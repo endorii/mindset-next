@@ -1,0 +1,427 @@
+{
+    "collections": [
+        {
+            "name": "Aesth",
+            "path": "aesth",
+            "banner": "/images/aesthbanner.png",
+            "categories": [
+                {
+                    "name": "Футболки",
+                    "path": "tshirts",
+                    "banner": "/images/tshirtbanner.jpg",
+                    "products": [
+                        {
+                            "name": "Tshirt1",
+                            "price": 600,
+                            "path": "tshirt1",
+                            "images": ["/images/black_tshirt.jpg"],
+                            "available": true,
+                            "description": "Стильний та зручний одяг, ідеальний для повсякденного використання.",
+                            "composition": "95% бавовна, 5% еластан",
+                            "sizes": ["XS", "S", "M", "L", "XL"],
+                            "type": ["regular", "oversize"],
+                            "color": ["чорний", "білий"]
+                        },
+                        {
+                            "name": "Tshirt2",
+                            "price": 650,
+                            "path": "tshirt2",
+                            "images": ["/images/black_tshirt.jpg"],
+                            "available": false,
+                            "description": "Стильний та зручний одяг, ідеальний для повсякденного використання.",
+                            "composition": "95% бавовна, 5% еластан",
+                            "sizes": ["XS", "S", "M", "L", "XL"],
+                            "type": ["regular", "oversize"],
+                            "color": ["чорний", "білий"]
+                        },
+                        {
+                            "name": "Tshirt3",
+                            "price": 700,
+                            "path": "tshirt3",
+                            "images": ["/images/black_tshirt.jpg"],
+                            "available": true,
+                            "description": "Стильний та зручний одяг, ідеальний для повсякденного використання.",
+                            "composition": "95% бавовна, 5% еластан",
+                            "sizes": ["XS", "S", "M", "L", "XL"],
+                            "type": ["regular", "oversize"],
+                            "color": ["чорний", "білий"]
+                        }
+                    ]
+                },
+                {
+                    "name": "Худі",
+                    "path": "hoodie",
+                    "banner": "/images/hoodiebanner.jpg",
+                    "products": [
+                        {
+                            "name": "Hoodie1",
+                            "price": 900,
+                            "path": "hoodie1",
+                            "images": ["/images/black_hoodie.jpg"],
+                            "available": false,
+                            "description": "Теплий та комфортний одяг для прохолодної погоди.",
+                            "composition": "80% бавовна, 20% поліестер",
+                            "sizes": ["S", "M", "L", "XL"],
+                            "type": ["regular", "oversize"],
+                            "color": ["чорний", "білий"]
+                        },
+                        {
+                            "name": "Hoodie2",
+                            "price": 950,
+                            "path": "hoodie2",
+                            "images": ["/images/white_hoodie.jpg"],
+                            "available": true,
+                            "description": "Теплий та комфортний одяг для прохолодної погоди.",
+                            "composition": "80% бавовна, 20% поліестер",
+                            "sizes": ["S", "M", "L", "XL"],
+                            "type": ["regular", "oversize"],
+                            "color": ["чорний", "білий"]
+                        }
+                    ]
+                },
+                {
+                    "name": "Зіп-кофти",
+                    "path": "zip",
+                    "banner": "/images/zipbanner.jpg",
+                    "products": [
+                        {
+                            "name": "Zip1",
+                            "price": 750,
+                            "path": "zip1",
+                            "images": ["/images/black_zip.jpg"],
+                            "available": true,
+                            "description": "Зручна зіп-кофта для холодної погоди.",
+                            "composition": "75% бавовна, 25% поліестер",
+                            "sizes": ["S", "M", "L", "XL"],
+                            "type": ["regular", "oversize"],
+                            "color": ["чорний", "білий"]
+                        },
+                        {
+                            "name": "Zip2",
+                            "price": 800,
+                            "path": "zip2",
+                            "images": ["/images/black_zip.jpg"],
+                            "available": false,
+                            "description": "Зручна зіп-кофта для холодної погоди.",
+                            "composition": "75% бавовна, 25% поліестер",
+                            "sizes": ["S", "M", "L", "XL"],
+                            "type": ["regular", "oversize"],
+                            "color": ["чорний", "білий"]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "Serenity",
+            "path": "serenity",
+            "banner": "/images/serenitybanner.png",
+            "categories": [
+                {
+                    "name": "Футболки",
+                    "path": "tshirts",
+                    "banner": "/images/tshirtbanner.jpg",
+                    "products": [
+                        {
+                            "name": "TshirtOut1",
+                            "price": 620,
+                            "path": "tshirtout1",
+                            "images": ["/images/black_tshirt.jpg"],
+                            "available": true,
+                            "description": "Стильний та зручний одяг, ідеальний для повсякденного використання.",
+                            "composition": "95% бавовна, 5% еластан",
+                            "sizes": ["XS", "S", "M", "L", "XL"],
+                            "type": ["regular", "oversize"],
+                            "color": ["чорний", "білий"]
+                        },
+                        {
+                            "name": "TshirtOut2",
+                            "price": 680,
+                            "path": "tshirtout2",
+                            "images": ["/images/black_tshirt.jpg"],
+                            "available": false,
+                            "description": "Стильний та зручний одяг, ідеальний для повсякденного використання.",
+                            "composition": "95% бавовна, 5% еластан",
+                            "sizes": ["XS", "S", "M", "L", "XL"],
+                            "type": ["regular", "oversize"],
+                            "color": ["чорний", "білий"]
+                        }
+                    ]
+                },
+                {
+                    "name": "Худі",
+                    "path": "hoodie",
+                    "banner": "/images/hoodiebanner.jpg",
+                    "products": [
+                        {
+                            "name": "HoodieOut1",
+                            "price": 930,
+                            "path": "hoodieout1",
+                            "images": [
+                                "/images/black_hoodie.jpg",
+                                "/images/black_hoodie.jpg",
+                                "/images/black_hoodie.jpg",
+                                "/images/black_hoodie.jpg",
+                                "/images/black_hoodie.jpg",
+                                "/images/black_hoodie.jpg",
+                                "/images/black_hoodie.jpg",
+                                "/images/black_hoodie.jpg"
+                            ],
+                            "available": false,
+                            "description": "Теплий та комфортний одяг для прохолодної погоди.",
+                            "composition": "80% бавовна, 20% поліестер",
+                            "sizes": ["S", "M", "L", "XL"],
+                            "type": ["regular", "oversize"],
+                            "color": ["чорний", "білий"]
+                        },
+                        {
+                            "name": "HoodieOut2",
+                            "price": 980,
+                            "path": "hoodieout2",
+                            "images": ["/images/white_hoodie.jpg"],
+                            "available": true,
+                            "description": "Теплий та комфортний одяг для прохолодної погоди.",
+                            "composition": "80% бавовна, 20% поліестер",
+                            "sizes": ["S", "M", "L", "XL"],
+                            "type": ["regular", "oversize"],
+                            "color": ["чорний", "білий"]
+                        }
+                    ]
+                },
+                {
+                    "name": "Зіп-кофти",
+                    "path": "zip",
+                    "banner": "/images/zipbanner.jpg",
+                    "products": [
+                        {
+                            "name": "ZipOut1",
+                            "price": 770,
+                            "path": "zipout1",
+                            "images": ["/images/black_zip.jpg"],
+                            "available": true,
+                            "description": "Зручна зіп-кофта для холодної погоди.",
+                            "composition": "75% бавовна, 25% поліестер",
+                            "sizes": ["S", "M", "L", "XL"],
+                            "type": ["regular", "oversize"],
+                            "color": ["чорний", "білий"]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "247",
+            "path": "247",
+            "banner": "/images/247banner.png",
+            "categories": [
+                {
+                    "name": "Футболки",
+                    "path": "tshirts",
+                    "banner": "/images/tshirtbanner.jpg",
+                    "products": [
+                        {
+                            "name": "Tshirt247-1",
+                            "price": 610,
+                            "path": "tshirt247_1",
+                            "images": ["/images/black_tshirt.jpg"],
+                            "available": true,
+                            "description": "Стильний та зручний одяг, ідеальний для повсякденного використання.",
+                            "composition": "95% бавовна, 5% еластан",
+                            "sizes": ["XS", "S", "M", "L", "XL"],
+                            "type": ["regular", "oversize"],
+                            "color": ["чорний", "білий"]
+                        },
+                        {
+                            "name": "Tshirt247-2",
+                            "price": 665,
+                            "path": "tshirt247_2",
+                            "images": ["/images/black_tshirt.jpg"],
+                            "available": false,
+                            "description": "Стильний та зручний одяг, ідеальний для повсякденного використання.",
+                            "composition": "95% бавовна, 5% еластан",
+                            "sizes": ["XS", "S", "M", "L", "XL"],
+                            "type": ["regular", "oversize"],
+                            "color": ["чорний", "білий"]
+                        }
+                    ]
+                },
+                {
+                    "name": "Худі",
+                    "path": "hoodie",
+                    "banner": "/images/hoodiebanner.jpg",
+                    "products": [
+                        {
+                            "name": "Hoodie247-1",
+                            "price": 910,
+                            "path": "hoodie247_1",
+                            "images": ["/images/white_hoodie.jpg"],
+                            "available": true,
+                            "description": "Теплий та комфортний одяг для прохолодної погоди.",
+                            "composition": "80% бавовна, 20% поліестер",
+                            "sizes": ["S", "M", "L", "XL"],
+                            "type": ["regular", "oversize"],
+                            "color": ["чорний", "білий"]
+                        }
+                    ]
+                },
+                {
+                    "name": "Зіп-кофти",
+                    "path": "zip",
+                    "banner": "/images/zipbanner.jpg",
+                    "products": [
+                        {
+                            "name": "Zip247-1",
+                            "price": 790,
+                            "path": "zip247_1",
+                            "images": ["/images/black_zip.jpg"],
+                            "available": false,
+                            "description": "Зручна зіп-кофта для холодної погоди.",
+                            "composition": "75% бавовна, 25% поліестер",
+                            "sizes": ["S", "M", "L", "XL"],
+                            "type": ["regular", "oversize"],
+                            "color": ["чорний", "білий"]
+                        },
+                        {
+                            "name": "Zip247-2",
+                            "price": 820,
+                            "path": "zip247_2",
+                            "images": ["/images/black_zip.jpg"],
+                            "available": true,
+                            "description": "Зручна зіп-кофта для холодної погоди.",
+                            "composition": "75% бавовна, 25% поліестер",
+                            "sizes": ["S", "M", "L", "XL"],
+                            "type": ["regular", "oversize"],
+                            "color": ["чорний", "білий"]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "Bliss",
+            "path": "bliss",
+            "banner": "/images/blissbanner.png",
+            "categories": [
+                {
+                    "name": "Футболки",
+                    "path": "tshirts",
+                    "banner": "/images/tshirtbanner.jpg",
+                    "products": [
+                        {
+                            "name": "TshirtMen1",
+                            "price": 605,
+                            "path": "tshirtmen1",
+                            "images": ["/images/black_tshirt.jpg"],
+                            "available": false,
+                            "description": "Стильний та зручний одяг, ідеальний для повсякденного використання.",
+                            "composition": "95% бавовна, 5% еластан",
+                            "sizes": ["XS", "S", "M", "L", "XL"],
+                            "type": ["regular", "oversize"],
+                            "color": ["чорний", "білий"]
+                        },
+                        {
+                            "name": "TshirtMen2",
+                            "price": 690,
+                            "path": "tshirtmen2",
+                            "images": ["/images/black_tshirt.jpg"],
+                            "available": true,
+                            "description": "Стильний та зручний одяг, ідеальний для повсякденного використання.",
+                            "composition": "95% бавовна, 5% еластан",
+                            "sizes": ["XS", "S", "M", "L", "XL"],
+                            "type": ["regular", "oversize"],
+                            "color": ["чорний", "білий"]
+                        }
+                    ]
+                },
+                {
+                    "name": "Худі",
+                    "path": "hoodie",
+                    "banner": "/images/hoodiebanner.jpg",
+                    "products": [
+                        {
+                            "name": "HoodieMen1",
+                            "price": 940,
+                            "path": "hoodiemen1",
+                            "images": ["/images/black_hoodie.jpg"],
+                            "available": true,
+                            "description": "Теплий та комфортний одягдля прохолодної погоди.",
+                            "composition": "80% бавовна, 20% поліестер",
+                            "sizes": ["S", "M", "L", "XL"],
+                            "type": ["regular", "oversize"],
+                            "color": ["чорний", "білий"]
+                        }
+                    ]
+                },
+                {
+                    "name": "Зіп-кофти",
+                    "path": "zip",
+                    "banner": "/images/zipbanner.jpg",
+                    "products": [
+                        {
+                            "name": "ZipMen1",
+                            "price": 780,
+                            "path": "zipmen1",
+                            "images": ["/images/black_zip.jpg"],
+                            "available": false,
+                            "description": "Зручна зіп-кофта для холодної погоди.",
+                            "composition": "75% бавовна, 25% поліестер",
+                            "sizes": ["S", "M", "L", "XL"],
+                            "type": ["regular", "oversize"],
+                            "color": ["чорний", "білий"]
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "user": {
+        "username": "Петро Петренко",
+        "email": "user@example.com",
+        "password": "hashed_password_here",
+        "phone": "+380991234567",
+        "shippingAddress": {
+            "recipient": "Петро (Петрович) Петренко",
+            "country": "Україна",
+            "region": "Київська область",
+            "city": "Київ",
+            "postalCode": "01001",
+            "street": "вул. Хрещатик",
+            "building": "22",
+            "apartment": "15"
+        },
+        "cart": [
+            {
+                "productPath": "tshirt1",
+                "quantity": 2,
+                "size": "M",
+                "color": "чорний"
+            },
+            {
+                "productPath": "hoodie247_1",
+                "quantity": 1,
+                "size": "L",
+                "color": "білий"
+            },
+            {
+                "productPath": "tshirt1",
+                "quantity": 2,
+                "size": "M",
+                "color": "чорний"
+            },
+            {
+                "productPath": "hoodie247_1",
+                "quantity": 1,
+                "size": "L",
+                "color": "білий"
+            }
+        ],
+        "favorites": [
+            {
+                "productPath": "zipout1"
+            },
+            {
+                "productPath": "tshirtmen2"
+            }
+        ]
+    }
+}
