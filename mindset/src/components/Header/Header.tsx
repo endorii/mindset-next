@@ -5,7 +5,7 @@ const Header = () => {
     return (
         <header className="fixed top-0 py-[10px] px-[20px] md:px-[35px] h-[75px] md:h-[85px] flex justify-end items-center w-full bg-white z-[100] shadow-custom border-b border-gray-200">
             <div className="absolute left-1/2 transform -translate-x-1/2">
-                <Link href="/" className="font-bold text-4xl tracking-tighter">
+                <Link href="/" className="font-bold text-5xl tracking-tighter">
                     mindset
                 </Link>
             </div>

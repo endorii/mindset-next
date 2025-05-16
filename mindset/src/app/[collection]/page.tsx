@@ -3,6 +3,7 @@
 import { notFound, usePathname } from "next/navigation";
 import Link from "next/link";
 import { collections } from "@/data/collections";
+import Image from "next/image";
 
 export default function Collection() {
     const pathname = usePathname();
@@ -36,10 +37,11 @@ export default function Collection() {
                                 <div className="absolute top-0 left-0 bg-black text-white px-[25px] py-[15px] text-lg z-10">
                                     {product.name}
                                 </div>
-                                <img
+                                <Image
+                                    width={450}
+                                    height={450}
                                     src={product.banner}
                                     alt={product.name}
-                                    className="w-full h-auto"
                                 />
                             </Link>
                         </li>

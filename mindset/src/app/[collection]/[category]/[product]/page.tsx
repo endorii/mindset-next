@@ -2,7 +2,6 @@
 
 import { usePathname } from "next/navigation";
 import { collections } from "@/data/collections";
-import Link from "next/link";
 
 export default function ProductPage() {
     const pathname = usePathname();

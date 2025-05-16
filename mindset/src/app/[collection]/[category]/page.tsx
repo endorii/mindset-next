@@ -3,6 +3,7 @@
 import { notFound, usePathname } from "next/navigation";
 import Link from "next/link";
 import { collections } from "@/data/collections";
+import Image from "next/image";
 
 export default function CategoryPage() {
     const pathname = usePathname();
@@ -38,10 +39,11 @@ export default function CategoryPage() {
                             >
                                 {product.name}
                             </div>
-                            <img
-                                src={product.images?.[0] || "/placeholder.jpg"}
+                            <Image
+                                width={450}
+                                height={450}
+                                src={product.images[0]}
                                 alt={product.name}
-                                className="w-full h-auto"
                             />
                         </Link>
                     </li>

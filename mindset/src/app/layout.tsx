@@ -1,8 +1,14 @@
 import type { Metadata } from "next";
+import { Mulish } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/Header/Header";
 import Footer from "@/components/Footer/Footer";
 import Container from "@/components/Container/Container";
+import CustomCursor from "@/components/CustomCursor/CustomCursor";
+
+const mulish = Mulish({
+    subsets: ["cyrillic"],
+});
 
 export const metadata: Metadata = {
     title: "Mindset",
@@ -13,8 +19,9 @@ export default function RootLayout({
     children,
 }: Readonly<{ children: React.ReactNode }>) {
     return (
-        <html lang="en">
+        <html lang="en" className={mulish.className}>
             <body>
+                <CustomCursor />
                 <Header />
                 <Container>{children}</Container>
                 <Footer />

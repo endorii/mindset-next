@@ -24,7 +24,7 @@ export default function HomePage() {
                                 <img
                                     src={collection.banner}
                                     alt={collection.name}
-                                    className="w-full h-[100vh] object-cover filter transition-all duration-300"
+                                    className="w-full h-[100vh] object-cover filter transition-all duration-300 grayscale-100 hover:grayscale-25"
                                 />
                             </Link>
                         </li>
