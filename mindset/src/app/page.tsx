@@ -4,7 +4,7 @@ import Link from "next/link";
 export default function HomePage() {
     return (
         <>
-            <div className="collections-list">
+            <div>
                 <h3 className="mt-[30px] text-xl uppercase font-bold">
                     Колекції
                 </h3>

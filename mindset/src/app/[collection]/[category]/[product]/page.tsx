@@ -2,6 +2,7 @@
 
 import { usePathname } from "next/navigation";
 import { collections } from "@/data/collections";
+import HeartIcon from "@/components/Icons/HeartIcon";
 
 export default function ProductPage() {
     const pathname = usePathname();
@@ -29,8 +30,8 @@ export default function ProductPage() {
         <div className="flex flex-col md:flex-row mt-[30px] gap-[50px] items-start">
             <div className="flex gap-[10px] relative">
                 <div className="relative">
-                    <button className="absolute top-0 right-0 text-xs flex items-center gap-[10px] border border-transparent hover:text-black hover:border-black hover:bg-white bg-black text-white p-[10px] transition-all duration-300 cursor-pointer">
-                        ❤️
+                    <button className="absolute top-0 right-0 text-xs flex items-center gap-[10px] border border-transparent hover:text-black hover:border-black hover:bg-white bg-black text-white p-[10px] transition-all duration-300 cursor-pointer ">
+                        <HeartIcon className="w-[30px] stroke-white" />
                     </button>
                     <img
                         src={product.images?.[0] || "/placeholder.jpg"}

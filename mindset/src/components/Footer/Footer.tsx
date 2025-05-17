@@ -1,5 +1,8 @@
 import { collections } from "@/data/collections";
 import Link from "next/link";
+import TiktokIcon from "../Icons/TiktokIcon";
+import InstagramIcon from "../Icons/InstagramIcon";
+import TelegramIcon from "../Icons/TelegramIcon";
 
 const Footer = () => {
     return (
@@ -35,17 +38,21 @@ const Footer = () => {
                 <ul className="flex gap-[20px]">
                     <li>
                         <button className="cursor-pointer p-[10px] border borer-white rounded-[50%] hover:bg-white group transition-all duration-300">
-                            <Link href={"#"}></Link>
+                            <Link href={"#"}>
+                                <TiktokIcon className="w-[20px] fill-white group-hover:fill-black" />
+                            </Link>
                         </button>
                     </li>
                     <li>
                         <button className="cursor-pointer p-[10px] border borer-white rounded-[50%] hover:bg-white group transition-all duration-300">
                             <Link href={"#"}></Link>
+                            <InstagramIcon className="w-[20px] fill-white group-hover:fill-black" />
                         </button>
                     </li>
                     <li>
                         <button className="cursor-pointer p-[10px] border borer-white rounded-[50%] hover:bg-white group transition-all duration-300">
                             <Link href={"#"}></Link>
+                            <TelegramIcon className="w-[20px] fill-white group-hover:fill-black" />
                         </button>
                     </li>
                 </ul>

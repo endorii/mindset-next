@@ -6,7 +6,9 @@ interface ContainerProps {
 
 const Container = ({ children }: ContainerProps) => {
     return (
-        <div className="mt-[115px] px-[30px] py-[30px] pt-0">{children}</div>
+        <div className="min-h-[63vh] mt-[115px] px-[30px] py-[30px] pt-0">
+            {children}
+        </div>
     );
 };
 

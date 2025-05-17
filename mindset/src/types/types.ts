@@ -56,3 +56,7 @@ export interface ICartItem {
 export interface IFavoriteItem {
     productPath: IProduct["path"];
 }
+
+export interface IIconsProps {
+    className?: string;
+}
