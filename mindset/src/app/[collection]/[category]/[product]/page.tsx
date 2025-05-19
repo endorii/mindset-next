@@ -40,7 +40,7 @@ export default function ProductPage() {
                     />
                 </div>
 
-                <ul className="flex flex-col w-[120px] gap-[10px] overflow-y-auto max-h-[500px]">
+                <ul className="flex flex-col w-[150px] gap-[10px] overflow-y-auto max-h-[600px]">
                     {product.images?.map((image, i) => (
                         <li key={i}>
                             <img
@@ -96,13 +96,13 @@ export default function ProductPage() {
                 <div className="flex justify-between gap-[15px] mt-[30px]">
                     <button
                         disabled={!product.available}
-                        className="w-full border border-transparent hover:border-black hover:bg-white bg-black text-white px-[15px] py-[12px] transition-all duration-300 cursor-pointer disabled:bg-gray-200"
+                        className="w-full border border-transparent hover:border-black hover:bg-white hover:text-black bg-black text-white px-[15px] py-[12px] transition-all duration-300 cursor-pointer disabled:bg-gray-200 disabled:border-transparent disabled:text-white"
                     >
                         Купити
                     </button>
                     <button
                         disabled={!product.available}
-                        className="w-full border border-transparent hover:border-black hover:bg-white bg-black text-white px-[15px] py-[12px] transition-all duration-300 cursor-pointer disabled:bg-gray-200"
+                        className="w-full border border-transparent hover:border-black hover:bg-white hover:text-black bg-black text-white px-[15px] py-[12px] transition-all duration-300 cursor-pointer disabled:bg-gray-200 disabled:border-transparent disabled:text-white"
                     >
                         В кошик
                     </button>

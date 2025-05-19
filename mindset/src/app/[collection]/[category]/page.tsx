@@ -31,15 +31,19 @@ export default function CategoryPage() {
                     <li key={i}>
                         <Link
                             href={`/${collectionPath}/${categoryPath}/${product.path}`}
-                            className="relative block"
+                            className="relative block group"
                         >
                             <div
-                                className="absolute top-0 left-0 bg-black text-white px-[25px] py-[15px] text-lg z-10 
-                                group-hover:bg-white group-hover:text-black transition-colors duration-300"
+                                className="z-10 absolute top-0 left-0 bg-black text-white px-[25px] py-[15px] text-lg
+                                group-hover:bg-transparent group-hover:text-white group-hover:text-3xl group-hover:top-[50%] group-hover:left-[50%] group-hover:translate-x-[-50%] group-hover:translate-y-[-50%] transition-all ease-in-out duration-800"
                             >
-                                {product.name}
+                                <div>{product.name}</div>
+                                <div className="text-lg font-semibold mt-[5px]">
+                                    {product.price} грн.
+                                </div>
                             </div>
                             <Image
+                                className="filter transition-all group-hover:brightness-50 duration-600"
                                 width={450}
                                 height={450}
                                 src={product.images[0]}

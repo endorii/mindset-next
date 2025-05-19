@@ -32,12 +32,16 @@ export default function Collection() {
                         <li key={i}>
                             <Link
                                 href={`/${selectedCollection.path}/${product.path}`}
-                                className="relative block"
+                                className="relative block group"
                             >
-                                <div className="absolute top-0 left-0 bg-black text-white px-[25px] py-[15px] text-lg z-10">
+                                <div
+                                    className="z-10 absolute top-0 left-0 bg-black text-white px-[25px] py-[15px] text-lg
+                                group-hover:bg-transparent group-hover:text-white group-hover:text-3xl group-hover:top-[50%] group-hover:left-[50%] group-hover:translate-x-[-50%] group-hover:translate-y-[-50%] transition-all ease-in-out duration-800"
+                                >
                                     {product.name}
                                 </div>
                                 <Image
+                                    className="filter transition-all group-hover:brightness-50 duration-600"
                                     width={450}
                                     height={450}
                                     src={product.banner}
