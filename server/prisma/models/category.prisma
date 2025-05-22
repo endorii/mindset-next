@@ -1,0 +1,10 @@
+model Category {
+  id           String     @id @default(cuid())
+  name         String
+  path         String
+  banner       String
+  collection   Collection @relation(fields: [collectionId], references: [id])
+  collectionId String     @map("collection_id")
+  products     Product[]
+  createdAt    DateTime   @default(now()) @map("created_at")
+}

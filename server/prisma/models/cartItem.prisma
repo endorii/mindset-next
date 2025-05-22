@@ -1,0 +1,10 @@
+model CartItem {
+    id        String  @id @default(cuid())
+    user      User    @relation(fields: [userId], references: [id])
+    userId    String  @map("user_id")
+    product   Product @relation(fields: [productId], references: [id])
+    productId String  @map("product_id")
+    quantity  Int
+    size      String
+    color     String
+}

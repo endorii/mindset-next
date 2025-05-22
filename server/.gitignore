@@ -1,3 +1,6 @@
+# prisma files
+/generated/prisma
+
 # compiled output
 /dist
 /node_modules
