@@ -1,15 +1,26 @@
+"use client";
+
 import { collections } from "@/data/collections";
 import Link from "next/link";
+import { useGetAllCollectionsQuery } from "../lib/features/collections/collections.Slice";
+import AddCollection from "@/components/AddCollections";
+import { useEffect } from "react";
+import { ICollection } from "@/types/types";
 
 export default function HomePage() {
+    const { data, isError, isLoading } = useGetAllCollectionsQuery();
+
+    console.log({ data, isError, isLoading });
+
     return (
         <>
             <div>
                 <h3 className="mt-[30px] text-xl uppercase font-bold">
                     Колекції
                 </h3>
+                {AddCollection()}
                 <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 mt-[30px]">
-                    {collections.map((collection, i) => (
+                    {data?.map((collection: ICollection, i: string) => (
                         <li key={i}>
                             <Link
                                 href={`/${collection.path}`}

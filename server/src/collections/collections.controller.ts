@@ -1,13 +1,13 @@
 import { Body, Controller, Delete, Get, Param, Post, Put } from "@nestjs/common";
-import { AppService } from "./app.service";
+import { CollectionsService } from "./collections.service";
 
-@Controller("collections")
-export class AppController {
-    constructor(private readonly appService: AppService) {}
+@Controller("api/collections")
+export class CollectionsController {
+    constructor(private readonly collectionsService: CollectionsService) {}
 
     @Get()
     getCollections() {
-        return this.appService.getCollections();
+        return this.collectionsService.getCollections();
     }
 
     @Post()
@@ -16,7 +16,7 @@ export class AppController {
         @Body("path") path: string,
         @Body("banner") banner: string
     ) {
-        return this.appService.createCollection(name, path, banner);
+        return this.collectionsService.createCollection(name, path, banner);
     }
 
     @Put(":id")
@@ -26,11 +26,11 @@ export class AppController {
         @Body("path") path: string,
         @Body("banner") banner: string
     ) {
-        return this.appService.updateCollection(id, name, path, banner);
+        return this.collectionsService.updateCollection(id, name, path, banner);
     }
 
     @Delete(":id")
     deleteUser(@Param("id") id: string) {
-        return this.appService.deleteCollection(id);
+        return this.collectionsService.deleteCollection(id);
     }
 }
