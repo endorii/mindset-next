@@ -1,36 +1,23 @@
-import { Body, Controller, Delete, Get, Param, Post, Put } from "@nestjs/common";
+import { Controller, Get, Post, Body, Param, Delete } from "@nestjs/common";
 import { CollectionsService } from "./collections.service";
+import { CreateCollectionDto } from "./dto/create-collection.dto";
 
-@Controller("api/collections")
+@Controller("collections")
 export class CollectionsController {
     constructor(private readonly collectionsService: CollectionsService) {}
 
     @Get()
-    getCollections() {
-        return this.collectionsService.getCollections();
+    getAllCollections() {
+        return this.collectionsService.getAllCollections();
     }
 
     @Post()
-    createCollection(
-        @Body("name") name: string,
-        @Body("path") path: string,
-        @Body("banner") banner: string
-    ) {
-        return this.collectionsService.createCollection(name, path, banner);
-    }
-
-    @Put(":id")
-    updateCollection(
-        @Param("id") id: string,
-        @Body("name") name: string,
-        @Body("path") path: string,
-        @Body("banner") banner: string
-    ) {
-        return this.collectionsService.updateCollection(id, name, path, banner);
+    postCollection(@Body() createCollectionDto: CreateCollectionDto) {
+        return this.collectionsService.postCollection(createCollectionDto);
     }
 
     @Delete(":id")
-    deleteUser(@Param("id") id: string) {
+    remove(@Param("id") id: string) {
         return this.collectionsService.deleteCollection(id);
     }
 }

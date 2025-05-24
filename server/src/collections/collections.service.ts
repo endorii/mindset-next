@@ -1,38 +1,35 @@
-import { Injectable } from "@nestjs/common";
-import { PrismaService } from "../prisma.service";
+import { Injectable, InternalServerErrorException, NotFoundException } from "@nestjs/common";
+import { CreateCollectionDto } from "./dto/create-collection.dto";
+import { PrismaService } from "src/prisma/prisma.service";
 
 @Injectable()
 export class CollectionsService {
-    constructor(private prisma: PrismaService) {}
+    constructor(private readonly prisma: PrismaService) {}
 
-    getCollections() {
+    getAllCollections() {
         return this.prisma.collection.findMany();
     }
 
-    createCollection(name: string, path: string, banner: string) {
+    postCollection(createCollectionDto: CreateCollectionDto) {
         return this.prisma.collection.create({
-            data: {
-                name,
-                path,
-                banner,
-            },
+            data: createCollectionDto,
         });
     }
 
-    updateCollection(id: string, name: string, path: string, banner: string) {
-        return this.prisma.collection.update({
-            where: { id },
-            data: {
-                name,
-                path,
-                banner,
-            },
-        });
-    }
+    async deleteCollection(id: string) {
+        try {
+            const existing = await this.prisma.collection.findUnique({ where: { id } });
 
-    deleteCollection(id: string) {
-        return this.prisma.collection.delete({
-            where: { id },
-        });
+            if (!existing) {
+                throw new NotFoundException(`Collection with id ${id} not found`);
+            }
+
+            return await this.prisma.collection.delete({
+                where: { id },
+            });
+        } catch (error) {
+            console.error("Delete error:", error);
+            throw new InternalServerErrorException("Failed to delete collection");
+        }
     }
 }
