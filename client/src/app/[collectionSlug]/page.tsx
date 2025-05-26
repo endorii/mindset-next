@@ -2,36 +2,37 @@
 
 import { notFound, usePathname } from "next/navigation";
 import Link from "next/link";
-import { collections } from "@/data/collections";
 import Image from "next/image";
+import { useCategories } from "@/lib/hooks/useCategories";
 
 export default function Collection() {
     const pathname = usePathname();
-    const collectionPath = pathname.split("/")[1] || "";
+    const collectionId = pathname.split("/")[1] || "";
 
-    const selectedCollection = collections.find(
-        (c) => c.path === collectionPath
-    );
+    const { data, isError, isLoading } = useCategories(collectionId);
 
-    if (!selectedCollection) {
-        return (
-            <div className="pt-[130px] text-center text-[50px]">
-                {notFound()}
-            </div>
-        );
+    if (isLoading) {
+        return <p>Завантаження...</p>;
     }
+
+    if (!data) {
+        return notFound();
+    }
+
+    if (isLoading) return <p>Завантаження...</p>;
+    if (isError || !data) return <p>Колекція не знайдена</p>;
 
     return (
         <div>
             <h3 className="mt-[30px] text-2xl uppercase font-bold">
                 Категорії товарів:
             </h3>
-            {selectedCollection.categories?.length ? (
+            {data?.length ? (
                 <ul className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-[20px] mt-[30px]">
-                    {selectedCollection.categories.map((product, i) => (
+                    {data.map((product, i) => (
                         <li key={i}>
                             <Link
-                                href={`/${selectedCollection.path}/${product.path}`}
+                                href={`/${collectionId}/${product.id}`}
                                 className="relative block group"
                             >
                                 <div

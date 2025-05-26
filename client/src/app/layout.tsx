@@ -5,7 +5,7 @@ import Header from "@/components/Header/Header";
 import Footer from "@/components/Footer/Footer";
 import Container from "@/components/Container/Container";
 import CustomCursor from "@/components/CustomCursor/CustomCursor";
-import StoreProvider from "./StoreProvider";
+import QueryProvider from "@/components/QueryProvider";
 
 const mulish = Mulish({
     subsets: ["cyrillic"],
@@ -20,15 +20,15 @@ export default function RootLayout({
     children,
 }: Readonly<{ children: React.ReactNode }>) {
     return (
-        <StoreProvider>
-            <html lang="en" className={mulish.className}>
-                <body>
+        <html lang="en" className={mulish.className}>
+            <body>
+                <QueryProvider>
                     <CustomCursor />
                     <Header />
                     <Container>{children}</Container>
                     <Footer />
-                </body>
-            </html>
-        </StoreProvider>
+                </QueryProvider>
+            </body>
+        </html>
     );
 }

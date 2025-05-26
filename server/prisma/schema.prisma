@@ -34,6 +34,37 @@ model ShippingAddress {
   apartment  String
 }
 
+model CartItem {
+  id        String  @id @default(cuid())
+  user      User    @relation(fields: [userId], references: [id])
+  userId    String  @map("user_id")
+  product   Product @relation(fields: [productId], references: [id])
+  productId String  @map("product_id")
+  quantity  Int
+  size      String
+  color     String
+}
+
+model Collection {
+  id         String     @id @default(cuid())
+  name       String
+  path       String     @unique
+  banner     String
+  categories Category[]
+  createdAt  DateTime   @default(now()) @map("created_at")
+}
+
+model Category {
+  id           String     @id @default(cuid())
+  name         String
+  path         String     @unique
+  banner       String
+  collection   Collection @relation(fields: [collectionId], references: [id])
+  collectionId String     @map("collection_id")
+  products     Product[]
+  createdAt    DateTime   @default(now()) @map("created_at")
+}
+
 model Product {
   id          String         @id @default(cuid())
   name        String
@@ -79,37 +110,6 @@ model ProductColor {
   value     String
   product   Product @relation(fields: [productId], references: [id])
   productId String  @map("product_id")
-}
-
-model CartItem {
-  id        String  @id @default(cuid())
-  user      User    @relation(fields: [userId], references: [id])
-  userId    String  @map("user_id")
-  product   Product @relation(fields: [productId], references: [id])
-  productId String  @map("product_id")
-  quantity  Int
-  size      String
-  color     String
-}
-
-model Category {
-  id           String     @id @default(cuid())
-  name         String
-  path         String
-  banner       String
-  collection   Collection @relation(fields: [collectionId], references: [id])
-  collectionId String     @map("collection_id")
-  products     Product[]
-  createdAt    DateTime   @default(now()) @map("created_at")
-}
-
-model Collection {
-  id         String     @id @default(cuid())
-  name       String
-  path       String     @unique
-  banner     String
-  categories Category[]
-  createdAt  DateTime   @default(now()) @map("created_at")
 }
 
 model Favorite {

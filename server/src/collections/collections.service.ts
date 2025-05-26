@@ -10,6 +10,14 @@ export class CollectionsService {
         return this.prisma.collection.findMany();
     }
 
+    getCollection(path: string) {
+        return this.prisma.collection.findUnique({
+            where: {
+                path,
+            },
+        });
+    }
+
     postCollection(createCollectionDto: CreateCollectionDto) {
         return this.prisma.collection.create({
             data: createCollectionDto,

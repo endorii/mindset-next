@@ -1,4 +1,9 @@
+export interface Props {
+    children: React.ReactNode;
+}
+
 export interface ICollection {
+    id: string;
     name: string;
     path: string;
     banner: string;
@@ -6,6 +11,7 @@ export interface ICollection {
 }
 
 export interface ICategory {
+    id: string;
     name: string;
     path: string;
     banner: string;
@@ -13,6 +19,7 @@ export interface ICategory {
 }
 
 export interface IProduct {
+    id: string;
     name: string;
     price: number;
     path: string;
@@ -26,6 +33,7 @@ export interface IProduct {
 }
 
 export interface IUser {
+    id: string;
     username: string;
     email: string;
     password: string;

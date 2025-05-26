@@ -1,8 +1,8 @@
 "use client";
 
-import { collections } from "@/data/collections";
 import Link from "next/link";
 import { ICollection } from "@/types/types";
+import { useCollections } from "@/lib/hooks/useCollections";
 
 interface ChooseCategoryHeaderProps {
     currentCollection: ICollection | null;
@@ -12,10 +12,24 @@ interface ChooseCategoryHeaderProps {
 const ChooseCategoryHeader = ({
     setCurrentCollection,
 }: ChooseCategoryHeaderProps) => {
+    const { data: collections, isError, error, isLoading } = useCollections();
+
+    if (isLoading) {
+        return <div>Loading...</div>;
+    }
+
+    if (isError) {
+        return (
+            <div>
+                Помилка: {error?.message || "Не вдалося отримати колекції"}
+            </div>
+        );
+    }
+
     return (
         <div className="bg-gray-100 py-4 z-10">
             <ul className="flex justify-center gap-4">
-                {collections.map((collection, i) => (
+                {collections?.map((collection, i) => (
                     <li
                         key={i}
                         className="border border-gray-300 hover:bg-black hover:text-white transition-colors duration-300"

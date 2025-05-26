@@ -1,10 +1,26 @@
-import { collections } from "@/data/collections";
+"use client";
+
 import Link from "next/link";
 import TiktokIcon from "../Icons/TiktokIcon";
 import InstagramIcon from "../Icons/InstagramIcon";
 import TelegramIcon from "../Icons/TelegramIcon";
+import { useCollections } from "@/lib/hooks/useCollections";
 
 const Footer = () => {
+    const { data: collections, isError, error, isLoading } = useCollections();
+
+    if (isLoading) {
+        return <div>Loading...</div>;
+    }
+
+    if (isError) {
+        return (
+            <div>
+                Помилка: {error?.message || "Не вдалося отримати колекції"}
+            </div>
+        );
+    }
+
     return (
         <div className="relative bg-black p-[50px] flex justify-between text-white">
             <div className="flex flex-col gap-[25px] w-[350px] text-sm">
@@ -20,7 +36,7 @@ const Footer = () => {
             <div className="absolute top-[50px] left-[50%] translate-x-[-50%]">
                 <div className="text-center font-bold mb-[5px]">Колекції:</div>
                 <ul className="flex gap-[10px] ">
-                    {collections.map((collection, i) => {
+                    {collections?.map((collection, i) => {
                         return (
                             <li
                                 key={i}
