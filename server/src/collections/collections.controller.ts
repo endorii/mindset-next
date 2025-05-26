@@ -11,6 +11,11 @@ export class CollectionsController {
         return this.collectionsService.getAllCollections();
     }
 
+    @Get(":collectionPath")
+    getCategoriesFromCollectionPath(@Param("collectionPath") collectionPath: string) {
+        return this.collectionsService.getCategoriesFromCollectionPath(collectionPath);
+    }
+
     @Post()
     postCollection(@Body() createCollectionDto: CreateCollectionDto) {
         return this.collectionsService.postCollection(createCollectionDto);

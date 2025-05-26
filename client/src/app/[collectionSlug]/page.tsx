@@ -4,12 +4,16 @@ import { notFound, usePathname } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import { useCategories } from "@/lib/hooks/useCategories";
+import { useGetCategoriesFromCollection } from "@/lib/hooks/useCollections";
 
 export default function Collection() {
     const pathname = usePathname();
-    const collectionId = pathname.split("/")[1] || "";
+    const collectionPath = pathname.split("/")[1] || "";
 
-    const { data, isError, isLoading } = useCategories(collectionId);
+    const { data, isError, isLoading } =
+        useGetCategoriesFromCollection(collectionPath);
+
+    console.log(data);
 
     if (isLoading) {
         return <p>Завантаження...</p>;
@@ -27,12 +31,12 @@ export default function Collection() {
             <h3 className="mt-[30px] text-2xl uppercase font-bold">
                 Категорії товарів:
             </h3>
-            {data?.length ? (
+            {data?.categories.length ? (
                 <ul className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-[20px] mt-[30px]">
-                    {data.map((product, i) => (
+                    {data.categories.map((product, i) => (
                         <li key={i}>
                             <Link
-                                href={`/${collectionId}/${product.id}`}
+                                href={`/${collectionPath}/${product.path}`}
                                 className="relative block group"
                             >
                                 <div

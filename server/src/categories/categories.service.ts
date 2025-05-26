@@ -6,14 +6,6 @@ import { PrismaService } from "src/prisma/prisma.service";
 export class CategoriesService {
     constructor(private readonly prisma: PrismaService) {}
 
-    getCategoriesFromCollection(collectionId: string) {
-        return this.prisma.category.findMany({
-            where: {
-                collectionId,
-            },
-        });
-    }
-
     async postCategory(createCategoryDto: CreateCategoryDto) {
         try {
             return await this.prisma.category.create({

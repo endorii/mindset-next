@@ -29,7 +29,7 @@ export default function HomePage() {
                         {data?.map((collection, i) => (
                             <li key={i}>
                                 <Link
-                                    href={`/${collection.id}`}
+                                    href={`/${collection.path}`}
                                     className="relative group"
                                 >
                                     <div

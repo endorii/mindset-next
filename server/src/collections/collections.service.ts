@@ -6,19 +6,18 @@ import { PrismaService } from "src/prisma/prisma.service";
 export class CollectionsService {
     constructor(private readonly prisma: PrismaService) {}
 
-    getAllCollections() {
+    async getAllCollections() {
         return this.prisma.collection.findMany();
     }
 
-    getCollection(path: string) {
-        return this.prisma.collection.findUnique({
-            where: {
-                path,
-            },
+    async getCategoriesFromCollectionPath(collectionPath: string) {
+        return await this.prisma.collection.findUnique({
+            where: { path: collectionPath },
+            include: { categories: true }, // Отримати пов’язані категорії
         });
     }
 
-    postCollection(createCollectionDto: CreateCollectionDto) {
+    async postCollection(createCollectionDto: CreateCollectionDto) {
         return this.prisma.collection.create({
             data: createCollectionDto,
         });

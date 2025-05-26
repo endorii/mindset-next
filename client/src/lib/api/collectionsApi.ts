@@ -11,7 +11,9 @@ export async function fetchCollections(): Promise<ICollection[]> {
     }
 }
 
-export async function fetchCollection(collectionPath: string): Promise<ICollection> {
+export async function fetchCategoriesFromCollectionByPath(
+    collectionPath: string
+): Promise<ICollection> {
     try {
         const res = await fetch(`http://localhost:5000/api/collections/${collectionPath}`);
         if (!res.ok) throw new Error("Помилка отримання колекції");

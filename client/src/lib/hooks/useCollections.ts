@@ -1,5 +1,5 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { fetchCollection, fetchCollections } from "@/lib/api/collectionsApi";
+import { fetchCategoriesFromCollectionByPath, fetchCollections } from "@/lib/api/collectionsApi";
 
 export function useCollections() {
     return useQuery({
@@ -8,9 +8,9 @@ export function useCollections() {
     });
 }
 
-export function useCollection(collectionPath: string) {
+export function useGetCategoriesFromCollection(collectionPath: string) {
     return useQuery({
         queryKey: ["collections", collectionPath],
-        queryFn: () => fetchCollection(collectionPath),
+        queryFn: () => fetchCategoriesFromCollectionByPath(collectionPath),
     });
 }
