@@ -3,15 +3,13 @@
 import { notFound, usePathname } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
-import { useCategories } from "@/lib/hooks/useCategories";
-import { useGetCategoriesFromCollection } from "@/lib/hooks/useCollections";
+import { useCollection } from "@/lib/hooks/useCollections";
 
 export default function Collection() {
     const pathname = usePathname();
     const collectionPath = pathname.split("/")[1] || "";
 
-    const { data, isError, isLoading } =
-        useGetCategoriesFromCollection(collectionPath);
+    const { data, isError, isLoading } = useCollection(collectionPath);
 
     console.log(data);
 
@@ -40,7 +38,7 @@ export default function Collection() {
                                 className="relative block group"
                             >
                                 <div
-                                    className="z-10 absolute top-0 left-0 bg-black text-white px-[25px] py-[15px] text-lg
+                                    className="z-[2] absolute top-0 left-0 bg-black text-white px-[25px] py-[15px] text-lg
                                 group-hover:bg-transparent group-hover:text-white group-hover:text-3xl group-hover:top-[50%] group-hover:left-[50%] group-hover:translate-x-[-50%] group-hover:translate-y-[-50%] transition-all ease-in-out duration-800"
                                 >
                                     {product.name}

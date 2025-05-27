@@ -1,9 +1,10 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { fetchCategories } from "../api/categoriesApi";
+import { ICategory, ICollection } from "@/types/types";
+import { fetchCategory } from "../api/categories.api";
 
-export function useCategories(collectionPath: string) {
+export function useCategory(collectionPath: ICollection["path"], categoryPath: ICategory["path"]) {
     return useQuery({
-        queryKey: ["categories", collectionPath],
-        queryFn: () => fetchCategories(collectionPath),
+        queryKey: ["collections", collectionPath, categoryPath],
+        queryFn: () => fetchCategory(collectionPath, categoryPath),
     });
 }

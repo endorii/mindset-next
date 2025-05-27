@@ -23,13 +23,19 @@ export interface IProduct {
     name: string;
     price: number;
     path: string;
-    images: string[];
+    images: IProductImage[];
     available: boolean;
     description: string;
     composition: string;
     sizes: string[];
     type: string[];
     color: string[];
+}
+
+export interface IProductImage {
+    id: string;
+    url: string;
+    productId: string;
 }
 
 export interface IUser {

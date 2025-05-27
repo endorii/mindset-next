@@ -18,6 +18,7 @@ model User {
   cart            CartItem[]
   favorites       Favorite[]
   createdAt       DateTime         @default(now()) @map("created_at")
+  updatedAt       DateTime         @updatedAt @map("updated_at")
 }
 
 model ShippingAddress {
@@ -52,6 +53,7 @@ model Collection {
   banner     String
   categories Category[]
   createdAt  DateTime   @default(now()) @map("created_at")
+  updatedAt  DateTime   @updatedAt @map("updated_at")
 }
 
 model Category {
@@ -63,6 +65,7 @@ model Category {
   collectionId String     @map("collection_id")
   products     Product[]
   createdAt    DateTime   @default(now()) @map("created_at")
+  updatedAt    DateTime   @updatedAt @map("updated_at")
 
   @@unique([collectionId, path]) // Унікальність категорії тільки в межах колекції
 }
@@ -84,6 +87,7 @@ model Product {
   cartItems   CartItem[]
   favorites   Favorite[]
   createdAt   DateTime       @default(now()) @map("created_at")
+  updatedAt   DateTime       @updatedAt @map("updated_at")
 }
 
 model ProductImage {

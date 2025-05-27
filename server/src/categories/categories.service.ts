@@ -1,36 +1,62 @@
-import { Injectable, InternalServerErrorException, NotFoundException } from "@nestjs/common";
-import { CreateCategoryDto } from "./dto/create-category.dto";
+import { Injectable } from "@nestjs/common";
+// import { CreateCategoryDto } from "./dto/create-category.dto";
 import { PrismaService } from "src/prisma/prisma.service";
 
 @Injectable()
 export class CategoriesService {
     constructor(private readonly prisma: PrismaService) {}
 
-    async postCategory(createCategoryDto: CreateCategoryDto) {
+    async getCategory(collectionPath: string, categoryPath: string) {
         try {
-            return await this.prisma.category.create({
-                data: createCategoryDto,
+            const category = await this.prisma.category.findFirst({
+                where: {
+                    path: categoryPath,
+                    collection: { path: collectionPath }, // Фільтр по колекції
+                },
+                include: {
+                    collection: true, // Включає дані про колекцію
+                    products: {
+                        include: {
+                            images: true,
+                        },
+                    }, // Включає всі продукти, які належать категорії
+                },
             });
+
+            if (!category) throw new Error("Категорія не знайдена");
+
+            return category;
         } catch (error) {
-            console.error("Помилка створення категорії:", error);
-            throw new Error("Не вдалося створити категорію");
+            console.error("Помилка отримання категорії:", error);
+            throw new Error("Не вдалося отримати категорію.");
         }
     }
 
-    async deleteCategory(id: string) {
-        try {
-            const existing = await this.prisma.category.findUnique({ where: { id } });
+    // async postCategory(createCategoryDto: CreateCategoryDto) {
+    //     try {
+    //         return await this.prisma.category.create({
+    //             data: createCategoryDto,
+    //         });
+    //     } catch (error) {
+    //         console.error("Помилка створення категорії:", error);
+    //         throw new Error("Не вдалося створити категорію");
+    //     }
+    // }
 
-            if (!existing) {
-                throw new NotFoundException(`Collection with id ${id} not found`);
-            }
+    // async deleteCategory(id: string) {
+    //     try {
+    //         const existing = await this.prisma.category.findUnique({ where: { id } });
 
-            return await this.prisma.category.delete({
-                where: { id },
-            });
-        } catch (error) {
-            console.error("Delete error:", error);
-            throw new InternalServerErrorException("Failed to delete collection");
-        }
-    }
+    //         if (!existing) {
+    //             throw new NotFoundException(`Collection with id ${id} not found`);
+    //         }
+
+    //         return await this.prisma.category.delete({
+    //             where: { id },
+    //         });
+    //     } catch (error) {
+    //         console.error("Delete error:", error);
+    //         throw new InternalServerErrorException("Failed to delete collection");
+    //     }
+    // }
 }

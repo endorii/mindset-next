@@ -1,18 +1,26 @@
-import { Controller, Post, Body, Param, Delete } from "@nestjs/common";
+import { Controller, Param, Get } from "@nestjs/common";
 import { CategoriesService } from "./categories.service";
-import { CreateCategoryDto } from "./dto/create-category.dto";
+// import { CreateCategoryDto } from "./dto/create-category.dto";
 
-@Controller("categories")
+@Controller("collections/:collectionPath/categories")
 export class CategoriesController {
     constructor(private readonly categoriesService: CategoriesService) {}
 
-    @Post()
-    postCategory(@Body() createCategoryDto: CreateCategoryDto) {
-        return this.categoriesService.postCategory(createCategoryDto);
+    @Get(":categoryPath")
+    getCategory(
+        @Param("collectionPath") collectionPath: string,
+        @Param("categoryPath") categoryPath: string
+    ) {
+        return this.categoriesService.getCategory(collectionPath, categoryPath);
     }
 
-    @Delete(":id")
-    deleteCategory(@Param("id") id: string) {
-        return this.categoriesService.deleteCategory(id);
-    }
+    // @Post()
+    // postCategory(@Body() createCategoryDto: CreateCategoryDto) {
+    //     return this.categoriesService.postCategory(createCategoryDto);
+    // }
+
+    // @Delete(":id")
+    // deleteCategory(@Param("id") id: string) {
+    //     return this.categoriesService.deleteCategory(id);
+    // }
 }
