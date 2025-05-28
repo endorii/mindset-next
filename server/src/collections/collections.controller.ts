@@ -7,12 +7,12 @@ export class CollectionsController {
     constructor(private readonly collectionsService: CollectionsService) {}
 
     @Get()
-    getAllCollegetCollectionsctions() {
+    getCollections() {
         return this.collectionsService.getCollections();
     }
 
     @Get(":collectionPath")
-    getCategorgetCollectioniesFromCollection(@Param("collectionPath") collectionPath: string) {
+    getCollection(@Param("collectionPath") collectionPath: string) {
         return this.collectionsService.getCollection(collectionPath);
     }
 

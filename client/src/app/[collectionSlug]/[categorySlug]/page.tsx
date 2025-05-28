@@ -26,14 +26,14 @@ export default function CategoryPage() {
         return notFound();
     }
 
-    console.log(data.products[0].images);
+    console.log(data.products[0]?.images);
 
     return (
         <div>
             <h3 className="mt-[30px] text-2xl uppercase font-bold">
                 Доступні товари:
             </h3>
-            {data || isError ? (
+            {data.products.length ? (
                 <ul className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-[20px] mt-[30px]">
                     {data.products.map((product, i) => (
                         <li key={i}>
@@ -62,7 +62,7 @@ export default function CategoryPage() {
                     ))}
                 </ul>
             ) : (
-                <p>Колекція не знайдена</p>
+                <p>Товарів не знайдено</p>
             )}
         </div>
     );

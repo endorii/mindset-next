@@ -4,7 +4,7 @@ import { fetchCategory } from "../api/categories.api";
 
 export function useCategory(collectionPath: ICollection["path"], categoryPath: ICategory["path"]) {
     return useQuery({
-        queryKey: ["collections", collectionPath, categoryPath],
+        queryKey: ["collections", collectionPath, "categories", categoryPath],
         queryFn: () => fetchCategory(collectionPath, categoryPath),
     });
 }

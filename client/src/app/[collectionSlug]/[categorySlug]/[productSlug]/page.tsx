@@ -3,6 +3,7 @@
 import { usePathname } from "next/navigation";
 import { collections } from "@/data/collections";
 import HeartIcon from "@/components/Icons/HeartIcon";
+import { useProduct } from "@/lib/hooks/useProducts";
 
 export default function ProductPage() {
     const pathname = usePathname();
@@ -12,13 +13,15 @@ export default function ProductPage() {
     const categoryPath = pathSegments[1];
     const productPath = pathSegments[2];
 
-    const collection = collections.find((c) => c.path === collectionPath);
-    const category = collection?.categories.find(
-        (cat) => cat.path === categoryPath
+    const { data, isError, error, isLoading } = useProduct(
+        collectionPath,
+        categoryPath,
+        productPath
     );
-    const product = category?.products.find((p) => p.path === productPath);
 
-    if (!collection || !category || !product) {
+    console.log(data);
+
+    if (!data) {
         return (
             <div className="pt-[130px] text-center text-[50px]">
                 Товар не знайдено 😞
@@ -34,18 +37,18 @@ export default function ProductPage() {
                         <HeartIcon className="w-[30px] stroke-white" />
                     </button>
                     <img
-                        src={product.images?.[0] || "/placeholder.jpg"}
-                        alt={product.name}
+                        src={data?.images[0].url}
+                        alt={data.name}
                         className="max-w-[600px]"
                     />
                 </div>
 
                 <ul className="flex flex-col w-[150px] gap-[10px] overflow-y-auto max-h-[600px]">
-                    {product.images?.map((image, i) => (
+                    {data.images?.map((image, i) => (
                         <li key={i}>
                             <img
-                                src={image}
-                                alt={product.name}
+                                src={image.url}
+                                alt={data.name}
                                 className="w-full h-auto"
                             />
                         </li>
@@ -55,53 +58,53 @@ export default function ProductPage() {
 
             <div className="flex flex-col gap-[15px] w-full">
                 <div className="flex justify-between">
-                    <h3 className="text-2xl font-bold">{product.name}</h3>
+                    <h3 className="text-2xl font-bold">{data.name}</h3>
                     <div className="text-3xl font-semibold text-gray-800">
-                        {product.price} грн.
+                        {data.price} грн.
                     </div>
                 </div>
 
                 <div className="text-sm text-gray-500">
-                    {collection.name} / {category.name}
+                    {data.category?.collection?.name} / {data.category?.name}
                 </div>
 
                 <div className="mt-[20px] text-gray-700">
-                    {product.description}
+                    {data.description}
                 </div>
                 <hr className="w-full border-gray-200" />
-                <div className="text-gray-600">{product.composition}</div>
+                <div className="text-gray-600">{data.composition}</div>
 
                 <div
                     className={`text-sm ${
-                        product.available ? "text-green-600" : "text-gray-500"
+                        data.available ? "text-green-600" : "text-gray-500"
                     }`}
                 >
-                    {product.available ? "В наявності" : "Немає в наявності"}
+                    {data.available ? "В наявності" : "Немає в наявності"}
                 </div>
 
-                {["Тип", "Колір", "Розмір"].map((property) => (
-                    <div
-                        key={property}
-                        className="flex flex-col gap-[10px] mt-[10px]"
-                    >
-                        <div>{property}:</div>
-                        <ul className="flex gap-[10px]">
-                            <li className="px-[15px] py-[8px] border border-gray-200 hover:border-black cursor-pointer">
-                                {property}
+                <div className="flex flex-col gap-[10px] mt-[10px]">
+                    <div>Колір:</div>
+                    <ul className="flex gap-[10px]">
+                        {data.colors.map((color, i) => (
+                            <li
+                                key={i}
+                                className="px-[15px] py-[8px] border border-gray-200 hover:border-black cursor-pointer"
+                            >
+                                {color.value}
                             </li>
-                        </ul>
-                    </div>
-                ))}
+                        ))}
+                    </ul>
+                </div>
 
                 <div className="flex justify-between gap-[15px] mt-[30px]">
                     <button
-                        disabled={!product.available}
+                        disabled={!data.available}
                         className="w-full border border-transparent hover:border-black hover:bg-white hover:text-black bg-black text-white px-[15px] py-[12px] transition-all duration-300 cursor-pointer disabled:bg-gray-200 disabled:border-transparent disabled:text-white"
                     >
                         Купити
                     </button>
                     <button
-                        disabled={!product.available}
+                        disabled={!data.available}
                         className="w-full border border-transparent hover:border-black hover:bg-white hover:text-black bg-black text-white px-[15px] py-[12px] transition-all duration-300 cursor-pointer disabled:bg-gray-200 disabled:border-transparent disabled:text-white"
                     >
                         В кошик

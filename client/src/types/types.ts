@@ -16,6 +16,7 @@ export interface ICategory {
     path: string;
     banner: string;
     products: IProduct[];
+    collection?: ICollection;
 }
 
 export interface IProduct {
@@ -28,13 +29,20 @@ export interface IProduct {
     description: string;
     composition: string;
     sizes: string[];
-    type: string[];
-    color: string[];
+    types: string[];
+    colors: IProductColor[];
+    category?: ICategory;
 }
 
 export interface IProductImage {
     id: string;
     url: string;
+    productId: string;
+}
+
+export interface IProductColor {
+    id: string;
+    value: string;
     productId: string;
 }
 
