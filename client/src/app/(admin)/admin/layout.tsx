@@ -1,5 +1,8 @@
 "use client";
 
+import AdminHeader from "@/components/AdminPage/Header/AdminHeader";
+import AdminNavigation from "@/components/AdminPage/Navigation/AdminNavigation";
+
 export default function AdminLayout({
     children,
 }: {
@@ -7,11 +10,8 @@ export default function AdminLayout({
 }) {
     return (
         <>
-            <div className="fixed top-[80px] left-0 w-full z-10">
-                admin panel
-            </div>
-
-            <main className="mt-[185px]">{children}</main>
+            <AdminHeader />
+            <AdminNavigation>{children}</AdminNavigation>
         </>
     );
 }

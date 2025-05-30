@@ -1,5 +1,4 @@
 import { IIconsProps } from "@/types/types";
-import React from "react";
 
 const CardIcon = ({ className }: IIconsProps) => {
     return (

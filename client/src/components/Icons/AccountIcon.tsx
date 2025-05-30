@@ -1,5 +1,4 @@
 import { IIconsProps } from "@/types/types";
-import React from "react";
 
 const AccountIcon = ({ className }: IIconsProps) => {
     return (
