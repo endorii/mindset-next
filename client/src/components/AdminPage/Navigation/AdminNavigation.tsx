@@ -14,8 +14,37 @@ import { useState } from "react";
 function AdminNavigation({ children }: { children: React.ReactNode }) {
     const [navOpen, setNavOpen] = useState(true);
 
+    const links = [
+        { href: "/admin", Icon: MainPageIcon, text: "Головна" },
+        {
+            href: "/admin/collections",
+            Icon: CollectionsIcon,
+            text: "Колекції",
+        },
+        // {
+        //     href: "/admin/categories",
+        //     Icon: CategoriesIcon,
+        //     text: "Категорії",
+        // },
+        // {
+        //     href: "/admin/products",
+        //     Icon: ProductsIcon,
+        //     text: "Товари",
+        // },
+        {
+            href: "/admin/account",
+            Icon: AccountIcon,
+            text: "Акаунт",
+        },
+        {
+            href: "/admin/settings",
+            Icon: SettingsIcon,
+            text: "Налаштування",
+        },
+    ];
+
     return (
-        <div className="pt-[75px] flex h-[calc(100vh-75px)]">
+        <div className="pt-[75px] flex h-screen">
             <div
                 className={`relative flex flex-col justify-between border-r border-gray-200 transition-all duration-300 ease-in-out ${
                     navOpen ? "w-[300px]" : "w-[80px]"
@@ -26,59 +55,34 @@ function AdminNavigation({ children }: { children: React.ReactNode }) {
                     onClick={() => setNavOpen(!navOpen)}
                 >
                     <ArrowIcon
-                        className={`w-[25px] stroke-white fill-none group-hover:stroke-black transition-all duration-200 ${
-                            navOpen ? "rotate-0" : "rotate-180"
+                        className={`w-[25px] stroke-white fill-none group-hover:stroke-black stroke-[1.5] transition-all duration-200 ${
+                            navOpen ? "rotate-270" : "rotate-90"
                         }`}
                     />
                 </button>
                 <div
-                    className={`flex flex-col gap-[25px] pt-[70px] transition-all duration-300 ${
-                        navOpen ? "p-[30px] pr-[40px]" : "pr-[0px]"
+                    className={`flex flex-col gap-[25px] pt-[70px] ${
+                        navOpen ? "p-[30px]" : "p-[15px]"
                     }`}
                 >
-                    {[
-                        { href: "/admin", Icon: MainPageIcon, text: "Головна" },
-                        {
-                            href: "/admin/collections",
-                            Icon: CollectionsIcon,
-                            text: "Колекції",
-                        },
-                        {
-                            href: "/admin/categories",
-                            Icon: CategoriesIcon,
-                            text: "Категорії",
-                        },
-                        {
-                            href: "/admin/products",
-                            Icon: ProductsIcon,
-                            text: "Товари",
-                        },
-                        {
-                            href: "/admin/account",
-                            Icon: AccountIcon,
-                            text: "Акаунт",
-                        },
-                        {
-                            href: "/admin/settings",
-                            Icon: SettingsIcon,
-                            text: "Налаштування",
-                        },
-                    ].map(({ href, Icon, text }) => (
+                    {links.map(({ href, Icon, text }) => (
                         <Link
                             key={href}
                             href={href}
-                            className={`flex gap-[18px] items-center font-semibold transition-all duration-300 ${
+                            className={`flex gap-[18px] items-center font-semibold group py-[5px] hover:bg-black hover:text-white transition-all duration-300 rounded ${
                                 navOpen
-                                    ? "px-[15px] pr-[30px]"
-                                    : "px-[0px] justify-center"
+                                    ? "px-[15px]"
+                                    : "px-[5px] justify-center"
                             }`}
                         >
-                            <Icon className="w-[32px]" />
+                            <Icon className="w-[32px] group-hover:fill-white" />
+                            {/* пізніше підправити */}
+
                             <span
                                 className={`transition-opacity duration-200 ${
                                     navOpen
                                         ? "opacity-100"
-                                        : "opacity-0 w-0 overflow-hidden"
+                                        : "display-none opacity-0 w-0 hidden"
                                 }`}
                             >
                                 {text}
@@ -86,23 +90,25 @@ function AdminNavigation({ children }: { children: React.ReactNode }) {
                         </Link>
                     ))}
                 </div>
-                <Link
-                    href="#"
-                    className={`mb-[50px] flex gap-[20px] items-center font-semibold pb-[5px] transition-all duration-300 ${
-                        navOpen ? "px-[47px] pr-[30px]" : "px-0 justify-center"
-                    }`}
-                >
-                    <LogoutIcon className="w-[25px]" />
-                    <span
-                        className={`transition-opacity duration-200 ${
+                <div className={`${navOpen ? "p-[30px]" : "p-[15px]"}`}>
+                    <Link
+                        href="#"
+                        className={`mb-[50px] flex gap-[20px] group items-center font-semibold pb-[5px] py-[5px] hover:bg-black hover:text-white transition-all duration-300 rounded ${
                             navOpen
-                                ? "opacity-100"
-                                : "opacity-0 w-0 overflow-hidden"
+                                ? "px-[47px] pr-[30px]"
+                                : "px-[5px] justify-center"
                         }`}
                     >
-                        Вийти
-                    </span>
-                </Link>
+                        <LogoutIcon className="w-[25px] group-hover:fill-white" />
+                        <span
+                            className={`transition-opacity duration-200 ${
+                                navOpen ? "opacity-100" : "opacity-0 w-0 hidden"
+                            }`}
+                        >
+                            Вийти
+                        </span>
+                    </Link>
+                </div>
             </div>
             <div className="p-[30px] flex-1">{children}</div>
         </div>

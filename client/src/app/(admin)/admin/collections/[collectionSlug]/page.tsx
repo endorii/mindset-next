@@ -1,28 +1,30 @@
 "use client";
 
-import CategoriesIcon from "@/components/Icons/CategoriesIcon";
 import EditIcon from "@/components/Icons/EditIcon";
 import InfoIcon from "@/components/Icons/InfoIcon";
+import ProductsIcon from "@/components/Icons/ProductsIcon";
 import TrashIcon from "@/components/Icons/TrashIcon";
-import { useCollections } from "@/lib/hooks/useCollections";
+import { useCollection } from "@/lib/hooks/useCollections";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import React from "react";
 
-function AdminCollections() {
+function AdminCollection() {
     const filters = [
         "спочатку нові",
         "oстанні оновлені",
         "по алфавіту",
-        "кількість категорій",
         "кількість товарів",
     ];
 
-    const { data, isError, error, isLoading } = useCollections();
+    const router = useRouter();
+    const pathname = usePathname();
+
+    const collectionPath = pathname.split("/")[3] || "";
+
+    const { data, isError, error, isLoading } = useCollection(collectionPath);
 
     console.log(data);
-
-    const pathname = usePathname();
 
     const formatDate = (dateString: string) => {
         const date = new Date(dateString);
@@ -36,7 +38,15 @@ function AdminCollections() {
 
     return (
         <div>
-            <div className="text-2xl font-bold">Список колекцій:</div>
+            <button
+                className="mb-[30px] p-[10px] bg-black border border-transparent text-white hover:text-black hover:border-black hover:bg-white transition-all duration-200 cursor-pointer"
+                onClick={() => {
+                    router.push(`/admin/collections`);
+                }}
+            >
+                Повернутися назад
+            </button>
+            <div className="text-2xl font-bold">Список категорій:</div>
             <div className="flex mt-[30px] items-center gap-[15px]">
                 <div className="">фільтрувати:</div>
                 <ul className="flex gap-[10px]">
@@ -62,33 +72,33 @@ function AdminCollections() {
                 </div>
                 {/* Дані */}
                 <div className="border border-gray-200 rounded-b-lg">
-                    {data?.map((collection, i) => {
+                    {data?.categories.map((category, i) => {
                         return (
                             <div
                                 key={i}
-                                className="grid grid-cols-[120px_0.7fr_80px_150px_1fr_200px] gap-[20px] p-4 border-b last:border-b-0 hover:bg-gray-50 items-center"
+                                className="grid grid-cols-[120px_0.7fr_80px_150px_1fr_200px] gap-[20px] p-4 border-b border-gray-200 last:border-b-0 hover:bg-gray-50 items-center"
                             >
                                 <img
-                                    src={collection.banner}
+                                    src={category.banner}
                                     className="max-h-[120px] w-full object-cover rounded"
                                     alt="banner"
                                 />
-                                <div>{collection.name}</div>
+                                <div>{category.name}</div>
                                 <div>{0}</div>
                                 <div>Опубліковано</div>
                                 <div>
-                                    {formatDate(collection.createdAt)} /{" "}
-                                    {formatDate(collection.updatedAt)}
+                                    {formatDate(category.createdAt)} /{" "}
+                                    {formatDate(category.updatedAt)}
                                 </div>
                                 <div className="flex gap-[20px] justify-end">
                                     <Link
-                                        href={`collections/${collection.path}`}
+                                        href={`${collectionPath}/${category.path}`}
                                     >
                                         <button className="relative group bg-white hover:bg-black p-[5px] transition-all duration-200 cursor-pointer rounded">
                                             <div className="absolute top-[-5px] right-[-5px] bg-white w-[20px] h-[20px] flex items-center justify-center text-[11px] font-bold rounded-[50%] border-2 border-black text-black pt-[1px] ">
-                                                {collection.categories?.length}
+                                                {category.products?.length}
                                             </div>
-                                            <CategoriesIcon className="w-[30px] group-hover:fill-white" />
+                                            <ProductsIcon className="w-[30px] stroke-black group-hover:fill-white" />
                                         </button>
                                     </Link>
                                     <button className="group bg-white hover:bg-black p-[5px] transition-all duration-200 cursor-pointer rounded">
@@ -110,4 +120,4 @@ function AdminCollections() {
     );
 }
 
-export default AdminCollections;
+export default AdminCollection;

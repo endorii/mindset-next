@@ -53,7 +53,7 @@ function Cart() {
                                     className="flex"
                                 >
                                     <img
-                                        src={product.images[0]}
+                                        src={product.images[0].url}
                                         alt={product.name}
                                         className="max-w-[250px] h-auto"
                                     />

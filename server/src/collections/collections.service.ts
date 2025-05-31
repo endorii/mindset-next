@@ -7,13 +7,17 @@ export class CollectionsService {
     constructor(private readonly prisma: PrismaService) {}
 
     async getCollections() {
-        return this.prisma.collection.findMany();
+        return this.prisma.collection.findMany({
+            include: {
+                categories: true,
+            },
+        });
     }
 
     async getCollection(collectionPath: string) {
         return await this.prisma.collection.findUnique({
             where: { path: collectionPath },
-            include: { categories: true }, // Отримати пов’язані категорії
+            include: { categories: { include: { products: true } } },
         });
     }
 

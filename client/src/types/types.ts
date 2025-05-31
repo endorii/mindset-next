@@ -8,6 +8,8 @@ export interface ICollection {
     path: string;
     banner: string;
     categories: ICategory[];
+    createdAt: string;
+    updatedAt: string;
 }
 
 export interface ICategory {
@@ -17,6 +19,8 @@ export interface ICategory {
     banner: string;
     products: IProduct[];
     collection?: ICollection;
+    createdAt: string;
+    updatedAt: string;
 }
 
 export interface IProduct {
@@ -32,6 +36,8 @@ export interface IProduct {
     types: string[];
     colors: IProductColor[];
     category?: ICategory;
+    createdAt: string;
+    updatedAt: string;
 }
 
 export interface IProductImage {
@@ -55,6 +61,8 @@ export interface IUser {
     shippingAddress: IUserShippingAdress;
     cart: ICartItem[];
     favorites: IFavoriteItem[];
+    createdAt: string;
+    updatedAt: string;
 }
 
 export interface IUserShippingAdress {
