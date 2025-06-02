@@ -2,6 +2,7 @@
 
 import AccountIcon from "@/components/Icons/AccountIcon";
 import ArrowIcon from "@/components/Icons/ArrowIcon";
+import BackIcon from "@/components/Icons/BackIcon";
 import CategoriesIcon from "@/components/Icons/CategoriesIcon";
 import CollectionsIcon from "@/components/Icons/CollectionsIcon";
 import LogoutIcon from "@/components/Icons/LogoutIcon";
@@ -54,9 +55,9 @@ function AdminNavigation({ children }: { children: React.ReactNode }) {
                     className="absolute top-[10px] right-[20px] border border-transparent bg-black text-white p-[1px] hover:bg-white hover:border-black hover:text-black cursor-pointer transition-all duration-200 group"
                     onClick={() => setNavOpen(!navOpen)}
                 >
-                    <ArrowIcon
-                        className={`w-[25px] stroke-white fill-none group-hover:stroke-black stroke-[1.5] transition-all duration-200 ${
-                            navOpen ? "rotate-270" : "rotate-90"
+                    <BackIcon
+                        className={`w-[18px] stroke-white stroke-[50] fill-white group-hover:stroke-black transition-all duration-200 ${
+                            navOpen ? "rotate-0" : "rotate-180"
                         }`}
                     />
                 </button>

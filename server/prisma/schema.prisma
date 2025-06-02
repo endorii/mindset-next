@@ -14,16 +14,15 @@ model User {
   email           String           @unique
   password        String
   phone           String
-  shippingAddress ShippingAddress?
-  cart            CartItem[]
-  favorites       Favorite[]
   createdAt       DateTime         @default(now()) @map("created_at")
   updatedAt       DateTime         @updatedAt @map("updated_at")
+  cart            CartItem[]
+  favorites       Favorite[]
+  shippingAddress ShippingAddress?
 }
 
 model ShippingAddress {
   id         String @id @default(cuid())
-  user       User   @relation(fields: [userId], references: [id])
   userId     String @unique @map("user_id")
   recipient  String
   country    String
@@ -33,17 +32,18 @@ model ShippingAddress {
   street     String
   building   String
   apartment  String
+  user       User   @relation(fields: [userId], references: [id])
 }
 
 model CartItem {
   id        String  @id @default(cuid())
-  user      User    @relation(fields: [userId], references: [id])
   userId    String  @map("user_id")
-  product   Product @relation(fields: [productId], references: [id])
   productId String  @map("product_id")
   quantity  Int
   size      String
   color     String
+  product   Product @relation(fields: [productId], references: [id])
+  user      User    @relation(fields: [userId], references: [id])
 }
 
 model Collection {
@@ -51,9 +51,11 @@ model Collection {
   name       String
   path       String     @unique
   banner     String
-  categories Category[]
   createdAt  DateTime   @default(now()) @map("created_at")
   updatedAt  DateTime   @updatedAt @map("updated_at")
+  status     String
+  views      Int
+  categories Category[]
 }
 
 model Category {
@@ -61,13 +63,15 @@ model Category {
   name         String
   path         String
   banner       String
-  collection   Collection @relation(fields: [collectionId], references: [id])
   collectionId String     @map("collection_id")
-  products     Product[]
   createdAt    DateTime   @default(now()) @map("created_at")
   updatedAt    DateTime   @updatedAt @map("updated_at")
+  status       String
+  views        Int
+  collection   Collection @relation(fields: [collectionId], references: [id])
+  products     Product[]
 
-  @@unique([collectionId, path]) // Унікальність категорії тільки в межах колекції
+  @@unique([collectionId, path])
 }
 
 model Product {
@@ -78,50 +82,52 @@ model Product {
   available   Boolean
   description String
   composition String
-  category    Category       @relation(fields: [categoryId], references: [id])
   categoryId  String         @map("category_id")
+  createdAt   DateTime       @default(now()) @map("created_at")
+  status      String
+  updatedAt   DateTime       @updatedAt @map("updated_at")
+  views       Int
+  cartItems   CartItem[]
+  favorites   Favorite[]
+  category    Category       @relation(fields: [categoryId], references: [id])
+  colors      ProductColor[]
   images      ProductImage[]
   sizes       ProductSize[]
   types       ProductType[]
-  colors      ProductColor[]
-  cartItems   CartItem[]
-  favorites   Favorite[]
-  createdAt   DateTime       @default(now()) @map("created_at")
-  updatedAt   DateTime       @updatedAt @map("updated_at")
 }
 
 model ProductImage {
   id        String  @id @default(cuid())
   url       String
-  product   Product @relation(fields: [productId], references: [id])
   productId String  @map("product_id")
+  product   Product @relation(fields: [productId], references: [id])
 }
 
 model ProductSize {
   id        String  @id @default(cuid())
   value     String
-  product   Product @relation(fields: [productId], references: [id])
   productId String  @map("product_id")
+  product   Product @relation(fields: [productId], references: [id])
 }
 
 model ProductType {
   id        String  @id @default(cuid())
   value     String
-  product   Product @relation(fields: [productId], references: [id])
   productId String  @map("product_id")
+  product   Product @relation(fields: [productId], references: [id])
 }
 
 model ProductColor {
   id        String  @id @default(cuid())
   value     String
-  product   Product @relation(fields: [productId], references: [id])
   productId String  @map("product_id")
+  product   Product @relation(fields: [productId], references: [id])
 }
 
 model Favorite {
   id        String  @id @default(cuid())
-  user      User    @relation(fields: [userId], references: [id])
   userId    String  @map("user_id")
-  product   Product @relation(fields: [productId], references: [id])
   productId String  @map("product_id")
+  product   Product @relation(fields: [productId], references: [id])
+  user      User    @relation(fields: [userId], references: [id])
 }

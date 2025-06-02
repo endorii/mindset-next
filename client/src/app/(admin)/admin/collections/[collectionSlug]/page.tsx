@@ -1,67 +1,97 @@
 "use client";
 
+import { useState } from "react";
+import Link from "next/link";
+import { useRouter, usePathname } from "next/navigation";
+import { useCollection } from "@/lib/hooks/useCollections";
+import { formatDate } from "@/lib/helpers/formatDate";
+import ProductsIcon from "@/components/Icons/ProductsIcon";
 import EditIcon from "@/components/Icons/EditIcon";
 import InfoIcon from "@/components/Icons/InfoIcon";
-import ProductsIcon from "@/components/Icons/ProductsIcon";
+import PlusIcon from "@/components/Icons/PlusIcon";
 import TrashIcon from "@/components/Icons/TrashIcon";
-import { useCollection } from "@/lib/hooks/useCollections";
-import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
-import React from "react";
+import AddCategoryModal from "@/components/Modals/category/AddCategoryModal";
+import EditCategoryModal from "@/components/Modals/category/EditCategoryModal";
+import DeleteCategoryModal from "@/components/Modals/category/DeleteCategoryModal";
+import { ICategory } from "@/types/types";
+import BackIcon from "@/components/Icons/BackIcon";
+
+type ModalType = "add" | "edit" | "delete" | null;
+
+const filters = [
+    "спочатку нові",
+    "останні оновлені",
+    "по алфавіту",
+    "кількість товарів",
+];
 
 function AdminCollection() {
-    const filters = [
-        "спочатку нові",
-        "oстанні оновлені",
-        "по алфавіту",
-        "кількість товарів",
-    ];
-
     const router = useRouter();
     const pathname = usePathname();
-
     const collectionPath = pathname.split("/")[3] || "";
 
     const { data, isError, error, isLoading } = useCollection(collectionPath);
 
-    console.log(data);
+    const [activeModal, setActiveModal] = useState<ModalType>(null);
+    const [selectedCategory, setSelectedCategory] = useState<ICategory | null>(
+        null
+    );
 
-    const formatDate = (dateString: string) => {
-        const date = new Date(dateString);
-        const day = String(date.getDate()).padStart(2, "0");
-        const month = String(date.getMonth() + 1).padStart(2, "0");
-        const year = date.getFullYear();
-        const hours = String(date.getHours()).padStart(2, "0");
-        const minutes = String(date.getMinutes()).padStart(2, "0");
-        return `${day}.${month}.${year} ${hours}:${minutes}`;
+    const openModal = (type: ModalType, category: ICategory | null = null) => {
+        setSelectedCategory(category);
+        setActiveModal(type);
     };
 
+    const closeModal = () => {
+        setSelectedCategory(null);
+        setActiveModal(null);
+    };
+
+    if (isLoading) return <div className="text-center">Завантаження...</div>;
+    if (isError)
+        return (
+            <div className="text-center text-red-500">
+                Помилка: {error?.message || "Невідома помилка"}
+            </div>
+        );
+
     return (
-        <div>
+        <div className="">
             <button
-                className="mb-[30px] p-[10px] bg-black border border-transparent text-white hover:text-black hover:border-black hover:bg-white transition-all duration-200 cursor-pointer"
-                onClick={() => {
-                    router.push(`/admin/collections`);
-                }}
+                className="flex group gap-[7px] items-center mb-[30px] px-[15px] py-[8px] bg-black border border-transparent text-white hover:text-black hover:border-black hover:bg-white transition-all duration-200 cursor-pointer"
+                onClick={() => router.push("/admin/collections")}
             >
-                Повернутися назад
+                <BackIcon className="w-[23px] stroke-white stroke-[50] group-hover:stroke-black" />
+                <div>Назад до колекцій</div>
             </button>
-            <div className="text-2xl font-bold">Список категорій:</div>
-            <div className="flex mt-[30px] items-center gap-[15px]">
-                <div className="">фільтрувати:</div>
+            <div className="text-2xl font-bold">
+                Список категорій: {data?.name}
+            </div>
+
+            <div className="flex mt-[30px] mb-[10px] items-center gap-[15px]">
+                <div className="font-semibold">Фільтрувати:</div>
                 <ul className="flex gap-[10px]">
-                    {filters.map((name, i) => {
-                        return (
-                            <li key={i}>
-                                <button className="bg-black text-white px-[15px] border py-[5px] border-transparent cursor-pointer hover:bg-white hover:text-black hover:border-black transition-all duration-200">
-                                    {name}
-                                </button>
-                            </li>
-                        );
-                    })}
+                    {filters.map((name, i) => (
+                        <li key={i}>
+                            <button className="bg-white text-black px-[15px] border py-[5px] border-black cursor-pointer hover:bg-black hover:text-white hover:border-transparent transition-all duration-200">
+                                {name}
+                            </button>
+                        </li>
+                    ))}
                 </ul>
             </div>
-            <div className="mt-[50px]">
+
+            <div className="flex justify-end">
+                <button
+                    className="flex group items-center gap-[10px] mt-[20px] mb-[10px] px-[15px] py-[8px] bg-black border border-transparent text-white hover:text-black hover:border-black hover:bg-white transition-all duration-200 cursor-pointer"
+                    onClick={() => openModal("add")}
+                >
+                    <div>Додати категорію</div>
+                    <PlusIcon className="stroke-white stroke-2 w-[30px] group-hover:stroke-black" />
+                </button>
+            </div>
+
+            <div className="mt-[10px]">
                 <div className="grid grid-cols-[120px_0.7fr_80px_150px_1fr_200px] gap-[20px] bg-gray-100 p-4 rounded-t-lg font-semibold text-sm text-gray-700">
                     <div>Банер</div>
                     <div>Назва</div>
@@ -70,52 +100,73 @@ function AdminCollection() {
                     <div>Додано/оновлено</div>
                     <div className="text-right">Дії</div>
                 </div>
-                {/* Дані */}
                 <div className="border border-gray-200 rounded-b-lg">
-                    {data?.categories.map((category, i) => {
-                        return (
-                            <div
-                                key={i}
-                                className="grid grid-cols-[120px_0.7fr_80px_150px_1fr_200px] gap-[20px] p-4 border-b border-gray-200 last:border-b-0 hover:bg-gray-50 items-center"
-                            >
-                                <img
-                                    src={category.banner}
-                                    className="max-h-[120px] w-full object-cover rounded"
-                                    alt="banner"
-                                />
-                                <div>{category.name}</div>
-                                <div>{0}</div>
-                                <div>Опубліковано</div>
-                                <div>
-                                    {formatDate(category.createdAt)} /{" "}
-                                    {formatDate(category.updatedAt)}
-                                </div>
-                                <div className="flex gap-[20px] justify-end">
-                                    <Link
-                                        href={`${collectionPath}/${category.path}`}
-                                    >
-                                        <button className="relative group bg-white hover:bg-black p-[5px] transition-all duration-200 cursor-pointer rounded">
-                                            <div className="absolute top-[-5px] right-[-5px] bg-white w-[20px] h-[20px] flex items-center justify-center text-[11px] font-bold rounded-[50%] border-2 border-black text-black pt-[1px] ">
-                                                {category.products?.length}
-                                            </div>
-                                            <ProductsIcon className="w-[30px] stroke-black group-hover:fill-white" />
-                                        </button>
-                                    </Link>
-                                    <button className="group bg-white hover:bg-black p-[5px] transition-all duration-200 cursor-pointer rounded">
-                                        <InfoIcon className="w-[30px] stroke-black fill-none stroke-[2] group-hover:stroke-white" />
-                                    </button>
-                                    <button className="group bg-white hover:bg-black p-[5px] transition-all duration-200 cursor-pointer rounded">
-                                        <EditIcon className="w-[27px] fill-none stroke-black stroke-[2.3] group-hover:stroke-white" />
-                                    </button>
-                                    <button className="group bg-white hover:bg-black p-[5px] transition-all duration-200 cursor-pointer rounded">
-                                        <TrashIcon className="w-[30px] fill-none stroke-black stroke-[2] group-hover:stroke-white" />
-                                    </button>
-                                </div>
+                    {data?.categories?.map((category, i) => (
+                        <div
+                            key={i} // TODO: Замінити на category.id, якщо доступно
+                            className="grid grid-cols-[120px_0.7fr_80px_150px_1fr_200px] gap-[20px] p-4 border-gray-200 border-b last:border-b-0 hover:bg-gray-50 items-center"
+                        >
+                            <img
+                                src={category.banner}
+                                className="max-h-[120px] w-full object-cover rounded"
+                                alt={`Банер категорії ${category.name}`}
+                            />
+                            <div>{category.name}</div>
+                            <div>{category.products?.length || 0}</div>
+                            <div>Опубліковано</div>
+                            <div>
+                                {formatDate(category.createdAt)} /{" "}
+                                {formatDate(category.updatedAt)}
                             </div>
-                        );
-                    })}
+                            <div className="flex gap-[20px] justify-end">
+                                <Link
+                                    href={`/admin/collections/${collectionPath}/${category.path}`}
+                                >
+                                    <button className="relative group hover:bg-black p-[5px] transition-all duration-200 cursor-pointer rounded">
+                                        <div className="absolute top-[-5px] right-[-5px] bg-white w-[20px] h-[20px] flex items-center justify-center text-[11px] font-bold rounded-[50%] border-2 border-black text-black pt-[1px]">
+                                            {category.products?.length || 0}
+                                        </div>
+                                        <ProductsIcon className="w-[30px] stroke-black group-hover:fill-white" />
+                                    </button>
+                                </Link>
+                                <button className="group hover:bg-black p-[5px] transition-all duration-200 cursor-pointer rounded">
+                                    <InfoIcon className="w-[30px] stroke-black fill-none stroke-[2] group-hover:stroke-white" />
+                                </button>
+                                <button
+                                    onClick={() => openModal("edit", category)}
+                                    className="group hover:bg-black p-[5px] transition-all duration-200 cursor-pointer rounded"
+                                >
+                                    <EditIcon className="w-[27px] fill-none stroke-black stroke-[2.3] group-hover:stroke-white" />
+                                </button>
+                                <button
+                                    onClick={() =>
+                                        openModal("delete", category)
+                                    }
+                                    className="group hover:bg-black p-[5px] transition-all duration-200 cursor-pointer rounded"
+                                >
+                                    <TrashIcon className="w-[30px] fill-none stroke-black stroke-[2] group-hover:stroke-white" />
+                                </button>
+                            </div>
+                        </div>
+                    ))}
                 </div>
             </div>
+
+            <AddCategoryModal
+                isOpen={activeModal === "add"}
+                onClose={closeModal}
+                collectionId={data?.id} // Передаємо ID колекції для створення категорії
+            />
+            <EditCategoryModal
+                isOpen={activeModal === "edit"}
+                onClose={closeModal}
+                item={selectedCategory}
+            />
+            <DeleteCategoryModal
+                isOpen={activeModal === "delete"}
+                onClose={closeModal}
+                item={selectedCategory}
+            />
         </div>
     );
 }

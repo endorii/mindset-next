@@ -2,6 +2,24 @@ export interface Props {
     children: React.ReactNode;
 }
 
+export interface ICollectionModalProps {
+    isOpen: boolean;
+    onClose: () => void;
+    item: ICollection | null;
+}
+
+export interface ICategoryModalProps {
+    isOpen: boolean;
+    onClose: () => void;
+    item: ICategory | null;
+}
+
+export interface IProductModalProps {
+    isOpen: boolean;
+    onClose: () => void;
+    item: IProduct | null;
+}
+
 export interface ICollection {
     id: string;
     name: string;
