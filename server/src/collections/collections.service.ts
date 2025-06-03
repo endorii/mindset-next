@@ -1,6 +1,6 @@
-import { Injectable } from "@nestjs/common";
-// import { CreateCollectionDto } from "./dto/create-collection.dto";
+import { Injectable, BadRequestException } from "@nestjs/common";
 import { PrismaService } from "src/prisma/prisma.service";
+import { CreateCollectionDto } from "./dto/create-collection.dto";
 
 @Injectable()
 export class CollectionsService {
@@ -21,26 +21,30 @@ export class CollectionsService {
         });
     }
 
-    // async postCollection(createCollectionDto: CreateCollectionDto) {
-    //     return this.prisma.collection.create({
-    //         data: createCollectionDto,
-    //     });
-    // }
+    async postCollection(createCollectionDto: CreateCollectionDto) {
+        const { name, path, banner, views, status } = createCollectionDto;
 
-    // async deleteCollection(id: string) {
-    //     try {
-    //         const existing = await this.prisma.collection.findUnique({ where: { id } });
+        // Перевірка унікальності шляху
+        const existingCollection = await this.prisma.collection.findUnique({
+            where: { path },
+        });
+        if (existingCollection) {
+            throw new BadRequestException("Колекція з таким шляхом уже існує");
+        }
 
-    //         if (!existing) {
-    //             throw new NotFoundException(`Collection with id ${id} not found`);
-    //         }
+        const collection = await this.prisma.collection.create({
+            data: {
+                name,
+                path,
+                banner,
+                views,
+                status,
+            },
+        });
 
-    //         return await this.prisma.collection.delete({
-    //             where: { id },
-    //         });
-    //     } catch (error) {
-    //         console.error("Delete error:", error);
-    //         throw new InternalServerErrorException("Failed to delete collection");
-    //     }
-    // }
+        return {
+            message: "Колекцію успішно створено",
+            collection,
+        };
+    }
 }

@@ -72,11 +72,11 @@ function AdminCollections() {
             </div>
 
             <div className="mt-[10px]">
-                <div className="grid grid-cols-[120px_0.7fr_80px_150px_1fr_200px] gap-[20px] bg-gray-100 p-4 rounded-t-lg font-semibold text-sm text-gray-700">
+                <div className="grid grid-cols-[120px_0.7fr_150px_150px_1fr_230px] gap-[20px] bg-gray-100 p-4 rounded-t-lg font-semibold text-sm text-gray-700">
                     <div>Банер</div>
                     <div>Назва</div>
-                    <div>Товарів</div>
                     <div>Статус</div>
+                    <div>Переглядів</div>
                     <div>Додано/оновлено</div>
                     <div className="text-right">Дії</div>
                 </div>
@@ -84,16 +84,22 @@ function AdminCollections() {
                     {data?.map((collection, i) => (
                         <div
                             key={i}
-                            className="grid grid-cols-[120px_0.7fr_80px_150px_1fr_200px] gap-[20px] p-4 border-gray-200 border-b last:border-b-0 hover:bg-gray-50 items-center"
+                            className="grid grid-cols-[120px_0.7fr_150px_150px_1fr_230px] gap-[20px] p-4 border-gray-200 border-b last:border-b-0 hover:bg-gray-50 items-center"
                         >
                             <img
-                                src={collection.banner}
+                                src={`http://localhost:5000/${collection.banner}`}
                                 className="max-h-[120px] w-full object-cover rounded"
                                 alt="banner"
                             />
                             <div>{collection.name}</div>
+                            <div>
+                                {collection.status === "ACTIVE"
+                                    ? "Опубліковано"
+                                    : collection.status === "INACTIVE"
+                                    ? "Не опубліковано"
+                                    : "Невідомий статус"}
+                            </div>
                             <div>{0}</div>
-                            <div>Опубліковано</div>
                             <div>
                                 {formatDate(collection.createdAt)} /{" "}
                                 {formatDate(collection.updatedAt)}

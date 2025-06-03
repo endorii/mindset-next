@@ -2,6 +2,8 @@ export interface Props {
     children: React.ReactNode;
 }
 
+export type TStatus = "ACTIVE" | "INACTIVE";
+
 export interface ICollectionModalProps {
     isOpen: boolean;
     onClose: () => void;
@@ -25,6 +27,8 @@ export interface ICollection {
     name: string;
     path: string;
     banner: string;
+    views: number;
+    status: "ACTIVE" | "INACTIVE";
     categories: ICategory[];
     createdAt: string;
     updatedAt: string;
@@ -35,6 +39,8 @@ export interface ICategory {
     name: string;
     path: string;
     banner: string;
+    views: number;
+    status: "ACTIVE" | "INACTIVE";
     products: IProduct[];
     collection?: ICollection;
     createdAt: string;
@@ -46,6 +52,8 @@ export interface IProduct {
     name: string;
     price: number;
     path: string;
+    views: number;
+    status: "ACTIVE" | "INACTIVE";
     images: IProductImage[];
     available: boolean;
     description: string;

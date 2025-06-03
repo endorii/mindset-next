@@ -107,7 +107,10 @@ export default function EditCollectionModal({
                         </div>
                         <img
                             className="h-[50vh] object-contain"
-                            src={previewUrl || "/placeholder.png"}
+                            src={
+                                `http://localhost:5000/${bannerUrl}` ||
+                                "/placeholder.png"
+                            }
                             alt={item.name || "Банер"}
                         />
                     </div>

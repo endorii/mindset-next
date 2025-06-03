@@ -155,7 +155,7 @@ function AdminCollection() {
             <AddCategoryModal
                 isOpen={activeModal === "add"}
                 onClose={closeModal}
-                collectionId={data?.id} // Передаємо ID колекції для створення категорії
+                collectionId={data?.id}
             />
             <EditCategoryModal
                 isOpen={activeModal === "edit"}

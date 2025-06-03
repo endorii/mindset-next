@@ -1,4 +1,4 @@
-import { ICollection, IProduct } from "@/types/types";
+import { ICollection } from "@/types/types";
 
 export async function fetchCollections(): Promise<ICollection[]> {
     try {
@@ -18,6 +18,33 @@ export async function fetchCollection(collectionPath: string): Promise<ICollecti
         return res.json();
     } catch (error) {
         console.error("Fetch error:", error);
+        throw error;
+    }
+}
+
+export async function createCollection(data: {
+    name: string;
+    path: string;
+    banner: string;
+    views: number;
+    status: string;
+}): Promise<ICollection> {
+    try {
+        const res = await fetch("http://localhost:5000/api/collections", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(data),
+        });
+        if (!res.ok) throw new Error("Помилка створення колекції");
+        const response = await res.json();
+
+        console.log(response.message);
+
+        return response.collection;
+    } catch (error) {
+        console.error("Create collection error:", error);
         throw error;
     }
 }
