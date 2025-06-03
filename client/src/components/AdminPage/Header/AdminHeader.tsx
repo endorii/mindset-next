@@ -5,7 +5,7 @@ import React from "react";
 
 function AdminHeader() {
     return (
-        <header className="fixed top-0 py-[10px] px-[20px] md:px-[35px] h-[65px] md:h-[75px] flex gap-[5%] items-center w-full bg-white z-[100] shadow-custom border-b border-gray-200 ">
+        <header className="fixed top-0 py-[10px] px-[20px] md:px-[35px] h-[65px] md:h-[75px] flex gap-[5%] items-center w-full bg-white shadow-custom border-b border-gray-200">
             <div className="min-w-[180px]">
                 <Link
                     href="/admin"

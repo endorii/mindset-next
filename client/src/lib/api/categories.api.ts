@@ -29,26 +29,26 @@ export async function fetchCategory(
     }
 }
 
-// export async function addCategoryToCollection(
-//     collectionPath: string,
-//     categoryData: any //заглушка
-// ): Promise<ICategory> {
-//     try {
-//         const res = await fetch(
-//             `http://localhost:5000/api/collections/${collectionPath}/categories`,
-//             {
-//                 method: "POST",
-//                 headers: { "Content-Type": "application/json" },
-//                 body: JSON.stringify(categoryData),
-//             }
-//         );
-//         if (!res.ok) throw new Error("Помилка додавання категорії");
-//         return res.json();
-//     } catch (error) {
-//         console.error("Fetch error:", error);
-//         throw error;
-//     }
-// }
+export async function addCategoryToCollection(
+    collectionPath: string,
+    categoryData: ICategory
+): Promise<ICategory> {
+    try {
+        const res = await fetch(
+            `http://localhost:5000/api/collections/${collectionPath}/categories`,
+            {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(categoryData),
+            }
+        );
+        if (!res.ok) throw new Error("Помилка додавання категорії");
+        return res.json();
+    } catch (error) {
+        console.error("Fetch error:", error);
+        throw error;
+    }
+}
 
 // export async function deleteCategory(collectionPath: string, categoryPath: string): Promise<void> {
 //     try {

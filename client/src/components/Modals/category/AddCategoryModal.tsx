@@ -1,20 +1,23 @@
 "use client";
 
 import { statuses } from "@/lib/helpers/helpers";
-import { useUploadImage } from "@/lib/hooks/useCollections";
+import { useCreateCartegory } from "@/lib/hooks/useCategories";
+import { useUploadImage } from "@/lib/hooks/useImages";
 import { ICollection, TStatus } from "@/types/types";
 import { useState } from "react";
 
 interface ModalProps {
     isOpen: boolean;
     onClose: () => void;
-    collectionId: ICollection["id"] | undefined;
+    collectionId: ICollection["id"];
+    collectionPath: ICollection["path"];
 }
 
 export default function AddCategoryModal({
     isOpen,
     onClose,
     collectionId,
+    collectionPath,
 }: ModalProps) {
     const [name, setName] = useState("");
     const [path, setPath] = useState("");
@@ -25,15 +28,11 @@ export default function AddCategoryModal({
     const [message, setMessage] = useState<string>("");
 
     const uploadImageMutation = useUploadImage();
-    // const createCollectionMutation = useCreateCollection();
+    const createCategoryMutation = useCreateCartegory(collectionPath);
 
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const selectedFile = e.target.files?.[0];
         if (selectedFile) {
-            // if (selectedFile.size > 5 * 1024 * 1024) {
-            //     setMessage("Файл занадто великий! Максимум 5 МБ");
-            //     return;
-            // }
             setBanner(selectedFile);
             setPreview(URL.createObjectURL(selectedFile));
         }
@@ -67,12 +66,17 @@ export default function AddCategoryModal({
             const uploadResult = await uploadImageMutation.mutateAsync(banner);
             const imagePath = uploadResult.path;
 
-            await createCollectionMutation.mutateAsync({
+            await createCategoryMutation.mutateAsync({
                 name,
                 path,
                 banner: imagePath,
                 views: 0,
                 status,
+                collectionId,
+                id: "",
+                products: [],
+                createdAt: "",
+                updatedAt: "",
             });
 
             setMessage("Категорію успішно додано!");
@@ -86,7 +90,7 @@ export default function AddCategoryModal({
     if (!isOpen) return null;
 
     return (
-        <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-100">
+        <div className="fixed inset-0 bg-black/70 flex items-center justify-center">
             <div className="bg-white p-[40px] shadow-lg max-w-3xl w-full">
                 <h2 className="text-lg font-bold mb-4">Додавання категорії</h2>
                 <form onSubmit={handleSubmit}>

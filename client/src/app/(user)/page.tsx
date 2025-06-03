@@ -26,27 +26,31 @@ export default function HomePage() {
                 </h3>
                 {data?.length ? (
                     <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 mt-[30px]">
-                        {data?.map((collection, i) => (
-                            <li key={i}>
-                                <Link
-                                    href={`/${collection.path}`}
-                                    className="relative group"
-                                >
-                                    <div
-                                        className="absolute top-0 left-0 bg-black text-white px-[25px] py-[15px] text-lg z-10 
-                                            group-hover:bg-transparent group-hover:text-white group-hover:text-4xl
-                                            group-hover:top-[50%] group-hover:left-[50%] group-hover:translate-x-[-50%] group-hover:translate-y-[-50%] transition-all ease-in-out duration-800"
+                        {data?.map((collection, i) => {
+                            if (collection.status !== "ACTIVE") return null; // TODO: використати .filter()
+
+                            return (
+                                <li key={i}>
+                                    <Link
+                                        href={`/${collection.path}`}
+                                        className="relative group"
                                     >
-                                        {collection.name}
-                                    </div>
-                                    <img
-                                        src={collection.banner}
-                                        alt={collection.name}
-                                        className="w-full h-[100vh] object-cover filter transition-all group-hover:brightness-50 duration-600 "
-                                    />
-                                </Link>
-                            </li>
-                        ))}
+                                        <div
+                                            className="absolute top-0 left-0 bg-black text-white px-[25px] py-[15px] text-lg z-10 
+                        group-hover:bg-transparent group-hover:text-white group-hover:text-4xl
+                        group-hover:top-[50%] group-hover:left-[50%] group-hover:translate-x-[-50%] group-hover:translate-y-[-50%] transition-all ease-in-out duration-800"
+                                        >
+                                            {collection.name}
+                                        </div>
+                                        <img
+                                            src={collection.banner}
+                                            alt={collection.name}
+                                            className="w-full h-[100vh] object-cover filter transition-all group-hover:brightness-50 duration-600"
+                                        />
+                                    </Link>
+                                </li>
+                            );
+                        })}
                     </ul>
                 ) : (
                     <p>Немає доступних колекцій.</p>

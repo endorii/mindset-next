@@ -92,28 +92,34 @@ function AdminCollection() {
             </div>
 
             <div className="mt-[10px]">
-                <div className="grid grid-cols-[120px_0.7fr_80px_150px_1fr_200px] gap-[20px] bg-gray-100 p-4 rounded-t-lg font-semibold text-sm text-gray-700">
+                <div className="grid grid-cols-[120px_0.7fr_150px_150px_1fr_230px] gap-[20px] bg-gray-100 p-4 rounded-t-lg font-semibold text-sm text-gray-700">
                     <div>Банер</div>
                     <div>Назва</div>
-                    <div>Товарів</div>
                     <div>Статус</div>
+                    <div>Переглядів</div>
                     <div>Додано/оновлено</div>
                     <div className="text-right">Дії</div>
                 </div>
                 <div className="border border-gray-200 rounded-b-lg">
-                    {data?.categories?.map((category, i) => (
+                    {data?.categories?.map((category) => (
                         <div
-                            key={i} // TODO: Замінити на category.id, якщо доступно
-                            className="grid grid-cols-[120px_0.7fr_80px_150px_1fr_200px] gap-[20px] p-4 border-gray-200 border-b last:border-b-0 hover:bg-gray-50 items-center"
+                            key={category.id}
+                            className="grid grid-cols-[120px_0.7fr_150px_150px_1fr_230px] gap-[20px] p-4 border-gray-200 border-b last:border-b-0 hover:bg-gray-50 items-center"
                         >
                             <img
-                                src={category.banner}
+                                src={`http://localhost:5000/${category.banner}`}
                                 className="max-h-[120px] w-full object-cover rounded"
                                 alt={`Банер категорії ${category.name}`}
                             />
                             <div>{category.name}</div>
-                            <div>{category.products?.length || 0}</div>
-                            <div>Опубліковано</div>
+                            <div>
+                                {category.status === "ACTIVE"
+                                    ? "Опубліковано"
+                                    : category.status === "INACTIVE"
+                                    ? "Не опубліковано"
+                                    : "Невідомий статус"}
+                            </div>
+                            <div>{0}</div>
                             <div>
                                 {formatDate(category.createdAt)} /{" "}
                                 {formatDate(category.updatedAt)}
@@ -152,21 +158,28 @@ function AdminCollection() {
                 </div>
             </div>
 
-            <AddCategoryModal
-                isOpen={activeModal === "add"}
-                onClose={closeModal}
-                collectionId={data?.id}
-            />
-            <EditCategoryModal
-                isOpen={activeModal === "edit"}
-                onClose={closeModal}
-                item={selectedCategory}
-            />
-            <DeleteCategoryModal
-                isOpen={activeModal === "delete"}
-                onClose={closeModal}
-                item={selectedCategory}
-            />
+            {data && (
+                <AddCategoryModal
+                    isOpen={activeModal === "add"}
+                    onClose={closeModal}
+                    collectionId={data.id}
+                    collectionPath={collectionPath}
+                />
+            )}
+            {selectedCategory && (
+                <>
+                    <EditCategoryModal
+                        isOpen={activeModal === "edit"}
+                        onClose={closeModal}
+                        item={selectedCategory}
+                    />
+                    <DeleteCategoryModal
+                        isOpen={activeModal === "delete"}
+                        onClose={closeModal}
+                        item={selectedCategory}
+                    />
+                </>
+            )}
         </div>
     );
 }

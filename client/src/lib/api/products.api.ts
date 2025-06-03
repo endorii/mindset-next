@@ -32,3 +32,25 @@ export async function fetchProduct(
         throw error;
     }
 }
+
+export async function addProductToCategory(
+    collectionPath: string,
+    categoryPath: string,
+    productData: IProduct
+): Promise<IProduct> {
+    try {
+        const res = await fetch(
+            `http://localhost:5000/api/collections/${collectionPath}/categories/${categoryPath}/products`,
+            {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(productData),
+            }
+        );
+        if (!res.ok) throw new Error("Помилка отримання продукту");
+        return res.json();
+    } catch (error) {
+        console.error("Fetch error:", error);
+        throw error;
+    }
+}

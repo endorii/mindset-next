@@ -1,5 +1,5 @@
 import { Injectable } from "@nestjs/common";
-// import { CreateProductDto } from "./dto/create-product.dto";
+import { CreateProductDto } from "./dto/create-product.dto";
 // import { UpdateProductDto } from "./dto/update-product.dto";
 import { PrismaService } from "src/prisma/prisma.service";
 
@@ -36,6 +36,38 @@ export class ProductsService {
         } catch (error) {
             console.error("Помилка отримання продукту:", error);
             throw new Error("Не вдалося отримати продукт.");
+        }
+    }
+
+    async postProduct(createProductDto: CreateProductDto) {
+        const {
+            name,
+            path,
+            views,
+            status,
+            categoryId,
+            price,
+            available,
+            description,
+            composition,
+        } = createProductDto;
+        try {
+            return await this.prisma.product.create({
+                data: {
+                    name,
+                    path,
+                    price,
+                    available,
+                    description,
+                    composition,
+                    views,
+                    status,
+                    categoryId,
+                },
+            });
+        } catch (error) {
+            console.error("Помилка створення категорії:", error);
+            throw new Error("Не вдалося створити категорію");
         }
     }
 }

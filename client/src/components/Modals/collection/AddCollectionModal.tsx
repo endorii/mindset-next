@@ -26,10 +26,6 @@ export default function AddCollectionModal({ isOpen, onClose }: ModalProps) {
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const selectedFile = e.target.files?.[0];
         if (selectedFile) {
-            // if (selectedFile.size > 5 * 1024 * 1024) {
-            //     setMessage("Файл занадто великий! Максимум 5 МБ");
-            //     return;
-            // }
             setBanner(selectedFile);
             setPreview(URL.createObjectURL(selectedFile));
         }

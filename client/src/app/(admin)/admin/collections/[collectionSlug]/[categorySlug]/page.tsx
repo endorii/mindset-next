@@ -5,9 +5,13 @@ import EditIcon from "@/components/Icons/EditIcon";
 import InfoIcon from "@/components/Icons/InfoIcon";
 import PlusIcon from "@/components/Icons/PlusIcon";
 import TrashIcon from "@/components/Icons/TrashIcon";
+import AddProductModal from "@/components/Modals/product/AddProductModal";
 import { useCategory } from "@/lib/hooks/useCategories";
+import { IProduct } from "@/types/types";
 import { usePathname, useRouter } from "next/navigation";
-import React from "react";
+import React, { useState } from "react";
+
+type ModalType = "add" | "edit" | "delete" | null;
 
 function AdminCategory() {
     const filters = [
@@ -23,12 +27,24 @@ function AdminCategory() {
     const collectionPath = pathname.split("/")[3] || "";
     const categoryPath = pathname.split("/")[4] || "";
 
+    const [activeModal, setActiveModal] = useState<ModalType>(null);
+    const [selectedProduct, setSelectedProduct] = useState<IProduct | null>(
+        null
+    );
+
     const { data, isError, error, isLoading } = useCategory(
         collectionPath,
         categoryPath
     );
+    const openModal = (type: ModalType, product: IProduct | null = null) => {
+        setSelectedProduct(product);
+        setActiveModal(type);
+    };
 
-    console.log(data);
+    const closeModal = () => {
+        setSelectedProduct(null);
+        setActiveModal(null);
+    };
 
     const formatDate = (dateString: string) => {
         const date = new Date(dateString);
@@ -71,7 +87,7 @@ function AdminCategory() {
             <div className="flex justify-end">
                 <button
                     className="flex group items-center gap-[10px] mt-[20px] mb-[10px] px-[15px] py-[8px] bg-black border border-transparent text-white hover:text-black hover:border-black hover:bg-white transition-all duration-200 cursor-pointer"
-                    // onClick={() => openModal("add")}
+                    onClick={() => openModal("add")}
                 >
                     <div>Додати товар</div>
                     <PlusIcon className="stroke-white stroke-2 w-[30px] group-hover:stroke-black" />
@@ -122,6 +138,14 @@ function AdminCategory() {
                     })}
                 </div>
             </div>
+            {data && (
+                <AddProductModal
+                    isOpen={activeModal === "add"}
+                    onClose={closeModal}
+                    categoryId={data.id}
+                    categoryPath={categoryPath}
+                />
+            )}
         </div>
     );
 }

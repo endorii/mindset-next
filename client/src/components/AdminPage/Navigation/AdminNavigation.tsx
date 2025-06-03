@@ -45,7 +45,7 @@ function AdminNavigation({ children }: { children: React.ReactNode }) {
     ];
 
     return (
-        <div className="pt-[75px] flex h-screen">
+        <div className="fixed pt-[75px] flex h-screen w-full">
             <div
                 className={`relative flex flex-col justify-between border-r border-gray-200 transition-all duration-300 ease-in-out ${
                     navOpen ? "w-[300px]" : "w-[80px]"
@@ -111,7 +111,7 @@ function AdminNavigation({ children }: { children: React.ReactNode }) {
                     </Link>
                 </div>
             </div>
-            <div className="p-[30px] flex-1">{children}</div>
+            <div className="p-[30px] flex-1 overflow-y-auto">{children}</div>
         </div>
     );
 }

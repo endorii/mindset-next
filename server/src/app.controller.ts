@@ -1,21 +1,16 @@
-// app.controller.ts
 import {
     Controller,
     Post,
     UploadedFile,
     UseInterceptors,
-    Body,
     BadRequestException,
 } from "@nestjs/common";
 import { FileInterceptor } from "@nestjs/platform-express";
 import { diskStorage } from "multer";
 import { extname } from "path";
-import { PrismaService } from "./prisma/prisma.service";
 
 @Controller("upload/image")
 export class AppController {
-    constructor(private readonly prisma: PrismaService) {}
-
     @Post()
     @UseInterceptors(
         FileInterceptor("file", {

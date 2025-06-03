@@ -81,9 +81,9 @@ function AdminCollections() {
                     <div className="text-right">Дії</div>
                 </div>
                 <div className="border border-gray-200 rounded-b-lg">
-                    {data?.map((collection, i) => (
+                    {data?.map((collection) => (
                         <div
-                            key={i}
+                            key={collection.id}
                             className="grid grid-cols-[120px_0.7fr_150px_150px_1fr_230px] gap-[20px] p-4 border-gray-200 border-b last:border-b-0 hover:bg-gray-50 items-center"
                         >
                             <img
@@ -142,16 +142,20 @@ function AdminCollections() {
                 isOpen={activeModal === "add"}
                 onClose={closeModal}
             />
-            <EditCollectionModal
-                isOpen={activeModal === "edit"}
-                onClose={closeModal}
-                item={selectedCollection}
-            />
-            <DeleteCollectionModal
-                isOpen={activeModal === "delete"}
-                onClose={closeModal}
-                item={selectedCollection}
-            />
+            {selectedCollection && (
+                <>
+                    <EditCollectionModal
+                        isOpen={activeModal === "edit"}
+                        onClose={closeModal}
+                        item={selectedCollection}
+                    />
+                    <DeleteCollectionModal
+                        isOpen={activeModal === "delete"}
+                        onClose={closeModal}
+                        item={selectedCollection}
+                    />
+                </>
+            )}
         </div>
     );
 }

@@ -43,6 +43,7 @@ export interface ICategory {
     status: "ACTIVE" | "INACTIVE";
     products: IProduct[];
     collection?: ICollection;
+    collectionId: string;
     createdAt: string;
     updatedAt: string;
 }
@@ -62,6 +63,7 @@ export interface IProduct {
     types: string[];
     colors: IProductColor[];
     category?: ICategory;
+    categoryId: string;
     createdAt: string;
     updatedAt: string;
 }

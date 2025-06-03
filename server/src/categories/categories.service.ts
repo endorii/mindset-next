@@ -1,6 +1,7 @@
 import { Injectable } from "@nestjs/common";
 // import { CreateCategoryDto } from "./dto/create-category.dto";
 import { PrismaService } from "src/prisma/prisma.service";
+import { CreateCategoryDto } from "./dto/create-category.dto";
 
 @Injectable()
 export class CategoriesService {
@@ -11,15 +12,15 @@ export class CategoriesService {
             const category = await this.prisma.category.findFirst({
                 where: {
                     path: categoryPath,
-                    collection: { path: collectionPath }, // Фільтр по колекції
+                    collection: { path: collectionPath },
                 },
                 include: {
-                    collection: true, // Включає дані про колекцію
+                    collection: true,
                     products: {
                         include: {
                             images: true,
                         },
-                    }, // Включає всі продукти, які належать категорії
+                    },
                 },
             });
 
@@ -32,16 +33,24 @@ export class CategoriesService {
         }
     }
 
-    // async postCategory(createCategoryDto: CreateCategoryDto) {
-    //     try {
-    //         return await this.prisma.category.create({
-    //             data: createCategoryDto,
-    //         });
-    //     } catch (error) {
-    //         console.error("Помилка створення категорії:", error);
-    //         throw new Error("Не вдалося створити категорію");
-    //     }
-    // }
+    async postCategory(createCategoryDto: CreateCategoryDto) {
+        const { name, path, banner, views, status, collectionId } = createCategoryDto;
+        try {
+            return await this.prisma.category.create({
+                data: {
+                    name,
+                    path,
+                    banner,
+                    views,
+                    status,
+                    collectionId,
+                },
+            });
+        } catch (error) {
+            console.error("Помилка створення категорії:", error);
+            throw new Error("Не вдалося створити категорію");
+        }
+    }
 
     // async deleteCategory(id: string) {
     //     try {
