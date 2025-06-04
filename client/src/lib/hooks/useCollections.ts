@@ -18,13 +18,13 @@ export function useCollection(collectionPath: ICollection["path"]) {
 
 export function useCreateCollection() {
     const queryClient = useQueryClient();
+
     return useMutation({
         mutationFn: createCollection,
-        onSuccess: (newCollection) => {
-            queryClient.setQueryData<ICollection[]>(["collections"], (old = []) => [
-                ...old,
-                newCollection,
-            ]);
+        onSuccess: () => {
+            queryClient.invalidateQueries({
+                queryKey: ["collections"],
+            });
         },
     });
 }

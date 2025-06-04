@@ -1,5 +1,4 @@
 import { Injectable } from "@nestjs/common";
-// import { CreateCategoryDto } from "./dto/create-category.dto";
 import { PrismaService } from "src/prisma/prisma.service";
 import { CreateCategoryDto } from "./dto/create-category.dto";
 
@@ -16,11 +15,7 @@ export class CategoriesService {
                 },
                 include: {
                     collection: true,
-                    products: {
-                        include: {
-                            images: true,
-                        },
-                    },
+                    products: true,
                 },
             });
 

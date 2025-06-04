@@ -87,20 +87,14 @@ model Product {
   status      String
   updatedAt   DateTime       @updatedAt @map("updated_at")
   views       Int
+  banner      String
+  images      String[]
   cartItems   CartItem[]
   favorites   Favorite[]
   category    Category       @relation(fields: [categoryId], references: [id])
   colors      ProductColor[]
-  images      ProductImage[]
   sizes       ProductSize[]
   types       ProductType[]
-}
-
-model ProductImage {
-  id        String  @id @default(cuid())
-  url       String
-  productId String  @map("product_id")
-  product   Product @relation(fields: [productId], references: [id])
 }
 
 model ProductSize {

@@ -4,6 +4,8 @@ import { statuses } from "@/lib/helpers/helpers";
 import { useCreateProduct } from "@/lib/hooks/useProducts";
 import { ICategory, ICollection, IProduct, TStatus } from "@/types/types";
 import { useState } from "react";
+import Image from "next/image";
+import { useUploadImage, useUploadImages } from "@/lib/hooks/useImages";
 
 interface ModalProps {
     isOpen: boolean;
@@ -20,100 +22,103 @@ export default function AddProductModal({
     collectionPath,
     categoryPath,
 }: ModalProps) {
-    const [name, setName] = useState("");
-    const [path, setPath] = useState("");
-    const [price, setPrice] = useState<IProduct["price"] | null>(null);
-    const [available, setAvailable] = useState<IProduct["available"] | null>(
-        null
-    );
-    const [description, setDescription] = useState<
-        IProduct["description"] | null
-    >(null);
-    const [composition, setComposition] = useState<
-        IProduct["composition"] | null
-    >(null);
-    const [status, setStatus] = useState<TStatus | null>(null);
+    const [name, setName] = useState(""),
+        [path, setPath] = useState(""),
+        [price, setPrice] = useState<number | null>(null),
+        [available, setAvailable] = useState<boolean | null>(null),
+        [description, setDescription] = useState(""),
+        [composition, setComposition] = useState(""),
+        [status, setStatus] = useState<TStatus | null>(null);
 
-    // const [banner, setBanner] = useState<File | null>(null);
-    // const [preview, setPreview] = useState<string | null>(null);
+    const [banner, setBanner] = useState<File | null>(null),
+        [bannerPreview, setBannerPreview] = useState<string | null>(null);
 
-    const [message, setMessage] = useState<string>("");
+    const [images, setImages] = useState<File[]>([]),
+        [imagePreviews, setImagePreviews] = useState<string[]>([]);
 
-    // const uploadImageMutation = useUploadImage();
+    const [message, setMessage] = useState("");
+
+    const uploadImageMutation = useUploadImage();
+    const uploadImagesMutation = useUploadImages();
+
     const createProductMutation = useCreateProduct(
         collectionPath,
         categoryPath
     );
 
-    // const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    //     const selectedFile = e.target.files?.[0];
-    //     if (selectedFile) {
-    //         setBanner(selectedFile);
-    //         setPreview(URL.createObjectURL(selectedFile));
-    //     }
-    // };
+    const handleBannerChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+        if (file) {
+            setBanner(file);
+            setBannerPreview(URL.createObjectURL(file));
+        }
+    };
+
+    const handleImagesChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const files = Array.from(e.target.files || []);
+        setImages((prev) => [...prev, ...files]);
+        setImagePreviews((prev) => [
+            ...prev,
+            ...files.map((f) => URL.createObjectURL(f)),
+        ]);
+    };
+
+    const removeImage = (index: number) => {
+        setImages((prev) => prev.filter((_, i) => i !== index));
+        setImagePreviews((prev) => prev.filter((_, i) => i !== index));
+    };
 
     const handleClose = () => {
-        // if (preview) URL.revokeObjectURL(preview);
         setName("");
         setPath("");
-        setPrice(0);
-        setAvailable(false);
+        setPrice(null);
+        setAvailable(null);
         setDescription("");
         setComposition("");
         setStatus(null);
-
-        // setBanner(null);
-        // setPreview(null);
-
+        setBanner(null);
+        setBannerPreview(null);
+        setImages([]);
+        setImagePreviews([]);
         setMessage("");
         onClose();
     };
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-
-        if (
-            !name ||
-            !path ||
-            !status ||
-            !price ||
-            !description ||
-            !composition
-        ) {
-            setMessage("Заповніть усі поля!");
-            return;
-        }
-
-        // if (!banner) {
-        //     setMessage("Виберіть зображення для банера!");
-        //     return;
-        // }
-
+        if (!name || !path || !status || !price || !description || !composition)
+            return setMessage("Заповніть усі поля!");
+        if (!banner) return setMessage("Оберіть банер!");
         try {
-            // const uploadResult = await uploadImageMutation.mutateAsync(banner);
-            // const imagePath = uploadResult.path;
+            const uploadBannerResult = await uploadImageMutation.mutateAsync(
+                banner
+            );
+            const bannerPath = uploadBannerResult.path;
+
+            const uploadImagesResults = await uploadImagesMutation.mutateAsync(
+                images
+            );
+            const imagesPaths = uploadImagesResults.paths;
 
             await createProductMutation.mutateAsync({
                 name,
                 path,
-                // banner: imagePath,
                 views: 0,
                 status,
                 categoryId,
                 id: "",
                 createdAt: "",
                 updatedAt: "",
-                price: 0,
-                images: [],
-                available: false,
-                description: "",
-                composition: "",
+                price,
+                available: available || false,
+                description,
+                composition,
+                banner: bannerPath,
                 sizes: [],
                 types: [],
                 colors: [],
+                images: imagesPaths,
             });
-
             setMessage("Товар успішно додано!");
             handleClose();
         } catch (error) {
@@ -125,103 +130,72 @@ export default function AddProductModal({
     if (!isOpen) return null;
 
     return (
-        <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-100">
-            <div className="bg-white p-[40px] shadow-lg max-w-3xl w-full">
-                <h2 className="text-lg font-bold mb-4">Додавання товару</h2>
+        <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 overflow-y-auto">
+            <div className="bg-white p-[40px] shadow-xl max-w-4xl h-[95vh] w-full rounded-md overflow-y-auto">
+                <h2 className="text-xl font-bold mb-4 ">Додавання товару</h2>
                 <form onSubmit={handleSubmit}>
-                    <div className="flex gap-[20px] justify-between">
-                        <div className="flex flex-col gap-[20px] w-[50%]">
+                    <div className="flex gap-[20px]">
+                        <div className="flex flex-col gap-[20px] w-1/2">
                             <div className="flex flex-col">
-                                <label htmlFor="name">Назва</label>
+                                <label>Назва товару</label>
                                 <input
-                                    id="name"
-                                    name="name"
-                                    type="text"
                                     className="border-b py-2 px-1 outline-0"
-                                    placeholder="Назва колекції"
                                     value={name}
+                                    placeholder="Назва"
                                     onChange={(e) => setName(e.target.value)}
                                 />
                             </div>
                             <div className="flex flex-col">
-                                <label htmlFor="path">Шлях</label>
+                                <label className="text-sm font-semibold">
+                                    Шлях
+                                </label>
                                 <input
-                                    id="path"
-                                    name="path"
-                                    type="text"
                                     className="border-b py-2 px-1 outline-0"
-                                    placeholder="Шлях (продублювати назву)"
                                     value={path}
+                                    placeholder="Шлях"
                                     onChange={(e) => setPath(e.target.value)}
                                 />
                             </div>
-
                             <div className="flex flex-col">
-                                <label htmlFor="price">Ціна</label>
+                                <label className="text-sm font-semibold">
+                                    Ціна
+                                </label>
                                 <input
-                                    id="price"
-                                    name="price"
-                                    type="text"
                                     className="border-b py-2 px-1 outline-0"
+                                    value={price || ""}
                                     placeholder="Ціна"
-                                    value={name}
                                     onChange={(e) => setPrice(+e.target.value)}
                                 />
                             </div>
-
                             <div className="flex flex-col">
-                                <label htmlFor="description">Опис</label>
+                                <label className="text-sm font-semibold">
+                                    Опис
+                                </label>
                                 <textarea
-                                    id="description"
-                                    name="description"
                                     className="border-b py-2 px-1 outline-0"
-                                    value={name}
+                                    value={description}
                                     onChange={(e) =>
                                         setDescription(e.target.value)
                                     }
                                 />
                             </div>
-
                             <div className="flex flex-col">
-                                <label htmlFor="coposition">Склад</label>
+                                <label className="text-sm font-semibold">
+                                    Склад
+                                </label>
                                 <textarea
-                                    id="coposition"
-                                    name="coposition"
                                     className="border-b py-2 px-1 outline-0"
-                                    value={name}
+                                    value={composition}
                                     onChange={(e) =>
                                         setComposition(e.target.value)
                                     }
                                 />
                             </div>
-                            {/* <div className="flex flex-col">
-                                <label
-                                    htmlFor="banner"
-                                    className="mb-2 font-medium text-gray-700"
-                                >
-                                    Банер
-                                </label>
-
-                                <label
-                                    htmlFor="banner"
-                                    className="inline-flex items-center justify-center gap-2 px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700 shadow-sm hover:bg-black hover:text-white cursor-pointer transition-all duration-200"
-                                >
-                                    Завантажити зображення
-                                </label>
-
-                                <input
-                                    id="banner"
-                                    name="banner"
-                                    type="file"
-                                    accept="image/*"
-                                    onChange={handleFileChange}
-                                    className="hidden"
-                                />
-                            </div> */}
                             <div className="flex flex-col">
-                                <label htmlFor="available">Доступність</label>
+                                <label className="text-sm font-semibold">
+                                    Доступність
+                                </label>
                                 <select
-                                    name="available"
                                     className="border-b py-2 px-1 outline-0"
                                     value={
                                         available === null
@@ -242,11 +216,12 @@ export default function AddProductModal({
                                 </select>
                             </div>
                             <div className="flex flex-col">
-                                <label htmlFor="status">Статус</label>
+                                <label className="text-sm font-semibold">
+                                    Статус
+                                </label>
                                 <select
-                                    name="status"
                                     className="border-b py-2 px-1 outline-0"
-                                    value={status ?? ""}
+                                    value={status || ""}
                                     onChange={(e) =>
                                         setStatus(e.target.value as TStatus)
                                     }
@@ -254,52 +229,115 @@ export default function AddProductModal({
                                     <option value="" disabled>
                                         Оберіть статус
                                     </option>
-                                    {statuses.map((statusOption) => (
-                                        <option
-                                            key={statusOption}
-                                            value={statusOption}
-                                        >
-                                            {statusOption}
+                                    {statuses.map((s) => (
+                                        <option key={s} value={s}>
+                                            {s}
                                         </option>
                                     ))}
                                 </select>
                             </div>
                         </div>
-                        {/* <div className="flex flex-col gap-[20px] w-[50%]">
-                            <img
-                                className="object-contain h-[340px]"
-                                src={preview || "../images/placeholder.png"}
-                                alt="Банер"
-                            />
-                        </div> */}
+
+                        <div className="flex flex-col gap-[20px] w-1/2">
+                            <div>
+                                <label
+                                    htmlFor="banner"
+                                    className="text-sm font-semibold"
+                                >
+                                    Банер
+                                </label>
+                                <label
+                                    htmlFor="banner"
+                                    className="min-h-[100px] max-w-[300px] border border-dashed border-gray-400 mt-2 flex items-center justify-center cursor-pointer bg-gray-50 hover:bg-gray-100 rounded-md overflow-hidden"
+                                >
+                                    {bannerPreview ? (
+                                        <Image
+                                            src={bannerPreview}
+                                            alt="banner"
+                                            width={250}
+                                            height={300}
+                                            className="object-cover"
+                                        />
+                                    ) : (
+                                        <span className="text-4xl text-gray-400">
+                                            +
+                                        </span>
+                                    )}
+                                </label>
+                                <input
+                                    type="file"
+                                    id="banner"
+                                    accept="image/*"
+                                    onChange={handleBannerChange}
+                                    className="hidden"
+                                />
+                            </div>
+
+                            <div>
+                                <label
+                                    htmlFor="images"
+                                    className="text-sm font-semibold"
+                                >
+                                    Додаткові зображення
+                                </label>
+                                <label
+                                    htmlFor="images"
+                                    className="min-h-[100px] max-w-[300px] border border-dashed border-gray-400 mt-2 flex items-center justify-center cursor-pointer bg-gray-50 hover:bg-gray-100 rounded-md overflow-hidden"
+                                >
+                                    <span className="text-4xl text-gray-400">
+                                        +
+                                    </span>
+                                </label>
+                                <input
+                                    type="file"
+                                    id="images"
+                                    multiple
+                                    accept="image/*"
+                                    onChange={handleImagesChange}
+                                    className="hidden"
+                                />
+
+                                <div className="flex flex-wrap gap-3 mt-4">
+                                    {imagePreviews.map((src, i) => (
+                                        <div
+                                            key={i}
+                                            className="relative group w-[100px] h-[100px]"
+                                        >
+                                            <Image
+                                                src={src}
+                                                alt={`img-${i}`}
+                                                width={100}
+                                                height={100}
+                                                className="object-cover rounded-md"
+                                            />
+                                            <button
+                                                type="button"
+                                                onClick={() => removeImage(i)}
+                                                className="absolute top-0 right-0 bg-black text-white px-[8px] py-[2px] opacity-0 group-hover:opacity-100 transition cursor-pointer"
+                                            >
+                                                Х
+                                            </button>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    {message && <p className="mt-4 text-red-500">{message}</p>}
-                    <div className="flex justify-end gap-4 mt-4">
+
+                    {message && <p className="text-red-500 mt-4">{message}</p>}
+                    <div className="flex justify-end gap-4 mt-6">
                         <button
                             type="button"
                             onClick={handleClose}
-                            className="px-[20px] py-[7px] bg-white text-black hover:bg-black hover:border-transparent hover:text-white cursor-pointer transition-all duration-200"
-                            // disabled={
-                            //     uploadImageMutation.isPending ||
-                            //     createCollectionMutation.isPending
-                            // }
+                            className="px-4 py-2 bg-gray-200 hover:bg-gray-300 rounded"
                         >
                             Відмінити
                         </button>
                         <button
                             type="submit"
-                            className="px-[20px] py-[7px] bg-black/70 border hover:bg-black hover:border-transparent text-white cursor-pointer transition-all duration-200"
-                            // disabled={
-                            //     uploadImageMutation.isPending ||
-                            //     createCollectionMutation.isPending
-                            // }
+                            className="px-4 py-2 bg-black text-white hover:bg-gray-800 rounded"
                         >
-                            {/* {uploadImageMutation.isPending ||
-                            createCollectionMutation.isPending
-                                ? "Завантаження..."
-                                : " */}
                             Додати
-                            {/* " */}
                         </button>
                     </div>
                 </form>

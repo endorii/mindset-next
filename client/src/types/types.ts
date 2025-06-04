@@ -54,8 +54,9 @@ export interface IProduct {
     price: number;
     path: string;
     views: number;
+    banner: string;
     status: "ACTIVE" | "INACTIVE";
-    images: IProductImage[];
+    images: string[];
     available: boolean;
     description: string;
     composition: string;
@@ -66,12 +67,6 @@ export interface IProduct {
     categoryId: string;
     createdAt: string;
     updatedAt: string;
-}
-
-export interface IProductImage {
-    id: string;
-    url: string;
-    productId: string;
 }
 
 export interface IProductColor {

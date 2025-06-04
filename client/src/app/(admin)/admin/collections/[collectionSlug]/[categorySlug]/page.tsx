@@ -102,7 +102,6 @@ function AdminCategory() {
                     <div>Додано/оновлено</div>
                     <div className="text-right">Дії</div>
                 </div>
-                {/* Дані */}
                 <div className="border border-gray-200 rounded-b-lg">
                     {data?.products.map((product, i) => {
                         return (
@@ -111,7 +110,7 @@ function AdminCategory() {
                                 className="grid grid-cols-[120px_0.7fr_80px_150px_1fr_200px] gap-[20px] p-4 border-b border-gray-200 last:border-b-0 hover:bg-gray-50 items-center"
                             >
                                 <img
-                                    src={product.images[0]?.url}
+                                    src={`http://localhost:5000/${product.banner}`}
                                     className="max-h-[120px] w-full object-cover rounded"
                                     alt="banner"
                                 />
@@ -142,6 +141,7 @@ function AdminCategory() {
                 <AddProductModal
                     isOpen={activeModal === "add"}
                     onClose={closeModal}
+                    collectionPath={collectionPath}
                     categoryId={data.id}
                     categoryPath={categoryPath}
                 />

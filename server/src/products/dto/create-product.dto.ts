@@ -14,6 +14,9 @@ export class CreateProductDto {
     @IsNotEmpty()
     path: string;
 
+    @IsString()
+    banner: string;
+
     @IsInt()
     @IsNotEmpty()
     price: number;

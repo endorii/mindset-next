@@ -37,7 +37,7 @@ export default function ProductPage() {
                         <HeartIcon className="w-[30px] stroke-white" />
                     </button>
                     <img
-                        src={data?.images[0].url}
+                        src={data?.images[0]}
                         alt={data.name}
                         className="max-w-[600px]"
                     />
@@ -47,7 +47,7 @@ export default function ProductPage() {
                     {data.images?.map((image, i) => (
                         <li key={i}>
                             <img
-                                src={image.url}
+                                src={image}
                                 alt={data.name}
                                 className="w-full h-auto"
                             />

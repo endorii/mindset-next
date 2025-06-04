@@ -25,21 +25,14 @@ export function useCreateProduct(
     categoryPath: ICategory["path"]
 ) {
     const queryClient = useQueryClient();
+
     return useMutation({
         mutationFn: (productData: IProduct) =>
             addProductToCategory(collectionPath, categoryPath, productData),
-        onSuccess: (newProduct) => {
-            queryClient.setQueryData(
-                ["collections", collectionPath, "categories", categoryPath, "products"],
-                (oldData: any) => {
-                    if (!oldData) return oldData;
-
-                    return {
-                        ...oldData,
-                        categories: [...(oldData.categories || []), newProduct],
-                    };
-                }
-            );
+        onSuccess: () => {
+            queryClient.invalidateQueries({
+                queryKey: ["collections", collectionPath, "categories", categoryPath],
+            });
         },
     });
 }

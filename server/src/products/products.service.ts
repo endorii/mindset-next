@@ -20,7 +20,6 @@ export class ProductsService {
                     },
                 },
                 include: {
-                    images: true,
                     colors: true,
                     category: {
                         include: {
@@ -50,6 +49,7 @@ export class ProductsService {
             available,
             description,
             composition,
+            banner,
         } = createProductDto;
         try {
             return await this.prisma.product.create({
@@ -63,6 +63,7 @@ export class ProductsService {
                     views,
                     status,
                     categoryId,
+                    banner,
                 },
             });
         } catch (error) {

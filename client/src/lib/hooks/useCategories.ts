@@ -11,21 +11,14 @@ export function useCategory(collectionPath: ICollection["path"], categoryPath: I
 
 export function useCreateCartegory(collectionPath: ICollection["path"]) {
     const queryClient = useQueryClient();
+
     return useMutation({
         mutationFn: (categoryData: ICategory) =>
             addCategoryToCollection(collectionPath, categoryData),
-        onSuccess: (newCategory) => {
-            queryClient.setQueryData(
-                ["collections", collectionPath, "categories"],
-                (oldData: any) => {
-                    if (!oldData) return oldData;
-
-                    return {
-                        ...oldData,
-                        categories: [...(oldData.categories || []), newCategory],
-                    };
-                }
-            );
+        onSuccess: () => {
+            queryClient.invalidateQueries({
+                queryKey: ["collections", collectionPath],
+            });
         },
     });
 }
