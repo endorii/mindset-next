@@ -136,67 +136,67 @@ export default function AddProductModal({
                 <form onSubmit={handleSubmit}>
                     <div className="flex gap-[20px]">
                         <div className="flex flex-col gap-[20px] w-1/2">
-                            <div className="flex flex-col">
+                            <div className="flex flex-col gap-[7px]">
                                 <label>Назва товару</label>
                                 <input
-                                    className="border-b py-2 px-1 outline-0"
+                                    className="border border-gray-200 rounded px-[10px] py-[7px] bg-gray-50 outline-0"
                                     value={name}
                                     placeholder="Назва"
                                     onChange={(e) => setName(e.target.value)}
                                 />
                             </div>
-                            <div className="flex flex-col">
+                            <div className="flex flex-col gap-[7px]">
                                 <label className="text-sm font-semibold">
                                     Шлях
                                 </label>
                                 <input
-                                    className="border-b py-2 px-1 outline-0"
+                                    className="border border-gray-200 rounded px-[10px] py-[7px] bg-gray-50 outline-0"
                                     value={path}
                                     placeholder="Шлях"
                                     onChange={(e) => setPath(e.target.value)}
                                 />
                             </div>
-                            <div className="flex flex-col">
+                            <div className="flex flex-col gap-[7px]">
                                 <label className="text-sm font-semibold">
                                     Ціна
                                 </label>
                                 <input
-                                    className="border-b py-2 px-1 outline-0"
+                                    className="border border-gray-200 rounded px-[10px] py-[7px] bg-gray-50 outline-0"
                                     value={price || ""}
                                     placeholder="Ціна"
                                     onChange={(e) => setPrice(+e.target.value)}
                                 />
                             </div>
-                            <div className="flex flex-col">
+                            <div className="flex flex-col gap-[7px]">
                                 <label className="text-sm font-semibold">
                                     Опис
                                 </label>
                                 <textarea
-                                    className="border-b py-2 px-1 outline-0"
+                                    className="border border-gray-200 rounded px-[10px] py-[7px] bg-gray-50 outline-0"
                                     value={description}
                                     onChange={(e) =>
                                         setDescription(e.target.value)
                                     }
                                 />
                             </div>
-                            <div className="flex flex-col">
+                            <div className="flex flex-col gap-[7px]">
                                 <label className="text-sm font-semibold">
                                     Склад
                                 </label>
                                 <textarea
-                                    className="border-b py-2 px-1 outline-0"
+                                    className="border border-gray-200 rounded px-[10px] py-[7px] bg-gray-50 outline-0"
                                     value={composition}
                                     onChange={(e) =>
                                         setComposition(e.target.value)
                                     }
                                 />
                             </div>
-                            <div className="flex flex-col">
+                            <div className="flex flex-col gap-[7px]">
                                 <label className="text-sm font-semibold">
                                     Доступність
                                 </label>
                                 <select
-                                    className="border-b py-2 px-1 outline-0"
+                                    className="border border-gray-200 rounded px-[10px] py-[7px] bg-gray-50 outline-0"
                                     value={
                                         available === null
                                             ? ""
@@ -215,12 +215,12 @@ export default function AddProductModal({
                                     <option value="false">Недоступний</option>
                                 </select>
                             </div>
-                            <div className="flex flex-col">
+                            <div className="flex flex-col gap-[7px]">
                                 <label className="text-sm font-semibold">
                                     Статус
                                 </label>
                                 <select
-                                    className="border-b py-2 px-1 outline-0"
+                                    className="border border-gray-200 rounded px-[10px] py-[7px] bg-gray-50 outline-0"
                                     value={status || ""}
                                     onChange={(e) =>
                                         setStatus(e.target.value as TStatus)

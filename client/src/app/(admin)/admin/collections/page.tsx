@@ -6,15 +6,14 @@ import InfoIcon from "@/components/Icons/InfoIcon";
 import PlusIcon from "@/components/Icons/PlusIcon";
 import TrashIcon from "@/components/Icons/TrashIcon";
 import AddCollectionModal from "@/components/Modals/collection/AddCollectionModal";
+import CollectionInfoModal from "@/components/Modals/collection/CollectionInfoModal";
 import DeleteCollectionModal from "@/components/Modals/collection/ConfirmDeleteModal";
 import EditCollectionModal from "@/components/Modals/collection/EditCollectionModal";
 import { formatDate } from "@/lib/helpers/formatDate";
 import { useCollections } from "@/lib/hooks/useCollections";
-import { ICollection } from "@/types/types";
+import { ICollection, ModalType } from "@/types/types";
 import Link from "next/link";
 import React, { useState } from "react";
-
-type ModalType = "add" | "edit" | "delete" | null;
 
 function AdminCollections() {
     const filters = [
@@ -113,7 +112,12 @@ function AdminCollections() {
                                         <CategoriesIcon className="w-[30px] group-hover:fill-white" />
                                     </button>
                                 </Link>
-                                <button className="group hover:bg-black p-[5px] transition-all duration-200 cursor-pointer rounded">
+                                <button
+                                    className="group hover:bg-black p-[5px] transition-all duration-200 cursor-pointer rounded"
+                                    onClick={() =>
+                                        openModal("info", collection)
+                                    }
+                                >
                                     <InfoIcon className="w-[30px] stroke-black fill-none stroke-[2] group-hover:stroke-white" />
                                 </button>
                                 <button
@@ -144,6 +148,11 @@ function AdminCollections() {
             />
             {selectedCollection && (
                 <>
+                    <CollectionInfoModal
+                        isOpen={activeModal === "info"}
+                        onClose={closeModal}
+                        item={selectedCollection}
+                    />
                     <EditCollectionModal
                         isOpen={activeModal === "edit"}
                         onClose={closeModal}

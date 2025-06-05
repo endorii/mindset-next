@@ -1,9 +1,6 @@
 # prisma
 /generated
 
-# public
-/public
-
 # compiled output
 /dist
 /node_modules

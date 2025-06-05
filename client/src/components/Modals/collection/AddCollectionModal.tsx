@@ -5,6 +5,7 @@ import { useCreateCollection } from "@/lib/hooks/useCollections";
 import { TStatus } from "@/types/types";
 import { statuses } from "@/lib/helpers/helpers";
 import { useUploadImage } from "@/lib/hooks/useImages";
+import Image from "next/image";
 
 interface ModalProps {
     isOpen: boolean;
@@ -23,7 +24,7 @@ export default function AddCollectionModal({ isOpen, onClose }: ModalProps) {
     const uploadImageMutation = useUploadImage();
     const createCollectionMutation = useCreateCollection();
 
-    const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleBannerChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const selectedFile = e.target.files?.[0];
         if (selectedFile) {
             setBanner(selectedFile);
@@ -84,60 +85,35 @@ export default function AddCollectionModal({ isOpen, onClose }: ModalProps) {
                 <form onSubmit={handleSubmit}>
                     <div className="flex gap-[20px] justify-between">
                         <div className="flex flex-col gap-[20px] w-[50%]">
-                            <div className="flex flex-col">
+                            <div className="flex flex-col gap-[7px]">
                                 <label htmlFor="name">Назва</label>
                                 <input
                                     id="name"
                                     name="name"
                                     type="text"
-                                    className="border-b py-2 px-1 outline-0"
+                                    className="border border-gray-200 rounded px-[10px] py-[7px] bg-gray-50 outline-0"
                                     placeholder="Назва колекції"
                                     value={name}
                                     onChange={(e) => setName(e.target.value)}
                                 />
                             </div>
-                            <div className="flex flex-col">
+                            <div className="flex flex-col gap-[7px]">
                                 <label htmlFor="path">Шлях</label>
                                 <input
                                     id="path"
                                     name="path"
                                     type="text"
-                                    className="border-b py-2 px-1 outline-0"
-                                    placeholder="Шлях (продублювати назву)"
+                                    className="border border-gray-200 rounded px-[10px] py-[7px] bg-gray-50 outline-0"
+                                    placeholder="Шлях"
                                     value={path}
                                     onChange={(e) => setPath(e.target.value)}
                                 />
                             </div>
-                            <div className="flex flex-col">
-                                <label
-                                    htmlFor="banner"
-                                    className="mb-2 font-medium text-gray-700"
-                                >
-                                    Банер
-                                </label>
-
-                                <label
-                                    htmlFor="banner"
-                                    className="inline-flex items-center justify-center gap-2 px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700 shadow-sm hover:bg-black hover:text-white cursor-pointer transition-all duration-200"
-                                >
-                                    Завантажити зображення
-                                </label>
-
-                                <input
-                                    id="banner"
-                                    name="banner"
-                                    type="file"
-                                    accept="image/*"
-                                    onChange={handleFileChange}
-                                    className="hidden"
-                                />
-                            </div>
-
-                            <div className="flex flex-col">
+                            <div className="flex flex-col gap-[7px]">
                                 <label htmlFor="status">Статус</label>
                                 <select
                                     name="status"
-                                    className="border-b py-2 px-1 outline-0"
+                                    className="border border-gray-200 rounded px-[10px] py-[7px] bg-gray-50 outline-0"
                                     value={status ?? ""}
                                     onChange={(e) =>
                                         setStatus(e.target.value as TStatus)
@@ -157,12 +133,40 @@ export default function AddCollectionModal({ isOpen, onClose }: ModalProps) {
                                 </select>
                             </div>
                         </div>
-                        <div className="flex flex-col gap-[20px] w-[50%]">
-                            <img
-                                className="object-contain h-[340px]"
-                                src={preview || "../images/placeholder.png"}
-                                alt="Банер"
-                            />
+                        <div className="flex flex-col gap-[20px] w-1/2">
+                            <div>
+                                <label
+                                    htmlFor="banner"
+                                    className="text-sm font-semibold"
+                                >
+                                    Банер
+                                </label>
+                                <label
+                                    htmlFor="banner"
+                                    className="min-h-[100px] max-w-[300px] border border-dashed border-gray-400 mt-2 flex items-center justify-center cursor-pointer bg-gray-50 hover:bg-gray-100 rounded-md overflow-hidden"
+                                >
+                                    {preview ? (
+                                        <Image
+                                            src={preview}
+                                            alt="banner"
+                                            width={250}
+                                            height={300}
+                                            className="object-cover"
+                                        />
+                                    ) : (
+                                        <span className="text-4xl text-gray-400">
+                                            +
+                                        </span>
+                                    )}
+                                </label>
+                                <input
+                                    type="file"
+                                    id="banner"
+                                    accept="image/*"
+                                    onChange={handleBannerChange}
+                                    className="hidden"
+                                />
+                            </div>
                         </div>
                     </div>
                     {message && <p className="mt-4 text-red-500">{message}</p>}

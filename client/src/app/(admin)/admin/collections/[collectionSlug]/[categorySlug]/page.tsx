@@ -6,12 +6,14 @@ import InfoIcon from "@/components/Icons/InfoIcon";
 import PlusIcon from "@/components/Icons/PlusIcon";
 import TrashIcon from "@/components/Icons/TrashIcon";
 import AddProductModal from "@/components/Modals/product/AddProductModal";
+import DeleteProductModal from "@/components/Modals/product/DeleteProductModal";
+import EditProductModal from "@/components/Modals/product/EditProductModal";
+import ProductInfoModal from "@/components/Modals/product/ProductInfoModal";
+import { formatDate } from "@/lib/helpers/formatDate";
 import { useCategory } from "@/lib/hooks/useCategories";
-import { IProduct } from "@/types/types";
+import { IProduct, ModalType } from "@/types/types";
 import { usePathname, useRouter } from "next/navigation";
 import React, { useState } from "react";
-
-type ModalType = "add" | "edit" | "delete" | null;
 
 function AdminCategory() {
     const filters = [
@@ -36,6 +38,9 @@ function AdminCategory() {
         collectionPath,
         categoryPath
     );
+
+    const products = data?.products ?? [];
+
     const openModal = (type: ModalType, product: IProduct | null = null) => {
         setSelectedProduct(product);
         setActiveModal(type);
@@ -44,16 +49,6 @@ function AdminCategory() {
     const closeModal = () => {
         setSelectedProduct(null);
         setActiveModal(null);
-    };
-
-    const formatDate = (dateString: string) => {
-        const date = new Date(dateString);
-        const day = String(date.getDate()).padStart(2, "0");
-        const month = String(date.getMonth() + 1).padStart(2, "0");
-        const year = date.getFullYear();
-        const hours = String(date.getHours()).padStart(2, "0");
-        const minutes = String(date.getMinutes()).padStart(2, "0");
-        return `${day}.${month}.${year} ${hours}:${minutes}`;
     };
 
     return (
@@ -93,50 +88,69 @@ function AdminCategory() {
                     <PlusIcon className="stroke-white stroke-2 w-[30px] group-hover:stroke-black" />
                 </button>
             </div>
-            <div className="mt-[10px]">
-                <div className="grid grid-cols-[120px_0.7fr_80px_150px_1fr_200px] gap-[20px] bg-gray-100 p-4 rounded-t-lg font-semibold text-sm text-gray-700">
-                    <div>Банер</div>
-                    <div>Назва</div>
-                    <div>Переглядів</div>
-                    <div>Статус</div>
-                    <div>Додано/оновлено</div>
-                    <div className="text-right">Дії</div>
-                </div>
-                <div className="border border-gray-200 rounded-b-lg">
-                    {data?.products.map((product, i) => {
-                        return (
-                            <div
-                                key={i}
-                                className="grid grid-cols-[120px_0.7fr_80px_150px_1fr_200px] gap-[20px] p-4 border-b border-gray-200 last:border-b-0 hover:bg-gray-50 items-center"
-                            >
-                                <img
-                                    src={`http://localhost:5000/${product.banner}`}
-                                    className="max-h-[120px] w-full object-cover rounded"
-                                    alt="banner"
-                                />
-                                <div>{product.name}</div>
-                                <div>{0}</div>
-                                <div>Опубліковано</div>
-                                <div>
-                                    {formatDate(product.createdAt)} /{" "}
-                                    {formatDate(product.updatedAt)}
+            {products.length > 0 ? (
+                <div className="mt-[10px]">
+                    <div className="grid grid-cols-[120px_0.7fr_80px_150px_1fr_200px] gap-[20px] bg-gray-100 p-4 rounded-t-lg font-semibold text-sm text-gray-700">
+                        <div>Банер</div>
+                        <div>Назва</div>
+                        <div>Переглядів</div>
+                        <div>Статус</div>
+                        <div>Додано/оновлено</div>
+                        <div className="text-right">Дії</div>
+                    </div>
+                    <div className="border border-gray-200 rounded-b-lg">
+                        {products.map((product, i) => {
+                            return (
+                                <div
+                                    key={i}
+                                    className="grid grid-cols-[120px_0.7fr_80px_150px_1fr_200px] gap-[20px] p-4 border-b border-gray-200 last:border-b-0 hover:bg-gray-50 items-center"
+                                >
+                                    <img
+                                        src={`http://localhost:5000/${product.banner}`}
+                                        className="max-h-[120px] w-full object-cover rounded"
+                                        alt="banner"
+                                    />
+                                    <div>{product.name}</div>
+                                    <div>{0}</div>
+                                    <div>Опубліковано</div>
+                                    <div>
+                                        {formatDate(product.createdAt)} /{" "}
+                                        {formatDate(product.updatedAt)}
+                                    </div>
+                                    <div className="flex gap-[20px] justify-end">
+                                        <button
+                                            className="group hover:bg-black p-[5px] transition-all duration-200 cursor-pointer rounded"
+                                            onClick={() =>
+                                                openModal("info", product)
+                                            }
+                                        >
+                                            <InfoIcon className="w-[30px] stroke-black fill-none stroke-[2] group-hover:stroke-white" />
+                                        </button>
+                                        <button
+                                            className="group hover:bg-black p-[5px] transition-all duration-200 cursor-pointer rounded"
+                                            onClick={() =>
+                                                openModal("edit", product)
+                                            }
+                                        >
+                                            <EditIcon className="w-[27px] fill-none stroke-black stroke-[2.3] group-hover:stroke-white" />
+                                        </button>
+                                        <button
+                                            className="group hover:bg-black p-[5px] transition-all duration-200 cursor-pointer rounded"
+                                            onClick={() =>
+                                                openModal("delete", product)
+                                            }
+                                        >
+                                            <TrashIcon className="w-[30px] fill-none stroke-black stroke-[2] group-hover:stroke-white" />
+                                        </button>
+                                    </div>
                                 </div>
-                                <div className="flex gap-[20px] justify-end">
-                                    <button className="group bg-white hover:bg-black p-[5px] transition-all duration-200 cursor-pointer rounded">
-                                        <InfoIcon className="w-[30px] stroke-black fill-none stroke-[2] group-hover:stroke-white" />
-                                    </button>
-                                    <button className="group bg-white hover:bg-black p-[5px] transition-all duration-200 cursor-pointer rounded">
-                                        <EditIcon className="w-[27px] fill-none stroke-black stroke-[2.3] group-hover:stroke-white" />
-                                    </button>
-                                    <button className="group bg-white hover:bg-black p-[5px] transition-all duration-200 cursor-pointer rounded">
-                                        <TrashIcon className="w-[30px] fill-none stroke-black stroke-[2] group-hover:stroke-white" />
-                                    </button>
-                                </div>
-                            </div>
-                        );
-                    })}
+                            );
+                        })}
+                    </div>
                 </div>
-            </div>
+            ) : (
+                <div>Товари відсутні</div>
+            )}
             {data && (
                 <AddProductModal
                     isOpen={activeModal === "add"}
@@ -145,6 +159,27 @@ function AdminCategory() {
                     categoryId={data.id}
                     categoryPath={categoryPath}
                 />
+            )}
+            {selectedProduct && (
+                <>
+                    <ProductInfoModal
+                        isOpen={activeModal === "info"}
+                        onClose={closeModal}
+                        collectionPath={collectionPath}
+                        categoryPath={categoryPath}
+                        item={selectedProduct}
+                    />
+                    <EditProductModal
+                        isOpen={activeModal === "edit"}
+                        onClose={closeModal}
+                        item={selectedProduct}
+                    />
+                    <DeleteProductModal
+                        isOpen={activeModal === "delete"}
+                        onClose={closeModal}
+                        item={selectedProduct}
+                    />
+                </>
             )}
         </div>
     );

@@ -51,7 +51,7 @@ export default function EditCategoryModal({
                 </h2>
                 <div className="flex gap-[20px] justify-between">
                     <div className="flex flex-col gap-[20px] w-[50%]">
-                        <div className="flex flex-col">
+                        <div className="flex flex-col gap-[7px]">
                             <label htmlFor="name">Назва</label>
                             <input
                                 id="name"
@@ -59,11 +59,11 @@ export default function EditCategoryModal({
                                 type="text"
                                 value={name}
                                 onChange={handleInputChange}
-                                className="border-b py-2 px-1 outline-0"
+                                className="border border-gray-200 rounded px-[10px] py-[7px] bg-gray-50 outline-0"
                                 placeholder="Назва колекції"
                             />
                         </div>
-                        <div className="flex flex-col">
+                        <div className="flex flex-col gap-[7px]">
                             <label htmlFor="path">Шлях</label>
                             <input
                                 id="path"
@@ -71,24 +71,24 @@ export default function EditCategoryModal({
                                 type="text"
                                 value={path}
                                 onChange={handleInputChange}
-                                className="border-b py-2 px-1 outline-0"
+                                className="border border-gray-200 rounded px-[10px] py-[7px] bg-gray-50 outline-0"
                                 placeholder="Шлях (URL)"
                             />
                         </div>
-                        <div className="flex flex-col">
+                        <div className="flex flex-col gap-[7px]">
                             <label htmlFor="banner">Банер</label>
                             <input
                                 id="banner"
                                 name="banner"
                                 type="file"
                                 onChange={handleInputChange}
-                                className="border-b py-2 px-1 outline-0"
+                                className="border border-gray-200 rounded px-[10px] py-[7px] bg-gray-50 outline-0"
                                 accept="image/*"
                             />
                         </div>
                     </div>
                     <div className="flex flex-col gap-[20px] w-[50%]">
-                        <div className="flex flex-col">
+                        <div className="flex flex-col gap-[7px]">
                             <label htmlFor="bannerUrl">Банер (URL)</label>
                             <input
                                 id="bannerUrl"
@@ -96,7 +96,7 @@ export default function EditCategoryModal({
                                 type="text"
                                 value={bannerUrl}
                                 disabled
-                                className="border-b py-2 px-1 outline-0 disabled:opacity-35 disabled:cursor-not-allowed"
+                                className="border border-gray-200 rounded px-[10px] py-[7px] bg-gray-50 outline-0 disabled:opacity-35 disabled:cursor-not-allowed"
                             />
                         </div>
                         <img

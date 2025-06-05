@@ -2,6 +2,8 @@ export interface Props {
     children: React.ReactNode;
 }
 
+export type ModalType = "add" | "edit" | "delete" | "info" | null;
+
 export type TStatus = "ACTIVE" | "INACTIVE";
 
 export interface ICollectionModalProps {
@@ -13,12 +15,15 @@ export interface ICollectionModalProps {
 export interface ICategoryModalProps {
     isOpen: boolean;
     onClose: () => void;
+    collectionPath?: ICollection["path"];
     item: ICategory | null;
 }
 
 export interface IProductModalProps {
     isOpen: boolean;
     onClose: () => void;
+    collectionPath?: ICollection["path"];
+    categoryPath?: ICategory["path"];
     item: IProduct | null;
 }
 
