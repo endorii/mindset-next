@@ -24,7 +24,6 @@ export class CollectionsService {
     async postCollection(createCollectionDto: CreateCollectionDto) {
         const { name, path, banner, views, status } = createCollectionDto;
 
-        // Перевірка унікальності шляху
         const existingCollection = await this.prisma.collection.findUnique({
             where: { path },
         });

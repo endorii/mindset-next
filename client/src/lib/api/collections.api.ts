@@ -48,3 +48,16 @@ export async function createCollection(data: {
         throw error;
     }
 }
+
+export async function editCollection(collectionPath: string, formData: FormData) {
+    const res = await fetch(`http://localhost:5000/api/collections/${collectionPath}`, {
+        method: "PATCH",
+        body: formData,
+    });
+
+    if (!res.ok) {
+        throw new Error("Не вдалося оновити колекцію");
+    }
+
+    return res.json();
+}
