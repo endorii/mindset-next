@@ -1,4 +1,4 @@
-import { IsString, IsNotEmpty, IsInt, IsEnum, IsBoolean } from "class-validator";
+import { IsString, IsNotEmpty, IsInt, IsEnum, IsBoolean, IsArray } from "class-validator";
 
 enum EStatus {
     ACTIVE = "ACTIVE",
@@ -41,4 +41,7 @@ export class CreateProductDto {
 
     @IsString()
     categoryId: string;
+
+    @IsArray()
+    images: string[];
 }

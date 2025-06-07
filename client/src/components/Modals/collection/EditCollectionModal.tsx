@@ -130,14 +130,6 @@ export default function EditCollectionModal({
                             </select>
                         </div>
                     </div>
-                    <div>
-                        <button
-                            onClick={handleConfirm}
-                            className="px-[20px] py-[7px] bg-black/70 border hover:bg-black hover:border-transparent text-white cursor-pointer transition-all duration-200"
-                        >
-                            Підтвердити
-                        </button>
-                    </div>
                 </div>
                 <div className="flex flex-col gap-[20px]">
                     <div className="flex gap-[20px]">
@@ -178,7 +170,13 @@ export default function EditCollectionModal({
                             />
                         </div>{" "}
                     </div>
-                    <div>
+                    <div className="flex justify-end gap-4 mt-6">
+                        <button
+                            onClick={onClose}
+                            className="px-[20px] py-[7px] bg-white text-black hover:bg-black hover:border-transparent hover:text-white cursor-pointer transition-all duration-200"
+                        >
+                            Скасувати
+                        </button>
                         <button
                             onClick={handleConfirm}
                             className="px-[20px] py-[7px] bg-black/70 border hover:bg-black hover:border-transparent text-white cursor-pointer transition-all duration-200"

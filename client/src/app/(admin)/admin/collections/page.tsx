@@ -69,78 +69,84 @@ function AdminCollections() {
                     <PlusIcon className="stroke-white stroke-2 w-[30px] group-hover:stroke-black" />
                 </button>
             </div>
+            {(data ?? []).length > 0 ? (
+                <div className="mt-[10px]">
+                    <div className="grid grid-cols-[120px_0.7fr_150px_150px_1fr_230px] gap-[20px] bg-gray-100 p-4 rounded-t-lg font-semibold text-sm text-gray-700">
+                        <div>Банер</div>
+                        <div>Назва</div>
+                        <div>Статус</div>
+                        <div>Переглядів</div>
+                        <div>Додано/оновлено</div>
+                        <div className="text-right">Дії</div>
+                    </div>
 
-            <div className="mt-[10px]">
-                <div className="grid grid-cols-[120px_0.7fr_150px_150px_1fr_230px] gap-[20px] bg-gray-100 p-4 rounded-t-lg font-semibold text-sm text-gray-700">
-                    <div>Банер</div>
-                    <div>Назва</div>
-                    <div>Статус</div>
-                    <div>Переглядів</div>
-                    <div>Додано/оновлено</div>
-                    <div className="text-right">Дії</div>
-                </div>
-                <div className="border border-gray-200 rounded-b-lg">
-                    {data?.map((collection) => (
-                        <div
-                            key={collection.id}
-                            className="grid grid-cols-[120px_0.7fr_150px_150px_1fr_230px] gap-[20px] p-4 border-gray-200 border-b last:border-b-0 hover:bg-gray-50 items-center"
-                        >
-                            <img
-                                src={`http://localhost:5000/${collection.banner}`}
-                                className="max-h-[120px] w-full object-cover rounded"
-                                alt="banner"
-                            />
-                            <div>{collection.name}</div>
-                            <div>
-                                {collection.status === "ACTIVE"
-                                    ? "Опубліковано"
-                                    : collection.status === "INACTIVE"
-                                    ? "Не опубліковано"
-                                    : "Невідомий статус"}
-                            </div>
-                            <div>{0}</div>
-                            <div>
-                                {formatDate(collection.createdAt)} /{" "}
-                                {formatDate(collection.updatedAt)}
-                            </div>
-                            <div className="flex gap-[20px] justify-end">
-                                <Link href={`collections/${collection.path}`}>
-                                    <button className="relative group hover:bg-black p-[5px] transition-all duration-200 cursor-pointer rounded">
-                                        <div className="absolute top-[-5px] right-[-5px] bg-white w-[20px] h-[20px] flex items-center justify-center text-[11px] font-bold rounded-[50%] border-2 border-black text-black pt-[1px]">
-                                            {collection.categories?.length}
-                                        </div>
-                                        <CategoriesIcon className="w-[30px] group-hover:fill-white" />
+                    <div className="border border-gray-200 rounded-b-lg">
+                        {data?.map((collection) => (
+                            <div
+                                key={collection.id}
+                                className="grid grid-cols-[120px_0.7fr_150px_150px_1fr_230px] gap-[20px] p-4 border-gray-200 border-b last:border-b-0 hover:bg-gray-50 items-center"
+                            >
+                                <img
+                                    src={`http://localhost:5000/${collection.banner}`}
+                                    className="max-h-[120px] w-full object-cover rounded"
+                                    alt="banner"
+                                />
+                                <div>{collection.name}</div>
+                                <div>
+                                    {collection.status === "ACTIVE"
+                                        ? "Опубліковано"
+                                        : collection.status === "INACTIVE"
+                                        ? "Не опубліковано"
+                                        : "Невідомий статус"}
+                                </div>
+                                <div>{0}</div>
+                                <div>
+                                    {formatDate(collection.createdAt)} /{" "}
+                                    {formatDate(collection.updatedAt)}
+                                </div>
+                                <div className="flex gap-[20px] justify-end">
+                                    <Link
+                                        href={`collections/${collection.path}`}
+                                    >
+                                        <button className="relative group hover:bg-black p-[5px] transition-all duration-200 cursor-pointer rounded">
+                                            <div className="absolute top-[-5px] right-[-5px] bg-white w-[20px] h-[20px] flex items-center justify-center text-[11px] font-bold rounded-[50%] border-2 border-black text-black pt-[1px]">
+                                                {collection.categories?.length}
+                                            </div>
+                                            <CategoriesIcon className="w-[30px] group-hover:fill-white" />
+                                        </button>
+                                    </Link>
+                                    <button
+                                        className="group hover:bg-black p-[5px] transition-all duration-200 cursor-pointer rounded"
+                                        onClick={() =>
+                                            openModal("info", collection)
+                                        }
+                                    >
+                                        <InfoIcon className="w-[30px] stroke-black fill-none stroke-[2] group-hover:stroke-white" />
                                     </button>
-                                </Link>
-                                <button
-                                    className="group hover:bg-black p-[5px] transition-all duration-200 cursor-pointer rounded"
-                                    onClick={() =>
-                                        openModal("info", collection)
-                                    }
-                                >
-                                    <InfoIcon className="w-[30px] stroke-black fill-none stroke-[2] group-hover:stroke-white" />
-                                </button>
-                                <button
-                                    onClick={() =>
-                                        openModal("edit", collection)
-                                    }
-                                    className="group hover:bg-black p-[5px] transition-all duration-200 cursor-pointer rounded"
-                                >
-                                    <EditIcon className="w-[27px] fill-none stroke-black stroke-[2.3] group-hover:stroke-white" />
-                                </button>
-                                <button
-                                    onClick={() =>
-                                        openModal("delete", collection)
-                                    }
-                                    className="group hover:bg-black p-[5px] transition-all duration-200 cursor-pointer rounded"
-                                >
-                                    <TrashIcon className="w-[30px] fill-none stroke-black stroke-[2] group-hover:stroke-white" />
-                                </button>
+                                    <button
+                                        onClick={() =>
+                                            openModal("edit", collection)
+                                        }
+                                        className="group hover:bg-black p-[5px] transition-all duration-200 cursor-pointer rounded"
+                                    >
+                                        <EditIcon className="w-[27px] fill-none stroke-black stroke-[2.3] group-hover:stroke-white" />
+                                    </button>
+                                    <button
+                                        onClick={() =>
+                                            openModal("delete", collection)
+                                        }
+                                        className="group hover:bg-black p-[5px] transition-all duration-200 cursor-pointer rounded"
+                                    >
+                                        <TrashIcon className="w-[30px] fill-none stroke-black stroke-[2] group-hover:stroke-white" />
+                                    </button>
+                                </div>
                             </div>
-                        </div>
-                    ))}
+                        ))}
+                    </div>
                 </div>
-            </div>
+            ) : (
+                <div>Колекції відсутні</div>
+            )}
 
             <AddCollectionModal
                 isOpen={activeModal === "add"}

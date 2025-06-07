@@ -50,6 +50,7 @@ export class ProductsService {
             description,
             composition,
             banner,
+            images,
         } = createProductDto;
         try {
             return await this.prisma.product.create({
@@ -64,6 +65,7 @@ export class ProductsService {
                     status,
                     categoryId,
                     banner,
+                    images,
                 },
             });
         } catch (error) {
