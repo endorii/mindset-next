@@ -41,10 +41,7 @@ export default function AddProductModal({
     const uploadImageMutation = useUploadImage();
     const uploadImagesMutation = useUploadImages();
 
-    const createProductMutation = useCreateProduct(
-        collectionPath,
-        categoryPath
-    );
+    const createProductMutation = useCreateProduct();
 
     const handleBannerChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
@@ -101,23 +98,27 @@ export default function AddProductModal({
             const imagesPaths = uploadImagesResults.paths;
 
             await createProductMutation.mutateAsync({
-                name,
-                path,
-                views: 0,
-                status,
-                categoryId,
-                id: "",
-                createdAt: "",
-                updatedAt: "",
-                price,
-                available: available || false,
-                description,
-                composition,
-                banner: bannerPath,
-                sizes: [],
-                types: [],
-                colors: [],
-                images: imagesPaths,
+                collectionPath,
+                categoryPath,
+                productData: {
+                    name,
+                    path,
+                    views: 0,
+                    status,
+                    categoryId,
+                    id: "",
+                    createdAt: "",
+                    updatedAt: "",
+                    price,
+                    available: available || false,
+                    description,
+                    composition,
+                    banner: bannerPath,
+                    sizes: [],
+                    types: [],
+                    colors: [],
+                    images: imagesPaths,
+                },
             });
             setMessage("Товар успішно додано!");
             handleClose();

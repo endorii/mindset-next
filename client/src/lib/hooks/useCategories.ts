@@ -1,6 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { ICategory, ICollection } from "@/types/types";
-import { addCategoryToCollection, fetchCategory } from "../api/categories.api";
+import { addCategoryToCollection, deleteCategory, fetchCategory } from "../api/categories.api";
 
 export function useCategory(collectionPath: ICollection["path"], categoryPath: ICategory["path"]) {
     return useQuery({
@@ -9,15 +9,39 @@ export function useCategory(collectionPath: ICollection["path"], categoryPath: I
     });
 }
 
-export function useCreateCartegory(collectionPath: ICollection["path"]) {
+export function useCreateCategory() {
     const queryClient = useQueryClient();
 
     return useMutation({
-        mutationFn: (categoryData: ICategory) =>
-            addCategoryToCollection(collectionPath, categoryData),
-        onSuccess: () => {
+        mutationFn: ({
+            collectionPath,
+            categoryData,
+        }: {
+            collectionPath: ICollection["path"];
+            categoryData: ICategory;
+        }) => addCategoryToCollection(collectionPath, categoryData),
+        onSuccess: (_data, variables) => {
             queryClient.invalidateQueries({
-                queryKey: ["collections", collectionPath],
+                queryKey: ["collections", variables.collectionPath],
+            });
+        },
+    });
+}
+
+export function useDeleteCategory() {
+    const queryClient = useQueryClient();
+
+    return useMutation({
+        mutationFn: ({
+            collectionPath,
+            categoryPath,
+        }: {
+            collectionPath: ICollection["path"];
+            categoryPath: ICategory["path"];
+        }) => deleteCategory(collectionPath, categoryPath),
+        onSuccess: (_data, variables) => {
+            queryClient.invalidateQueries({
+                queryKey: ["collections", variables.collectionPath],
             });
         },
     });

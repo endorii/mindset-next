@@ -1,6 +1,8 @@
-import { ICategory } from "@/types/types";
+import { ICategory, ICollection } from "@/types/types";
 
-export async function fetchCategoriesByCollection(collectionPath: string): Promise<ICategory[]> {
+export async function fetchCategoriesByCollection(
+    collectionPath: ICollection["path"]
+): Promise<ICategory[]> {
     try {
         const res = await fetch(
             `http://localhost:5000/api/collections/${collectionPath}/categories`
@@ -14,8 +16,8 @@ export async function fetchCategoriesByCollection(collectionPath: string): Promi
 }
 
 export async function fetchCategory(
-    collectionPath: string,
-    categoryPath: string
+    collectionPath: ICollection["path"],
+    categoryPath: ICategory["path"]
 ): Promise<ICategory> {
     try {
         const res = await fetch(
@@ -30,7 +32,7 @@ export async function fetchCategory(
 }
 
 export async function addCategoryToCollection(
-    collectionPath: string,
+    collectionPath: ICollection["path"],
     categoryData: ICategory
 ): Promise<ICategory> {
     try {
@@ -50,17 +52,20 @@ export async function addCategoryToCollection(
     }
 }
 
-// export async function deleteCategory(collectionPath: string, categoryPath: string): Promise<void> {
-//     try {
-//         const res = await fetch(
-//             `http://localhost:5000/api/collections/${collectionPath}/categories/${categoryPath}`,
-//             {
-//                 method: "DELETE",
-//             }
-//         );
-//         if (!res.ok) throw new Error("Помилка видалення категорії");
-//     } catch (error) {
-//         console.error("Fetch error:", error);
-//         throw error;
-//     }
-// }
+export async function deleteCategory(
+    collectionPath: ICollection["path"],
+    categoryPath: ICategory["path"]
+) {
+    const res = await fetch(
+        `http://localhost:5000/api/collections/${collectionPath}/categories/${categoryPath}`,
+        {
+            method: "DELETE",
+        }
+    );
+
+    if (!res.ok) {
+        throw new Error("Не вдалося видалити категорію");
+    }
+
+    return res.json();
+}

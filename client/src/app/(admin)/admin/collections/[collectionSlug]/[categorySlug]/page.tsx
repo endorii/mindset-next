@@ -177,6 +177,8 @@ function AdminCategory() {
                     <DeleteProductModal
                         isOpen={activeModal === "delete"}
                         onClose={closeModal}
+                        collectionPath={collectionPath}
+                        categoryPath={categoryPath}
                         item={selectedProduct}
                     />
                 </>

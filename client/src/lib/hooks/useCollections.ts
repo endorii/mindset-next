@@ -4,6 +4,7 @@ import {
     fetchCollections,
     createCollection,
     editCollection,
+    deleteCollection,
 } from "@/lib/api/collections.api";
 import { ICollection, TStatus } from "@/types/types";
 
@@ -50,6 +51,17 @@ export function useEditCollection() {
                 banner: string;
             };
         }) => editCollection(collectionPath, data),
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ["collections"] });
+        },
+    });
+}
+
+export function useDeleteCollection() {
+    const queryClient = useQueryClient();
+
+    return useMutation({
+        mutationFn: (collectionPath: ICollection["path"]) => deleteCollection(collectionPath),
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["collections"] });
         },

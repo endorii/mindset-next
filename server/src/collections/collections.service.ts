@@ -72,4 +72,16 @@ export class CollectionsService {
             collection,
         };
     }
+
+    async deleteCollection(collectionPath: string) {
+        await this.prisma.collection.delete({
+            where: {
+                path: collectionPath,
+            },
+        });
+
+        return {
+            message: "Колекцію успішно видалено",
+        };
+    }
 }

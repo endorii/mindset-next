@@ -67,3 +67,15 @@ export async function editCollection(
 
     return res.json();
 }
+
+export async function deleteCollection(collectionPath: string) {
+    const res = await fetch(`http://localhost:5000/api/collections/${collectionPath}`, {
+        method: "DELETE",
+    });
+
+    if (!res.ok) {
+        throw new Error("Не вдалося видалити колекцію");
+    }
+
+    return res.json();
+}

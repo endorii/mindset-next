@@ -1,4 +1,4 @@
-import { IProduct } from "@/types/types";
+import { ICategory, ICollection, IProduct } from "@/types/types";
 
 export async function fetchProducts(
     collectionPath: string,
@@ -53,4 +53,23 @@ export async function addProductToCategory(
         console.error("Fetch error:", error);
         throw error;
     }
+}
+
+export async function deleteProduct(
+    collectionPath: ICollection["path"],
+    categoryPath: ICategory["path"],
+    productPath: IProduct["path"]
+) {
+    const res = await fetch(
+        `http://localhost:5000/api/collections/${collectionPath}/categories/${categoryPath}/products/${productPath}`,
+        {
+            method: "DELETE",
+        }
+    );
+
+    if (!res.ok) {
+        throw new Error("Не вдалося видалити товар");
+    }
+
+    return res.json();
 }

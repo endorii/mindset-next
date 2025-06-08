@@ -194,6 +194,7 @@ function AdminCollection() {
                     <DeleteCategoryModal
                         isOpen={activeModal === "delete"}
                         onClose={closeModal}
+                        collectionPath={collectionPath}
                         item={selectedCategory}
                     />
                 </>

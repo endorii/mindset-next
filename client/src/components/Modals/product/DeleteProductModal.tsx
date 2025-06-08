@@ -1,14 +1,38 @@
 "use client";
 
-import { IModalProps } from "@/types/types";
+import { useDeleteProduct } from "@/lib/hooks/useProducts";
+import { ICategory, ICollection, IProduct } from "@/types/types";
+
+interface DeleteProductProps {
+    isOpen: boolean;
+    onClose: () => void;
+    collectionPath: ICollection["path"];
+    categoryPath: ICategory["path"];
+    item: IProduct;
+}
 
 export default function DeleteProductModal({
     isOpen,
     onClose,
+    collectionPath,
+    categoryPath,
     item,
-}: IModalProps) {
+}: DeleteProductProps) {
     if (!isOpen) return null;
 
+    const deleteProduct = useDeleteProduct();
+
+    const handleDelete = async () => {
+        try {
+            await deleteProduct.mutateAsync({
+                collectionPath,
+                categoryPath,
+                productPath: item.path,
+            });
+        } catch (error) {
+            console.error("Помилка при видаленні:", error);
+        }
+    };
     return (
         <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-100">
             <div className="bg-white p-[40px] shadow-lg max-w-sm w-full">
@@ -26,6 +50,7 @@ export default function DeleteProductModal({
                     <button
                         onClick={() => {
                             onClose();
+                            handleDelete();
                             console.log("Колекцію було видалено");
                         }}
                         className="px-[20px] py-[7px] bg-black/70 border hover:bg-black hover:border-transparent text-white cursor-pointer transition-all duration-200"

@@ -7,7 +7,7 @@ import PlusIcon from "@/components/Icons/PlusIcon";
 import TrashIcon from "@/components/Icons/TrashIcon";
 import AddCollectionModal from "@/components/Modals/collection/AddCollectionModal";
 import CollectionInfoModal from "@/components/Modals/collection/CollectionInfoModal";
-import DeleteCollectionModal from "@/components/Modals/collection/ConfirmDeleteModal";
+import DeleteCollectionModal from "@/components/Modals/collection/DeleteCollectionModal";
 import EditCollectionModal from "@/components/Modals/collection/EditCollectionModal";
 import { formatDate } from "@/lib/helpers/formatDate";
 import { useCollections } from "@/lib/hooks/useCollections";

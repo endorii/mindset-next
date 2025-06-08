@@ -1,19 +1,36 @@
 "use client";
 
-import { ICategory } from "@/types/types";
+import { deleteCategory } from "@/lib/api/categories.api";
+import { useDeleteCategory } from "@/lib/hooks/useCategories";
+import { ICategory, ICollection } from "@/types/types";
 
 interface ModalProps {
     isOpen: boolean;
     onClose: () => void;
-    item: ICategory | null;
+    collectionPath: ICollection["path"];
+    item: ICategory;
 }
 
 export default function DeleteCategoryModal({
     isOpen,
     onClose,
+    collectionPath,
     item,
 }: ModalProps) {
     if (!isOpen) return null;
+
+    const deleteCategory = useDeleteCategory();
+
+    const handleDelete = async () => {
+        try {
+            await deleteCategory.mutateAsync({
+                collectionPath,
+                categoryPath: item.path,
+            });
+        } catch (error) {
+            console.error("Помилка при видаленні:", error);
+        }
+    };
 
     return (
         <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-100">
@@ -32,6 +49,7 @@ export default function DeleteCategoryModal({
                     <button
                         onClick={() => {
                             onClose();
+                            handleDelete();
                             console.log("Колекцію було видалено");
                         }}
                         className="px-[20px] py-[7px] bg-black/70 border hover:bg-black hover:border-transparent text-white cursor-pointer transition-all duration-200"

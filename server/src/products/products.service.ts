@@ -73,4 +73,40 @@ export class ProductsService {
             throw new Error("Не вдалося створити категорію");
         }
     }
+
+    async deleteProduct(collectionPath: string, categoryPath: string, productPath: string) {
+        const collection = await this.prisma.collection.findUnique({
+            where: { path: collectionPath },
+        });
+
+        if (!collection) {
+            throw new Error("Колекцію не знайдено");
+        }
+
+        const category = await this.prisma.category.findUnique({
+            where: {
+                collectionId_path: {
+                    collectionId: collection.id,
+                    path: categoryPath,
+                },
+            },
+        });
+
+        if (!category) {
+            throw new Error("Категорію не знайдено");
+        }
+
+        await this.prisma.product.delete({
+            where: {
+                categoryId_path: {
+                    categoryId: category.id,
+                    path: productPath,
+                },
+            },
+        });
+
+        return {
+            message: "Товар успішно видалено",
+        };
+    }
 }

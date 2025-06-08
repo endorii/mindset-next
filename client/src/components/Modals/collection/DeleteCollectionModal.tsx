@@ -1,11 +1,12 @@
 "use client";
 
+import { useDeleteCollection } from "@/lib/hooks/useCollections";
 import { ICollection } from "@/types/types";
 
 interface DeleteCollectionModalProps {
     isOpen: boolean;
     onClose: () => void;
-    item: ICollection | null;
+    item: ICollection;
 }
 
 export default function DeleteCollectionModal({
@@ -14,6 +15,16 @@ export default function DeleteCollectionModal({
     item,
 }: DeleteCollectionModalProps) {
     if (!isOpen) return null;
+
+    const deleteCollection = useDeleteCollection();
+
+    const handleDelete = async () => {
+        try {
+            await deleteCollection.mutateAsync(item?.path);
+        } catch (error) {
+            console.error("Помилка при видаленні:", error);
+        }
+    };
 
     return (
         <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-100">
@@ -32,6 +43,7 @@ export default function DeleteCollectionModal({
                     <button
                         onClick={() => {
                             onClose();
+                            handleDelete();
                             console.log("Колекцію було видалено");
                         }}
                         className="px-[20px] py-[7px] bg-black/70 border hover:bg-black hover:border-transparent text-white cursor-pointer transition-all duration-200"

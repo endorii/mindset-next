@@ -1,11 +1,11 @@
 "use client";
 
 import { statuses } from "@/lib/helpers/helpers";
-import { useCreateCartegory } from "@/lib/hooks/useCategories";
 import { useUploadImage } from "@/lib/hooks/useImages";
 import { ICollection, TStatus } from "@/types/types";
 import Image from "next/image";
 import { useState } from "react";
+import { useCreateCategory } from "@/lib/hooks/useCategories";
 
 interface ModalProps {
     isOpen: boolean;
@@ -29,7 +29,7 @@ export default function AddCategoryModal({
     const [message, setMessage] = useState<string>("");
 
     const uploadImageMutation = useUploadImage();
-    const createCategoryMutation = useCreateCartegory(collectionPath);
+    const createCategoryMutation = useCreateCategory();
 
     const handleBannerChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const selectedFile = e.target.files?.[0];
@@ -68,16 +68,19 @@ export default function AddCategoryModal({
             const imagePath = uploadResult.path;
 
             await createCategoryMutation.mutateAsync({
-                name,
-                path,
-                banner: imagePath,
-                views: 0,
-                status,
-                collectionId,
-                id: "",
-                products: [],
-                createdAt: "",
-                updatedAt: "",
+                collectionPath,
+                categoryData: {
+                    name,
+                    path,
+                    banner: imagePath,
+                    views: 0,
+                    status,
+                    collectionId,
+                    id: "",
+                    products: [],
+                    createdAt: "",
+                    updatedAt: "",
+                },
             });
 
             setMessage("Категорію успішно додано!");

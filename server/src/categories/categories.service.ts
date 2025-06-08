@@ -47,20 +47,26 @@ export class CategoriesService {
         }
     }
 
-    // async deleteCategory(id: string) {
-    //     try {
-    //         const existing = await this.prisma.category.findUnique({ where: { id } });
+    async deleteCategory(collectionPath: string, categoryPath: string) {
+        const collection = await this.prisma.collection.findUnique({
+            where: { path: collectionPath },
+        });
 
-    //         if (!existing) {
-    //             throw new NotFoundException(`Collection with id ${id} not found`);
-    //         }
+        if (!collection) {
+            throw new Error("Колекцію не знайдено");
+        }
 
-    //         return await this.prisma.category.delete({
-    //             where: { id },
-    //         });
-    //     } catch (error) {
-    //         console.error("Delete error:", error);
-    //         throw new InternalServerErrorException("Failed to delete collection");
-    //     }
-    // }
+        await this.prisma.category.delete({
+            where: {
+                collectionId_path: {
+                    collectionId: collection.id,
+                    path: categoryPath,
+                },
+            },
+        });
+
+        return {
+            message: "Категорію успішно видалено",
+        };
+    }
 }

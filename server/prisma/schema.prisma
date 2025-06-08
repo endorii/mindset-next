@@ -95,6 +95,8 @@ model Product {
   colors      ProductColor[]
   sizes       ProductSize[]
   types       ProductType[]
+
+  @@unique([categoryId, path])
 }
 
 model ProductSize {
