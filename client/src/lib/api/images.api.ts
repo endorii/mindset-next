@@ -31,3 +31,18 @@ export async function uploadImages(files: File[]): Promise<{ paths: string[] }> 
         throw error;
     }
 }
+
+export async function deleteImage(path: string): Promise<void> {
+    try {
+        const res = await fetch(
+            `http://localhost:5000/api/upload/image?path=${encodeURIComponent(path)}`,
+            {
+                method: "DELETE",
+            }
+        );
+        if (!res.ok) throw new Error("Помилка при видаленні зображення");
+    } catch (error) {
+        console.error("Delete image error:", error);
+        throw error;
+    }
+}

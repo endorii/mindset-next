@@ -1,4 +1,4 @@
-import { ICollection } from "@/types/types";
+import { ICollection, TStatus } from "@/types/types";
 
 export async function fetchCollections(): Promise<ICollection[]> {
     try {
@@ -49,10 +49,16 @@ export async function createCollection(data: {
     }
 }
 
-export async function editCollection(collectionPath: string, formData: FormData) {
+export async function editCollection(
+    collectionPath: string,
+    data: { name: string; path: string; status: TStatus; banner: string }
+) {
     const res = await fetch(`http://localhost:5000/api/collections/${collectionPath}`, {
         method: "PATCH",
-        body: formData,
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
     });
 
     if (!res.ok) {

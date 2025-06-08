@@ -1,6 +1,7 @@
 import { Injectable, BadRequestException } from "@nestjs/common";
 import { PrismaService } from "src/prisma/prisma.service";
 import { CreateCollectionDto } from "./dto/create-collection.dto";
+import { UpdateCollectionDto } from "./dto/update-collection.dto";
 
 @Injectable()
 export class CollectionsService {
@@ -43,6 +44,31 @@ export class CollectionsService {
 
         return {
             message: "Колекцію успішно створено",
+            collection,
+        };
+    }
+
+    async editCollection(collectionPath: string, updateCollectionDto: UpdateCollectionDto) {
+        if (!updateCollectionDto) {
+            throw new BadRequestException("Дані для оновлення не надано");
+        }
+
+        const { name, path, banner, status } = updateCollectionDto;
+
+        const collection = await this.prisma.collection.update({
+            where: {
+                path: collectionPath,
+            },
+            data: {
+                name,
+                path,
+                banner,
+                status,
+            },
+        });
+
+        return {
+            message: "Колекцію успішно оновлено",
             collection,
         };
     }

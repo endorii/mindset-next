@@ -1,5 +1,6 @@
 "use client";
 
+import { deleteImage } from "@/lib/api/images.api";
 import { statuses } from "@/lib/helpers/helpers";
 import { useEditCollection } from "@/lib/hooks/useCollections";
 import { useUploadImage } from "@/lib/hooks/useImages";
@@ -20,7 +21,7 @@ export default function EditCollectionModal({
 }: EditCollectionModalProps) {
     const [name, setName] = useState("");
     const [path, setPath] = useState("");
-    const [status, setStatus] = useState<TStatus>();
+    const [status, setStatus] = useState<TStatus | "">("");
     const [banner, setBanner] = useState<string | File>("");
 
     const [preview, setPreview] = useState("");
@@ -38,14 +39,26 @@ export default function EditCollectionModal({
     }, [item]);
 
     const handleConfirm = async () => {
+        if (!status) {
+            alert("Будь ласка, оберіть статус колекції");
+            return;
+        }
+
         try {
             let bannerPath = typeof banner === "string" ? banner : "";
 
             if (banner instanceof File) {
-                const uploadResult = await uploadImageMutation.mutateAsync(
+                if (
+                    typeof item.banner === "string" &&
+                    item.banner.startsWith("/images/")
+                ) {
+                    await deleteImage(item.banner);
+                }
+
+                const uploadImage = await uploadImageMutation.mutateAsync(
                     banner
                 );
-                bannerPath = uploadResult.path;
+                bannerPath = uploadImage.path;
             }
 
             await editCollection.mutateAsync({
@@ -53,12 +66,13 @@ export default function EditCollectionModal({
                 data: {
                     name,
                     path,
-                    status: status || "",
-                    banner: banner instanceof File ? banner : bannerPath,
+                    status,
+                    banner: bannerPath,
                 },
             });
 
             onClose();
+            console.log("Відправлено на редагування");
         } catch (error) {
             console.error("Помилка при редагуванні колекції:", error);
         }
@@ -72,11 +86,25 @@ export default function EditCollectionModal({
         }
     };
 
+    const handleStatusChange = (e: ChangeEvent<HTMLSelectElement>) => {
+        const val = e.target.value;
+        if (statuses.includes(val as TStatus)) {
+            setStatus(val as TStatus);
+        } else {
+            setStatus("");
+        }
+    };
+
     if (!isOpen || !item) return null;
+
+    const bannerSrc =
+        typeof banner === "string" && banner.startsWith("/images/")
+            ? `http://localhost:5000${banner}`
+            : "";
 
     return (
         <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-100">
-            <div className="flex flex-col  gap-[30px] bg-white p-[40px] shadow-lg max-w-3xl w-full">
+            <div className="flex flex-col gap-[30px] bg-white p-[40px] shadow-lg max-w-3xl w-full">
                 <div className="flex flex-col gap-[20px]">
                     <h2 className="text-lg font-bold mb-4">
                         Редагування колекції: {item.name || "Без назви"}
@@ -112,9 +140,7 @@ export default function EditCollectionModal({
                                 name="status"
                                 className="border border-gray-200 rounded px-[10px] py-[7px] bg-gray-50 outline-0"
                                 value={status}
-                                onChange={(e) =>
-                                    setStatus(e.target.value as TStatus)
-                                }
+                                onChange={handleStatusChange}
                             >
                                 <option value="" disabled>
                                     Оберіть статус
@@ -147,9 +173,9 @@ export default function EditCollectionModal({
                                         height={300}
                                         className="object-cover"
                                     />
-                                ) : banner ? (
+                                ) : bannerSrc ? (
                                     <Image
-                                        src={`http://localhost:5000${banner}`}
+                                        src={bannerSrc}
                                         alt="banner"
                                         width={250}
                                         height={300}
@@ -168,7 +194,7 @@ export default function EditCollectionModal({
                                 onChange={handleBannerChange}
                                 className="hidden"
                             />
-                        </div>{" "}
+                        </div>
                     </div>
                     <div className="flex justify-end gap-4 mt-6">
                         <button

@@ -5,7 +5,7 @@ import {
     createCollection,
     editCollection,
 } from "@/lib/api/collections.api";
-import { ICollection } from "@/types/types";
+import { ICollection, TStatus } from "@/types/types";
 
 export function useCollections() {
     return useQuery({
@@ -46,27 +46,12 @@ export function useEditCollection() {
             data: {
                 name: string;
                 path: string;
-                status: string;
-                banner: File | string;
+                status: TStatus;
+                banner: string;
             };
-        }) => {
-            const formData = new FormData();
-            formData.append("name", data.name);
-            formData.append("path", data.path);
-            formData.append("status", data.status);
-
-            if (data.banner instanceof File) {
-                formData.append("banner", data.banner);
-            } else {
-                formData.append("bannerPath", data.banner);
-            }
-
-            return editCollection(collectionPath, formData);
-        },
+        }) => editCollection(collectionPath, data),
         onSuccess: () => {
-            queryClient.invalidateQueries({
-                queryKey: ["collections"],
-            });
+            queryClient.invalidateQueries({ queryKey: ["collections"] });
         },
     });
 }

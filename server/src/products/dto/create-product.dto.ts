@@ -26,11 +26,11 @@ export class CreateProductDto {
     available: boolean;
 
     @IsString()
-    // @IsNotEmpty()
+    @IsNotEmpty()
     description: string;
 
     @IsString()
-    // @IsNotEmpty()
+    @IsNotEmpty()
     composition: string;
 
     @IsInt()

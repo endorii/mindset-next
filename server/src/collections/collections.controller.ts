@@ -1,7 +1,8 @@
-import { Controller, Get, Post, Body, Param } from "@nestjs/common";
+import { Controller, Get, Post, Body, Param, Patch } from "@nestjs/common";
 
 import { CollectionsService } from "./collections.service";
 import { CreateCollectionDto } from "./dto/create-collection.dto";
+import { UpdateCollectionDto } from "./dto/update-collection.dto";
 
 @Controller("collections")
 export class CollectionsController {
@@ -20,5 +21,13 @@ export class CollectionsController {
     @Post()
     postCollection(@Body() createCollectionDto: CreateCollectionDto) {
         return this.collectionsService.postCollection(createCollectionDto);
+    }
+
+    @Patch(":collectionPath")
+    editCollection(
+        @Param("collectionPath") collectionPath: string,
+        @Body() updateCollectionDto: UpdateCollectionDto
+    ) {
+        return this.collectionsService.editCollection(collectionPath, updateCollectionDto);
     }
 }
