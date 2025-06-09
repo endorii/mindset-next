@@ -1,6 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import { PrismaService } from "src/prisma/prisma.service";
 import { CreateCategoryDto } from "./dto/create-category.dto";
+import { UpdateCategoryDto } from "./dto/update-category.dto";
 
 @Injectable()
 export class CategoriesService {
@@ -45,6 +46,44 @@ export class CategoriesService {
             console.error("Помилка створення категорії:", error);
             throw new Error("Не вдалося створити категорію");
         }
+    }
+
+    async editCategory(
+        collectionPath: string,
+        categoryPath: string,
+        updateCategoryDto: UpdateCategoryDto
+    ) {
+        const collection = await this.prisma.collection.findUnique({
+            where: { path: collectionPath },
+        });
+
+        if (!collection) {
+            throw new Error("Колекцію не знайдено");
+        }
+
+        const { name, path, banner, views, status, collectionId } = updateCategoryDto;
+
+        const category = await this.prisma.category.update({
+            where: {
+                collectionId_path: {
+                    collectionId: collection.id,
+                    path: categoryPath,
+                },
+            },
+            data: {
+                name,
+                path,
+                banner,
+                views,
+                status,
+                collectionId,
+            },
+        });
+
+        return {
+            message: "Категорію успішно оновлено",
+            category,
+        };
     }
 
     async deleteCategory(collectionPath: string, categoryPath: string) {

@@ -58,6 +58,7 @@ export default function EditCollectionModal({
                 const uploadImage = await uploadImageMutation.mutateAsync(
                     banner
                 );
+
                 bannerPath = uploadImage.path;
             }
 

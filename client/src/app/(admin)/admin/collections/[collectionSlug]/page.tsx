@@ -189,6 +189,7 @@ function AdminCollection() {
                     <EditCategoryModal
                         isOpen={activeModal === "edit"}
                         onClose={closeModal}
+                        collectionPath={collectionPath}
                         item={selectedCategory}
                     />
                     <DeleteCategoryModal

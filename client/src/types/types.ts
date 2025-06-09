@@ -33,7 +33,7 @@ export interface ICollection {
     path: string;
     banner: string;
     views: number;
-    status: "ACTIVE" | "INACTIVE";
+    status: TStatus;
     categories: ICategory[];
     createdAt: string;
     updatedAt: string;
@@ -45,7 +45,7 @@ export interface ICategory {
     path: string;
     banner: string;
     views: number;
-    status: "ACTIVE" | "INACTIVE";
+    status: TStatus;
     products: IProduct[];
     collection?: ICollection;
     collectionId: string;
@@ -60,7 +60,7 @@ export interface IProduct {
     path: string;
     views: number;
     banner: string;
-    status: "ACTIVE" | "INACTIVE";
+    status: TStatus;
     images: string[];
     available: boolean;
     description: string;
