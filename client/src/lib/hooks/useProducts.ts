@@ -1,6 +1,11 @@
 import { ICategory, ICollection, IProduct } from "@/types/types";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { addProductToCategory, deleteProduct, fetchProduct } from "../api/products.api";
+import {
+    addProductToCategory,
+    deleteProduct,
+    editProduct,
+    fetchProduct,
+} from "../api/products.api";
 
 export function useProduct(
     collectionPath: ICollection["path"],
@@ -34,6 +39,34 @@ export function useCreateProduct() {
             productData: IProduct;
         }) => addProductToCategory(collectionPath, categoryPath, productData),
         onSuccess: (_data, variables) => {
+            queryClient.invalidateQueries({
+                queryKey: [
+                    "collections",
+                    variables.collectionPath,
+                    "categories",
+                    variables.categoryPath,
+                ],
+            });
+        },
+    });
+}
+
+export function useEditProduct() {
+    const queryClient = useQueryClient();
+
+    return useMutation({
+        mutationFn: ({
+            collectionPath,
+            categoryPath,
+            productPath,
+            productData,
+        }: {
+            collectionPath: ICollection["path"];
+            categoryPath: ICategory["path"];
+            productPath: IProduct["path"];
+            productData: Partial<IProduct>;
+        }) => editProduct(collectionPath, categoryPath, productPath, productData),
+        onSuccess(_data, variables) {
             queryClient.invalidateQueries({
                 queryKey: [
                     "collections",

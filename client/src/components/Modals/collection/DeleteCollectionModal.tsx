@@ -1,18 +1,19 @@
 "use client";
 
+import { deleteImage } from "@/lib/api/images.api";
 import { useDeleteCollection } from "@/lib/hooks/useCollections";
 import { ICollection } from "@/types/types";
 
 interface DeleteCollectionModalProps {
     isOpen: boolean;
     onClose: () => void;
-    item: ICollection;
+    collection: ICollection;
 }
 
 export default function DeleteCollectionModal({
     isOpen,
     onClose,
-    item,
+    collection,
 }: DeleteCollectionModalProps) {
     if (!isOpen) return null;
 
@@ -20,7 +21,7 @@ export default function DeleteCollectionModal({
 
     const handleDelete = async () => {
         try {
-            await deleteCollection.mutateAsync(item?.path);
+            await deleteCollection.mutateAsync(collection?.path);
         } catch (error) {
             console.error("Помилка при видаленні:", error);
         }
@@ -32,7 +33,9 @@ export default function DeleteCollectionModal({
                 <h2 className="text-lg font-bold mb-4">
                     Підтвердження видалення
                 </h2>
-                <p className="mb-6">Ви дійсно хочете видалити {item?.name}?</p>
+                <p className="mb-6">
+                    Ви дійсно хочете видалити {collection?.name}?
+                </p>
                 <div className="flex justify-end gap-4">
                     <button
                         onClick={onClose}
@@ -41,10 +44,10 @@ export default function DeleteCollectionModal({
                         Скасувати
                     </button>
                     <button
-                        onClick={() => {
+                        onClick={async () => {
                             onClose();
+                            await deleteImage(collection.banner);
                             handleDelete();
-                            console.log("Колекцію було видалено");
                         }}
                         className="px-[20px] py-[7px] bg-black/70 border hover:bg-black hover:border-transparent text-white cursor-pointer transition-all duration-200"
                     >

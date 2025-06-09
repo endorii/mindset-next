@@ -22,13 +22,7 @@ export async function fetchCollection(collectionPath: string): Promise<ICollecti
     }
 }
 
-export async function createCollection(data: {
-    name: string;
-    path: string;
-    banner: string;
-    views: number;
-    status: string;
-}): Promise<ICollection> {
+export async function createCollection(data: ICollection): Promise<ICollection> {
     try {
         const res = await fetch("http://localhost:5000/api/collections", {
             method: "POST",
@@ -49,10 +43,7 @@ export async function createCollection(data: {
     }
 }
 
-export async function editCollection(
-    collectionPath: string,
-    data: { name: string; path: string; status: TStatus; banner: string }
-) {
+export async function editCollection(collectionPath: string, data: Partial<ICollection>) {
     const res = await fetch(`http://localhost:5000/api/collections/${collectionPath}`, {
         method: "PATCH",
         headers: {

@@ -1,63 +1,69 @@
 "use client";
 
 import { formatDate } from "@/lib/helpers/formatDate";
-import { IProductModalProps } from "@/types/types";
+import { ICategory, ICollection, IProduct } from "@/types/types";
 import Image from "next/image";
+
+export interface ProductInfoModalProps {
+    isOpen: boolean;
+    onClose: () => void;
+    collectionPath?: ICollection["path"];
+    categoryPath?: ICategory["path"];
+    product: IProduct;
+}
 
 export default function ProductInfoModal({
     isOpen,
     onClose,
     collectionPath,
     categoryPath,
-    item,
-}: IProductModalProps) {
-    if (!isOpen || !item) return null;
-
-    console.log(item);
+    product,
+}: ProductInfoModalProps) {
+    if (!isOpen || !product) return null;
 
     return (
-        <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-100">
+        <div className="fixed inset-0 bg-black/70 flex products-center justify-center z-100">
             <div className="bg-white p-[40px] h-[90vh] shadow-lg max-w-4xl w-full overflow-y-auto">
                 <h2 className="text-lg font-bold mb-4">
-                    Інформація про товар: {item.name || "Без назви"}
+                    Інформація про товар: {product.name || "Без назви"}
                 </h2>
                 <div className="flex gap-[20px] justify-between">
                     <div className="flex flex-col gap-[20px] w-1/3">
                         <div className="flex flex-col gap-[7px]">
                             <label htmlFor="name">Назва:</label>
                             <div className="border border-gray-200 rounded px-[10px] py-[7px] bg-gray-50">
-                                {item.name}
+                                {product.name}
                             </div>
                         </div>
                         <div className="flex flex-col gap-[7px]">
                             <label htmlFor="path">Шлях</label>
                             <div className="border border-gray-200 rounded px-[10px] py-[7px] bg-gray-50">
-                                /{item.path}
+                                /{product.path}
                             </div>
                         </div>
                         <div className="flex flex-col gap-[7px]">
                             <label htmlFor="price">Ціна</label>
                             <div className="border border-gray-200 rounded px-[10px] py-[7px] bg-gray-50">
-                                {item.price}
+                                {product.price}
                             </div>
                         </div>
                         <div className="flex flex-col gap-[7px]">
                             <label htmlFor="status">Доступність</label>
                             <div className="border border-gray-200 rounded px-[10px] py-[7px] bg-gray-50">
-                                {item.available ? "Доступно" : "Не доступно"}
+                                {product.available ? "Доступно" : "Не доступно"}
                             </div>
                         </div>
                         <div className="flex flex-col gap-[7px]">
                             <label htmlFor="status">Статус</label>
                             <div className="border border-gray-200 rounded px-[10px] py-[7px] bg-gray-50">
-                                {item.status}
+                                {product.status}
                             </div>
                         </div>
 
                         <div className="flex flex-col gap-[7px]">
                             <label htmlFor="views">Перегляди</label>
                             <div className="border border-gray-200 rounded px-[10px] py-[7px] bg-gray-50">
-                                {item.views}
+                                {product.views}
                             </div>
                         </div>
                     </div>
@@ -66,26 +72,26 @@ export default function ProductInfoModal({
                         <div className="flex flex-col gap-[7px]">
                             <label htmlFor="description">Опис</label>
                             <div className="border break-all border-gray-200 rounded px-[10px] py-[7px] bg-gray-50 max-h-[130px] overflow-y-auto">
-                                {item.description}
+                                {product.description}
                             </div>
                         </div>
                         <div className="flex flex-col gap-[7px]">
                             <label htmlFor="composition">Склад</label>
                             <div className="border break-all border-gray-200 rounded px-[10px] py-[7px] bg-gray-50 max-h-[130px] overflow-y-auto">
-                                {item.composition}
+                                {product.composition}
                             </div>
                         </div>
 
                         <div className="flex flex-col gap-[7px]">
                             <label htmlFor="status">Доступні кольори</label>
                             <div className="border border-gray-200 rounded px-[10px] py-[7px] bg-gray-50">
-                                {item.status}
+                                {product.status}
                             </div>
                         </div>
                         <div className="flex flex-col gap-[7px]">
                             <label htmlFor="status">Доступні розміри</label>
                             <div className="border border-gray-200 rounded px-[10px] py-[7px] bg-gray-50">
-                                {item.status}
+                                {product.status}
                             </div>
                         </div>
                     </div>
@@ -93,13 +99,13 @@ export default function ProductInfoModal({
                         <div className="flex flex-col gap-[7px]">
                             <label htmlFor="views">Cтворено</label>
                             <div className="border border-gray-200 rounded px-[10px] py-[7px] bg-gray-50">
-                                {formatDate(item.createdAt)}
+                                {formatDate(product.createdAt)}
                             </div>
                         </div>
                         <div className="flex flex-col gap-[7px]">
                             <label htmlFor="views">Редаговано</label>
                             <div className="border border-gray-200 rounded px-[10px] py-[7px] bg-gray-50">
-                                {formatDate(item.updatedAt)}
+                                {formatDate(product.updatedAt)}
                             </div>
                         </div>
                         <div className="flex flex-col gap-[7px]">
@@ -117,10 +123,10 @@ export default function ProductInfoModal({
                                 <img
                                     className="max-h-[300px] object-contain "
                                     src={
-                                        `http://localhost:5000/${item.banner}` ||
+                                        `http://localhost:5000/${product.banner}` ||
                                         "/placeholder.png"
                                     }
-                                    alt={item.name || "Банер"}
+                                    alt={product.name || "Банер"}
                                 />
                             </div>
                         </div>
@@ -130,8 +136,9 @@ export default function ProductInfoModal({
                     <div className="flex flex-col gap-[7px]">
                         <label htmlFor="views">Додаткові зображення</label>
                         <div className="flex gap-[10px]">
-                            {item.images.map((image, i) => (
+                            {product.images.map((image, i) => (
                                 <Image
+                                    key={i}
                                     src={`http://localhost:5000${image}`}
                                     alt="banner"
                                     width={250}

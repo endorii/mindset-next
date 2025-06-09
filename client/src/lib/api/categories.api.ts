@@ -55,12 +55,7 @@ export async function addCategoryToCollection(
 export async function editCategory(
     collectionPath: ICollection["path"],
     categoryPath: ICategory["path"],
-    data: {
-        name: ICategory["name"];
-        path: ICategory["path"];
-        status: ICategory["status"];
-        banner: ICategory["banner"];
-    }
+    data: Partial<ICategory>
 ) {
     const res = await fetch(
         `http://localhost:5000/api/collections/${collectionPath}/categories/${categoryPath}`,

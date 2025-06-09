@@ -8,6 +8,7 @@ import {
     Delete,
     Query,
     NotFoundException,
+    Body,
 } from "@nestjs/common";
 import { FileInterceptor, FilesInterceptor } from "@nestjs/platform-express";
 import * as fs from "fs";
@@ -35,7 +36,7 @@ export class ImagesController {
 
     @Post("images")
     @UseInterceptors(
-        FilesInterceptor("file", 10, {
+        FilesInterceptor("files", 10, {
             storage: imageStorage,
             fileFilter: imageFileFilter,
         })
@@ -66,5 +67,33 @@ export class ImagesController {
         } else {
             throw new NotFoundException("Файл не знайдено");
         }
+    }
+
+    @Delete("images")
+    deleteImages(@Body() body: { paths: string[] }) {
+        if (!body.paths || !Array.isArray(body.paths) || body.paths.length === 0) {
+            throw new BadRequestException("Масив шляхів зображень не вказано або порожній");
+        }
+
+        const results: { path: string; status: string }[] = [];
+
+        for (const imagePath of body.paths) {
+            try {
+                const cleanedPath = imagePath.replace(/^\/+/, "");
+                const fullPath = path.join(process.cwd(), "public", cleanedPath);
+
+                if (fs.existsSync(fullPath)) {
+                    fs.unlinkSync(fullPath);
+                    results.push({ path: imagePath, status: "deleted" });
+                } else {
+                    results.push({ path: imagePath, status: "not_found" });
+                }
+            } catch (e) {
+                console.log(e);
+                results.push({ path: imagePath, status: "error" });
+            }
+        }
+
+        return { message: "Обробка масового видалення завершена", results };
     }
 }

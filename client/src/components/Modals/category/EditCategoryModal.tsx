@@ -11,14 +11,14 @@ interface EditCategoryModalProps {
     isOpen: boolean;
     onClose: () => void;
     collectionPath: ICollection["path"];
-    item: ICategory;
+    category: ICategory;
 }
 
 export default function EditCategoryModal({
     isOpen,
     onClose,
     collectionPath,
-    item,
+    category,
 }: EditCategoryModalProps) {
     const [name, setName] = useState("");
     const [path, setPath] = useState("");
@@ -28,16 +28,16 @@ export default function EditCategoryModal({
     const [preview, setPreview] = useState("");
 
     const uploadImageMutation = useUploadImage();
-    const editCategory = useEditCategory();
+    const editCategoryMutation = useEditCategory();
 
     useEffect(() => {
-        if (item) {
-            setName(item.name || "");
-            setPath(item.path || "");
-            setBanner(item.banner || "");
-            setStatus(item.status || "");
+        if (category) {
+            setName(category.name || "");
+            setPath(category.path || "");
+            setBanner(category.banner || "");
+            setStatus(category.status || "");
         }
-    }, [item]);
+    }, [category]);
 
     const handleConfirm = async () => {
         try {
@@ -50,9 +50,9 @@ export default function EditCategoryModal({
                 bannerPath = uploadResult.path;
             }
 
-            await editCategory.mutateAsync({
+            await editCategoryMutation.mutateAsync({
                 collectionPath,
-                categoryPath: item.path,
+                categoryPath: category.path,
                 data: {
                     name,
                     path,
@@ -75,7 +75,7 @@ export default function EditCategoryModal({
         }
     };
 
-    if (!isOpen || !item) return null;
+    if (!isOpen || !category) return null;
 
     const bannerSrc =
         typeof banner === "string" && banner.startsWith("/images/")
@@ -86,7 +86,7 @@ export default function EditCategoryModal({
             <div className="flex flex-col  gap-[30px] bg-white p-[40px] shadow-lg max-w-3xl w-full">
                 <div className="flex flex-col gap-[20px]">
                     <h2 className="text-lg font-bold mb-4">
-                        Редагування категорії: {item.name || "Без назви"}
+                        Редагування категорії: {category.name || "Без назви"}
                     </h2>
                     <div className="flex flex-wrap gap-[20px]">
                         <div className="flex flex-col gap-[7px]">

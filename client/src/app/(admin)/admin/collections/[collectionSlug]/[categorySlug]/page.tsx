@@ -90,11 +90,11 @@ function AdminCategory() {
             </div>
             {products.length > 0 ? (
                 <div className="mt-[10px]">
-                    <div className="grid grid-cols-[120px_0.7fr_80px_150px_1fr_200px] gap-[20px] bg-gray-100 p-4 rounded-t-lg font-semibold text-sm text-gray-700">
+                    <div className="grid grid-cols-[120px_0.7fr_150px_150px_1fr_230px] gap-[20px] bg-gray-100 p-4 rounded-t-lg font-semibold text-sm text-gray-700">
                         <div>Банер</div>
                         <div>Назва</div>
-                        <div>Переглядів</div>
                         <div>Статус</div>
+                        <div>Переглядів</div>
                         <div>Додано/оновлено</div>
                         <div className="text-right">Дії</div>
                     </div>
@@ -103,7 +103,7 @@ function AdminCategory() {
                             return (
                                 <div
                                     key={i}
-                                    className="grid grid-cols-[120px_0.7fr_80px_150px_1fr_200px] gap-[20px] p-4 border-b border-gray-200 last:border-b-0 hover:bg-gray-50 items-center"
+                                    className="grid grid-cols-[120px_0.7fr_150px_150px_1fr_230px] gap-[20px] p-4 border-b border-gray-200 last:border-b-0 hover:bg-gray-50 items-center"
                                 >
                                     <img
                                         src={`http://localhost:5000/${product.banner}`}
@@ -111,8 +111,15 @@ function AdminCategory() {
                                         alt="banner"
                                     />
                                     <div>{product.name}</div>
-                                    <div>{0}</div>
-                                    <div>Опубліковано</div>
+                                    <div>
+                                        {product.status === "ACTIVE"
+                                            ? "Опубліковано"
+                                            : product.status === "INACTIVE"
+                                            ? "Не опубліковано"
+                                            : "Невідомий статус"}
+                                    </div>
+                                    <div>{product.views}</div>
+
                                     <div>
                                         {formatDate(product.createdAt)} /{" "}
                                         {formatDate(product.updatedAt)}
@@ -167,19 +174,21 @@ function AdminCategory() {
                         onClose={closeModal}
                         collectionPath={collectionPath}
                         categoryPath={categoryPath}
-                        item={selectedProduct}
+                        product={selectedProduct}
                     />
                     <EditProductModal
                         isOpen={activeModal === "edit"}
                         onClose={closeModal}
-                        item={selectedProduct}
+                        product={selectedProduct}
+                        collectionPath={collectionPath}
+                        categoryPath={categoryPath}
                     />
                     <DeleteProductModal
                         isOpen={activeModal === "delete"}
                         onClose={closeModal}
                         collectionPath={collectionPath}
                         categoryPath={categoryPath}
-                        item={selectedProduct}
+                        product={selectedProduct}
                     />
                 </>
             )}

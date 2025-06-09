@@ -121,7 +121,7 @@ function AdminCollection() {
                                         ? "Не опубліковано"
                                         : "Невідомий статус"}
                                 </div>
-                                <div>{0}</div>
+                                <div>{category.views}</div>
                                 <div>
                                     {formatDate(category.createdAt)} /{" "}
                                     {formatDate(category.updatedAt)}
@@ -184,19 +184,19 @@ function AdminCollection() {
                         isOpen={activeModal === "info"}
                         onClose={closeModal}
                         collectionPath={collectionPath}
-                        item={selectedCategory}
+                        category={selectedCategory}
                     />
                     <EditCategoryModal
                         isOpen={activeModal === "edit"}
                         onClose={closeModal}
                         collectionPath={collectionPath}
-                        item={selectedCategory}
+                        category={selectedCategory}
                     />
                     <DeleteCategoryModal
                         isOpen={activeModal === "delete"}
                         onClose={closeModal}
                         collectionPath={collectionPath}
-                        item={selectedCategory}
+                        category={selectedCategory}
                     />
                 </>
             )}

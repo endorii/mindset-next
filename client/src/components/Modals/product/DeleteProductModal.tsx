@@ -1,5 +1,6 @@
 "use client";
 
+import { deleteImage, deleteImages } from "@/lib/api/images.api";
 import { useDeleteProduct } from "@/lib/hooks/useProducts";
 import { ICategory, ICollection, IProduct } from "@/types/types";
 
@@ -8,7 +9,7 @@ interface DeleteProductProps {
     onClose: () => void;
     collectionPath: ICollection["path"];
     categoryPath: ICategory["path"];
-    item: IProduct;
+    product: IProduct;
 }
 
 export default function DeleteProductModal({
@@ -16,7 +17,7 @@ export default function DeleteProductModal({
     onClose,
     collectionPath,
     categoryPath,
-    item,
+    product,
 }: DeleteProductProps) {
     if (!isOpen) return null;
 
@@ -27,7 +28,7 @@ export default function DeleteProductModal({
             await deleteProduct.mutateAsync({
                 collectionPath,
                 categoryPath,
-                productPath: item.path,
+                productPath: product.path,
             });
         } catch (error) {
             console.error("Помилка при видаленні:", error);
@@ -39,7 +40,9 @@ export default function DeleteProductModal({
                 <h2 className="text-lg font-bold mb-4">
                     Підтвердження видалення
                 </h2>
-                <p className="mb-6">Ви дійсно хочете видалити {item?.name}?</p>
+                <p className="mb-6">
+                    Ви дійсно хочете видалити {product?.name}?
+                </p>
                 <div className="flex justify-end gap-4">
                     <button
                         onClick={onClose}
@@ -50,8 +53,9 @@ export default function DeleteProductModal({
                     <button
                         onClick={() => {
                             onClose();
+                            deleteImage(product.banner);
+                            deleteImages(product.images);
                             handleDelete();
-                            console.log("Колекцію було видалено");
                         }}
                         className="px-[20px] py-[7px] bg-black/70 border hover:bg-black hover:border-transparent text-white cursor-pointer transition-all duration-200"
                     >

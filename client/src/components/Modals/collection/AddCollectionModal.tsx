@@ -7,12 +7,15 @@ import { statuses } from "@/lib/helpers/helpers";
 import { useUploadImage } from "@/lib/hooks/useImages";
 import Image from "next/image";
 
-interface ModalProps {
+interface AddCollectionModalProps {
     isOpen: boolean;
     onClose: () => void;
 }
 
-export default function AddCollectionModal({ isOpen, onClose }: ModalProps) {
+export default function AddCollectionModal({
+    isOpen,
+    onClose,
+}: AddCollectionModalProps) {
     const [name, setName] = useState("");
     const [path, setPath] = useState("");
     const [banner, setBanner] = useState<File | null>(null);
@@ -66,6 +69,10 @@ export default function AddCollectionModal({ isOpen, onClose }: ModalProps) {
                 banner: imagePath,
                 views: 0,
                 status,
+                id: "",
+                categories: [],
+                createdAt: "",
+                updatedAt: "",
             });
 
             setMessage("Колекцію успішно додано!");

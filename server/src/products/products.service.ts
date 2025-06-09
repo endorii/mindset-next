@@ -2,6 +2,7 @@ import { Injectable } from "@nestjs/common";
 import { CreateProductDto } from "./dto/create-product.dto";
 // import { UpdateProductDto } from "./dto/update-product.dto";
 import { PrismaService } from "src/prisma/prisma.service";
+import { UpdateProductDto } from "./dto/update-product.dto";
 
 @Injectable()
 export class ProductsService {
@@ -69,9 +70,52 @@ export class ProductsService {
                 },
             });
         } catch (error) {
-            console.error("Помилка створення категорії:", error);
-            throw new Error("Не вдалося створити категорію");
+            console.error("Помилка створення продукту:", error);
+            throw new Error("Не вдалося створити продукт");
         }
+    }
+
+    async editProduct(
+        collectionPath: string,
+        categoryPath: string,
+        productPath: string,
+        updateProductDto: UpdateProductDto
+    ) {
+        const collection = await this.prisma.collection.findUnique({
+            where: { path: collectionPath },
+        });
+
+        if (!collection) {
+            throw new Error("Колекцію не знайдено");
+        }
+
+        const category = await this.prisma.category.findUnique({
+            where: {
+                collectionId_path: {
+                    collectionId: collection.id,
+                    path: categoryPath,
+                },
+            },
+        });
+
+        if (!category) {
+            throw new Error("Категорію не знайдено");
+        }
+
+        await this.prisma.product.update({
+            where: {
+                categoryId_path: {
+                    categoryId: category.id,
+                    path: productPath,
+                },
+            },
+            data: updateProductDto,
+        });
+
+        return {
+            message: "Продукт успішно оновлено",
+            category,
+        };
     }
 
     async deleteProduct(collectionPath: string, categoryPath: string, productPath: string) {
@@ -106,7 +150,7 @@ export class ProductsService {
         });
 
         return {
-            message: "Товар успішно видалено",
+            message: "Продукт успішно видалено",
         };
     }
 }

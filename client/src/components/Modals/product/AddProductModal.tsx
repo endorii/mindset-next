@@ -7,7 +7,7 @@ import { useState } from "react";
 import Image from "next/image";
 import { useUploadImage, useUploadImages } from "@/lib/hooks/useImages";
 
-interface ModalProps {
+interface AddProductModalProps {
     isOpen: boolean;
     onClose: () => void;
     categoryId: ICategory["id"];
@@ -21,7 +21,7 @@ export default function AddProductModal({
     categoryId,
     collectionPath,
     categoryPath,
-}: ModalProps) {
+}: AddProductModalProps) {
     const [name, setName] = useState(""),
         [path, setPath] = useState(""),
         [price, setPrice] = useState<number | null>(null),
@@ -117,7 +117,7 @@ export default function AddProductModal({
                     sizes: [],
                     types: [],
                     colors: [],
-                    images: imagesPaths,
+                    images: [...imagesPaths],
                 },
             });
             setMessage("Товар успішно додано!");

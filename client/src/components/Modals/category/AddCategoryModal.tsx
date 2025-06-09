@@ -7,7 +7,7 @@ import Image from "next/image";
 import { useState } from "react";
 import { useCreateCategory } from "@/lib/hooks/useCategories";
 
-interface ModalProps {
+interface AddCategoryModalProps {
     isOpen: boolean;
     onClose: () => void;
     collectionId: ICollection["id"];
@@ -19,7 +19,7 @@ export default function AddCategoryModal({
     onClose,
     collectionId,
     collectionPath,
-}: ModalProps) {
+}: AddCategoryModalProps) {
     const [name, setName] = useState("");
     const [path, setPath] = useState("");
     const [banner, setBanner] = useState<File | null>(null);

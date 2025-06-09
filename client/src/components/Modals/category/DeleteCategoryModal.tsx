@@ -1,22 +1,23 @@
 "use client";
 
 import { deleteCategory } from "@/lib/api/categories.api";
+import { deleteImage } from "@/lib/api/images.api";
 import { useDeleteCategory } from "@/lib/hooks/useCategories";
 import { ICategory, ICollection } from "@/types/types";
 
-interface ModalProps {
+interface DeleteCategoryModalProps {
     isOpen: boolean;
     onClose: () => void;
     collectionPath: ICollection["path"];
-    item: ICategory;
+    category: ICategory;
 }
 
 export default function DeleteCategoryModal({
     isOpen,
     onClose,
     collectionPath,
-    item,
-}: ModalProps) {
+    category,
+}: DeleteCategoryModalProps) {
     if (!isOpen) return null;
 
     const deleteCategory = useDeleteCategory();
@@ -25,7 +26,7 @@ export default function DeleteCategoryModal({
         try {
             await deleteCategory.mutateAsync({
                 collectionPath,
-                categoryPath: item.path,
+                categoryPath: category.path,
             });
         } catch (error) {
             console.error("Помилка при видаленні:", error);
@@ -38,7 +39,9 @@ export default function DeleteCategoryModal({
                 <h2 className="text-lg font-bold mb-4">
                     Підтвердження видалення
                 </h2>
-                <p className="mb-6">Ви дійсно хочете видалити {item?.name}?</p>
+                <p className="mb-6">
+                    Ви дійсно хочете видалити {category?.name}?
+                </p>
                 <div className="flex justify-end gap-4">
                     <button
                         onClick={onClose}
@@ -47,10 +50,10 @@ export default function DeleteCategoryModal({
                         Скасувати
                     </button>
                     <button
-                        onClick={() => {
+                        onClick={async () => {
                             onClose();
+                            await deleteImage(category.banner);
                             handleDelete();
-                            console.log("Колекцію було видалено");
                         }}
                         className="px-[20px] py-[7px] bg-black/70 border hover:bg-black hover:border-transparent text-white cursor-pointer transition-all duration-200"
                     >

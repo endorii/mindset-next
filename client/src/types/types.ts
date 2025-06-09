@@ -6,27 +6,6 @@ export type ModalType = "add" | "edit" | "delete" | "info" | null;
 
 export type TStatus = "ACTIVE" | "INACTIVE";
 
-export interface ICollectionModalProps {
-    isOpen: boolean;
-    onClose: () => void;
-    item: ICollection | null;
-}
-
-export interface ICategoryModalProps {
-    isOpen: boolean;
-    onClose: () => void;
-    collectionPath?: ICollection["path"];
-    item: ICategory | null;
-}
-
-export interface IProductModalProps {
-    isOpen: boolean;
-    onClose: () => void;
-    collectionPath?: ICollection["path"];
-    categoryPath?: ICategory["path"];
-    item: IProduct | null;
-}
-
 export interface ICollection {
     id: string;
     name: string;

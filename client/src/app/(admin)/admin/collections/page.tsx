@@ -99,7 +99,7 @@ function AdminCollections() {
                                         ? "Не опубліковано"
                                         : "Невідомий статус"}
                                 </div>
-                                <div>{0}</div>
+                                <div>{collection.views}</div>
                                 <div>
                                     {formatDate(collection.createdAt)} /{" "}
                                     {formatDate(collection.updatedAt)}
@@ -157,17 +157,17 @@ function AdminCollections() {
                     <CollectionInfoModal
                         isOpen={activeModal === "info"}
                         onClose={closeModal}
-                        item={selectedCollection}
+                        collection={selectedCollection}
                     />
                     <EditCollectionModal
                         isOpen={activeModal === "edit"}
                         onClose={closeModal}
-                        item={selectedCollection}
+                        collection={selectedCollection}
                     />
                     <DeleteCollectionModal
                         isOpen={activeModal === "delete"}
                         onClose={closeModal}
-                        item={selectedCollection}
+                        collection={selectedCollection}
                     />
                 </>
             )}

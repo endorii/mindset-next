@@ -11,13 +11,13 @@ import { useState, useEffect, ChangeEvent } from "react";
 interface EditCollectionModalProps {
     isOpen: boolean;
     onClose: () => void;
-    item: ICollection;
+    collection: ICollection;
 }
 
 export default function EditCollectionModal({
     isOpen,
     onClose,
-    item,
+    collection,
 }: EditCollectionModalProps) {
     const [name, setName] = useState("");
     const [path, setPath] = useState("");
@@ -30,13 +30,13 @@ export default function EditCollectionModal({
     const editCollection = useEditCollection();
 
     useEffect(() => {
-        if (item) {
-            setName(item.name || "");
-            setPath(item.path || "");
-            setBanner(item.banner || "");
-            setStatus(item.status || "");
+        if (collection) {
+            setName(collection.name || "");
+            setPath(collection.path || "");
+            setBanner(collection.banner || "");
+            setStatus(collection.status || "");
         }
-    }, [item]);
+    }, [collection]);
 
     const handleConfirm = async () => {
         if (!status) {
@@ -49,10 +49,10 @@ export default function EditCollectionModal({
 
             if (banner instanceof File) {
                 if (
-                    typeof item.banner === "string" &&
-                    item.banner.startsWith("/images/")
+                    typeof collection.banner === "string" &&
+                    collection.banner.startsWith("/images/")
                 ) {
-                    await deleteImage(item.banner);
+                    await deleteImage(collection.banner);
                 }
 
                 const uploadImage = await uploadImageMutation.mutateAsync(
@@ -63,7 +63,7 @@ export default function EditCollectionModal({
             }
 
             await editCollection.mutateAsync({
-                collectionPath: item.path,
+                collectionPath: collection.path,
                 data: {
                     name,
                     path,
@@ -96,7 +96,7 @@ export default function EditCollectionModal({
         }
     };
 
-    if (!isOpen || !item) return null;
+    if (!isOpen || !collection) return null;
 
     const bannerSrc =
         typeof banner === "string" && banner.startsWith("/images/")
@@ -104,11 +104,11 @@ export default function EditCollectionModal({
             : "";
 
     return (
-        <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-100">
+        <div className="fixed inset-0 bg-black/70 flex collections-center justify-center z-100">
             <div className="flex flex-col gap-[30px] bg-white p-[40px] shadow-lg max-w-3xl w-full">
                 <div className="flex flex-col gap-[20px]">
                     <h2 className="text-lg font-bold mb-4">
-                        Редагування колекції: {item.name || "Без назви"}
+                        Редагування колекції: {collection.name || "Без назви"}
                     </h2>
                     <div className="flex flex-wrap gap-[20px]">
                         <div className="flex flex-col gap-[7px]">
@@ -164,7 +164,7 @@ export default function EditCollectionModal({
                             <label htmlFor="banner">Банер</label>
                             <label
                                 htmlFor="banner"
-                                className="min-h-[100px] max-w-[300px] border border-dashed border-gray-400 mt-2 flex items-center justify-center cursor-pointer bg-gray-50 hover:bg-gray-100 rounded-md overflow-hidden"
+                                className="min-h-[100px] max-w-[300px] border border-dashed border-gray-400 mt-2 flex collections-center justify-center cursor-pointer bg-gray-50 hover:bg-gray-100 rounded-md overflow-hidden"
                             >
                                 {preview ? (
                                     <Image

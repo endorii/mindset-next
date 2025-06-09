@@ -55,6 +55,33 @@ export async function addProductToCategory(
     }
 }
 
+export async function editProduct(
+    collectionPath: ICollection["path"],
+    categoryPath: ICategory["path"],
+    productPath: IProduct["path"],
+    productData: Partial<IProduct>
+) {
+    const res = await fetch(
+        `http://localhost:5000/api/collections/${collectionPath}/categories/${categoryPath}/products/${productPath}`,
+        {
+            method: "PATCH",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                ...productData,
+                updatedAt: new Date().toISOString(),
+            }),
+        }
+    );
+
+    if (!res.ok) {
+        throw new Error("Не вдалося оновити продукт");
+    }
+
+    return res.json();
+}
+
 export async function deleteProduct(
     collectionPath: ICollection["path"],
     categoryPath: ICategory["path"],

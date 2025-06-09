@@ -1,57 +1,63 @@
 "use client";
 
 import { formatDate } from "@/lib/helpers/formatDate";
-import { ICollectionModalProps } from "@/types/types";
+import { ICollection } from "@/types/types";
+
+export interface CollectionInfoModalProps {
+    isOpen: boolean;
+    onClose: () => void;
+    collection: ICollection;
+}
 
 export default function CollectionInfoModal({
     isOpen,
     onClose,
-    item,
-}: ICollectionModalProps) {
-    if (!isOpen || !item) return null;
+    collection,
+}: CollectionInfoModalProps) {
+    if (!isOpen || !collection) return null;
 
     return (
         <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-100">
             <div className="bg-white p-[40px] shadow-lg max-w-4xl w-full">
                 <h2 className="text-lg font-bold mb-4">
-                    Інформація про колекцію: {item.name || "Без назви"}
+                    Інформація про колекцію: {collection.name || "Без назви"}
                 </h2>
                 <div className="flex gap-[20px] justify-between">
                     <div className="flex flex-col gap-[20px] w-[50%]">
                         <div className="flex flex-col gap-[7px]">
                             <label htmlFor="name">Назва:</label>
                             <div className="border border-gray-200 rounded px-[10px] py-[7px] bg-gray-50">
-                                {item.name}
+                                {collection.name}
                             </div>
                         </div>
                         <div className="flex flex-col gap-[7px]">
                             <label htmlFor="path">Шлях</label>
                             <div className="border border-gray-200 rounded px-[10px] py-[7px] bg-gray-50">
-                                /{item.path}
+                                /{collection.path}
                             </div>
                         </div>
                         <div className="flex flex-col gap-[7px]">
                             <label htmlFor="status">Статус</label>
                             <div className="border border-gray-200 rounded px-[10px] py-[7px] bg-gray-50">
-                                {item.status}
+                                {collection.status}
                             </div>
                         </div>
                         <div className="flex flex-col gap-[7px]">
                             <label htmlFor="views">Перегляди</label>
                             <div className="border border-gray-200 rounded px-[10px] py-[7px] bg-gray-50">
-                                {item.views}
+                                {collection.views}
                             </div>
                         </div>
                         <div className="flex flex-col gap-[7px]">
                             <label htmlFor="views">Cтворено</label>
                             <div className="border border-gray-200 rounded px-[10px] py-[7px] bg-gray-50">
-                                {formatDate(item.createdAt)}
+                                {formatDate(collection.createdAt)}
                             </div>
                         </div>
                         <div className="flex flex-col gap-[7px]">
                             <label htmlFor="views">Редаговано</label>
                             <div className="border border-gray-200 rounded px-[10px] py-[7px] bg-gray-50">
-                                {formatDate(item.updatedAt)}
+                                {formatDate(collection.updatedAt)}
                             </div>
                         </div>
                     </div>
@@ -59,7 +65,7 @@ export default function CollectionInfoModal({
                         <div className="flex flex-col gap-[7px]">
                             <label htmlFor="views">Кількість категорій</label>
                             <div className="border border-gray-200 rounded px-[10px] py-[7px] bg-gray-50">
-                                {item.categories.length}
+                                {collection.categories.length}
                             </div>
                         </div>
                         <div className="flex flex-col gap-[7px] w-full">
@@ -68,10 +74,10 @@ export default function CollectionInfoModal({
                                 <img
                                     className="max-h-[300px] object-contain "
                                     src={
-                                        `http://localhost:5000/${item.banner}` ||
+                                        `http://localhost:5000/${collection.banner}` ||
                                         "/placeholder.png"
                                     }
-                                    alt={item.name || "Банер"}
+                                    alt={collection.name || "Банер"}
                                 />
                             </div>
                         </div>

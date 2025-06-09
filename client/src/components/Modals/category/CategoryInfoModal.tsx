@@ -1,60 +1,65 @@
 "use client";
 
 import { formatDate } from "@/lib/helpers/formatDate";
-import { ICategoryModalProps } from "@/types/types";
+import { ICategory, ICollection } from "@/types/types";
+
+interface CategoryInfoModalProps {
+    isOpen: boolean;
+    onClose: () => void;
+    collectionPath?: ICollection["path"];
+    category: ICategory;
+}
 
 export default function CategoryInfoModal({
     isOpen,
     onClose,
     collectionPath,
-    item,
-}: ICategoryModalProps) {
-    if (!isOpen || !item) return null;
-
-    console.log(item);
+    category,
+}: CategoryInfoModalProps) {
+    if (!isOpen || !category) return null;
 
     return (
         <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-100">
             <div className="bg-white p-[40px] shadow-lg max-w-4xl w-full">
                 <h2 className="text-lg font-bold mb-4">
-                    Інформація про категорію: {item.name || "Без назви"}
+                    Інформація про категорію: {category.name || "Без назви"}
                 </h2>
                 <div className="flex gap-[20px] justify-between">
                     <div className="flex flex-col gap-[20px] w-[50%]">
                         <div className="flex flex-col gap-[7px]">
                             <label htmlFor="name">Назва:</label>
                             <div className="border border-gray-200 rounded px-[10px] py-[7px] bg-gray-50">
-                                {item.name}
+                                {category.name}
                             </div>
                         </div>
                         <div className="flex flex-col gap-[7px]">
                             <label htmlFor="path">Шлях</label>
                             <div className="border border-gray-200 rounded px-[10px] py-[7px] bg-gray-50">
-                                /{item.path}
+                                /{category.path}
                             </div>
                         </div>
                         <div className="flex flex-col gap-[7px]">
                             <label htmlFor="status">Статус</label>
                             <div className="border border-gray-200 rounded px-[10px] py-[7px] bg-gray-50">
-                                {item.status}
+                                {category.status}
                             </div>
                         </div>
                         <div className="flex flex-col gap-[7px]">
                             <label htmlFor="views">Перегляди</label>
                             <div className="border border-gray-200 rounded px-[10px] py-[7px] bg-gray-50">
-                                {item.views}
+                                {category.views}
                             </div>
                         </div>
                         <div className="flex flex-col gap-[7px]">
                             <label htmlFor="views">Cтворено</label>
                             <div className="border border-gray-200 rounded px-[10px] py-[7px] bg-gray-50">
-                                {formatDate(item.createdAt)}
+                                {formatDate(category.createdAt)}
                             </div>
                         </div>
                         <div className="flex flex-col gap-[7px]">
                             <label htmlFor="views">Редаговано</label>
                             <div className="border border-gray-200 rounded px-[10px] py-[7px] bg-gray-50">
-                                {formatDate(item.updatedAt)}
+                                {formatDate(category.updatedAt)}
                             </div>
                         </div>
                     </div>
@@ -68,7 +73,7 @@ export default function CategoryInfoModal({
                         <div className="flex flex-col gap-[7px]">
                             <label htmlFor="views">Кількість товарів</label>
                             <div className="border border-gray-200 rounded px-[10px] py-[7px] bg-gray-50">
-                                {item.products.length}
+                                {category.products.length}
                             </div>
                         </div>
                         <div className="flex flex-col gap-[7px] w-full">
@@ -77,10 +82,10 @@ export default function CategoryInfoModal({
                                 <img
                                     className="max-h-[300px] object-contain "
                                     src={
-                                        `http://localhost:5000/${item.banner}` ||
+                                        `http://localhost:5000/${category.banner}` ||
                                         "/placeholder.png"
                                     }
-                                    alt={item.name || "Банер"}
+                                    alt={category.name || "Банер"}
                                 />
                             </div>
                         </div>
