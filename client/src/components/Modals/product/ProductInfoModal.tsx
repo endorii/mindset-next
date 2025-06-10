@@ -3,6 +3,7 @@
 import { formatDate } from "@/lib/helpers/formatDate";
 import { ICategory, ICollection, IProduct } from "@/types/types";
 import Image from "next/image";
+import { createPortal } from "react-dom";
 
 export interface ProductInfoModalProps {
     isOpen: boolean;
@@ -21,7 +22,7 @@ export default function ProductInfoModal({
 }: ProductInfoModalProps) {
     if (!isOpen || !product) return null;
 
-    return (
+    const modalContent = (
         <div className="fixed inset-0 bg-black/70 flex products-center justify-center z-100">
             <div className="bg-white p-[40px] h-[90vh] shadow-lg max-w-4xl w-full overflow-y-auto">
                 <h2 className="text-lg font-bold mb-4">
@@ -160,4 +161,5 @@ export default function ProductInfoModal({
             </div>
         </div>
     );
+    return createPortal(modalContent, document.body);
 }

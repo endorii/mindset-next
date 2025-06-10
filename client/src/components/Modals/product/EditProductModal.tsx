@@ -5,6 +5,7 @@ import { statuses } from "@/lib/helpers/helpers";
 import { ICategory, ICollection, IProduct, TStatus } from "@/types/types";
 import { useUploadImage, useUploadImages } from "@/lib/hooks/useImages";
 import { useEditProduct } from "@/lib/hooks/useProducts";
+import { createPortal } from "react-dom";
 
 interface EditProductModalProps {
     isOpen: boolean;
@@ -158,7 +159,7 @@ export default function EditProductModal({
 
     if (!isOpen || !product) return null;
 
-    return (
+    const modalContent = (
         <div className="fixed inset-0 bg-black/70 flex products-center justify-center z-50 overflow-y-auto">
             <div className="bg-white p-[40px] shadow-xl max-w-4xl w-full rounded-md overflow-y-auto h-[95vh]">
                 <h2 className="text-xl font-bold mb-4">
@@ -387,4 +388,5 @@ export default function EditProductModal({
             </div>
         </div>
     );
+    return createPortal(modalContent, document.body);
 }

@@ -9,6 +9,8 @@ import LogoutIcon from "@/components/Icons/LogoutIcon";
 import MainPageIcon from "@/components/Icons/MainPageIcon";
 import ProductsIcon from "@/components/Icons/ProductsIcon";
 import SettingsIcon from "@/components/Icons/SettingsIcon";
+import StatsIcon from "@/components/Icons/StatsIcon";
+import TagIcon from "@/components/Icons/TagIcon";
 import Link from "next/link";
 import { useState } from "react";
 
@@ -22,16 +24,16 @@ function AdminNavigation({ children }: { children: React.ReactNode }) {
             Icon: CollectionsIcon,
             text: "Колекції",
         },
-        // {
-        //     href: "/admin/categories",
-        //     Icon: CategoriesIcon,
-        //     text: "Категорії",
-        // },
-        // {
-        //     href: "/admin/products",
-        //     Icon: ProductsIcon,
-        //     text: "Товари",
-        // },
+        {
+            href: "/admin/attributes",
+            Icon: TagIcon,
+            text: "Атрибути",
+        },
+        {
+            href: "/admin/stats",
+            Icon: StatsIcon,
+            text: "Статистика",
+        },
         {
             href: "/admin/account",
             Icon: AccountIcon,
@@ -45,7 +47,7 @@ function AdminNavigation({ children }: { children: React.ReactNode }) {
     ];
 
     return (
-        <div className="fixed pt-[75px] flex h-screen w-full">
+        <div className="fixed pt-[75px] flex h-screen w-full z-[5]">
             <div
                 className={`relative flex flex-col justify-between border-r border-gray-200 transition-all duration-300 ease-in-out ${
                     navOpen ? "w-[300px]" : "w-[80px]"
@@ -77,7 +79,6 @@ function AdminNavigation({ children }: { children: React.ReactNode }) {
                             }`}
                         >
                             <Icon className="w-[32px] group-hover:fill-white" />
-                            {/* пізніше підправити */}
 
                             <span
                                 className={`transition-opacity duration-200 ${

@@ -6,6 +6,7 @@ import { TStatus } from "@/types/types";
 import { statuses } from "@/lib/helpers/helpers";
 import { useUploadImage } from "@/lib/hooks/useImages";
 import Image from "next/image";
+import { createPortal } from "react-dom";
 
 interface AddCollectionModalProps {
     isOpen: boolean;
@@ -20,7 +21,6 @@ export default function AddCollectionModal({
     const [path, setPath] = useState("");
     const [banner, setBanner] = useState<File | null>(null);
     const [status, setStatus] = useState<TStatus | null>(null);
-
     const [preview, setPreview] = useState<string | null>(null);
     const [message, setMessage] = useState<string>("");
 
@@ -48,21 +48,17 @@ export default function AddCollectionModal({
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-
         if (!name || !path || !status) {
             setMessage("Заповніть усі поля!");
             return;
         }
-
         if (!banner) {
             setMessage("Виберіть зображення для банера!");
             return;
         }
-
         try {
             const uploadResult = await uploadImageMutation.mutateAsync(banner);
             const imagePath = uploadResult.path;
-
             await createCollectionMutation.mutateAsync({
                 name,
                 path,
@@ -74,7 +70,6 @@ export default function AddCollectionModal({
                 createdAt: "",
                 updatedAt: "",
             });
-
             setMessage("Колекцію успішно додано!");
             handleClose();
         } catch (error) {
@@ -85,7 +80,7 @@ export default function AddCollectionModal({
 
     if (!isOpen) return null;
 
-    return (
+    const modalContent = (
         <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-100">
             <div className="bg-white p-[40px] shadow-lg max-w-3xl w-full">
                 <h2 className="text-lg font-bold mb-4">Додавання колекції</h2>
@@ -207,4 +202,6 @@ export default function AddCollectionModal({
             </div>
         </div>
     );
+
+    return createPortal(modalContent, document.body);
 }

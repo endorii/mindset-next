@@ -28,11 +28,11 @@ const ChooseCategoryHeader = ({
 
     return (
         <div className="bg-gray-100 py-4 z-10">
-            <ul className="flex justify-center gap-4">
+            <ul className="flex justify-center items-center gap-4">
                 {collections?.map((collection, i) => (
                     <li
                         key={i}
-                        className="border border-gray-300 hover:bg-black hover:text-white transition-colors duration-300"
+                        className="border border-gray-300 hover:bg-black hover:text-white transition-colors duration-300 w-[100px] text-center"
                     >
                         <Link
                             href={`/${collection.path}`}

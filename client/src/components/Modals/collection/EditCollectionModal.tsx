@@ -7,6 +7,7 @@ import { useUploadImage } from "@/lib/hooks/useImages";
 import { ICollection, TStatus } from "@/types/types";
 import Image from "next/image";
 import { useState, useEffect, ChangeEvent } from "react";
+import { createPortal } from "react-dom";
 
 interface EditCollectionModalProps {
     isOpen: boolean;
@@ -103,7 +104,7 @@ export default function EditCollectionModal({
             ? `http://localhost:5000${banner}`
             : "";
 
-    return (
+    const modalContent = (
         <div className="fixed inset-0 bg-black/70 flex collections-center justify-center z-100">
             <div className="flex flex-col gap-[30px] bg-white p-[40px] shadow-lg max-w-3xl w-full">
                 <div className="flex flex-col gap-[20px]">
@@ -215,4 +216,6 @@ export default function EditCollectionModal({
             </div>
         </div>
     );
+
+    return createPortal(modalContent, document.body);
 }

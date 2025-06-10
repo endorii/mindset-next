@@ -4,6 +4,7 @@ import { deleteCategory } from "@/lib/api/categories.api";
 import { deleteImage } from "@/lib/api/images.api";
 import { useDeleteCategory } from "@/lib/hooks/useCategories";
 import { ICategory, ICollection } from "@/types/types";
+import { createPortal } from "react-dom";
 
 interface DeleteCategoryModalProps {
     isOpen: boolean;
@@ -33,7 +34,7 @@ export default function DeleteCategoryModal({
         }
     };
 
-    return (
+    const modalContent = (
         <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-100">
             <div className="bg-white p-[40px] shadow-lg max-w-sm w-full">
                 <h2 className="text-lg font-bold mb-4">
@@ -63,4 +64,5 @@ export default function DeleteCategoryModal({
             </div>
         </div>
     );
+    return createPortal(modalContent, document.body);
 }

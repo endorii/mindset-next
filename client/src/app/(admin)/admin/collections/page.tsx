@@ -147,30 +147,31 @@ function AdminCollections() {
             ) : (
                 <div>Колекції відсутні</div>
             )}
-
-            <AddCollectionModal
-                isOpen={activeModal === "add"}
-                onClose={closeModal}
-            />
-            {selectedCollection && (
-                <>
-                    <CollectionInfoModal
-                        isOpen={activeModal === "info"}
-                        onClose={closeModal}
-                        collection={selectedCollection}
-                    />
-                    <EditCollectionModal
-                        isOpen={activeModal === "edit"}
-                        onClose={closeModal}
-                        collection={selectedCollection}
-                    />
-                    <DeleteCollectionModal
-                        isOpen={activeModal === "delete"}
-                        onClose={closeModal}
-                        collection={selectedCollection}
-                    />
-                </>
-            )}
+            <>
+                <AddCollectionModal
+                    isOpen={activeModal === "add"}
+                    onClose={closeModal}
+                />
+                {selectedCollection && (
+                    <>
+                        <CollectionInfoModal
+                            isOpen={activeModal === "info"}
+                            onClose={closeModal}
+                            collection={selectedCollection}
+                        />
+                        <EditCollectionModal
+                            isOpen={activeModal === "edit"}
+                            onClose={closeModal}
+                            collection={selectedCollection}
+                        />
+                        <DeleteCollectionModal
+                            isOpen={activeModal === "delete"}
+                            onClose={closeModal}
+                            collection={selectedCollection}
+                        />
+                    </>
+                )}
+            </>
         </div>
     );
 }

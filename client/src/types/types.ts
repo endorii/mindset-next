@@ -97,3 +97,20 @@ export interface IFavoriteItem {
 export interface IIconsProps {
     className?: string;
 }
+
+export interface ISize {
+    id: string;
+    value: string;
+    productId: string;
+}
+export interface IColor {
+    id: string;
+    value: string;
+    productId: string;
+}
+
+export interface IType {
+    id: string;
+    value: string;
+    productId: string;
+}

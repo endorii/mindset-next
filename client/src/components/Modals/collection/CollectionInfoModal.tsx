@@ -2,6 +2,7 @@
 
 import { formatDate } from "@/lib/helpers/formatDate";
 import { ICollection } from "@/types/types";
+import { createPortal } from "react-dom";
 
 export interface CollectionInfoModalProps {
     isOpen: boolean;
@@ -16,7 +17,7 @@ export default function CollectionInfoModal({
 }: CollectionInfoModalProps) {
     if (!isOpen || !collection) return null;
 
-    return (
+    const modalContent = (
         <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-100">
             <div className="bg-white p-[40px] shadow-lg max-w-4xl w-full">
                 <h2 className="text-lg font-bold mb-4">
@@ -94,4 +95,6 @@ export default function CollectionInfoModal({
             </div>
         </div>
     );
+
+    return createPortal(modalContent, document.body);
 }

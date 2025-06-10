@@ -6,6 +6,7 @@ import { ICategory, ICollection, IProduct, TStatus } from "@/types/types";
 import { useState } from "react";
 import Image from "next/image";
 import { useUploadImage, useUploadImages } from "@/lib/hooks/useImages";
+import { createPortal } from "react-dom";
 
 interface AddProductModalProps {
     isOpen: boolean;
@@ -130,7 +131,7 @@ export default function AddProductModal({
 
     if (!isOpen) return null;
 
-    return (
+    const modalContent = (
         <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 overflow-y-auto">
             <div className="bg-white p-[40px] shadow-xl max-w-4xl h-[95vh] w-full rounded-md overflow-y-auto">
                 <h2 className="text-xl font-bold mb-4 ">Додавання товару</h2>
@@ -345,4 +346,5 @@ export default function AddProductModal({
             </div>
         </div>
     );
+    return createPortal(modalContent, document.body);
 }

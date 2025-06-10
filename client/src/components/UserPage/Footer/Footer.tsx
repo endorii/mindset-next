@@ -1,9 +1,9 @@
 "use client";
 
 import Link from "next/link";
-import TiktokIcon from "../Icons/TiktokIcon";
-import InstagramIcon from "../Icons/InstagramIcon";
-import TelegramIcon from "../Icons/TelegramIcon";
+import TiktokIcon from "../../Icons/TiktokIcon";
+import InstagramIcon from "../../Icons/InstagramIcon";
+import TelegramIcon from "../../Icons/TelegramIcon";
 import { useCollections } from "@/lib/hooks/useCollections";
 
 const Footer = () => {
@@ -35,15 +35,15 @@ const Footer = () => {
             </div>
             <div className="absolute top-[50px] left-[50%] translate-x-[-50%]">
                 <div className="text-center font-bold mb-[5px]">Колекції:</div>
-                <ul className="flex gap-[10px] ">
+                <ul className="flex gap-[10px] max-w-[450px] flex-wrap justify-center">
                     {collections?.map((collection, i) => {
                         return (
                             <li
                                 key={i}
-                                className="border border-gray-300 hover:bg-white hover:text-black transition-colors duration-300 mt-[10px]"
+                                className="border border-gray-300 hover:bg-white hover:text-black transition-colors duration-300 mt-[10px] w-[100px]"
                             >
                                 <Link
-                                    href={collection.path}
+                                    href={`/${collection.path}`}
                                     className="flex items-center justify-center cursor-pointer px-4 py-2"
                                 >
                                     {collection.name}

@@ -2,6 +2,7 @@
 
 import { formatDate } from "@/lib/helpers/formatDate";
 import { ICategory, ICollection } from "@/types/types";
+import { createPortal } from "react-dom";
 
 interface CategoryInfoModalProps {
     isOpen: boolean;
@@ -18,7 +19,7 @@ export default function CategoryInfoModal({
 }: CategoryInfoModalProps) {
     if (!isOpen || !category) return null;
 
-    return (
+    const modalContent = (
         <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-100">
             <div className="bg-white p-[40px] shadow-lg max-w-4xl w-full">
                 <h2 className="text-lg font-bold mb-4">
@@ -102,4 +103,5 @@ export default function CategoryInfoModal({
             </div>
         </div>
     );
+    return createPortal(modalContent, document.body);
 }

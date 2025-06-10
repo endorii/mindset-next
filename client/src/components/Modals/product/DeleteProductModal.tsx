@@ -3,6 +3,7 @@
 import { deleteImage, deleteImages } from "@/lib/api/images.api";
 import { useDeleteProduct } from "@/lib/hooks/useProducts";
 import { ICategory, ICollection, IProduct } from "@/types/types";
+import { createPortal } from "react-dom";
 
 interface DeleteProductProps {
     isOpen: boolean;
@@ -34,7 +35,7 @@ export default function DeleteProductModal({
             console.error("Помилка при видаленні:", error);
         }
     };
-    return (
+    const modalContent = (
         <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-100">
             <div className="bg-white p-[40px] shadow-lg max-w-sm w-full">
                 <h2 className="text-lg font-bold mb-4">
@@ -65,4 +66,5 @@ export default function DeleteProductModal({
             </div>
         </div>
     );
+    return createPortal(modalContent, document.body);
 }

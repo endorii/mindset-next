@@ -1,6 +1,6 @@
 "use client";
 
-import ChooseCategoryHeader from "@/components/ChooseCategoryHeader/ChooseCategoryHeader";
+import ChooseCategoryHeader from "@/components/UserPage/ChooseCategoryHeader/ChooseCategoryHeader";
 import { collections } from "@/data/collections";
 import { ICollection } from "@/types/types";
 import { usePathname } from "next/navigation";

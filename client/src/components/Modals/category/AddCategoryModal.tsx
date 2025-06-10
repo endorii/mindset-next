@@ -6,6 +6,7 @@ import { ICollection, TStatus } from "@/types/types";
 import Image from "next/image";
 import { useState } from "react";
 import { useCreateCategory } from "@/lib/hooks/useCategories";
+import { createPortal } from "react-dom";
 
 interface AddCategoryModalProps {
     isOpen: boolean;
@@ -93,7 +94,7 @@ export default function AddCategoryModal({
 
     if (!isOpen) return null;
 
-    return (
+    const modalContent = (
         <div className="fixed inset-0 bg-black/70 flex items-center justify-center">
             <div className="bg-white p-[40px] shadow-lg max-w-3xl w-full">
                 <h2 className="text-lg font-bold mb-4">Додавання категорії</h2>
@@ -215,4 +216,5 @@ export default function AddCategoryModal({
             </div>
         </div>
     );
+    return createPortal(modalContent, document.body);
 }

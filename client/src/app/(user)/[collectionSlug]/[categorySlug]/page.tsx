@@ -36,27 +36,33 @@ export default function CategoryPage() {
             {data.products.length ? (
                 <ul className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-[20px] mt-[30px]">
                     {data.products.map((product, i) => (
-                        <li key={i}>
+                        <li
+                            key={i}
+                            className=" p-[2px] group hover:bg-black transition-all duration-300"
+                        >
                             <Link
                                 href={`/${collectionPath}/${categoryPath}/${product.path}`}
-                                className="relative block group"
                             >
-                                <div
-                                    className="z-[2] absolute top-0 left-0 bg-black text-white px-[25px] py-[15px] text-lg
-                                group-hover:bg-transparent group-hover:text-white group-hover:text-3xl group-hover:top-[50%] group-hover:left-[50%] group-hover:translate-x-[-50%] group-hover:translate-y-[-50%] transition-all ease-in-out duration-800"
-                                >
-                                    <div>{product.name}</div>
-                                    <div className="text-lg font-semibold mt-[5px]">
-                                        {product.price} грн.
-                                    </div>
-                                </div>
                                 <Image
-                                    className="filter transition-all group-hover:brightness-50 duration-600"
+                                    className=""
                                     width={450}
                                     height={450}
-                                    src={product.images[0].url}
+                                    src={`http://localhost:5000/${product.banner}`}
                                     alt={product.name}
                                 />
+                                <div className="flex flex-col p-[10px]">
+                                    <div className="group-hover:text-white font-semibold">
+                                        {product.name}
+                                    </div>
+                                    <div className="flex gap-[10px]">
+                                        <div className="font-semibold group-hover:text-white">
+                                            {product.price} грн.
+                                        </div>
+                                        <div className="font-semibold line-through text-gray-500 group-hover:text-gray-300">
+                                            999 грн.
+                                        </div>
+                                    </div>
+                                </div>
                             </Link>
                         </li>
                     ))}

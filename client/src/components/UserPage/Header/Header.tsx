@@ -1,9 +1,9 @@
 import { user } from "@/data/user";
 import Link from "next/link";
-import CartIcon from "../Icons/CartIcon";
-import AccountIcon from "../Icons/AccountIcon";
-import HeartIcon from "../Icons/HeartIcon";
-import SearchIcon from "../Icons/SearchIcon";
+import CartIcon from "../../Icons/CartIcon";
+import AccountIcon from "../../Icons/AccountIcon";
+import HeartIcon from "../../Icons/HeartIcon";
+import SearchIcon from "../../Icons/SearchIcon";
 
 const Header = () => {
     return (
@@ -42,7 +42,7 @@ const Header = () => {
                                     {user?.favorites.length}
                                 </div>
                             ) : null}
-                            <HeartIcon className="w-[25px] fill-white stroke-black" />
+                            <HeartIcon className="w-[25px] fill-white stroke-2 stroke-black" />
                         </Link>
                     </li>
                     <li>

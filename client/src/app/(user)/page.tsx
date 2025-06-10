@@ -27,8 +27,6 @@ export default function HomePage() {
                 {data?.length ? (
                     <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 mt-[30px]">
                         {data?.map((collection, i) => {
-                            if (collection.status !== "ACTIVE") return null; // TODO: використати .filter()
-
                             return (
                                 <li key={i}>
                                     <Link
@@ -43,9 +41,9 @@ export default function HomePage() {
                                             {collection.name}
                                         </div>
                                         <img
-                                            src={collection.banner}
+                                            src={`http://localhost:5000/${collection.banner}`}
                                             alt={collection.name}
-                                            className="w-full h-[100vh] object-cover filter transition-all group-hover:brightness-50 duration-600"
+                                            className="w-full h-[80vh] object-cover filter transition-all group-hover:brightness-50 duration-600"
                                         />
                                     </Link>
                                 </li>

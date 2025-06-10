@@ -1,9 +1,9 @@
 "use client";
 
 import { usePathname } from "next/navigation";
-import { collections } from "@/data/collections";
 import HeartIcon from "@/components/Icons/HeartIcon";
 import { useProduct } from "@/lib/hooks/useProducts";
+import { useState } from "react";
 
 export default function ProductPage() {
     const pathname = usePathname();
@@ -19,6 +19,8 @@ export default function ProductPage() {
         productPath
     );
 
+    const [liked, setLiked] = useState(false);
+
     console.log(data);
 
     if (!data) {
@@ -33,11 +35,20 @@ export default function ProductPage() {
         <div className="flex flex-col md:flex-row mt-[30px] gap-[50px] items-start">
             <div className="flex gap-[10px] relative">
                 <div className="relative">
-                    <button className="absolute top-0 right-0 text-xs flex items-center gap-[10px] border border-transparent hover:text-black hover:border-black hover:bg-white bg-black text-white p-[10px] transition-all duration-300 cursor-pointer ">
-                        <HeartIcon className="w-[30px] stroke-white" />
+                    <button
+                        onClick={() => setLiked(!liked)}
+                        className="absolute top-1 right-1 m-[0_auto] text-xs flex justify-center items-center gap-[10px] p-[10px] transition-all duration-300 cursor-pointer w-[60px] h-[60px]"
+                    >
+                        <HeartIcon
+                            className={`transition-all duration-300 ${
+                                liked
+                                    ? "w-[42px] stroke-white fill-white"
+                                    : "w-[35px] stroke-white stroke-[1.5] fill-none"
+                            } `}
+                        />
                     </button>
                     <img
-                        src={data?.images[0]}
+                        src={`http://localhost:5000/${data.banner}`}
                         alt={data.name}
                         className="max-w-[600px]"
                     />
@@ -47,7 +58,7 @@ export default function ProductPage() {
                     {data.images?.map((image, i) => (
                         <li key={i}>
                             <img
-                                src={image}
+                                src={`http://localhost:5000/${image}`}
                                 alt={data.name}
                                 className="w-full h-auto"
                             />

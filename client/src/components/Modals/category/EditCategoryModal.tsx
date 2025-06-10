@@ -6,6 +6,7 @@ import { useUploadImage } from "@/lib/hooks/useImages";
 import { ICategory, ICollection, TStatus } from "@/types/types";
 import Image from "next/image";
 import { useState, useEffect, ChangeEvent } from "react";
+import { createPortal } from "react-dom";
 
 interface EditCategoryModalProps {
     isOpen: boolean;
@@ -81,7 +82,7 @@ export default function EditCategoryModal({
         typeof banner === "string" && banner.startsWith("/images/")
             ? `http://localhost:5000${banner}`
             : "";
-    return (
+    const modalContent = (
         <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-100">
             <div className="flex flex-col  gap-[30px] bg-white p-[40px] shadow-lg max-w-3xl w-full">
                 <div className="flex flex-col gap-[20px]">
@@ -195,4 +196,5 @@ export default function EditCategoryModal({
             </div>
         </div>
     );
+    return createPortal(modalContent, document.body);
 }

@@ -47,7 +47,7 @@ export default function Collection() {
                                     className="filter transition-all group-hover:brightness-50 duration-600"
                                     width={450}
                                     height={450}
-                                    src={product.banner}
+                                    src={`http://localhost:5000/${product.banner}`}
                                     alt={product.name}
                                 />
                             </Link>
