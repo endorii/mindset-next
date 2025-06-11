@@ -75,49 +75,75 @@ model Category {
 }
 
 model Product {
-  id          String         @id @default(cuid())
+  id          String     @id @default(cuid())
   name        String
-  path        String         @unique
+  path        String     @unique
   price       Int
   available   Boolean
   description String
   composition String
-  categoryId  String         @map("category_id")
-  createdAt   DateTime       @default(now()) @map("created_at")
+  categoryId  String     @map("category_id")
+  createdAt   DateTime   @default(now()) @map("created_at")
   status      String
-  updatedAt   DateTime       @updatedAt @map("updated_at")
+  updatedAt   DateTime   @updatedAt @map("updated_at")
   views       Int
   banner      String
   images      String[]
   cartItems   CartItem[]
   favorites   Favorite[]
-  category    Category       @relation(fields: [categoryId], references: [id])
-  colors      ProductColor[]
-  sizes       ProductSize[]
-  types       ProductType[]
+  category    Category   @relation(fields: [categoryId], references: [id])
+
+  productColors ProductToColor[]
+  productSizes  ProductToSize[]
+  productTypes  ProductToType[]
 
   @@unique([categoryId, path])
 }
 
-model ProductSize {
-  id        String  @id @default(cuid())
-  value     String
-  productId String  @map("product_id")
-  product   Product @relation(fields: [productId], references: [id])
+model Color {
+  id            String           @id @default(cuid())
+  name          String           @unique
+  hexCode       String?
+  productColors ProductToColor[]
 }
 
-model ProductType {
-  id        String  @id @default(cuid())
-  value     String
-  productId String  @map("product_id")
-  product   Product @relation(fields: [productId], references: [id])
+model Size {
+  id           String          @id @default(cuid())
+  name         String          @unique
+  productSizes ProductToSize[]
 }
 
-model ProductColor {
-  id        String  @id @default(cuid())
-  value     String
+model Type {
+  id           String          @id @default(cuid())
+  name         String          @unique
+  productTypes ProductToType[]
+}
+
+model ProductToColor {
   productId String  @map("product_id")
-  product   Product @relation(fields: [productId], references: [id])
+  colorId   String  @map("color_id")
+  color     Color   @relation(fields: [colorId], references: [id])
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@id([productId, colorId])
+}
+
+model ProductToSize {
+  productId String  @map("product_id")
+  sizeId    String  @map("size_id")
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  size      Size    @relation(fields: [sizeId], references: [id])
+
+  @@id([productId, sizeId])
+}
+
+model ProductToType {
+  productId String  @map("product_id")
+  typeId    String  @map("type_id")
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  type      Type    @relation(fields: [typeId], references: [id])
+
+  @@id([productId, typeId])
 }
 
 model Favorite {

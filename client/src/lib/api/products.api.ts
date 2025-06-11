@@ -1,4 +1,4 @@
-import { ICategory, ICollection, IProduct } from "@/types/types";
+import { ICategory, ICollection, ICreateProductPayload, IProduct } from "@/types/types";
 
 export async function fetchProducts(
     collectionPath: string,
@@ -36,7 +36,7 @@ export async function fetchProduct(
 export async function addProductToCategory(
     collectionPath: string,
     categoryPath: string,
-    productData: IProduct
+    productData: ICreateProductPayload
 ): Promise<IProduct> {
     try {
         const res = await fetch(

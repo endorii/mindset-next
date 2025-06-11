@@ -1,4 +1,4 @@
-import { ICategory, ICollection, IProduct } from "@/types/types";
+import { ICategory, ICollection, ICreateProductPayload, IProduct } from "@/types/types";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
     addProductToCategory,
@@ -36,7 +36,7 @@ export function useCreateProduct() {
         }: {
             collectionPath: ICollection["path"];
             categoryPath: ICategory["path"];
-            productData: IProduct;
+            productData: ICreateProductPayload;
         }) => addProductToCategory(collectionPath, categoryPath, productData),
         onSuccess: (_data, variables) => {
             queryClient.invalidateQueries({

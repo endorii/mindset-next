@@ -2,6 +2,7 @@
 
 import { formatDate } from "@/lib/helpers/formatDate";
 import { ICategory, ICollection, IProduct } from "@/types/types";
+import { div, p } from "motion/react-client";
 import Image from "next/image";
 import { createPortal } from "react-dom";
 
@@ -23,8 +24,8 @@ export default function ProductInfoModal({
     if (!isOpen || !product) return null;
 
     const modalContent = (
-        <div className="fixed inset-0 bg-black/70 flex products-center justify-center z-100">
-            <div className="bg-white p-[40px] h-[90vh] shadow-lg max-w-4xl w-full overflow-y-auto">
+        <div className="fixed inset-0 bg-black/70 flex items-center products-center justify-center z-20">
+            <div className="bg-white p-[40px] h-[95vh] shadow-lg w-[80vw] overflow-y-auto">
                 <h2 className="text-lg font-bold mb-4">
                     Інформація про товар: {product.name || "Без назви"}
                 </h2>
@@ -48,23 +49,55 @@ export default function ProductInfoModal({
                                 {product.price}
                             </div>
                         </div>
+
                         <div className="flex flex-col gap-[7px]">
-                            <label htmlFor="status">Доступність</label>
-                            <div className="border border-gray-200 rounded px-[10px] py-[7px] bg-gray-50">
-                                {product.available ? "Доступно" : "Не доступно"}
-                            </div>
-                        </div>
-                        <div className="flex flex-col gap-[7px]">
-                            <label htmlFor="status">Статус</label>
-                            <div className="border border-gray-200 rounded px-[10px] py-[7px] bg-gray-50">
-                                {product.status}
+                            <label htmlFor="colors">Кольори</label>
+                            <div className="border border-gray-200 rounded px-[10px] py-[7px] bg-gray-50 flex flex-wrap gap-[10px]">
+                                {product.productColors.map((item, i) => (
+                                    <div
+                                        key={i}
+                                        className="flex gap-[5px] items-center"
+                                    >
+                                        <div className="">
+                                            {item.color.name}
+                                        </div>
+                                        <div
+                                            className="border border-gray-300 rounded w-[15px] h-[15px]"
+                                            style={{
+                                                backgroundColor:
+                                                    item.color.hexCode,
+                                            }}
+                                        ></div>
+                                    </div>
+                                ))}
                             </div>
                         </div>
 
                         <div className="flex flex-col gap-[7px]">
-                            <label htmlFor="views">Перегляди</label>
-                            <div className="border border-gray-200 rounded px-[10px] py-[7px] bg-gray-50">
-                                {product.views}
+                            <label htmlFor="sizes">Розміри</label>
+                            <div className="border border-gray-200 rounded px-[10px] py-[7px] bg-gray-50 flex flex-wrap gap-[10px]">
+                                {product.productSizes.map((item, i) => (
+                                    <div
+                                        className="flex gap-[5px] items-center"
+                                        key={i}
+                                    >
+                                        <div className="">{item.size.name}</div>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+
+                        <div className="flex flex-col gap-[7px]">
+                            <label htmlFor="types">Типи</label>
+                            <div className="border border-gray-200 rounded px-[10px] py-[7px] bg-gray-50 flex flex-wrap gap-[10px]">
+                                {product.productTypes.map((item, i) => (
+                                    <div
+                                        className="flex gap-[5px] items-center"
+                                        key={i}
+                                    >
+                                        <div className="">{item.type.name}</div>
+                                    </div>
+                                ))}
                             </div>
                         </div>
                     </div>
@@ -82,17 +115,22 @@ export default function ProductInfoModal({
                                 {product.composition}
                             </div>
                         </div>
-
                         <div className="flex flex-col gap-[7px]">
-                            <label htmlFor="status">Доступні кольори</label>
+                            <label htmlFor="status">Доступність</label>
+                            <div className="border border-gray-200 rounded px-[10px] py-[7px] bg-gray-50">
+                                {product.available ? "Доступно" : "Не доступно"}
+                            </div>
+                        </div>
+                        <div className="flex flex-col gap-[7px]">
+                            <label htmlFor="status">Статус</label>
                             <div className="border border-gray-200 rounded px-[10px] py-[7px] bg-gray-50">
                                 {product.status}
                             </div>
                         </div>
                         <div className="flex flex-col gap-[7px]">
-                            <label htmlFor="status">Доступні розміри</label>
+                            <label htmlFor="views">Перегляди</label>
                             <div className="border border-gray-200 rounded px-[10px] py-[7px] bg-gray-50">
-                                {product.status}
+                                {product.views}
                             </div>
                         </div>
                     </div>
@@ -133,7 +171,7 @@ export default function ProductInfoModal({
                         </div>
                     </div>
                 </div>
-                <div>
+                <div className="mt-[20px]">
                     <div className="flex flex-col gap-[7px]">
                         <label htmlFor="views">Додаткові зображення</label>
                         <div className="flex gap-[10px]">

@@ -32,6 +32,43 @@ export interface ICategory {
     updatedAt: string;
 }
 
+export interface ISize {
+    id: string;
+    name: string;
+}
+
+export interface IColor {
+    id: string;
+    name: string;
+    hexCode?: string;
+}
+
+export interface IType {
+    id: string;
+    name: string;
+}
+
+export interface IProductToColor {
+    colorId: string;
+    productId: string;
+    color: IColor;
+    product: IProduct;
+}
+
+export interface IProductToType {
+    typeId: string;
+    productId: string;
+    type: IType;
+    product: IProduct;
+}
+
+export interface IProductToSize {
+    sizeId: string;
+    productId: string;
+    size: ISize;
+    product: IProduct;
+}
+
 export interface IProduct {
     id: string;
     name: string;
@@ -44,19 +81,36 @@ export interface IProduct {
     available: boolean;
     description: string;
     composition: string;
-    sizes: string[];
-    types: string[];
-    colors: IProductColor[];
-    category?: ICategory;
     categoryId: string;
     createdAt: string;
     updatedAt: string;
-}
 
-export interface IProductColor {
-    id: string;
-    value: string;
-    productId: string;
+    // ОБОВ'ЯЗКОВО ПОВИННІ БУТИ ЦІ ПОЛЯ ДЛЯ ВІДОБРАЖЕННЯ ЗВ'ЯЗКІВ
+    productColors: IProductToColor[];
+    productTypes: IProductToType[];
+    productSizes: IProductToSize[];
+
+    category?: ICategory;
+
+    // cartItems?: ICartItem[];
+    // favorites?: IFavoriteItem[];
+}
+export interface ICreateProductPayload {
+    name: string;
+    path: string;
+    price: number;
+    available: boolean;
+    description: string;
+    composition: string;
+    categoryId: string;
+    status: TStatus;
+    views: number;
+    banner: string;
+    images: string[];
+
+    colorIds?: string[];
+    sizeIds?: string[];
+    typeIds?: string[];
 }
 
 export interface IUser {
@@ -85,9 +139,6 @@ export interface IUserShippingAdress {
 
 export interface ICartItem {
     productPath: IProduct["path"];
-    quantity: number;
-    size: string;
-    color: string;
 }
 
 export interface IFavoriteItem {
@@ -96,21 +147,4 @@ export interface IFavoriteItem {
 
 export interface IIconsProps {
     className?: string;
-}
-
-export interface ISize {
-    id: string;
-    value: string;
-    productId: string;
-}
-export interface IColor {
-    id: string;
-    value: string;
-    productId: string;
-}
-
-export interface IType {
-    id: string;
-    value: string;
-    productId: string;
 }

@@ -16,7 +16,25 @@ export class CategoriesService {
                 },
                 include: {
                     collection: true,
-                    products: true,
+                    products: {
+                        include: {
+                            productColors: {
+                                include: {
+                                    color: true,
+                                },
+                            },
+                            productTypes: {
+                                include: {
+                                    type: true,
+                                },
+                            },
+                            productSizes: {
+                                include: {
+                                    size: true,
+                                },
+                            },
+                        },
+                    },
                 },
             });
 

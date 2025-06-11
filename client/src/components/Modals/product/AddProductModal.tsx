@@ -2,11 +2,22 @@
 
 import { statuses } from "@/lib/helpers/helpers";
 import { useCreateProduct } from "@/lib/hooks/useProducts";
-import { ICategory, ICollection, IProduct, TStatus } from "@/types/types";
+import {
+    ICategory,
+    ICollection,
+    IColor,
+    ICreateProductPayload,
+    ISize,
+    IType,
+    TStatus,
+} from "@/types/types";
 import { useState } from "react";
 import Image from "next/image";
 import { useUploadImage, useUploadImages } from "@/lib/hooks/useImages";
 import { createPortal } from "react-dom";
+import { useColors } from "@/lib/hooks/useColors";
+import { useTypes } from "@/lib/hooks/useTypes";
+import { useSizes } from "@/lib/hooks/useSizes";
 
 interface AddProductModalProps {
     isOpen: boolean;
@@ -31,6 +42,10 @@ export default function AddProductModal({
         [composition, setComposition] = useState(""),
         [status, setStatus] = useState<TStatus | null>(null);
 
+    const [colorsToSend, setColorsToSend] = useState<IColor[] | []>([]);
+    const [sizesToSend, setSizesToSend] = useState<ISize[] | []>([]);
+    const [typesToSend, setTypesToSend] = useState<IType[] | []>([]);
+
     const [banner, setBanner] = useState<File | null>(null),
         [bannerPreview, setBannerPreview] = useState<string | null>(null);
 
@@ -41,6 +56,10 @@ export default function AddProductModal({
 
     const uploadImageMutation = useUploadImage();
     const uploadImagesMutation = useUploadImages();
+
+    const { data: allColors, isLoading: isLoadingColors } = useColors();
+    const { data: allTypes, isLoading: isLoadingTypes } = useTypes();
+    const { data: allSizes, isLoading: isLoadingSizes } = useSizes();
 
     const createProductMutation = useCreateProduct();
 
@@ -74,12 +93,58 @@ export default function AddProductModal({
         setDescription("");
         setComposition("");
         setStatus(null);
+        setColorsToSend([]);
+        setSizesToSend([]);
+        setTypesToSend([]);
         setBanner(null);
         setBannerPreview(null);
         setImages([]);
         setImagePreviews([]);
         setMessage("");
         onClose();
+    };
+
+    const handleAddColor = (color: IColor) => {
+        // Додаємо колір, якщо його ще немає в списку
+        setColorsToSend((prevColors) => {
+            if (prevColors.some((c) => c.id === color.id)) {
+                return prevColors; // Колір вже додано
+            }
+            return [...prevColors, color];
+        });
+    };
+
+    const handleRemoveColor = (colorId: string) => {
+        // Видаляємо колір за ID
+        setColorsToSend((prevColors) =>
+            prevColors.filter((c) => c.id !== colorId)
+        );
+    };
+
+    const handleAddSize = (size: ISize) => {
+        setSizesToSend((prevSizes) => {
+            if (prevSizes.some((s) => s.id === size.id)) {
+                return prevSizes;
+            }
+            return [...prevSizes, size];
+        });
+    };
+
+    const handleRemoveSize = (sizeId: string) => {
+        setSizesToSend((prevSizes) => prevSizes.filter((s) => s.id !== sizeId));
+    };
+
+    const handleAddType = (type: IType) => {
+        setTypesToSend((prevTypes) => {
+            if (prevTypes.some((t) => t.id === type.id)) {
+                return prevTypes;
+            }
+            return [...prevTypes, type];
+        });
+    };
+
+    const handleRemoveType = (typeId: string) => {
+        setTypesToSend((prevTypes) => prevTypes.filter((t) => t.id !== typeId));
     };
 
     const handleSubmit = async (e: React.FormEvent) => {
@@ -107,19 +172,16 @@ export default function AddProductModal({
                     views: 0,
                     status,
                     categoryId,
-                    id: "",
-                    createdAt: "",
-                    updatedAt: "",
-                    price,
+                    price: price || 0,
                     available: available || false,
                     description,
                     composition,
                     banner: bannerPath,
-                    sizes: [],
-                    types: [],
-                    colors: [],
+                    colorIds: colorsToSend.map((c) => c.id),
+                    sizeIds: sizesToSend.map((s) => s.id),
+                    typeIds: typesToSend.map((t) => t.id),
                     images: [...imagesPaths],
-                },
+                } as ICreateProductPayload,
             });
             setMessage("Товар успішно додано!");
             handleClose();
@@ -241,6 +303,217 @@ export default function AddProductModal({
                         </div>
 
                         <div className="flex flex-col gap-[20px] w-1/2">
+                            <div className="flex flex-col gap-2">
+                                <label className="text-sm font-semibold">
+                                    Оберіть кольори:
+                                </label>
+                                <div className="flex flex-wrap gap-2 p-2 border border-gray-200 rounded max-h-40 overflow-y-auto">
+                                    {isLoadingColors && (
+                                        <p>Завантаження кольорів...</p>
+                                    )}
+                                    {allColors?.map((color) => (
+                                        <button
+                                            key={color.id}
+                                            type="button"
+                                            onClick={() =>
+                                                handleAddColor(color)
+                                            }
+                                            className={`px-3 py-1 rounded-full text-sm flex items-center gap-1
+                              ${
+                                  colorsToSend.some((c) => c.id === color.id)
+                                      ? "bg-blue-500 text-white"
+                                      : "bg-gray-200 text-gray-800 hover:bg-gray-300"
+                              }`}
+                                        >
+                                            {color.name}
+                                            <div
+                                                className="w-4 h-4 rounded-full border border-gray-400"
+                                                style={{
+                                                    backgroundColor:
+                                                        color.hexCode ||
+                                                        "#FFFFFF",
+                                                }} // Додаємо hexCode
+                                            ></div>
+                                        </button>
+                                    ))}
+                                    {allColors?.length === 0 &&
+                                        !isLoadingColors && (
+                                            <p>Кольори не знайдено.</p>
+                                        )}
+                                </div>
+                            </div>
+
+                            {/* Відображення обраних кольорів */}
+                            <div className="flex flex-col gap-2">
+                                <label className="text-sm font-semibold">
+                                    Обрані кольори:
+                                </label>
+                                <div className="flex flex-wrap gap-2 p-2 border border-gray-200 rounded min-h-[50px]">
+                                    {colorsToSend.length > 0 ? (
+                                        colorsToSend.map((color) => (
+                                            <div
+                                                key={color.id}
+                                                className="flex items-center gap-2 px-3 py-1 bg-blue-100 rounded-full text-sm"
+                                            >
+                                                {color.name}
+                                                <div
+                                                    className="w-4 h-4 rounded-full border border-gray-400"
+                                                    style={{
+                                                        backgroundColor:
+                                                            color.hexCode ||
+                                                            "#FFFFFF",
+                                                    }}
+                                                ></div>
+                                                <button
+                                                    type="button"
+                                                    onClick={() =>
+                                                        handleRemoveColor(
+                                                            color.id
+                                                        )
+                                                    }
+                                                    className="text-red-500 hover:text-red-700 ml-1 font-bold"
+                                                >
+                                                    &times;
+                                                </button>
+                                            </div>
+                                        ))
+                                    ) : (
+                                        <p className="text-gray-500">
+                                            Не обрано жодного кольору.
+                                        </p>
+                                    )}
+                                </div>
+                            </div>
+
+                            {/* --- Секція для Розмірів (аналогічно кольорам) --- */}
+                            <div className="flex flex-col gap-2">
+                                <label className="text-sm font-semibold">
+                                    Оберіть розміри:
+                                </label>
+                                <div className="flex flex-wrap gap-2 p-2 border border-gray-200 rounded max-h-40 overflow-y-auto">
+                                    {isLoadingSizes && (
+                                        <p>Завантаження розмірів...</p>
+                                    )}
+                                    {allSizes?.map((size) => (
+                                        <button
+                                            key={size.id}
+                                            type="button"
+                                            onClick={() => handleAddSize(size)}
+                                            className={`px-3 py-1 rounded-full text-sm
+                              ${
+                                  sizesToSend.some((s) => s.id === size.id)
+                                      ? "bg-blue-500 text-white"
+                                      : "bg-gray-200 text-gray-800 hover:bg-gray-300"
+                              }`}
+                                        >
+                                            {size.name}
+                                        </button>
+                                    ))}
+                                    {allSizes?.length === 0 &&
+                                        !isLoadingSizes && (
+                                            <p>Розміри не знайдено.</p>
+                                        )}
+                                </div>
+                            </div>
+
+                            {/* Відображення обраних розмірів */}
+                            <div className="flex flex-col gap-2">
+                                <label className="text-sm font-semibold">
+                                    Обрані розміри:
+                                </label>
+                                <div className="flex flex-wrap gap-2 p-2 border border-gray-200 rounded min-h-[50px]">
+                                    {sizesToSend.length > 0 ? (
+                                        sizesToSend.map((size) => (
+                                            <div
+                                                key={size.id}
+                                                className="flex items-center gap-2 px-3 py-1 bg-blue-100 rounded-full text-sm"
+                                            >
+                                                {size.name}
+                                                <button
+                                                    type="button"
+                                                    onClick={() =>
+                                                        handleRemoveSize(
+                                                            size.id
+                                                        )
+                                                    }
+                                                    className="text-red-500 hover:text-red-700 ml-1 font-bold"
+                                                >
+                                                    &times;
+                                                </button>
+                                            </div>
+                                        ))
+                                    ) : (
+                                        <p className="text-gray-500">
+                                            Не обрано жодного розміру.
+                                        </p>
+                                    )}
+                                </div>
+                            </div>
+
+                            {/* --- Секція для Типів (аналогічно кольорам) --- */}
+                            <div className="flex flex-col gap-2">
+                                <label className="text-sm font-semibold">
+                                    Оберіть типи:
+                                </label>
+                                <div className="flex flex-wrap gap-2 p-2 border border-gray-200 rounded max-h-40 overflow-y-auto">
+                                    {isLoadingTypes && (
+                                        <p>Завантаження типів...</p>
+                                    )}
+                                    {allTypes?.map((type) => (
+                                        <button
+                                            key={type.id}
+                                            type="button"
+                                            onClick={() => handleAddType(type)}
+                                            className={`px-3 py-1 rounded-full text-sm
+                              ${
+                                  typesToSend.some((t) => t.id === type.id)
+                                      ? "bg-blue-500 text-white"
+                                      : "bg-gray-200 text-gray-800 hover:bg-gray-300"
+                              }`}
+                                        >
+                                            {type.name}
+                                        </button>
+                                    ))}
+                                    {allTypes?.length === 0 &&
+                                        !isLoadingTypes && (
+                                            <p>Типи не знайдено.</p>
+                                        )}
+                                </div>
+                            </div>
+
+                            {/* Відображення обраних типів */}
+                            <div className="flex flex-col gap-2">
+                                <label className="text-sm font-semibold">
+                                    Обрані типи:
+                                </label>
+                                <div className="flex flex-wrap gap-2 p-2 border border-gray-200 rounded min-h-[50px]">
+                                    {typesToSend.length > 0 ? (
+                                        typesToSend.map((type) => (
+                                            <div
+                                                key={type.id}
+                                                className="flex items-center gap-2 px-3 py-1 bg-blue-100 rounded-full text-sm"
+                                            >
+                                                {type.name}
+                                                <button
+                                                    type="button"
+                                                    onClick={() =>
+                                                        handleRemoveType(
+                                                            type.id
+                                                        )
+                                                    }
+                                                    className="text-red-500 hover:text-red-700 ml-1 font-bold"
+                                                >
+                                                    &times;
+                                                </button>
+                                            </div>
+                                        ))
+                                    ) : (
+                                        <p className="text-gray-500">
+                                            Не обрано жодного типу.
+                                        </p>
+                                    )}
+                                </div>
+                            </div>
                             <div>
                                 <label
                                     htmlFor="banner"

@@ -21,7 +21,7 @@ export class ProductsService {
                     },
                 },
                 include: {
-                    colors: true,
+                    productColors: true,
                     category: {
                         include: {
                             collection: true,
@@ -43,36 +43,78 @@ export class ProductsService {
         const {
             name,
             path,
-            views,
-            status,
-            categoryId,
             price,
             available,
             description,
             composition,
+            views,
+            status,
+            categoryId,
             banner,
             images,
+            colorIds,
+            sizeIds,
+            typeIds,
         } = createProductDto;
-        try {
-            return await this.prisma.product.create({
-                data: {
-                    name,
-                    path,
-                    price,
-                    available,
-                    description,
-                    composition,
-                    views,
-                    status,
-                    categoryId,
-                    banner,
-                    images,
+
+        const product = await this.prisma.product.create({
+            data: {
+                name,
+                path,
+                price,
+                available,
+                description,
+                composition,
+                views,
+                status,
+                categoryId,
+                banner,
+                images,
+
+                productColors: {
+                    create:
+                        colorIds?.map((colorId) => ({
+                            color: {
+                                connect: { id: colorId },
+                            },
+                        })) || [],
                 },
-            });
-        } catch (error) {
-            console.error("Помилка створення продукту:", error);
-            throw new Error("Не вдалося створити продукт");
-        }
+                productSizes: {
+                    create:
+                        sizeIds?.map((sizeId) => ({
+                            size: {
+                                connect: { id: sizeId },
+                            },
+                        })) || [],
+                },
+                productTypes: {
+                    create:
+                        typeIds?.map((typeId) => ({
+                            type: {
+                                connect: { id: typeId },
+                            },
+                        })) || [],
+                },
+            },
+
+            include: {
+                productColors: {
+                    include: { color: true },
+                },
+                productSizes: {
+                    include: { size: true },
+                },
+                productTypes: {
+                    include: { type: true },
+                },
+                category: true,
+            },
+        });
+
+        return {
+            message: "Продукт успішно створено",
+            product,
+        };
     }
 
     async editProduct(
