@@ -122,7 +122,7 @@ model Type {
 model ProductToColor {
   productId String  @map("product_id")
   colorId   String  @map("color_id")
-  color     Color   @relation(fields: [colorId], references: [id])
+  color     Color   @relation(fields: [colorId], references: [id], onDelete: Cascade)
   product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
 
   @@id([productId, colorId])
@@ -132,7 +132,7 @@ model ProductToSize {
   productId String  @map("product_id")
   sizeId    String  @map("size_id")
   product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
-  size      Size    @relation(fields: [sizeId], references: [id])
+  size      Size    @relation(fields: [sizeId], references: [id], onDelete: Cascade)
 
   @@id([productId, sizeId])
 }
@@ -141,7 +141,7 @@ model ProductToType {
   productId String  @map("product_id")
   typeId    String  @map("type_id")
   product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
-  type      Type    @relation(fields: [typeId], references: [id])
+  type      Type    @relation(fields: [typeId], references: [id], onDelete: Cascade)
 
   @@id([productId, typeId])
 }

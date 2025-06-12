@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, ValidationPipe } from "@nestjs/common";
+import { Controller, Get, Post, Body, ValidationPipe, Delete, Param } from "@nestjs/common";
 import { TypesService } from "./types.service";
 import { CreateTypeDto } from "./dto/create-type.dto";
 // import { UpdateTypeDto } from "./dto/update-type.dto";
@@ -15,5 +15,10 @@ export class TypesController {
     @Get()
     getTypes() {
         return this.typesService.getTypes();
+    }
+
+    @Delete(":typeId")
+    deleteType(@Param("typeId") typeId: string) {
+        return this.typesService.deleteType(typeId);
     }
 }

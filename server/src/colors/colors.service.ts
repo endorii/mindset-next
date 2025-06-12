@@ -35,7 +35,11 @@ export class ColorsService {
     //     return `This action updates a #${id} color`;
     // }
 
-    // remove(id: number) {
-    //     return `This action removes a #${id} color`;
-    // }
+    async deleteColor(colorId: string) {
+        return await this.prisma.color.delete({
+            where: {
+                id: colorId,
+            },
+        });
+    }
 }

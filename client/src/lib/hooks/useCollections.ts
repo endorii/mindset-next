@@ -6,7 +6,8 @@ import {
     editCollection,
     deleteCollection,
 } from "@/lib/api/collections.api";
-import { ICollection, TStatus } from "@/types/types";
+import { ICollection } from "@/types/collection/collection.types";
+import { TStatus } from "@/types/types";
 
 export function useCollections() {
     return useQuery({

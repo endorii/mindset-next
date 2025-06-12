@@ -34,7 +34,11 @@ export class SizesService {
     //   return `This action updates a #${id} size`;
     // }
 
-    // remove(id: number) {
-    //   return `This action removes a #${id} size`;
-    // }
+    async deleteSize(sizeId: string) {
+        return await this.prisma.size.delete({
+            where: {
+                id: sizeId,
+            },
+        });
+    }
 }

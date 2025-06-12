@@ -34,7 +34,11 @@ export class TypesService {
     //   return `This action updates a #${id} type`;
     // }
 
-    // remove(id: number) {
-    //   return `This action removes a #${id} type`;
-    // }
+    async deleteType(typeId: string) {
+        return await this.prisma.type.delete({
+            where: {
+                id: typeId,
+            },
+        });
+    }
 }

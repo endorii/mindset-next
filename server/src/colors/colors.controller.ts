@@ -1,5 +1,4 @@
-// colors.controller.ts
-import { Controller, Post, Body, ValidationPipe, Get } from "@nestjs/common";
+import { Controller, Post, Body, ValidationPipe, Get, Param, Delete } from "@nestjs/common";
 import { CreateColorDto } from "./dto/create-color.dto";
 import { ColorsService } from "./colors.service";
 
@@ -27,8 +26,8 @@ export class ColorsController {
     //     return this.colorsService.update(+id, updateColorDto);
     // }
 
-    // @Delete(":id")
-    // remove(@Param("id") id: string) {
-    //     return this.colorsService.remove(+id);
-    // }
+    @Delete(":colorId")
+    deleteColor(@Param("colorId") colorId: string) {
+        return this.colorsService.deleteColor(colorId);
+    }
 }

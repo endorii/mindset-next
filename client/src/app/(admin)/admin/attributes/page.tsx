@@ -12,12 +12,21 @@ import TrashIcon from "@/components/Icons/TrashIcon";
 // import EditSizeModal from "@/components/Modals/attributes/EditSizeModal";
 // import DeleteColorModal from "@/components/Modals/attributes/DeleteColorModal";
 // import DeleteSizeModal from "@/components/Modals/attributes/DeleteSizeModal";
-import { IColor, ISize, ModalType } from "@/types/types";
+import { AttributeModalType, ModalType } from "@/types/types";
 import React, { useState } from "react";
 import { useColors } from "@/lib/hooks/useColors";
 import { useTypes } from "@/lib/hooks/useTypes";
 import { useSizes } from "@/lib/hooks/useSizes";
 import SearchIcon from "@/components/Icons/SearchIcon";
+import AddColorModal from "@/components/Modals/color/AddColorModal";
+import { IColor } from "@/types/color/color.types";
+import { ISize } from "@/types/size/size.types";
+import AddTypeModal from "@/components/Modals/type/AddTypeModal";
+import AddSizeModal from "@/components/Modals/size/AddSizeModal";
+import { IType } from "@/types/type/type.types";
+import DeleteColorModal from "@/components/Modals/color/DeleteColorModal";
+import DeleteTypeModal from "@/components/Modals/type/DeleteTypeModal";
+import DeleteSizeModal from "@/components/Modals/size/DeleteSizeModal";
 
 function AdminAttributes() {
     const { data: colors } = useColors();
@@ -29,20 +38,53 @@ function AdminAttributes() {
     const [selectedAttribute, setSelectedAttribute] =
         useState<string>("кольори");
 
-    const [activeModal, setActiveModal] = useState<ModalType>(null);
+    const [activeModal, setActiveModal] = useState<AttributeModalType>(null);
     const [selectedColor, setSelectedColor] = useState<IColor | null>(null);
+    const [selectedType, setSelectedType] = useState<IColor | null>(null);
     const [selectedSize, setSelectedSize] = useState<ISize | null>(null);
 
     const attributes = ["кольори", "типи", "розміри"];
 
-    const openModal = (
-        type: ModalType,
-        color: IColor | null = null,
-        size: ISize | null = null
-    ) => {
+    const openAddColorModal = () => {
+        setActiveModal("addColor");
+    };
+
+    // const openEditColorModal = (color: IColor) => {
+    //     setSelectedColor(color);
+    //     setActiveModal("editColor");
+    // };
+
+    const openDeleteColorModal = (color: IColor) => {
         setSelectedColor(color);
+        setActiveModal("deleteColor");
+    };
+
+    const openAddTypeModal = () => {
+        setActiveModal("addType");
+    };
+
+    // const openEditTypeModal = (type: IType) => {
+    //     setSelectedType(type);
+    //     setActiveModal("editType");
+    // };
+
+    const openDeleteTypeModal = (type: IType) => {
+        setSelectedType(type);
+        setActiveModal("deleteType");
+    };
+
+    const openAddSizeModal = () => {
+        setActiveModal("addSize");
+    };
+
+    // const openEditSizeModal = (size: ISize) => {
+    //     setSelectedSize(size);
+    //     setActiveModal("editSize");
+    // };
+
+    const openDeleteSizeModal = (size: ISize) => {
         setSelectedSize(size);
-        setActiveModal(type);
+        setActiveModal("deleteSize");
     };
 
     const closeModal = () => {
@@ -50,6 +92,8 @@ function AdminAttributes() {
         setSelectedSize(null);
         setActiveModal(null);
     };
+
+    // TODO: ВЕРХНІ ФУНКЦІЇ ПОТРІБНО ОПТИМІЗУВАТИ, РОЗДІЛИТИ АТРИБУТИ ПО КОМПОНЕНТАМ
 
     return (
         <div>
@@ -87,7 +131,7 @@ function AdminAttributes() {
                         <div className="flex justify-end">
                             <button
                                 className="flex group items-center gap-[10px] mt-[20px] mb-[10px] px-[15px] py-[8px] bg-black border border-transparent text-white hover:text-black hover:border-black hover:bg-white transition-all duration-200 cursor-pointer"
-                                //   onClick={() => openModal("addColor")}
+                                onClick={openAddColorModal}
                             >
                                 <div>Додати колір</div>
                                 <PlusIcon className="stroke-white stroke-2 w-[30px] group-hover:stroke-black" />
@@ -121,19 +165,15 @@ function AdminAttributes() {
                                         <div>{color.hexCode}</div>
                                         <div className="flex gap-[20px] justify-end">
                                             <button
-                                                className="group hover:bg-black p-[5px] transition-all duration-200 cursor-pointer rounded"
-                                                // onClick={() => openModal("infoColor", color)}
-                                            >
-                                                <InfoIcon className="w-[30px] stroke-black fill-none stroke-[2] group-hover:stroke-white" />
-                                            </button>
-                                            <button
-                                                // onClick={() => openModal("editColor", color)}
+                                                // onClick={() => openModal("edit", color)}
                                                 className="group hover:bg-black p-[5px] transition-all duration-200 cursor-pointer rounded"
                                             >
                                                 <EditIcon className="w-[27px] fill-none stroke-black stroke-[2.3] group-hover:stroke-white" />
                                             </button>
                                             <button
-                                                // onClick={() => openModal("deleteColor", color)}
+                                                onClick={() =>
+                                                    openDeleteColorModal(color)
+                                                }
                                                 className="group hover:bg-black p-[5px] transition-all duration-200 cursor-pointer rounded"
                                             >
                                                 <TrashIcon className="w-[30px] fill-none stroke-black stroke-[2] group-hover:stroke-white" />
@@ -162,7 +202,7 @@ function AdminAttributes() {
                         <div className="flex justify-end">
                             <button
                                 className="flex group items-center gap-[10px] mt-[20px] mb-[10px] px-[15px] py-[8px] bg-black border border-transparent text-white hover:text-black hover:border-black hover:bg-white transition-all duration-200 cursor-pointer"
-                                //   onClick={() => openModal("addColor")}
+                                onClick={openAddTypeModal}
                             >
                                 <div>Додати тип</div>
                                 <PlusIcon className="stroke-white stroke-2 w-[30px] group-hover:stroke-black" />
@@ -184,19 +224,15 @@ function AdminAttributes() {
                                         <div>{type.name}</div>
                                         <div className="flex gap-[20px] justify-end">
                                             <button
-                                                className="group hover:bg-black p-[5px] transition-all duration-200 cursor-pointer rounded"
-                                                // onClick={() => openModal("infoColor", color)}
-                                            >
-                                                <InfoIcon className="w-[30px] stroke-black fill-none stroke-[2] group-hover:stroke-white" />
-                                            </button>
-                                            <button
                                                 // onClick={() => openModal("editColor", color)}
                                                 className="group hover:bg-black p-[5px] transition-all duration-200 cursor-pointer rounded"
                                             >
                                                 <EditIcon className="w-[27px] fill-none stroke-black stroke-[2.3] group-hover:stroke-white" />
                                             </button>
                                             <button
-                                                // onClick={() => openModal("deleteColor", color)}
+                                                onClick={() =>
+                                                    openDeleteTypeModal(type)
+                                                }
                                                 className="group hover:bg-black p-[5px] transition-all duration-200 cursor-pointer rounded"
                                             >
                                                 <TrashIcon className="w-[30px] fill-none stroke-black stroke-[2] group-hover:stroke-white" />
@@ -225,7 +261,7 @@ function AdminAttributes() {
                         <div className="flex justify-end">
                             <button
                                 className="flex group items-center gap-[10px] mt-[20px] mb-[10px] px-[15px] py-[8px] bg-black border border-transparent text-white hover:text-black hover:border-black hover:bg-white transition-all duration-200 cursor-pointer"
-                                //   onClick={() => openModal("addColor")}
+                                onClick={openAddSizeModal}
                             >
                                 <div>Додати розмір</div>
                                 <PlusIcon className="stroke-white stroke-2 w-[30px] group-hover:stroke-black" />
@@ -247,19 +283,15 @@ function AdminAttributes() {
                                         <div>{size.name}</div>
                                         <div className="flex gap-[20px] justify-end">
                                             <button
-                                                className="group hover:bg-black p-[5px] transition-all duration-200 cursor-pointer rounded"
-                                                // onClick={() => openModal("infoColor", color)}
-                                            >
-                                                <InfoIcon className="w-[30px] stroke-black fill-none stroke-[2] group-hover:stroke-white" />
-                                            </button>
-                                            <button
-                                                // onClick={() => openModal("editColor", color)}
+                                                // onClick={() => openModal("edit", color)}
                                                 className="group hover:bg-black p-[5px] transition-all duration-200 cursor-pointer rounded"
                                             >
                                                 <EditIcon className="w-[27px] fill-none stroke-black stroke-[2.3] group-hover:stroke-white" />
                                             </button>
                                             <button
-                                                // onClick={() => openModal("deleteColor", color)}
+                                                onClick={() =>
+                                                    openDeleteSizeModal(size)
+                                                }
                                                 className="group hover:bg-black p-[5px] transition-all duration-200 cursor-pointer rounded"
                                             >
                                                 <TrashIcon className="w-[30px] fill-none stroke-black stroke-[2] group-hover:stroke-white" />
@@ -276,47 +308,63 @@ function AdminAttributes() {
             ) : (
                 <div>Дані не знайдено</div>
             )}
+            <AddColorModal
+                isOpen={activeModal === "addColor"}
+                onClose={closeModal}
+            />
+            {selectedColor && (
+                <DeleteColorModal
+                    isOpen={activeModal === "deleteColor"}
+                    onClose={closeModal}
+                    color={selectedColor}
+                />
+            )}
+            {/* {selectedColor && (
+                <EditColorModal
+                    isOpen={activeModal === "editColor"}
+                    onClose={closeModal}
+                    color={selectedColor}
+                />
+            )} */}
 
-            {/* <AddColorModal isOpen={activeModal === "addColor"} onClose={closeModal} />
-      <AddSizeModal isOpen={activeModal === "addSize"} onClose={closeModal} />
-      {selectedColor && (
-        <>
-          <ColorInfoModal
-            isOpen={activeModal === "infoColor"}
-            onClose={closeModal}
-            color={selectedColor}
-          />
-          <EditColorModal
-            isOpen={activeModal === "editColor"}
-            onClose={closeModal}
-            color={selectedColor}
-          />
-          <DeleteColorModal
-            isOpen={activeModal === "deleteColor"}
-            onClose={closeModal}
-            color={selectedColor}
-          />
-        </>
-      )}
-      {selectedSize && (
-        <>
-          <SizeInfoModal
-            isOpen={activeModal === "infoSize"}
-            onClose={closeModal}
-            size={selectedSize}
-          />
-          <EditSizeModal
-            isOpen={activeModal === "editSize"}
-            onClose={closeModal}
-            size={selectedSize}
-          />
-          <DeleteSizeModal
-            isOpen={activeModal === "deleteSize", size)}
-            onClose={closeModal}
-            size={selectedSize}
-          />
-        </>
-      )} */}
+            <AddTypeModal
+                isOpen={activeModal === "addType"}
+                onClose={closeModal}
+            />
+            {selectedType && (
+                <DeleteTypeModal
+                    isOpen={activeModal === "deleteType"}
+                    onClose={closeModal}
+                    type={selectedType}
+                />
+            )}
+            {/* {selectedType && (
+                <EditTypeModal
+                    isOpen={activeModal === "editType"}
+                    onClose={closeModal}
+                    type={selectedType}
+                />
+            )} */}
+
+            <AddSizeModal
+                isOpen={activeModal === "addSize"}
+                onClose={closeModal}
+            />
+            {selectedSize && (
+                <DeleteSizeModal
+                    isOpen={activeModal === "deleteSize"}
+                    onClose={closeModal}
+                    size={selectedSize}
+                />
+            )}
+
+            {/* {selectedSize && (
+                <EditSizeModal
+                    isOpen={activeModal === "editSize"}
+                    onClose={closeModal}
+                    size={selectedSize}
+                />
+            )} */}
         </div>
     );
 }

@@ -1,4 +1,4 @@
-import { ICollection, TStatus } from "@/types/types";
+import { ICollection } from "@/types/collection/collection.types";
 
 export async function fetchCollections(): Promise<ICollection[]> {
     try {
