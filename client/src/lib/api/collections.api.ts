@@ -1,4 +1,4 @@
-import { ICollection } from "@/types/collection/collection.types";
+import { ICollection, ICollectionPayload } from "@/types/collection/collection.types";
 
 export async function fetchCollections(): Promise<ICollection[]> {
     try {
@@ -22,7 +22,7 @@ export async function fetchCollection(collectionPath: string): Promise<ICollecti
     }
 }
 
-export async function createCollection(data: ICollection): Promise<ICollection> {
+export async function createCollection(data: ICollectionPayload): Promise<ICollection> {
     try {
         const res = await fetch("http://localhost:5000/api/collections", {
             method: "POST",

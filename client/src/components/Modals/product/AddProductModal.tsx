@@ -2,15 +2,7 @@
 
 import { statuses } from "@/lib/helpers/helpers";
 import { useCreateProduct } from "@/lib/hooks/useProducts";
-import {
-    ICategory,
-    ICollection,
-    IColor,
-    ICreateProductPayload,
-    ISize,
-    IType,
-    TStatus,
-} from "@/types/types";
+import { TStatus } from "@/types/types";
 import { useState } from "react";
 import Image from "next/image";
 import { useUploadImage, useUploadImages } from "@/lib/hooks/useImages";
@@ -18,6 +10,12 @@ import { createPortal } from "react-dom";
 import { useColors } from "@/lib/hooks/useColors";
 import { useTypes } from "@/lib/hooks/useTypes";
 import { useSizes } from "@/lib/hooks/useSizes";
+import { ICategory } from "@/types/category/category.types";
+import { ICollection } from "@/types/collection/collection.types";
+import { IColor } from "@/types/color/color.types";
+import { ISize } from "@/types/size/size.types";
+import { IType } from "@/types/type/type.types";
+import { ICreateProductPayload } from "@/types/product/product.types";
 
 interface AddProductModalProps {
     isOpen: boolean;

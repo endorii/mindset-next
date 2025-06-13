@@ -1,4 +1,3 @@
-import { ICategory, ICollection, ICreateProductPayload, IProduct } from "@/types/types";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
     addProductToCategory,
@@ -6,6 +5,9 @@ import {
     editProduct,
     fetchProduct,
 } from "../api/products.api";
+import { ICollection } from "@/types/collection/collection.types";
+import { ICategory } from "@/types/category/category.types";
+import { ICreateProductPayload, IProduct } from "@/types/product/product.types";
 
 export function useProduct(
     collectionPath: ICollection["path"],

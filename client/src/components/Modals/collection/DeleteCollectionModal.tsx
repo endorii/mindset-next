@@ -2,7 +2,7 @@
 
 import { deleteImage } from "@/lib/api/images.api";
 import { useDeleteCollection } from "@/lib/hooks/useCollections";
-import { ICollection } from "@/types/types";
+import { ICollection } from "@/types/collection/collection.types";
 import { createPortal } from "react-dom";
 
 interface DeleteCollectionModalProps {

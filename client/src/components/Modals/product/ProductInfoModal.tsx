@@ -1,8 +1,9 @@
 "use client";
 
 import { formatDate } from "@/lib/helpers/formatDate";
-import { ICategory, ICollection, IProduct } from "@/types/types";
-import { div, p } from "motion/react-client";
+import { ICategory } from "@/types/category/category.types";
+import { ICollection } from "@/types/collection/collection.types";
+import { IProduct } from "@/types/product/product.types";
 import Image from "next/image";
 import { createPortal } from "react-dom";
 

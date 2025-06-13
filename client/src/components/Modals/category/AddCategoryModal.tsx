@@ -2,11 +2,12 @@
 
 import { statuses } from "@/lib/helpers/helpers";
 import { useUploadImage } from "@/lib/hooks/useImages";
-import { ICollection, TStatus } from "@/types/types";
+import { TStatus } from "@/types/types";
 import Image from "next/image";
 import { useState } from "react";
 import { useCreateCategory } from "@/lib/hooks/useCategories";
 import { createPortal } from "react-dom";
+import { ICollection } from "@/types/collection/collection.types";
 
 interface AddCategoryModalProps {
     isOpen: boolean;
@@ -77,10 +78,6 @@ export default function AddCategoryModal({
                     views: 0,
                     status,
                     collectionId,
-                    id: "",
-                    products: [],
-                    createdAt: "",
-                    updatedAt: "",
                 },
             });
 

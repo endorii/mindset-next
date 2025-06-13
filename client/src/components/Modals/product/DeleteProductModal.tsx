@@ -2,7 +2,9 @@
 
 import { deleteImage, deleteImages } from "@/lib/api/images.api";
 import { useDeleteProduct } from "@/lib/hooks/useProducts";
-import { ICategory, ICollection, IProduct } from "@/types/types";
+import { ICategory } from "@/types/category/category.types";
+import { ICollection } from "@/types/collection/collection.types";
+import { IProduct } from "@/types/product/product.types";
 import { createPortal } from "react-dom";
 
 interface DeleteProductProps {

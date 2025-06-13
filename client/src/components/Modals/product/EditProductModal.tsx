@@ -2,10 +2,13 @@
 import Image from "next/image";
 import { useEffect, useState, ChangeEvent } from "react";
 import { statuses } from "@/lib/helpers/helpers";
-import { ICategory, ICollection, IProduct, TStatus } from "@/types/types";
+import { TStatus } from "@/types/types";
 import { useUploadImage, useUploadImages } from "@/lib/hooks/useImages";
 import { useEditProduct } from "@/lib/hooks/useProducts";
 import { createPortal } from "react-dom";
+import { ICollection } from "@/types/collection/collection.types";
+import { ICategory } from "@/types/category/category.types";
+import { IProduct } from "@/types/product/product.types";
 
 interface EditProductModalProps {
     isOpen: boolean;

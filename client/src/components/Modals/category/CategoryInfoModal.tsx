@@ -1,7 +1,8 @@
 "use client";
 
 import { formatDate } from "@/lib/helpers/formatDate";
-import { ICategory, ICollection } from "@/types/types";
+import { ICategory } from "@/types/category/category.types";
+import { ICollection } from "@/types/collection/collection.types";
 import { createPortal } from "react-dom";
 
 interface CategoryInfoModalProps {

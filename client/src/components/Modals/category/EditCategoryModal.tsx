@@ -3,7 +3,9 @@
 import { statuses } from "@/lib/helpers/helpers";
 import { useEditCategory } from "@/lib/hooks/useCategories";
 import { useUploadImage } from "@/lib/hooks/useImages";
-import { ICategory, ICollection, TStatus } from "@/types/types";
+import { ICategory } from "@/types/category/category.types";
+import { ICollection } from "@/types/collection/collection.types";
+import { TStatus } from "@/types/types";
 import Image from "next/image";
 import { useState, useEffect, ChangeEvent } from "react";
 import { createPortal } from "react-dom";

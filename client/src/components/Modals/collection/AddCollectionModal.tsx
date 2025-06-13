@@ -65,10 +65,6 @@ export default function AddCollectionModal({
                 banner: imagePath,
                 views: 0,
                 status,
-                id: "",
-                categories: [],
-                createdAt: "",
-                updatedAt: "",
             });
             setMessage("Колекцію успішно додано!");
             handleClose();

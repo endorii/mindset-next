@@ -1,9 +1,9 @@
 "use client";
 
-import { deleteCategory } from "@/lib/api/categories.api";
 import { deleteImage } from "@/lib/api/images.api";
 import { useDeleteCategory } from "@/lib/hooks/useCategories";
-import { ICategory, ICollection } from "@/types/types";
+import { ICategory } from "@/types/category/category.types";
+import { ICollection } from "@/types/collection/collection.types";
 import { createPortal } from "react-dom";
 
 interface DeleteCategoryModalProps {
@@ -21,11 +21,11 @@ export default function DeleteCategoryModal({
 }: DeleteCategoryModalProps) {
     if (!isOpen) return null;
 
-    const deleteCategory = useDeleteCategory();
+    const deleteCategoryMutation = useDeleteCategory();
 
     const handleDelete = async () => {
         try {
-            await deleteCategory.mutateAsync({
+            await deleteCategoryMutation.mutateAsync({
                 collectionPath,
                 categoryPath: category.path,
             });

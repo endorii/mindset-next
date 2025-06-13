@@ -1,7 +1,7 @@
 "use client";
 
 import { formatDate } from "@/lib/helpers/formatDate";
-import { ICollection } from "@/types/types";
+import { ICollection } from "@/types/collection/collection.types";
 import { createPortal } from "react-dom";
 
 export interface CollectionInfoModalProps {

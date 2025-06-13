@@ -1,11 +1,12 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { ICategory, ICollection } from "@/types/types";
 import {
     addCategoryToCollection,
     deleteCategory,
     editCategory,
     fetchCategory,
 } from "../api/categories.api";
+import { ICategory, ICategoryPayload } from "@/types/category/category.types";
+import { ICollection } from "@/types/collection/collection.types";
 
 export function useCategory(collectionPath: ICollection["path"], categoryPath: ICategory["path"]) {
     return useQuery({
@@ -23,7 +24,7 @@ export function useCreateCategory() {
             categoryData,
         }: {
             collectionPath: ICollection["path"];
-            categoryData: ICategory;
+            categoryData: ICategoryPayload;
         }) => addCategoryToCollection(collectionPath, categoryData),
         onSuccess: (_data, variables) => {
             queryClient.invalidateQueries({
