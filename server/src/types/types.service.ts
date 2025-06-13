@@ -1,7 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import { CreateTypeDto } from "./dto/create-type.dto";
-// import { UpdateTypeDto } from "./dto/update-type.dto";
 import { PrismaService } from "src/prisma/prisma.service";
+import { UpdateTypeDto } from "./dto/update-type.dto";
 
 @Injectable()
 export class TypesService {
@@ -26,13 +26,14 @@ export class TypesService {
         return await this.prisma.type.findMany();
     }
 
-    // findOne(id: number) {
-    //   return `This action returns a #${id} type`;
-    // }
-
-    // update(id: number, updateTypeDto: UpdateTypeDto) {
-    //   return `This action updates a #${id} type`;
-    // }
+    async editType(typeId: string, updateTypeDto: UpdateTypeDto) {
+        return await this.prisma.type.update({
+            where: {
+                id: typeId,
+            },
+            data: updateTypeDto,
+        });
+    }
 
     async deleteType(typeId: string) {
         return await this.prisma.type.delete({

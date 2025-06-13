@@ -1,6 +1,7 @@
-import { Controller, Post, Body, ValidationPipe, Get, Param, Delete } from "@nestjs/common";
+import { Controller, Post, Body, ValidationPipe, Get, Param, Delete, Patch } from "@nestjs/common";
 import { CreateColorDto } from "./dto/create-color.dto";
 import { ColorsService } from "./colors.service";
+import { UpdateColorDto } from "./dto/update-color.dto";
 
 @Controller("colors")
 export class ColorsController {
@@ -16,15 +17,10 @@ export class ColorsController {
         return this.colorsService.getColors();
     }
 
-    // @Get(":id")
-    // findOne(@Param("id") id: string) {
-    //     return this.colorsService.findOne(+id);
-    // }
-
-    // @Patch(":id")
-    // update(@Param("id") id: string, @Body() updateColorDto: UpdateColorDto) {
-    //     return this.colorsService.update(+id, updateColorDto);
-    // }
+    @Patch(":colorId")
+    editColor(@Param("colorId") colorId: string, @Body() updateColorDto: UpdateColorDto) {
+        return this.colorsService.editColor(colorId, updateColorDto);
+    }
 
     @Delete(":colorId")
     deleteColor(@Param("colorId") colorId: string) {

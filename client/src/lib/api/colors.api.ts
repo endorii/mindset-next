@@ -32,6 +32,22 @@ export async function createColor(data: IColorPayload): Promise<IColor> {
     }
 }
 
+export async function editColor(colorId: IColor["id"], data: Partial<IColor>) {
+    const res = await fetch(`http://localhost:5000/api/colors/${colorId}`, {
+        method: "PATCH",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+    });
+
+    if (!res.ok) {
+        throw new Error("Не вдалося оновити колір");
+    }
+
+    return res.json();
+}
+
 export async function deleteColor(colorId: IColor["id"]) {
     const res = await fetch(`http://localhost:5000/api/colors/${colorId}`, {
         method: "DELETE",

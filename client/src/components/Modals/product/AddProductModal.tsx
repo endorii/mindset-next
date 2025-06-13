@@ -192,8 +192,8 @@ export default function AddProductModal({
     if (!isOpen) return null;
 
     const modalContent = (
-        <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 overflow-y-auto">
-            <div className="bg-white p-[40px] shadow-xl max-w-4xl h-[95vh] w-full rounded-md overflow-y-auto">
+        <div className="fixed inset-0 bg-black/70 flex items-center products-center justify-center z-100">
+            <div className="bg-white p-[40px] h-[95vh] shadow-lg w-[80vw] overflow-y-auto">
                 <h2 className="text-xl font-bold mb-4 ">Додавання товару</h2>
                 <form onSubmit={handleSubmit}>
                     <div className="flex gap-[20px]">
@@ -512,86 +512,90 @@ export default function AddProductModal({
                                     )}
                                 </div>
                             </div>
-                            <div>
-                                <label
-                                    htmlFor="banner"
-                                    className="text-sm font-semibold"
-                                >
-                                    Банер
-                                </label>
-                                <label
-                                    htmlFor="banner"
-                                    className="min-h-[100px] max-w-[300px] border border-dashed border-gray-400 mt-2 flex items-center justify-center cursor-pointer bg-gray-50 hover:bg-gray-100 rounded-md overflow-hidden"
-                                >
-                                    {bannerPreview ? (
-                                        <Image
-                                            src={bannerPreview}
-                                            alt="banner"
-                                            width={250}
-                                            height={300}
-                                            className="object-cover"
-                                        />
-                                    ) : (
+                            <div className="flex justify-between gap-[20px]">
+                                <div className="w-[50%]">
+                                    <label
+                                        htmlFor="banner"
+                                        className="text-sm font-semibold"
+                                    >
+                                        Банер
+                                    </label>
+                                    <label
+                                        htmlFor="banner"
+                                        className="min-h-[100px] max-w-[300px] border border-dashed border-gray-400 mt-2 flex items-center justify-center cursor-pointer bg-gray-50 hover:bg-gray-100 rounded-md overflow-hidden"
+                                    >
+                                        {bannerPreview ? (
+                                            <Image
+                                                src={bannerPreview}
+                                                alt="banner"
+                                                width={250}
+                                                height={300}
+                                                className="object-cover"
+                                            />
+                                        ) : (
+                                            <span className="text-4xl text-gray-400">
+                                                +
+                                            </span>
+                                        )}
+                                    </label>
+                                    <input
+                                        type="file"
+                                        id="banner"
+                                        accept="image/*"
+                                        onChange={handleBannerChange}
+                                        className="hidden"
+                                    />
+                                </div>
+
+                                <div className="w-[50%]">
+                                    <label
+                                        htmlFor="images"
+                                        className="text-sm font-semibold"
+                                    >
+                                        Додаткові зображення
+                                    </label>
+                                    <label
+                                        htmlFor="images"
+                                        className="min-h-[100px] max-w-[300px] border border-dashed border-gray-400 mt-2 flex items-center justify-center cursor-pointer bg-gray-50 hover:bg-gray-100 rounded-md overflow-hidden"
+                                    >
                                         <span className="text-4xl text-gray-400">
                                             +
                                         </span>
-                                    )}
-                                </label>
-                                <input
-                                    type="file"
-                                    id="banner"
-                                    accept="image/*"
-                                    onChange={handleBannerChange}
-                                    className="hidden"
-                                />
-                            </div>
+                                    </label>
+                                    <input
+                                        type="file"
+                                        id="images"
+                                        multiple
+                                        accept="image/*"
+                                        onChange={handleImagesChange}
+                                        className="hidden"
+                                    />
 
-                            <div>
-                                <label
-                                    htmlFor="images"
-                                    className="text-sm font-semibold"
-                                >
-                                    Додаткові зображення
-                                </label>
-                                <label
-                                    htmlFor="images"
-                                    className="min-h-[100px] max-w-[300px] border border-dashed border-gray-400 mt-2 flex items-center justify-center cursor-pointer bg-gray-50 hover:bg-gray-100 rounded-md overflow-hidden"
-                                >
-                                    <span className="text-4xl text-gray-400">
-                                        +
-                                    </span>
-                                </label>
-                                <input
-                                    type="file"
-                                    id="images"
-                                    multiple
-                                    accept="image/*"
-                                    onChange={handleImagesChange}
-                                    className="hidden"
-                                />
-
-                                <div className="flex flex-wrap gap-3 mt-4">
-                                    {imagePreviews.map((src, i) => (
-                                        <div
-                                            key={i}
-                                            className="relative group w-[100px] h-[100px]"
-                                        >
-                                            <Image
-                                                src={src}
-                                                alt={`img-${i}`}
-                                                width={100}
-                                                height={100}
-                                                className="object-cover rounded-md"
-                                            />
-                                            <button
-                                                type="button"
-                                                onClick={() => removeImage(i)}
-                                                className="absolute top-0 right-0 bg-black text-white px-[8px] py-[2px] opacity-0 group-hover:opacity-100 transition cursor-pointer"
+                                    <div className="flex flex-wrap gap-3 mt-4">
+                                        {imagePreviews.map((src, i) => (
+                                            <div
+                                                key={i}
+                                                className="relative group w-[100px] h-[100px]"
                                             >
-                                                Х
-                                            </button>
-                                        </div>
-                                    ))}
+                                                <Image
+                                                    src={src}
+                                                    alt={`img-${i}`}
+                                                    width={100}
+                                                    height={100}
+                                                    className="object-cover rounded-md"
+                                                />
+                                                <button
+                                                    type="button"
+                                                    onClick={() =>
+                                                        removeImage(i)
+                                                    }
+                                                    className="absolute top-0 right-0 bg-black text-white px-[8px] py-[2px] opacity-0 group-hover:opacity-100 transition cursor-pointer"
+                                                >
+                                                    Х
+                                                </button>
+                                            </div>
+                                        ))}
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -602,7 +606,7 @@ export default function AddProductModal({
                         <button
                             type="button"
                             onClick={handleClose}
-                            className="px-4 py-2 bg-gray-200 hover:bg-gray-300 rounded"
+                            className="px-4 py-2 bg-gray-200 hover:bg-black hover:text-white"
                         >
                             Відмінити
                         </button>

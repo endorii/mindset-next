@@ -32,6 +32,22 @@ export async function createType(data: ITypePayload): Promise<IType> {
     }
 }
 
+export async function editType(typeId: IType["id"], data: Partial<IType>) {
+    const res = await fetch(`http://localhost:5000/api/types/${typeId}`, {
+        method: "PATCH",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+    });
+
+    if (!res.ok) {
+        throw new Error("Не вдалося оновити тип");
+    }
+
+    return res.json();
+}
+
 export async function deleteType(typeId: IType["id"]) {
     const res = await fetch(`http://localhost:5000/api/types/${typeId}`, {
         method: "DELETE",

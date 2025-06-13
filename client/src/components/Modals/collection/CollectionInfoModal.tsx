@@ -18,8 +18,8 @@ export default function CollectionInfoModal({
     if (!isOpen || !collection) return null;
 
     const modalContent = (
-        <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-100">
-            <div className="bg-white p-[40px] shadow-lg max-w-4xl w-full">
+        <div className="fixed inset-0 bg-black/70 flex items-center products-center justify-center z-100">
+            <div className="bg-white p-[40px] h-[80vh] shadow-lg w-[50vw] overflow-y-auto">
                 <h2 className="text-lg font-bold mb-4">
                     Інформація про колекцію: {collection.name || "Без назви"}
                 </h2>

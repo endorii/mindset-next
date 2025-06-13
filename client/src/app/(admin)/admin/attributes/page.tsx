@@ -2,16 +2,7 @@
 
 import PlusIcon from "@/components/Icons/PlusIcon";
 import EditIcon from "@/components/Icons/EditIcon";
-import InfoIcon from "@/components/Icons/InfoIcon";
 import TrashIcon from "@/components/Icons/TrashIcon";
-// import AddColorModal from "@/components/Modals/attributes/AddColorModal";
-// import AddSizeModal from "@/components/Modals/attributes/AddSizeModal";
-// import ColorInfoModal from "@/components/Modals/attributes/ColorInfoModal";
-// import SizeInfoModal from "@/components/Modals/attributes/SizeInfoModal";
-// import EditColorModal from "@/components/Modals/attributes/EditColorModal";
-// import EditSizeModal from "@/components/Modals/attributes/EditSizeModal";
-// import DeleteColorModal from "@/components/Modals/attributes/DeleteColorModal";
-// import DeleteSizeModal from "@/components/Modals/attributes/DeleteSizeModal";
 import { AttributeModalType, ModalType } from "@/types/types";
 import React, { useState } from "react";
 import { useColors } from "@/lib/hooks/useColors";
@@ -27,6 +18,9 @@ import { IType } from "@/types/type/type.types";
 import DeleteColorModal from "@/components/Modals/color/DeleteColorModal";
 import DeleteTypeModal from "@/components/Modals/type/DeleteTypeModal";
 import DeleteSizeModal from "@/components/Modals/size/DeleteSizeModal";
+import EditColorModal from "@/components/Modals/color/EditColorModal";
+import EditSizeModal from "@/components/Modals/size/EditSizeModal";
+import EditTypeModal from "@/components/Modals/type/EditTypeModal";
 
 function AdminAttributes() {
     const { data: colors } = useColors();
@@ -49,10 +43,10 @@ function AdminAttributes() {
         setActiveModal("addColor");
     };
 
-    // const openEditColorModal = (color: IColor) => {
-    //     setSelectedColor(color);
-    //     setActiveModal("editColor");
-    // };
+    const openEditColorModal = (color: IColor) => {
+        setSelectedColor(color);
+        setActiveModal("editColor");
+    };
 
     const openDeleteColorModal = (color: IColor) => {
         setSelectedColor(color);
@@ -63,10 +57,10 @@ function AdminAttributes() {
         setActiveModal("addType");
     };
 
-    // const openEditTypeModal = (type: IType) => {
-    //     setSelectedType(type);
-    //     setActiveModal("editType");
-    // };
+    const openEditTypeModal = (type: IType) => {
+        setSelectedType(type);
+        setActiveModal("editType");
+    };
 
     const openDeleteTypeModal = (type: IType) => {
         setSelectedType(type);
@@ -77,10 +71,10 @@ function AdminAttributes() {
         setActiveModal("addSize");
     };
 
-    // const openEditSizeModal = (size: ISize) => {
-    //     setSelectedSize(size);
-    //     setActiveModal("editSize");
-    // };
+    const openEditSizeModal = (size: ISize) => {
+        setSelectedSize(size);
+        setActiveModal("editSize");
+    };
 
     const openDeleteSizeModal = (size: ISize) => {
         setSelectedSize(size);
@@ -165,7 +159,9 @@ function AdminAttributes() {
                                         <div>{color.hexCode}</div>
                                         <div className="flex gap-[20px] justify-end">
                                             <button
-                                                // onClick={() => openModal("edit", color)}
+                                                onClick={() =>
+                                                    openEditColorModal(color)
+                                                }
                                                 className="group hover:bg-black p-[5px] transition-all duration-200 cursor-pointer rounded"
                                             >
                                                 <EditIcon className="w-[27px] fill-none stroke-black stroke-[2.3] group-hover:stroke-white" />
@@ -224,7 +220,9 @@ function AdminAttributes() {
                                         <div>{type.name}</div>
                                         <div className="flex gap-[20px] justify-end">
                                             <button
-                                                // onClick={() => openModal("editColor", color)}
+                                                onClick={() =>
+                                                    openEditTypeModal(type)
+                                                }
                                                 className="group hover:bg-black p-[5px] transition-all duration-200 cursor-pointer rounded"
                                             >
                                                 <EditIcon className="w-[27px] fill-none stroke-black stroke-[2.3] group-hover:stroke-white" />
@@ -283,7 +281,9 @@ function AdminAttributes() {
                                         <div>{size.name}</div>
                                         <div className="flex gap-[20px] justify-end">
                                             <button
-                                                // onClick={() => openModal("edit", color)}
+                                                onClick={() =>
+                                                    openEditSizeModal(size)
+                                                }
                                                 className="group hover:bg-black p-[5px] transition-all duration-200 cursor-pointer rounded"
                                             >
                                                 <EditIcon className="w-[27px] fill-none stroke-black stroke-[2.3] group-hover:stroke-white" />
@@ -319,13 +319,13 @@ function AdminAttributes() {
                     color={selectedColor}
                 />
             )}
-            {/* {selectedColor && (
+            {selectedColor && (
                 <EditColorModal
                     isOpen={activeModal === "editColor"}
                     onClose={closeModal}
                     color={selectedColor}
                 />
-            )} */}
+            )}
 
             <AddTypeModal
                 isOpen={activeModal === "addType"}
@@ -338,13 +338,13 @@ function AdminAttributes() {
                     type={selectedType}
                 />
             )}
-            {/* {selectedType && (
+            {selectedType && (
                 <EditTypeModal
                     isOpen={activeModal === "editType"}
                     onClose={closeModal}
                     type={selectedType}
                 />
-            )} */}
+            )}
 
             <AddSizeModal
                 isOpen={activeModal === "addSize"}
@@ -358,13 +358,13 @@ function AdminAttributes() {
                 />
             )}
 
-            {/* {selectedSize && (
+            {selectedSize && (
                 <EditSizeModal
                     isOpen={activeModal === "editSize"}
                     onClose={closeModal}
                     size={selectedSize}
                 />
-            )} */}
+            )}
         </div>
     );
 }

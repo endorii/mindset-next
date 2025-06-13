@@ -1,5 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { createType, deleteType, fetchTypes } from "../api/types.api";
+import { createType, deleteType, editType, fetchTypes } from "../api/types.api";
 import { IType, ITypePayload } from "@/types/type/type.types";
 
 export function useTypes() {
@@ -18,6 +18,25 @@ export function useCreateType() {
             queryClient.invalidateQueries({
                 queryKey: ["types"],
             });
+        },
+    });
+}
+
+export function useEditType() {
+    const queryClient = useQueryClient();
+
+    return useMutation({
+        mutationFn: ({
+            typeId,
+            data,
+        }: {
+            typeId: IType["id"];
+            data: {
+                name: string;
+            };
+        }) => editType(typeId, data),
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ["types"] });
         },
     });
 }

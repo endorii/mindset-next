@@ -17,7 +17,7 @@ export default function AddColorModal({ isOpen, onClose }: AddColorModalProps) {
 
     const handleClose = () => {
         setName("");
-        setHexCode("");
+        setHexCode("#");
         onClose();
     };
 
@@ -39,16 +39,14 @@ export default function AddColorModal({ isOpen, onClose }: AddColorModalProps) {
         }
     };
 
-    const [isValidHex, setIsValidHex] = useState(true); // Состояние для отслеживания валидности
+    const [isValidHex, setIsValidHex] = useState(true);
 
-    // Регулярное выражение для валидации HEX-кода
     const hexRegex = /^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/;
 
     const handleHexCodeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const inputValue = e.target.value;
         setHexCode(inputValue);
 
-        // Проверяем валидность ввода с помощью регулярного выражения
         setIsValidHex(hexRegex.test(inputValue));
     };
 

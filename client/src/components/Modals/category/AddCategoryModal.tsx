@@ -92,10 +92,13 @@ export default function AddCategoryModal({
     if (!isOpen) return null;
 
     const modalContent = (
-        <div className="fixed inset-0 bg-black/70 flex items-center justify-center">
-            <div className="bg-white p-[40px] shadow-lg max-w-3xl w-full">
+        <div className="fixed inset-0 bg-black/70 flex items-center products-center justify-center z-100">
+            <div className="bg-white p-[40px] h-[50vh] shadow-lg w-[40vw] overflow-y-auto">
                 <h2 className="text-lg font-bold mb-4">Додавання категорії</h2>
-                <form onSubmit={handleSubmit}>
+                <form
+                    onSubmit={handleSubmit}
+                    className="flex flex-col justify-between"
+                >
                     <div className="flex gap-[20px] justify-between">
                         <div className="flex flex-col gap-[20px] w-1/2">
                             <div className="flex flex-col gap-[7px]">

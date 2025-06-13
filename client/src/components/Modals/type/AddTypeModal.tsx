@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import { createPortal } from "react-dom";
-import { useCreateColor } from "@/lib/hooks/useColors";
 import { useCreateType } from "@/lib/hooks/useTypes";
 
 interface AddTypeModalProps {

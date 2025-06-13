@@ -106,8 +106,8 @@ export default function EditCollectionModal({
             : "";
 
     const modalContent = (
-        <div className="fixed inset-0 bg-black/70 flex collections-center justify-center z-100">
-            <div className="flex flex-col gap-[30px] bg-white p-[40px] shadow-lg max-w-3xl w-full">
+        <div className="fixed inset-0 bg-black/70 flex items-center products-center justify-center z-100">
+            <div className="bg-white p-[40px] h-[65vh] shadow-lg w-[40vw] overflow-y-auto">
                 <div className="flex flex-col gap-[20px]">
                     <h2 className="text-lg font-bold mb-4">
                         Редагування колекції: {collection.name || "Без назви"}
@@ -159,8 +159,6 @@ export default function EditCollectionModal({
                             </select>
                         </div>
                     </div>
-                </div>
-                <div className="flex flex-col gap-[20px]">
                     <div className="flex gap-[20px]">
                         <div>
                             <label htmlFor="banner">Банер</label>
@@ -199,20 +197,20 @@ export default function EditCollectionModal({
                             />
                         </div>
                     </div>
-                    <div className="flex justify-end gap-4 mt-6">
-                        <button
-                            onClick={onClose}
-                            className="px-[20px] py-[7px] bg-white text-black hover:bg-black hover:border-transparent hover:text-white cursor-pointer transition-all duration-200"
-                        >
-                            Скасувати
-                        </button>
-                        <button
-                            onClick={handleConfirm}
-                            className="px-[20px] py-[7px] bg-black/70 border hover:bg-black hover:border-transparent text-white cursor-pointer transition-all duration-200"
-                        >
-                            Підтвердити
-                        </button>
-                    </div>
+                </div>
+                <div className="flex justify-end gap-4 mt-6">
+                    <button
+                        onClick={onClose}
+                        className="px-[20px] py-[7px] bg-white text-black hover:bg-black hover:border-transparent hover:text-white cursor-pointer transition-all duration-200"
+                    >
+                        Скасувати
+                    </button>
+                    <button
+                        onClick={handleConfirm}
+                        className="px-[20px] py-[7px] bg-black/70 border hover:bg-black hover:border-transparent text-white cursor-pointer transition-all duration-200"
+                    >
+                        Підтвердити
+                    </button>
                 </div>
             </div>
         </div>

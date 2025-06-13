@@ -1,7 +1,7 @@
-import { Controller, Get, Post, Body, ValidationPipe, Delete, Param } from "@nestjs/common";
+import { Controller, Get, Post, Body, ValidationPipe, Delete, Param, Patch } from "@nestjs/common";
 import { SizesService } from "./sizes.service";
 import { CreateSizeDto } from "./dto/create-size.dto";
-// import { UpdateSizeDto } from './dto/update-size.dto';
+import { UpdateSizeDto } from "./dto/update-size.dto";
 
 @Controller("sizes")
 export class SizesController {
@@ -15,6 +15,11 @@ export class SizesController {
     @Get()
     getSizes() {
         return this.sizesService.getSizes();
+    }
+
+    @Patch(":sizeId")
+    editSize(@Param("sizeId") sizeId: string, @Body() updateSizeDto: UpdateSizeDto) {
+        return this.sizesService.editSize(sizeId, updateSizeDto);
     }
 
     @Delete(":sizeId")

@@ -163,8 +163,8 @@ export default function EditProductModal({
     if (!isOpen || !product) return null;
 
     const modalContent = (
-        <div className="fixed inset-0 bg-black/70 flex products-center justify-center z-50 overflow-y-auto">
-            <div className="bg-white p-[40px] shadow-xl max-w-4xl w-full rounded-md overflow-y-auto h-[95vh]">
+        <div className="fixed inset-0 bg-black/70 flex items-center products-center justify-center z-100">
+            <div className="bg-white p-[40px] h-[90vh] shadow-lg w-[45vw] overflow-y-auto">
                 <h2 className="text-xl font-bold mb-4">
                     Редагування товару: {product.name}
                 </h2>
@@ -284,7 +284,7 @@ export default function EditProductModal({
                                 </label>
                                 <label
                                     htmlFor="banner"
-                                    className="min-h-[100px] max-w-[300px] border border-dashed border-gray-400 mt-2 flex products-center justify-center cursor-pointer bg-gray-50 hover:bg-gray-100 rounded-md overflow-hidden"
+                                    className="min-h-[100px] max-w-[300px] border border-dashed border-gray-400 mt-2 flex justify-center cursor-pointer bg-gray-50 hover:bg-gray-100 rounded-md overflow-hidden"
                                 >
                                     {bannerPreview ? (
                                         <Image
@@ -326,7 +326,7 @@ export default function EditProductModal({
                                 </label>
                                 <label
                                     htmlFor="images"
-                                    className="min-h-[100px] max-w-[300px] border border-dashed border-gray-400 mt-2 flex products-center justify-center cursor-pointer bg-gray-50 hover:bg-gray-100 rounded-md overflow-hidden"
+                                    className="min-h-[100px] max-w-[300px] border border-dashed border-gray-400 mt-2 flex products-center items-center justify-center cursor-pointer bg-gray-50 hover:bg-gray-100 rounded-md overflow-hidden"
                                 >
                                     <span className="text-4xl text-gray-400">
                                         +
@@ -356,7 +356,7 @@ export default function EditProductModal({
                                                 alt={`img-${i}`}
                                                 width={100}
                                                 height={100}
-                                                className="object-cover rounded-md"
+                                                className="object-contain rounded-md"
                                             />
                                             <button
                                                 type="button"
@@ -372,7 +372,7 @@ export default function EditProductModal({
                         </div>
                     </div>
                     {message && <p className="text-red-500 mt-4">{message}</p>}
-                    <div className="flex justify-end gap-4 mt-6">
+                    <div className="flex justify-end gap-4 mt-[30px]">
                         <button
                             type="button"
                             onClick={handleClose}

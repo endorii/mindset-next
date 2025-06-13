@@ -1,115 +1,57 @@
 "use client";
 
-import { deleteImage } from "@/lib/api/images.api";
-import { statuses } from "@/lib/helpers/helpers";
-import { useEditCollection } from "@/lib/hooks/useCollections";
-import { useUploadImage } from "@/lib/hooks/useImages";
-import { ICollection, TStatus } from "@/types/types";
-import Image from "next/image";
-import { useState, useEffect, ChangeEvent } from "react";
+import { useEditColor } from "@/lib/hooks/useColors";
+import { IColor } from "@/types/color/color.types";
+import { useState, useEffect } from "react";
 import { createPortal } from "react-dom";
 
-interface EditCollectionModalProps {
+interface EditColorProps {
     isOpen: boolean;
     onClose: () => void;
-    collection: ICollection;
+    color: IColor;
 }
 
-export default function EditCollectionModal({
+export default function EditColorModal({
     isOpen,
     onClose,
-    collection,
-}: EditCollectionModalProps) {
+    color,
+}: EditColorProps) {
     const [name, setName] = useState("");
-    const [path, setPath] = useState("");
-    const [status, setStatus] = useState<TStatus | "">("");
-    const [banner, setBanner] = useState<string | File>("");
+    const [hexCode, setHexCode] = useState("#");
 
-    const [preview, setPreview] = useState("");
-
-    const uploadImageMutation = useUploadImage();
-    const editCollection = useEditCollection();
+    const editColorMutation = useEditColor();
 
     useEffect(() => {
-        if (collection) {
-            setName(collection.name || "");
-            setPath(collection.path || "");
-            setBanner(collection.banner || "");
-            setStatus(collection.status || "");
+        if (color) {
+            setName(color.name || "");
+            setHexCode(color.hexCode || "#");
         }
-    }, [collection]);
+    }, [color]);
 
     const handleConfirm = async () => {
-        if (!status) {
-            alert("Будь ласка, оберіть статус колекції");
-            return;
-        }
-
         try {
-            let bannerPath = typeof banner === "string" ? banner : "";
-
-            if (banner instanceof File) {
-                if (
-                    typeof collection.banner === "string" &&
-                    collection.banner.startsWith("/images/")
-                ) {
-                    await deleteImage(collection.banner);
-                }
-
-                const uploadImage = await uploadImageMutation.mutateAsync(
-                    banner
-                );
-
-                bannerPath = uploadImage.path;
-            }
-
-            await editCollection.mutateAsync({
-                collectionPath: collection.path,
+            await editColorMutation.mutateAsync({
+                colorId: color.id,
                 data: {
                     name,
-                    path,
-                    status,
-                    banner: bannerPath,
+                    hexCode: hexCode,
                 },
             });
 
             onClose();
             console.log("Відправлено на редагування");
         } catch (error) {
-            console.error("Помилка при редагуванні колекції:", error);
+            console.error("Помилка при редагуванні кольору:", error);
         }
     };
 
-    const handleBannerChange = (e: ChangeEvent<HTMLInputElement>) => {
-        const selectedFile = e.target.files?.[0];
-        if (selectedFile) {
-            setBanner(selectedFile);
-            setPreview(URL.createObjectURL(selectedFile));
-        }
-    };
-
-    const handleStatusChange = (e: ChangeEvent<HTMLSelectElement>) => {
-        const val = e.target.value;
-        if (statuses.includes(val as TStatus)) {
-            setStatus(val as TStatus);
-        } else {
-            setStatus("");
-        }
-    };
-
-    if (!isOpen || !collection) return null;
-
-    const bannerSrc =
-        typeof banner === "string" && banner.startsWith("/images/")
-            ? `http://localhost:5000${banner}`
-            : "";
-
+    if (!isOpen || !color) return null;
     const modalContent = (
-        <div className="fixed inset-0 bg-black/70 flex collections-center justify-center z-100">
-            <div className="flex flex-col gap-[30px] bg-white p-[40px] shadow-lg max-w-3xl w-full">
+        <div className="fixed inset-0 bg-black/70 flex items-center products-center justify-center z-100">
+            <div className="bg-white p-[40px] h-[33vh] shadow-lg w-[30vw] overflow-y-auto">
                 <div className="flex flex-col gap-[20px]">
                     <h2 className="text-lg font-bold mb-4">
-                        Редагування колекції: {collection.name || "Без назви"}
+                        Редагування кольору: {color.name || "Без назви"}
                     </h2>
                     <div className="flex flex-wrap gap-[20px]">
                         <div className="flex flex-col gap-[7px]">
@@ -121,80 +63,19 @@ export default function EditCollectionModal({
                                 value={name}
                                 onChange={(e) => setName(e.target.value)}
                                 className="border border-gray-200 rounded px-[10px] py-[7px] bg-gray-50 outline-0"
-                                placeholder="Назва колекції"
+                                placeholder="Колір"
                             />
                         </div>
                         <div className="flex flex-col gap-[7px]">
-                            <label htmlFor="path">Шлях</label>
+                            <label htmlFor="path">HEX-код</label>
                             <input
-                                id="path"
-                                name="path"
+                                id="hexCode"
+                                name="hexCode"
                                 type="text"
-                                value={path}
-                                onChange={(e) => setPath(e.target.value)}
+                                value={hexCode}
+                                onChange={(e) => setHexCode(e.target.value)}
                                 className="border border-gray-200 rounded px-[10px] py-[7px] bg-gray-50 outline-0"
-                                placeholder="Шлях (URL)"
-                            />
-                        </div>
-                        <div className="flex flex-col gap-[7px]">
-                            <label htmlFor="status">Статус</label>
-                            <select
-                                name="status"
-                                className="border border-gray-200 rounded px-[10px] py-[7px] bg-gray-50 outline-0"
-                                value={status}
-                                onChange={handleStatusChange}
-                            >
-                                <option value="" disabled>
-                                    Оберіть статус
-                                </option>
-                                {statuses.map((statusOption) => (
-                                    <option
-                                        key={statusOption}
-                                        value={statusOption}
-                                    >
-                                        {statusOption}
-                                    </option>
-                                ))}
-                            </select>
-                        </div>
-                    </div>
-                </div>
-                <div className="flex flex-col gap-[20px]">
-                    <div className="flex gap-[20px]">
-                        <div>
-                            <label htmlFor="banner">Банер</label>
-                            <label
-                                htmlFor="banner"
-                                className="min-h-[100px] max-w-[300px] border border-dashed border-gray-400 mt-2 flex collections-center justify-center cursor-pointer bg-gray-50 hover:bg-gray-100 rounded-md overflow-hidden"
-                            >
-                                {preview ? (
-                                    <Image
-                                        src={preview}
-                                        alt="preview"
-                                        width={250}
-                                        height={300}
-                                        className="object-cover"
-                                    />
-                                ) : bannerSrc ? (
-                                    <Image
-                                        src={bannerSrc}
-                                        alt="banner"
-                                        width={250}
-                                        height={300}
-                                        className="object-cover"
-                                    />
-                                ) : (
-                                    <span className="text-4xl text-gray-400">
-                                        +
-                                    </span>
-                                )}
-                            </label>
-                            <input
-                                type="file"
-                                id="banner"
-                                accept="image/*"
-                                onChange={handleBannerChange}
-                                className="hidden"
+                                placeholder="#010101"
                             />
                         </div>
                     </div>

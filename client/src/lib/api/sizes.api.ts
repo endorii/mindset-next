@@ -32,6 +32,22 @@ export async function createSize(data: ISizePayload): Promise<ISize> {
     }
 }
 
+export async function editSize(sizeId: ISize["id"], data: Partial<ISize>) {
+    const res = await fetch(`http://localhost:5000/api/sizes/${sizeId}`, {
+        method: "PATCH",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+    });
+
+    if (!res.ok) {
+        throw new Error("Не вдалося оновити розмір");
+    }
+
+    return res.json();
+}
+
 export async function deleteSize(sizeId: ISize["id"]) {
     const res = await fetch(`http://localhost:5000/api/sizes/${sizeId}`, {
         method: "DELETE",

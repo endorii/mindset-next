@@ -77,8 +77,8 @@ export default function AddCollectionModal({
     if (!isOpen) return null;
 
     const modalContent = (
-        <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-100">
-            <div className="bg-white p-[40px] shadow-lg max-w-3xl w-full">
+        <div className="fixed inset-0 bg-black/70 flex items-center products-center justify-center z-100">
+            <div className="bg-white p-[40px] h-[95vh] shadow-lg w-[80vw] overflow-y-auto">
                 <h2 className="text-lg font-bold mb-4">Додавання колекції</h2>
                 <form onSubmit={handleSubmit}>
                     <div className="flex gap-[20px] justify-between">
