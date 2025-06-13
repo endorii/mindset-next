@@ -1,4 +1,5 @@
-import { ICategory, ICollection } from "@/types/types";
+import { ICategory, ICategoryPayload } from "@/types/category/category.types";
+import { ICollection } from "@/types/collection/collection.types";
 
 export async function fetchCategoriesByCollection(
     collectionPath: ICollection["path"]
@@ -33,7 +34,7 @@ export async function fetchCategory(
 
 export async function addCategoryToCollection(
     collectionPath: ICollection["path"],
-    categoryData: ICategory
+    categoryData: ICategoryPayload
 ): Promise<ICategory> {
     try {
         const res = await fetch(

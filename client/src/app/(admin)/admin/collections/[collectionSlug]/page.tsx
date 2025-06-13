@@ -13,9 +13,10 @@ import TrashIcon from "@/components/Icons/TrashIcon";
 import AddCategoryModal from "@/components/Modals/category/AddCategoryModal";
 import EditCategoryModal from "@/components/Modals/category/EditCategoryModal";
 import DeleteCategoryModal from "@/components/Modals/category/DeleteCategoryModal";
-import { ICategory, ModalType } from "@/types/types";
+import { ModalType } from "@/types/types";
 import BackIcon from "@/components/Icons/BackIcon";
 import CategoryInfoModal from "@/components/Modals/category/CategoryInfoModal";
+import { ICategory } from "@/types/category/category.types";
 
 const filters = [
     "спочатку нові",

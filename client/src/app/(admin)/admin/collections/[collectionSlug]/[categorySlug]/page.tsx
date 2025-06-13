@@ -11,7 +11,8 @@ import EditProductModal from "@/components/Modals/product/EditProductModal";
 import ProductInfoModal from "@/components/Modals/product/ProductInfoModal";
 import { formatDate } from "@/lib/helpers/formatDate";
 import { useCategory } from "@/lib/hooks/useCategories";
-import { IProduct, ModalType } from "@/types/types";
+import { IProduct } from "@/types/product/product.types";
+import { ModalType } from "@/types/types";
 import { usePathname, useRouter } from "next/navigation";
 import React, { useState } from "react";
 

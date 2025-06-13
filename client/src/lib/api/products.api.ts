@@ -1,4 +1,6 @@
-import { ICategory, ICollection, ICreateProductPayload, IProduct } from "@/types/types";
+import { ICategory } from "@/types/category/category.types";
+import { ICollection } from "@/types/collection/collection.types";
+import { ICreateProductPayload, IProduct } from "@/types/product/product.types";
 
 export async function fetchProducts(
     collectionPath: string,

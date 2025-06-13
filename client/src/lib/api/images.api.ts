@@ -1,4 +1,4 @@
-import { IProduct } from "@/types/types";
+import { IProduct } from "@/types/product/product.types";
 
 export async function uploadImage(file: File): Promise<{ path: string }> {
     try {

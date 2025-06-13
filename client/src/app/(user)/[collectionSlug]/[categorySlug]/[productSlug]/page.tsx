@@ -93,19 +93,59 @@ export default function ProductPage() {
                     {data.available ? "В наявності" : "Немає в наявності"}
                 </div>
 
-                <div className="flex flex-col gap-[10px] mt-[10px]">
-                    <div>Колір:</div>
-                    <ul className="flex gap-[10px]">
-                        {data.colors.map((color, i) => (
-                            <li
-                                key={i}
-                                className="px-[15px] py-[8px] border border-gray-200 hover:border-black cursor-pointer"
-                            >
-                                {color.value}
-                            </li>
-                        ))}
-                    </ul>
-                </div>
+                {data.productColors.length > 0 ? (
+                    <div className="flex flex-col gap-[10px] mt-[10px]">
+                        <div>Колір:</div>
+                        <ul className="flex gap-[10px]">
+                            {data.productColors.map((item, i) => (
+                                <li
+                                    key={i}
+                                    className="px-[15px] py-[8px] border border-gray-200 hover:border-black cursor-pointer"
+                                >
+                                    {item.color.name}
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
+                ) : (
+                    ""
+                )}
+
+                {data.productTypes.length > 0 ? (
+                    <div className="flex flex-col gap-[10px] mt-[10px]">
+                        <div>Тип:</div>
+                        <ul className="flex gap-[10px]">
+                            {data.productTypes.map((item, i) => (
+                                <li
+                                    key={i}
+                                    className="px-[15px] py-[8px] border border-gray-200 hover:border-black cursor-pointer"
+                                >
+                                    {item.type.name}
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
+                ) : (
+                    ""
+                )}
+
+                {data.productSizes.length > 0 ? (
+                    <div className="flex flex-col gap-[10px] mt-[10px]">
+                        <div>Розмір:</div>
+                        <ul className="flex gap-[10px]">
+                            {data.productSizes.map((item, i) => (
+                                <li
+                                    key={i}
+                                    className="px-[15px] py-[8px] border border-gray-200 hover:border-black cursor-pointer"
+                                >
+                                    {item.size.name}
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
+                ) : (
+                    ""
+                )}
 
                 <div className="flex justify-between gap-[15px] mt-[30px]">
                     <button

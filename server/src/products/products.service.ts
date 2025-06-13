@@ -21,7 +21,21 @@ export class ProductsService {
                     },
                 },
                 include: {
-                    productColors: true,
+                    productColors: {
+                        include: {
+                            color: true,
+                        },
+                    },
+                    productTypes: {
+                        include: {
+                            type: true,
+                        },
+                    },
+                    productSizes: {
+                        include: {
+                            size: true,
+                        },
+                    },
                     category: {
                         include: {
                             collection: true,
