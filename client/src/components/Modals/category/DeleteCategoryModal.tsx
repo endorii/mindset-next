@@ -4,6 +4,7 @@ import { deleteImage } from "@/lib/api/images.api";
 import { useDeleteCategory } from "@/lib/hooks/useCategories";
 import { ICategory } from "@/types/category/category.types";
 import { ICollection } from "@/types/collection/collection.types";
+import { useEffect } from "react";
 import { createPortal } from "react-dom";
 
 interface DeleteCategoryModalProps {
@@ -25,6 +26,7 @@ export default function DeleteCategoryModal({
 
     const handleDelete = async () => {
         try {
+            await deleteImage(category.banner);
             await deleteCategoryMutation.mutateAsync({
                 collectionPath,
                 categoryPath: category.path,
@@ -34,29 +36,50 @@ export default function DeleteCategoryModal({
         }
     };
 
+    useEffect(() => {
+        const handleEscape = (event: KeyboardEvent) => {
+            if (event.key === "Escape") {
+                onClose();
+            }
+        };
+
+        if (isOpen) {
+            document.addEventListener("keydown", handleEscape);
+        }
+
+        return () => {
+            document.removeEventListener("keydown", handleEscape);
+        };
+    }, [isOpen, onClose]);
+
     const modalContent = (
-        <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-100">
-            <div className="bg-white p-[40px] shadow-lg max-w-sm w-full">
+        <div
+            className="fixed inset-0 bg-black/70 flex items-center products-center justify-center z-100 cursor-pointer"
+            onClick={onClose}
+        >
+            <div
+                className="bg-white p-[30px] h-auto max-h-[80vh] shadow-lg w-[30vw] overflow-y-auto cursor-default"
+                onClick={(e) => e.stopPropagation()}
+            >
                 <h2 className="text-lg font-bold mb-4">
                     Підтвердження видалення
                 </h2>
                 <p className="mb-6">
-                    Ви дійсно хочете видалити {category?.name}?
+                    Ви дійсно хочете видалити категорію {category?.name}?
                 </p>
                 <div className="flex justify-end gap-4">
                     <button
                         onClick={onClose}
-                        className="px-[20px] py-[7px] bg-white text-black hover:bg-black hover:border-transparent hover:text-white cursor-pointer transition-all duration-200"
+                        className="px-[20px] py-[7px] border border-transparent bg-black text-white hover:bg-white hover:border-black hover:text-black cursor-pointer transition-all duration-200"
                     >
                         Скасувати
                     </button>
                     <button
-                        onClick={async () => {
+                        onClick={() => {
                             onClose();
-                            await deleteImage(category.banner);
                             handleDelete();
                         }}
-                        className="px-[20px] py-[7px] bg-black/70 border hover:bg-black hover:border-transparent text-white cursor-pointer transition-all duration-200"
+                        className="px-[20px] py-[7px] border border-transparent bg-black text-white hover:bg-white hover:border-black hover:text-black cursor-pointer transition-all duration-200"
                     >
                         Видалити
                     </button>

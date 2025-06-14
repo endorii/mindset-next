@@ -37,7 +37,7 @@ function Likes() {
         <div>
             <h3 className="mt-[30px] text-xl uppercase font-bold">Улюблене:</h3>
             <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-[20px] mt-[30px]">
-                {favouritesItems.map((item, i) => {
+                {favouritesItems.map((item: any, i: number) => {
                     const result = getProductWithPathInfo(item.productPath);
                     if (!result) return null;
 

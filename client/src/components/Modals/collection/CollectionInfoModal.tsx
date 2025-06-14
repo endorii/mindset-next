@@ -3,6 +3,9 @@
 import { formatDate } from "@/lib/helpers/formatDate";
 import { ICollection } from "@/types/collection/collection.types";
 import { createPortal } from "react-dom";
+import InfoField from "@/components/AdminPage/components/InfoField";
+import Image from "next/image";
+import { useEffect } from "react";
 
 export interface CollectionInfoModalProps {
     isOpen: boolean;
@@ -17,77 +20,92 @@ export default function CollectionInfoModal({
 }: CollectionInfoModalProps) {
     if (!isOpen || !collection) return null;
 
+    const {
+        name,
+        path,
+        status,
+        views,
+        createdAt,
+        updatedAt,
+        categories,
+        banner,
+    } = collection;
+
+    useEffect(() => {
+        const handleEscape = (event: KeyboardEvent) => {
+            if (event.key === "Escape") {
+                onClose();
+            }
+        };
+
+        if (isOpen) {
+            document.addEventListener("keydown", handleEscape);
+        }
+
+        return () => {
+            document.removeEventListener("keydown", handleEscape);
+        };
+    }, [isOpen, onClose]);
+
     const modalContent = (
-        <div className="fixed inset-0 bg-black/70 flex items-center products-center justify-center z-100">
-            <div className="bg-white p-[40px] h-[80vh] shadow-lg w-[50vw] overflow-y-auto">
-                <h2 className="text-lg font-bold mb-4">
+        <div
+            className="fixed inset-0 bg-black/70 flex items-center products-center justify-center z-100 cursor-pointer"
+            onClick={onClose}
+        >
+            <div
+                className="bg-white p-[30px] h-auto max-h-[80vh] shadow-lg w-[54vw] overflow-y-auto cursor-default"
+                onClick={(e) => e.stopPropagation()}
+            >
+                <h2 className="text-lg font-bold mb-5">
                     Інформація про колекцію: {collection.name || "Без назви"}
                 </h2>
-                <div className="flex gap-[20px] justify-between">
-                    <div className="flex flex-col gap-[20px] w-[50%]">
-                        <div className="flex flex-col gap-[7px]">
-                            <label htmlFor="name">Назва:</label>
-                            <div className="border border-gray-200 rounded px-[10px] py-[7px] bg-gray-50">
-                                {collection.name}
-                            </div>
-                        </div>
-                        <div className="flex flex-col gap-[7px]">
-                            <label htmlFor="path">Шлях</label>
-                            <div className="border border-gray-200 rounded px-[10px] py-[7px] bg-gray-50">
-                                /{collection.path}
-                            </div>
-                        </div>
-                        <div className="flex flex-col gap-[7px]">
-                            <label htmlFor="status">Статус</label>
-                            <div className="border border-gray-200 rounded px-[10px] py-[7px] bg-gray-50">
-                                {collection.status}
-                            </div>
-                        </div>
-                        <div className="flex flex-col gap-[7px]">
-                            <label htmlFor="views">Перегляди</label>
-                            <div className="border border-gray-200 rounded px-[10px] py-[7px] bg-gray-50">
-                                {collection.views}
-                            </div>
-                        </div>
-                        <div className="flex flex-col gap-[7px]">
-                            <label htmlFor="views">Cтворено</label>
-                            <div className="border border-gray-200 rounded px-[10px] py-[7px] bg-gray-50">
-                                {formatDate(collection.createdAt)}
-                            </div>
-                        </div>
-                        <div className="flex flex-col gap-[7px]">
-                            <label htmlFor="views">Редаговано</label>
-                            <div className="border border-gray-200 rounded px-[10px] py-[7px] bg-gray-50">
-                                {formatDate(collection.updatedAt)}
-                            </div>
-                        </div>
+
+                <div className="flex flex-col gap-[20px]">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-[20px]">
+                        <InfoField label={"Назва"} value={name} />
+                        <InfoField label={"Шлях"} value={path} />
+                        <InfoField label={"Статус"} value={status} />
+                        <InfoField label={"Переглядів"} value={views} />
+                        <InfoField
+                            label="Створено"
+                            value={formatDate(createdAt)}
+                        />
+                        <InfoField
+                            label="Редаговано"
+                            value={formatDate(updatedAt)}
+                        />
+                        <InfoField
+                            label={"Кількість категорій"}
+                            value={categories.length}
+                        />
                     </div>
-                    <div className="flex flex-col gap-[20px] w-1/2">
-                        <div className="flex flex-col gap-[7px]">
-                            <label htmlFor="views">Кількість категорій</label>
-                            <div className="border border-gray-200 rounded px-[10px] py-[7px] bg-gray-50">
-                                {collection.categories.length}
-                            </div>
-                        </div>
-                        <div className="flex flex-col gap-[7px] w-full">
-                            <label htmlFor="bannerUrl">Банер</label>
-                            <div className="border border-gray-200 rounded px-[10px] py-[7px] bg-gray-50">
-                                <img
-                                    className="max-h-[300px] object-contain "
-                                    src={
-                                        `http://localhost:5000/${collection.banner}` ||
-                                        "/placeholder.png"
-                                    }
-                                    alt={collection.name || "Банер"}
-                                />
-                            </div>
+                    <div className="flex flex-col gap-[7px] w-full">
+                        <label
+                            htmlFor="bannerUrl"
+                            className="text-sm font-semibold"
+                        >
+                            Банер:
+                        </label>
+                        <div className="rounded">
+                            <Image
+                                className="max-h-[300px] object-contain rounded border border-gray-200 px-[10px] py-[7px] bg-gray-50"
+                                src={
+                                    banner
+                                        ? `http://localhost:5000/${banner}`
+                                        : "/placeholder.png"
+                                }
+                                alt={name || "Банер"}
+                                width={250}
+                                height={250}
+                            />
                         </div>
                     </div>
                 </div>
-                <div className="flex justify-end gap-4 mt-6">
+
+                <div className="flex justify-end mt-[20px]">
                     <button
                         onClick={onClose}
-                        className="px-[20px] py-[7px] bg-white text-black hover:bg-black hover:border-transparent hover:text-white cursor-pointer transition-all duration-200"
+                        className="px-[20px] py-[7px] border border-transparent bg-black text-white hover:bg-white hover:border-black hover:text-black cursor-pointer transition-all duration-200"
                     >
                         Закрити
                     </button>

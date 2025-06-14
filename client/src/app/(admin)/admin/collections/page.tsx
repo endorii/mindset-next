@@ -11,7 +11,8 @@ import DeleteCollectionModal from "@/components/Modals/collection/DeleteCollecti
 import EditCollectionModal from "@/components/Modals/collection/EditCollectionModal";
 import { formatDate } from "@/lib/helpers/formatDate";
 import { useCollections } from "@/lib/hooks/useCollections";
-import { ICollection, ModalType } from "@/types/types";
+import { ICollection } from "@/types/collection/collection.types";
+import { ModalType } from "@/types/types";
 import Link from "next/link";
 import React, { useState } from "react";
 
@@ -52,7 +53,7 @@ function AdminCollections() {
                 <ul className="flex gap-[10px]">
                     {filters.map((name, i) => (
                         <li key={i}>
-                            <button className="bg-white text-black px-[15px] border py-[5px] border-black cursor-pointer hover:bg-black hover:text-white hover:border-transparent transition-all duration-200">
+                            <button className="bg-black text-white px-[15px] border py-[5px] border-transparent cursor-pointer hover:bg-white hover:text-black hover:border-black transition-all duration-200">
                                 {name}
                             </button>
                         </li>

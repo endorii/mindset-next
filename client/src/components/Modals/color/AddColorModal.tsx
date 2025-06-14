@@ -54,7 +54,7 @@ export default function AddColorModal({ isOpen, onClose }: AddColorModalProps) {
 
     const modalContent = (
         <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-100">
-            <div className="bg-white p-[40px] shadow-lg max-w-[400px] w-full">
+            <div className="bg-white p-[30px] shadow-lg max-w-[400px] w-full">
                 <h2 className="text-lg font-bold mb-4">Додавання кольору</h2>
                 <form onSubmit={handleSubmit}>
                     <div className="flex gap-[20px] justify-between">

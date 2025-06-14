@@ -3,7 +3,7 @@
 import { statuses } from "@/lib/helpers/helpers";
 import { useCreateProduct } from "@/lib/hooks/useProducts";
 import { TStatus } from "@/types/types";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import { useUploadImage, useUploadImages } from "@/lib/hooks/useImages";
 import { createPortal } from "react-dom";
@@ -16,6 +16,7 @@ import { IColor } from "@/types/color/color.types";
 import { ISize } from "@/types/size/size.types";
 import { IType } from "@/types/type/type.types";
 import { ICreateProductPayload } from "@/types/product/product.types";
+import InputField from "@/components/AdminPage/components/InputField";
 
 interface AddProductModalProps {
     isOpen: boolean;
@@ -34,11 +35,11 @@ export default function AddProductModal({
 }: AddProductModalProps) {
     const [name, setName] = useState(""),
         [path, setPath] = useState(""),
-        [price, setPrice] = useState<number | null>(null),
-        [available, setAvailable] = useState<boolean | null>(null),
+        [price, setPrice] = useState<number | string>(""),
+        [available, setAvailable] = useState<boolean>(false),
         [description, setDescription] = useState(""),
         [composition, setComposition] = useState(""),
-        [status, setStatus] = useState<TStatus | null>(null);
+        [status, setStatus] = useState<TStatus>("INACTIVE");
 
     const [colorsToSend, setColorsToSend] = useState<IColor[] | []>([]);
     const [sizesToSend, setSizesToSend] = useState<ISize[] | []>([]);
@@ -86,11 +87,11 @@ export default function AddProductModal({
     const handleClose = () => {
         setName("");
         setPath("");
-        setPrice(null);
-        setAvailable(null);
+        setPrice("");
+        setAvailable(false);
         setDescription("");
         setComposition("");
-        setStatus(null);
+        setStatus("INACTIVE");
         setColorsToSend([]);
         setSizesToSend([]);
         setTypesToSend([]);
@@ -103,17 +104,15 @@ export default function AddProductModal({
     };
 
     const handleAddColor = (color: IColor) => {
-        // Додаємо колір, якщо його ще немає в списку
         setColorsToSend((prevColors) => {
             if (prevColors.some((c) => c.id === color.id)) {
-                return prevColors; // Колір вже додано
+                return prevColors;
             }
             return [...prevColors, color];
         });
     };
 
     const handleRemoveColor = (colorId: string) => {
-        // Видаляємо колір за ID
         setColorsToSend((prevColors) =>
             prevColors.filter((c) => c.id !== colorId)
         );
@@ -170,8 +169,8 @@ export default function AddProductModal({
                     views: 0,
                     status,
                     categoryId,
-                    price: price || 0,
-                    available: available || false,
+                    price,
+                    available: available,
                     description,
                     composition,
                     banner: bannerPath,
@@ -189,46 +188,64 @@ export default function AddProductModal({
         }
     };
 
+    useEffect(() => {
+        const handleEscape = (event: KeyboardEvent) => {
+            if (event.key === "Escape") {
+                handleClose();
+            }
+        };
+
+        if (isOpen) {
+            document.addEventListener("keydown", handleEscape);
+        }
+
+        return () => {
+            document.removeEventListener("keydown", handleEscape);
+        };
+    }, [isOpen, handleClose]);
+
     if (!isOpen) return null;
 
     const modalContent = (
-        <div className="fixed inset-0 bg-black/70 flex items-center products-center justify-center z-100">
-            <div className="bg-white p-[40px] h-[95vh] shadow-lg w-[80vw] overflow-y-auto">
+        <div
+            className="fixed inset-0 bg-black/70 flex items-center products-center justify-center z-100 cursor-pointer"
+            onClick={onClose}
+        >
+            <div
+                className="bg-white p-[30px] h-auto max-h-[90vh] shadow-lg w-[74vw] overflow-y-auto cursor-default"
+                onClick={(e) => e.stopPropagation()}
+            >
                 <h2 className="text-xl font-bold mb-4 ">Додавання товару</h2>
                 <form onSubmit={handleSubmit}>
-                    <div className="flex gap-[20px]">
-                        <div className="flex flex-col gap-[20px] w-1/2">
-                            <div className="flex flex-col gap-[7px]">
-                                <label>Назва товару</label>
-                                <input
-                                    className="border border-gray-200 rounded px-[10px] py-[7px] bg-gray-50 outline-0"
-                                    value={name}
-                                    placeholder="Назва"
-                                    onChange={(e) => setName(e.target.value)}
-                                />
-                            </div>
-                            <div className="flex flex-col gap-[7px]">
-                                <label className="text-sm font-semibold">
-                                    Шлях
-                                </label>
-                                <input
-                                    className="border border-gray-200 rounded px-[10px] py-[7px] bg-gray-50 outline-0"
-                                    value={path}
-                                    placeholder="Шлях"
-                                    onChange={(e) => setPath(e.target.value)}
-                                />
-                            </div>
-                            <div className="flex flex-col gap-[7px]">
-                                <label className="text-sm font-semibold">
-                                    Ціна
-                                </label>
-                                <input
-                                    className="border border-gray-200 rounded px-[10px] py-[7px] bg-gray-50 outline-0"
-                                    value={price || ""}
-                                    placeholder="Ціна"
-                                    onChange={(e) => setPrice(+e.target.value)}
-                                />
-                            </div>
+                    <div className="flex flex-col gap-[20px]">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-[20px]">
+                            <InputField
+                                label={"Назва"}
+                                value={name}
+                                onChangeValue={(e) => setName(e.target.value)}
+                                id={"addProductName"}
+                                name={"addProductName"}
+                                placeholder={"Назва товару"}
+                                type={"text"}
+                            />
+                            <InputField
+                                label={"Шлях"}
+                                value={path}
+                                onChangeValue={(e) => setName(e.target.value)}
+                                id={"addProductPath"}
+                                name={"addProductPath"}
+                                placeholder={"Шлях"}
+                                type={"text"}
+                            />
+                            <InputField
+                                label={"Ціна"}
+                                value={price}
+                                onChangeValue={(e) => setPrice(+e.target.value)}
+                                id={"addProductPrice"}
+                                name={"addProductPrice"}
+                                placeholder={"Ціна"}
+                                type={"number"}
+                            />
                             <div className="flex flex-col gap-[7px]">
                                 <label className="text-sm font-semibold">
                                     Опис
@@ -300,12 +317,12 @@ export default function AddProductModal({
                             </div>
                         </div>
 
-                        <div className="flex flex-col gap-[20px] w-1/2">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-[20px]">
                             <div className="flex flex-col gap-2">
                                 <label className="text-sm font-semibold">
                                     Оберіть кольори:
                                 </label>
-                                <div className="flex flex-wrap gap-2 p-2 border border-gray-200 rounded max-h-40 overflow-y-auto">
+                                <div className="flex flex-wrap gap-2 p-2 border border-gray-200 rounded max-h-[100px] overflow-y-auto">
                                     {isLoadingColors && (
                                         <p>Завантаження кольорів...</p>
                                     )}
@@ -319,8 +336,8 @@ export default function AddProductModal({
                                             className={`px-3 py-1 rounded-full text-sm flex items-center gap-1
                               ${
                                   colorsToSend.some((c) => c.id === color.id)
-                                      ? "bg-blue-500 text-white"
-                                      : "bg-gray-200 text-gray-800 hover:bg-gray-300"
+                                      ? `bg-black text-white cursor-not-allowed`
+                                      : `border border-gray-300 text-black bg-gray-50 hover:bg-gray-200 cursor-pointer`
                               }`}
                                         >
                                             {color.name}
@@ -330,7 +347,7 @@ export default function AddProductModal({
                                                     backgroundColor:
                                                         color.hexCode ||
                                                         "#FFFFFF",
-                                                }} // Додаємо hexCode
+                                                }}
                                             ></div>
                                         </button>
                                     ))}
@@ -341,17 +358,19 @@ export default function AddProductModal({
                                 </div>
                             </div>
 
-                            {/* Відображення обраних кольорів */}
                             <div className="flex flex-col gap-2">
                                 <label className="text-sm font-semibold">
                                     Обрані кольори:
                                 </label>
-                                <div className="flex flex-wrap gap-2 p-2 border border-gray-200 rounded min-h-[50px]">
+                                <div className="flex flex-wrap gap-2 p-2 border border-gray-200 rounded max-h-[100px] overflow-y-auto">
                                     {colorsToSend.length > 0 ? (
                                         colorsToSend.map((color) => (
                                             <div
                                                 key={color.id}
-                                                className="flex items-center gap-2 px-3 py-1 bg-blue-100 rounded-full text-sm"
+                                                className="flex items-center gap-2 px-3 py-1 bg-black text-white rounded-full text-sm cursor-pointer"
+                                                onClick={() =>
+                                                    handleRemoveColor(color.id)
+                                                }
                                             >
                                                 {color.name}
                                                 <div
@@ -362,17 +381,6 @@ export default function AddProductModal({
                                                             "#FFFFFF",
                                                     }}
                                                 ></div>
-                                                <button
-                                                    type="button"
-                                                    onClick={() =>
-                                                        handleRemoveColor(
-                                                            color.id
-                                                        )
-                                                    }
-                                                    className="text-red-500 hover:text-red-700 ml-1 font-bold"
-                                                >
-                                                    &times;
-                                                </button>
                                             </div>
                                         ))
                                     ) : (
@@ -383,12 +391,11 @@ export default function AddProductModal({
                                 </div>
                             </div>
 
-                            {/* --- Секція для Розмірів (аналогічно кольорам) --- */}
                             <div className="flex flex-col gap-2">
                                 <label className="text-sm font-semibold">
                                     Оберіть розміри:
                                 </label>
-                                <div className="flex flex-wrap gap-2 p-2 border border-gray-200 rounded max-h-40 overflow-y-auto">
+                                <div className="flex flex-wrap gap-2 p-2 border border-gray-200 rounded max-h-[100px] overflow-y-auto">
                                     {isLoadingSizes && (
                                         <p>Завантаження розмірів...</p>
                                     )}
@@ -400,8 +407,8 @@ export default function AddProductModal({
                                             className={`px-3 py-1 rounded-full text-sm
                               ${
                                   sizesToSend.some((s) => s.id === size.id)
-                                      ? "bg-blue-500 text-white"
-                                      : "bg-gray-200 text-gray-800 hover:bg-gray-300"
+                                      ? `bg-black text-white cursor-not-allowed`
+                                      : `border border-gray-300 text-black bg-gray-50 hover:bg-gray-200 cursor-pointer`
                               }`}
                                         >
                                             {size.name}
@@ -414,30 +421,21 @@ export default function AddProductModal({
                                 </div>
                             </div>
 
-                            {/* Відображення обраних розмірів */}
                             <div className="flex flex-col gap-2">
                                 <label className="text-sm font-semibold">
                                     Обрані розміри:
                                 </label>
-                                <div className="flex flex-wrap gap-2 p-2 border border-gray-200 rounded min-h-[50px]">
+                                <div className="flex flex-wrap gap-2 p-2 border border-gray-200 rounded max-h-[100px] overflow-y-auto">
                                     {sizesToSend.length > 0 ? (
                                         sizesToSend.map((size) => (
                                             <div
                                                 key={size.id}
-                                                className="flex items-center gap-2 px-3 py-1 bg-blue-100 rounded-full text-sm"
+                                                className="flex items-center gap-2 px-3 py-1 bg-black text-white rounded-full text-sm cursor-pointer"
+                                                onClick={() =>
+                                                    handleRemoveSize(size.id)
+                                                }
                                             >
                                                 {size.name}
-                                                <button
-                                                    type="button"
-                                                    onClick={() =>
-                                                        handleRemoveSize(
-                                                            size.id
-                                                        )
-                                                    }
-                                                    className="text-red-500 hover:text-red-700 ml-1 font-bold"
-                                                >
-                                                    &times;
-                                                </button>
                                             </div>
                                         ))
                                     ) : (
@@ -448,12 +446,11 @@ export default function AddProductModal({
                                 </div>
                             </div>
 
-                            {/* --- Секція для Типів (аналогічно кольорам) --- */}
                             <div className="flex flex-col gap-2">
                                 <label className="text-sm font-semibold">
                                     Оберіть типи:
                                 </label>
-                                <div className="flex flex-wrap gap-2 p-2 border border-gray-200 rounded max-h-40 overflow-y-auto">
+                                <div className="flex flex-wrap gap-2 p-2 border border-gray-200 rounded max-h-[100px] overflow-y-auto">
                                     {isLoadingTypes && (
                                         <p>Завантаження типів...</p>
                                     )}
@@ -465,8 +462,8 @@ export default function AddProductModal({
                                             className={`px-3 py-1 rounded-full text-sm
                               ${
                                   typesToSend.some((t) => t.id === type.id)
-                                      ? "bg-blue-500 text-white"
-                                      : "bg-gray-200 text-gray-800 hover:bg-gray-300"
+                                      ? `bg-black text-white cursor-not-allowed`
+                                      : `border border-gray-300 text-black bg-gray-50 hover:bg-gray-200 cursor-pointer`
                               }`}
                                         >
                                             {type.name}
@@ -479,30 +476,21 @@ export default function AddProductModal({
                                 </div>
                             </div>
 
-                            {/* Відображення обраних типів */}
                             <div className="flex flex-col gap-2">
                                 <label className="text-sm font-semibold">
                                     Обрані типи:
                                 </label>
-                                <div className="flex flex-wrap gap-2 p-2 border border-gray-200 rounded min-h-[50px]">
+                                <div className="flex flex-wrap gap-2 p-2 border border-gray-200 rounded max-h-[100px] overflow-y-auto">
                                     {typesToSend.length > 0 ? (
                                         typesToSend.map((type) => (
                                             <div
                                                 key={type.id}
-                                                className="flex items-center gap-2 px-3 py-1 bg-blue-100 rounded-full text-sm"
+                                                className="flex items-center gap-2 px-3 py-1 bg-black text-white rounded-full text-sm cursor-pointer"
+                                                onClick={() =>
+                                                    handleRemoveType(type.id)
+                                                }
                                             >
                                                 {type.name}
-                                                <button
-                                                    type="button"
-                                                    onClick={() =>
-                                                        handleRemoveType(
-                                                            type.id
-                                                        )
-                                                    }
-                                                    className="text-red-500 hover:text-red-700 ml-1 font-bold"
-                                                >
-                                                    &times;
-                                                </button>
                                             </div>
                                         ))
                                     ) : (
@@ -512,91 +500,89 @@ export default function AddProductModal({
                                     )}
                                 </div>
                             </div>
-                            <div className="flex justify-between gap-[20px]">
-                                <div className="w-[50%]">
-                                    <label
-                                        htmlFor="banner"
-                                        className="text-sm font-semibold"
-                                    >
-                                        Банер
-                                    </label>
-                                    <label
-                                        htmlFor="banner"
-                                        className="min-h-[100px] max-w-[300px] border border-dashed border-gray-400 mt-2 flex items-center justify-center cursor-pointer bg-gray-50 hover:bg-gray-100 rounded-md overflow-hidden"
-                                    >
-                                        {bannerPreview ? (
-                                            <Image
-                                                src={bannerPreview}
-                                                alt="banner"
-                                                width={250}
-                                                height={300}
-                                                className="object-cover"
-                                            />
-                                        ) : (
-                                            <span className="text-4xl text-gray-400">
-                                                +
-                                            </span>
-                                        )}
-                                    </label>
-                                    <input
-                                        type="file"
-                                        id="banner"
-                                        accept="image/*"
-                                        onChange={handleBannerChange}
-                                        className="hidden"
+                        </div>
+                    </div>
+                    <div className="flex gap-[20px]">
+                        <div className="w-full">
+                            <label
+                                htmlFor="banner"
+                                className="text-sm font-semibold"
+                            >
+                                Банер
+                            </label>
+                            <label
+                                htmlFor="banner"
+                                className="min-h-[100px] max-w-[300px] border border-dashed border-gray-400 mt-2 flex items-center justify-center cursor-pointer bg-gray-50 hover:bg-gray-100 rounded-md overflow-hidden"
+                            >
+                                {bannerPreview ? (
+                                    <Image
+                                        src={bannerPreview}
+                                        alt="banner"
+                                        width={250}
+                                        height={300}
+                                        className="object-cover"
                                     />
-                                </div>
+                                ) : (
+                                    <span className="text-4xl text-gray-400">
+                                        +
+                                    </span>
+                                )}
+                            </label>
+                            <input
+                                type="file"
+                                id="banner"
+                                accept="image/*"
+                                onChange={handleBannerChange}
+                                className="hidden"
+                            />
+                        </div>
 
-                                <div className="w-[50%]">
-                                    <label
-                                        htmlFor="images"
-                                        className="text-sm font-semibold"
-                                    >
-                                        Додаткові зображення
-                                    </label>
-                                    <label
-                                        htmlFor="images"
-                                        className="min-h-[100px] max-w-[300px] border border-dashed border-gray-400 mt-2 flex items-center justify-center cursor-pointer bg-gray-50 hover:bg-gray-100 rounded-md overflow-hidden"
-                                    >
-                                        <span className="text-4xl text-gray-400">
-                                            +
-                                        </span>
-                                    </label>
-                                    <input
-                                        type="file"
-                                        id="images"
-                                        multiple
-                                        accept="image/*"
-                                        onChange={handleImagesChange}
-                                        className="hidden"
-                                    />
+                        <div className="w-full">
+                            <label
+                                htmlFor="images"
+                                className="text-sm font-semibold"
+                            >
+                                Додаткові зображення
+                            </label>
+                            <label
+                                htmlFor="images"
+                                className="min-h-[100px] max-w-[300px] border border-dashed border-gray-400 mt-2 flex items-center justify-center cursor-pointer bg-gray-50 hover:bg-gray-100 rounded-md overflow-hidden"
+                            >
+                                <span className="text-4xl text-gray-400">
+                                    +
+                                </span>
+                            </label>
+                            <input
+                                type="file"
+                                id="images"
+                                multiple
+                                accept="image/*"
+                                onChange={handleImagesChange}
+                                className="hidden"
+                            />
 
-                                    <div className="flex flex-wrap gap-3 mt-4">
-                                        {imagePreviews.map((src, i) => (
-                                            <div
-                                                key={i}
-                                                className="relative group w-[100px] h-[100px]"
-                                            >
-                                                <Image
-                                                    src={src}
-                                                    alt={`img-${i}`}
-                                                    width={100}
-                                                    height={100}
-                                                    className="object-cover rounded-md"
-                                                />
-                                                <button
-                                                    type="button"
-                                                    onClick={() =>
-                                                        removeImage(i)
-                                                    }
-                                                    className="absolute top-0 right-0 bg-black text-white px-[8px] py-[2px] opacity-0 group-hover:opacity-100 transition cursor-pointer"
-                                                >
-                                                    Х
-                                                </button>
-                                            </div>
-                                        ))}
+                            <div className="flex flex-wrap gap-3 mt-4">
+                                {imagePreviews.map((src, i) => (
+                                    <div
+                                        key={i}
+                                        className="relative group w-[100px] h-[100px]"
+                                    >
+                                        <Image
+                                            src={src}
+                                            alt={`img-${i}`}
+                                            width={100}
+                                            height={100}
+                                            className="object-cover rounded-md"
+                                        />
+                                        <button
+                                            type="button"
+                                            onClick={() => removeImage(i)}
+                                            className="absolute top-0 right-0 bg-black text-white px-[8px] py-[2px] opacity-0 group-hover:opacity-100 transition cursor-pointer"
+                                        >
+                                            Х
+                                        </button>
                                     </div>
-                                </div>
+                                ))}
                             </div>
                         </div>
                     </div>

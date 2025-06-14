@@ -28,7 +28,7 @@ const Login = () => {
 
             <div className="flex flex-col gap-[15px] w-full">
                 <h3 className="mt-[30px] text-xl font-bold">Вхід </h3>
-                <form className="border border-gray-200 p-[40px] flex flex-col gap-[20px]">
+                <form className="border border-gray-200 p-[30px] flex flex-col gap-[20px]">
                     <div className="flex flex-col gap-[4px]">
                         <label className="text-xs text-gray-600" htmlFor="">
                             електонна пошта*
@@ -55,7 +55,7 @@ const Login = () => {
 
             <div className="flex flex-col gap-[15px] w-full">
                 <h3 className="mt-[30px] text-xl font-bold">Реєстрація</h3>
-                <form className="border border-gray-200 p-[40px] flex flex-col gap-[20px]">
+                <form className="border border-gray-200 p-[30px] flex flex-col gap-[20px]">
                     <div className="flex flex-col gap-[4px]">
                         <label className="text-xs text-gray-600" htmlFor="">
                             електонна пошта*

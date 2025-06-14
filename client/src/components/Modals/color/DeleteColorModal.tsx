@@ -29,12 +29,12 @@ export default function DeleteColorModal({
 
     const modalContent = (
         <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-100">
-            <div className="bg-white p-[40px] shadow-lg max-w-sm w-full">
+            <div className="bg-white p-[30px] shadow-lg max-w-sm w-full">
                 <h2 className="text-lg font-bold mb-4">
                     Підтвердження видалення
                 </h2>
                 <p className="mb-6">
-                    Ви дійсно хочете видалити {color?.name} колір?
+                    Ви дійсно хочете видалити {color.name} колір?
                 </p>
                 <div className="flex justify-end gap-4">
                     <button
@@ -44,7 +44,7 @@ export default function DeleteColorModal({
                         Скасувати
                     </button>
                     <button
-                        onClick={async () => {
+                        onClick={() => {
                             onClose();
                             handleDelete();
                         }}

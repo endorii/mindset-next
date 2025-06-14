@@ -164,7 +164,7 @@ export default function EditProductModal({
 
     const modalContent = (
         <div className="fixed inset-0 bg-black/70 flex items-center products-center justify-center z-100">
-            <div className="bg-white p-[40px] h-[90vh] shadow-lg w-[45vw] overflow-y-auto">
+            <div className="bg-white p-[30px] h-[90vh] shadow-lg w-[45vw] overflow-y-auto">
                 <h2 className="text-xl font-bold mb-4">
                     Редагування товару: {product.name}
                 </h2>

@@ -48,7 +48,7 @@ export default function EditColorModal({
     if (!isOpen || !color) return null;
     const modalContent = (
         <div className="fixed inset-0 bg-black/70 flex items-center products-center justify-center z-100">
-            <div className="bg-white p-[40px] h-[33vh] shadow-lg w-[30vw] overflow-y-auto">
+            <div className="bg-white p-[30px] h-[33vh] shadow-lg w-[30vw] overflow-y-auto">
                 <div className="flex flex-col gap-[20px]">
                     <h2 className="text-lg font-bold mb-4">
                         Редагування кольору: {color.name || "Без назви"}
