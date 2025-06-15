@@ -61,7 +61,7 @@ export async function editProduct(
     collectionPath: ICollection["path"],
     categoryPath: ICategory["path"],
     productPath: IProduct["path"],
-    productData: Partial<IProduct>
+    productData: Partial<ICreateProductPayload>
 ) {
     const res = await fetch(
         `http://localhost:5000/api/collections/${collectionPath}/categories/${categoryPath}/products/${productPath}`,

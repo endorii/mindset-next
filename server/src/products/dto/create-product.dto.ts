@@ -1,5 +1,3 @@
-// src/products/dto/create-product.dto.ts
-
 import {
     IsString,
     IsNotEmpty,

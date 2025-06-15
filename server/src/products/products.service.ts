@@ -2,6 +2,7 @@ import { Injectable } from "@nestjs/common";
 import { CreateProductDto } from "./dto/create-product.dto";
 import { PrismaService } from "src/prisma/prisma.service";
 import { UpdateProductDto } from "./dto/update-product.dto";
+import { Prisma } from "generated/prisma";
 
 @Injectable()
 export class ProductsService {
@@ -157,19 +158,105 @@ export class ProductsService {
             throw new Error("Категорію не знайдено");
         }
 
-        await this.prisma.product.update({
+        const productToUpdate = await this.prisma.product.findUnique({
             where: {
                 categoryId_path: {
                     categoryId: category.id,
                     path: productPath,
                 },
             },
-            data: updateProductDto,
+        });
+
+        if (!productToUpdate) {
+            throw new Error("Продукт не знайдено");
+        }
+
+        const { colorIds, sizeIds, typeIds, ...restOfProductData } = updateProductDto;
+
+        const dataToUpdate: Prisma.ProductUpdateInput = {
+            ...restOfProductData,
+            updatedAt: new Date(),
+        };
+
+        // Кольори продукту
+        if (colorIds !== undefined) {
+            dataToUpdate.productColors = {
+                deleteMany: {
+                    productId: productToUpdate.id,
+                },
+            };
+            if (colorIds.length > 0) {
+                const colorsToConnect = colorIds.map((colorId) => ({
+                    color: { connect: { id: colorId } },
+                }));
+                dataToUpdate.productColors = {
+                    ...dataToUpdate.productColors,
+                    create: colorsToConnect,
+                };
+            }
+        }
+
+        // Розміри продукту
+        if (sizeIds !== undefined) {
+            dataToUpdate.productSizes = {
+                deleteMany: {
+                    productId: productToUpdate.id,
+                },
+            };
+            if (sizeIds.length > 0) {
+                const sizesToConnect = sizeIds.map((sizeId) => ({
+                    size: { connect: { id: sizeId } },
+                }));
+                dataToUpdate.productSizes = {
+                    ...dataToUpdate.productSizes,
+                    create: sizesToConnect,
+                };
+            }
+        }
+
+        // Типи продукту
+        if (typeIds !== undefined) {
+            dataToUpdate.productTypes = {
+                deleteMany: {
+                    productId: productToUpdate.id,
+                },
+            };
+            if (typeIds.length > 0) {
+                const typesToConnect = typeIds.map((typeId) => ({
+                    type: { connect: { id: typeId } },
+                }));
+                dataToUpdate.productTypes = {
+                    ...dataToUpdate.productTypes,
+                    create: typesToConnect,
+                };
+            }
+        }
+
+        const updatedProduct = await this.prisma.product.update({
+            where: {
+                categoryId_path: {
+                    categoryId: category.id,
+                    path: productPath,
+                },
+            },
+            data: dataToUpdate,
+            include: {
+                productColors: {
+                    include: { color: true },
+                },
+                productSizes: {
+                    include: { size: true },
+                },
+                productTypes: {
+                    include: { type: true },
+                },
+                category: true,
+            },
         });
 
         return {
             message: "Продукт успішно оновлено",
-            category,
+            product: updatedProduct,
         };
     }
 

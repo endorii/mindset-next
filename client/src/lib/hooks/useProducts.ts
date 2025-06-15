@@ -66,7 +66,7 @@ export function useEditProduct() {
             collectionPath: ICollection["path"];
             categoryPath: ICategory["path"];
             productPath: IProduct["path"];
-            productData: Partial<IProduct>;
+            productData: Partial<ICreateProductPayload>;
         }) => editProduct(collectionPath, categoryPath, productPath, productData),
         onSuccess(_data, variables) {
             queryClient.invalidateQueries({

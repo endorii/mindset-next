@@ -17,6 +17,7 @@ import { ISize } from "@/types/size/size.types";
 import { IType } from "@/types/type/type.types";
 import { ICreateProductPayload } from "@/types/product/product.types";
 import InputField from "@/components/AdminPage/components/InputField";
+import TrashIcon from "@/components/Icons/TrashIcon";
 
 interface AddProductModalProps {
     isOpen: boolean;
@@ -216,7 +217,10 @@ export default function AddProductModal({
                 onClick={(e) => e.stopPropagation()}
             >
                 <h2 className="text-xl font-bold mb-4 ">Додавання товару</h2>
-                <form onSubmit={handleSubmit}>
+                <form
+                    onSubmit={handleSubmit}
+                    className="flex flex-col gap-[20px]"
+                >
                     <div className="flex flex-col gap-[20px]">
                         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-[20px]">
                             <InputField
@@ -231,7 +235,7 @@ export default function AddProductModal({
                             <InputField
                                 label={"Шлях"}
                                 value={path}
-                                onChangeValue={(e) => setName(e.target.value)}
+                                onChangeValue={(e) => setPath(e.target.value)}
                                 id={"addProductPath"}
                                 name={"addProductPath"}
                                 placeholder={"Шлях"}
@@ -565,7 +569,8 @@ export default function AddProductModal({
                                 {imagePreviews.map((src, i) => (
                                     <div
                                         key={i}
-                                        className="relative group w-[100px] h-[100px]"
+                                        className="relative group w-[100px] h-[100px] group cursor-pointer"
+                                        onClick={() => removeImage(i)}
                                     >
                                         <Image
                                             src={src}
@@ -574,13 +579,9 @@ export default function AddProductModal({
                                             height={100}
                                             className="object-cover rounded-md"
                                         />
-                                        <button
-                                            type="button"
-                                            onClick={() => removeImage(i)}
-                                            className="absolute top-0 right-0 bg-black text-white px-[8px] py-[2px] opacity-0 group-hover:opacity-100 transition cursor-pointer"
-                                        >
-                                            Х
-                                        </button>
+                                        <div className="absolute flex items-center justify-center opacity-0 rounded group-hover:opacity-100 top-0 right-0 bg-black/40 w-full h-full transition-all duration-200">
+                                            <TrashIcon className=" w-[35px] fill-none  stroke-white stroke-[1.5] " />
+                                        </div>
                                     </div>
                                 ))}
                             </div>
@@ -592,13 +593,13 @@ export default function AddProductModal({
                         <button
                             type="button"
                             onClick={handleClose}
-                            className="px-4 py-2 bg-gray-200 hover:bg-black hover:text-white"
+                            className="px-[20px] py-[7px] border border-transparent bg-black text-white hover:bg-white hover:border-black hover:text-black cursor-pointer transition-all duration-200"
                         >
                             Відмінити
                         </button>
                         <button
                             type="submit"
-                            className="px-4 py-2 bg-black text-white hover:bg-gray-800 rounded"
+                            className="px-[20px] py-[7px] border border-transparent bg-black text-white hover:bg-white hover:border-black hover:text-black cursor-pointer transition-all duration-200"
                         >
                             Додати
                         </button>
