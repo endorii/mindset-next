@@ -1,10 +1,13 @@
+import { ICartItem } from "../cart/cart.types";
 import { ICategory } from "../category/category.types";
 import { IColor } from "../color/color.types";
+import { IFavoriteItem } from "../favorite/favorite.types";
 import { ISize } from "../size/size.types";
 import { IType } from "../type/type.types";
 import { TStatus } from "../types";
 
 export interface IProduct {
+    id: string;
     name: string;
     price: number;
     path: string;
@@ -24,9 +27,6 @@ export interface IProduct {
     productSizes: IProductToSize[];
 
     category?: ICategory;
-
-    // cartItems?: ICartItem[];
-    // favorites?: IFavoriteItem[];
 }
 export interface ICreateProductPayload {
     name: string;

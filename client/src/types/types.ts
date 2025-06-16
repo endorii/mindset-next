@@ -22,14 +22,6 @@ export type AttributeModalType =
 
 export type TStatus = "ACTIVE" | "INACTIVE";
 
-export interface ICartItem {
-    productPath: IProduct["path"];
-}
-
-export interface IFavoriteItem {
-    productPath: IProduct["path"];
-}
-
 export interface IIconsProps {
     className?: string;
 }

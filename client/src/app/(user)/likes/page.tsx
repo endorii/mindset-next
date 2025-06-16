@@ -1,29 +1,16 @@
-import React from "react";
+"use client";
 
-import { user } from "@/data/user";
-import { collections } from "@/data/collections";
+import React from "react";
 import Link from "next/link";
 import CloseIcon from "@/components/Icons/CloseIcon";
+import { IFavoriteItem } from "@/types/favorite/favorite.types";
+import { useUser } from "@/lib/hooks/useUsers";
+import Image from "next/image";
 
 function Likes() {
-    const getProductWithPathInfo = (productPath: string) => {
-        for (const collection of collections) {
-            for (const category of collection.categories) {
-                for (const product of category.products) {
-                    if (product.path === productPath) {
-                        return {
-                            product,
-                            categoryPath: category.path,
-                            collectionPath: collection.path,
-                        };
-                    }
-                }
-            }
-        }
-        return null;
-    };
+    const { data: user, isLoading, error } = useUser("johnsmith@gmail.com");
 
-    const favouritesItems = user?.favorites;
+    const favouritesItems: IFavoriteItem[] = user?.favorites || [];
 
     if (!favouritesItems || favouritesItems.length === 0) {
         return (
@@ -33,44 +20,61 @@ function Likes() {
         );
     }
 
+    if (isLoading) {
+        return <p>Завантаження кошика...</p>;
+    }
+
+    if (error) {
+        return (
+            <p>
+                Помилка завантаження кошика:{" "}
+                {error.message || "Невідома помилка"}
+            </p>
+        );
+    }
+
     return (
         <div>
             <h3 className="mt-[30px] text-xl uppercase font-bold">Улюблене:</h3>
-            <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-[20px] mt-[30px]">
-                {favouritesItems.map((item: any, i: number) => {
-                    const result = getProductWithPathInfo(item.productPath);
-                    if (!result) return null;
+            {favouritesItems.length > 0 ? (
+                <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-[20px] mt-[30px]">
+                    {favouritesItems.map((item, i) => {
+                        const { product } = item;
 
-                    const { product, categoryPath, collectionPath } = result;
+                        if (!product) return null;
 
-                    return (
-                        <li key={i} className="relative">
-                            <button className="absolute top-0 right-0 group flex text-xs items-center gap-[20px] border border-transparent hover:text-black hover:border-black hover:bg-white bg-black text-white p-[10px] transition-all duration-300 cursor-pointer disabled:bg-gray-200 disabled:text-gray-400 disabled:border-0 disabled:cursor-not-allowed">
-                                <CloseIcon className="w-[20px] stroke-white group-hover:stroke-black transition-all duration-300" />
-                            </button>
-                            <Link
-                                href={`/${collectionPath}/${categoryPath}/${product.path}`}
-                            >
-                                <img
-                                    src={product.images[0]}
-                                    alt={product.name}
-                                    className="w-full h-auto"
-                                />
-                                <div className="px-[20px] py-[15px] flex justify-between">
-                                    <div>
-                                        <div className="text-lg font-medium">
-                                            {product.name}
-                                        </div>
-                                        <div className="text-sm text-gray-600">
-                                            {product.price} грн.
+                        return (
+                            <li key={i} className="relative">
+                                <button className="absolute top-0 right-0 group flex text-xs items-center gap-[20px] border border-transparent hover:text-black hover:border-black hover:bg-white bg-black text-white p-[10px] transition-all duration-300 cursor-pointer disabled:bg-gray-200 disabled:text-gray-400 disabled:border-0 disabled:cursor-not-allowed">
+                                    <CloseIcon className="w-[20px] stroke-white group-hover:stroke-black transition-all duration-300" />
+                                </button>
+                                <Link
+                                    href={`${product.category?.collection?.path}/${product.category?.path}/${product.path}`}
+                                >
+                                    <Image
+                                        src={`http://localhost:5000/${product.banner}`}
+                                        alt={product.name}
+                                        width={450}
+                                        height={450}
+                                    />
+                                    <div className="px-[20px] py-[15px] flex justify-between">
+                                        <div>
+                                            <div className="text-lg font-medium">
+                                                {product.name}
+                                            </div>
+                                            <div className="text-sm text-gray-600">
+                                                {product.price} грн.
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                            </Link>
-                        </li>
-                    );
-                })}
-            </ul>
+                                </Link>
+                            </li>
+                        );
+                    })}
+                </ul>
+            ) : (
+                "Товарів не знайдено"
+            )}
         </div>
     );
 }

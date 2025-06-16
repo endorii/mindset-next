@@ -21,6 +21,25 @@ model User {
   shippingAddress ShippingAddress?
 }
 
+model Favorite {
+  id        String  @id @default(cuid())
+  userId    String  @map("user_id")
+  productId String  @map("product_id")
+  product   Product @relation(fields: [productId], references: [id])
+  user      User    @relation(fields: [userId], references: [id])
+}
+
+model CartItem {
+  id        String  @id @default(cuid())
+  userId    String  @map("user_id")
+  productId String  @map("product_id")
+  quantity  Int
+  size      String
+  color     String
+  product   Product @relation(fields: [productId], references: [id])
+  user      User    @relation(fields: [userId], references: [id])
+}
+
 model ShippingAddress {
   id         String @id @default(cuid())
   userId     String @unique @map("user_id")
@@ -33,17 +52,6 @@ model ShippingAddress {
   building   String
   apartment  String
   user       User   @relation(fields: [userId], references: [id])
-}
-
-model CartItem {
-  id        String  @id @default(cuid())
-  userId    String  @map("user_id")
-  productId String  @map("product_id")
-  quantity  Int
-  size      String
-  color     String
-  product   Product @relation(fields: [productId], references: [id])
-  user      User    @relation(fields: [userId], references: [id])
 }
 
 model Collection {
@@ -144,12 +152,4 @@ model ProductToType {
   type      Type    @relation(fields: [typeId], references: [id], onDelete: Cascade)
 
   @@id([productId, typeId])
-}
-
-model Favorite {
-  id        String  @id @default(cuid())
-  userId    String  @map("user_id")
-  productId String  @map("product_id")
-  product   Product @relation(fields: [productId], references: [id])
-  user      User    @relation(fields: [userId], references: [id])
 }

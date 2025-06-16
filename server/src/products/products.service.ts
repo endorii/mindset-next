@@ -10,7 +10,7 @@ export class ProductsService {
 
     async getProduct(collectionPath: string, categoryPath: string, productPath: string) {
         try {
-            const product = await this.prisma.product.findFirst({
+            const product = await this.prisma.product.findUnique({
                 where: {
                     path: productPath,
                     category: {
@@ -21,6 +21,7 @@ export class ProductsService {
                     },
                 },
                 include: {
+                    favorites: true,
                     productColors: {
                         include: {
                             color: true,
