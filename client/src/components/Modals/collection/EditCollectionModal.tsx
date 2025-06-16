@@ -4,6 +4,7 @@ import InputField from "@/components/AdminPage/components/InputField";
 import { deleteImage } from "@/lib/api/images.api";
 import { statuses } from "@/lib/helpers/helpers";
 import { useEditCollection } from "@/lib/hooks/useCollections";
+import { useEscapeKeyClose } from "@/lib/hooks/useEscapeKeyClose";
 import { useUploadImage } from "@/lib/hooks/useImages";
 import { ICollection } from "@/types/collection/collection.types";
 import { TStatus } from "@/types/types";
@@ -40,7 +41,8 @@ export default function EditCollectionModal({
         }
     }, [collection]);
 
-    const handleSubmit = async () => {
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
         if (!status) {
             alert("Будь ласка, оберіть статус колекції");
             return;
@@ -88,21 +90,7 @@ export default function EditCollectionModal({
         }
     };
 
-    useEffect(() => {
-        const handleEscape = (event: KeyboardEvent) => {
-            if (event.key === "Escape") {
-                onClose();
-            }
-        };
-
-        if (isOpen) {
-            document.addEventListener("keydown", handleEscape);
-        }
-
-        return () => {
-            document.removeEventListener("keydown", handleEscape);
-        };
-    }, [isOpen, onClose]);
+    useEscapeKeyClose({ isOpen, onClose });
 
     if (!isOpen || !collection) return null;
 

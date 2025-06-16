@@ -2,6 +2,7 @@
 
 import InfoField from "@/components/AdminPage/components/InfoField";
 import { formatDate } from "@/lib/helpers/formatDate";
+import { useEscapeKeyClose } from "@/lib/hooks/useEscapeKeyClose";
 import { ICategory } from "@/types/category/category.types";
 import { ICollection } from "@/types/collection/collection.types";
 import Image from "next/image";
@@ -34,21 +35,7 @@ export default function CategoryInfoModal({
         products,
     } = category;
 
-    useEffect(() => {
-        const handleEscape = (event: KeyboardEvent) => {
-            if (event.key === "Escape") {
-                onClose();
-            }
-        };
-
-        if (isOpen) {
-            document.addEventListener("keydown", handleEscape);
-        }
-
-        return () => {
-            document.removeEventListener("keydown", handleEscape);
-        };
-    }, [isOpen, onClose]);
+    useEscapeKeyClose({ isOpen, onClose });
 
     const modalContent = (
         <div

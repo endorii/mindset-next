@@ -10,6 +10,7 @@ export interface InputFieldProps {
     required?: boolean;
     disabled?: boolean;
     type: string;
+    className?: string;
 }
 
 const InputField: React.FC<InputFieldProps> = ({
@@ -22,6 +23,7 @@ const InputField: React.FC<InputFieldProps> = ({
     disabled,
     required,
     type = "text",
+    className = "border border-gray-200 rounded px-[10px] py-[7px] bg-gray-50 outline-0  transition-colors duration-200",
 }) => (
     <div className="flex flex-col gap-[7px]">
         <label htmlFor={id} className="text-sm font-semibold">
@@ -31,7 +33,7 @@ const InputField: React.FC<InputFieldProps> = ({
             id={id}
             name={name}
             type={type}
-            className="border border-gray-200 rounded px-[10px] py-[7px] bg-gray-50 outline-0  transition-colors duration-200"
+            className={className}
             placeholder={placeholder}
             value={value}
             required={required}

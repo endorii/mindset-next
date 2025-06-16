@@ -42,21 +42,7 @@ export default function ProductInfoModal({
         images,
     } = product;
 
-    useEffect(() => {
-        const handleEscape = (event: KeyboardEvent) => {
-            if (event.key === "Escape") {
-                onClose();
-            }
-        };
-
-        if (isOpen) {
-            document.addEventListener("keydown", handleEscape);
-        }
-
-        return () => {
-            document.removeEventListener("keydown", handleEscape);
-        };
-    }, [isOpen, onClose]);
+    useEscapeKeyClose({ isOpen, onClose });
 
     if (!isOpen || !product) return null;
 

@@ -2,6 +2,7 @@
 
 import { deleteImage } from "@/lib/api/images.api";
 import { useDeleteCategory } from "@/lib/hooks/useCategories";
+import { useEscapeKeyClose } from "@/lib/hooks/useEscapeKeyClose";
 import { ICategory } from "@/types/category/category.types";
 import { ICollection } from "@/types/collection/collection.types";
 import { useEffect } from "react";
@@ -36,21 +37,7 @@ export default function DeleteCategoryModal({
         }
     };
 
-    useEffect(() => {
-        const handleEscape = (event: KeyboardEvent) => {
-            if (event.key === "Escape") {
-                onClose();
-            }
-        };
-
-        if (isOpen) {
-            document.addEventListener("keydown", handleEscape);
-        }
-
-        return () => {
-            document.removeEventListener("keydown", handleEscape);
-        };
-    }, [isOpen, onClose]);
+    useEscapeKeyClose({ isOpen, onClose });
 
     const modalContent = (
         <div

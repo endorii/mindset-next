@@ -40,21 +40,7 @@ export default function DeleteProductModal({
             console.error("Помилка при видаленні:", error);
         }
     };
-    useEffect(() => {
-        const handleEscape = (event: KeyboardEvent) => {
-            if (event.key === "Escape") {
-                onClose();
-            }
-        };
-
-        if (isOpen) {
-            document.addEventListener("keydown", handleEscape);
-        }
-
-        return () => {
-            document.removeEventListener("keydown", handleEscape);
-        };
-    }, [isOpen, onClose]);
+    useEscapeKeyClose({ isOpen, onClose });
 
     const modalContent = (
         <div

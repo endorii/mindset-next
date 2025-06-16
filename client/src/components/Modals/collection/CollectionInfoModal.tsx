@@ -6,6 +6,7 @@ import { createPortal } from "react-dom";
 import InfoField from "@/components/AdminPage/components/InfoField";
 import Image from "next/image";
 import { useEffect } from "react";
+import { useEscapeKeyClose } from "@/lib/hooks/useEscapeKeyClose";
 
 export interface CollectionInfoModalProps {
     isOpen: boolean;
@@ -31,21 +32,7 @@ export default function CollectionInfoModal({
         banner,
     } = collection;
 
-    useEffect(() => {
-        const handleEscape = (event: KeyboardEvent) => {
-            if (event.key === "Escape") {
-                onClose();
-            }
-        };
-
-        if (isOpen) {
-            document.addEventListener("keydown", handleEscape);
-        }
-
-        return () => {
-            document.removeEventListener("keydown", handleEscape);
-        };
-    }, [isOpen, onClose]);
+    useEscapeKeyClose({ isOpen, onClose });
 
     const modalContent = (
         <div

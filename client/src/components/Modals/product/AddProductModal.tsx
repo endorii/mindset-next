@@ -595,7 +595,7 @@ export default function AddProductModal({
                             onClick={handleClose}
                             className="px-[20px] py-[7px] border border-transparent bg-black text-white hover:bg-white hover:border-black hover:text-black cursor-pointer transition-all duration-200"
                         >
-                            Відмінити
+                            Скасувати
                         </button>
                         <button
                             type="submit"

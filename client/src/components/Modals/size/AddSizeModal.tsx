@@ -1,7 +1,9 @@
 "use client";
 
+import InputField from "@/components/AdminPage/components/InputField";
+import { useEscapeKeyClose } from "@/lib/hooks/useEscapeKeyClose";
 import { useCreateSize } from "@/lib/hooks/useSizes";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 
 interface AddSizeModalProps {
@@ -36,27 +38,32 @@ export default function AddSizeModal({ isOpen, onClose }: AddSizeModalProps) {
         }
     };
 
+    useEscapeKeyClose({ isOpen, onClose });
+
     if (!isOpen) return null;
 
     const modalContent = (
-        <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-100">
-            <div className="bg-white p-[30px] shadow-lg max-w-[400px] w-full">
-                <h2 className="text-lg font-bold mb-4">Додавання типу</h2>
+        <div
+            className="fixed inset-0 bg-black/70 flex items-center products-center justify-center z-100 cursor-pointer"
+            onClick={onClose}
+        >
+            <div
+                className="bg-white p-[30px] h-auto max-h-[80vh] shadow-lg w-[20vw] overflow-y-auto cursor-default"
+                onClick={(e) => e.stopPropagation()}
+            >
+                <h2 className="text-lg font-bold mb-4">Додавання розімру</h2>
                 <form onSubmit={handleSubmit}>
                     <div className="flex gap-[20px] justify-between">
                         <div className="flex flex-col gap-[20px] w-full">
-                            <div className="flex flex-col gap-[7px]">
-                                <label htmlFor="name">Назва</label>
-                                <input
-                                    id="name"
-                                    name="name"
-                                    type="text"
-                                    className="border border-gray-200 rounded px-[10px] py-[7px] bg-gray-50 outline-0"
-                                    placeholder="Назва типу"
-                                    value={name}
-                                    onChange={(e) => setName(e.target.value)}
-                                />
-                            </div>
+                            <InputField
+                                label={"Назва"}
+                                value={name}
+                                onChangeValue={(e) => setName(e.target.value)}
+                                id={"name"}
+                                name={"name"}
+                                placeholder={"Назва розміру"}
+                                type={"text"}
+                            />
                         </div>
                     </div>
                     {/* {message && <p className="mt-4 text-red-500">{message}</p>} */}
@@ -64,14 +71,14 @@ export default function AddSizeModal({ isOpen, onClose }: AddSizeModalProps) {
                         <button
                             type="button"
                             onClick={handleClose}
-                            className="px-[20px] py-[7px] bg-white text-black hover:bg-black hover:border-transparent hover:text-white cursor-pointer transition-all duration-200"
+                            className="px-[20px] py-[7px] border border-transparent bg-black text-white hover:bg-white hover:border-black hover:text-black cursor-pointer transition-all duration-200"
                             disabled={createSizeMutation.isPending}
                         >
-                            Відмінити
+                            Скасувати
                         </button>
                         <button
                             type="submit"
-                            className="px-[20px] py-[7px] bg-black/70 border hover:bg-black hover:border-transparent text-white cursor-pointer transition-all duration-200"
+                            className="px-[20px] py-[7px] border border-transparent bg-black text-white hover:bg-white hover:border-black hover:text-black cursor-pointer transition-all duration-200"
                             disabled={createSizeMutation.isPending}
                         >
                             {createSizeMutation.isPending

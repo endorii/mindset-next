@@ -3,6 +3,7 @@
 import InputField from "@/components/AdminPage/components/InputField";
 import { statuses } from "@/lib/helpers/helpers";
 import { useEditCategory } from "@/lib/hooks/useCategories";
+import { useEscapeKeyClose } from "@/lib/hooks/useEscapeKeyClose";
 import { useUploadImage } from "@/lib/hooks/useImages";
 import { ICategory } from "@/types/category/category.types";
 import { ICollection } from "@/types/collection/collection.types";
@@ -43,7 +44,8 @@ export default function EditCategoryModal({
         }
     }, [category]);
 
-    const handleSubmit = async () => {
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
         try {
             let bannerPath = typeof banner === "string" ? banner : "";
 
@@ -79,21 +81,7 @@ export default function EditCategoryModal({
         }
     };
 
-    useEffect(() => {
-        const handleEscape = (event: KeyboardEvent) => {
-            if (event.key === "Escape") {
-                onClose();
-            }
-        };
-
-        if (isOpen) {
-            document.addEventListener("keydown", handleEscape);
-        }
-
-        return () => {
-            document.removeEventListener("keydown", handleEscape);
-        };
-    }, [isOpen, onClose]);
+    useEscapeKeyClose({ isOpen, onClose });
 
     if (!isOpen || !category) return null;
 

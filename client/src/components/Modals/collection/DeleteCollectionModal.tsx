@@ -2,6 +2,7 @@
 
 import { deleteImage } from "@/lib/api/images.api";
 import { useDeleteCollection } from "@/lib/hooks/useCollections";
+import { useEscapeKeyClose } from "@/lib/hooks/useEscapeKeyClose";
 import { ICollection } from "@/types/collection/collection.types";
 import { useEffect } from "react";
 import { createPortal } from "react-dom";
@@ -29,21 +30,8 @@ export default function DeleteCollectionModal({
             console.error("Помилка при видаленні:", error);
         }
     };
-    useEffect(() => {
-        const handleEscape = (event: KeyboardEvent) => {
-            if (event.key === "Escape") {
-                onClose();
-            }
-        };
 
-        if (isOpen) {
-            document.addEventListener("keydown", handleEscape);
-        }
-
-        return () => {
-            document.removeEventListener("keydown", handleEscape);
-        };
-    }, [isOpen, onClose]);
+    useEscapeKeyClose({ isOpen, onClose });
 
     const modalContent = (
         <div

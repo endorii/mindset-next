@@ -9,6 +9,7 @@ import { useCreateCategory } from "@/lib/hooks/useCategories";
 import { createPortal } from "react-dom";
 import { ICollection } from "@/types/collection/collection.types";
 import InputField from "@/components/AdminPage/components/InputField";
+import { useEscapeKeyClose } from "@/lib/hooks/useEscapeKeyClose";
 
 interface AddCategoryModalProps {
     isOpen: boolean;
@@ -89,21 +90,7 @@ export default function AddCategoryModal({
         }
     };
 
-    useEffect(() => {
-        const handleEscape = (event: KeyboardEvent) => {
-            if (event.key === "Escape") {
-                handleClose();
-            }
-        };
-
-        if (isOpen) {
-            document.addEventListener("keydown", handleEscape);
-        }
-
-        return () => {
-            document.removeEventListener("keydown", handleEscape);
-        };
-    }, [isOpen, handleClose]);
+    useEscapeKeyClose({ isOpen, onClose });
 
     if (!isOpen) return null;
 
@@ -207,7 +194,7 @@ export default function AddCategoryModal({
                                 createCategoryMutation.isPending
                             }
                         >
-                            Відмінити
+                            Скасувати
                         </button>
                         <button
                             type="submit"

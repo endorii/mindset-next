@@ -8,6 +8,7 @@ import { useUploadImage } from "@/lib/hooks/useImages";
 import Image from "next/image";
 import { createPortal } from "react-dom";
 import InputField from "@/components/AdminPage/components/InputField";
+import { useEscapeKeyClose } from "@/lib/hooks/useEscapeKeyClose";
 
 interface AddCollectionModalProps {
     isOpen: boolean;
@@ -82,21 +83,7 @@ export default function AddCollectionModal({
         }
     };
 
-    useEffect(() => {
-        const handleEscape = (event: KeyboardEvent) => {
-            if (event.key === "Escape") {
-                handleClose();
-            }
-        };
-
-        if (isOpen) {
-            document.addEventListener("keydown", handleEscape);
-        }
-
-        return () => {
-            document.removeEventListener("keydown", handleEscape);
-        };
-    }, [isOpen, handleClose]);
+    useEscapeKeyClose({ isOpen, onClose });
 
     if (!isOpen) return null;
 
@@ -200,7 +187,7 @@ export default function AddCollectionModal({
                                 createCollectionMutation.isPending
                             }
                         >
-                            Відмінити
+                            Скасувати
                         </button>
                         <button
                             type="submit"

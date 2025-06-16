@@ -1,7 +1,9 @@
 "use client";
 
 import { useDeleteColor } from "@/lib/hooks/useColors";
+import { useEscapeKeyClose } from "@/lib/hooks/useEscapeKeyClose";
 import { IColor } from "@/types/color/color.types";
+import { useEffect } from "react";
 import { createPortal } from "react-dom";
 
 interface DeleteColorModalProps {
@@ -27,9 +29,17 @@ export default function DeleteColorModal({
         }
     };
 
+    useEscapeKeyClose({ isOpen, onClose });
+
     const modalContent = (
-        <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-100">
-            <div className="bg-white p-[30px] shadow-lg max-w-sm w-full">
+        <div
+            className="fixed inset-0 bg-black/70 flex items-center products-center justify-center z-100 cursor-pointer"
+            onClick={onClose}
+        >
+            <div
+                className="bg-white p-[30px] h-auto max-h-[80vh] shadow-lg w-[24vw] overflow-y-auto cursor-default"
+                onClick={(e) => e.stopPropagation()}
+            >
                 <h2 className="text-lg font-bold mb-4">
                     Підтвердження видалення
                 </h2>
@@ -39,7 +49,7 @@ export default function DeleteColorModal({
                 <div className="flex justify-end gap-4">
                     <button
                         onClick={onClose}
-                        className="px-[20px] py-[7px] bg-white text-black hover:bg-black hover:border-transparent hover:text-white cursor-pointer transition-all duration-200"
+                        className="px-[20px] py-[7px] border border-transparent bg-black text-white hover:bg-white hover:border-black hover:text-black cursor-pointer transition-all duration-200"
                     >
                         Скасувати
                     </button>
@@ -48,7 +58,7 @@ export default function DeleteColorModal({
                             onClose();
                             handleDelete();
                         }}
-                        className="px-[20px] py-[7px] bg-black/70 border hover:bg-black hover:border-transparent text-white cursor-pointer transition-all duration-200"
+                        className="px-[20px] py-[7px] border border-transparent bg-black text-white hover:bg-white hover:border-black hover:text-black cursor-pointer transition-all duration-200"
                     >
                         Видалити
                     </button>

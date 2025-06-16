@@ -211,21 +211,7 @@ export default function EditProductModal({
         }
     };
 
-    useEffect(() => {
-        const handleEscape = (event: KeyboardEvent) => {
-            if (event.key === "Escape") {
-                onClose();
-            }
-        };
-
-        if (isOpen) {
-            document.addEventListener("keydown", handleEscape);
-        }
-
-        return () => {
-            document.removeEventListener("keydown", handleEscape);
-        };
-    }, [isOpen, onClose]);
+    useEscapeKeyClose({ isOpen, onClose });
 
     if (!isOpen || !product) return null;
 
@@ -635,7 +621,7 @@ export default function EditProductModal({
                             onClick={handleClose}
                             className="px-[20px] py-[7px] border border-transparent bg-black text-white hover:bg-white hover:border-black hover:text-black cursor-pointer transition-all duration-200"
                         >
-                            Відмінити
+                            Скасувати
                         </button>
                         <button
                             type="submit"

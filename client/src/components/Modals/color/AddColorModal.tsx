@@ -1,8 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { useCreateColor } from "@/lib/hooks/useColors";
+import InputField from "@/components/AdminPage/components/InputField";
+import { useEscapeKeyClose } from "@/lib/hooks/useEscapeKeyClose";
 
 interface AddColorModalProps {
     isOpen: boolean;
@@ -50,43 +52,46 @@ export default function AddColorModal({ isOpen, onClose }: AddColorModalProps) {
         setIsValidHex(hexRegex.test(inputValue));
     };
 
+    useEscapeKeyClose({ isOpen, onClose });
+
     if (!isOpen) return null;
 
     const modalContent = (
-        <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-100">
-            <div className="bg-white p-[30px] shadow-lg max-w-[400px] w-full">
+        <div
+            className="fixed inset-0 bg-black/70 flex items-center products-center justify-center z-100 cursor-pointer"
+            onClick={onClose}
+        >
+            <div
+                className="bg-white p-[30px] h-auto max-h-[80vh] shadow-lg w-[34vw] overflow-y-auto cursor-default"
+                onClick={(e) => e.stopPropagation()}
+            >
                 <h2 className="text-lg font-bold mb-4">Додавання кольору</h2>
                 <form onSubmit={handleSubmit}>
-                    <div className="flex gap-[20px] justify-between">
-                        <div className="flex flex-col gap-[20px] w-full">
-                            <div className="flex flex-col gap-[7px]">
-                                <label htmlFor="name">Назва</label>
-                                <input
-                                    id="name"
-                                    name="name"
-                                    type="text"
-                                    className="border border-gray-200 rounded px-[10px] py-[7px] bg-gray-50 outline-0"
-                                    placeholder="Назва кольору"
-                                    value={name}
-                                    onChange={(e) => setName(e.target.value)}
-                                />
-                            </div>
-                            <div className="flex flex-col gap-[7px]">
-                                <label htmlFor="path">HEX-код</label>
-                                <input
-                                    id="path"
-                                    name="path"
-                                    type="text"
-                                    className={`border rounded px-[10px] py-[7px] bg-gray-50 outline-0 ${
-                                        isValidHex
-                                            ? "border-gray-200"
-                                            : "border-red-500"
-                                    }`}
-                                    placeholder="#000000"
-                                    value={hexCode}
-                                    onChange={handleHexCodeChange}
-                                />
-                            </div>
+                    <div className="flex flex-col gap-[20px]">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-[20px]">
+                            <InputField
+                                label={"Назва"}
+                                value={name}
+                                onChangeValue={(e) => setName(e.target.value)}
+                                id={"name"}
+                                name={"name"}
+                                placeholder={"Назва кольору"}
+                                type={"text"}
+                            />
+                            <InputField
+                                label={"HEX-код"}
+                                value={hexCode}
+                                onChangeValue={handleHexCodeChange}
+                                id={"hex"}
+                                name={"hex"}
+                                placeholder={"#000000"}
+                                type={"text"}
+                                className={`border rounded px-[10px] py-[7px] bg-gray-50 outline-0 ${
+                                    isValidHex
+                                        ? "border-gray-200"
+                                        : "border-red-500"
+                                }`}
+                            />
                         </div>
                     </div>
                     {/* {message && <p className="mt-4 text-red-500">{message}</p>} */}
@@ -94,14 +99,14 @@ export default function AddColorModal({ isOpen, onClose }: AddColorModalProps) {
                         <button
                             type="button"
                             onClick={handleClose}
-                            className="px-[20px] py-[7px] bg-white text-black hover:bg-black hover:border-transparent hover:text-white cursor-pointer transition-all duration-200"
+                            className="px-[20px] py-[7px] border border-transparent bg-black text-white hover:bg-white hover:border-black hover:text-black cursor-pointer transition-all duration-200"
                             disabled={createColorMutation.isPending}
                         >
-                            Відмінити
+                            Скасувати
                         </button>
                         <button
                             type="submit"
-                            className="px-[20px] py-[7px] bg-black/70 border hover:bg-black hover:border-transparent text-white cursor-pointer transition-all duration-200"
+                            className="px-[20px] py-[7px] border border-transparent bg-black text-white hover:bg-white hover:border-black hover:text-black cursor-pointer transition-all duration-200"
                             disabled={createColorMutation.isPending}
                         >
                             {createColorMutation.isPending
