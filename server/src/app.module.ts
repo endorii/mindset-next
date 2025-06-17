@@ -10,6 +10,7 @@ import { TypesModule } from "./types/types.module";
 import { ColorsModule } from "./colors/colors.module";
 import { SizesModule } from "./sizes/sizes.module";
 import { UsersModule } from "./users/users.module";
+import { UserAddressModule } from "./user-address/user-address.module";
 
 @Module({
     imports: [
@@ -25,6 +26,7 @@ import { UsersModule } from "./users/users.module";
         ColorsModule,
         SizesModule,
         UsersModule,
+        UserAddressModule,
     ],
     controllers: [],
     providers: [],
