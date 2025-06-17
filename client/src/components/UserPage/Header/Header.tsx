@@ -9,8 +9,6 @@ import { useUser } from "@/lib/hooks/useUsers";
 const Header = () => {
     const { data: user } = useUser("johnsmith@gmail.com");
 
-    console.log(user);
-
     return (
         <header className="fixed top-0 py-[10px] px-[20px] md:px-[35px] h-[75px] md:h-[85px] flex justify-end items-center w-full bg-white z-[100] shadow-custom border-b border-gray-200">
             <div className="absolute left-1/2 transform -translate-x-1/2">
@@ -37,7 +35,7 @@ const Header = () => {
                                     {user?.cart.length}
                                 </div>
                             ) : null}
-                            <CartIcon className="w-[25px] fill-white stroke-black" />
+                            <CartIcon className="w-[25px] fill-white stroke-2 stroke-black" />
                         </Link>
                     </li>
                     <li>
@@ -51,9 +49,23 @@ const Header = () => {
                         </Link>
                     </li>
                     <li>
-                        <Link href="/account">
-                            <AccountIcon className="w-[25px] fill-black" />
-                        </Link>
+                        {user ? (
+                            <Link
+                                href="/account"
+                                className="flex items-center gap-[10px] font-semibold"
+                            >
+                                <AccountIcon className="w-[25px] fill-black" />
+                                <div>{user.username}</div>
+                            </Link>
+                        ) : (
+                            <Link
+                                href="/login"
+                                className="flex items-center gap-[5px] font-semibold"
+                            >
+                                <AccountIcon className="w-[25px] fill-black" />
+                                <div>Увійти</div>
+                            </Link>
+                        )}
                     </li>
                 </ul>
             </div>

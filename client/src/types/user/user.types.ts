@@ -1,4 +1,5 @@
-import { ICartItem, IFavoriteItem } from "../types";
+import { ICartItem } from "../cart/cart.types";
+import { IFavoriteItem } from "../favorite/favorite.types";
 
 export interface IUser {
     username: string;

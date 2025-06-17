@@ -2,7 +2,7 @@
 
 import ChooseCategoryHeader from "@/components/UserPage/ChooseCategoryHeader/ChooseCategoryHeader";
 import { collections } from "@/data/collections";
-import { ICollection } from "@/types/types";
+import { ICollection } from "@/types/collection/collection.types";
 import { usePathname } from "next/navigation";
 import { useState, useEffect } from "react";
 

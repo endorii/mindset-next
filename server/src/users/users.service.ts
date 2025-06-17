@@ -20,6 +20,7 @@ export class UsersService {
                 email,
             },
             include: {
+                shippingAddress: true,
                 cart: {
                     include: {
                         product: {

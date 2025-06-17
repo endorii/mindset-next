@@ -8,7 +8,7 @@ const Login = () => {
     const router = useRouter();
     useEffect(() => {
         if (user) {
-            router.replace("/account");
+            // router.replace("/account");
         }
     }, []);
 
@@ -89,8 +89,8 @@ const Login = () => {
                         <div className="flex gap-[10px] items-center">
                             <input type="checkbox" name="" id="" className="" />
                             <div className="text-gray-600">
-                                Хочу отримувати комерційні пропозиції магазину
-                                answear.ua на вказаний вище email
+                                Згідний отримувати комерційні пропозиції від
+                                mindset.ua на вказаний email
                             </div>
                         </div>
                     </div>

@@ -35,7 +35,7 @@ function Cart() {
             <h3 className="mt-[30px] text-xl uppercase font-bold">Кошик:</h3>
             <div className="flex justify-between">
                 {cartItems.length > 0 ? (
-                    <ul className="mt-[30px] flex flex-col gap-[30px] w-[70%] max-h-[80vh] overflow-y-scroll">
+                    <ul className="mt-[30px] flex flex-col gap-[30px] w-[70%] max-h-[90vh] overflow-y-scroll">
                         {cartItems.map((item) => {
                             const { product } = item;
 

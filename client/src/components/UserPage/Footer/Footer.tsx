@@ -54,7 +54,7 @@ const Footer = () => {
                 </ul>
             </div>
             <div className="flex flex-col gap-[20px]">
-                <ul className="flex flex-col gap-[7px]">
+                <ul className="flex flex-col gap-[7px] text-sm">
                     <li className="hover:underline">
                         <a href="tel:+380974000000">+380 97 400 0000</a>
                     </li>

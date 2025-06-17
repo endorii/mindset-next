@@ -1,4 +1,3 @@
-// types/cart.ts
 import { IProduct } from "../product/product.types";
 
 export interface ICartItem {

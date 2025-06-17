@@ -1,13 +1,10 @@
 "use client";
 
 import AccountIcon from "@/components/Icons/AccountIcon";
-import ArrowIcon from "@/components/Icons/ArrowIcon";
 import BackIcon from "@/components/Icons/BackIcon";
-import CategoriesIcon from "@/components/Icons/CategoriesIcon";
 import CollectionsIcon from "@/components/Icons/CollectionsIcon";
 import LogoutIcon from "@/components/Icons/LogoutIcon";
 import MainPageIcon from "@/components/Icons/MainPageIcon";
-import ProductsIcon from "@/components/Icons/ProductsIcon";
 import SettingsIcon from "@/components/Icons/SettingsIcon";
 import StatsIcon from "@/components/Icons/StatsIcon";
 import TagIcon from "@/components/Icons/TagIcon";
