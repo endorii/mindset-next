@@ -18,9 +18,10 @@ export type AttributeModalType =
     | "editSize"
     | "deleteSize"
     | "infoSize"
-    | "editAddress"
+    | "addUserAddress"
+    | "editUserAddress"
     | "editUserInfo"
-    | "editPassword"
+    | "editUserPassword"
     | null;
 
 export type TStatus = "ACTIVE" | "INACTIVE";

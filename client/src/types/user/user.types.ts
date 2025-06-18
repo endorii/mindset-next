@@ -2,6 +2,7 @@ import { ICartItem } from "../cart/cart.types";
 import { IFavoriteItem } from "../favorite/favorite.types";
 
 export interface IUser {
+    id: string;
     username: string;
     email: string;
     password: string;
@@ -22,4 +23,5 @@ export interface IUserShippingAdress {
     street: string;
     building: string;
     apartment: string;
+    userId: IUser["id"];
 }

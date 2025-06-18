@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from "@nestjs/common";
+import { Controller, Post, Body, Patch, Param } from "@nestjs/common";
 import { UserAddressService } from "./user-address.service";
 import { CreateUserAddressDto } from "./dto/create-user-address.dto";
 import { UpdateUserAddressDto } from "./dto/update-user-address.dto";
@@ -8,27 +8,15 @@ export class UserAddressController {
     constructor(private readonly userAddressService: UserAddressService) {}
 
     @Post()
-    create(@Body() createUserAddressDto: CreateUserAddressDto) {
-        return this.userAddressService.create(createUserAddressDto);
+    addUserAddress(@Body() createUserAddressDto: CreateUserAddressDto) {
+        return this.userAddressService.addUserAddress(createUserAddressDto);
     }
 
-    @Get()
-    findAll() {
-        return this.userAddressService.findAll();
-    }
-
-    @Get(":id")
-    findOne(@Param("id") id: string) {
-        return this.userAddressService.findOne(+id);
-    }
-
-    @Patch(":id")
-    update(@Param("id") id: string, @Body() updateUserAddressDto: UpdateUserAddressDto) {
-        return this.userAddressService.update(+id, updateUserAddressDto);
-    }
-
-    @Delete(":id")
-    remove(@Param("id") id: string) {
-        return this.userAddressService.remove(+id);
+    @Patch(":userId")
+    updateUserAddress(
+        @Param("userId") userId: string,
+        @Body() updateUserAddressDto: UpdateUserAddressDto
+    ) {
+        return this.userAddressService.updateUserAddress(userId, updateUserAddressDto);
     }
 }

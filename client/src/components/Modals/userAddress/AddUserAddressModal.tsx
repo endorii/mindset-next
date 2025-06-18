@@ -2,22 +2,22 @@
 
 import InputField from "@/components/AdminPage/components/InputField";
 import { useEscapeKeyClose } from "@/lib/hooks/useEscapeKeyClose";
-import { useEditUserAddress } from "@/lib/hooks/useUserAddress";
-import { IUserShippingAdress } from "@/types/user/user.types";
-import { useState, useEffect } from "react";
+import { useCreateUserAddress } from "@/lib/hooks/useUserAddress";
+import { IUser } from "@/types/user/user.types";
+import { useState } from "react";
 import { createPortal } from "react-dom";
 
-interface EditUserAddressModalProps {
+interface AddUserAddressModalProps {
     isOpen: boolean;
     onClose: () => void;
-    address: IUserShippingAdress | undefined;
+    userId: IUser["id"];
 }
 
-export default function EditUserAddressModal({
+export default function AddUserAddressModal({
     isOpen,
     onClose,
-    address,
-}: EditUserAddressModalProps) {
+    userId,
+}: AddUserAddressModalProps) {
     const [recipient, setRecipient] = useState("");
     const [country, setCountry] = useState("");
     const [region, setRegion] = useState("");
@@ -27,20 +27,7 @@ export default function EditUserAddressModal({
     const [building, setBuilding] = useState("");
     const [apartment, setApartment] = useState("");
 
-    const editUserAddress = useEditUserAddress();
-
-    useEffect(() => {
-        if (address) {
-            setRecipient(address.recipient || "");
-            setCountry(address.country || "");
-            setRegion(address.region || "");
-            setCity(address.city || "");
-            setPostalCode(address.postalCode || "");
-            setStreet(address.street || "");
-            setBuilding(address.building || "");
-            setApartment(address.apartment || "");
-        }
-    }, [address]);
+    const createUserAddress = useCreateUserAddress();
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -50,18 +37,16 @@ export default function EditUserAddressModal({
         }
 
         try {
-            await editUserAddress.mutateAsync({
-                userId: address?.userId || "",
-                data: {
-                    recipient,
-                    country,
-                    region,
-                    city,
-                    postalCode,
-                    street,
-                    building,
-                    apartment,
-                },
+            await createUserAddress.mutateAsync({
+                userId,
+                recipient,
+                country,
+                region,
+                city,
+                postalCode,
+                street,
+                building,
+                apartment,
             });
 
             onClose();
@@ -72,7 +57,7 @@ export default function EditUserAddressModal({
 
     useEscapeKeyClose({ isOpen, onClose });
 
-    if (!isOpen || !address) return null;
+    if (!isOpen) return null;
 
     const modalContent = (
         <div
@@ -84,7 +69,7 @@ export default function EditUserAddressModal({
                 onClick={(e) => e.stopPropagation()}
             >
                 <h2 className="text-lg font-bold mb-4">
-                    Редагування адреси доставки
+                    Дадавання адреси доставки
                 </h2>
                 <form onSubmit={handleSubmit}>
                     <div className="flex flex-col gap-[20px]">
@@ -166,8 +151,8 @@ export default function EditUserAddressModal({
                                 onChangeValue={(e) =>
                                     setPostalCode(e.target.value)
                                 }
-                                id={"editUserAddressRecipient"}
-                                name={"editUserAddressRecipient"}
+                                id={"editUserAddressPostalCode"}
+                                name={"editUserAddressPostalCode"}
                                 placeholder={"01001"}
                                 type={"text"}
                             />
