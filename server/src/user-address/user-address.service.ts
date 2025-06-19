@@ -43,7 +43,7 @@ export class UserAddressService {
         });
     }
 
-    remove(id: number) {
-        return `This action removes a #${id} userAddress`;
-    }
+    // remove(id: number) {
+    //     return `This action removes a #${id} userAddress`;
+    // }
 }

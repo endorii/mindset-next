@@ -3,6 +3,7 @@
 import InputField from "@/components/AdminPage/components/InputField";
 import { useEditCollection } from "@/lib/hooks/useCollections";
 import { useEscapeKeyClose } from "@/lib/hooks/useEscapeKeyClose";
+import { useEditUser } from "@/lib/hooks/useUsers";
 import { IUser, IUserShippingAdress } from "@/types/user/user.types";
 import { useState, useEffect } from "react";
 import { createPortal } from "react-dom";
@@ -22,7 +23,7 @@ export default function EditUserInfoModal({
     const [email, setEmail] = useState("");
     const [phoneNumber, setPhoneNumber] = useState("");
 
-    // const editCollection = useEditCollection();
+    const editUserMutation = useEditUser();
 
     useEffect(() => {
         if (user) {
@@ -40,15 +41,14 @@ export default function EditUserInfoModal({
         }
 
         try {
-            // await editCollection.mutateAsync({
-            //     collectionPath: collection.path,
-            //     data: {
-            //         name,
-            //         path,
-            //         status,
-            //         banner: bannerPath,
-            //     },
-            // });
+            await editUserMutation.mutateAsync({
+                id: user?.id || "",
+                data: {
+                    username: userName,
+                    email,
+                    phone: phoneNumber,
+                },
+            });
 
             onClose();
         } catch (error) {
