@@ -2,11 +2,11 @@
 
 import InfoField from "@/components/AdminPage/components/InfoField";
 import { formatDate } from "@/lib/helpers/formatDate";
+import { useEscapeKeyClose } from "@/lib/hooks/useEscapeKeyClose";
 import { ICategory } from "@/types/category/category.types";
 import { ICollection } from "@/types/collection/collection.types";
 import { IProduct } from "@/types/product/product.types";
 import Image from "next/image";
-import { useEffect } from "react";
 import { createPortal } from "react-dom";
 
 export interface ProductInfoModalProps {

@@ -23,10 +23,6 @@ export default function AddSizeModal({ isOpen, onClose }: AddSizeModalProps) {
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        // if (!name) {
-        //     setMessage("Заповніть усі поля!");
-        //     return;
-        // }
 
         try {
             await createSizeMutation.mutateAsync({
@@ -66,7 +62,6 @@ export default function AddSizeModal({ isOpen, onClose }: AddSizeModalProps) {
                             />
                         </div>
                     </div>
-                    {/* {message && <p className="mt-4 text-red-500">{message}</p>} */}
                     <div className="flex justify-end gap-4 mt-6">
                         <button
                             type="button"

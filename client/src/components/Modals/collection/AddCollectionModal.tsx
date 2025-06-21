@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useCreateCollection } from "@/lib/hooks/useCollections";
 import { TStatus } from "@/types/types";
 import { statuses } from "@/lib/helpers/helpers";

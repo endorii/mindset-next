@@ -6,16 +6,6 @@ import { UpdateUserDto } from "./dto/update-user.dto";
 export class UsersController {
     constructor(private readonly usersService: UsersService) {}
 
-    // @Post()
-    // create(@Body() createUserDto: CreateUserDto) {
-    //   return this.userService.create(createUserDto);
-    // }
-
-    // @Get()
-    // findAll() {
-    //     return this.userService.findAll();
-    // }
-
     @Get(":email")
     findUserJohn(@Param("email") email: string) {
         return this.usersService.findUserJohn(email);
@@ -25,9 +15,4 @@ export class UsersController {
     updateUser(@Param("id") id: string, @Body() updateUserDto: UpdateUserDto) {
         return this.usersService.updateUser(id, updateUserDto);
     }
-
-    // @Delete(":id")
-    // remove(@Param("id") id: string) {
-    //     return this.userService.remove(+id);
-    // }
 }

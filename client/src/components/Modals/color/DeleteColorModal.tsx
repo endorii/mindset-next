@@ -3,7 +3,6 @@
 import { useDeleteColor } from "@/lib/hooks/useColors";
 import { useEscapeKeyClose } from "@/lib/hooks/useEscapeKeyClose";
 import { IColor } from "@/types/color/color.types";
-import { useEffect } from "react";
 import { createPortal } from "react-dom";
 
 interface DeleteColorModalProps {

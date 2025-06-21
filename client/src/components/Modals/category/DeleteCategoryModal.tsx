@@ -5,7 +5,6 @@ import { useDeleteCategory } from "@/lib/hooks/useCategories";
 import { useEscapeKeyClose } from "@/lib/hooks/useEscapeKeyClose";
 import { ICategory } from "@/types/category/category.types";
 import { ICollection } from "@/types/collection/collection.types";
-import { useEffect } from "react";
 import { createPortal } from "react-dom";
 
 interface DeleteCategoryModalProps {

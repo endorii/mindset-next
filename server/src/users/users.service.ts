@@ -7,13 +7,6 @@ import { UpdateUserDto } from "./dto/update-user.dto";
 @Injectable()
 export class UsersService {
     constructor(private readonly prisma: PrismaService) {}
-    // create(createUserDto: CreateUserDto) {
-    //   return 'This action adds a new user';
-    // }
-
-    // findAll() {
-    //   return `This action returns all user`;
-    // }
 
     async findUserJohn(email: string) {
         return await this.prisma.user.findUnique({
@@ -60,8 +53,4 @@ export class UsersService {
             data: updateUserDto,
         });
     }
-
-    // remove(id: number) {
-    //   return `This action removes a #${id} user`;
-    // }
 }

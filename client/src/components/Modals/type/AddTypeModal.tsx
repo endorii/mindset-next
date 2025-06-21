@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { createPortal } from "react-dom";
 import { useCreateType } from "@/lib/hooks/useTypes";
 import InputField from "@/components/AdminPage/components/InputField";
@@ -23,10 +23,6 @@ export default function AddTypeModal({ isOpen, onClose }: AddTypeModalProps) {
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        // if (!name) {
-        //     setMessage("Заповніть усі поля!");
-        //     return;
-        // }
 
         try {
             await createTypeMutation.mutateAsync({
@@ -66,7 +62,6 @@ export default function AddTypeModal({ isOpen, onClose }: AddTypeModalProps) {
                             />
                         </div>
                     </div>
-                    {/* {message && <p className="mt-4 text-red-500">{message}</p>} */}
                     <div className="flex justify-end gap-4 mt-6">
                         <button
                             type="button"

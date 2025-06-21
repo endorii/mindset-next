@@ -1,7 +1,5 @@
-import { ICartItem } from "../cart/cart.types";
 import { ICategory } from "../category/category.types";
 import { IColor } from "../color/color.types";
-import { IFavoriteItem } from "../favorite/favorite.types";
 import { ISize } from "../size/size.types";
 import { IType } from "../type/type.types";
 import { TStatus } from "../types";

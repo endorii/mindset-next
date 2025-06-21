@@ -6,7 +6,6 @@ import { useEscapeKeyClose } from "@/lib/hooks/useEscapeKeyClose";
 import { ICategory } from "@/types/category/category.types";
 import { ICollection } from "@/types/collection/collection.types";
 import Image from "next/image";
-import { useEffect } from "react";
 import { createPortal } from "react-dom";
 
 interface CategoryInfoModalProps {

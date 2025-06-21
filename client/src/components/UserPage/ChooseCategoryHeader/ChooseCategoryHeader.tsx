@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { ICollection } from "@/types/types";
+import { ICollection } from "@/types/collection/collection.types";
 import { useCollections } from "@/lib/hooks/useCollections";
 
 interface ChooseCategoryHeaderProps {

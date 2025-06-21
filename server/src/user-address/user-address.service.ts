@@ -9,7 +9,6 @@ export class UserAddressService {
     async addUserAddress(createUserAddressDto: CreateUserAddressDto) {
         const { userId, ...addressData } = createUserAddressDto;
 
-        // 1. Перевірка наявності адреси для користувача
         const existingAddress = await this.prisma.shippingAddress.findUnique({
             where: { userId },
         });
@@ -42,8 +41,4 @@ export class UserAddressService {
             data: updateUserAddressDto,
         });
     }
-
-    // remove(id: number) {
-    //     return `This action removes a #${id} userAddress`;
-    // }
 }

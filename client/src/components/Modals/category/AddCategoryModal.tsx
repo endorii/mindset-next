@@ -4,7 +4,7 @@ import { statuses } from "@/lib/helpers/helpers";
 import { useUploadImage } from "@/lib/hooks/useImages";
 import { TStatus } from "@/types/types";
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useCreateCategory } from "@/lib/hooks/useCategories";
 import { createPortal } from "react-dom";
 import { ICollection } from "@/types/collection/collection.types";

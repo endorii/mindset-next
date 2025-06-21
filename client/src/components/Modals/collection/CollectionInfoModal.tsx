@@ -5,7 +5,6 @@ import { ICollection } from "@/types/collection/collection.types";
 import { createPortal } from "react-dom";
 import InfoField from "@/components/AdminPage/components/InfoField";
 import Image from "next/image";
-import { useEffect } from "react";
 import { useEscapeKeyClose } from "@/lib/hooks/useEscapeKeyClose";
 
 export interface CollectionInfoModalProps {

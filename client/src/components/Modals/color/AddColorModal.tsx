@@ -1,6 +1,6 @@
 "use client";
 
-import { ChangeEvent, useEffect, useState } from "react";
+import { useState } from "react";
 import { createPortal } from "react-dom";
 import { useCreateColor } from "@/lib/hooks/useColors";
 import InputField from "@/components/AdminPage/components/InputField";
@@ -25,10 +25,6 @@ export default function AddColorModal({ isOpen, onClose }: AddColorModalProps) {
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        // if (!name) {
-        //     setMessage("Заповніть усі поля!");
-        //     return;
-        // }
 
         try {
             await createColorMutation.mutateAsync({
@@ -94,7 +90,6 @@ export default function AddColorModal({ isOpen, onClose }: AddColorModalProps) {
                             />
                         </div>
                     </div>
-                    {/* {message && <p className="mt-4 text-red-500">{message}</p>} */}
                     <div className="flex justify-end gap-4 mt-6">
                         <button
                             type="button"

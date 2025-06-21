@@ -1,11 +1,11 @@
 "use client";
 
 import { deleteImage, deleteImages } from "@/lib/api/images.api";
+import { useEscapeKeyClose } from "@/lib/hooks/useEscapeKeyClose";
 import { useDeleteProduct } from "@/lib/hooks/useProducts";
 import { ICategory } from "@/types/category/category.types";
 import { ICollection } from "@/types/collection/collection.types";
 import { IProduct } from "@/types/product/product.types";
-import { useEffect } from "react";
 import { createPortal } from "react-dom";
 
 interface DeleteProductProps {

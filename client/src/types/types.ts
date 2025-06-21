@@ -1,5 +1,3 @@
-import { IProduct } from "./product/product.types";
-
 export interface Props {
     children: React.ReactNode;
 }

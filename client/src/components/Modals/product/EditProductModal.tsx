@@ -3,7 +3,7 @@ import Image from "next/image";
 import { useEffect, useState, ChangeEvent } from "react";
 import { statuses } from "@/lib/helpers/helpers";
 import { TStatus } from "@/types/types";
-import { useUploadImage, useUploadImages } from "@/lib/hooks/useImages";
+import { useUploadImage } from "@/lib/hooks/useImages";
 import { useEditProduct } from "@/lib/hooks/useProducts";
 import { createPortal } from "react-dom";
 import { ICollection } from "@/types/collection/collection.types";
@@ -17,6 +17,7 @@ import { IType } from "@/types/type/type.types";
 import { useColors } from "@/lib/hooks/useColors";
 import { useSizes } from "@/lib/hooks/useSizes";
 import { useTypes } from "@/lib/hooks/useTypes";
+import { useEscapeKeyClose } from "@/lib/hooks/useEscapeKeyClose";
 
 interface EditProductModalProps {
     isOpen: boolean;

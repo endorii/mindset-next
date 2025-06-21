@@ -1,10 +1,9 @@
 "use client";
 
 import InputField from "@/components/AdminPage/components/InputField";
-import { useEditCollection } from "@/lib/hooks/useCollections";
 import { useEscapeKeyClose } from "@/lib/hooks/useEscapeKeyClose";
 import { useEditUser } from "@/lib/hooks/useUsers";
-import { IUser, IUserShippingAdress } from "@/types/user/user.types";
+import { IUser } from "@/types/user/user.types";
 import { useState, useEffect } from "react";
 import { createPortal } from "react-dom";
 

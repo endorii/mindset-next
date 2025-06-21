@@ -1,7 +1,7 @@
 "use client";
 
 import ChooseCategoryHeader from "@/components/UserPage/ChooseCategoryHeader/ChooseCategoryHeader";
-import { collections } from "@/data/collections";
+import { useCollections } from "@/lib/hooks/useCollections";
 import { ICollection } from "@/types/collection/collection.types";
 import { usePathname } from "next/navigation";
 import { useState, useEffect } from "react";
@@ -11,6 +11,8 @@ export default function CollectionLayout({
 }: {
     children: React.ReactNode;
 }) {
+    const { data: collections } = useCollections();
+
     const pathname = usePathname();
     const collectionPath = pathname.split("/").filter(Boolean)[0] || null;
 
@@ -20,7 +22,7 @@ export default function CollectionLayout({
     useEffect(() => {
         if (collectionPath) {
             const foundCollection =
-                collections.find((c) => c.path === collectionPath) || null;
+                collections?.find((c) => c.path === collectionPath) || null;
             setCurrentCollection(foundCollection);
         }
     }, [collectionPath]);
