@@ -67,16 +67,4 @@ export class AuthService {
             access_token: this.jwtService.sign(payload),
         };
     }
-
-    async validateUserById(userId: string) {
-        return this.prisma.user.findUnique({
-            where: { id: userId },
-            select: {
-                id: true,
-                username: true,
-                email: true,
-                phone: true,
-            },
-        });
-    }
 }

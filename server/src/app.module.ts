@@ -11,7 +11,7 @@ import { ColorsModule } from "./colors/colors.module";
 import { SizesModule } from "./sizes/sizes.module";
 import { UsersModule } from "./users/users.module";
 import { UserAddressModule } from "./user-address/user-address.module";
-import { AuthModule } from './auth/auth.module';
+import { AuthModule } from "./auth/auth.module";
 
 @Module({
     imports: [
