@@ -1,61 +1,47 @@
+import axios from "axios";
 import { IType, ITypePayload } from "@/types/type/type.types";
+
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
 export async function fetchTypes(): Promise<IType[]> {
     try {
-        const res = await fetch(`http://localhost:5000/api/types`);
-        if (!res.ok) throw new Error("Помилка отримання типів");
-        return res.json();
+        const response = await axios.get<IType[]>(`${API_BASE_URL}/types`);
+        return response.data;
     } catch (error) {
-        console.error("Fetch error:", error);
-        throw error;
+        console.error("Axios error fetching types:", error);
+        throw new Error("Помилка отримання типів");
     }
 }
 
 export async function createType(data: ITypePayload): Promise<IType> {
     try {
-        const res = await fetch("http://localhost:5000/api/types", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify(data),
-        });
-        if (!res.ok) throw new Error("Помилка створення типу");
-        const response = await res.json();
-
-        console.log(response.message);
-
-        return response.collection;
+        const response = await axios.post<{ message: string; type: IType }>(
+            `${API_BASE_URL}/types`,
+            data
+        );
+        console.log(response.data.message);
+        return response.data.type;
     } catch (error) {
-        console.error("Create collection error:", error);
-        throw error;
+        console.error("Axios error creating type:", error);
+        throw new Error("Помилка створення типу");
     }
 }
 
-export async function editType(typeId: IType["id"], data: Partial<IType>) {
-    const res = await fetch(`http://localhost:5000/api/types/${typeId}`, {
-        method: "PATCH",
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-    });
-
-    if (!res.ok) {
+export async function editType(typeId: IType["id"], data: Partial<IType>): Promise<IType> {
+    try {
+        const response = await axios.patch<IType>(`${API_BASE_URL}/types/${typeId}`, data);
+        return response.data;
+    } catch (error) {
+        console.error("Axios error updating type:", error);
         throw new Error("Не вдалося оновити тип");
     }
-
-    return res.json();
 }
 
-export async function deleteType(typeId: IType["id"]) {
-    const res = await fetch(`http://localhost:5000/api/types/${typeId}`, {
-        method: "DELETE",
-    });
-
-    if (!res.ok) {
+export async function deleteType(typeId: IType["id"]): Promise<void> {
+    try {
+        await axios.delete(`${API_BASE_URL}/types/${typeId}`);
+    } catch (error) {
+        console.error("Axios error deleting type:", error);
         throw new Error("Не вдалося видалити тип");
     }
-
-    return res.json();
 }

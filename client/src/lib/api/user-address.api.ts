@@ -1,35 +1,33 @@
+import axios from "axios";
 import { IUser, IUserShippingAdress } from "@/types/user/user.types";
 
-export async function createUserAddress(data: IUserShippingAdress) {
-    try {
-        const res = await fetch(`http://localhost:5000/api/user-address`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify(data),
-        });
-        if (!res.ok) throw new Error("Помилка створення адреси доставки");
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
-        return res.json();
+export async function createUserAddress(data: IUserShippingAdress): Promise<IUserShippingAdress> {
+    try {
+        const response = await axios.post<IUserShippingAdress>(
+            `${API_BASE_URL}/user-address`,
+            data
+        );
+        return response.data;
     } catch (error) {
-        console.error("Create collection error:", error);
-        throw error;
+        console.error("Axios error creating user address:", error);
+        throw new Error("Помилка створення адреси доставки");
     }
 }
 
-export async function editUserAddress(userId: IUser["id"], data: Partial<IUserShippingAdress>) {
-    const res = await fetch(`http://localhost:5000/api/user-address/${userId}`, {
-        method: "PATCH",
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-    });
-
-    if (!res.ok) {
+export async function editUserAddress(
+    userId: IUser["id"],
+    data: Partial<IUserShippingAdress>
+): Promise<IUserShippingAdress> {
+    try {
+        const response = await axios.patch<IUserShippingAdress>(
+            `${API_BASE_URL}/user-address/${userId}`,
+            data
+        );
+        return response.data;
+    } catch (error) {
+        console.error("Axios error updating user address:", error);
         throw new Error("Не вдалося оновити адресу доставки");
     }
-
-    return res.json();
 }

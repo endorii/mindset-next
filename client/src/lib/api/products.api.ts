@@ -1,20 +1,22 @@
+import axios from "axios";
 import { ICategory } from "@/types/category/category.types";
 import { ICollection } from "@/types/collection/collection.types";
 import { ICreateProductPayload, IProduct } from "@/types/product/product.types";
+
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
 export async function fetchProducts(
     collectionPath: string,
     categoryPath: string
 ): Promise<IProduct[]> {
     try {
-        const res = await fetch(
-            `http://localhost:5000/api/collections/${collectionPath}/categories/${categoryPath}/products`
+        const response = await axios.get<IProduct[]>(
+            `${API_BASE_URL}/collections/${collectionPath}/categories/${categoryPath}/products`
         );
-        if (!res.ok) throw new Error("Помилка отримання продуктів");
-        return res.json();
+        return response.data;
     } catch (error) {
-        console.error("Fetch error:", error);
-        throw error;
+        console.error("Axios error fetching products:", error);
+        throw new Error("Помилка отримання продуктів");
     }
 }
 
@@ -24,14 +26,13 @@ export async function fetchProduct(
     productPath: string
 ): Promise<IProduct> {
     try {
-        const res = await fetch(
-            `http://localhost:5000/api/collections/${collectionPath}/categories/${categoryPath}/products/${productPath}`
+        const response = await axios.get<IProduct>(
+            `${API_BASE_URL}/collections/${collectionPath}/categories/${categoryPath}/products/${productPath}`
         );
-        if (!res.ok) throw new Error("Помилка отримання продукту");
-        return res.json();
+        return response.data;
     } catch (error) {
-        console.error("Fetch error:", error);
-        throw error;
+        console.error("Axios error fetching product:", error);
+        throw new Error("Помилка отримання продукту");
     }
 }
 
@@ -41,19 +42,14 @@ export async function addProductToCategory(
     productData: ICreateProductPayload
 ): Promise<IProduct> {
     try {
-        const res = await fetch(
-            `http://localhost:5000/api/collections/${collectionPath}/categories/${categoryPath}/products`,
-            {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(productData),
-            }
+        const response = await axios.post<IProduct>(
+            `${API_BASE_URL}/collections/${collectionPath}/categories/${categoryPath}/products`,
+            productData
         );
-        if (!res.ok) throw new Error("Помилка отримання продукту");
-        return res.json();
+        return response.data;
     } catch (error) {
-        console.error("Fetch error:", error);
-        throw error;
+        console.error("Axios error adding product:", error);
+        throw new Error("Помилка додавання продукту");
     }
 }
 
@@ -62,43 +58,33 @@ export async function editProduct(
     categoryPath: ICategory["path"],
     productPath: IProduct["path"],
     productData: Partial<ICreateProductPayload>
-) {
-    const res = await fetch(
-        `http://localhost:5000/api/collections/${collectionPath}/categories/${categoryPath}/products/${productPath}`,
-        {
-            method: "PATCH",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
+): Promise<IProduct> {
+    try {
+        const response = await axios.patch<IProduct>(
+            `${API_BASE_URL}/collections/${collectionPath}/categories/${categoryPath}/products/${productPath}`,
+            {
                 ...productData,
                 updatedAt: new Date().toISOString(),
-            }),
-        }
-    );
-
-    if (!res.ok) {
+            }
+        );
+        return response.data;
+    } catch (error) {
+        console.error("Axios error updating product:", error);
         throw new Error("Не вдалося оновити продукт");
     }
-
-    return res.json();
 }
 
 export async function deleteProduct(
     collectionPath: ICollection["path"],
     categoryPath: ICategory["path"],
     productPath: IProduct["path"]
-) {
-    const res = await fetch(
-        `http://localhost:5000/api/collections/${collectionPath}/categories/${categoryPath}/products/${productPath}`,
-        {
-            method: "DELETE",
-        }
-    );
-
-    if (!res.ok) {
+): Promise<void> {
+    try {
+        await axios.delete(
+            `${API_BASE_URL}/collections/${collectionPath}/categories/${categoryPath}/products/${productPath}`
+        );
+    } catch (error) {
+        console.error("Axios error deleting product:", error);
         throw new Error("Не вдалося видалити товар");
     }
-
-    return res.json();
 }

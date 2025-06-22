@@ -1,72 +1,67 @@
+import axios from "axios";
 import { ICollection, ICollectionPayload } from "@/types/collection/collection.types";
+
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
 export async function fetchCollections(): Promise<ICollection[]> {
     try {
-        const res = await fetch("http://localhost:5000/api/collections");
-        if (!res.ok) throw new Error("Помилка отримання колекцій");
-        return res.json();
+        const response = await axios.get<ICollection[]>(`${API_BASE_URL}/collections`);
+        return response.data;
     } catch (error) {
-        console.error("Fetch error:", error);
-        throw error;
+        console.error("Axios error fetching collections:", error);
+        throw new Error("Помилка отримання колекцій");
     }
 }
 
 export async function fetchCollection(collectionPath: string): Promise<ICollection> {
     try {
-        const res = await fetch(`http://localhost:5000/api/collections/${collectionPath}`);
-        if (!res.ok) throw new Error("Помилка отримання колекції");
-        return res.json();
+        const response = await axios.get<ICollection>(
+            `${API_BASE_URL}/collections/${collectionPath}`
+        );
+        return response.data;
     } catch (error) {
-        console.error("Fetch error:", error);
-        throw error;
+        console.error("Axios error fetching collection:", error);
+        throw new Error("Помилка отримання колекції");
     }
 }
 
 export async function createCollection(data: ICollectionPayload): Promise<ICollection> {
     try {
-        const res = await fetch("http://localhost:5000/api/collections", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify(data),
-        });
-        if (!res.ok) throw new Error("Помилка створення колекції");
-        const response = await res.json();
+        const response = await axios.post<{ message: string; collection: ICollection }>(
+            `${API_BASE_URL}/collections`,
+            data
+        );
 
-        console.log(response.message);
+        console.log(response.data.message);
 
-        return response.collection;
+        return response.data.collection;
     } catch (error) {
-        console.error("Create collection error:", error);
-        throw error;
+        console.error("Axios error creating collection:", error);
+        throw new Error("Помилка створення колекції");
     }
 }
 
-export async function editCollection(collectionPath: string, data: Partial<ICollection>) {
-    const res = await fetch(`http://localhost:5000/api/collections/${collectionPath}`, {
-        method: "PATCH",
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-    });
-
-    if (!res.ok) {
+export async function editCollection(
+    collectionPath: string,
+    data: Partial<ICollection>
+): Promise<ICollection> {
+    try {
+        const response = await axios.patch<ICollection>(
+            `${API_BASE_URL}/collections/${collectionPath}`,
+            data
+        );
+        return response.data;
+    } catch (error) {
+        console.error("Axios error updating collection:", error);
         throw new Error("Не вдалося оновити колекцію");
     }
-
-    return res.json();
 }
 
-export async function deleteCollection(collectionPath: string) {
-    const res = await fetch(`http://localhost:5000/api/collections/${collectionPath}`, {
-        method: "DELETE",
-    });
-
-    if (!res.ok) {
+export async function deleteCollection(collectionPath: string): Promise<void> {
+    try {
+        await axios.delete(`${API_BASE_URL}/collections/${collectionPath}`);
+    } catch (error) {
+        console.error("Axios error deleting collection:", error);
         throw new Error("Не вдалося видалити колекцію");
     }
-
-    return res.json();
 }
