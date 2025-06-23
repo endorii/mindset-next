@@ -157,7 +157,7 @@ export default function ProductInfoModal({
                                 <img
                                     className="max-h-[300px] object-contain "
                                     src={
-                                        `http://localhost:5000/${banner}` ||
+                                        `http://localhost:5000${banner}` ||
                                         "/placeholder.png"
                                     }
                                     alt={name || "Банер"}

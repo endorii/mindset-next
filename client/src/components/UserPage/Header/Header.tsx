@@ -30,21 +30,21 @@ const Header = () => {
                 <ul className="flex gap-[30px]">
                     <li>
                         <Link href="/cart" className="relative">
-                            {user ? (
+                            {Array.isArray(user?.cart) && (
                                 <div className="absolute top-[-10px] right-[-10px] bg-black w-[20px] h-[20px] flex items-center justify-center text-[8px] font-bold rounded-[50%] border-2 border-white text-white">
-                                    {user?.cart.length}
+                                    {user.cart.length}
                                 </div>
-                            ) : null}
+                            )}
                             <CartIcon className="w-[25px] fill-white stroke-2 stroke-black" />
                         </Link>
                     </li>
                     <li>
                         <Link href="/likes" className="relative">
-                            {user ? (
+                            {Array.isArray(user?.favorites) && (
                                 <div className="absolute top-[-10px] right-[-10px] bg-black w-[20px] h-[20px] flex items-center justify-center text-[8px] font-bold rounded-[50%] border-2 border-white text-white">
-                                    {user?.favorites.length}
+                                    {user.favorites.length}
                                 </div>
-                            ) : null}
+                            )}
                             <HeartIcon className="w-[25px] fill-white stroke-2 stroke-black" />
                         </Link>
                     </li>

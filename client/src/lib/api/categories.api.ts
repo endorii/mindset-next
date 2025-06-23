@@ -1,19 +1,22 @@
-import axios from "axios";
 import { ICategory, ICategoryPayload } from "@/types/category/category.types";
 import { ICollection } from "@/types/collection/collection.types";
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
+const API_BASE_URL = "http://localhost:5000/api";
 
 export async function fetchCategoriesByCollection(
     collectionPath: ICollection["path"]
 ): Promise<ICategory[]> {
     try {
-        const response = await axios.get<ICategory[]>(
-            `${API_BASE_URL}/collections/${collectionPath}/categories`
-        );
-        return response.data;
+        const response = await fetch(`${API_BASE_URL}/collections/${collectionPath}/categories`);
+
+        if (!response.ok) {
+            const errorData = await response.json().catch(() => ({}));
+            throw new Error(errorData.message || "Помилка отримання категорій");
+        }
+
+        return await response.json();
     } catch (error) {
-        console.error("Axios error fetching categories:", error);
+        console.error("Fetch error fetching categories:", error);
         throw new Error("Помилка отримання категорій");
     }
 }
@@ -23,13 +26,19 @@ export async function fetchCategory(
     categoryPath: ICategory["path"]
 ): Promise<ICategory> {
     try {
-        const response = await axios.get<ICategory>(
+        const response = await fetch(
             `${API_BASE_URL}/collections/${collectionPath}/categories/${categoryPath}`
         );
-        return response.data;
+
+        if (!response.ok) {
+            const errorData = await response.json().catch(() => ({}));
+            throw new Error(errorData.message || "Помилка отримання категорії");
+        }
+
+        return await response.json();
     } catch (error) {
-        console.error("Axios error fetching category:", error);
-        throw new Error("Помилка отримання категорій");
+        console.error("Fetch error fetching category:", error);
+        throw new Error("Помилка отримання категорії");
     }
 }
 
@@ -38,13 +47,22 @@ export async function addCategoryToCollection(
     categoryData: ICategoryPayload
 ): Promise<ICategory> {
     try {
-        const response = await axios.post<ICategory>(
-            `${API_BASE_URL}/collections/${collectionPath}/categories`,
-            categoryData
-        );
-        return response.data;
+        const response = await fetch(`${API_BASE_URL}/collections/${collectionPath}/categories`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(categoryData),
+        });
+
+        if (!response.ok) {
+            const errorData = await response.json().catch(() => ({}));
+            throw new Error(errorData.message || "Помилка додавання категорії");
+        }
+
+        return await response.json();
     } catch (error) {
-        console.error("Axios error adding category:", error);
+        console.error("Fetch error adding category:", error);
         throw new Error("Помилка додавання категорії");
     }
 }
@@ -55,14 +73,26 @@ export async function editCategory(
     data: Partial<ICategory>
 ): Promise<ICategory> {
     try {
-        const response = await axios.patch<ICategory>(
+        const response = await fetch(
             `${API_BASE_URL}/collections/${collectionPath}/categories/${categoryPath}`,
-            data
+            {
+                method: "PATCH",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(data),
+            }
         );
-        return response.data;
+
+        if (!response.ok) {
+            const errorData = await response.json().catch(() => ({}));
+            throw new Error(errorData.message || "Помилка оновлення категорії");
+        }
+
+        return await response.json();
     } catch (error) {
-        console.error("Axios error updating category:", error);
-        throw new Error("Не вдалося оновити колекцію");
+        console.error("Fetch error updating category:", error);
+        throw new Error("Помилка оновлення категорії");
     }
 }
 
@@ -70,13 +100,20 @@ export async function deleteCategory(
     collectionPath: ICollection["path"],
     categoryPath: ICategory["path"]
 ): Promise<void> {
-    // Assuming delete usually returns no content or a success message
     try {
-        await axios.delete(
-            `${API_BASE_URL}/collections/${collectionPath}/categories/${categoryPath}`
+        const response = await fetch(
+            `${API_BASE_URL}/collections/${collectionPath}/categories/${categoryPath}`,
+            {
+                method: "DELETE",
+            }
         );
+
+        if (!response.ok) {
+            const errorData = await response.json().catch(() => ({}));
+            throw new Error(errorData.message || "Помилка видалення категорії");
+        }
     } catch (error) {
-        console.error("Axios error deleting category:", error);
-        throw new Error("Не вдалося видалити категорію");
+        console.error("Fetch error deleting category:", error);
+        throw new Error("Помилка видалення категорії");
     }
 }

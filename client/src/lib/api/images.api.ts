@@ -1,24 +1,25 @@
-import axios from "axios";
 import { IProduct } from "@/types/product/product.types";
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
+const API_BASE_URL = "http://localhost:5000/api";
 
 export async function uploadImage(file: File): Promise<{ path: string }> {
     try {
         const formData = new FormData();
         formData.append("file", file);
-        const response = await axios.post<{ path: string }>(
-            `${API_BASE_URL}/upload/image`,
-            formData,
-            {
-                headers: {
-                    "Content-Type": "multipart/form-data",
-                },
-            }
-        );
-        return response.data;
+
+        const response = await fetch(`${API_BASE_URL}/upload/image`, {
+            method: "POST",
+            body: formData,
+        });
+
+        if (!response.ok) {
+            const errorData = await response.json().catch(() => ({}));
+            throw new Error(errorData.message || "Помилка завантаження зображення");
+        }
+
+        return await response.json();
     } catch (error) {
-        console.error("Axios upload image error:", error);
+        console.error("Fetch upload image error:", error);
         throw new Error("Помилка завантаження зображення");
     }
 }
@@ -29,43 +30,59 @@ export async function uploadImages(files: File[]): Promise<{ paths: string[] }> 
         files.forEach((file) => {
             formData.append("files", file);
         });
-        const response = await axios.post<{ paths: string[] }>(
-            `${API_BASE_URL}/upload/images`,
-            formData,
-            {
-                headers: {
-                    "Content-Type": "multipart/form-data",
-                },
-            }
-        );
-        return response.data;
+
+        const response = await fetch(`${API_BASE_URL}/upload/images`, {
+            method: "POST",
+            body: formData,
+        });
+
+        if (!response.ok) {
+            const errorData = await response.json().catch(() => ({}));
+            throw new Error(errorData.message || "Помилка завантаження зображень");
+        }
+
+        return await response.json();
     } catch (error) {
-        console.error("Axios upload images error:", error);
-        throw new Error("Помилка завантаження зображення");
+        console.error("Fetch upload images error:", error);
+        throw new Error("Помилка завантаження зображень");
     }
 }
 
 export async function deleteImage(path: string): Promise<void> {
     try {
-        await axios.delete(`${API_BASE_URL}/upload/image`, {
-            params: { path: path },
+        const url = new URL(`${API_BASE_URL}/upload/image`);
+        url.searchParams.append("path", path);
+
+        const response = await fetch(url.toString(), {
+            method: "DELETE",
         });
+
+        if (!response.ok) {
+            const errorData = await response.json().catch(() => ({}));
+            throw new Error(errorData.message || "Помилка при видаленні зображення");
+        }
     } catch (error) {
-        console.error("Axios delete image error:", error);
+        console.error("Fetch delete image error:", error);
         throw new Error("Помилка при видаленні зображення");
     }
 }
 
 export async function deleteImages(imagePaths: IProduct["images"]): Promise<void> {
     try {
-        await axios.delete(`${API_BASE_URL}/upload/images`, {
-            data: { paths: imagePaths },
+        const response = await fetch(`${API_BASE_URL}/upload/images`, {
+            method: "DELETE",
             headers: {
                 "Content-Type": "application/json",
             },
+            body: JSON.stringify({ paths: imagePaths }),
         });
+
+        if (!response.ok) {
+            const errorData = await response.json().catch(() => ({}));
+            throw new Error(errorData.message || "Помилка при масовому видаленні зображень");
+        }
     } catch (error) {
-        console.error("Axios delete images error:", error);
+        console.error("Fetch delete images error:", error);
         throw new Error("Помилка при масовому видаленні зображень");
     }
 }

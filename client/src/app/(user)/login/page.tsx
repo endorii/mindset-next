@@ -3,6 +3,8 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import BasicInput from "@/components/ui/inputs/BasicInput";
+import { register } from "@/lib/api/auth.api";
+import { ILoginData, IRegisterData } from "@/types/auth/auth.types";
 
 const Login = () => {
     const router = useRouter();
@@ -22,32 +24,40 @@ const Login = () => {
     const [registerError, setRegisterError] = useState<string | null>(null);
     const [registerSuccess, setRegisterSuccess] = useState<boolean>(false);
 
+    const loginData: ILoginData = {
+        email: loginEmail,
+        password: loginPassword,
+    };
+
+    const registerData: IRegisterData = {
+        username: registerUsername,
+        email: registerEmail,
+        phone: registerPhone,
+        password: registerPassword,
+    };
+
     const handleLoginSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setLoginError(null);
-
         try {
-            //   const response = await axios.post(`${API_BASE_URL}/auth/login`, {
-            //     email: loginEmail,
-            //     password: loginPassword,
-            //   });
-            //   const { access_token } = response.data;
-            //   localStorage.setItem("accessToken", access_token); // Зберігаємо токен
-            //   alert("Успішний вхід!");
-            //   router.push("/"); // Перенаправлення на головну сторінку або сторінку профілю
+            // await login(loginData);
+            // alert("Успішний вхід!");
+            router.push("/");
         } catch (error: any) {
             console.error("Login error:", error);
-            setLoginError(
-                error.response?.data?.message ||
-                    "Помилка входу. Спробуйте ще раз."
-            );
+            setLoginError(error.message || "Помилка входу. Спробуйте ще раз.");
         }
     };
 
     const handleRegisterSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        setRegisterError(null); // Очищаємо попередні помилки
+        setRegisterError(null);
         setRegisterSuccess(false);
+
+        if (registerPassword.length < 8) {
+            setRegisterError("Пароль повинен містити щонайменше 8 символів.");
+            return;
+        }
 
         if (!registerRulesCheckBox) {
             setRegisterError("Ви повинні погодитися з правилами магазину.");
@@ -55,16 +65,9 @@ const Login = () => {
         }
 
         try {
-            //   await axios.post(`${API_BASE_URL}/auth/register`, {
-            //     username: registerUsername,
-            //     email: registerEmail,
-            //     password: registerPassword,
-            //     phone: registerPhone, // Додаємо телефон
-            //   });
-
+            await register(registerData);
             setRegisterSuccess(true);
             alert("Реєстрація успішна! Тепер ви можете увійти.");
-
             setRegisterUsername("");
             setRegisterEmail("");
             setRegisterPassword("");
@@ -101,7 +104,7 @@ const Login = () => {
                     onSubmit={handleLoginSubmit}
                 >
                     <BasicInput
-                        label={"електонна пошта*"}
+                        label={"електронна пошта*"}
                         value={loginEmail}
                         onChangeValue={(e) => {
                             setLoginEmail(e.target.value);
@@ -122,6 +125,7 @@ const Login = () => {
                     <button
                         type="submit"
                         className="w-full border border-transparent hover:text-black hover:border-black hover:bg-white bg-black text-white px-[20px] py-[15px] mt-[30px] transition-all duration-300 cursor-pointer disabled:bg-gray-200 disabled:text-gray-400 disabled:border-0 disabled:cursor-not-allowed"
+                        disabled={!loginEmail || !loginPassword}
                     >
                         Увійти
                     </button>
@@ -135,12 +139,12 @@ const Login = () => {
                     onSubmit={handleRegisterSubmit}
                 >
                     <BasicInput
-                        label={"користувацьке ім'я*"}
+                        label={"ім'я користувача*"}
                         value={registerUsername}
                         onChangeValue={(e) => {
                             setRegisterUsername(e.target.value);
                         }}
-                        placeholder={"введіть користувацьке ім'я"}
+                        placeholder={"введіть ім'я користувача"}
                         type={"text"}
                     />
                     <BasicInput
@@ -209,17 +213,21 @@ const Login = () => {
                     {registerError && (
                         <p className="text-red-500 text-sm">{registerError}</p>
                     )}{" "}
-                    {/* Показ помилки */}
                     {registerSuccess && (
                         <p className="text-green-500 text-sm">
                             Реєстрація успішна! Тепер ви можете увійти.
                         </p>
                     )}{" "}
-                    {/* Показ успіху */}
                     <button
                         className="w-full border border-transparent hover:text-black hover:border-black hover:bg-white bg-black text-white px-[20px] py-[15px] mt-[30px] transition-all duration-300 cursor-pointer disabled:bg-gray-200 disabled:text-gray-400 disabled:border-0 disabled:cursor-not-allowed"
                         type="submit"
-                        disabled={!registerRulesCheckBox}
+                        disabled={
+                            !registerUsername ||
+                            !registerEmail ||
+                            !registerPhone ||
+                            !registerPassword ||
+                            !registerRulesCheckBox
+                        }
                     >
                         Зареєструватися
                     </button>
