@@ -9,12 +9,16 @@ import { ImagesModule } from "./images/images.module";
 import { TypesModule } from "./types/types.module";
 import { ColorsModule } from "./colors/colors.module";
 import { SizesModule } from "./sizes/sizes.module";
-import { UsersModule } from "./users/users.module";
+import { UserModule } from "./user/user.module";
 import { UserAddressModule } from "./user-address/user-address.module";
 import { AuthModule } from "./auth/auth.module";
+import { ConfigModule } from "@nestjs/config";
 
 @Module({
     imports: [
+        ConfigModule.forRoot({
+            isGlobal: true,
+        }),
         ServeStaticModule.forRoot({
             rootPath: join(__dirname, "..", "public"),
         }),
@@ -26,7 +30,7 @@ import { AuthModule } from "./auth/auth.module";
         TypesModule,
         ColorsModule,
         SizesModule,
-        UsersModule,
+        UserModule,
         UserAddressModule,
         AuthModule,
     ],

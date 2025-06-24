@@ -14,7 +14,7 @@ export default function ProductPage() {
     const categoryPath = pathSegments[1];
     const productPath = pathSegments[2];
 
-    const { data: user } = useUser("johnsmith@gmail.com");
+    const { data: user } = useUser("");
 
     const {
         data: product,

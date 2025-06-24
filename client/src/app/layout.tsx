@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Mulish } from "next/font/google";
 import "./globals.css";
 import QueryProvider from "@/components/QueryProvider";
+import { AuthProvider } from "@/lib/context/AuthContext";
 
 const mulish = Mulish({
     subsets: ["cyrillic"],
@@ -18,7 +19,9 @@ export default function RootLayout({
     return (
         <html lang="en" className={mulish.className}>
             <body>
-                <QueryProvider>{children}</QueryProvider>
+                <QueryProvider>
+                    <AuthProvider>{children}</AuthProvider>
+                </QueryProvider>
             </body>
         </html>
     );

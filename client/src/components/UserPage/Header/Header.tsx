@@ -7,7 +7,7 @@ import SearchIcon from "../../Icons/SearchIcon";
 import { useUser } from "@/lib/hooks/useUsers";
 
 const Header = () => {
-    const { data: user } = useUser("johnsmith@gmail.com");
+    const { data: user } = useUser("");
 
     return (
         <header className="fixed top-0 py-[10px] px-[20px] md:px-[35px] h-[75px] md:h-[85px] flex justify-end items-center w-full bg-white z-[100] shadow-custom border-b border-gray-200">

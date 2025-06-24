@@ -9,7 +9,7 @@ import { useUser } from "@/lib/hooks/useUsers";
 import Link from "next/link";
 
 function AccountNavigation({ children }: { children: React.ReactNode }) {
-    const { data: user } = useUser("johnsmith@gmail.com");
+    const { data: user } = useUser("");
 
     const links = [
         {

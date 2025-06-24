@@ -8,7 +8,7 @@ import { ICartItem } from "@/types/cart/cart.types";
 import Image from "next/image";
 
 function Cart() {
-    const { data: user, isLoading, error } = useUser("johnsmith@gmail.com");
+    const { data: user, isLoading, error } = useUser("");
 
     const cartItems: ICartItem[] = user?.cart || [];
 

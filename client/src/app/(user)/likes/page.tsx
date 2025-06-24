@@ -8,7 +8,7 @@ import { useUser } from "@/lib/hooks/useUsers";
 import Image from "next/image";
 
 function Likes() {
-    const { data: user, isLoading, error } = useUser("johnsmith@gmail.com");
+    const { data: user, isLoading, error } = useUser("");
 
     const favouritesItems: IFavoriteItem[] = user?.favorites || [];
 

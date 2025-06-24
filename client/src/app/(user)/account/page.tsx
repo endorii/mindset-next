@@ -9,7 +9,7 @@ import { AttributeModalType } from "@/types/types";
 import { useEffect, useState } from "react";
 
 function Account() {
-    const { data: user } = useUser("johnsmith@gmail.com");
+    const { data: user } = useUser("");
     const [activeModal, setActiveModal] = useState<AttributeModalType>(null);
 
     const replasePassword = (password?: string) => {

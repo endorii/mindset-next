@@ -14,6 +14,7 @@ model User {
   email           String           @unique
   password        String
   phone           String
+  role            String
   createdAt       DateTime         @default(now()) @map("created_at")
   updatedAt       DateTime         @updatedAt @map("updated_at")
   cart            CartItem[]
@@ -83,24 +84,23 @@ model Category {
 }
 
 model Product {
-  id          String     @id @default(cuid())
-  name        String
-  path        String     @unique
-  price       Int
-  available   Boolean
-  description String
-  composition String
-  categoryId  String     @map("category_id")
-  createdAt   DateTime   @default(now()) @map("created_at")
-  status      String
-  updatedAt   DateTime   @updatedAt @map("updated_at")
-  views       Int
-  banner      String
-  images      String[]
-  cartItems   CartItem[]
-  favorites   Favorite[]
-  category    Category   @relation(fields: [categoryId], references: [id])
-
+  id            String           @id @default(cuid())
+  name          String
+  path          String           @unique
+  price         Int
+  available     Boolean
+  description   String
+  composition   String
+  categoryId    String           @map("category_id")
+  createdAt     DateTime         @default(now()) @map("created_at")
+  status        String
+  updatedAt     DateTime         @updatedAt @map("updated_at")
+  views         Int
+  banner        String
+  images        String[]
+  cartItems     CartItem[]
+  favorites     Favorite[]
+  category      Category         @relation(fields: [categoryId], references: [id])
   productColors ProductToColor[]
   productSizes  ProductToSize[]
   productTypes  ProductToType[]
