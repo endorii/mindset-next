@@ -9,10 +9,10 @@ import { ImagesModule } from "./images/images.module";
 import { TypesModule } from "./types/types.module";
 import { ColorsModule } from "./colors/colors.module";
 import { SizesModule } from "./sizes/sizes.module";
-import { UserModule } from "./user/user.module";
 import { UserAddressModule } from "./user-address/user-address.module";
-import { AuthModule } from "./auth/auth.module";
 import { ConfigModule } from "@nestjs/config";
+import { UserModule } from "./user/user.module";
+import { AuthModule } from "./auth/auth.module";
 
 @Module({
     imports: [
@@ -31,8 +31,8 @@ import { ConfigModule } from "@nestjs/config";
         ColorsModule,
         SizesModule,
         UserModule,
-        UserAddressModule,
         AuthModule,
+        UserAddressModule,
     ],
     controllers: [],
     providers: [],

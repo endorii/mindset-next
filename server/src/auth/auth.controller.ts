@@ -1,51 +1,63 @@
-import { Body, Controller, Post } from "@nestjs/common";
+import { Body, Controller, Post, Req, Request, UseGuards } from "@nestjs/common";
 import { AuthService } from "./auth.service";
-import { ApiOkResponse, ApiTags } from "@nestjs/swagger";
-import { LoginDto } from "./dto/login.dto";
-import { UserResponseDto } from "src/user/dto/user-response.dto.";
-import { CreateUserDto } from "src/user/dto/create-user.dto";
-import { UserService } from "src/user/user.service";
-// import { ForgotPasswordDto } from './dto/forgot-password.dto';
-// import { ResetPasswordDto } from "./dto/reset-password.dto";
-// import { Roles } from "./roles.decorator";
-// import { JwtAuthRoleGuard } from "./jwt-auth-role.guard";
-// import { Role } from "src/user/enum/role.enum";
-import { AuthResponseDto } from "./dto/auth-response.dto";
+import { CreateUserDto } from "../user/dto/create-user.dto";
+import { LocalAuthGuard } from "./guards/local-auth/local-auth.guard";
+import { RefreshAuthGuard } from "./guards/refresh-auth/refresh-auth.guard";
+// import { GoogleAuthGuard } from "./guards/google-auth/google-auth.guard";
+// import { Response } from "express";
+import { Public } from "./decorators/public.decorator";
+// import { Roles } from "./decorators/roles.decorator";
+import { Request as ExpressRequest } from "express";
+import { AuthenticatedRequestUser } from "./types/auth-request-user.type";
 
 @Controller("auth")
-@ApiTags("auth")
 export class AuthController {
-    constructor(
-        private readonly authService: AuthService,
-        private readonly userService: UserService
-    ) {}
-
-    @Post("login")
-    @ApiOkResponse({ type: AuthResponseDto })
-    async login(@Body() loginDto: LoginDto): Promise<AuthResponseDto> {
-        return this.authService.login(loginDto);
+    constructor(private readonly authService: AuthService) {}
+    @Post("signup")
+    registerUser(@Body() createUserDto: CreateUserDto) {
+        return this.authService.registerUser(createUserDto);
     }
 
-    @Post("register")
-    @ApiOkResponse({ type: UserResponseDto })
-    async register(@Body() createUserDto: CreateUserDto): Promise<UserResponseDto> {
-        return this.userService.create(createUserDto);
+    @Public()
+    @UseGuards(LocalAuthGuard)
+    @Post("signin")
+    login(@Request() req: ExpressRequest & { user: AuthenticatedRequestUser }) {
+        return this.authService.login(req.user.id, req.user.name, req.user.role);
     }
 
-    // @Post('forgot-password')
-    // @ApiOkResponse({ type: AuthResponseDto })
-    // forgotPassword(@Body() forgotPasswordDto: ForgotPasswordDto): AuthResponseDto {
-    //   return this.authService.forgotPassword(forgotPasswordDto);
+    @Public()
+    @UseGuards(RefreshAuthGuard)
+    @Post("refresh")
+    refreshToken(@Request() req: ExpressRequest & { user: AuthenticatedRequestUser }) {
+        return this.authService.refreshToken(req.user.id, req.user.name);
+    }
+
+    @Post("signout")
+    signOut(@Req() req: ExpressRequest & { user: AuthenticatedRequestUser }) {
+        return this.authService.signOut(req.user.id);
+    }
+
+    // @Roles("ADMIN", "EDITOR")
+    // @Get("protected")
+    // getAll(@Request() req: ExpressRequest & { user: AuthenticatedRequestUser }) {
+    //     return {
+    //         messege: `Now you can access this protected API. this is your user ID: ${req.user.id}`,
+    //     };
     // }
 
-    // @Post("reset-password")
-    // @ApiOkResponse({ type: UserResponseDto })
-    // @UseGuards(JwtAuthRoleGuard())
-    // @Roles(Role.Admin)
-    // async resetPassword(
-    //     @Body() resetPasswordDto: ResetPasswordDto,
-    //     @Request() req
-    // ): Promise<UserResponseDto> {
-    //     return this.authService.resetPassword(resetPasswordDto, req.user);
+    // @Public()
+    // @UseGuards(GoogleAuthGuard)
+    // @Get("google/login")
+    // googleLogin() {}
+
+    // @Public()
+    // @UseGuards(GoogleAuthGuard)
+    // @Get("google/callback")
+    // async googleCallback(@Request() req, @Res() res: Response) {
+    //     // console.log('Google User', req.user);
+    //     const resopnse = await this.authService.login(req.user.id, req.user.name, req.user.role);
+    //     res.redirect(
+    //         `http://localhost:3000/api/auth/google/callback?userId=${resopnse.id}&name=${resopnse.name}&accessToken=${resopnse.accessToken}&refreshToken=${resopnse.refreshToken}&role=${resopnse.role}`
+    //     );
     // }
 }

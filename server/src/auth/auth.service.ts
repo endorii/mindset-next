@@ -1,91 +1,104 @@
-import { Injectable, UnauthorizedException } from "@nestjs/common";
-import { PrismaService } from "src/prisma/prisma.service";
-import { JwtService, JwtSignOptions } from "@nestjs/jwt";
+import { ConflictException, Inject, Injectable, UnauthorizedException } from "@nestjs/common";
+import { CreateUserDto } from "../user/dto/create-user.dto";
+import { UserService } from "src/user/user.service";
+// import { hash, verify } from "argon2";
+import type { AuthJwtPayload } from "./types/auth-jwtPayload";
+import { JwtService } from "@nestjs/jwt";
+import refreshConfig from "./config/refresh.config";
+import { ConfigType } from "@nestjs/config";
+import { Role } from "generated/prisma";
 import * as bcrypt from "bcryptjs";
-import { LoginDto } from "./dto/login.dto";
-import { User } from "generated/prisma";
-// import { UserResponseDto } from "src/user/dto/user-response.dto.";
-// import { plainToClass } from "class-transformer";
-// import { ForgotPasswordDto } from './dto/forgot-password.dto';
-// import { ResetPasswordDto } from "./dto/reset-password.dto";
-import { ConfigService } from "@nestjs/config";
-import { AuthResponseDto } from "./dto/auth-response.dto";
-
-export const roundsOfHashing = 10;
 
 @Injectable()
 export class AuthService {
     constructor(
-        private readonly prisma: PrismaService,
+        private readonly userService: UserService,
         private readonly jwtService: JwtService,
-        private readonly config: ConfigService
-        // private readonly emailService: EmailService,
+        @Inject(refreshConfig.KEY)
+        private refreshTokenConfig: ConfigType<typeof refreshConfig>
     ) {}
+    async registerUser(createUserDto: CreateUserDto) {
+        const user = await this.userService.findByEmail(createUserDto.email);
+        if (user) throw new ConflictException("User already exists!");
+        return this.userService.create(createUserDto);
+    }
 
-    async login(loginDto: LoginDto): Promise<AuthResponseDto> {
-        const { email, password } = loginDto;
-        const user = await this.prisma.user.findUnique({ where: { email } });
+    async validateLocalUser(email: string, password: string) {
+        const user = await this.userService.findByEmail(email);
+        if (!user) throw new UnauthorizedException("User not found!");
+        const isPasswordMatched = await bcrypt.compare(password, user.password);
+        if (!isPasswordMatched) throw new UnauthorizedException("Invalid Credentials!");
 
-        if (!user) {
-            throw new UnauthorizedException("User not found!");
-        }
+        return { id: user.id, name: user.name, role: user.role };
+    }
 
-        const isPasswordValid = await bcrypt.compare(password, user.password);
-
-        if (!isPasswordValid) {
-            throw new UnauthorizedException("Wrong password!");
-        }
-
+    async login(userId: string, name: string, role: Role) {
+        const { accessToken, refreshToken } = await this.generateTokens(userId);
+        const hashedRT = await bcrypt.hash(refreshToken, 12);
+        await this.userService.updateHashedRefreshToken(userId, hashedRT);
         return {
-            accessToken: this.generateAccessToken(user),
+            id: userId,
+            name: name,
+            role,
+            accessToken,
+            refreshToken,
         };
     }
 
-    generateAccessToken(user: User, options?: JwtSignOptions): string {
-        return this.jwtService.sign(
-            {
-                userId: user.id,
-                role: user.role,
-                username: user.username,
-                email: user.email,
-            },
-            options
-        );
+    async generateTokens(userId: string) {
+        const payload: AuthJwtPayload = { sub: userId };
+        const [accessToken, refreshToken] = await Promise.all([
+            this.jwtService.signAsync(payload),
+            this.jwtService.signAsync(payload, this.refreshTokenConfig),
+        ]);
+
+        return {
+            accessToken,
+            refreshToken,
+        };
     }
 
-    // async forgotPassword(forgotPasswordDto: ForgotPasswordDto): Promise<AuthResponseDto> {
-    //   const { email } = forgotPasswordDto;
-    //   const user = await this.prisma.user.findUnique({ where: { email } });
+    async validateJwtUser(userId: string) {
+        const user = await this.userService.findOne(userId);
+        if (!user) throw new UnauthorizedException("User not found!");
+        const currentUser = { id: user.id, role: user.role };
+        return currentUser;
+    }
 
-    //   if (!user) {
-    //     throw new UnauthorizedException('User not found!');
-    //   }
+    async validateRefreshToken(userId: string, refreshToken: string) {
+        const user = await this.userService.findOne(userId);
+        if (!user) throw new UnauthorizedException("User not found!");
 
-    //   const accessToken = this.generateAccessToken(user, { expiresIn: '1h' });
+        if (!user.hashedRefreshToken) {
+            throw new UnauthorizedException("No refresh token stored");
+        }
 
-    //   await this.emailService.sendEmail(email, 'Reset Your Password', 'reset-password.html', {
-    //     name: `${user.firstName} ${user.lastName}`,
-    //     resetUrl: `${this.config.get('frontendUrl')}/reset-password?token=${accessToken}`,
-    //   });
+        const refreshTokenMatched = await bcrypt.compare(refreshToken, user.hashedRefreshToken);
 
-    //   return {
-    //     accessToken,
-    //   };
+        if (!refreshTokenMatched) throw new UnauthorizedException("Invalid Refresh Token!");
+        const currentUser = { id: user.id };
+        return currentUser;
+    }
+
+    async refreshToken(userId: string, name: string) {
+        const { accessToken, refreshToken } = await this.generateTokens(userId);
+        const hashedRT = await bcrypt.hash(refreshToken, 10);
+        await this.userService.updateHashedRefreshToken(userId, hashedRT);
+        return {
+            id: userId,
+            name: name,
+            accessToken,
+            refreshToken,
+        };
+    }
+
+    // async validateGoogleUser(googleUser: CreateUserDto) {
+    //     const user = await this.userService.findByEmail(googleUser.email);
+    //     if (user) return user;
+    //     return await this.userService.create(googleUser);
     // }
 
-    // async resetPassword(resetPasswordDto: ResetPasswordDto, user: User): Promise<UserResponseDto> {
-    //     const { password } = resetPasswordDto;
-    //     const getUser = await this.prisma.user.findUniqueOrThrow({ where: { email: user.email } });
-
-    //     const hashedPassword = await bcrypt.hash(password, roundsOfHashing);
-    //     return plainToClass(
-    //         UserResponseDto,
-    //         this.prisma.user.update({
-    //             where: { id: getUser.id },
-    //             data: {
-    //                 password: hashedPassword,
-    //             },
-    //         })
-    //     );
-    // }
+    async signOut(userId: string) {
+        return await this.userService.updateHashedRefreshToken(userId, null);
+    }
 }
