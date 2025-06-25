@@ -112,7 +112,7 @@ export default function AddCollectionModal({
                             <InputField
                                 label={"Шлях"}
                                 value={path}
-                                onChangeValue={(e) => setName(e.target.value)}
+                                onChangeValue={(e) => setPath(e.target.value)}
                                 id={"addCollectionPath"}
                                 name={"addCollectionPath"}
                                 placeholder={"Шлях"}

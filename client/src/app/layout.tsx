@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import { Mulish } from "next/font/google";
 import "./globals.css";
-import QueryProvider from "@/components/QueryProvider";
-import { AuthProvider } from "@/lib/context/AuthContext";
+import { AuthProvider } from "@/components/AuthProvider";
+import { QueryProvider } from "@/components/QueryProvider";
 
 const mulish = Mulish({
     subsets: ["cyrillic"],

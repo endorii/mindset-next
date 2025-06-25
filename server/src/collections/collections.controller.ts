@@ -3,16 +3,19 @@ import { Controller, Get, Post, Body, Param, Patch, Delete } from "@nestjs/commo
 import { CollectionsService } from "./collections.service";
 import { CreateCollectionDto } from "./dto/create-collection.dto";
 import { UpdateCollectionDto } from "./dto/update-collection.dto";
+import { Public } from "src/auth/decorators/public.decorator";
 
 @Controller("collections")
 export class CollectionsController {
     constructor(private readonly collectionsService: CollectionsService) {}
 
+    @Public()
     @Get()
     getCollections() {
         return this.collectionsService.getCollections();
     }
 
+    @Public()
     @Get(":collectionPath")
     getCollection(@Param("collectionPath") collectionPath: string) {
         return this.collectionsService.getCollection(collectionPath);

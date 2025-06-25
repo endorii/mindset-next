@@ -3,12 +3,12 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import BasicInput from "@/components/ui/inputs/BasicInput";
-import { login, register } from "@/lib/api/auth.api";
-import { ILoginData, IRegisterData } from "@/types/auth/auth.types";
-import { useMutation, UseMutationResult } from "@tanstack/react-query";
+import { useAuth } from "@/lib/hooks/useAuth";
+import { ILoginCredentials, CreateUserDto } from "@/types/auth/auth.types";
 
 const Login = () => {
     const router = useRouter();
+    const { login, register, isLoading, error } = useAuth();
 
     const [loginEmail, setLoginEmail] = useState<string>("");
     const [loginPassword, setLoginPassword] = useState<string>("");
@@ -27,12 +27,13 @@ const Login = () => {
     const [registerMessage, setRegisterMessage] = useState<string | null>(null);
     const [registerIsSuccess, setRegisterIsSuccess] = useState<boolean>(false);
 
-    const loginData: ILoginData = {
+    const loginData: ILoginCredentials = {
         email: loginEmail,
         password: loginPassword,
     };
-    const registerData: IRegisterData = {
-        username: registerUsername,
+
+    const registerData: CreateUserDto = {
+        name: registerUsername,
         email: registerEmail,
         phone: registerPhone,
         password: registerPassword,
@@ -43,11 +44,11 @@ const Login = () => {
         setLocalLoginMessage(null);
 
         try {
-            await login(loginData);
+            login(loginData);
             setLocalLoginMessage("Успішний вхід!");
             router.push("/");
-        } catch (error) {
-            setLocalLoginMessage("Помлка входу");
+        } catch (err) {
+            setLocalLoginMessage(error?.message || "Помилка входу");
         }
     };
 
@@ -65,7 +66,14 @@ const Login = () => {
             return;
         }
 
-        await register(registerData);
+        try {
+            register(registerData);
+            setRegisterMessage("Реєстрація успішна!");
+            setRegisterIsSuccess(true);
+            router.push("/");
+        } catch (err) {
+            setRegisterMessage(error?.message || "Помилка реєстрації");
+        }
     };
 
     return (
@@ -91,38 +99,46 @@ const Login = () => {
                     onSubmit={handleLoginSubmit}
                 >
                     <BasicInput
-                        label={"електронна пошта*"}
+                        label="електронна пошта*"
                         value={loginEmail}
                         onChangeValue={(e) => {
                             setLoginEmail(e.target.value);
                             setLocalLoginMessage(null);
                         }}
-                        type={"email"}
+                        type="email"
                     />
                     <BasicInput
-                        label={"пароль*"}
+                        label="пароль*"
                         value={loginPassword}
                         onChangeValue={(e) => {
                             setLoginPassword(e.target.value);
                             setLocalLoginMessage(null);
                         }}
-                        type={"password"}
+                        type="password"
                     />
+
+                    {localLoginMessage && (
+                        <p className="text-red-500 text-sm">
+                            {localLoginMessage}
+                        </p>
+                    )}
 
                     <button
                         type="submit"
                         className="w-full border border-transparent rounded-md
-                       hover:text-black hover:border-black hover:bg-white
-                       bg-black text-white px-[20px] py-[15px] mt-[30px]
-                       transition-all duration-300 cursor-pointer
-                       disabled:bg-gray-200 disabled:text-gray-400 disabled:border-0 disabled:cursor-not-allowed"
-                        disabled={!loginEmail || !loginPassword}
+              hover:text-black hover:border-black hover:bg-white
+              bg-black text-white px-[20px] py-[15px] mt-[30px]
+              transition-all duration-300
+              cursor-pointer
+              disabled:bg-gray-200 disabled:text-gray-400 disabled:border-0 disabled:cursor-not-allowed"
+                        disabled={!loginEmail || !loginPassword || isLoading}
                     >
-                        "Увійти"
+                        {isLoading ? "Завантаження..." : "Увійти"}
                     </button>
                 </form>
             </div>
 
+            {/* Форма реєстрації */}
             <div className="flex flex-col gap-[15px] w-full md:w-1/3">
                 <h3 className="mt-[30px] text-xl font-bold">Реєстрація</h3>
                 <form
@@ -130,43 +146,43 @@ const Login = () => {
                     onSubmit={handleRegisterSubmit}
                 >
                     <BasicInput
-                        label={"ім'я користувача*"}
+                        label="ім'я користувача*"
                         value={registerUsername}
                         onChangeValue={(e) => {
                             setRegisterUsername(e.target.value);
                             setRegisterMessage(null);
                         }}
-                        placeholder={"введіть ім'я користувача"}
-                        type={"text"}
+                        placeholder="введіть ім'я користувача"
+                        type="text"
                     />
                     <BasicInput
-                        label={"електронна пошта*"}
+                        label="електронна пошта*"
                         value={registerEmail}
                         onChangeValue={(e) => {
                             setRegisterEmail(e.target.value);
                             setRegisterMessage(null);
                         }}
                         placeholder="введіть електронну пошту..."
-                        type={"email"}
+                        type="email"
                     />
                     <BasicInput
-                        label={"телефон"}
+                        label="телефон"
                         value={registerPhone}
                         onChangeValue={(e) => {
                             setRegisterPhone(e.target.value);
                             setRegisterMessage(null);
                         }}
                         placeholder="введіть номер телефону (не обов'язково)"
-                        type={"tel"}
+                        type="tel"
                     />
                     <BasicInput
-                        label={"пароль*"}
+                        label="пароль*"
                         value={registerPassword}
                         onChangeValue={(e) => {
                             setRegisterPassword(e.target.value);
                             setRegisterMessage(null);
                         }}
-                        type={"password"}
+                        type="password"
                     >
                         <div className="text-xs text-gray-500 absolute bottom-[-15px] left-0">
                             мінімально 8 символів
@@ -221,19 +237,20 @@ const Login = () => {
 
                     <button
                         className="w-full border border-transparent rounded-md
-                       hover:text-black hover:border-black hover:bg-white
-                       bg-black text-white px-[20px] py-[15px] mt-[30px]
-                       transition-all duration-300 cursor-pointer
-                       disabled:bg-gray-200 disabled:text-gray-400 disabled:border-0 disabled:cursor-not-allowed"
+              hover:text-black hover:border-black hover:bg-white
+              bg-black text-white px-[20px] py-[15px] mt-[30px]
+              transition-all duration-300 cursor-pointer
+              disabled:bg-gray-200 disabled:text-gray-400 disabled:border-0 disabled:cursor-not-allowed"
                         type="submit"
                         disabled={
                             !registerUsername ||
                             !registerEmail ||
                             !registerPassword ||
-                            !registerRulesCheckBox
+                            !registerRulesCheckBox ||
+                            isLoading
                         }
                     >
-                        Зареєструватися
+                        {isLoading ? "Завантаження..." : "Зареєструватися"}
                     </button>
                 </form>
             </div>

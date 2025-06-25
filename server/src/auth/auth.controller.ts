@@ -13,6 +13,7 @@ import { AuthenticatedRequestUser } from "./types/auth-request-user.type";
 @Controller("auth")
 export class AuthController {
     constructor(private readonly authService: AuthService) {}
+    @Public()
     @Post("signup")
     registerUser(@Body() createUserDto: CreateUserDto) {
         return this.authService.registerUser(createUserDto);
