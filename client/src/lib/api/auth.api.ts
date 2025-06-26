@@ -11,6 +11,7 @@ export async function registerUser(data: CreateUserDto): Promise<IAuthResponse> 
                 "Content-Type": "application/json",
             },
             body: JSON.stringify(data),
+            credentials: "include",
         });
 
         if (!response.ok) {
@@ -33,6 +34,7 @@ export async function login(credentials: ILoginCredentials): Promise<IAuthRespon
                 "Content-Type": "application/json",
             },
             body: JSON.stringify(credentials),
+            credentials: "include",
         });
 
         if (!response.ok) {
@@ -53,12 +55,13 @@ export async function getCurrentUser(): Promise<IUser> {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
-                Authorization: `Bearer ${getAccessToken()}`,
             },
+            credentials: "include",
         });
 
         if (!response.ok) {
-            throw new Error("Помилка отримання користувача");
+            const errorData = await response.json().catch(() => ({}));
+            throw new Error(errorData.message || "Помилка отримання даних користувача");
         }
 
         return await response.json();
@@ -68,14 +71,14 @@ export async function getCurrentUser(): Promise<IUser> {
     }
 }
 
-export async function refreshToken(refreshToken: string): Promise<IAuthResponse> {
+export async function refreshToken(): Promise<IAuthResponse> {
     try {
         const response = await fetch(`${API_BASE_URL}/auth/refresh`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
             },
-            body: JSON.stringify({ refresh: refreshToken }),
+            credentials: "include",
         });
 
         if (!response.ok) {
@@ -96,8 +99,8 @@ export async function logout(): Promise<void> {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
-                Authorization: `Bearer ${getAccessToken()}`,
             },
+            credentials: "include",
         });
 
         if (!response.ok) {
@@ -108,17 +111,4 @@ export async function logout(): Promise<void> {
         console.error("Fetch error logging out:", error);
         throw new Error("Помилка виходу");
     }
-}
-
-// Helper to get access token from cookies
-function getAccessToken() {
-    if (typeof document !== "undefined") {
-        const cookies = document.cookie.split(";").reduce((acc, cookie) => {
-            const [key, value] = cookie.trim().split("=");
-            acc[key] = value;
-            return acc;
-        }, {} as Record<string, string>);
-        return cookies.accessToken;
-    }
-    return "";
 }

@@ -1,14 +1,20 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import BasicInput from "@/components/ui/inputs/BasicInput";
 import { useAuth } from "@/lib/hooks/useAuth";
 import { ILoginCredentials, CreateUserDto } from "@/types/auth/auth.types";
+import { useCurrentUser } from "@/lib/hooks/useUsers";
 
 const Login = () => {
     const router = useRouter();
     const { login, register, isLoading, error } = useAuth();
+    const {
+        data: currentUser,
+        isLoading: isUserLoading,
+        isError: isUserError,
+    } = useCurrentUser();
 
     const [loginEmail, setLoginEmail] = useState<string>("");
     const [loginPassword, setLoginPassword] = useState<string>("");
@@ -75,9 +81,18 @@ const Login = () => {
         }
     };
 
+    useEffect(() => {
+        if (isUserLoading) {
+            return;
+        }
+
+        if (currentUser) {
+            router.push("/");
+        }
+    }, [currentUser, isUserLoading, isUserError, router]);
+
     return (
         <div className="flex flex-col md:flex-row justify-between gap-[50px] p-5">
-            {/* Інформаційний блок */}
             <div className="flex flex-col gap-[15px] w-full md:w-1/3">
                 <h3 className="mt-[30px] text-xl font-bold">
                     Захист вашої інформації
@@ -137,7 +152,6 @@ const Login = () => {
                 </form>
             </div>
 
-            {/* Форма реєстрації */}
             <div className="flex flex-col gap-[15px] w-full md:w-1/3">
                 <h3 className="mt-[30px] text-xl font-bold">Реєстрація</h3>
                 <form

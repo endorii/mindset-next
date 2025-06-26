@@ -7,6 +7,7 @@ import refreshConfig from "./config/refresh.config";
 import { ConfigType } from "@nestjs/config";
 import { Role } from "generated/prisma";
 import * as bcrypt from "bcryptjs";
+import { Response } from "express";
 
 @Injectable()
 export class AuthService {
@@ -31,16 +32,29 @@ export class AuthService {
         return { id: user.id, name: user.name, role: user.role };
     }
 
-    async login(userId: string, name: string, role: Role) {
+    async login(userId: string, name: string, role: Role, res: Response) {
         const { accessToken, refreshToken } = await this.generateTokens(userId);
         const hashedRT = await bcrypt.hash(refreshToken, 10);
         await this.userService.updateHashedRefreshToken(userId, hashedRT);
+
+        res.cookie("accessToken", accessToken, {
+            httpOnly: true,
+            sameSite: "lax",
+            expires: new Date(Date.now() + 30 * 60 * 1000),
+            path: "/",
+        });
+
+        res.cookie("refreshToken", refreshToken, {
+            httpOnly: true,
+            sameSite: "lax",
+            expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
+            path: "/",
+        });
+
         return {
             id: userId,
             name,
             role,
-            accessToken,
-            refreshToken,
         };
     }
 
@@ -98,19 +112,35 @@ export class AuthService {
         return currentUser;
     }
 
-    async refreshToken(userId: string, name: string) {
+    async refreshToken(userId: string, name: string, res: Response) {
         const { accessToken, refreshToken } = await this.generateTokens(userId);
         const hashedRT = await bcrypt.hash(refreshToken, 10);
         await this.userService.updateHashedRefreshToken(userId, hashedRT);
+
+        res.cookie("accessToken", accessToken, {
+            httpOnly: true,
+            sameSite: "lax",
+            expires: new Date(Date.now() + 30 * 60 * 1000),
+            path: "/",
+        });
+
+        res.cookie("refreshToken", refreshToken, {
+            httpOnly: true,
+            sameSite: "lax",
+            expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
+            path: "/",
+        });
+
         return {
             id: userId,
             name,
-            accessToken,
-            refreshToken,
         };
     }
 
-    async signOut(userId: string) {
-        return await this.userService.updateHashedRefreshToken(userId, null);
+    async signOut(userId: string, res: Response) {
+        await this.userService.updateHashedRefreshToken(userId, null);
+        res.clearCookie("accessToken", { path: "/" });
+        res.clearCookie("refreshToken", { path: "/" });
+        return { message: "Signed out successfully" };
     }
 }

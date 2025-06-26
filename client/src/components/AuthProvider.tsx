@@ -1,24 +1,13 @@
 "use client";
-
 import { useEffect } from "react";
-import { useAuth } from "@/lib/hooks/useAuth";
 import { useRouter } from "next/navigation";
+import { useCurrentUser } from "@/lib/hooks/useUsers";
 
-// ...
 export function AuthProvider({ children }: { children: React.ReactNode }) {
-    const { refreshToken } = useAuth();
     const router = useRouter();
+    const { data: currentUser, isLoading, isError } = useCurrentUser();
 
-    useEffect(() => {
-        const refreshTokenFromCookie = document.cookie
-            .split(";")
-            .find((cookie) => cookie.trim().startsWith("refreshToken="))
-            ?.split("=")[1];
-
-        if (refreshTokenFromCookie) {
-            refreshToken(refreshTokenFromCookie);
-        }
-    }, [refreshToken, router]);
+    useEffect(() => {}, [currentUser, isLoading, isError, router]);
 
     return <>{children}</>;
 }

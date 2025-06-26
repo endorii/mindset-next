@@ -7,7 +7,7 @@ export function useCurrentUser() {
     return useQuery({
         queryKey: ["currentUser"],
         queryFn: getCurrentUser,
-        retry: false, // Не намагайтесь повторно відправляти запит, якщо користувач не авторизований
+        retry: false,
     });
 }
 

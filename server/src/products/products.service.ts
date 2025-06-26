@@ -179,7 +179,6 @@ export class ProductsService {
             updatedAt: new Date(),
         };
 
-        // Кольори продукту
         if (colorIds !== undefined) {
             dataToUpdate.productColors = {
                 deleteMany: {
@@ -197,7 +196,6 @@ export class ProductsService {
             }
         }
 
-        // Розміри продукту
         if (sizeIds !== undefined) {
             dataToUpdate.productSizes = {
                 deleteMany: {
@@ -215,7 +213,6 @@ export class ProductsService {
             }
         }
 
-        // Типи продукту
         if (typeIds !== undefined) {
             dataToUpdate.productTypes = {
                 deleteMany: {

@@ -10,12 +10,8 @@ export function useAuth() {
     const loginMutation = useMutation({
         mutationFn: login,
         onSuccess: (data: IAuthResponse) => {
-            document.cookie = `accessToken=${data.accessToken}; path=/; max-age=${60 * 60 * 24}`;
-            document.cookie = `refreshToken=${data.refreshToken}; path=/; max-age=${
-                60 * 60 * 24 * 7
-            }`;
             queryClient.setQueryData(["currentUser"], data);
-            // router.push("/");
+            router.push("/");
         },
         onError: (error) => {
             console.error("Login error:", error);
@@ -24,28 +20,23 @@ export function useAuth() {
 
     const registerMutation = useMutation({
         mutationFn: registerUser,
+        onSuccess: () => {},
+        onError: (error) => {
+            console.error("Register error:", error);
+        },
     });
 
     const logoutMutation = useMutation({
         mutationFn: logout,
         onSuccess: () => {
-            document.cookie = "accessToken=; path=/; max-age=0";
-            document.cookie = "refreshToken=; path=/; max-age=0";
-
             queryClient.setQueryData(["currentUser"], null);
             queryClient.invalidateQueries({ queryKey: ["currentUser"] });
-
             router.push("/login");
         },
         onError: (error) => {
             console.error("Logout error:", error);
-
-            document.cookie = "accessToken=; path=/; max-age=0";
-            document.cookie = "refreshToken=; path=/; max-age=0";
-
             queryClient.setQueryData(["currentUser"], null);
             queryClient.invalidateQueries({ queryKey: ["currentUser"] });
-
             router.push("/login");
         },
     });
@@ -53,11 +44,13 @@ export function useAuth() {
     const refreshTokenMutation = useMutation({
         mutationFn: refreshToken,
         onSuccess: (data: IAuthResponse) => {
-            document.cookie = `accessToken=${data.accessToken}; path=/; max-age=${60 * 60 * 24}`;
-            document.cookie = `refreshToken=${data.refreshToken}; path=/; max-age=${
-                60 * 60 * 24 * 7
-            }`;
             queryClient.setQueryData(["refreshToken"], data);
+        },
+        onError: (error) => {
+            console.error("Refresh token error:", error);
+            queryClient.setQueryData(["currentUser"], null);
+            queryClient.invalidateQueries({ queryKey: ["currentUser"] });
+            router.push("/login");
         },
     });
 
@@ -68,6 +61,7 @@ export function useAuth() {
         refreshToken: refreshTokenMutation.mutate,
         isLoading:
             loginMutation.isPending || registerMutation.isPending || logoutMutation.isPending,
-        error: loginMutation.error || registerMutation.error || logoutMutation.error,
+
+        error: loginMutation.error,
     };
 }

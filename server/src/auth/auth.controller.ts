@@ -1,10 +1,10 @@
-import { Body, Controller, Get, Post, Req, Request, UseGuards } from "@nestjs/common";
+import { Body, Controller, Get, Post, Req, Request, UseGuards, Res } from "@nestjs/common";
 import { AuthService } from "./auth.service";
 import { CreateUserDto } from "../user/dto/create-user.dto";
 import { LocalAuthGuard } from "./guards/local-auth/local-auth.guard";
 import { RefreshAuthGuard } from "./guards/refresh-auth/refresh-auth.guard";
 import { Public } from "./decorators/public.decorator";
-import { Request as ExpressRequest } from "express";
+import { Request as ExpressRequest, Response as ExpressResponse } from "express";
 import { AuthenticatedRequestUser } from "./types/auth-request-user.type";
 
 @Controller("auth")
@@ -19,8 +19,11 @@ export class AuthController {
     @Public()
     @UseGuards(LocalAuthGuard)
     @Post("signin")
-    login(@Request() req: ExpressRequest & { user: AuthenticatedRequestUser }) {
-        return this.authService.login(req.user.id, req.user.name, req.user.role);
+    login(
+        @Request() req: ExpressRequest & { user: AuthenticatedRequestUser },
+        @Res({ passthrough: true }) res: ExpressResponse
+    ) {
+        return this.authService.login(req.user.id, req.user.name, req.user.role, res);
     }
 
     @Get("me")
@@ -31,12 +34,18 @@ export class AuthController {
     @Public()
     @UseGuards(RefreshAuthGuard)
     @Post("refresh")
-    refreshToken(@Request() req: ExpressRequest & { user: AuthenticatedRequestUser }) {
-        return this.authService.refreshToken(req.user.id, req.user.name);
+    refreshToken(
+        @Request() req: ExpressRequest & { user: AuthenticatedRequestUser },
+        @Res({ passthrough: true }) res: ExpressResponse
+    ) {
+        return this.authService.refreshToken(req.user.id, req.user.name, res);
     }
 
     @Post("signout")
-    signOut(@Req() req: ExpressRequest & { user: AuthenticatedRequestUser }) {
-        return this.authService.signOut(req.user.id);
+    signOut(
+        @Req() req: ExpressRequest & { user: AuthenticatedRequestUser },
+        @Res({ passthrough: true }) res: ExpressResponse
+    ) {
+        return this.authService.signOut(req.user.id, res);
     }
 }

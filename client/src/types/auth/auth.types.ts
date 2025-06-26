@@ -22,6 +22,4 @@ export interface IAuthResponse {
     phone: string;
     email: string;
     role: string;
-    accessToken?: string;
-    refreshToken?: string;
 }
