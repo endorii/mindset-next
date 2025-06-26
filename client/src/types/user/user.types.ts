@@ -3,7 +3,7 @@ import { IFavoriteItem } from "../favorite/favorite.types";
 
 export interface IUser {
     id: string;
-    username: string;
+    name: string;
     email: string;
     password: string;
     phone: string;

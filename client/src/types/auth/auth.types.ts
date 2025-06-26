@@ -19,7 +19,9 @@ export interface CreateUserDto {
 export interface IAuthResponse {
     id: string;
     name: string;
+    phone: string;
+    email: string;
     role: string;
-    accessToken: string;
-    refreshToken: string;
+    accessToken?: string;
+    refreshToken?: string;
 }

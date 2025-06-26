@@ -4,10 +4,10 @@ import CartIcon from "../../Icons/CartIcon";
 import AccountIcon from "../../Icons/AccountIcon";
 import HeartIcon from "../../Icons/HeartIcon";
 import SearchIcon from "../../Icons/SearchIcon";
-import { useUser } from "@/lib/hooks/useUsers";
+import { useCurrentUser } from "@/lib/hooks/useUsers";
 
 const Header = () => {
-    const { data: user } = useUser("");
+    const { data: user } = useCurrentUser();
 
     return (
         <header className="fixed top-0 py-[10px] px-[20px] md:px-[35px] h-[75px] md:h-[85px] flex justify-end items-center w-full bg-white z-[100] shadow-custom border-b border-gray-200">
@@ -55,7 +55,7 @@ const Header = () => {
                                 className="flex items-center gap-[10px] font-semibold"
                             >
                                 <AccountIcon className="w-[25px] fill-black" />
-                                <div>{user.username}</div>
+                                <div>{user.name}</div>
                             </Link>
                         ) : (
                             <Link

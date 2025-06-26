@@ -4,7 +4,7 @@ import { usePathname } from "next/navigation";
 import HeartIcon from "@/components/Icons/HeartIcon";
 import { useProduct } from "@/lib/hooks/useProducts";
 import { useState } from "react";
-import { useUser } from "@/lib/hooks/useUsers";
+import { useCurrentUser } from "@/lib/hooks/useUsers";
 
 export default function ProductPage() {
     const pathname = usePathname();
@@ -14,7 +14,7 @@ export default function ProductPage() {
     const categoryPath = pathSegments[1];
     const productPath = pathSegments[2];
 
-    const { data: user } = useUser("");
+    const { data: user } = useCurrentUser();
 
     const {
         data: product,
@@ -45,7 +45,7 @@ export default function ProductPage() {
                             className={`transition-all duration-300 ${
                                 liked ||
                                 user?.favorites.some(
-                                    (item) => item.productId === product.id
+                                    (item: any) => item.productId === product.id
                                 )
                                     ? "w-[42px] stroke-white fill-white"
                                     : "w-[35px] stroke-white stroke-[1.5] fill-none"

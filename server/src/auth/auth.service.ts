@@ -1,7 +1,6 @@
 import { ConflictException, Inject, Injectable, UnauthorizedException } from "@nestjs/common";
 import { CreateUserDto } from "../user/dto/create-user.dto";
 import { UserService } from "src/user/user.service";
-// import { hash, verify } from "argon2";
 import type { AuthJwtPayload } from "./types/auth-jwtPayload";
 import { JwtService } from "@nestjs/jwt";
 import refreshConfig from "./config/refresh.config";
@@ -34,14 +33,33 @@ export class AuthService {
 
     async login(userId: string, name: string, role: Role) {
         const { accessToken, refreshToken } = await this.generateTokens(userId);
-        const hashedRT = await bcrypt.hash(refreshToken, 12);
+        const hashedRT = await bcrypt.hash(refreshToken, 10);
         await this.userService.updateHashedRefreshToken(userId, hashedRT);
         return {
             id: userId,
-            name: name,
+            name,
             role,
             accessToken,
             refreshToken,
+        };
+    }
+
+    async getCurrentUser(userId: string) {
+        const user = await this.userService.findOne(userId);
+        if (!user) {
+            throw new UnauthorizedException("User not found!");
+        }
+
+        return {
+            id: user.id,
+            email: user.email,
+            phone: user.phone,
+            role: user.role,
+            createdAt: user.createdAt,
+            name: user.name,
+            favorites: user.favorites,
+            cart: user.cart,
+            shippingAddress: user.shippingAddress,
         };
     }
 
@@ -86,17 +104,11 @@ export class AuthService {
         await this.userService.updateHashedRefreshToken(userId, hashedRT);
         return {
             id: userId,
-            name: name,
+            name,
             accessToken,
             refreshToken,
         };
     }
-
-    // async validateGoogleUser(googleUser: CreateUserDto) {
-    //     const user = await this.userService.findByEmail(googleUser.email);
-    //     if (user) return user;
-    //     return await this.userService.create(googleUser);
-    // }
 
     async signOut(userId: string) {
         return await this.userService.updateHashedRefreshToken(userId, null);

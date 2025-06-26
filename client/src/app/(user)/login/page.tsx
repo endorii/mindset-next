@@ -70,7 +70,6 @@ const Login = () => {
             register(registerData);
             setRegisterMessage("Реєстрація успішна!");
             setRegisterIsSuccess(true);
-            router.push("/");
         } catch (err) {
             setRegisterMessage(error?.message || "Помилка реєстрації");
         }

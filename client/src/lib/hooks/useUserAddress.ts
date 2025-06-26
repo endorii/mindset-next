@@ -13,7 +13,7 @@ export function useCreateUserAddress() {
             });
 
             queryClient.invalidateQueries({
-                queryKey: ["user"],
+                queryKey: ["currentUser"],
             });
         },
     });
@@ -33,7 +33,7 @@ export function useEditUserAddress() {
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["user-address"] });
             queryClient.invalidateQueries({
-                queryKey: ["user"],
+                queryKey: ["currentUser"],
             });
         },
     });

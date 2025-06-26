@@ -13,12 +13,17 @@ import { UserAddressModule } from "./user-address/user-address.module";
 import { ConfigModule } from "@nestjs/config";
 import { UserModule } from "./user/user.module";
 import { AuthModule } from "./auth/auth.module";
+// import { ThrottlerModule } from "@nestjs/throttler";
 
 @Module({
     imports: [
         ConfigModule.forRoot({
             isGlobal: true,
         }),
+        // ThrottlerModule.forRoot({
+        //     ttl: 60,
+        //     limit: 10,
+        // }),
         ServeStaticModule.forRoot({
             rootPath: join(__dirname, "..", "public"),
         }),

@@ -31,6 +31,11 @@ export class UserService {
             where: {
                 id: userId,
             },
+            include: {
+                favorites: true,
+                cart: true,
+                shippingAddress: true,
+            },
         });
     }
 

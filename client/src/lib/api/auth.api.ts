@@ -1,4 +1,5 @@
 import { ILoginCredentials, IAuthResponse, CreateUserDto } from "@/types/auth/auth.types";
+import { IUser } from "@/types/user/user.types";
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api";
 
@@ -43,6 +44,27 @@ export async function login(credentials: ILoginCredentials): Promise<IAuthRespon
     } catch (error) {
         console.error("Fetch error logging in:", error);
         throw new Error("Помилка входу");
+    }
+}
+
+export async function getCurrentUser(): Promise<IUser> {
+    try {
+        const response = await fetch(`${API_BASE_URL}/auth/me`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${getAccessToken()}`,
+            },
+        });
+
+        if (!response.ok) {
+            throw new Error("Помилка отримання користувача");
+        }
+
+        return await response.json();
+    } catch (error) {
+        console.error("Fetch error getting current user:", error);
+        throw error;
     }
 }
 

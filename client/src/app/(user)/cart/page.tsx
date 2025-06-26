@@ -3,12 +3,12 @@
 import Link from "next/link";
 import CloseIcon from "@/components/Icons/CloseIcon";
 import HeartIcon from "@/components/Icons/HeartIcon";
-import { useUser } from "@/lib/hooks/useUsers";
+import { useCurrentUser } from "@/lib/hooks/useUsers";
 import { ICartItem } from "@/types/cart/cart.types";
 import Image from "next/image";
 
 function Cart() {
-    const { data: user, isLoading, error } = useUser("");
+    const { data: user, isLoading, error } = useCurrentUser();
 
     const cartItems: ICartItem[] = user?.cart || [];
 

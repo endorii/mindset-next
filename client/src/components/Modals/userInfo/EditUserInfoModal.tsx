@@ -26,7 +26,7 @@ export default function EditUserInfoModal({
 
     useEffect(() => {
         if (user) {
-            setUserName(user.username || "");
+            setUserName(user.name || "");
             setEmail(user.email || "");
             setPhoneNumber(user.phone || "");
         }
@@ -43,7 +43,7 @@ export default function EditUserInfoModal({
             await editUserMutation.mutateAsync({
                 id: user?.id || "",
                 data: {
-                    username: userName,
+                    name: userName,
                     email,
                     phone: phoneNumber,
                 },

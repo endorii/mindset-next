@@ -4,11 +4,11 @@ import React from "react";
 import Link from "next/link";
 import CloseIcon from "@/components/Icons/CloseIcon";
 import { IFavoriteItem } from "@/types/favorite/favorite.types";
-import { useUser } from "@/lib/hooks/useUsers";
+import { useCurrentUser } from "@/lib/hooks/useUsers";
 import Image from "next/image";
 
 function Likes() {
-    const { data: user, isLoading, error } = useUser("");
+    const { data: user, isLoading, error } = useCurrentUser();
 
     const favouritesItems: IFavoriteItem[] = user?.favorites || [];
 

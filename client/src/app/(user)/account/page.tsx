@@ -4,12 +4,12 @@ import EditIcon from "@/components/Icons/EditIcon";
 import AddUserAddressModal from "@/components/Modals/userAddress/AddUserAddressModal";
 import EditUserAddressModal from "@/components/Modals/userAddress/EditUserAddressModal";
 import EditUserInfoModal from "@/components/Modals/userInfo/EditUserInfoModal";
-import { useUser } from "@/lib/hooks/useUsers";
+import { useCurrentUser } from "@/lib/hooks/useUsers";
 import { AttributeModalType } from "@/types/types";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 function Account() {
-    const { data: user } = useUser("");
+    const { data: user } = useCurrentUser();
     const [activeModal, setActiveModal] = useState<AttributeModalType>(null);
 
     const replasePassword = (password?: string) => {
@@ -30,12 +30,6 @@ function Account() {
         setActiveModal(null);
     };
 
-    useEffect(() => {
-        // if (!user) {
-        //     router.replace("/login");
-        // }
-    }, []);
-
     return (
         <div>
             <div className="flex w-full justify-between mt-[30px] items-stretch gap-[20px]">
@@ -48,7 +42,7 @@ function Account() {
                         >
                             <EditIcon className="w-[20px] stroke-white fill-none stroke-2 group-hover:stroke-black transition-all duration-300" />
                         </button>
-                        <li>{user?.username}</li>
+                        <li>{user?.name}</li>
                         <li>{user?.email}</li>
                         <li>{user?.phone}</li>
                     </ul>

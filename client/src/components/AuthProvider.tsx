@@ -2,9 +2,12 @@
 
 import { useEffect } from "react";
 import { useAuth } from "@/lib/hooks/useAuth";
+import { useRouter } from "next/navigation";
 
+// ...
 export function AuthProvider({ children }: { children: React.ReactNode }) {
     const { refreshToken } = useAuth();
+    const router = useRouter();
 
     useEffect(() => {
         const refreshTokenFromCookie = document.cookie
@@ -15,7 +18,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         if (refreshTokenFromCookie) {
             refreshToken(refreshTokenFromCookie);
         }
-    }, [refreshToken]);
+    }, [refreshToken, router]);
 
     return <>{children}</>;
 }

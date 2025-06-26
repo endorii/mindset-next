@@ -10,25 +10,20 @@ export function useAuth() {
     const loginMutation = useMutation({
         mutationFn: login,
         onSuccess: (data: IAuthResponse) => {
-            // Set cookies
             document.cookie = `accessToken=${data.accessToken}; path=/; max-age=${60 * 60 * 24}`;
             document.cookie = `refreshToken=${data.refreshToken}; path=/; max-age=${
                 60 * 60 * 24 * 7
             }`;
-            queryClient.setQueryData(["user"], data);
-            router.push("/");
+            queryClient.setQueryData(["currentUser"], data);
+            // router.push("/");
+        },
+        onError: (error) => {
+            console.error("Login error:", error);
         },
     });
 
     const registerMutation = useMutation({
         mutationFn: registerUser,
-        onSuccess: (data: IAuthResponse) => {
-            document.cookie = `accessToken=${data.accessToken}; path=/; max-age=${60 * 60 * 24}`;
-            document.cookie = `refreshToken=${data.refreshToken}; path=/; max-age=${
-                60 * 60 * 24 * 7
-            }`;
-            queryClient.setQueryData(["user"], data);
-        },
     });
 
     const logoutMutation = useMutation({
@@ -36,7 +31,21 @@ export function useAuth() {
         onSuccess: () => {
             document.cookie = "accessToken=; path=/; max-age=0";
             document.cookie = "refreshToken=; path=/; max-age=0";
-            queryClient.removeQueries({ queryKey: ["user"] });
+
+            queryClient.setQueryData(["currentUser"], null);
+            queryClient.invalidateQueries({ queryKey: ["currentUser"] });
+
+            router.push("/login");
+        },
+        onError: (error) => {
+            console.error("Logout error:", error);
+
+            document.cookie = "accessToken=; path=/; max-age=0";
+            document.cookie = "refreshToken=; path=/; max-age=0";
+
+            queryClient.setQueryData(["currentUser"], null);
+            queryClient.invalidateQueries({ queryKey: ["currentUser"] });
+
             router.push("/login");
         },
     });
@@ -48,7 +57,7 @@ export function useAuth() {
             document.cookie = `refreshToken=${data.refreshToken}; path=/; max-age=${
                 60 * 60 * 24 * 7
             }`;
-            queryClient.setQueryData(["user"], data);
+            queryClient.setQueryData(["refreshToken"], data);
         },
     });
 

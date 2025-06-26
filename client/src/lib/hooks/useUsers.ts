@@ -1,11 +1,13 @@
-import { IUser } from "@/types/user/user.types";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { editUser, fetchUser } from "../api/users.api";
+import { getCurrentUser } from "@/lib/api/auth.api";
+import { IUser } from "@/types/user/user.types";
+import { editUser } from "../api/users.api";
 
-export function useUser(email: IUser["email"]) {
+export function useCurrentUser() {
     return useQuery({
-        queryKey: ["user"],
-        queryFn: () => fetchUser(email),
+        queryKey: ["currentUser"],
+        queryFn: getCurrentUser,
+        retry: false, // Не намагайтесь повторно відправляти запит, якщо користувач не авторизований
     });
 }
 
@@ -16,7 +18,7 @@ export function useEditUser() {
         mutationFn: ({ id, data }: { id: IUser["id"]; data: Partial<IUser> }) => editUser(id, data),
         onSuccess: () => {
             queryClient.invalidateQueries({
-                queryKey: ["user"],
+                queryKey: ["currentUser"],
             });
         },
     });
