@@ -26,6 +26,7 @@ export async function editUser(id: string, data: Partial<IUser>): Promise<IUser>
                 "Content-Type": "application/json",
             },
             body: JSON.stringify(data),
+            credentials: "include",
         });
 
         if (!response.ok) {

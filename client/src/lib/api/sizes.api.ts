@@ -22,6 +22,7 @@ export async function createSize(data: ISizePayload): Promise<ISize> {
     try {
         const response = await fetch(`${API_BASE_URL}/sizes`, {
             method: "POST",
+            credentials: "include",
             headers: {
                 "Content-Type": "application/json",
             },
@@ -46,6 +47,7 @@ export async function editSize(sizeId: ISize["id"], data: Partial<ISize>): Promi
     try {
         const response = await fetch(`${API_BASE_URL}/sizes/${sizeId}`, {
             method: "PATCH",
+            credentials: "include",
             headers: {
                 "Content-Type": "application/json",
             },
@@ -68,6 +70,7 @@ export async function deleteSize(sizeId: ISize["id"]): Promise<void> {
     try {
         const response = await fetch(`${API_BASE_URL}/sizes/${sizeId}`, {
             method: "DELETE",
+            credentials: "include",
         });
 
         if (!response.ok) {

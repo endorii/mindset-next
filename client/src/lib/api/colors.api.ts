@@ -22,6 +22,7 @@ export async function createColor(data: IColorPayload): Promise<IColor> {
     try {
         const response = await fetch(`${API_BASE_URL}/colors`, {
             method: "POST",
+            credentials: "include",
             headers: {
                 "Content-Type": "application/json",
             },
@@ -46,6 +47,7 @@ export async function editColor(colorId: IColor["id"], data: Partial<IColor>): P
     try {
         const response = await fetch(`${API_BASE_URL}/colors/${colorId}`, {
             method: "PATCH",
+            credentials: "include",
             headers: {
                 "Content-Type": "application/json",
             },
@@ -68,6 +70,7 @@ export async function deleteColor(colorId: IColor["id"]): Promise<void> {
     try {
         const response = await fetch(`${API_BASE_URL}/colors/${colorId}`, {
             method: "DELETE",
+            credentials: "include",
         });
 
         if (!response.ok) {

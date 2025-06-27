@@ -9,15 +9,22 @@ import {
     Query,
     NotFoundException,
     Body,
+    UseGuards,
 } from "@nestjs/common";
 import { FileInterceptor, FilesInterceptor } from "@nestjs/platform-express";
 import * as fs from "fs";
+import { Role } from "generated/prisma";
 import * as path from "path";
+import { Roles } from "src/auth/decorators/roles.decorator";
+import { JwtAuthGuard } from "src/auth/guards/jwt-auth/jwt-auth.guard";
+import { RolesGuard } from "src/auth/guards/roles/roles.guard";
 import { imageFileFilter, imageStorage } from "src/multer.config";
 
 @Controller("upload")
+@UseGuards(JwtAuthGuard, RolesGuard)
 export class ImagesController {
     @Post("image")
+    @Roles(Role.ADMIN)
     @UseInterceptors(
         FileInterceptor("file", {
             storage: imageStorage,
@@ -35,6 +42,7 @@ export class ImagesController {
     }
 
     @Post("images")
+    @Roles(Role.ADMIN)
     @UseInterceptors(
         FilesInterceptor("files", 10, {
             storage: imageStorage,
@@ -53,6 +61,7 @@ export class ImagesController {
     }
 
     @Delete("image")
+    @Roles(Role.ADMIN)
     deleteImage(@Query("path") imagePath: string) {
         if (!imagePath) {
             throw new BadRequestException("Шлях до зображення не вказано");
@@ -70,6 +79,7 @@ export class ImagesController {
     }
 
     @Delete("images")
+    @Roles(Role.ADMIN)
     deleteImages(@Body() body: { paths: string[] }) {
         if (!body.paths || !Array.isArray(body.paths) || body.paths.length === 0) {
             throw new BadRequestException("Масив шляхів зображень не вказано або порожній");

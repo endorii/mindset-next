@@ -9,6 +9,7 @@ export async function uploadImage(file: File): Promise<{ path: string }> {
 
         const response = await fetch(`${API_BASE_URL}/upload/image`, {
             method: "POST",
+            credentials: "include",
             body: formData,
         });
 
@@ -34,6 +35,7 @@ export async function uploadImages(files: File[]): Promise<{ paths: string[] }> 
         const response = await fetch(`${API_BASE_URL}/upload/images`, {
             method: "POST",
             body: formData,
+            credentials: "include",
         });
 
         if (!response.ok) {
@@ -55,6 +57,7 @@ export async function deleteImage(path: string): Promise<void> {
 
         const response = await fetch(url.toString(), {
             method: "DELETE",
+            credentials: "include",
         });
 
         if (!response.ok) {
@@ -71,6 +74,7 @@ export async function deleteImages(imagePaths: IProduct["images"]): Promise<void
     try {
         const response = await fetch(`${API_BASE_URL}/upload/images`, {
             method: "DELETE",
+            credentials: "include",
             headers: {
                 "Content-Type": "application/json",
             },

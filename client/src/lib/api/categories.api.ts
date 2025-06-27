@@ -52,6 +52,7 @@ export async function addCategoryToCollection(
             headers: {
                 "Content-Type": "application/json",
             },
+            credentials: "include",
             body: JSON.stringify(categoryData),
         });
 
@@ -80,6 +81,7 @@ export async function editCategory(
                 headers: {
                     "Content-Type": "application/json",
                 },
+                credentials: "include",
                 body: JSON.stringify(data),
             }
         );
@@ -105,6 +107,7 @@ export async function deleteCategory(
             `${API_BASE_URL}/collections/${collectionPath}/categories/${categoryPath}`,
             {
                 method: "DELETE",
+                credentials: "include",
             }
         );
 

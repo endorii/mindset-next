@@ -41,6 +41,7 @@ export async function createCollection(data: ICollectionPayload): Promise<IColle
             headers: {
                 "Content-Type": "application/json",
             },
+            credentials: "include",
             body: JSON.stringify(data),
         });
 
@@ -69,6 +70,7 @@ export async function editCollection(
             headers: {
                 "Content-Type": "application/json",
             },
+            credentials: "include",
             body: JSON.stringify(data),
         });
 
@@ -88,6 +90,7 @@ export async function deleteCollection(collectionPath: string): Promise<void> {
     try {
         const response = await fetch(`${API_BASE_URL}/collections/${collectionPath}`, {
             method: "DELETE",
+            credentials: "include",
         });
 
         if (!response.ok) {

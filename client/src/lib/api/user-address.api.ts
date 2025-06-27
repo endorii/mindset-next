@@ -9,6 +9,7 @@ export async function createUserAddress(data: IUserShippingAdress): Promise<IUse
             headers: {
                 "Content-Type": "application/json",
             },
+            credentials: "include",
             body: JSON.stringify(data),
         });
 
@@ -35,6 +36,7 @@ export async function editUserAddress(
                 "Content-Type": "application/json",
             },
             body: JSON.stringify(data),
+            credentials: "include",
         });
 
         if (!response.ok) {

@@ -57,6 +57,7 @@ export async function addProductToCategory(
             `${API_BASE_URL}/collections/${collectionPath}/categories/${categoryPath}/products`,
             {
                 method: "POST",
+                credentials: "include",
                 headers: {
                     "Content-Type": "application/json",
                 },
@@ -90,6 +91,7 @@ export async function editProduct(
                 headers: {
                     "Content-Type": "application/json",
                 },
+                credentials: "include",
                 body: JSON.stringify({
                     ...productData,
                     updatedAt: new Date().toISOString(),
@@ -119,6 +121,7 @@ export async function deleteProduct(
             `${API_BASE_URL}/collections/${collectionPath}/categories/${categoryPath}/products/${productPath}`,
             {
                 method: "DELETE",
+                credentials: "include",
             }
         );
 

@@ -26,6 +26,7 @@ export async function createType(data: ITypePayload): Promise<IType> {
                 "Content-Type": "application/json",
             },
             body: JSON.stringify(data),
+            credentials: "include",
         });
 
         if (!response.ok) {
@@ -50,6 +51,7 @@ export async function editType(typeId: IType["id"], data: Partial<IType>): Promi
                 "Content-Type": "application/json",
             },
             body: JSON.stringify(data),
+            credentials: "include",
         });
 
         if (!response.ok) {
@@ -68,6 +70,7 @@ export async function deleteType(typeId: IType["id"]): Promise<void> {
     try {
         const response = await fetch(`${API_BASE_URL}/types/${typeId}`, {
             method: "DELETE",
+            credentials: "include",
         });
 
         if (!response.ok) {

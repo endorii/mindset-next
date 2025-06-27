@@ -91,7 +91,7 @@ function AdminNavigation({ children }: { children: React.ReactNode }) {
                 </div>
                 <div className={`${navOpen ? "p-[30px]" : "p-[15px]"}`}>
                     <Link
-                        href="#"
+                        href="/"
                         className={`mb-[50px] flex gap-[20px] group items-center font-semibold pb-[5px] py-[5px] hover:bg-black hover:text-white transition-all duration-300 rounded ${
                             navOpen
                                 ? "px-[47px] pr-[30px]"
@@ -104,7 +104,7 @@ function AdminNavigation({ children }: { children: React.ReactNode }) {
                                 navOpen ? "opacity-100" : "opacity-0 w-0 hidden"
                             }`}
                         >
-                            Вийти
+                            Вийти з панелі
                         </span>
                     </Link>
                 </div>
