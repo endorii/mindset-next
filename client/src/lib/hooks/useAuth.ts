@@ -43,9 +43,6 @@ export function useAuth() {
 
     const refreshTokenMutation = useMutation({
         mutationFn: refreshToken,
-        onSuccess: (data: IAuthResponse) => {
-            queryClient.setQueryData(["refreshToken"], data);
-        },
         onError: (error) => {
             console.error("Refresh token error:", error);
             queryClient.setQueryData(["currentUser"], null);

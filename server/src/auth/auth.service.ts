@@ -17,19 +17,11 @@ export class AuthService {
         @Inject(refreshConfig.KEY)
         private refreshTokenConfig: ConfigType<typeof refreshConfig>
     ) {}
+
     async registerUser(createUserDto: CreateUserDto) {
         const user = await this.userService.findByEmail(createUserDto.email);
         if (user) throw new ConflictException("User already exists!");
         return this.userService.create(createUserDto);
-    }
-
-    async validateLocalUser(email: string, password: string) {
-        const user = await this.userService.findByEmail(email);
-        if (!user) throw new UnauthorizedException("User not found!");
-        const isPasswordMatched = await bcrypt.compare(password, user.password);
-        if (!isPasswordMatched) throw new UnauthorizedException("Invalid Credentials!");
-
-        return { id: user.id, name: user.name, role: user.role };
     }
 
     async login(userId: string, name: string, role: Role, res: Response) {
@@ -56,6 +48,22 @@ export class AuthService {
             name,
             role,
         };
+    }
+
+    async signOut(userId: string, res: Response) {
+        await this.userService.updateHashedRefreshToken(userId, null);
+        res.clearCookie("accessToken", { path: "/" });
+        res.clearCookie("refreshToken", { path: "/" });
+        return { message: "Signed out successfully" };
+    }
+
+    async validateLocalUser(email: string, password: string) {
+        const user = await this.userService.findByEmail(email);
+        if (!user) throw new UnauthorizedException("User not found!");
+        const isPasswordMatched = await bcrypt.compare(password, user.password);
+        if (!isPasswordMatched) throw new UnauthorizedException("Invalid Credentials!");
+
+        return { id: user.id, name: user.name, role: user.role };
     }
 
     async getCurrentUser(userId: string) {
@@ -135,12 +143,5 @@ export class AuthService {
             id: userId,
             name,
         };
-    }
-
-    async signOut(userId: string, res: Response) {
-        await this.userService.updateHashedRefreshToken(userId, null);
-        res.clearCookie("accessToken", { path: "/" });
-        res.clearCookie("refreshToken", { path: "/" });
-        return { message: "Signed out successfully" };
     }
 }

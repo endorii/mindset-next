@@ -30,11 +30,11 @@ import { RolesGuard } from "./guards/roles/roles.guard";
         RefreshStrategy,
         {
             provide: APP_GUARD,
-            useClass: JwtAuthGuard, //@UseGuard(JwtAuthGuard)
+            useClass: JwtAuthGuard,
         },
         {
             provide: APP_GUARD,
-            useClass: RolesGuard, //@UseGuard(Roles)
+            useClass: RolesGuard,
         },
     ],
 })

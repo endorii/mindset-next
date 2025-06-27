@@ -1,5 +1,6 @@
 import { ILoginCredentials, IAuthResponse, CreateUserDto } from "@/types/auth/auth.types";
 import { IUser } from "@/types/user/user.types";
+import { fetchWithRefresh } from "./fetchWithRefresh";
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api";
 
@@ -51,7 +52,7 @@ export async function login(credentials: ILoginCredentials): Promise<IAuthRespon
 
 export async function getCurrentUser(): Promise<IUser> {
     try {
-        const response = await fetch(`${API_BASE_URL}/auth/me`, {
+        const response = await fetchWithRefresh(`${API_BASE_URL}/auth/me`, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",
