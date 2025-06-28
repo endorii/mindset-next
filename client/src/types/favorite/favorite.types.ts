@@ -1,8 +1,17 @@
 import { IProduct } from "../product/product.types";
 
 export interface IFavoriteItem {
-    id: string;
-    userId: string;
+    size: string;
+    type: string;
+    color: string;
     productId: string;
+    product: IProduct;
+}
+
+export interface ILocalFavoriteItem {
+    size: string;
+    type: string;
+    color: string;
+    addedAt: string;
     product: IProduct;
 }

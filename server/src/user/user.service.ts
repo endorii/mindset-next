@@ -32,7 +32,19 @@ export class UserService {
                 id: userId,
             },
             include: {
-                favorites: true,
+                favorites: {
+                    include: {
+                        product: {
+                            include: {
+                                category: {
+                                    include: {
+                                        collection: true,
+                                    },
+                                },
+                            },
+                        },
+                    },
+                },
                 cart: true,
                 shippingAddress: true,
             },

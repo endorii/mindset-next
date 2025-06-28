@@ -18,6 +18,8 @@ import { join } from "path";
 import { ConfigModule } from "@nestjs/config";
 
 // import { ThrottlerModule } from "@nestjs/throttler";
+import { CartModule } from './cart/cart.module';
+import { FavoritesModule } from './favorites/favorites.module';
 
 @Module({
     imports: [
@@ -42,6 +44,8 @@ import { ConfigModule } from "@nestjs/config";
         UserAddressModule,
         AuthModule,
         ImagesModule,
+        CartModule,
+        FavoritesModule,
     ],
     controllers: [],
     providers: [],

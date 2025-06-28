@@ -21,7 +21,6 @@ export class ProductsService {
                     },
                 },
                 include: {
-                    favorites: true,
                     productColors: {
                         include: {
                             color: true,

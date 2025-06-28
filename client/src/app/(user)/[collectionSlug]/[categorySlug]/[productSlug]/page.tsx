@@ -3,8 +3,19 @@
 import { usePathname } from "next/navigation";
 import HeartIcon from "@/components/Icons/HeartIcon";
 import { useProduct } from "@/lib/hooks/useProducts";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useCurrentUser } from "@/lib/hooks/useUsers";
+import { IProduct } from "@/types/product/product.types";
+
+import {
+    IFavoriteItem,
+    ILocalFavoriteItem,
+} from "@/types/favorite/favorite.types";
+import {
+    addFavoriteToUser,
+    deleteFavoriteFromUser,
+} from "@/lib/api/favorites.api";
+import { useAddFavorite, useDeleteFavorite } from "@/lib/hooks/useFavorites";
 
 export default function ProductPage() {
     const pathname = usePathname();
@@ -25,6 +36,121 @@ export default function ProductPage() {
 
     const [liked, setLiked] = useState(false);
 
+    const [chosenSize, setChosenSize] = useState("");
+    const [chosenType, setChosenType] = useState("");
+    const [chosenColor, setChosenColor] = useState("");
+
+    const getFavorites = (): ILocalFavoriteItem[] => {
+        try {
+            const favorites = localStorage.getItem("favorites");
+            return favorites ? JSON.parse(favorites) : [];
+        } catch (error) {
+            console.error("Помилка при читанні localStorage:", error);
+            return [];
+        }
+    };
+
+    const saveFavorites = (favorites: ILocalFavoriteItem[]) => {
+        try {
+            localStorage.setItem("favorites", JSON.stringify(favorites));
+        } catch (error) {
+            console.error("Помилка при збереженні в localStorage:", error);
+        }
+    };
+
+    const addToFavorites = (product: IProduct) => {
+        const favorites = getFavorites();
+        const isAlreadyFavorite: boolean = favorites.some(
+            (item: ILocalFavoriteItem) => item.product.id === product.id
+        );
+
+        if (!isAlreadyFavorite) {
+            const updatedFavorites = [
+                ...favorites,
+                {
+                    id: product.id,
+                    size: chosenSize,
+                    type: chosenType,
+                    color: chosenColor,
+                    product,
+                    addedAt: new Date().toISOString(),
+                },
+            ];
+            saveFavorites(updatedFavorites);
+        }
+    };
+
+    const removeFromFavorites = (
+        productId: ILocalFavoriteItem["product"]["id"]
+    ) => {
+        const favorites = getFavorites();
+        const updatedFavorites: ILocalFavoriteItem[] = favorites.filter(
+            (item: ILocalFavoriteItem) => item.product.id !== productId
+        );
+        saveFavorites(updatedFavorites);
+    };
+
+    useEffect(() => {
+        if (!product) return;
+
+        if (user) {
+            const isFavorite = user.favorites?.some(
+                (item) => item.productId === product.id
+            );
+            setLiked(isFavorite);
+        } else {
+            const favorites = getFavorites();
+            const isInFavorites = favorites.some(
+                (item: ILocalFavoriteItem) => item.product.id === product.id
+            );
+            setLiked(isInFavorites);
+        }
+    }, [product, user]);
+
+    const addToFavorite = useAddFavorite();
+    const deleteFromFavorite = useDeleteFavorite();
+
+    const handleLikeToggle = async () => {
+        if (!product) return;
+
+        const newLikedState = !liked;
+        setLiked(newLikedState);
+
+        const dataToSend: IFavoriteItem = {
+            size: chosenSize,
+            type: chosenType,
+            color: chosenColor,
+            product,
+            productId: product.id,
+        };
+
+        if (user) {
+            try {
+                if (newLikedState) {
+                    addToFavorite.mutate({
+                        userId: user.id,
+                        favoriteItem: dataToSend,
+                    });
+                    console.log("Успішно додано");
+                } else {
+                    deleteFromFavorite.mutate({
+                        userId: user.id,
+                        productId: product.id,
+                    });
+                    console.log("Успішно видалено");
+                }
+            } catch (err) {
+                console.error("Помилка з серверними вподобаннями:", err);
+            }
+        } else {
+            if (newLikedState) {
+                addToFavorites(product);
+            } else {
+                removeFromFavorites(product.id);
+            }
+        }
+    };
+
     if (!product) {
         return (
             <div className="pt-[130px] text-center text-[50px]">
@@ -38,15 +164,12 @@ export default function ProductPage() {
             <div className="flex gap-[10px] relative">
                 <div className="relative">
                     <button
-                        onClick={() => setLiked(!liked)}
+                        onClick={handleLikeToggle}
                         className="absolute top-1 right-1 m-[0_auto] text-xs flex justify-center items-center gap-[10px] p-[10px] transition-all duration-300 cursor-pointer w-[60px] h-[60px]"
                     >
                         <HeartIcon
                             className={`transition-all duration-300 ${
-                                liked ||
-                                user?.favorites.some(
-                                    (item: any) => item.productId === product.id
-                                )
+                                liked
                                     ? "w-[42px] stroke-white fill-white"
                                     : "w-[35px] stroke-white stroke-[1.5] fill-none"
                             } `}
@@ -106,7 +229,14 @@ export default function ProductPage() {
                             {product.productColors.map((item, i) => (
                                 <li
                                     key={i}
-                                    className="px-[15px] py-[8px] border border-gray-200 hover:border-black cursor-pointer"
+                                    className={`px-[15px] py-[8px] border ${
+                                        chosenColor === item.color.name
+                                            ? "border-black"
+                                            : "border-gray-200"
+                                    } hover:border-black cursor-pointer`}
+                                    onClick={() => {
+                                        setChosenColor(item.color.name);
+                                    }}
                                 >
                                     {item.color.name}
                                 </li>
@@ -124,7 +254,14 @@ export default function ProductPage() {
                             {product.productTypes.map((item, i) => (
                                 <li
                                     key={i}
-                                    className="px-[15px] py-[8px] border border-gray-200 hover:border-black cursor-pointer"
+                                    className={`px-[15px] py-[8px] border ${
+                                        chosenType === item.type.name
+                                            ? "border-black"
+                                            : "border-gray-200"
+                                    } hover:border-black cursor-pointer`}
+                                    onClick={() => {
+                                        setChosenType(item.type.name);
+                                    }}
                                 >
                                     {item.type.name}
                                 </li>
@@ -142,7 +279,14 @@ export default function ProductPage() {
                             {product.productSizes.map((item, i) => (
                                 <li
                                     key={i}
-                                    className="px-[15px] py-[8px] border border-gray-200 hover:border-black cursor-pointer"
+                                    className={`px-[15px] py-[8px] border ${
+                                        chosenSize === item.size.name
+                                            ? "border-black"
+                                            : "border-gray-200"
+                                    } hover:border-black cursor-pointer`}
+                                    onClick={() => {
+                                        setChosenSize(item.size.name);
+                                    }}
                                 >
                                     {item.size.name}
                                 </li>

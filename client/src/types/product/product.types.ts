@@ -26,6 +26,7 @@ export interface IProduct {
 
     category?: ICategory;
 }
+
 export interface ICreateProductPayload {
     name: string;
     path: string;

@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import CartIcon from "../../Icons/CartIcon";
 import AccountIcon from "../../Icons/AccountIcon";
@@ -11,15 +11,27 @@ import { getLocalStorageArray } from "@/lib/helpers/helpers";
 const Header = () => {
     const { data: user } = useCurrentUser();
 
-    const cart =
-        user?.cart && Array.isArray(user.cart)
-            ? user.cart
-            : getLocalStorageArray("cart");
+    const [localCart, setLocalCart] = useState<any[]>([]);
+    const [localFavorites, setLocalFavorites] = useState<any[]>([]);
+    const [isMounted, setIsMounted] = useState(false);
+
+    useEffect(() => {
+        setIsMounted(true);
+
+        setLocalCart(getLocalStorageArray("cart"));
+        setLocalFavorites(getLocalStorageArray("favorites"));
+    }, []);
+
+    const cart = user?.cart && Array.isArray(user.cart) ? user.cart : localCart;
 
     const favorites =
         user?.favorites && Array.isArray(user.favorites)
             ? user.favorites
-            : getLocalStorageArray("favorites");
+            : localFavorites;
+
+    if (!isMounted) {
+        return null;
+    }
 
     return (
         <header className="fixed top-0 py-[10px] px-[20px] md:px-[35px] h-[75px] md:h-[85px] flex justify-end items-center w-full bg-white z-[100] shadow-custom border-b border-gray-200">
