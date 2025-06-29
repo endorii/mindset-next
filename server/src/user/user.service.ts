@@ -45,7 +45,19 @@ export class UserService {
                         },
                     },
                 },
-                cart: true,
+                cart: {
+                    include: {
+                        product: {
+                            include: {
+                                category: {
+                                    include: {
+                                        collection: true,
+                                    },
+                                },
+                            },
+                        },
+                    },
+                },
                 shippingAddress: true,
             },
         });

@@ -83,8 +83,8 @@ function Likes() {
         return (
             <div className="pt-[30px] text-center text-[50px]">
                 {user
-                    ? "У вас поки немає улюблених товарів"
-                    : "Товари відсутні"}
+                    ? "У вас поки немає вподобаних товарів"
+                    : "Вподобані товари відсутні"}
             </div>
         );
     }
@@ -92,21 +92,16 @@ function Likes() {
     return (
         <div>
             <h3 className="mt-[30px] text-xl uppercase font-bold">
-                Улюблене {user ? "(Ваш акаунт)" : "(Локально збережене)"}:
+                Улюблене :
             </h3>
             <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-[20px] mt-[30px]">
                 {favoritesToShow.map((item, i) => {
                     const isServer = !!user;
 
-                    const product = isServer
-                        ? (item as IFavoriteItem).product
-                        : (item as ILocalFavoriteItem).product;
+                    const product = item.product;
+                    const id = item.productId;
 
                     if (!product) return null;
-
-                    const id = isServer
-                        ? (item as IFavoriteItem).product.id
-                        : (item as ILocalFavoriteItem).product.id;
 
                     const handleRemove = () => {
                         if (isServer) {

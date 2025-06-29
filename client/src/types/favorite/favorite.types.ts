@@ -12,6 +12,6 @@ export interface ILocalFavoriteItem {
     size: string;
     type: string;
     color: string;
-    addedAt: string;
+    productId: string;
     product: IProduct;
 }

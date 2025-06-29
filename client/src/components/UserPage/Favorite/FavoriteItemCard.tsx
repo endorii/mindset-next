@@ -9,7 +9,7 @@ interface Props {
     product: IProduct;
     onRemove: () => void;
     index: number;
-    id: string | number;
+    id: string;
     color: string;
     size: string;
     type: string;

@@ -28,9 +28,11 @@ const BasicInput: React.FC<BasicInputProps> = ({
     children,
 }) => (
     <div className="relative flex flex-col gap-[4px]">
-        <label htmlFor={id} className="text-xs text-gray-600">
-            {label}:
-        </label>
+        {label ? (
+            <label htmlFor={id} className="text-xs text-gray-600">
+                {label}:
+            </label>
+        ) : null}
         <input
             id={id}
             name={name}

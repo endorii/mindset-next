@@ -5,116 +5,83 @@ import HeartIcon from "@/components/Icons/HeartIcon";
 import { useProduct } from "@/lib/hooks/useProducts";
 import { useState, useEffect } from "react";
 import { useCurrentUser } from "@/lib/hooks/useUsers";
-import { IProduct } from "@/types/product/product.types";
-
+import { useAddFavorite, useDeleteFavorite } from "@/lib/hooks/useFavorites";
+import {
+    useAddCartItemToUser,
+    useDeleteCartItemFromUser,
+} from "@/lib/hooks/useCart";
+import { ICartItem } from "@/types/cart/cart.types";
 import {
     IFavoriteItem,
     ILocalFavoriteItem,
 } from "@/types/favorite/favorite.types";
-import {
-    addFavoriteToUser,
-    deleteFavoriteFromUser,
-} from "@/lib/api/favorites.api";
-import { useAddFavorite, useDeleteFavorite } from "@/lib/hooks/useFavorites";
+import BasicInput from "@/components/ui/inputs/BasicInput";
+import { number } from "motion";
 
 export default function ProductPage() {
     const pathname = usePathname();
-    const pathSegments = pathname.split("/").filter(Boolean);
-
-    const collectionPath = pathSegments[0];
-    const categoryPath = pathSegments[1];
-    const productPath = pathSegments[2];
+    const [collectionPath, categoryPath, productPath] = pathname
+        .split("/")
+        .filter(Boolean);
 
     const { data: user } = useCurrentUser();
-
-    const {
-        data: product,
-        isError,
-        error,
-        isLoading,
-    } = useProduct(collectionPath, categoryPath, productPath);
-
-    const [liked, setLiked] = useState(false);
+    const { data: product, isLoading } = useProduct(
+        collectionPath,
+        categoryPath,
+        productPath
+    );
 
     const [chosenSize, setChosenSize] = useState("");
     const [chosenType, setChosenType] = useState("");
     const [chosenColor, setChosenColor] = useState("");
+    const [quantity, setQuantity] = useState<number>(1);
+    const [liked, setLiked] = useState(false);
+    const [alreadyInCart, setAlreadyInCart] = useState(false);
 
-    const getFavorites = (): ILocalFavoriteItem[] => {
-        try {
-            const favorites = localStorage.getItem("favorites");
-            return favorites ? JSON.parse(favorites) : [];
-        } catch (error) {
-            console.error("Помилка при читанні localStorage:", error);
-            return [];
-        }
-    };
-
-    const saveFavorites = (favorites: ILocalFavoriteItem[]) => {
-        try {
-            localStorage.setItem("favorites", JSON.stringify(favorites));
-        } catch (error) {
-            console.error("Помилка при збереженні в localStorage:", error);
-        }
-    };
-
-    const addToFavorites = (product: IProduct) => {
-        const favorites = getFavorites();
-        const isAlreadyFavorite: boolean = favorites.some(
-            (item: ILocalFavoriteItem) => item.product.id === product.id
-        );
-
-        if (!isAlreadyFavorite) {
-            const updatedFavorites = [
-                ...favorites,
-                {
-                    id: product.id,
-                    size: chosenSize,
-                    type: chosenType,
-                    color: chosenColor,
-                    product,
-                    addedAt: new Date().toISOString(),
-                },
-            ];
-            saveFavorites(updatedFavorites);
-        }
-    };
-
-    const removeFromFavorites = (
-        productId: ILocalFavoriteItem["product"]["id"]
-    ) => {
-        const favorites = getFavorites();
-        const updatedFavorites: ILocalFavoriteItem[] = favorites.filter(
-            (item: ILocalFavoriteItem) => item.product.id !== productId
-        );
-        saveFavorites(updatedFavorites);
-    };
+    const addToFavorite = useAddFavorite();
+    const deleteFromFavorite = useDeleteFavorite();
+    const addCartItemToUser = useAddCartItemToUser();
+    const deleteCartItem = useDeleteCartItemFromUser();
 
     useEffect(() => {
+        setChosenSize(product?.productSizes[0].size.name || "");
+        setChosenType(product?.productTypes[0].type.name || "");
+        setChosenColor(product?.productColors[0].color.name || "");
+
         if (!product) return;
 
         if (user) {
             const isFavorite = user.favorites?.some(
                 (item) => item.productId === product.id
             );
-            setLiked(isFavorite);
-        } else {
-            const favorites = getFavorites();
-            const isInFavorites = favorites.some(
-                (item: ILocalFavoriteItem) => item.product.id === product.id
+            const isInCart = user.cart?.some(
+                (item) => item.productId === product.id
             );
-            setLiked(isInFavorites);
-        }
-    }, [product, user]);
+            setLiked(!!isFavorite);
+            setAlreadyInCart(!!isInCart);
+        } else {
+            const favorites = localStorage.getItem("favorites");
+            const parsedFavorites: ILocalFavoriteItem[] = favorites
+                ? JSON.parse(favorites)
+                : [];
+            const isFav = parsedFavorites.some(
+                (item) => item.product.id === product.id
+            );
+            setLiked(isFav);
 
-    const addToFavorite = useAddFavorite();
-    const deleteFromFavorite = useDeleteFavorite();
+            const cart = localStorage.getItem("cart");
+            const parsedCart: ICartItem[] = cart ? JSON.parse(cart) : [];
+            const isCart = parsedCart.some(
+                (item) => item.productId === product.id
+            );
+            setAlreadyInCart(isCart);
+        }
+    }, [product]);
 
     const handleLikeToggle = async () => {
         if (!product) return;
-
-        const newLikedState = !liked;
-        setLiked(newLikedState);
+        const newLiked = !liked;
+        setLiked(newLiked);
 
         const dataToSend: IFavoriteItem = {
             size: chosenSize,
@@ -125,36 +92,77 @@ export default function ProductPage() {
         };
 
         if (user) {
-            try {
-                if (newLikedState) {
-                    addToFavorite.mutate({
-                        userId: user.id,
-                        favoriteItem: dataToSend,
-                    });
-                    console.log("Успішно додано");
-                } else {
-                    deleteFromFavorite.mutate({
-                        userId: user.id,
-                        productId: product.id,
-                    });
-                    console.log("Успішно видалено");
-                }
-            } catch (err) {
-                console.error("Помилка з серверними вподобаннями:", err);
+            if (newLiked) {
+                addToFavorite.mutate({
+                    userId: user.id,
+                    favoriteItem: dataToSend,
+                });
+            } else {
+                deleteFromFavorite.mutate({
+                    userId: user.id,
+                    productId: product.id,
+                });
             }
         } else {
-            if (newLikedState) {
-                addToFavorites(product);
-            } else {
-                removeFromFavorites(product.id);
-            }
+            const favorites = localStorage.getItem("favorites");
+            const parsed: ILocalFavoriteItem[] = favorites
+                ? JSON.parse(favorites)
+                : [];
+            const updated = newLiked
+                ? [...parsed, dataToSend]
+                : parsed.filter((item) => item.product.id !== product.id);
+            localStorage.setItem("favorites", JSON.stringify(updated));
         }
     };
 
-    if (!product) {
+    const handleCartToggle = async () => {
+        if (!product) return;
+        const newCartState = !alreadyInCart;
+        setAlreadyInCart(newCartState);
+
+        const dataToSend: ICartItem = {
+            size: chosenSize,
+            type: chosenType,
+            color: chosenColor,
+            quantity,
+            product,
+            productId: product.id,
+        };
+
+        if (user) {
+            if (newCartState) {
+                addCartItemToUser.mutate({
+                    userId: user.id,
+                    cartItem: dataToSend,
+                });
+            } else {
+                deleteCartItem.mutate({
+                    userId: user.id,
+                    productId: product.id,
+                });
+            }
+        } else {
+            const cart = localStorage.getItem("cart");
+            const parsed: ICartItem[] = cart ? JSON.parse(cart) : [];
+            const updated = newCartState
+                ? [...parsed, dataToSend]
+                : parsed.filter((item) => item.productId !== product.id);
+            localStorage.setItem("cart", JSON.stringify(updated));
+        }
+    };
+
+    const checkQuantity = (quantity: number) => {
+        if (quantity < 1) {
+            return 1;
+        } else {
+            return quantity;
+        }
+    };
+
+    if (isLoading || !product) {
         return (
             <div className="pt-[130px] text-center text-[50px]">
-                Товар не знайдено 😞
+                {isLoading ? "Завантаження..." : "Товар не знайдено 😞"}
             </div>
         );
     }
@@ -172,7 +180,7 @@ export default function ProductPage() {
                                 liked
                                     ? "w-[42px] stroke-white fill-white"
                                     : "w-[35px] stroke-white stroke-[1.5] fill-none"
-                            } `}
+                            }`}
                         />
                     </button>
                     <img
@@ -181,7 +189,6 @@ export default function ProductPage() {
                         className="max-w-[600px]"
                     />
                 </div>
-
                 <ul className="flex flex-col w-[150px] gap-[10px] overflow-y-auto max-h-[600px]">
                     {product.images?.map((image, i) => (
                         <li key={i}>
@@ -222,7 +229,7 @@ export default function ProductPage() {
                     {product.available ? "В наявності" : "Немає в наявності"}
                 </div>
 
-                {product.productColors.length > 0 ? (
+                {product.productColors.length > 0 && (
                     <div className="flex flex-col gap-[10px] mt-[10px]">
                         <div>Колір:</div>
                         <ul className="flex gap-[10px]">
@@ -234,20 +241,18 @@ export default function ProductPage() {
                                             ? "border-black"
                                             : "border-gray-200"
                                     } hover:border-black cursor-pointer`}
-                                    onClick={() => {
-                                        setChosenColor(item.color.name);
-                                    }}
+                                    onClick={() =>
+                                        setChosenColor(item.color.name)
+                                    }
                                 >
                                     {item.color.name}
                                 </li>
                             ))}
                         </ul>
                     </div>
-                ) : (
-                    ""
                 )}
 
-                {product.productTypes.length > 0 ? (
+                {product.productTypes.length > 0 && (
                     <div className="flex flex-col gap-[10px] mt-[10px]">
                         <div>Тип:</div>
                         <ul className="flex gap-[10px]">
@@ -259,20 +264,18 @@ export default function ProductPage() {
                                             ? "border-black"
                                             : "border-gray-200"
                                     } hover:border-black cursor-pointer`}
-                                    onClick={() => {
-                                        setChosenType(item.type.name);
-                                    }}
+                                    onClick={() =>
+                                        setChosenType(item.type.name)
+                                    }
                                 >
                                     {item.type.name}
                                 </li>
                             ))}
                         </ul>
                     </div>
-                ) : (
-                    ""
                 )}
 
-                {product.productSizes.length > 0 ? (
+                {product.productSizes.length > 0 && (
                     <div className="flex flex-col gap-[10px] mt-[10px]">
                         <div>Розмір:</div>
                         <ul className="flex gap-[10px]">
@@ -284,31 +287,51 @@ export default function ProductPage() {
                                             ? "border-black"
                                             : "border-gray-200"
                                     } hover:border-black cursor-pointer`}
-                                    onClick={() => {
-                                        setChosenSize(item.size.name);
-                                    }}
+                                    onClick={() =>
+                                        setChosenSize(item.size.name)
+                                    }
                                 >
                                     {item.size.name}
                                 </li>
                             ))}
                         </ul>
                     </div>
-                ) : (
-                    ""
                 )}
+
+                <div className="relative flex flex-col gap-[4px]">
+                    <label className="text-gray-600">Кількість</label>
+                    <BasicInput
+                        type="number"
+                        value={quantity}
+                        onChangeValue={(e) =>
+                            setQuantity(checkQuantity(+e.target.value))
+                        }
+                    />
+                </div>
 
                 <div className="flex justify-between gap-[15px] mt-[30px]">
                     <button
                         disabled={!product.available}
-                        className="w-full border border-transparent hover:border-black hover:bg-white hover:text-black bg-black text-white px-[15px] py-[12px] transition-all duration-300 cursor-pointer disabled:bg-gray-200 disabled:border-transparent disabled:text-white"
+                        className="w-full border border-transparent hover:border-black hover:bg-white hover:text-black bg-black text-white px-[15px] py-[12px] transition-all duration-300 cursor-pointer disabled:bg-gray-200"
                     >
                         Купити
                     </button>
                     <button
-                        disabled={!product.available}
-                        className="w-full border border-transparent hover:border-black hover:bg-white hover:text-black bg-black text-white px-[15px] py-[12px] transition-all duration-300 cursor-pointer disabled:bg-gray-200 disabled:border-transparent disabled:text-white"
+                        onClick={handleCartToggle}
+                        disabled={
+                            !product.available ||
+                            !chosenColor ||
+                            !chosenSize ||
+                            !chosenType ||
+                            quantity < 1
+                        }
+                        className={`w-full border px-[15px] py-[12px] transition-all duration-300 cursor-pointer disabled:bg-gray-200 ${
+                            alreadyInCart
+                                ? "border-black hover:bg-black hover:text-white bg-white text-black"
+                                : "border-transparent hover:border-black hover:bg-white hover:text-black bg-black text-white"
+                        }`}
                     >
-                        В кошик
+                        {alreadyInCart ? "Видалити з кошика" : "В кошик"}
                     </button>
                 </div>
             </div>

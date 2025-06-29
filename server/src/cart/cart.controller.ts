@@ -1,34 +1,31 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
-import { CartService } from './cart.service';
-import { CreateCartDto } from './dto/create-cart.dto';
-import { UpdateCartDto } from './dto/update-cart.dto';
+import { Controller, Get, Post, Body, Param, Delete, UseGuards } from "@nestjs/common";
+import { CartService } from "./cart.service";
+import { CreateCartDto } from "./dto/create-cart.dto";
+import { JwtAuthGuard } from "src/auth/guards/jwt-auth/jwt-auth.guard";
+import { RolesGuard } from "src/auth/guards/roles/roles.guard";
+import { Roles } from "src/auth/decorators/roles.decorator";
+import { Role } from "generated/prisma";
 
-@Controller('cart')
+@Controller("cart")
+@UseGuards(JwtAuthGuard, RolesGuard)
 export class CartController {
-  constructor(private readonly cartService: CartService) {}
+    constructor(private readonly cartService: CartService) {}
 
-  @Post()
-  create(@Body() createCartDto: CreateCartDto) {
-    return this.cartService.create(createCartDto);
-  }
+    @Post(":userId")
+    @Roles(Role.ADMIN || Role.USER)
+    addCartItemToUser(@Param("userId") userId: string, @Body() createCartDto: CreateCartDto) {
+        return this.cartService.addCartItemToUser(userId, createCartDto);
+    }
 
-  @Get()
-  findAll() {
-    return this.cartService.findAll();
-  }
+    @Get(":userId")
+    @Roles(Role.ADMIN || Role.USER)
+    getAllCartItemsFromUser(@Param("userId") userId: string) {
+        return this.cartService.getAllCartItemsFromUser(userId);
+    }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.cartService.findOne(+id);
-  }
-
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateCartDto: UpdateCartDto) {
-    return this.cartService.update(+id, updateCartDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.cartService.remove(+id);
-  }
+    @Delete(":userId/:productId")
+    @Roles(Role.ADMIN || Role.USER)
+    removeCartItemFromUser(@Param("userId") userId: string, @Param("productId") productId: string) {
+        return this.cartService.removeCartItemFromUser(userId, productId);
+    }
 }
