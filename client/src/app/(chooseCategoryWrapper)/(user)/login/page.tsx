@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import BasicInput from "@/components/ui/inputs/BasicInput";
 import { useAuth } from "@/lib/hooks/useAuth";
 import { ILoginCredentials, CreateUserDto } from "@/types/auth/auth.types";
 import { useCurrentUser } from "@/lib/hooks/useUsers";
@@ -93,8 +92,8 @@ const Login = () => {
     }, [currentUser, isUserLoading, isUserError, router]);
 
     return (
-        <div className="flex flex-col md:flex-row justify-between gap-[30px] pt-[50px] p-[10px] text-white">
-            <div className="flex flex-col justify-between gap-[15px] w-full md:w-1/3 rounded-xl bg-white/5 shadow-lg backdrop-blur-3xl border border-white/5 p-[20px]">
+        <div className="flex flex-col md:flex-row justify-between gap-[30px] pt-[60px] p-[10px] text-white">
+            <div className="flex flex-col gap-[15px] justify-between w-full md:w-1/3 rounded-xl bg-white/5 shadow-lg backdrop-blur-3xl border border-white/5 p-[20px] transition hover:shadow-xl hover:border-white/10">
                 <div className="flex flex-col gap-[15px]">
                     <h3 className="text-4xl font-thin text-white">
                         Захист вашої інформації
@@ -159,8 +158,8 @@ const Login = () => {
                 </div>
             </div>
 
-            <div className="flex flex-col gap-[15px] w-full h-fit md:w-1/3 rounded-xl bg-white/5 shadow-lg backdrop-blur-3xl border border-white/5 p-[20px]">
-                <h3 className="text-4xl font-thin text-white">Вхід</h3>
+            <div className="flex flex-col gap-[15px] w-full md:w-1/3 rounded-xl bg-white/5 shadow-lg backdrop-blur-3xl border border-white/5 p-[20px]">
+                <h3 className="text-4xl font-thin">Вхід</h3>
                 <hr className="border-t border-white/10" />
                 <form
                     className="flex flex-col gap-[20px] rounded-md shadow-sm"
@@ -174,6 +173,8 @@ const Login = () => {
                             setLocalLoginMessage(null);
                         }}
                         type="email"
+                        id={"loginEmail"}
+                        name={"loginEmail"}
                     />
                     <InputField
                         label="пароль*"
@@ -183,6 +184,9 @@ const Login = () => {
                             setLocalLoginMessage(null);
                         }}
                         type="password"
+                        id={"loginPassword"}
+                        name={"loginPassword"}
+                        placeholder={""}
                     />
 
                     {localLoginMessage && (
@@ -191,9 +195,13 @@ const Login = () => {
                         </p>
                     )}
 
+                    <div className="underline cursor-pointer">
+                        Забули пароль?
+                    </div>
+
                     <button
                         type="submit"
-                        className="p-[15px] rounded-xl border border-white/10 hover:bg-black/50 transition-all duration-300 disabled:border-white/10 cursor-pointer disabled:cursor-not-allowed"
+                        className="text-white bg-transparent px-[15px] py-[15px] rounded-xl font-bold border border-white/15 hover:border-white/60 hover:bg-black/40 cursor-pointer disabled:cursor-not-allowed transition-all duration-200 disabled:text-gray-500 disabled:border-white/10 disabled:bg-white/0"
                         disabled={!loginEmail || !loginPassword || isLoading}
                     >
                         {isLoading ? "Завантаження..." : "Увійти"}
@@ -201,11 +209,11 @@ const Login = () => {
                 </form>
             </div>
 
-            <div className="flex flex-col gap-[15px] w-full md:w-1/3 rounded-xl bg-white/5 shadow-lg backdrop-blur-3xl border border-white/5 p-[20px]">
-                <h3 className="text-4xl font-thin text-white">Реєстрація</h3>
+            <div className="flex flex-col gap-[15px] w-full md:w-1/3 rounded-xl bg-white/5 shadow-lg backdrop-blur-3xl p-[20px]">
+                <h3 className="text-4xl font-thin">Реєстрація</h3>
                 <hr className="border-t border-white/10" />
                 <form
-                    className="flex flex-col gap-[20px] rounded-md shadow-sm"
+                    className=" flex flex-col gap-[20px] rounded-md shadow-sm"
                     onSubmit={handleRegisterSubmit}
                 >
                     <InputField
@@ -216,6 +224,8 @@ const Login = () => {
                             setRegisterMessage(null);
                         }}
                         type="text"
+                        id={"registerName"}
+                        name={"registerName"}
                     />
                     <InputField
                         label="електронна пошта*"
@@ -225,16 +235,21 @@ const Login = () => {
                             setRegisterMessage(null);
                         }}
                         type="email"
+                        id={"registerEmail"}
+                        name={"registerEmail"}
                     />
                     <InputField
-                        label="телефон*"
+                        label="телефон"
                         value={registerPhone}
                         onChangeValue={(e) => {
                             setRegisterPhone(e.target.value);
                             setRegisterMessage(null);
                         }}
                         type="tel"
+                        id={"registerPhone"}
+                        name={"registerPhone"}
                     />
+
                     <InputField
                         label="пароль*"
                         value={registerPassword}
@@ -243,9 +258,11 @@ const Login = () => {
                             setRegisterMessage(null);
                         }}
                         type="password"
+                        id={"registerPass"}
+                        name={"registerPass"}
                     />
 
-                    <div className="text-sm flex flex-col gap-[7px]">
+                    <div className="text-sm flex flex-col gap-[7px] ">
                         <div className="flex gap-[10px] items-center">
                             <input
                                 type="checkbox"
@@ -255,11 +272,10 @@ const Login = () => {
                                         !registerRulesCheckBox
                                     )
                                 }
-                                className="rounded text-blue-600 focus:ring-blue-500"
                             />
-                            <div className="">
+                            <div className="text-sm text-white/60">
                                 Я погоджуюсь з{" "}
-                                <span className="underline text-blue-400 hover:text-blue-300">
+                                <span className="text-blue-400 hover:text-blue-300 underline">
                                     правилами магазину
                                 </span>
                             </div>
@@ -273,11 +289,10 @@ const Login = () => {
                                         !registerComerceCheckBox
                                     )
                                 }
-                                className="rounded text-blue-600 focus:ring-blue-500"
                             />
-                            <div className="">
+                            <div className="text-sm text-white/60">
                                 Згідний отримувати комерційні пропозиції від{" "}
-                                <span className="underline text-blue-400 hover:text-blue-300">
+                                <span className="text-blue-400 hover:text-blue-300 underline">
                                     mindset.ua
                                 </span>{" "}
                                 на вказаний email
@@ -298,7 +313,7 @@ const Login = () => {
                     )}
 
                     <button
-                        className="p-[15px] rounded-xl border border-white/10 hover:bg-black/50 transition-all duration-300 disabled:border-white/10 cursor-pointer disabled:cursor-not-allowed"
+                        className="text-white bg-transparent px-[15px] py-[15px] rounded-xl font-bold border border-white/15 hover:border-white/60 hover:bg-black/40 cursor-pointer disabled:cursor-not-allowed transition-all duration-200 disabled:text-gray-500 disabled:border-white/10 disabled:bg-white/0"
                         type="submit"
                         disabled={
                             !registerUsername ||

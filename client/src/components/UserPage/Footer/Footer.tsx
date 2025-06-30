@@ -73,7 +73,7 @@ const Footer = () => {
                         </a>
                     </li>
                 </ul>
-                <ul className="flex gap-[20px] justify-center rounded-xl bg-white/5 shadow-lg backdrop-blur-lg border border-white/5 p-[20px]">
+                <ul className="flex gap-[20px] justify-center rounded-xl bg-white/5 shadow-lg backdrop-blur-xl border border-white/5 p-[20px]">
                     <li>
                         <button className="cursor-pointer p-[10px] border border-white/10 rounded-[50%] hover:bg-white group transition-all duration-300">
                             <Link href={"#"}>
