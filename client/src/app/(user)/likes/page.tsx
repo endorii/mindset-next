@@ -81,20 +81,19 @@ function Likes() {
 
     if (!favoritesToShow || favoritesToShow.length === 0) {
         return (
-            <div className="pt-[30px] text-center text-[50px]">
-                {user
-                    ? "У вас поки немає вподобаних товарів"
-                    : "Вподобані товари відсутні"}
+            <div className="flex justify-center items-center">
+                <div className="text-white text-center mt-[150px] text-[24px] uppercase font-bold rounded-xl bg-white/5 shadow-lg backdrop-blur-lg border border-white/5 px-[30px] py-[15px]">
+                    {user
+                        ? "У вас поки немає вподобаних товарів"
+                        : "Вподобані товари відсутні"}
+                </div>
             </div>
         );
     }
 
     return (
         <div>
-            <h3 className="mt-[30px] text-xl uppercase font-bold">
-                Улюблене :
-            </h3>
-            <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-[20px] mt-[30px]">
+            <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 w-full p-[30px] gap-[20px]">
                 {favoritesToShow.map((item, i) => {
                     const isServer = !!user;
 

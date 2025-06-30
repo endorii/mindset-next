@@ -22,18 +22,18 @@ const Footer = () => {
     }
 
     return (
-        <div className="relative bg-black p-[50px] flex justify-between text-white">
-            <div className="flex flex-col gap-[25px] w-[350px] text-sm">
+        <div className="relative bg-transparent p-[30px] flex justify-between text-white">
+            <div className="flex flex-col gap-[25px] w-[350px] text-sm rounded-xl bg-white/5 shadow-lg backdrop-blur-lg border border-white/5 p-[20px]">
                 <Link href="/" className="font-bold text-5xl tracking-tighter">
                     mindset
                 </Link>
-                <hr className="w-[60%]" />
+                <hr className="w-[60%] border border-white/10" />
                 <div className="">
                     Створено для тих, кому є різниця у чому ходити. Для тих, у
                     кого його стиль - це його вайб.
                 </div>
             </div>
-            <div className="absolute top-[50px] left-[50%] translate-x-[-50%]">
+            <div className="absolute top-[30px] left-[50%] translate-x-[-50%] rounded-xl bg-white/5 shadow-lg backdrop-blur-lg border border-white/5 p-[20px]">
                 <div className="text-center font-bold mb-[5px]">Колекції:</div>
                 <ul className="flex gap-[10px] max-w-[450px] flex-wrap justify-center">
                     {Array.isArray(collections) &&
@@ -41,7 +41,7 @@ const Footer = () => {
                             return (
                                 <li
                                     key={i}
-                                    className="border border-gray-300 hover:bg-white hover:text-black transition-colors duration-300 mt-[10px] w-[100px]"
+                                    className="border border-white/10 rounded-xl hover:bg-white hover:text-black transition-colors duration-300 mt-[10px] w-[100px]"
                                 >
                                     <Link
                                         href={`/${collection.path}`}
@@ -54,8 +54,8 @@ const Footer = () => {
                         })}
                 </ul>
             </div>
-            <div className="flex flex-col gap-[20px]">
-                <ul className="flex flex-col gap-[7px] text-sm">
+            <div className="flex flex-col gap-[20px] ">
+                <ul className="flex flex-col gap-[7px] text-sm rounded-xl bg-white/5 shadow-lg backdrop-blur-lg border border-white/5 p-[20px]">
                     <li className="hover:underline">
                         <a href="tel:+380974000000">+380 97 400 0000</a>
                     </li>
@@ -73,22 +73,22 @@ const Footer = () => {
                         </a>
                     </li>
                 </ul>
-                <ul className="flex gap-[20px]">
+                <ul className="flex gap-[20px] justify-center rounded-xl bg-white/5 shadow-lg backdrop-blur-lg border border-white/5 p-[20px]">
                     <li>
-                        <button className="cursor-pointer p-[10px] border borer-white rounded-[50%] hover:bg-white group transition-all duration-300">
+                        <button className="cursor-pointer p-[10px] border border-white/10 rounded-[50%] hover:bg-white group transition-all duration-300">
                             <Link href={"#"}>
                                 <TiktokIcon className="w-[20px] fill-white group-hover:fill-black" />
                             </Link>
                         </button>
                     </li>
                     <li>
-                        <button className="cursor-pointer p-[10px] border borer-white rounded-[50%] hover:bg-white group transition-all duration-300">
+                        <button className="cursor-pointer p-[10px] border border-white/10 rounded-[50%] hover:bg-white group transition-all duration-300">
                             <Link href={"#"}></Link>
                             <InstagramIcon className="w-[20px] fill-white group-hover:fill-black" />
                         </button>
                     </li>
                     <li>
-                        <button className="cursor-pointer p-[10px] border borer-white rounded-[50%] hover:bg-white group transition-all duration-300">
+                        <button className="cursor-pointer p-[10px] border border-white/10 rounded-[50%] hover:bg-white group transition-all duration-300">
                             <Link href={"#"}></Link>
                             <TelegramIcon className="w-[20px] fill-white group-hover:fill-black" />
                         </button>

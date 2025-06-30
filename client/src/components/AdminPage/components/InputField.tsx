@@ -23,7 +23,7 @@ const InputField: React.FC<InputFieldProps> = ({
     disabled,
     required,
     type = "text",
-    className = "border border-gray-200 rounded px-[10px] py-[7px] bg-gray-50 outline-0  transition-colors duration-200",
+    className = "border border-white/5 rounded px-[10px] py-[7px] bg-white/5 outline-0  transition-colors duration-200",
 }) => (
     <div className="flex flex-col gap-[7px]">
         <label htmlFor={id} className="text-sm font-semibold">

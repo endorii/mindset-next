@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
-import { Mulish } from "next/font/google";
+import { Roboto } from "next/font/google";
 import "./globals.css";
 import { AuthProvider } from "@/components/AuthProvider";
 import { QueryProvider } from "@/components/QueryProvider";
 
-const mulish = Mulish({
+const roboto = Roboto({
     subsets: ["cyrillic"],
 });
 
@@ -17,8 +17,8 @@ export default function RootLayout({
     children,
 }: Readonly<{ children: React.ReactNode }>) {
     return (
-        <html lang="en" className={mulish.className}>
-            <body>
+        <html lang="en" className={roboto.className}>
+            <body className="bg-black">
                 <QueryProvider>
                     <AuthProvider>{children}</AuthProvider>
                 </QueryProvider>

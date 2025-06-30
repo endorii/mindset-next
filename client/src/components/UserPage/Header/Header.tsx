@@ -34,60 +34,67 @@ const Header = () => {
     }
 
     return (
-        <header className="fixed top-0 py-[10px] px-[20px] md:px-[35px] h-[75px] md:h-[85px] flex justify-end items-center w-full bg-white z-[100] shadow-custom border-b border-gray-200">
-            <div className="absolute left-1/2 transform -translate-x-1/2">
-                <Link href="/" className="font-bold text-5xl tracking-tighter">
-                    mindset
-                </Link>
-            </div>
+        <header className="fixed top-[10px] py-[10px] px-[20px] md:px-[35px] h-[75px] md:h-[85px] flex justify-end items-center w-full bg-transparent text-white z-[100] shadow-custom ">
+            <Link
+                href="/"
+                className="absolute left-1/2 transform -translate-x-1/2 rounded-xl bg-white/5 shadow-lg px-[25px] py-[13px] pb-[18px] backdrop-blur-2xl font-bold text-5xl tracking-tighter leading-10 border border-white/5"
+            >
+                mindset
+            </Link>
 
             <div className="flex items-center gap-[30px]">
-                <div className="relative">
+                {/* <div className="relative">
                     <SearchIcon className="absolute top-[5px] right-0 w-[20px] fill-white stroke-black" />
                     <input
                         type="text"
                         className="border-b text-xs py-2 outline-0 w-[200px] pr-[25px]"
                         placeholder="знайти щось"
                     />
-                </div>
+                </div> */}
 
-                <ul className="flex gap-[30px]">
+                <ul className="flex gap-[10px]">
                     <li>
-                        <Link href="/cart" className="relative">
+                        <Link
+                            href="/cart"
+                            className="relative flex gap-[10px] rounded-xl bg-white/5 shadow-lg px-[20px] py-[13px] backdrop-blur-2xl border border-white/5"
+                        >
                             {Array.isArray(cart) && cart.length > 0 && (
-                                <div className="absolute top-[-10px] right-[-10px] bg-black w-[20px] h-[20px] flex items-center justify-center text-[8px] font-bold rounded-[50%] border-2 border-white text-white">
+                                <div className="absolute top-[5px] right-[7px] bg-black w-[20px] h-[20px] flex items-center justify-center text-[8px] font-bold rounded-[50%] border-2 border-white text-white">
                                     {cart.length}
                                 </div>
                             )}
-                            <CartIcon className="w-[25px] fill-white stroke-2 stroke-black" />
+                            <CartIcon className="w-[25px] fill-none stroke-2 stroke-white" />
                         </Link>
                     </li>
                     <li>
-                        <Link href="/likes" className="relative">
+                        <Link
+                            href="/likes"
+                            className="relative flex gap-[10px] rounded-xl bg-white/5 shadow-lg px-[20px] py-[13px] backdrop-blur-2xl border border-white/5"
+                        >
                             {Array.isArray(favorites) &&
                                 favorites.length > 0 && (
-                                    <div className="absolute top-[-10px] right-[-10px] bg-black w-[20px] h-[20px] flex items-center justify-center text-[8px] font-bold rounded-[50%] border-2 border-white text-white">
+                                    <div className="absolute top-[5px] right-[7px] bg-black w-[20px] h-[20px] flex items-center justify-center text-[8px] font-bold rounded-[50%] border-2 border-white text-white">
                                         {favorites.length}
                                     </div>
                                 )}
-                            <HeartIcon className="w-[25px] fill-white stroke-2 stroke-black" />
+                            <HeartIcon className="w-[25px] fill-none stroke-2 stroke-white" />
                         </Link>
                     </li>
                     <li>
                         {user ? (
                             <Link
                                 href="/account"
-                                className="flex items-center gap-[10px] font-semibold"
+                                className="relative flex gap-[10px] rounded-xl bg-white/5 shadow-lg px-[20px] py-[13px] backdrop-blur-2xl border border-white/5"
                             >
-                                <AccountIcon className="w-[25px] fill-black" />
+                                <AccountIcon className="w-[25px] fill-white" />
                                 <div>{user.name}</div>
                             </Link>
                         ) : (
                             <Link
                                 href="/login"
-                                className="flex items-center gap-[5px] font-semibold"
+                                className="relative flex gap-[10px] rounded-xl bg-white/5 shadow-lg px-[20px] py-[13px] backdrop-blur-2xl border border-white/5"
                             >
-                                <AccountIcon className="w-[25px] fill-black" />
+                                <AccountIcon className="w-[25px] fill-white" />
                                 <div>Увійти</div>
                             </Link>
                         )}

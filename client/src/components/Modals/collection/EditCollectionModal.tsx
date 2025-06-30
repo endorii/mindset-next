@@ -126,7 +126,7 @@ export default function EditCollectionModal({
                             <InputField
                                 label={"Шлях"}
                                 value={path}
-                                onChangeValue={(e) => setName(e.target.value)}
+                                onChangeValue={(e) => setPath(e.target.value)}
                                 id={"editCollectionPath"}
                                 name={"editCollectionPath"}
                                 placeholder={"Шлях"}

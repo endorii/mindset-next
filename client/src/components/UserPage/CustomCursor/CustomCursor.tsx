@@ -9,7 +9,7 @@ export default function CustomCursor() {
         y: useMotionValue(0),
     };
 
-    const smoothOptions = { damping: 20, stiffness: 300, mass: 0.5 };
+    const smoothOptions = { damping: 30, stiffness: 400, mass: 0.3 };
 
     const smoothMouse = {
         x: useSpring(mouse.x, smoothOptions),
@@ -25,8 +25,8 @@ export default function CustomCursor() {
         mouse.y.set(clientY - cursorSize.get() / 2);
     };
 
-    const manageMouseEnter = () => cursorSize.set(15);
-    const manageMouseLeave = () => cursorSize.set(24);
+    const manageMouseEnter = () => cursorSize.set(8);
+    const manageMouseLeave = () => cursorSize.set(12);
 
     const applyCursorListeners = () => {
         const elements = document.querySelectorAll("button, a");
@@ -59,14 +59,17 @@ export default function CustomCursor() {
 
     return (
         <motion.div
-            className="fixed z-[1000] pointer-events-none border border-white"
+            className="fixed pointer-events-none"
             style={{
                 width: animatedCursorSize,
                 height: animatedCursorSize,
+                border: "none",
                 borderRadius: "50%",
-                backgroundColor: "black",
+                backgroundColor: "rgba(255, 255, 255, 0.35)",
+                boxShadow: "0 0 60px 20px rgba(255, 255, 255, 1)",
                 left: smoothMouse.x,
                 top: smoothMouse.y,
+                zIndex: "-1",
             }}
         />
     );

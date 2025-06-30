@@ -29,14 +29,14 @@ export default function CollectionLayout({
 
     return (
         <>
-            <div className="fixed top-[80px] left-0 w-full z-10">
+            <div className="fixed top-[10px] left-[10px] max-w-[600px] z-100 ">
                 <ChooseCategoryHeader
                     currentCollection={currentCollection}
                     setCurrentCollection={setCurrentCollection}
                 />
             </div>
 
-            <main className="mt-[185px]">{children}</main>
+            <div className="mt-[145px]">{children}</div>
         </>
     );
 }

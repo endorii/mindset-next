@@ -61,11 +61,11 @@ export default function EditUserInfoModal({
 
     const modalContent = (
         <div
-            className="fixed inset-0 bg-black/70 flex items-center products-center justify-center z-100 cursor-pointer"
+            className="fixed inset-0 bg-black/80 flex items-center products-center justify-center z-100 cursor-pointer text-white"
             onClick={onClose}
         >
             <div
-                className="bg-white p-[30px] h-auto max-h-[80vh] shadow-lg w-[54vw] overflow-y-auto cursor-default"
+                className="bg-gradient-to-br from-black to-white/5 border border-white/10 rounded-xl p-[30px] h-auto max-h-[80vh] shadow-lg w-[54vw] overflow-y-auto cursor-default"
                 onClick={(e) => e.stopPropagation()}
             >
                 <h2 className="text-lg font-bold mb-4">
@@ -110,13 +110,13 @@ export default function EditUserInfoModal({
                     <div className="flex justify-end gap-4 mt-6">
                         <button
                             onClick={onClose}
-                            className="px-[20px] py-[7px] border border-transparent bg-black text-white hover:bg-white hover:border-black hover:text-black cursor-pointer transition-all duration-200"
+                            className="flex gap-[15px] px-[25px] py-[13px] items-center cursor-pointer p-[10px] border border-white/10 rounded-xl hover:bg-white hover:text-black transition-all duration-300"
                         >
                             Скасувати
                         </button>
                         <button
                             onClick={handleSubmit}
-                            className="px-[20px] py-[7px] border border-transparent bg-black text-white hover:bg-white hover:border-black hover:text-black cursor-pointer transition-all duration-200"
+                            className="flex gap-[15px] px-[25px] py-[13px] items-center cursor-pointer p-[10px] border border-white/10 rounded-xl hover:bg-white hover:text-black transition-all duration-300"
                         >
                             Підтвердити
                         </button>

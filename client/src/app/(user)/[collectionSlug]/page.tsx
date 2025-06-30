@@ -9,42 +9,43 @@ export default function Collection() {
     const pathname = usePathname();
     const collectionPath = pathname.split("/")[1] || "";
 
-    const { data, isError, isLoading } = useCollection(collectionPath);
+    const {
+        data: collection,
+        isError,
+        isLoading,
+    } = useCollection(collectionPath);
 
-    console.log(data);
+    console.log(collection);
 
     if (isLoading) {
         return <p>Завантаження...</p>;
     }
 
-    if (!data) {
+    if (!collection) {
         return notFound();
     }
 
     if (isLoading) return <p>Завантаження...</p>;
-    if (isError || !data) return <p>Колекція не знайдена</p>;
+    if (isError || !collection) return <p>Колекція не знайдена</p>;
 
     return (
-        <div>
-            <h3 className="mt-[30px] text-2xl uppercase font-bold">
-                Категорії товарів:
+        <div className="relative min-h-[45vw]">
+            <h3 className="text-xl font-bold text-center text-white text-[200px] leading-[140px]">
+                Категорії {collection.name}
             </h3>
-            {data?.categories.length ? (
-                <ul className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-[20px] mt-[30px]">
-                    {data.categories.map((product, i) => (
+            {collection?.categories.length ? (
+                <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 mt-[10px] absolute top-0 left-[50%] translate-x-[-50%] w-full p-[100px] gap-[20px]">
+                    {collection.categories.map((product, i) => (
                         <li key={i}>
                             <Link
                                 href={`/${collectionPath}/${product.path}`}
-                                className="relative block group"
+                                className="flex flex-col gap-[15px] group rounded-xl bg-white/5 shadow-lg backdrop-blur-lg border border-white/5 p-[20px]"
                             >
-                                <div
-                                    className="z-[2] absolute top-0 left-0 bg-black text-white px-[25px] py-[15px] text-lg
-                                group-hover:bg-transparent group-hover:text-white group-hover:text-3xl group-hover:top-[50%] group-hover:left-[50%] group-hover:translate-x-[-50%] group-hover:translate-y-[-50%] transition-all ease-in-out duration-800"
-                                >
+                                <div className="text-white text-3xl font-thin">
                                     {product.name}
                                 </div>
                                 <Image
-                                    className="filter transition-all group-hover:brightness-50 duration-600"
+                                    className="rounded-xl"
                                     width={450}
                                     height={450}
                                     src={`http://localhost:5000/${product.banner}`}
@@ -55,7 +56,11 @@ export default function Collection() {
                     ))}
                 </ul>
             ) : (
-                <p className="text-lg">Тут поки немає товарів.</p>
+                <div className="flex justify-center items-center">
+                    <div className="text-white text-center mt-[150px] text-[24px] uppercase font-bold rounded-xl bg-white/5 shadow-lg backdrop-blur-lg border border-white/5 px-[30px] py-[15px]">
+                        Тут поки немає категорій, але вони скоро з'являться
+                    </div>
+                </div>
             )}
         </div>
     );

@@ -27,17 +27,17 @@ const ChooseCategoryHeader = ({
     }
 
     return (
-        <div className="bg-gray-100 py-4 z-10">
+        <div className="rounded-xl bg-white/5 shadow-lg backdrop-blur-lg border border-white/5 p-[20px]">
             <ul className="flex justify-center items-center gap-4">
                 {collections?.map((collection, i) => (
                     <li
                         key={i}
-                        className="border border-gray-300 hover:bg-black hover:text-white transition-colors duration-300 w-[100px] text-center"
+                        className="border border-white/10 rounded-xl hover:bg-white transition-colors duration-300 text-white hover:text-black w-[100px] text-center cursor-pointer"
                     >
                         <Link
                             href={`/${collection.path}`}
                             onClick={() => setCurrentCollection(collection)}
-                            className="block px-4 py-2 cursor-pointer"
+                            className="block px-4 py-2 cursor-pointer "
                         >
                             {collection.name}
                         </Link>

@@ -92,7 +92,7 @@ const Login = () => {
     }, [currentUser, isUserLoading, isUserError, router]);
 
     return (
-        <div className="flex flex-col md:flex-row justify-between gap-[50px] p-5">
+        <div className="flex flex-col md:flex-row justify-between gap-[50px] p-5 text-white">
             <div className="flex flex-col gap-[15px] w-full md:w-1/3">
                 <h3 className="mt-[30px] text-xl font-bold">
                     Захист вашої інформації

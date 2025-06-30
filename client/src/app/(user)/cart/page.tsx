@@ -192,17 +192,23 @@ function Cart() {
 
     if (!cartToShow || cartToShow.length === 0) {
         return (
-            <div className="pt-[30px] text-center text-[50px]">
-                {user ? "У вас поки немає товарів у кошику" : "Кошик порожній"}
+            <div className="flex justify-center items-center">
+                <div className="text-white text-center mt-[150px] text-[24px] uppercase font-bold rounded-xl bg-white/5 shadow-lg backdrop-blur-lg border border-white/5 px-[30px] py-[15px]">
+                    {user
+                        ? "У вас поки немає товарів у кошику"
+                        : "Кошик порожній"}
+                </div>
             </div>
         );
     }
 
     return (
-        <div>
-            <h3 className="mt-[30px] text-xl uppercase font-bold">Кошик:</h3>
+        <div className="relative py-[50px] text-white">
+            {/* <h3 className="text-xl font-bold text-center text-white text-[200px] leading-[270px]">
+                Кошик:
+            </h3> */}
             <div className="flex justify-between">
-                <ul className="mt-[30px] flex flex-col gap-[30px] w-[70%] max-h-[90vh] overflow-y-scroll">
+                <ul className=" flex flex-col gap-[30px] w-[70%] max-h-[80vh] overflow-y-auto">
                     {cartToShow.map((item) => {
                         const isServer = !!user;
                         const { product } = item;
@@ -225,7 +231,7 @@ function Cart() {
                         return (
                             <li
                                 key={item.product.id}
-                                className="border-b pb-[30px] border-gray-200"
+                                className="border-b pb-[30px] rounded-xl bg-white/5 backdrop-blur-[100px] border border-white/5 p-[20px] "
                             >
                                 <Link
                                     href={`${product.category?.collection?.path}/${product.category?.path}/${product.path}`}
@@ -234,34 +240,56 @@ function Cart() {
                                     <Image
                                         src={`http://localhost:5000/${product.banner}`}
                                         alt={product.name}
-                                        width={250}
-                                        height={250}
+                                        width={300}
+                                        height={300}
+                                        className="rounded-xl"
                                     />
-                                    <div className="px-[30px] flex flex-col justify-between w-full">
+                                    <div className="px-[30px] flex flex-col justify-between w-full ">
                                         <div className="flex flex-col justify-between">
                                             <div className="flex items-center justify-between mb-[15px]">
-                                                <div className="text-lg font-medium">
+                                                <div className="text-[30px] font-thin">
                                                     {product.name}
                                                 </div>
                                                 <div className="text-lg font-bold">
                                                     {product.price} грн.
                                                 </div>
                                             </div>
-                                            <div>
-                                                <div className="text-sm text-gray-600">
-                                                    Розмір: {item.size}
+                                            <div className="flex flex-col items-start gap-[7px] text-white/60">
+                                                <div className="flex gap-[7px] items-center">
+                                                    <div className="text-sm">
+                                                        Колір:{" "}
+                                                    </div>
+                                                    <div className="text-sm rounded-xl bg-white/5 shadow-lg backdrop-blur-lg border border-white/5 px-[10px] py-[3px]">
+                                                        {item.color}
+                                                    </div>
                                                 </div>
-                                                <div className="text-sm text-gray-600">
-                                                    Кількість: {item.quantity}
+                                                <div className="flex gap-[7px] items-center">
+                                                    <div className="text-sm">
+                                                        Розмір:{" "}
+                                                    </div>
+                                                    <div className="text-sm rounded-xl bg-white/5 shadow-lg backdrop-blur-lg border border-white/5 px-[10px] py-[3px]">
+                                                        {item.size}
+                                                    </div>
                                                 </div>
-                                                <div className="text-sm text-gray-600">
-                                                    Колір: {item.color}
+                                                <div className="flex gap-[7px] items-center">
+                                                    <div className="text-sm">
+                                                        Тип:{" "}
+                                                    </div>
+                                                    <div className="text-sm rounded-xl bg-white/5 shadow-lg backdrop-blur-lg border border-white/5 px-[10px] py-[3px]">
+                                                        {item.type}
+                                                    </div>
                                                 </div>
-                                                <div className="text-sm text-gray-600">
-                                                    Тип: {item.type}
+                                                <div className="flex gap-[7px] items-center">
+                                                    <div className="text-sm">
+                                                        Кількість:{" "}
+                                                    </div>
+                                                    <div className="text-sm rounded-xl bg-white/5 shadow-lg backdrop-blur-lg border border-white/5 px-[10px] py-[3px]">
+                                                        {item.quantity}
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
+                                        <hr className="border-t border-white/10" />
                                         <div className="flex justify-between gap-[10px]">
                                             <button
                                                 onClick={(e) => {
@@ -269,7 +297,7 @@ function Cart() {
                                                     e.stopPropagation();
                                                     handleRemove();
                                                 }}
-                                                className="group flex text-xs items-center gap-[20px] w-full border border-transparent hover:text-black hover:border-black hover:bg-white bg-black text-white px-[20px] py-[7px] transition-all duration-300 cursor-pointer disabled:bg-gray-200 disabled:text-gray-400 disabled:border-0 disabled:cursor-not-allowed"
+                                                className="flex justify-center gap-[10px] text-white bg-transparent px-[15px] py-[15px] rounded-xl font-bold border border-white/15 cursor-pointer w-full disabled:cursor-not-allowed"
                                             >
                                                 <CloseIcon className="w-[20px] stroke-white group-hover:stroke-black transition-all duration-300" />
                                                 <div>Видалити</div>
@@ -280,18 +308,10 @@ function Cart() {
                                                     e.stopPropagation();
                                                     handleFavoriteToggle(item);
                                                 }}
-                                                className={`group flex text-xs items-center gap-[20px] w-full border transition-all duration-300 cursor-pointer disabled:bg-gray-200 disabled:text-gray-400 disabled:border-0 disabled:cursor-not-allowed px-[20px] py-[7px] ${
-                                                    isFavorite
-                                                        ? "border-black-500 bg-white text-black"
-                                                        : "border-transparent hover:text-black hover:border-black hover:bg-white bg-black text-white"
-                                                }`}
+                                                className={`flex justify-center gap-[10px] text-white bg-transparent px-[15px] py-[15px] rounded-xl font-bold border border-white/15 cursor-pointer w-full `}
                                             >
                                                 <HeartIcon
-                                                    className={`w-[22px] transition-all duration-300 ${
-                                                        isFavorite
-                                                            ? "stroke-black fill-none group-hover:fill-black"
-                                                            : "stroke-white group-hover:stroke-black"
-                                                    }`}
+                                                    className={`w-[22px] transition-all duration-300 stroke-white fill-none`}
                                                 />
                                                 <div>
                                                     {isFavorite
@@ -306,19 +326,19 @@ function Cart() {
                         );
                     })}
                 </ul>
-                <div className="w-[27%] bg-gray-100 p-[30px]">
+                <div className="w-[27%] rounded-xl bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px] text-lg">
                     <div className="font-bold">Всього</div>
-                    <hr className="my-[15px] border-b border-gray-200" />
+                    <hr className="border-t border-white/10 my-[15px]" />
                     <div className="flex flex-col gap-[15px]">
                         <div className="flex justify-between">
                             <div>Сума товарів:</div>
                             <div>{totalPrice.toFixed(2)} грн</div>
                         </div>
-                        <div className="flex justify-between text-gray-500">
+                        <div className="flex justify-between text-white/50 text-base">
                             <div>Сума знижки:</div>
                             <div>0 грн</div>
                         </div>
-                        <div className="flex justify-between text-gray-500">
+                        <div className="flex justify-between text-white/50 text-base">
                             <div>Доставка:</div>
                             <div>0 грн</div>
                         </div>
@@ -328,7 +348,7 @@ function Cart() {
                         </div>
                     </div>
 
-                    <button className="w-full border border-transparent hover:text-black hover:border-black hover:bg-white bg-black text-white px-[20px] py-[15px] mt-[30px] transition-all duration-300 cursor-pointer disabled:bg-gray-200 disabled:text-gray-400 disabled:border-0 disabled:cursor-not-allowed">
+                    <button className="flex justify-center gap-[10px] text-white bg-transparent px-[15px] py-[15px] rounded-xl font-bold border mt-[50px] border-white/15 cursor-pointer w-full disabled:cursor-not-allowed text-base">
                         Купити
                     </button>
                 </div>

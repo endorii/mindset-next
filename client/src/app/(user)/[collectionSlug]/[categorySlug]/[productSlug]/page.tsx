@@ -16,7 +16,6 @@ import {
     ILocalFavoriteItem,
 } from "@/types/favorite/favorite.types";
 import BasicInput from "@/components/ui/inputs/BasicInput";
-import { number } from "motion";
 
 export default function ProductPage() {
     const pathname = usePathname();
@@ -168,8 +167,8 @@ export default function ProductPage() {
     }
 
     return (
-        <div className="flex flex-col md:flex-row mt-[30px] gap-[50px] items-start">
-            <div className="flex gap-[10px] relative">
+        <div className="flex flex-col md:flex-row gap-[20px] items-start text-white min-h-[45vw]">
+            <div className="flex gap-[10px] relative rounded-xl bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px]">
                 <div className="relative">
                     <button
                         onClick={handleLikeToggle}
@@ -186,7 +185,7 @@ export default function ProductPage() {
                     <img
                         src={`http://localhost:5000/${product.banner}`}
                         alt={product.name}
-                        className="max-w-[600px]"
+                        className="max-w-[745px] rounded-xl"
                     />
                 </div>
                 <ul className="flex flex-col w-[150px] gap-[10px] overflow-y-auto max-h-[600px]">
@@ -195,124 +194,125 @@ export default function ProductPage() {
                             <img
                                 src={`http://localhost:5000/${image}`}
                                 alt={product.name}
-                                className="w-full h-auto"
+                                className="w-full h-auto rounded-xl"
                             />
                         </li>
                     ))}
                 </ul>
             </div>
 
-            <div className="flex flex-col gap-[15px] w-full">
-                <div className="flex justify-between">
-                    <h3 className="text-2xl font-bold">{product.name}</h3>
-                    <div className="text-3xl font-semibold text-gray-800">
-                        {product.price} грн.
+            <div className="flex flex-col gap-[5px] w-full ">
+                <div className="flex flex-col gap-[15px] rounded-xl bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px]">
+                    <div className="flex justify-between">
+                        <h3 className="text-5xl font-thin">{product.name}</h3>
+                        <div className="text-3xl font-semibold rounded-xl bg-white/5 shadow-lg backdrop-blur-lg border border-white/5 px-[20px] py-[15px]">
+                            {product.price} грн.
+                        </div>
+                    </div>
+                    <div className="text-sm text-gray-400">
+                        {product.category?.collection?.name} /{" "}
+                        {product.category?.name}
+                    </div>
+                    <div className="mt-[20px] text-gray-300">
+                        {product.description}
+                    </div>
+                    <hr className="w-full border-white/10 border-t" />
+                    <div className="text-gray-300">{product.composition}</div>
+                    <div
+                        className={`text-sm ${
+                            product.available
+                                ? "text-green-600"
+                                : "text-gray-500"
+                        }`}
+                    >
+                        {product.available
+                            ? "В наявності"
+                            : "Немає в наявності"}
+                    </div>
+                    {product.productColors.length > 0 && (
+                        <div className="flex flex-col gap-[10px] mt-[10px]">
+                            <div>Колір:</div>
+                            <ul className="flex gap-[10px]">
+                                {product.productColors.map((item, i) => (
+                                    <li
+                                        key={i}
+                                        className={`px-[15px] py-[8px] border border-white/10 rounded-xl hover:border-white/20 cursor-pointer ${
+                                            chosenColor === item.color.name
+                                                ? "bg-white text-black"
+                                                : "border-gray-200"
+                                        }`}
+                                        onClick={() =>
+                                            setChosenColor(item.color.name)
+                                        }
+                                    >
+                                        {item.color.name}
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
+                    )}
+                    {product.productTypes.length > 0 && (
+                        <div className="flex flex-col gap-[10px] mt-[10px]">
+                            <div>Тип:</div>
+                            <ul className="flex gap-[10px]">
+                                {product.productTypes.map((item, i) => (
+                                    <li
+                                        key={i}
+                                        className={`px-[15px] py-[8px] border border-white/10 rounded-xl hover:border-white/20 cursor-pointer ${
+                                            chosenType === item.type.name
+                                                ? "bg-white text-black"
+                                                : "border-gray-200"
+                                        } `}
+                                        onClick={() =>
+                                            setChosenType(item.type.name)
+                                        }
+                                    >
+                                        {item.type.name}
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
+                    )}
+                    {product.productSizes.length > 0 && (
+                        <div className="flex flex-col gap-[10px] mt-[10px]">
+                            <div>Розмір:</div>
+                            <ul className="flex gap-[10px]">
+                                {product.productSizes.map((item, i) => (
+                                    <li
+                                        key={i}
+                                        className={`px-[15px] py-[8px] border border-white/10 rounded-xl hover:border-white/20 cursor-pointer ${
+                                            chosenSize === item.size.name
+                                                ? "bg-white text-black"
+                                                : "border-gray-200"
+                                        }`}
+                                        onClick={() =>
+                                            setChosenSize(item.size.name)
+                                        }
+                                    >
+                                        {item.size.name}
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
+                    )}
+
+                    {/* зробити нормально */}
+
+                    <div className="relative flex flex-col gap-[4px] mt-[5px]">
+                        <label className="text-white">Кількість</label>
+                        <BasicInput
+                            type="number"
+                            value={quantity}
+                            onChangeValue={(e) =>
+                                setQuantity(checkQuantity(+e.target.value))
+                            }
+                        />
                     </div>
                 </div>
-
-                <div className="text-sm text-gray-500">
-                    {product.category?.collection?.name} /{" "}
-                    {product.category?.name}
-                </div>
-
-                <div className="mt-[20px] text-gray-700">
-                    {product.description}
-                </div>
-                <hr className="w-full border-gray-200" />
-                <div className="text-gray-600">{product.composition}</div>
-
-                <div
-                    className={`text-sm ${
-                        product.available ? "text-green-600" : "text-gray-500"
-                    }`}
-                >
-                    {product.available ? "В наявності" : "Немає в наявності"}
-                </div>
-
-                {product.productColors.length > 0 && (
-                    <div className="flex flex-col gap-[10px] mt-[10px]">
-                        <div>Колір:</div>
-                        <ul className="flex gap-[10px]">
-                            {product.productColors.map((item, i) => (
-                                <li
-                                    key={i}
-                                    className={`px-[15px] py-[8px] border ${
-                                        chosenColor === item.color.name
-                                            ? "border-black"
-                                            : "border-gray-200"
-                                    } hover:border-black cursor-pointer`}
-                                    onClick={() =>
-                                        setChosenColor(item.color.name)
-                                    }
-                                >
-                                    {item.color.name}
-                                </li>
-                            ))}
-                        </ul>
-                    </div>
-                )}
-
-                {product.productTypes.length > 0 && (
-                    <div className="flex flex-col gap-[10px] mt-[10px]">
-                        <div>Тип:</div>
-                        <ul className="flex gap-[10px]">
-                            {product.productTypes.map((item, i) => (
-                                <li
-                                    key={i}
-                                    className={`px-[15px] py-[8px] border ${
-                                        chosenType === item.type.name
-                                            ? "border-black"
-                                            : "border-gray-200"
-                                    } hover:border-black cursor-pointer`}
-                                    onClick={() =>
-                                        setChosenType(item.type.name)
-                                    }
-                                >
-                                    {item.type.name}
-                                </li>
-                            ))}
-                        </ul>
-                    </div>
-                )}
-
-                {product.productSizes.length > 0 && (
-                    <div className="flex flex-col gap-[10px] mt-[10px]">
-                        <div>Розмір:</div>
-                        <ul className="flex gap-[10px]">
-                            {product.productSizes.map((item, i) => (
-                                <li
-                                    key={i}
-                                    className={`px-[15px] py-[8px] border ${
-                                        chosenSize === item.size.name
-                                            ? "border-black"
-                                            : "border-gray-200"
-                                    } hover:border-black cursor-pointer`}
-                                    onClick={() =>
-                                        setChosenSize(item.size.name)
-                                    }
-                                >
-                                    {item.size.name}
-                                </li>
-                            ))}
-                        </ul>
-                    </div>
-                )}
-
-                <div className="relative flex flex-col gap-[4px]">
-                    <label className="text-gray-600">Кількість</label>
-                    <BasicInput
-                        type="number"
-                        value={quantity}
-                        onChangeValue={(e) =>
-                            setQuantity(checkQuantity(+e.target.value))
-                        }
-                    />
-                </div>
-
                 <div className="flex justify-between gap-[15px] mt-[30px]">
                     <button
                         disabled={!product.available}
-                        className="w-full border border-transparent hover:border-black hover:bg-white hover:text-black bg-black text-white px-[15px] py-[12px] transition-all duration-300 cursor-pointer disabled:bg-gray-200"
+                        className="w-full text-white bg-white/5 px-[15px] py-[15px] rounded-xl font-bold border border-white/15 cursor-pointer"
                     >
                         Купити
                     </button>
@@ -325,11 +325,7 @@ export default function ProductPage() {
                             !chosenType ||
                             quantity < 1
                         }
-                        className={`w-full border px-[15px] py-[12px] transition-all duration-300 cursor-pointer disabled:bg-gray-200 ${
-                            alreadyInCart
-                                ? "border-black hover:bg-black hover:text-white bg-white text-black"
-                                : "border-transparent hover:border-black hover:bg-white hover:text-black bg-black text-white"
-                        }`}
+                        className={`w-full text-white bg-white/5 px-[15px] py-[15px] rounded-xl font-bold border border-white/15 cursor-pointer `}
                     >
                         {alreadyInCart ? "Видалити з кошика" : "В кошик"}
                     </button>

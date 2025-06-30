@@ -19,41 +19,43 @@ export default function HomePage() {
     }
 
     return (
-        <>
-            <div>
-                <h3 className="mt-[30px] text-xl uppercase font-bold">
-                    Колекції
-                </h3>
-                {data?.length ? (
-                    <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 mt-[30px]">
-                        {data?.map((collection, i) => {
-                            return (
-                                <li key={i}>
-                                    <Link
-                                        href={`/${collection.path}`}
-                                        className="relative group"
-                                    >
-                                        <div
-                                            className="absolute top-0 left-0 bg-black text-white px-[25px] py-[15px] text-lg z-10 
-                        group-hover:bg-transparent group-hover:text-white group-hover:text-4xl
-                        group-hover:top-[50%] group-hover:left-[50%] group-hover:translate-x-[-50%] group-hover:translate-y-[-50%] transition-all ease-in-out duration-800"
-                                        >
+        <div className="relative min-h-[45vw]">
+            <h3 className="mt-[100px] text-xl font-bold text-center text-white text-[200px]">
+                Колекції
+            </h3>
+            {data?.length ? (
+                <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 mt-[80px] absolute top-0 left-[50%] translate-x-[-50%] w-full p-[100px] gap-[20px]">
+                    {data?.map((collection, i) => {
+                        return (
+                            <li
+                                key={i}
+                                className="rounded-xl bg-white/5 shadow-lg backdrop-blur-lg border border-white/5 p-[10px]"
+                            >
+                                <Link
+                                    href={`/${collection.path}`}
+                                    className="group flex flex-col"
+                                >
+                                    <div className="flex flex-col gap-[20px] p-[20px]">
+                                        <div className="text-white text-3xl font-thin">
                                             {collection.name}
                                         </div>
-                                        <img
-                                            src={`http://localhost:5000/${collection.banner}`}
-                                            alt={collection.name}
-                                            className="w-full h-[80vh] object-cover filter transition-all group-hover:brightness-50 duration-600"
-                                        />
-                                    </Link>
-                                </li>
-                            );
-                        })}
-                    </ul>
-                ) : (
-                    <p>Немає доступних колекцій.</p>
-                )}
-            </div>
-        </>
+                                        <button className="text-white bg-transparent px-[15px] py-[15px] rounded-xl font-bold border border-white/15 cursor-pointer">
+                                            Переглянути колекцію
+                                        </button>
+                                    </div>
+                                    <img
+                                        src={`http://localhost:5000/${collection.banner}`}
+                                        alt={collection.name}
+                                        className="w-full h-[350px] object-cover filter transition-all duration-600 rounded-xl"
+                                    />
+                                </Link>
+                            </li>
+                        );
+                    })}
+                </ul>
+            ) : (
+                <p>Немає доступних колекцій.</p>
+            )}
+        </div>
     );
 }
