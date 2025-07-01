@@ -29,8 +29,7 @@ export default function EditCategoryModal({
     const [path, setPath] = useState("");
     const [status, setStatus] = useState<TStatus>("INACTIVE");
     const [banner, setBanner] = useState<string | File>("");
-
-    const [preview, setPreview] = useState("");
+    const [preview, setPreview] = useState<string>("");
 
     const uploadImageMutation = useUploadImage();
     const editCategoryMutation = useEditCategory();
@@ -40,7 +39,8 @@ export default function EditCategoryModal({
             setName(category.name || "");
             setPath(category.path || "");
             setBanner(category.banner || "");
-            setStatus(category.status || "");
+            setStatus(category.status || "INACTIVE");
+            setPreview("");
         }
     }, [category]);
 
@@ -69,7 +69,7 @@ export default function EditCategoryModal({
 
             onClose();
         } catch (error) {
-            console.error("Помилка при редагуванні колекції:", error);
+            console.error("Помилка при редагуванні категорії:", error);
         }
     };
 
@@ -86,58 +86,69 @@ export default function EditCategoryModal({
     if (!isOpen || !category) return null;
 
     const bannerSrc =
-        typeof banner === "string" && banner.startsWith("/images/")
+        !preview && typeof banner === "string" && banner.startsWith("/images/")
             ? `http://localhost:5000${banner}`
             : "";
 
+    const displaySrc = preview || bannerSrc;
+
     const modalContent = (
         <div
-            className="fixed inset-0 bg-black/70 flex items-center products-center justify-center z-100 cursor-pointer"
+            className="fixed inset-0 bg-black/85 flex items-center justify-center z-100 cursor-pointer"
             onClick={onClose}
         >
             <div
-                className="bg-white p-[30px] h-auto max-h-[80vh] shadow-lg w-[54vw] overflow-y-auto cursor-default"
+                className="bg-black rounded-xl text-white bg-gradient-to-br from-black/0 to-white/5 border border-white/10 p-[30px] max-h-[80vh] shadow-lg w-[54vw] overflow-y-auto cursor-default"
                 onClick={(e) => e.stopPropagation()}
             >
-                <h2 className="text-lg font-bold mb-4">
+                <h2 className="text-3xl font-thin mb-6">
                     Редагування категорії: {category.name || "Без назви"}
                 </h2>
                 <form onSubmit={handleSubmit}>
                     <div className="flex flex-col gap-[20px]">
                         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-[20px]">
                             <InputField
-                                label={"Назва"}
+                                label="Назва"
                                 value={name}
                                 onChangeValue={(e) => setName(e.target.value)}
-                                id={"editCollectionName"}
-                                name={"editCollectionName"}
-                                placeholder={"Назва колекції"}
-                                type={"text"}
+                                id="editCategoryName"
+                                name="editCategoryName"
+                                placeholder="Назва категорії"
+                                type="text"
                             />
                             <InputField
-                                label={"Шлях"}
+                                label="Шлях"
                                 value={path}
-                                onChangeValue={(e) => setName(e.target.value)}
-                                id={"editCollectionPath"}
-                                name={"editCollectionPath"}
-                                placeholder={"Шлях"}
-                                type={"text"}
+                                onChangeValue={(e) => setPath(e.target.value)}
+                                id="editCategoryPath"
+                                name="editCategoryPath"
+                                placeholder="Шлях"
+                                type="text"
                             />
                             <div className="flex flex-col gap-[7px]">
-                                <label htmlFor="status">Статус</label>
+                                <label
+                                    htmlFor="status"
+                                    className="font-semibold text-sm"
+                                >
+                                    Статус
+                                </label>
                                 <select
                                     name="status"
-                                    className="border border-gray-200 rounded px-[10px] py-[7px] bg-gray-50 outline-0"
+                                    className="border border-white/10 rounded px-[10px] py-[10px] bg-black/20 text-white outline-0 cursor-pointer"
                                     value={status}
                                     onChange={(e) =>
                                         setStatus(e.target.value as TStatus)
                                     }
                                 >
-                                    <option value="" disabled>
+                                    <option
+                                        className="text-white bg-black"
+                                        disabled
+                                    >
                                         Оберіть статус
                                     </option>
                                     {statuses.map((statusOption) => (
                                         <option
+                                            className="text-white bg-black"
                                             key={statusOption}
                                             value={statusOption}
                                         >
@@ -148,23 +159,17 @@ export default function EditCategoryModal({
                             </div>
                         </div>
                         <div className="flex flex-col gap-[7px] w-full">
-                            <label htmlFor="banner">Банер</label>
+                            <label htmlFor="banner" className="font-semibold">
+                                Банер
+                            </label>
                             <label
                                 htmlFor="banner"
-                                className="min-h-[100px] max-w-[300px] border border-dashed border-gray-400 mt-2 flex collections-center justify-center cursor-pointer bg-gray-50 hover:bg-gray-100 rounded-md overflow-hidden"
+                                className="min-h-[100px] max-w-[300px] border border-dashed border-white/10 mt-2 flex items-center justify-center cursor-pointer bg-black/20 hover:bg-white/10 rounded-md overflow-hidden"
                             >
-                                {preview ? (
+                                {displaySrc ? (
                                     <Image
-                                        src={preview}
+                                        src={displaySrc}
                                         alt="preview"
-                                        width={250}
-                                        height={250}
-                                        className="object-cover"
-                                    />
-                                ) : bannerSrc ? (
-                                    <Image
-                                        src={bannerSrc}
-                                        alt="banner"
                                         width={250}
                                         height={250}
                                         className="object-cover"
@@ -186,15 +191,23 @@ export default function EditCategoryModal({
                         <div className="flex justify-end gap-4 mt-6">
                             <button
                                 onClick={onClose}
-                                className="px-[20px] py-[7px] border border-transparent bg-black text-white hover:bg-white hover:border-black hover:text-black cursor-pointer transition-all duration-200"
+                                className="flex gap-[15px] px-[25px] py-[13px] items-center cursor-pointer border border-white/10 rounded-xl hover:bg-white group transition-all duration-300 hover:text-black"
+                                type="button"
                             >
                                 Скасувати
                             </button>
                             <button
-                                onClick={handleSubmit}
-                                className="px-[20px] py-[7px] border border-transparent bg-black text-white hover:bg-white hover:border-black hover:text-black cursor-pointer transition-all duration-200"
+                                type="submit"
+                                className="flex gap-[15px] px-[25px] py-[13px] items-center cursor-pointer border border-white/10 rounded-xl hover:bg-white group transition-all duration-300 hover:text-black"
+                                disabled={
+                                    uploadImageMutation.isPending ||
+                                    editCategoryMutation.isPending
+                                }
                             >
-                                Підтвердити
+                                {uploadImageMutation.isPending ||
+                                editCategoryMutation.isPending
+                                    ? "Завантаження..."
+                                    : "Підтвердити"}
                             </button>
                         </div>
                     </div>

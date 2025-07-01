@@ -43,9 +43,9 @@ export default function ProductPage() {
     const deleteCartItem = useDeleteCartItemFromUser();
 
     useEffect(() => {
-        setChosenSize(product?.productSizes[0].size.name || "");
-        setChosenType(product?.productTypes[0].type.name || "");
-        setChosenColor(product?.productColors[0].color.name || "");
+        setChosenSize(product?.productSizes[0]?.size.name || "");
+        setChosenType(product?.productTypes[0]?.type.name || "");
+        setChosenColor(product?.productColors[0]?.color.name || "");
 
         if (!product) return;
 
@@ -222,7 +222,7 @@ export default function ProductPage() {
                         className={`text-sm ${
                             product.available
                                 ? "text-green-600"
-                                : "text-gray-500"
+                                : "text-red-500"
                         }`}
                     >
                         {product.available
@@ -325,7 +325,7 @@ export default function ProductPage() {
                             !chosenType ||
                             quantity < 1
                         }
-                        className={`w-full text-white bg-white/5 px-[15px] py-[15px] rounded-xl font-bold border border-white/15 cursor-pointer `}
+                        className={`w-full text-white bg-white/5 px-[15px] py-[15px] rounded-xl font-bold border border-white/15 cursor-pointer disabled:cursor-not-allowed`}
                     >
                         {alreadyInCart ? "Видалити з кошика" : "В кошик"}
                     </button>

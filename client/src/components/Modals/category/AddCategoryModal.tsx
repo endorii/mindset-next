@@ -73,8 +73,8 @@ export default function AddCategoryModal({
             await createCategoryMutation.mutateAsync({
                 collectionPath,
                 categoryData: {
-                    name,
-                    path,
+                    name: name.trim(),
+                    path: path.trim(),
                     banner: imagePath,
                     views: 0,
                     status,
@@ -96,50 +96,60 @@ export default function AddCategoryModal({
 
     const modalContent = (
         <div
-            className="fixed inset-0 bg-black/70 flex items-center products-center justify-center z-100 cursor-pointer"
+            className="fixed inset-0 bg-black/85 flex items-center justify-center z-100 cursor-pointer"
             onClick={onClose}
         >
             <div
-                className="bg-white p-[30px] h-auto max-h-[80vh] shadow-lg w-[54vw] overflow-y-auto cursor-default"
+                className="bg-black rounded-xl text-white bg-gradient-to-br from-black/0 to-white/5 border border-white/10 p-[30px] max-h-[80vh] shadow-lg w-[54vw] overflow-y-auto cursor-default"
                 onClick={(e) => e.stopPropagation()}
             >
-                <h2 className="text-lg font-bold mb-4">Додавання категорії</h2>
+                <h2 className="text-3xl font-thin mb-6">Додавання категорії</h2>
                 <form onSubmit={handleSubmit}>
                     <div className="flex flex-col gap-[20px]">
                         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-[20px]">
                             <InputField
-                                label={"Назва"}
+                                label="Назва"
                                 value={name}
                                 onChangeValue={(e) => setName(e.target.value)}
-                                id={"addCategoryName"}
-                                name={"addCategoryName"}
-                                placeholder={"Назва категорії"}
-                                type={"text"}
+                                id="addCategoryName"
+                                name="addCategoryName"
+                                placeholder="Назва категорії"
+                                type="text"
                             />
                             <InputField
-                                label={"Шлях"}
+                                label="Шлях"
                                 value={path}
                                 onChangeValue={(e) => setPath(e.target.value)}
-                                id={"addCategoryPath"}
-                                name={"addCategoryPath"}
-                                placeholder={"Шлях"}
-                                type={"text"}
+                                id="addCategoryPath"
+                                name="addCategoryPath"
+                                placeholder="Шлях"
+                                type="text"
                             />
                             <div className="flex flex-col gap-[7px]">
-                                <label htmlFor="status">Статус</label>
+                                <label
+                                    className="font-semibold text-sm"
+                                    htmlFor="status"
+                                >
+                                    Статус
+                                </label>
                                 <select
                                     name="status"
-                                    className="border border-gray-200 rounded px-[10px] py-[7px] bg-gray-50 outline-0"
+                                    className="border border-white/10 rounded p-[10px] outline-0 cursor-pointer"
                                     value={status ?? ""}
                                     onChange={(e) =>
                                         setStatus(e.target.value as TStatus)
                                     }
                                 >
-                                    <option value="" disabled>
+                                    <option
+                                        className="text-white bg-black"
+                                        value=""
+                                        disabled
+                                    >
                                         Оберіть статус
                                     </option>
                                     {statuses.map((statusOption) => (
                                         <option
+                                            className="text-white bg-black"
                                             key={statusOption}
                                             value={statusOption}
                                         >
@@ -152,13 +162,13 @@ export default function AddCategoryModal({
                         <div className="flex flex-col gap-[7px] w-full">
                             <label
                                 htmlFor="banner"
-                                className="text-sm font-semibold"
+                                className="text-sm font-semibold cursor-pointer"
                             >
                                 Банер
                             </label>
                             <label
                                 htmlFor="banner"
-                                className="min-h-[100px] max-w-[300px] border border-dashed border-gray-400 mt-2 flex items-center justify-center cursor-pointer bg-gray-50 hover:bg-gray-100 rounded-md overflow-hidden"
+                                className="min-h-[100px] max-w-[300px] border border-dashed border-white/20 mt-2 flex items-center justify-center cursor-pointer bg-black/10 hover:bg-black/20 rounded-xl overflow-hidden"
                             >
                                 {preview ? (
                                     <Image
@@ -169,7 +179,7 @@ export default function AddCategoryModal({
                                         className="object-cover"
                                     />
                                 ) : (
-                                    <span className="text-4xl text-gray-400">
+                                    <span className="text-5xl text-white">
                                         +
                                     </span>
                                 )}
@@ -184,25 +194,25 @@ export default function AddCategoryModal({
                         </div>
                     </div>
                     {message && <p className="mt-4 text-red-500">{message}</p>}
-                    <div className="flex justify-end gap-4 mt-4">
+                    <div className="flex justify-end gap-4 mt-6">
                         <button
                             type="button"
                             onClick={handleClose}
-                            className="px-[20px] py-[7px] border border-transparent bg-black text-white hover:bg-white hover:border-black hover:text-black cursor-pointer transition-all duration-200"
                             disabled={
                                 uploadImageMutation.isPending ||
                                 createCategoryMutation.isPending
                             }
+                            className="flex gap-[15px] px-[25px] py-[13px] items-center cursor-pointer border border-white/10 rounded-xl hover:bg-white group transition-all duration-300 hover:text-black disabled:opacity-50 disabled:cursor-not-allowed"
                         >
                             Скасувати
                         </button>
                         <button
                             type="submit"
-                            className="px-[20px] py-[7px] border border-transparent bg-black text-white hover:bg-white hover:border-black hover:text-black cursor-pointer transition-all duration-200"
                             disabled={
                                 uploadImageMutation.isPending ||
                                 createCategoryMutation.isPending
                             }
+                            className="flex gap-[15px] px-[25px] py-[13px] items-center cursor-pointer border border-white/10 rounded-xl hover:bg-white group transition-all duration-300 hover:text-black disabled:opacity-50 disabled:cursor-not-allowed"
                         >
                             {uploadImageMutation.isPending ||
                             createCategoryMutation.isPending
@@ -214,5 +224,6 @@ export default function AddCategoryModal({
             </div>
         </div>
     );
+
     return createPortal(modalContent, document.body);
 }

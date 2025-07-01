@@ -26,7 +26,9 @@ export default function DeleteCategoryModal({
 
     const handleDelete = async () => {
         try {
-            await deleteImage(category.banner);
+            if (category.banner) {
+                await deleteImage(category.banner);
+            }
             await deleteCategoryMutation.mutateAsync({
                 collectionPath,
                 categoryPath: category.path,
@@ -40,23 +42,24 @@ export default function DeleteCategoryModal({
 
     const modalContent = (
         <div
-            className="fixed inset-0 bg-black/70 flex items-center products-center justify-center z-100 cursor-pointer"
+            className="fixed inset-0 bg-black/85 flex items-center justify-center z-100 cursor-pointer"
             onClick={onClose}
         >
             <div
-                className="bg-white p-[30px] h-auto max-h-[80vh] shadow-lg w-[30vw] overflow-y-auto cursor-default"
+                className="bg-black rounded-xl text-white bg-gradient-to-br from-black/0 to-white/5 border border-white/10 p-[30px] max-h-[80vh] shadow-lg w-[30vw] overflow-y-auto cursor-default"
                 onClick={(e) => e.stopPropagation()}
             >
-                <h2 className="text-lg font-bold mb-4">
+                <h2 className="text-3xl font-thin mb-6">
                     Підтвердження видалення
                 </h2>
-                <p className="mb-6">
-                    Ви дійсно хочете видалити категорію {category?.name}?
+                <p className="mb-6 text-white">
+                    Ви дійсно хочете видалити категорію{" "}
+                    <strong>{category?.name || "Без назви"}</strong>?
                 </p>
                 <div className="flex justify-end gap-4">
                     <button
                         onClick={onClose}
-                        className="px-[20px] py-[7px] border border-transparent bg-black text-white hover:bg-white hover:border-black hover:text-black cursor-pointer transition-all duration-200"
+                        className="flex gap-[15px] px-[25px] py-[13px] items-center cursor-pointer border border-white/10 rounded-xl hover:bg-white group transition-all duration-300 hover:text-black"
                     >
                         Скасувати
                     </button>
@@ -65,7 +68,7 @@ export default function DeleteCategoryModal({
                             onClose();
                             handleDelete();
                         }}
-                        className="px-[20px] py-[7px] border border-transparent bg-black text-white hover:bg-white hover:border-black hover:text-black cursor-pointer transition-all duration-200"
+                        className="flex gap-[15px] px-[25px] py-[13px] items-center cursor-pointer border border-red-950 bg-red-900 rounded-xl hover:bg-red-700 group transition-all duration-300 hover:text-white"
                     >
                         Видалити
                     </button>
@@ -73,5 +76,6 @@ export default function DeleteCategoryModal({
             </div>
         </div>
     );
+
     return createPortal(modalContent, document.body);
 }

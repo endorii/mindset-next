@@ -28,9 +28,8 @@ export default function EditColorModal({
     const hexRegex = /^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/;
 
     const handleHexCodeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const inputValue = e.target.value;
+        const inputValue = e.target.value.trim();
         setHexCode(inputValue);
-
         setIsValidHex(hexRegex.test(inputValue));
     };
 
@@ -38,22 +37,30 @@ export default function EditColorModal({
         if (color) {
             setName(color.name || "");
             setHexCode(color.hexCode || "#");
+            setIsValidHex(color.hexCode ? hexRegex.test(color.hexCode) : false);
         }
     }, [color]);
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+
+        if (!isValidHex) {
+            alert("Введіть валідний HEX-код");
+            return;
+        }
+
+        if (!name.trim()) {
+            alert("Введіть назву кольору");
+            return;
+        }
+
         try {
             await editColorMutation.mutateAsync({
                 colorId: color.id,
-                data: {
-                    name,
-                    hexCode: hexCode,
-                },
+                data: { name: name.trim(), hexCode },
             });
 
             onClose();
-            console.log("Відправлено на редагування");
         } catch (error) {
             console.error("Помилка при редагуванні кольору:", error);
         }
@@ -65,58 +72,55 @@ export default function EditColorModal({
 
     const modalContent = (
         <div
-            className="fixed inset-0 bg-black/70 flex items-center products-center justify-center z-100 cursor-pointer"
+            className="fixed inset-0 bg-black/85 flex items-center justify-center z-100 cursor-pointer"
             onClick={onClose}
         >
             <div
-                className="bg-white p-[30px] h-auto max-h-[80vh] shadow-lg w-[34vw] overflow-y-auto cursor-default"
+                className="bg-black rounded-xl text-white bg-gradient-to-br from-black/0 to-white/5 border border-white/10 p-[30px] max-h-[80vh] shadow-lg w-[34vw] overflow-y-auto cursor-default"
                 onClick={(e) => e.stopPropagation()}
             >
-                <h2 className="text-lg font-bold mb-4">
+                <h2 className="text-3xl font-thin mb-6">
                     Редагування кольору: {color.name || "Без назви"}
                 </h2>
                 <form onSubmit={handleSubmit}>
                     <div className="flex flex-col gap-[20px]">
-                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-[20px]">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-[20px]">
                             <InputField
-                                label={"Назва"}
+                                label="Назва"
                                 value={name}
                                 onChangeValue={(e) => setName(e.target.value)}
-                                id={"name"}
-                                name={"name"}
-                                placeholder={"Назва кольору"}
-                                type={"text"}
+                                id="name"
+                                name="name"
+                                placeholder="Назва кольору"
+                                type="text"
                             />
                             <InputField
-                                label={"HEX-код"}
+                                label="HEX-код"
                                 value={hexCode}
                                 onChangeValue={handleHexCodeChange}
-                                id={"hex"}
-                                name={"hex"}
-                                placeholder={"#000000"}
-                                type={"text"}
-                                className={`border rounded px-[10px] py-[7px] bg-gray-50 outline-0 ${
-                                    isValidHex
-                                        ? "border-gray-200"
-                                        : "border-red-500"
+                                id="hex"
+                                name="hex"
+                                placeholder="#000000"
+                                type="text"
+                                className={`border border-white/10 rounded px-[10px] py-[7px] outline-0 ${
+                                    isValidHex ? "" : "border-red-500"
                                 }`}
                             />
                         </div>
                     </div>
-                    {/* {message && <p className="mt-4 text-red-500">{message}</p>} */}
                     <div className="flex justify-end gap-4 mt-6">
                         <button
                             type="button"
                             onClick={onClose}
-                            className="px-[20px] py-[7px] border border-transparent bg-black text-white hover:bg-white hover:border-black hover:text-black cursor-pointer transition-all duration-200"
                             disabled={editColorMutation.isPending}
+                            className="flex gap-[15px] px-[25px] py-[13px] items-center cursor-pointer border border-white/10 rounded-xl hover:bg-white group transition-all duration-300 hover:text-black disabled:opacity-50 disabled:cursor-not-allowed"
                         >
                             Скасувати
                         </button>
                         <button
                             type="submit"
-                            className="px-[20px] py-[7px] border border-transparent bg-black text-white hover:bg-white hover:border-black hover:text-black cursor-pointer transition-all duration-200"
                             disabled={editColorMutation.isPending}
+                            className="flex gap-[15px] px-[25px] py-[13px] items-center cursor-pointer border border-white/10 rounded-xl hover:bg-white group transition-all duration-300 hover:text-black disabled:opacity-50 disabled:cursor-not-allowed"
                         >
                             {editColorMutation.isPending
                                 ? "Завантаження..."

@@ -35,66 +35,65 @@ export default function CollectionInfoModal({
 
     const modalContent = (
         <div
-            className="fixed inset-0 bg-black/70 flex items-center products-center justify-center z-100 cursor-pointer"
+            className="fixed inset-0 bg-black/85 flex items-center justify-center z-100 cursor-pointer"
             onClick={onClose}
         >
-            <div
-                className="bg-white p-[30px] h-auto max-h-[80vh] shadow-lg w-[54vw] overflow-y-auto cursor-default"
-                onClick={(e) => e.stopPropagation()}
-            >
-                <h2 className="text-lg font-bold mb-5">
-                    Інформація про колекцію: {collection.name || "Без назви"}
-                </h2>
-
-                <div className="flex flex-col gap-[20px]">
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-[20px]">
-                        <InfoField label={"Назва"} value={name} />
-                        <InfoField label={"Шлях"} value={path} />
-                        <InfoField label={"Статус"} value={status} />
-                        <InfoField label={"Переглядів"} value={views} />
-                        <InfoField
-                            label="Створено"
-                            value={formatDate(createdAt)}
-                        />
-                        <InfoField
-                            label="Редаговано"
-                            value={formatDate(updatedAt)}
-                        />
-                        <InfoField
-                            label={"Кількість категорій"}
-                            value={categories.length}
-                        />
-                    </div>
-                    <div className="flex flex-col gap-[7px] w-full">
-                        <label
-                            htmlFor="bannerUrl"
-                            className="text-sm font-semibold"
-                        >
-                            Банер:
-                        </label>
-                        <div className="rounded">
-                            <Image
-                                className="max-h-[300px] object-contain rounded border border-gray-200 px-[10px] py-[7px] bg-gray-50"
-                                src={
-                                    banner
-                                        ? `http://localhost:5000/${banner}`
-                                        : "/placeholder.png"
-                                }
-                                alt={name || "Банер"}
-                                width={250}
-                                height={250}
+            <div className="bg-black">
+                <div
+                    className="rounded-xl text-white bg-gradient-to-br from-black/0 to-white/3 border border-white/10 p-[30px] h-auto max-h-[80vh] shadow-lg w-[54vw] overflow-y-auto cursor-default"
+                    onClick={(e) => e.stopPropagation()}
+                >
+                    <h2 className="text-3xl font-thin mb-4">
+                        Інформація про колекцію
+                    </h2>
+                    <hr className="border-t border-white/10 py-[10px]" />
+                    <div className="flex flex-col gap-[20px]">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-[20px]">
+                            <InfoField label={"Назва"} value={name} />
+                            <InfoField label={"Шлях"} value={path} />
+                            <InfoField label={"Статус"} value={status} />
+                            <InfoField label={"Переглядів"} value={views} />
+                            <InfoField
+                                label="Створено"
+                                value={formatDate(createdAt)}
+                            />
+                            <InfoField
+                                label="Редаговано"
+                                value={formatDate(updatedAt)}
+                            />
+                            <InfoField
+                                label={"Кількість категорій"}
+                                value={categories.length}
                             />
                         </div>
+                        <div className="flex flex-col gap-[7px] w-full">
+                            <label className="text-sm font-semibold">
+                                Банер:
+                            </label>
+                            <div className="min-h-[100px] max-w-[300px] border border-dashed border-white/10 mt-2 flex items-center justify-center rounded-md overflow-hidden">
+                                <Image
+                                    className="object-cover rounded"
+                                    src={
+                                        banner
+                                            ? `http://localhost:5000/${banner}`
+                                            : "/placeholder.png"
+                                    }
+                                    alt={name || "Банер"}
+                                    width={250}
+                                    height={250}
+                                />
+                            </div>
+                        </div>
                     </div>
-                </div>
 
-                <div className="flex justify-end mt-[20px]">
-                    <button
-                        onClick={onClose}
-                        className="px-[20px] py-[7px] border border-transparent bg-black text-white hover:bg-white hover:border-black hover:text-black cursor-pointer transition-all duration-200"
-                    >
-                        Закрити
-                    </button>
+                    <div className="flex justify-end mt-6">
+                        <button
+                            onClick={onClose}
+                            className="flex gap-[15px] px-[25px] py-[13px] items-center cursor-pointer border border-white/10 rounded-xl hover:bg-white group transition-all duration-300 hover:text-black"
+                        >
+                            Закрити
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>

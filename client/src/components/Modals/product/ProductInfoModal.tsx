@@ -48,69 +48,74 @@ export default function ProductInfoModal({
 
     const modalContent = (
         <div
-            className="fixed inset-0 bg-black/70 flex items-center products-center justify-center z-100 cursor-pointer"
+            className="fixed inset-0 bg-black/85 flex items-center justify-center z-100 cursor-pointer"
             onClick={onClose}
         >
             <div
-                className="bg-white p-[30px] h-auto max-h-[80vh] shadow-lg w-[54vw] overflow-y-auto cursor-default"
+                className="bg-black rounded-xl text-white bg-gradient-to-br from-black/0 to-white/5 border border-white/10 p-[30px] max-h-[80vh] shadow-lg w-[54vw] overflow-y-auto cursor-default"
                 onClick={(e) => e.stopPropagation()}
             >
-                <h2 className="text-lg font-bold mb-4">
-                    Інформація про товар: {product.name || "Без назви"}
+                <h2 className="text-2xl font-thin mb-6">
+                    Інформація про товар:{" "}
+                    <span className="font-semibold">{name || "Без назви"}</span>
                 </h2>
                 <div className="flex flex-col gap-[20px]">
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-[20px]">
-                        <InfoField label={"Назва"} value={name} />
-                        <InfoField label={"Шлях"} value={path} />
-                        <InfoField label={"Ціна"} value={price} />
+                        <InfoField label="Назва" value={name} />
+                        <InfoField label="Шлях" value={path} />
+                        <InfoField label="Ціна" value={price} />
                         <InfoField
-                            label={"Доступність"}
+                            label="Доступність"
                             value={available ? "Доступно" : "Не доступно"}
                         />
-                        <InfoField label={"Статус"} value={status} />
-                        <InfoField label={"Перегляди"} value={views} />
+                        <InfoField label="Статус" value={status} />
+                        <InfoField label="Перегляди" value={views} />
                         <InfoField
-                            label={"Cтворено"}
+                            label="Створено"
                             value={formatDate(createdAt)}
                         />
                         <InfoField
-                            label={"Редаговано"}
+                            label="Редаговано"
                             value={formatDate(updatedAt)}
                         />
                         <InfoField
-                            label={"Входить до колекції та категорії"}
-                            value={`${collectionPath}/${categoryPath}`}
+                            label="Входить до колекції та категорії"
+                            value={`${collectionPath || "-"} / ${
+                                categoryPath || "-"
+                            }`}
                         />
+
                         <div className="flex flex-col gap-[7px]">
-                            <label htmlFor="description">Опис</label>
-                            <div className="border break-all border-gray-200 rounded px-[10px] py-[7px] bg-gray-50 max-h-[130px] overflow-y-auto">
-                                {description}
-                            </div>
-                        </div>
-                        <div className="flex flex-col gap-[7px]">
-                            <label htmlFor="composition">Склад</label>
-                            <div className="border break-all border-gray-200 rounded px-[10px] py-[7px] bg-gray-50 max-h-[130px] overflow-y-auto">
-                                {composition}
+                            <label>Опис</label>
+                            <div className="border break-words border-white/20 rounded px-[10px] py-[7px] bg-black/10 max-h-[130px] overflow-y-auto">
+                                {description || "Не вказано"}
                             </div>
                         </div>
 
                         <div className="flex flex-col gap-[7px]">
-                            <label htmlFor="colors">Кольори</label>
-                            <div className="border border-gray-200 rounded px-[10px] py-[7px] bg-gray-50 flex flex-wrap gap-[10px]">
+                            <label>Склад</label>
+                            <div className="border break-words border-white/20 rounded px-[10px] py-[7px] bg-black/10 max-h-[130px] overflow-y-auto">
+                                {composition || "Не вказано"}
+                            </div>
+                        </div>
+
+                        <div className="flex flex-col gap-[7px]">
+                            <label>Кольори</label>
+                            <div className="border border-white/20 rounded px-[10px] py-[7px] bg-black/10 flex flex-wrap gap-[10px]">
                                 {productColors.length > 0
                                     ? productColors.map((item, i) => (
                                           <div
                                               key={i}
-                                              className="flex gap-[5px] items-center px-3 py-1 rounded-full text-sm border border-gray-300 bg-black text-white"
+                                              className="flex gap-[5px] items-center px-3 py-1 rounded-full text-sm border border-white/30 bg-black text-white"
                                           >
                                               <div>{item.color.name}</div>
                                               <div
-                                                  className="border border-gray-300 rounded-full w-[15px] h-[15px]"
+                                                  className="border border-white/30 rounded-full w-[15px] h-[15px]"
                                                   style={{
                                                       backgroundColor:
                                                           item.color.hexCode,
                                                   }}
-                                              ></div>
+                                              />
                                           </div>
                                       ))
                                     : "Не вказано"}
@@ -118,15 +123,15 @@ export default function ProductInfoModal({
                         </div>
 
                         <div className="flex flex-col gap-[7px]">
-                            <label htmlFor="sizes">Розміри</label>
-                            <div className="border border-gray-200 rounded px-[10px] py-[7px] bg-gray-50 flex flex-wrap gap-[10px]">
+                            <label>Розміри</label>
+                            <div className="border border-white/20 rounded px-[10px] py-[7px] bg-black/10 flex flex-wrap gap-[10px]">
                                 {productSizes.length > 0
                                     ? productSizes.map((item, i) => (
                                           <div
-                                              className="flex gap-[5px] items-center px-3 py-1 rounded-full text-sm border border-gray-300 bg-black text-white"
+                                              className="flex gap-[5px] items-center px-3 py-1 rounded-full text-sm border border-white/30 bg-black text-white"
                                               key={i}
                                           >
-                                              <div>{item.size.name}</div>
+                                              {item.size.name}
                                           </div>
                                       ))
                                     : "Не вказано"}
@@ -134,15 +139,15 @@ export default function ProductInfoModal({
                         </div>
 
                         <div className="flex flex-col gap-[7px]">
-                            <label htmlFor="types">Типи</label>
-                            <div className="border border-gray-200 rounded px-[10px] py-[7px] bg-gray-50 flex flex-wrap gap-[10px]">
+                            <label>Типи</label>
+                            <div className="border border-white/20 rounded px-[10px] py-[7px] bg-black/10 flex flex-wrap gap-[10px]">
                                 {productTypes.length > 0
                                     ? productTypes.map((item, i) => (
                                           <div
-                                              className="flex gap-[5px] items-center px-3 py-1 rounded-full text-sm border border-gray-300 bg-black text-white"
+                                              className="flex gap-[5px] items-center px-3 py-1 rounded-full text-sm border border-white/30 bg-black text-white"
                                               key={i}
                                           >
-                                              <div>{item.type.name}</div>
+                                              {item.type.name}
                                           </div>
                                       ))
                                     : "Не вказано"}
@@ -152,31 +157,41 @@ export default function ProductInfoModal({
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-[20px]">
                         <div className="flex flex-col gap-[7px] w-full">
-                            <label htmlFor="bannerUrl">Банер</label>
-                            <div className="border border-gray-200 rounded px-[10px] py-[7px] bg-gray-50">
-                                <img
-                                    className="max-h-[300px] object-contain "
-                                    src={
-                                        `http://localhost:5000${banner}` ||
-                                        "/placeholder.png"
-                                    }
-                                    alt={name || "Банер"}
-                                />
+                            <label>Банер</label>
+                            <div className="border border-white/20 rounded px-[10px] py-[7px] bg-black/10 flex justify-center">
+                                {banner ? (
+                                    <img
+                                        src={`http://localhost:5000${banner}`}
+                                        alt={name || "Банер"}
+                                        className="max-h-[300px] object-contain"
+                                    />
+                                ) : (
+                                    <div className="text-white opacity-50">
+                                        Немає банера
+                                    </div>
+                                )}
                             </div>
                         </div>
+
                         <div className="flex flex-col gap-[7px] w-full">
-                            <label htmlFor="views">Додаткові зображення</label>
-                            <div className="flex gap-[10px]">
-                                {images.map((image, i) => (
-                                    <Image
-                                        key={i}
-                                        src={`http://localhost:5000${image}`}
-                                        alt="banner"
-                                        width={250}
-                                        height={2500}
-                                        className="border border-gray-200 rounded px-[10px] py-[7px] bg-gray-50 object-cover"
-                                    />
-                                ))}
+                            <label>Додаткові зображення</label>
+                            <div className="flex gap-[10px] overflow-x-auto">
+                                {images.length > 0 ? (
+                                    images.map((image, i) => (
+                                        <Image
+                                            key={i}
+                                            src={`http://localhost:5000${image}`}
+                                            alt={`Зображення ${i + 1}`}
+                                            width={250}
+                                            height={250}
+                                            className="border border-white/20 rounded object-cover"
+                                        />
+                                    ))
+                                ) : (
+                                    <div className="text-white opacity-50">
+                                        Немає зображень
+                                    </div>
+                                )}
                             </div>
                         </div>
                     </div>
@@ -185,7 +200,7 @@ export default function ProductInfoModal({
                 <div className="flex justify-end gap-4 mt-6">
                     <button
                         onClick={onClose}
-                        className="px-[20px] py-[7px] border border-transparent bg-black text-white hover:bg-white hover:border-black hover:text-black cursor-pointer transition-all duration-200"
+                        className="flex gap-[15px] px-[25px] py-[13px] items-center cursor-pointer border border-white/10 rounded-xl hover:bg-white group transition-all duration-300 hover:text-black disabled:opacity-50 disabled:cursor-not-allowed"
                     >
                         Закрити
                     </button>
@@ -193,5 +208,6 @@ export default function ProductInfoModal({
             </div>
         </div>
     );
+
     return createPortal(modalContent, document.body);
 }

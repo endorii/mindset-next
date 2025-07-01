@@ -89,14 +89,15 @@ export default function AddCollectionModal({
 
     const modalContent = (
         <div
-            className="fixed inset-0 bg-black/70 flex items-center products-center justify-center z-100 cursor-pointer"
+            className="fixed inset-0 bg-black/85 flex items-center products-center justify-center z-100 cursor-pointer"
             onClick={onClose}
         >
             <div
-                className="bg-white p-[30px] h-auto max-h-[80vh] shadow-lg w-[54vw] overflow-y-auto cursor-default"
+                className="bg-black rounded-xl text-white bg-gradient-to-br from-black/0 to-white/3 border border-white/10 p-[30px] h-auto max-h-[80vh] shadow-lg w-[54vw] overflow-y-auto cursor-default"
                 onClick={(e) => e.stopPropagation()}
             >
-                <h2 className="text-lg font-bold mb-4">Додавання колекції</h2>
+                <h2 className="text-3xl font-thin mb-4">Додавання колекції</h2>
+                <hr className="border-t border-white/10 py-[10px]" />
                 <form onSubmit={handleSubmit}>
                     <div className="flex flex-col gap-[20px]">
                         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-[20px]">
@@ -119,10 +120,15 @@ export default function AddCollectionModal({
                                 type={"text"}
                             />
                             <div className="flex flex-col gap-[7px]">
-                                <label htmlFor="status">Статус</label>
+                                <label
+                                    className="text-sm font-semibold"
+                                    htmlFor="status"
+                                >
+                                    Статус
+                                </label>
                                 <select
                                     name="status"
-                                    className="border border-gray-200 rounded px-[10px] py-[7px] bg-gray-50 outline-0"
+                                    className="border border-white/10 rounded p-[10px] outline-0 cursor-pointer"
                                     value={status}
                                     onChange={(e) =>
                                         setStatus(e.target.value as TStatus)
@@ -151,7 +157,7 @@ export default function AddCollectionModal({
                             </label>
                             <label
                                 htmlFor="banner"
-                                className="min-h-[100px] max-w-[300px] border border-dashed border-gray-400 mt-2 flex items-center justify-center cursor-pointer bg-gray-50 hover:bg-gray-100 rounded-md overflow-hidden"
+                                className="min-h-[100px] max-w-[300px] border border-dashed border-white/10 mt-2 flex items-center justify-center cursor-pointer hover:bg-white/3 rounded-md overflow-hidden"
                             >
                                 {preview ? (
                                     <Image
@@ -181,7 +187,7 @@ export default function AddCollectionModal({
                         <button
                             type="button"
                             onClick={handleClose}
-                            className="px-[20px] py-[7px] border border-transparent bg-black text-white hover:bg-white hover:border-black hover:text-black cursor-pointer transition-all duration-200"
+                            className="flex gap-[15px] px-[25px] py-[13px] items-center cursor-pointer p-[10px] border border-white/10 rounded-xl hover:bg-white group transition-all duration-300 hover:text-black"
                             disabled={
                                 uploadImageMutation.isPending ||
                                 createCollectionMutation.isPending
@@ -191,7 +197,7 @@ export default function AddCollectionModal({
                         </button>
                         <button
                             type="submit"
-                            className="px-[20px] py-[7px] border border-transparent bg-black text-white hover:bg-white hover:border-black hover:text-black cursor-pointer transition-all duration-200"
+                            className="flex gap-[15px] px-[25px] py-[13px] items-center cursor-pointer p-[10px] border border-white/10 rounded-xl hover:bg-white group transition-all duration-300 hover:text-black"
                             disabled={
                                 uploadImageMutation.isPending ||
                                 createCollectionMutation.isPending
