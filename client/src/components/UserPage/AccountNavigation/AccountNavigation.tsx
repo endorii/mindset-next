@@ -1,5 +1,6 @@
 "use client";
 
+import AdminIcon from "@/components/Icons/AdminIcon";
 import CartIcon from "@/components/Icons/CartIcon";
 import CollectionsIcon from "@/components/Icons/CollectionsIcon";
 import HeartIcon from "@/components/Icons/HeartIcon";
@@ -84,17 +85,32 @@ function AccountNavigation({ children }: { children: React.ReactNode }) {
                         ))}
                     </div>
                 </div>
-                <div className="">
-                    <Link
-                        href="#"
-                        className="flex gap-[15px] px-[25px] py-[13px] items-center cursor-pointer p-[10px] border border-white/10 rounded-xl hover:bg-white group transition-all duration-300"
-                        onClick={() => logout()}
-                    >
-                        <LogoutIcon className="w-[25px] fill-white group-hover:fill-black" />
-                        <span className="transition-opacity duration-200 group-hover:text-black">
-                            Вийти
-                        </span>
-                    </Link>
+                <div className="flex flex-col gap-[15px]">
+                    {user?.role === "ADMIN" ? (
+                        <div>
+                            <Link
+                                href="/admin"
+                                className="flex gap-[15px] px-[25px] py-[13px] items-center cursor-pointer p-[10px] border border-white/10 rounded-xl hover:bg-white group transition-all duration-300"
+                            >
+                                <AdminIcon className="w-[25px] fill-white group-hover:fill-black" />
+                                <span className="transition-opacity duration-200 group-hover:text-black">
+                                    Адмін панель
+                                </span>
+                            </Link>
+                        </div>
+                    ) : null}
+                    <div>
+                        <Link
+                            href="#"
+                            className="flex gap-[15px] px-[25px] py-[13px] items-center cursor-pointer p-[10px] border border-white/10 rounded-xl hover:bg-white group transition-all duration-300"
+                            onClick={() => logout()}
+                        >
+                            <LogoutIcon className="w-[25px] fill-white group-hover:fill-black" />
+                            <span className="transition-opacity duration-200 group-hover:text-black">
+                                Вийти
+                            </span>
+                        </Link>
+                    </div>
                 </div>
             </div>
             <div className="w-full">{children}</div>

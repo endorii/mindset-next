@@ -44,14 +44,20 @@ function AdminNavigation({ children }: { children: React.ReactNode }) {
     ];
 
     return (
-        <div className="fixed pt-[75px] flex h-screen w-full z-[5]">
+        <div className="fixed pt-[90px] flex h-screen w-full z-[5] text-white">
             <div
-                className={`relative flex flex-col justify-between border-r border-gray-200 transition-all duration-300 ease-in-out ${
-                    navOpen ? "w-[300px]" : "w-[80px]"
+                className={`relative flex flex-col gap-[15px] transition-all duration-300 ease-in-out ${
+                    navOpen ? "w-[300px]" : "w-[100px]"
                 }`}
+                onMouseEnter={() => {
+                    setNavOpen(true);
+                }}
+                onMouseLeave={() => {
+                    setNavOpen(false);
+                }}
             >
                 <button
-                    className="absolute top-[10px] right-[20px] border border-transparent bg-black text-white p-[1px] hover:bg-white hover:border-black hover:text-black cursor-pointer transition-all duration-200 group"
+                    className="absolute top-[8px] right-0 flex gap-[15px] items-center cursor-pointer p-[7px] border border-white/10 rounded-xl hover:bg-white group transition-all duration-300"
                     onClick={() => setNavOpen(!navOpen)}
                 >
                     <BackIcon
@@ -61,51 +67,62 @@ function AdminNavigation({ children }: { children: React.ReactNode }) {
                     />
                 </button>
                 <div
-                    className={`flex flex-col gap-[25px] pt-[70px] ${
-                        navOpen ? "p-[30px]" : "p-[15px]"
-                    }`}
+                    className={`flex flex-col gap-[15px] mt-[50px] rounded-xl bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px]`}
                 >
                     {links.map(({ href, Icon, text }) => (
                         <Link
                             key={href}
                             href={href}
-                            className={`flex gap-[18px] items-center font-semibold group py-[5px] hover:bg-black hover:text-white transition-all duration-300 rounded ${
-                                navOpen
-                                    ? "px-[15px]"
-                                    : "px-[5px] justify-center"
+                            className={`flex gap-[15px] py-[13px] items-center cursor-pointer p-[10px] border border-white/10 rounded-xl hover:bg-white group transition-all duration-300 ${
+                                navOpen ? "px-[25px]" : "px-[10px]"
                             }`}
                         >
-                            <Icon className="w-[32px] group-hover:fill-white" />
-
-                            <span
-                                className={`transition-opacity duration-200 ${
-                                    navOpen
-                                        ? "opacity-100"
-                                        : "display-none opacity-0 w-0 hidden"
+                            <div
+                                className={`flex items-center justify-center gap-[20px] w-full ${
+                                    navOpen ? "justify-start" : "justify-center"
                                 }`}
                             >
-                                {text}
-                            </span>
+                                <Icon className="w-[32px] h-[32px] min-w-[32px] min-h-[32px] fill-white group-hover:fill-black " />
+
+                                <span
+                                    className={`group-hover:text-black transition-all duration-200 ${
+                                        navOpen
+                                            ? "opacity-100"
+                                            : "opacity-0 hidden"
+                                    }`}
+                                >
+                                    {text}
+                                </span>
+                            </div>
                         </Link>
                     ))}
                 </div>
-                <div className={`${navOpen ? "p-[30px]" : "p-[15px]"}`}>
+
+                <div
+                    className={`flex flex-col gap-[20px] rounded-xl bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px] ${
+                        navOpen ? "justify-start" : "justify-center"
+                    }`}
+                >
                     <Link
                         href="/"
-                        className={`mb-[50px] flex gap-[20px] group items-center font-semibold pb-[5px] py-[5px] hover:bg-black hover:text-white transition-all duration-300 rounded ${
-                            navOpen
-                                ? "px-[47px] pr-[30px]"
-                                : "px-[5px] justify-center"
+                        className={`flex gap-[15px] py-[13px] w-full items-center cursor-pointer  border border-white/10 rounded-xl hover:bg-white group transition-all duration-300 ${
+                            navOpen ? "px-[25px]" : "px-[5px]"
                         }`}
                     >
-                        <LogoutIcon className="w-[25px] group-hover:fill-white" />
-                        <span
-                            className={`transition-opacity duration-200 ${
-                                navOpen ? "opacity-100" : "opacity-0 w-0 hidden"
+                        <div
+                            className={`flex items-center gap-[20px] w-full ${
+                                navOpen ? "justify-start" : "justify-center"
                             }`}
                         >
-                            Вийти з панелі
-                        </span>
+                            <LogoutIcon className="w-[25px] h-[25px] min-w-[25px] min-h-[25px] fill-white group-hover:fill-black" />
+                            <span
+                                className={`group-hover:text-black transition-all duration-200 whitespace-nowrap ${
+                                    navOpen ? "opacity-100" : "opacity-0 hidden"
+                                }`}
+                            >
+                                Вийти з панелі
+                            </span>
+                        </div>
                     </Link>
                 </div>
             </div>

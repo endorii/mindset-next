@@ -39,7 +39,7 @@ export default function HomePage() {
                                         <div className="text-white text-3xl font-thin">
                                             {collection.name}
                                         </div>
-                                        <button className="p-[15px] text-white rounded-xl border border-white/10 hover:bg-black/50 transition-all duration-300 disabled:border-white/10">
+                                        <button className="p-[15px] text-white rounded-xl border border-white/10 hover:bg-black/50 transition-all duration-300 disabled:border-white/10 cursor-pointer">
                                             Переглянути колекцію
                                         </button>
                                     </div>

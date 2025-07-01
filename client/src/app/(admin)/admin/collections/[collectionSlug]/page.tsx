@@ -58,34 +58,20 @@ function AdminCollection() {
         );
 
     return (
-        <div className="">
-            <button
-                className="flex group gap-[7px] items-center mb-[30px] px-[15px] py-[8px] bg-black border border-transparent text-white hover:text-black hover:border-black hover:bg-white transition-all duration-200 cursor-pointer"
-                onClick={() => router.push("/admin/collections")}
-            >
-                <BackIcon className="w-[23px] stroke-white stroke-[50] group-hover:stroke-black" />
-                <div>Назад до колекцій</div>
-            </button>
-            <div className="text-2xl font-bold">
-                Список категорій: {data?.name}
-            </div>
-
-            <div className="flex mt-[30px] mb-[10px] items-center gap-[15px]">
-                <div className="font-semibold">Фільтрувати:</div>
-                <ul className="flex gap-[10px]">
-                    {filters.map((name, i) => (
-                        <li key={i}>
-                            <button className="bg-black text-white px-[15px] border py-[5px] border-transparent cursor-pointer hover:bg-white hover:text-black hover:border-black transition-all duration-200">
-                                {name}
-                            </button>
-                        </li>
-                    ))}
-                </ul>
-            </div>
-
-            <div className="flex justify-end">
+        <div className="flex flex-col gap-[15px]">
+            <div>
                 <button
-                    className="flex group items-center gap-[10px] mt-[20px] mb-[10px] px-[15px] py-[8px] bg-black border border-transparent text-white hover:text-black hover:border-black hover:bg-white transition-all duration-200 cursor-pointer"
+                    className="flex gap-[15px] px-[25px] py-[13px] items-center cursor-pointer p-[10px] border border-white/10 rounded-xl hover:bg-white group transition-all duration-300 hover:text-black"
+                    onClick={() => router.push("/admin/collections")}
+                >
+                    <BackIcon className="w-[23px] stroke-white stroke-[50] group-hover:stroke-black" />
+                    <div>Назад до колекцій</div>
+                </button>
+            </div>
+            <div className="flex gap-[15px] justify-between items-center rounded-xl bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px]">
+                <div className="text-2xl font-bold">Список колекцій:</div>
+                <button
+                    className="flex gap-[15px] px-[25px] py-[13px] items-center cursor-pointer p-[10px] border border-white/10 rounded-xl hover:bg-white group transition-all duration-300 hover:text-black"
                     onClick={() => openModal("add")}
                 >
                     <div>Додати категорію</div>
@@ -93,9 +79,22 @@ function AdminCollection() {
                 </button>
             </div>
 
+            <div className="flex items-center gap-[15px] rounded-xl bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px]">
+                <div className="font-semibold">Фільтрувати:</div>
+                <ul className="flex gap-[10px]">
+                    {filters.map((name, i) => (
+                        <li key={i}>
+                            <button className="border border-white/10 rounded-xl hover:bg-white hover:text-black transition-colors duration-300 px-4 py-2">
+                                {name}
+                            </button>
+                        </li>
+                    ))}
+                </ul>
+            </div>
+
             {categories.length > 0 ? (
-                <div className="mt-[10px]">
-                    <div className="grid grid-cols-[120px_0.7fr_150px_150px_1fr_230px] gap-[20px] bg-gray-100 p-4 rounded-t-lg font-semibold text-sm text-gray-700">
+                <div className="rounded-xl bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px]">
+                    <div className="grid grid-cols-[120px_0.7fr_150px_150px_1fr_230px] gap-[20px] p-4 rounded-t-lg font-semibold text-sm">
                         <div>Банер</div>
                         <div>Назва</div>
                         <div>Статус</div>
@@ -103,11 +102,11 @@ function AdminCollection() {
                         <div>Додано/оновлено</div>
                         <div className="text-right">Дії</div>
                     </div>
-                    <div className="border border-gray-200 rounded-b-lg">
+                    <div className="border border-white/10 rounded-xl">
                         {categories?.map((category) => (
                             <div
                                 key={category.id}
-                                className="grid grid-cols-[120px_0.7fr_150px_150px_1fr_230px] gap-[20px] p-4 border-gray-200 border-b last:border-b-0 hover:bg-gray-50 items-center"
+                                className="grid grid-cols-[120px_0.7fr_150px_150px_1fr_230px] gap-[20px] p-4 border-b border-white/10 last:border-b-0 items-center"
                             >
                                 <img
                                     src={`http://localhost:5000/${category.banner}`}
@@ -127,40 +126,40 @@ function AdminCollection() {
                                     {formatDate(category.createdAt)} /{" "}
                                     {formatDate(category.updatedAt)}
                                 </div>
-                                <div className="flex gap-[20px] justify-end">
+                                <div className="flex gap-[10px] justify-end">
                                     <Link
                                         href={`/admin/collections/${collectionPath}/${category.path}`}
                                     >
-                                        <button className="relative group hover:bg-black p-[5px] transition-all duration-200 cursor-pointer rounded">
-                                            <div className="absolute top-[-5px] right-[-5px] bg-white w-[20px] h-[20px] flex items-center justify-center text-[11px] font-bold rounded-[50%] border-2 border-black text-black pt-[1px]">
+                                        <button className="relative group border border-white/10 rounded-xl hover:bg-white hover:text-black transition-colors duration-300 px-3 py-2 cursor-pointer">
+                                            <div className="absolute top-[-5px] right-[-5px] bg-none w-[20px] h-[20px] flex items-center justify-center text-[11px] font-bold rounded-[50%] border-2 border-white text-white pt-[1px] z-[10] bg-black">
                                                 {category.products?.length || 0}
                                             </div>
-                                            <ProductsIcon className="w-[30px] stroke-black group-hover:fill-white" />
+                                            <ProductsIcon className="w-[30px] stroke-none fill-white group-hover:fill-black" />
                                         </button>
                                     </Link>
                                     <button
-                                        className="group hover:bg-black p-[5px] transition-all duration-200 cursor-pointer rounded"
+                                        className="group border border-white/10 rounded-xl hover:bg-white hover:text-black transition-colors duration-300 px-3 py-2 cursor-pointer"
                                         onClick={() =>
                                             openModal("info", category)
                                         }
                                     >
-                                        <InfoIcon className="w-[30px] stroke-black fill-none stroke-[2] group-hover:stroke-white" />
+                                        <InfoIcon className="w-[30px] fill-none stroke-white stroke-2  group-hover:stroke-black" />
                                     </button>
                                     <button
                                         onClick={() =>
                                             openModal("edit", category)
                                         }
-                                        className="group hover:bg-black p-[5px] transition-all duration-200 cursor-pointer rounded"
+                                        className="group border border-white/10 rounded-xl hover:bg-white hover:text-black transition-colors duration-300 px-3 py-2 cursor-pointer"
                                     >
-                                        <EditIcon className="w-[27px] fill-none stroke-black stroke-[2.3] group-hover:stroke-white" />
+                                        <EditIcon className="w-[26px] stroke-white stroke-2 group-hover:stroke-black fill-none" />
                                     </button>
                                     <button
                                         onClick={() =>
                                             openModal("delete", category)
                                         }
-                                        className="group hover:bg-black p-[5px] transition-all duration-200 cursor-pointer rounded"
+                                        className="group border border-white/10 rounded-xl hover:bg-white hover:text-black transition-colors duration-300 px-3 py-2 cursor-pointer"
                                     >
-                                        <TrashIcon className="w-[30px] fill-none stroke-black stroke-[2] group-hover:stroke-white" />
+                                        <TrashIcon className="w-[30px] stroke-white stroke-[1.7]  group-hover:stroke-black fill-none" />
                                     </button>
                                 </div>
                             </div>
