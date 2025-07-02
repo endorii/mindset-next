@@ -1,18 +1,20 @@
 "use client";
 
-import BackIcon from "@/components/Icons/BackIcon";
-import EditIcon from "@/components/Icons/EditIcon";
-import InfoIcon from "@/components/Icons/InfoIcon";
-import PlusIcon from "@/components/Icons/PlusIcon";
-import TrashIcon from "@/components/Icons/TrashIcon";
-import AddProductModal from "@/components/Modals/product/AddProductModal";
-import DeleteProductModal from "@/components/Modals/product/DeleteProductModal";
-import EditProductModal from "@/components/Modals/product/EditProductModal";
-import ProductInfoModal from "@/components/Modals/product/ProductInfoModal";
-import { formatDate } from "@/lib/helpers/formatDate";
-import { useCategory } from "@/lib/hooks/useCategories";
-import { IProduct } from "@/types/product/product.types";
-import { ModalType } from "@/types/types";
+import { useCategory } from "@/features/categories/hooks/useCategories";
+import AddProductModal from "@/features/products/modals/AddProductModal";
+import DeleteProductModal from "@/features/products/modals/DeleteProductModal";
+import EditProductModal from "@/features/products/modals/EditProductModal";
+import ProductInfoModal from "@/features/products/modals/ProductInfoModal";
+import { IProduct } from "@/features/products/types/products.types";
+import {
+    BackIcon,
+    PlusIcon,
+    InfoIcon,
+    EditIcon,
+    TrashIcon,
+} from "@/shared/icons";
+import { ModalType } from "@/shared/types/types";
+import { formatDate } from "@/shared/utils/formatDate";
 import { usePathname, useRouter } from "next/navigation";
 import React, { useState } from "react";
 

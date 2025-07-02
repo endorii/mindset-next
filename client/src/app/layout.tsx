@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import { Roboto } from "next/font/google";
 import "./globals.css";
-import { AuthProvider } from "@/components/AuthProvider";
-import { QueryProvider } from "@/components/QueryProvider";
+import { AuthProvider } from "@/shared/components/providers/AuthProvider";
+import { QueryProvider } from "@/shared/components/providers/QueryProvider";
 
 const roboto = Roboto({
     subsets: ["cyrillic"],

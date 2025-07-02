@@ -3,20 +3,22 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useRouter, usePathname } from "next/navigation";
-import { useCollection } from "@/lib/hooks/useCollections";
-import { formatDate } from "@/lib/helpers/formatDate";
-import ProductsIcon from "@/components/Icons/ProductsIcon";
-import EditIcon from "@/components/Icons/EditIcon";
-import InfoIcon from "@/components/Icons/InfoIcon";
-import PlusIcon from "@/components/Icons/PlusIcon";
-import TrashIcon from "@/components/Icons/TrashIcon";
-import AddCategoryModal from "@/components/Modals/category/AddCategoryModal";
-import EditCategoryModal from "@/components/Modals/category/EditCategoryModal";
-import DeleteCategoryModal from "@/components/Modals/category/DeleteCategoryModal";
-import { ModalType } from "@/types/types";
-import BackIcon from "@/components/Icons/BackIcon";
-import CategoryInfoModal from "@/components/Modals/category/CategoryInfoModal";
-import { ICategory } from "@/types/category/category.types";
+import { useCollection } from "@/features/collections/hooks/useCollections";
+import AddCategoryModal from "@/features/categories/modals/AddCategoryModal";
+import CategoryInfoModal from "@/features/categories/modals/CategoryInfoModal";
+import DeleteCategoryModal from "@/features/categories/modals/DeleteCategoryModal";
+import EditCategoryModal from "@/features/categories/modals/EditCategoryModal";
+import { ICategory } from "@/features/categories/types/categories.types";
+import {
+    BackIcon,
+    PlusIcon,
+    ProductsIcon,
+    InfoIcon,
+    EditIcon,
+    TrashIcon,
+} from "@/shared/icons";
+import { ModalType } from "@/shared/types/types";
+import { formatDate } from "@/shared/utils/formatDate";
 
 const filters = [
     "спочатку нові",

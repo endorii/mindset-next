@@ -1,18 +1,20 @@
 "use client";
 
-import CategoriesIcon from "@/components/Icons/CategoriesIcon";
-import EditIcon from "@/components/Icons/EditIcon";
-import InfoIcon from "@/components/Icons/InfoIcon";
-import PlusIcon from "@/components/Icons/PlusIcon";
-import TrashIcon from "@/components/Icons/TrashIcon";
-import AddCollectionModal from "@/components/Modals/collection/AddCollectionModal";
-import CollectionInfoModal from "@/components/Modals/collection/CollectionInfoModal";
-import DeleteCollectionModal from "@/components/Modals/collection/DeleteCollectionModal";
-import EditCollectionModal from "@/components/Modals/collection/EditCollectionModal";
-import { formatDate } from "@/lib/helpers/formatDate";
-import { useCollections } from "@/lib/hooks/useCollections";
-import { ICollection } from "@/types/collection/collection.types";
-import { ModalType } from "@/types/types";
+import { useCollections } from "@/features/collections/hooks/useCollections";
+import AddCollectionModal from "@/features/collections/modals/AddCollectionModal";
+import CollectionInfoModal from "@/features/collections/modals/CollectionInfoModal";
+import DeleteCollectionModal from "@/features/collections/modals/DeleteCollectionModal";
+import EditCollectionModal from "@/features/collections/modals/EditCollectionModal";
+import { ICollection } from "@/features/collections/types/collections.types";
+import {
+    CategoriesIcon,
+    EditIcon,
+    InfoIcon,
+    PlusIcon,
+    TrashIcon,
+} from "@/shared/icons";
+import { ModalType } from "@/shared/types/types";
+import { formatDate } from "@/shared/utils/formatDate";
 import Link from "next/link";
 import React, { useState } from "react";
 

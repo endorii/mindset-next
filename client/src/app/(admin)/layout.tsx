@@ -2,10 +2,10 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import AdminHeader from "@/components/AdminPage/Header/AdminHeader";
-import AdminNavigation from "@/components/AdminPage/Navigation/AdminNavigation";
-import { getCurrentUser } from "@/lib/api/auth.api";
-import { IUser } from "@/types/user/user.types";
+import AdminHeader from "@/features/admin/components/layout/AdminHeader";
+import AdminNavigation from "@/features/admin/components/layout/AdminNavigation";
+import { getCurrentUser } from "@/features/auth/api/auth.api";
+import { IUser } from "@/features/admin/user-info/types/user.types";
 
 export default function AdminLayout({
     children,

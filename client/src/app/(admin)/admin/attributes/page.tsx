@@ -1,26 +1,25 @@
 "use client";
 
-import PlusIcon from "@/components/Icons/PlusIcon";
-import EditIcon from "@/components/Icons/EditIcon";
-import TrashIcon from "@/components/Icons/TrashIcon";
-import { AttributeModalType, ModalType } from "@/types/types";
-import React, { useState } from "react";
-import { useColors } from "@/lib/hooks/useColors";
-import { useTypes } from "@/lib/hooks/useTypes";
-import { useSizes } from "@/lib/hooks/useSizes";
-import SearchIcon from "@/components/Icons/SearchIcon";
-import AddColorModal from "@/components/Modals/color/AddColorModal";
-import { IColor } from "@/types/color/color.types";
-import { ISize } from "@/types/size/size.types";
-import AddTypeModal from "@/components/Modals/type/AddTypeModal";
-import AddSizeModal from "@/components/Modals/size/AddSizeModal";
-import { IType } from "@/types/type/type.types";
-import DeleteColorModal from "@/components/Modals/color/DeleteColorModal";
-import DeleteTypeModal from "@/components/Modals/type/DeleteTypeModal";
-import DeleteSizeModal from "@/components/Modals/size/DeleteSizeModal";
-import EditColorModal from "@/components/Modals/color/EditColorModal";
-import EditSizeModal from "@/components/Modals/size/EditSizeModal";
-import EditTypeModal from "@/components/Modals/type/EditTypeModal";
+import {
+    AddColorModal,
+    AddSizeModal,
+    AddTypeModal,
+    DeleteColorModal,
+    DeleteSizeModal,
+    DeleteTypeModal,
+    EditColorModal,
+    EditSizeModal,
+    EditTypeModal,
+} from "@/features/admin";
+import { useColors } from "@/features/admin/attributes/product-colors/hooks/useColors";
+import { IColor } from "@/features/admin/attributes/product-colors/types/product-color.types";
+import { useSizes } from "@/features/admin/attributes/product-sizes/hooks/useSizes";
+import { ISize } from "@/features/admin/attributes/product-sizes/types/product-size.types";
+import { useTypes } from "@/features/admin/attributes/product-types/hooks/useTypes";
+import { IType } from "@/features/admin/attributes/product-types/types/product-type.types";
+import { EditIcon, PlusIcon, TrashIcon } from "@/shared/icons";
+import { AttributeModalType } from "@/shared/types/types";
+import { useState } from "react";
 
 function AdminAttributes() {
     const { data: colors } = useColors();
