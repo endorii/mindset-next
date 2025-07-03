@@ -1,12 +1,17 @@
 "use client";
 
 import { useCurrentUser } from "@/features/admin/user-info/hooks/useUsers";
-import FavoriteItemCard from "@/features/favorites/components/FavoriteItemCard";
+import FavoriteCard from "@/features/favorites/components/FavoriteCard";
 import { useDeleteFavorite } from "@/features/favorites/hooks/useFavorites";
 import {
     ILocalFavoriteItem,
     IFavoriteItem,
 } from "@/features/favorites/types/favorites.types";
+import {
+    getFavoritesFromStorage,
+    saveFavoritesToStorage,
+} from "@/features/favorites/utils/favorites.utils";
+import H3 from "@/shared/ui/text/H3";
 import React, { useState, useEffect } from "react";
 
 export const Favorites = () => {
@@ -15,23 +20,7 @@ export const Favorites = () => {
         []
     );
 
-    const getFavoritesFromStorage = (): ILocalFavoriteItem[] => {
-        try {
-            const favorites = localStorage.getItem("favorites");
-            return favorites ? JSON.parse(favorites) : [];
-        } catch (error) {
-            console.error("Помилка при читанні localStorage:", error);
-            return [];
-        }
-    };
-
-    const saveFavoritesToStorage = (favorites: ILocalFavoriteItem[]) => {
-        try {
-            localStorage.setItem("favorites", JSON.stringify(favorites));
-        } catch (error) {
-            console.error("Помилка при збереженні в localStorage:", error);
-        }
-    };
+    const deleteFavorite = useDeleteFavorite();
 
     const removeFromLocalStorage = (productId: string) => {
         const updatedFavorites = localFavorites.filter(
@@ -40,8 +29,6 @@ export const Favorites = () => {
         setLocalFavorites(updatedFavorites);
         saveFavoritesToStorage(updatedFavorites);
     };
-
-    const deleteFavorite = useDeleteFavorite();
 
     const removeFromServerFavorites = async (
         userId: string,
@@ -79,51 +66,48 @@ export const Favorites = () => {
         );
     }
 
-    if (!favoritesToShow || favoritesToShow.length === 0) {
-        return (
-            <div className="flex justify-center items-center">
-                <div className="text-white text-center mt-[150px] text-[24px] uppercase font-bold rounded-xl bg-white/5 shadow-lg backdrop-blur-lg border border-white/5 px-[30px] py-[15px]">
-                    {user
-                        ? "У вас поки немає вподобаних товарів"
-                        : "Вподобані товари відсутні"}
-                </div>
-            </div>
-        );
-    }
-
     return (
-        <div>
-            <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 w-full p-[30px] gap-[20px]">
-                {favoritesToShow.map((item, i) => {
-                    const isServer = !!user;
+        <div className="relative">
+            <H3>Вподобане</H3>
+            {favoritesToShow.length > 0 ? (
+                <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 w-full pt-[120px] p-[30px] gap-[20px]">
+                    {favoritesToShow.map((item, i) => {
+                        const isServer = !!user;
 
-                    const product = item.product;
-                    const id = item.productId;
+                        if (!item.product) return null;
 
-                    if (!product) return null;
+                        const handleRemove = () => {
+                            if (isServer) {
+                                removeFromServerFavorites(
+                                    user.id,
+                                    item.product.id
+                                );
+                            } else {
+                                removeFromLocalStorage(item.productId);
+                            }
+                        };
 
-                    const handleRemove = () => {
-                        if (isServer) {
-                            removeFromServerFavorites(user.id, item.product.id);
-                        } else {
-                            removeFromLocalStorage(id);
-                        }
-                    };
-
-                    return (
-                        <FavoriteItemCard
-                            key={`${isServer ? "server" : "local"}-${id}-${i}`}
-                            product={product}
-                            onRemove={handleRemove}
-                            color={item.color}
-                            type={item.type}
-                            size={item.size}
-                            index={i}
-                            id={id}
-                        />
-                    );
-                })}
-            </ul>
+                        return (
+                            <FavoriteCard
+                                key={`${item.productId}`}
+                                product={item.product}
+                                onRemove={handleRemove}
+                                color={item.color}
+                                type={item.type}
+                                size={item.size}
+                                index={i}
+                                id={item.productId}
+                            />
+                        );
+                    })}
+                </ul>
+            ) : (
+                <div className="flex justify-center items-center">
+                    <div className="text-white text-center mt-[230px] text-[24px] uppercase font-bold rounded-xl bg-white/5 shadow-lg backdrop-blur-lg border border-white/5 px-[30px] py-[15px]">
+                        У вас поки немає вподобаних товарів
+                    </div>
+                </div>
+            )}
         </div>
     );
 };

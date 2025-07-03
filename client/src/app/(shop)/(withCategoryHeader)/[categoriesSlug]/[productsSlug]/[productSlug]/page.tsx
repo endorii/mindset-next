@@ -175,10 +175,10 @@ export default function ProductPage() {
                 <div className="relative">
                     <button
                         onClick={handleLikeToggle}
-                        className="absolute top-1 right-1 m-[0_auto] text-xs flex justify-center items-center gap-[10px] p-[10px] transition-all duration-300 cursor-pointer w-[60px] h-[60px]"
+                        className="absolute group top-[10px] right-[10px] m-[0_auto] text-xs flex justify-center items-center gap-[10px] transition-all duration-300 cursor-pointer min-w-[60px] w-[60px] min-h-[60px] h-[60px] rounded-xl bg-black/30 hover:bg-black/40 shadow-lg backdrop-blur-[100px] border border-black/5 p-[10px]"
                     >
                         <HeartIcon
-                            className={`transition-all duration-300 ${
+                            className={`group-hover:fill-white transition-all duration-300 ${
                                 liked
                                     ? "w-[42px] stroke-white fill-white"
                                     : "w-[35px] stroke-white stroke-[1.5] fill-none"

@@ -39,7 +39,7 @@ const Footer = () => {
                             return (
                                 <li
                                     key={i}
-                                    className="border border-white/10 rounded-xl hover:bg-white hover:text-black transition-colors duration-300 mt-[10px] w-[100px]"
+                                    className="border border-white/10 bg-black/80 shadow-lg rounded-xl hover:bg-white hover:text-black transition-colors duration-300 mt-[10px] w-[100px]"
                                 >
                                     <Link
                                         href={`/${collection.path}`}

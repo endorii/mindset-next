@@ -48,7 +48,7 @@ function AccountNavigation({ children }: { children: React.ReactNode }) {
 
     return (
         <div className="flex gap-[20px] min-h-[63vh] p-[10px] py-[50px] text-white">
-            <div className=" border-r min-h-full w-full max-w-[450px] flex flex-col justify-between gap-[100px] rounded-xl bg-gradient-to-br from-white/10 to-white/3 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px]">
+            <div className="border-r min-h-full w-full max-w-[450px] flex flex-col justify-between gap-[100px] rounded-xl bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px]">
                 <div className="flex gap-[30px] flex-col">
                     <div className="flex gap-[30px] items-center">
                         <img

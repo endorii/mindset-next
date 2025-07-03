@@ -66,7 +66,7 @@ export default function CustomCursor() {
                 border: "none",
                 borderRadius: "50%",
                 backgroundColor: "rgba(255, 255, 255, 0.12)",
-                boxShadow: "0 0 200px 40px rgba(255, 255, 255, 1)",
+                boxShadow: "0 0 150px 30px rgba(255, 255, 255, 1)",
                 left: smoothMouse.x,
                 top: smoothMouse.y,
                 zIndex: "-1",

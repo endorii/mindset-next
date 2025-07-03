@@ -35,7 +35,7 @@ function Account() {
     return (
         <div>
             <div className="flex w-full justify-between gap-[20px]">
-                <div className="relative flex flex-col group gap-[10px] w-1/3 rounded-xl bg-gradient-to-br from-white/10 to-white/3 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px]">
+                <div className="relative flex flex-col group gap-[10px] w-1/3 rounded-xl bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px]">
                     <button
                         className="absolute top-0 right-0 flex h-full w-full items-center justify-center rounded-xl bg-black/80 uppercase text-2xl font-light opacity-0 group-hover:opacity-100 transition-all duration-400 cursor-pointer z-10"
                         onClick={() => openModal("editUserInfo")}
@@ -49,7 +49,7 @@ function Account() {
                         <li>{user?.phone}</li>
                     </ul>
                 </div>
-                <div className="relative flex flex-col group gap-[10px] w-1/3 rounded-xl bg-gradient-to-br from-white/10 to-white/3 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px]">
+                <div className="relative flex flex-col group gap-[10px] w-1/3 rounded-xl bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px]">
                     <button
                         className="absolute top-0 right-0 flex h-full w-full items-center justify-center rounded-xl bg-black/80 uppercase text-2xl font-light opacity-0 group-hover:opacity-100 transition-all duration-400 cursor-pointer z-10"
                         onClick={() => openModal("editUserAddress")}
@@ -83,7 +83,7 @@ function Account() {
                         )}
                     </div>
                 </div>
-                <div className="flex flex-col gap-[10px] w-1/3 rounded-xl bg-gradient-to-br from-white/10 to-white/3 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px]">
+                <div className="flex flex-col gap-[10px] w-1/3 rounded-xl bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px]">
                     <div className="font-bold">Доставка та оплата</div>
                     <div className="relative p-[30px] flex flex-col gap-[7px] h-full">
                         <div className="flex gap-[10px] items-center">

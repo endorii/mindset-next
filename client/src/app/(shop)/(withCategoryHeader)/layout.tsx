@@ -36,7 +36,7 @@ export default function CollectionsLayout({
                 />
             </div>
 
-            <div className="mt-[145px]">{children}</div>
+            <div>{children}</div>
         </>
     );
 }

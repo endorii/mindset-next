@@ -14,7 +14,7 @@ interface Props {
     type: string;
 }
 
-export default function FavoriteItemCard({
+export default function FavoriteCard({
     product,
     onRemove,
     index,
@@ -77,7 +77,7 @@ export default function FavoriteItemCard({
                         {color ? (
                             <div className="flex gap-[7px] items-center">
                                 <div className="text-sm">Колір: </div>
-                                <div className="text-sm rounded-xl bg-white/5 shadow-lg backdrop-blur-lg border border-white/5 px-[10px] py-[3px]">
+                                <div className="text-white rounded-xl bg-black/80 shadow-lg backdrop-blur-lg border border-white/5 px-[15px] py-[7px] text-sm">
                                     {color}
                                 </div>
                             </div>
@@ -85,7 +85,7 @@ export default function FavoriteItemCard({
                         {type ? (
                             <div className="flex gap-[7px] items-center">
                                 <div className="text-sm">Тип: </div>
-                                <div className="text-sm rounded-xl bg-white/5 shadow-lg backdrop-blur-lg border border-white/5 px-[10px] py-[3px]">
+                                <div className="text-white rounded-xl bg-black/80 shadow-lg backdrop-blur-lg border border-white/5 px-[15px] py-[7px] text-sm">
                                     {type}
                                 </div>
                             </div>
@@ -93,7 +93,7 @@ export default function FavoriteItemCard({
                         {size ? (
                             <div className="flex gap-[7px] items-center">
                                 <div className="text-sm">Розмір: </div>
-                                <div className="text-sm rounded-xl bg-white/5 shadow-lg backdrop-blur-lg border border-white/5 px-[10px] py-[3px]">
+                                <div className="text-white rounded-xl bg-black/80 shadow-lg backdrop-blur-lg border border-white/5 px-[15px] py-[7px] text-sm">
                                     {size}
                                 </div>
                             </div>
