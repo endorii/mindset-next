@@ -6,6 +6,7 @@ import { useEscapeKeyClose } from "@/shared/hooks/useEscapeKeyClose";
 import { IColor } from "../types/product-color.types";
 import { useState, useEffect } from "react";
 import { createPortal } from "react-dom";
+import MonoButton from "@/shared/ui/buttons/MonoButton";
 
 interface EditColorProps {
     isOpen: boolean;
@@ -109,23 +110,21 @@ export default function EditColorModal({
                         </div>
                     </div>
                     <div className="flex justify-end gap-4 mt-6">
-                        <button
+                        <MonoButton
                             type="button"
                             onClick={onClose}
                             disabled={editColorMutation.isPending}
-                            className="flex gap-[15px] px-[25px] py-[13px] items-center cursor-pointer border border-white/10 rounded-xl hover:bg-white group transition-all duration-300 hover:text-black disabled:opacity-50 disabled:cursor-not-allowed"
                         >
                             Скасувати
-                        </button>
-                        <button
+                        </MonoButton>
+                        <MonoButton
                             type="submit"
                             disabled={editColorMutation.isPending}
-                            className="flex gap-[15px] px-[25px] py-[13px] items-center cursor-pointer border border-white/10 rounded-xl hover:bg-white group transition-all duration-300 hover:text-black disabled:opacity-50 disabled:cursor-not-allowed"
                         >
                             {editColorMutation.isPending
                                 ? "Завантаження..."
                                 : "Підтвердити"}
-                        </button>
+                        </MonoButton>
                     </div>
                 </form>
             </div>

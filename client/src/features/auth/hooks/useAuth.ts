@@ -31,13 +31,13 @@ export function useAuth() {
         onSuccess: () => {
             queryClient.setQueryData(["currentUser"], null);
             queryClient.invalidateQueries({ queryKey: ["currentUser"] });
-            router.push("/login");
+            router.push("/auth");
         },
         onError: (error) => {
             console.error("Logout error:", error);
             queryClient.setQueryData(["currentUser"], null);
             queryClient.invalidateQueries({ queryKey: ["currentUser"] });
-            router.push("/login");
+            router.push("/auth");
         },
     });
 
@@ -47,7 +47,7 @@ export function useAuth() {
             console.error("Refresh token error:", error);
             queryClient.setQueryData(["currentUser"], null);
             queryClient.invalidateQueries({ queryKey: ["currentUser"] });
-            router.push("/login");
+            router.push("/auth");
         },
     });
 

@@ -6,6 +6,7 @@ import { useState, useEffect } from "react";
 import { createPortal } from "react-dom";
 import { useEditSize } from "../hooks/useSizes";
 import { ISize } from "../types/product-size.types";
+import MonoButton from "@/shared/ui/buttons/MonoButton";
 
 interface EditSizeProps {
     isOpen: boolean;
@@ -76,23 +77,21 @@ export default function EditSizeModal({
                     </div>
                     {/* {message && <p className="mt-4 text-red-500">{message}</p>} */}
                     <div className="flex justify-end gap-4 mt-6">
-                        <button
+                        <MonoButton
                             type="button"
                             onClick={onClose}
-                            className="px-[20px] py-[7px] border border-transparent bg-black text-white hover:bg-white hover:border-black hover:text-black cursor-pointer transition-all duration-200"
                             disabled={editSizeMutation.isPending}
                         >
                             Скасувати
-                        </button>
-                        <button
+                        </MonoButton>
+                        <MonoButton
                             type="submit"
-                            className="px-[20px] py-[7px] border border-transparent bg-black text-white hover:bg-white hover:border-black hover:text-black cursor-pointer transition-all duration-200"
                             disabled={editSizeMutation.isPending}
                         >
                             {editSizeMutation.isPending
                                 ? "Завантаження..."
                                 : "Підтвердити"}
-                        </button>
+                        </MonoButton>
                     </div>
                 </form>
             </div>

@@ -24,7 +24,7 @@ const InputField: React.FC<InputFieldProps> = ({
     disabled,
     required,
     type = "text",
-    className = "border border-white/5 rounded px-[10px] py-[8px] bg-white/5 outline-0  transition-colors duration-200",
+    className = "border border-white/10 rounded px-[10px] py-[8px] outline-0  transition-colors duration-200 bg-black/10 text-white",
     children,
 }) => (
     <>

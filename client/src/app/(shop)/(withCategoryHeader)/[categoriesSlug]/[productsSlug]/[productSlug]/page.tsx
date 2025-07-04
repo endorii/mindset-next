@@ -19,6 +19,8 @@ import { HeartIcon } from "@/shared/icons";
 import BasicInput from "@/shared/ui/inputs/BasicInput";
 import { usePathname } from "next/navigation";
 import { useState, useEffect } from "react";
+import MonoButton from "@/shared/ui/buttons/MonoButton";
+import DeleteButton from "@/shared/ui/buttons/DeleteButton";
 
 export default function ProductPage() {
     const pathname = usePathname();
@@ -204,7 +206,7 @@ export default function ProductPage() {
                 </ul>
             </div>
 
-            <div className="flex flex-col gap-[5px] w-full ">
+            <div className="flex flex-col gap-[15px] w-full h-full">
                 <div className="flex flex-col gap-[15px] rounded-xl bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px]">
                     <div className="flex justify-between">
                         <h3 className="text-5xl font-thin">{product.name}</h3>
@@ -312,14 +314,11 @@ export default function ProductPage() {
                         />
                     </div>
                 </div>
-                <div className="flex justify-between gap-[15px] mt-[30px]">
-                    <button
-                        disabled={!product.available}
-                        className="w-full text-white bg-white/5 px-[15px] py-[15px] rounded-xl font-bold border border-white/15 cursor-pointer"
-                    >
+                <div className="flex justify-between gap-[15px] rounded-xl bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[10px]">
+                    <MonoButton disabled={!product.available}>
                         Купити
-                    </button>
-                    <button
+                    </MonoButton>
+                    <MonoButton
                         onClick={handleCartToggle}
                         disabled={
                             !product.available ||
@@ -328,10 +327,9 @@ export default function ProductPage() {
                             !chosenType ||
                             quantity < 1
                         }
-                        className={`w-full text-white bg-white/5 px-[15px] py-[15px] rounded-xl font-bold border border-white/15 cursor-pointer disabled:cursor-not-allowed`}
                     >
                         {alreadyInCart ? "Видалити з кошика" : "В кошик"}
-                    </button>
+                    </MonoButton>
                 </div>
             </div>
         </div>

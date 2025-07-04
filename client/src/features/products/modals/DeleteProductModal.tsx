@@ -7,6 +7,8 @@ import { useEscapeKeyClose } from "@/shared/hooks/useEscapeKeyClose";
 import { createPortal } from "react-dom";
 import { useDeleteProduct } from "../hooks/useProducts";
 import { IProduct } from "../types/products.types";
+import MonoButton from "@/shared/ui/buttons/MonoButton";
+import DeleteButton from "@/shared/ui/buttons/DeleteButton";
 
 interface DeleteProductModalProps {
     isOpen: boolean;
@@ -61,20 +63,10 @@ export default function DeleteProductModal({
                     <span className="font-semibold">{product?.name}</span>?
                 </p>
                 <div className="flex justify-end gap-4">
-                    <button
-                        type="button"
-                        onClick={onClose}
-                        className="flex gap-[15px] px-[25px] py-[13px] items-center cursor-pointer border border-white/10 rounded-xl hover:bg-white hover:text-black transition-all duration-300"
-                    >
+                    <MonoButton type="button" onClick={onClose}>
                         Скасувати
-                    </button>
-                    <button
-                        type="button"
-                        onClick={handleDelete}
-                        className="flex gap-[15px] px-[25px] py-[13px] items-center cursor-pointer border border-white/10 rounded-xl bg-red-600 hover:bg-red-700 text-white transition-all duration-300"
-                    >
-                        Видалити
-                    </button>
+                    </MonoButton>
+                    <DeleteButton onClick={handleDelete}>Видалити</DeleteButton>
                 </div>
             </div>
         </div>

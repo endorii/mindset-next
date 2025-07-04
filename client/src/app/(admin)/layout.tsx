@@ -30,7 +30,7 @@ export default function AdminLayout({
                     router.push("/");
                 }
             } catch (error) {
-                router.push("/login");
+                router.push("/auth");
                 console.error("Error checking admin access:", error);
             } finally {
                 setLoading(false);

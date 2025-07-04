@@ -6,6 +6,7 @@ import { formatDate } from "@/shared/utils/formatDate";
 import { createPortal } from "react-dom";
 import { ICollection } from "../types/collections.types";
 import Image from "next/image";
+import MonoButton from "@/shared/ui/buttons/MonoButton";
 
 export interface CollectionInfoModalProps {
     isOpen: boolean;
@@ -87,12 +88,7 @@ export default function CollectionInfoModal({
                     </div>
 
                     <div className="flex justify-end mt-6">
-                        <button
-                            onClick={onClose}
-                            className="flex gap-[15px] px-[25px] py-[13px] items-center cursor-pointer border border-white/10 rounded-xl hover:bg-white group transition-all duration-300 hover:text-black"
-                        >
-                            Закрити
-                        </button>
+                        <MonoButton onClick={onClose}>Закрити</MonoButton>
                     </div>
                 </div>
             </div>

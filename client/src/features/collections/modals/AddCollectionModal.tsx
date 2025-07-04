@@ -9,6 +9,7 @@ import { useState } from "react";
 import { createPortal } from "react-dom";
 import { useCreateCollection } from "../hooks/useCollections";
 import Image from "next/image";
+import MonoButton from "@/shared/ui/buttons/MonoButton";
 
 interface AddCollectionModalProps {
     isOpen: boolean;
@@ -184,20 +185,18 @@ export default function AddCollectionModal({
                     </div>
                     {message && <p className="mt-4 text-red-500">{message}</p>}
                     <div className="flex justify-end gap-4 mt-6">
-                        <button
+                        <MonoButton
                             type="button"
                             onClick={handleClose}
-                            className="flex gap-[15px] px-[25px] py-[13px] items-center cursor-pointer p-[10px] border border-white/10 rounded-xl hover:bg-white group transition-all duration-300 hover:text-black"
                             disabled={
                                 uploadImageMutation.isPending ||
                                 createCollectionMutation.isPending
                             }
                         >
                             Скасувати
-                        </button>
-                        <button
+                        </MonoButton>
+                        <MonoButton
                             type="submit"
-                            className="flex gap-[15px] px-[25px] py-[13px] items-center cursor-pointer p-[10px] border border-white/10 rounded-xl hover:bg-white group transition-all duration-300 hover:text-black"
                             disabled={
                                 uploadImageMutation.isPending ||
                                 createCollectionMutation.isPending
@@ -207,7 +206,7 @@ export default function AddCollectionModal({
                             createCollectionMutation.isPending
                                 ? "Завантаження..."
                                 : "Додати"}
-                        </button>
+                        </MonoButton>
                     </div>
                 </form>
             </div>

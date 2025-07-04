@@ -8,6 +8,7 @@ import {
 import { useCurrentUser } from "@/features/admin/user-info/hooks/useUsers";
 import { EditIcon } from "@/shared/icons";
 import { AttributeModalType } from "@/shared/types/types";
+import MonoButton from "@/shared/ui/buttons/MonoButton";
 import { useState } from "react";
 
 function Account() {
@@ -74,12 +75,11 @@ function Account() {
                                 <div>{user?.shippingAddress?.postalCode}</div>{" "}
                             </>
                         ) : (
-                            <button
-                                className="px-[20px] py-[7px] border border-transparent bg-black text-white hover:bg-white hover:border-black hover:text-black cursor-pointer transition-all duration-200"
+                            <MonoButton
                                 onClick={() => openModal("addUserAddress")}
                             >
                                 Додати адресу
-                            </button>
+                            </MonoButton>
                         )}
                     </div>
                 </div>

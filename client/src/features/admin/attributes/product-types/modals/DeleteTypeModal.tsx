@@ -4,6 +4,8 @@ import { useEscapeKeyClose } from "@/shared/hooks/useEscapeKeyClose";
 import { useDeleteType } from "../hooks/useTypes";
 import { IType } from "../types/product-type.types";
 import { createPortal } from "react-dom";
+import MonoButton from "@/shared/ui/buttons/MonoButton";
+import DeleteButton from "@/shared/ui/buttons/DeleteButton";
 
 interface DeleteTypeModalProps {
     isOpen: boolean;
@@ -46,21 +48,15 @@ export default function DeleteTypeModal({
                     Ви дійсно хочете видалити тип {type?.name}?
                 </p>
                 <div className="flex justify-end gap-4">
-                    <button
-                        onClick={onClose}
-                        className="px-[20px] py-[7px] border border-transparent bg-black text-white hover:bg-white hover:border-black hover:text-black cursor-pointer transition-all duration-200"
-                    >
-                        Скасувати
-                    </button>
-                    <button
+                    <MonoButton onClick={onClose}>Скасувати</MonoButton>
+                    <DeleteButton
                         onClick={async () => {
                             onClose();
                             handleDelete();
                         }}
-                        className="px-[20px] py-[7px] border border-transparent bg-black text-white hover:bg-white hover:border-black hover:text-black cursor-pointer transition-all duration-200"
                     >
                         Видалити
-                    </button>
+                    </DeleteButton>
                 </div>
             </div>
         </div>

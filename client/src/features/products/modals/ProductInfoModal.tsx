@@ -8,6 +8,7 @@ import { formatDate } from "@/shared/utils/formatDate";
 import Image from "next/image";
 import { createPortal } from "react-dom";
 import { IProduct } from "../types/products.types";
+import MonoButton from "@/shared/ui/buttons/MonoButton";
 
 export interface ProductInfoModalProps {
     isOpen: boolean;
@@ -198,12 +199,7 @@ export default function ProductInfoModal({
                 </div>
 
                 <div className="flex justify-end gap-4 mt-6">
-                    <button
-                        onClick={onClose}
-                        className="flex gap-[15px] px-[25px] py-[13px] items-center cursor-pointer border border-white/10 rounded-xl hover:bg-white group transition-all duration-300 hover:text-black disabled:opacity-50 disabled:cursor-not-allowed"
-                    >
-                        Закрити
-                    </button>
+                    <MonoButton onClick={onClose}>Закрити</MonoButton>
                 </div>
             </div>
         </div>

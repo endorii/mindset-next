@@ -9,6 +9,7 @@ import {
     CreateUserDto,
 } from "@/features/auth/types/auth.types";
 import InputField from "@/shared/ui/inputs/InputField";
+import MonoButton from "@/shared/ui/buttons/MonoButton";
 
 const Login = () => {
     const router = useRouter();
@@ -193,13 +194,12 @@ const Login = () => {
                         </p>
                     )}
 
-                    <button
+                    <MonoButton
                         type="submit"
-                        className="p-[15px] rounded-xl border border-white/10 hover:bg-black/50 transition-all duration-300 disabled:border-white/10 cursor-pointer disabled:cursor-not-allowed"
                         disabled={!loginEmail || !loginPassword || isLoading}
                     >
                         {isLoading ? "Завантаження..." : "Увійти"}
-                    </button>
+                    </MonoButton>
                 </form>
             </div>
 
@@ -299,8 +299,7 @@ const Login = () => {
                         </p>
                     )}
 
-                    <button
-                        className="p-[15px] rounded-xl border border-white/10 hover:bg-black/50 transition-all duration-300 disabled:border-white/10 cursor-pointer disabled:cursor-not-allowed"
+                    <MonoButton
                         type="submit"
                         disabled={
                             !registerUsername ||
@@ -311,7 +310,7 @@ const Login = () => {
                         }
                     >
                         {isLoading ? "Завантаження..." : "Зареєструватися"}
-                    </button>
+                    </MonoButton>
                 </form>
             </div>
         </div>

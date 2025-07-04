@@ -6,6 +6,7 @@ import { useEditUser } from "../hooks/useUsers";
 import { IUser } from "../types/user.types";
 import { useState, useEffect } from "react";
 import { createPortal } from "react-dom";
+import MonoButton from "@/shared/ui/buttons/MonoButton";
 
 interface EditUserInfoModalProps {
     isOpen: boolean;
@@ -108,18 +109,8 @@ export default function EditUserInfoModal({
                         </div>
                     </div>
                     <div className="flex justify-end gap-4 mt-6">
-                        <button
-                            onClick={onClose}
-                            className="flex gap-[15px] px-[25px] py-[13px] items-center cursor-pointer p-[10px] border border-white/10 rounded-xl hover:bg-white hover:text-black transition-all duration-300"
-                        >
-                            Скасувати
-                        </button>
-                        <button
-                            onClick={handleSubmit}
-                            className="flex gap-[15px] px-[25px] py-[13px] items-center cursor-pointer p-[10px] border border-white/10 rounded-xl hover:bg-white hover:text-black transition-all duration-300"
-                        >
-                            Підтвердити
-                        </button>
+                        <MonoButton onClick={onClose}>Скасувати</MonoButton>
+                        <MonoButton type="submit">Підтвердити</MonoButton>
                     </div>
                 </form>
             </div>

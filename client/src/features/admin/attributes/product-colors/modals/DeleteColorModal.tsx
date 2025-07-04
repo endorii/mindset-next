@@ -4,6 +4,8 @@ import { useDeleteColor } from "../hooks/useColors";
 import { useEscapeKeyClose } from "@/shared/hooks/useEscapeKeyClose";
 import { IColor } from "../types/product-color.types";
 import { createPortal } from "react-dom";
+import MonoButton from "@/shared/ui/buttons/MonoButton";
+import DeleteButton from "@/shared/ui/buttons/DeleteButton";
 
 interface DeleteColorModalProps {
     isOpen: boolean;
@@ -47,25 +49,23 @@ export default function DeleteColorModal({
                     <span className="font-semibold">{color.name}</span>?
                 </p>
                 <div className="flex justify-end gap-4">
-                    <button
+                    <MonoButton
                         onClick={onClose}
                         disabled={deleteColorMutation.isPending}
-                        className="px-[20px] py-[7px] border border-white/10 rounded-xl hover:bg-white hover:text-black hover:border-black cursor-pointer transition-all duration-300"
                     >
                         Скасувати
-                    </button>
-                    <button
+                    </MonoButton>
+                    <DeleteButton
                         onClick={() => {
                             handleDelete();
                             onClose();
                         }}
                         disabled={deleteColorMutation.isPending}
-                        className="flex gap-[15px] px-[25px] py-[13px] items-center cursor-pointer border border-red-950 bg-red-900 rounded-xl hover:bg-red-700 group transition-all duration-300 hover:text-white"
                     >
                         {deleteColorMutation.isPending
                             ? "Видалення..."
                             : "Видалити"}
-                    </button>
+                    </DeleteButton>
                 </div>
             </div>
         </div>

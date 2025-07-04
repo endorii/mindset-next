@@ -6,6 +6,8 @@ import { useEscapeKeyClose } from "@/shared/hooks/useEscapeKeyClose";
 import { createPortal } from "react-dom";
 import { useDeleteCategory } from "../hooks/useCategories";
 import { ICategory } from "../types/categories.types";
+import MonoButton from "@/shared/ui/buttons/MonoButton";
+import DeleteButton from "@/shared/ui/buttons/DeleteButton";
 
 interface DeleteCategoryModalProps {
     isOpen: boolean;
@@ -57,21 +59,15 @@ export default function DeleteCategoryModal({
                     <strong>{category?.name || "Без назви"}</strong>?
                 </p>
                 <div className="flex justify-end gap-4">
-                    <button
-                        onClick={onClose}
-                        className="flex gap-[15px] px-[25px] py-[13px] items-center cursor-pointer border border-white/10 rounded-xl hover:bg-white group transition-all duration-300 hover:text-black"
-                    >
-                        Скасувати
-                    </button>
-                    <button
+                    <MonoButton onClick={onClose}>Скасувати</MonoButton>
+                    <DeleteButton
                         onClick={() => {
                             onClose();
                             handleDelete();
                         }}
-                        className="flex gap-[15px] px-[25px] py-[13px] items-center cursor-pointer border border-red-950 bg-red-900 rounded-xl hover:bg-red-700 group transition-all duration-300 hover:text-white"
                     >
                         Видалити
-                    </button>
+                    </DeleteButton>
                 </div>
             </div>
         </div>

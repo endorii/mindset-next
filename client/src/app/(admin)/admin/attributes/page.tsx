@@ -19,6 +19,9 @@ import { useTypes } from "@/features/admin/attributes/product-types/hooks/useTyp
 import { IType } from "@/features/admin/attributes/product-types/types/product-type.types";
 import { EditIcon, PlusIcon, TrashIcon } from "@/shared/icons";
 import { AttributeModalType } from "@/shared/types/types";
+import ButtonWithIcon from "@/shared/ui/buttons/ButtonWithIcon";
+import DeleteButtonWithIcon from "@/shared/ui/buttons/DeleteButtonWithIcon";
+import MonoButton from "@/shared/ui/buttons/MonoButton";
 import { useState } from "react";
 
 function AdminAttributes() {
@@ -115,13 +118,10 @@ function AdminAttributes() {
                         <div className="text-2xl font-bold">
                             Список кольорів:
                         </div>
-                        <button
-                            className="flex gap-[15px] px-[25px] py-[13px] items-center cursor-pointer p-[10px] border border-white/10 rounded-xl hover:bg-white group transition-all duration-300 hover:text-black"
-                            onClick={openAddColorModal}
-                        >
+                        <MonoButton onClick={openAddColorModal}>
                             <div>Додати колір</div>
                             <PlusIcon className="stroke-white stroke-2 w-[30px] group-hover:stroke-black" />
-                        </button>
+                        </MonoButton>
                     </div>
 
                     {/* <div className="flex justify-between items-center mt-[15px]">
@@ -161,22 +161,20 @@ function AdminAttributes() {
                                         <div>{color.name}</div>
                                         <div>{color.hexCode}</div>
                                         <div className="flex gap-[10px] justify-end">
-                                            <button
+                                            <ButtonWithIcon
                                                 onClick={() =>
                                                     openEditColorModal(color)
                                                 }
-                                                className="group border border-white/10 rounded-xl hover:bg-white hover:text-black transition-colors duration-300 px-3 py-2 cursor-pointer"
                                             >
-                                                <EditIcon className="w-[27px] fill-none stroke-white stroke-[2.3] group-hover:stroke-black" />
-                                            </button>
-                                            <button
+                                                <EditIcon className="w-[26px] stroke-white stroke-2 group-hover:stroke-black fill-none" />
+                                            </ButtonWithIcon>
+                                            <DeleteButtonWithIcon
                                                 onClick={() =>
                                                     openDeleteColorModal(color)
                                                 }
-                                                className="group border border-white/10 rounded-xl hover:bg-white hover:text-black transition-colors duration-300 px-3 py-2 cursor-pointer"
                                             >
-                                                <TrashIcon className="w-[30px] fill-none stroke-white stroke-[2] group-hover:stroke-black" />
-                                            </button>
+                                                <TrashIcon className="w-[30px] stroke-white stroke-[1.7]  fill-none" />
+                                            </DeleteButtonWithIcon>
                                         </div>
                                     </div>
                                 ))}
@@ -190,13 +188,10 @@ function AdminAttributes() {
                 <>
                     <div className="flex gap-[15px] justify-between items-center rounded-xl bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px]">
                         <div className="text-2xl font-bold">Список типів:</div>
-                        <button
-                            className="flex gap-[15px] px-[25px] py-[13px] items-center cursor-pointer p-[10px] border border-white/10 rounded-xl hover:bg-white group transition-all duration-300 hover:text-black"
-                            onClick={openAddTypeModal}
-                        >
+                        <MonoButton onClick={openAddTypeModal}>
                             <div>Додати тип</div>
                             <PlusIcon className="stroke-white stroke-2 w-[30px] group-hover:stroke-black" />
-                        </button>
+                        </MonoButton>
                     </div>
                     {(types ?? []).length > 0 ? (
                         <div className="rounded-xl bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px]">
@@ -212,22 +207,20 @@ function AdminAttributes() {
                                     >
                                         <div>{type.name}</div>
                                         <div className="flex gap-[10px] justify-end">
-                                            <button
+                                            <ButtonWithIcon
                                                 onClick={() =>
                                                     openEditTypeModal(type)
                                                 }
-                                                className="group border border-white/10 rounded-xl hover:bg-white hover:text-black transition-colors duration-300 px-3 py-2 cursor-pointer"
                                             >
-                                                <EditIcon className="w-[27px] fill-none stroke-white stroke-[2.3] group-hover:stroke-black" />
-                                            </button>
-                                            <button
+                                                <EditIcon className="w-[26px] stroke-white stroke-2 group-hover:stroke-black fill-none" />
+                                            </ButtonWithIcon>
+                                            <DeleteButtonWithIcon
                                                 onClick={() =>
                                                     openDeleteTypeModal(type)
                                                 }
-                                                className="group border border-white/10 rounded-xl hover:bg-white hover:text-black transition-colors duration-300 px-3 py-2 cursor-pointer"
                                             >
-                                                <TrashIcon className="w-[30px] fill-none stroke-white stroke-[2] group-hover:stroke-black" />
-                                            </button>
+                                                <TrashIcon className="w-[30px] stroke-white stroke-[1.7]  fill-none" />
+                                            </DeleteButtonWithIcon>
                                         </div>
                                     </div>
                                 ))}
@@ -243,13 +236,10 @@ function AdminAttributes() {
                         <div className="text-2xl font-bold">
                             Список розмірів:
                         </div>
-                        <button
-                            className="flex gap-[15px] px-[25px] py-[13px] items-center cursor-pointer p-[10px] border border-white/10 rounded-xl hover:bg-white group transition-all duration-300 hover:text-black"
-                            onClick={openAddSizeModal}
-                        >
+                        <MonoButton onClick={openAddSizeModal}>
                             <div>Додати розмір</div>
                             <PlusIcon className="stroke-white stroke-2 w-[30px] group-hover:stroke-black" />
-                        </button>
+                        </MonoButton>
                     </div>
                     {(sizes ?? []).length > 0 ? (
                         <div className="rounded-xl bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px]">
@@ -265,22 +255,20 @@ function AdminAttributes() {
                                     >
                                         <div>{size.name}</div>
                                         <div className="flex gap-[10px] justify-end">
-                                            <button
+                                            <ButtonWithIcon
                                                 onClick={() =>
                                                     openEditSizeModal(size)
                                                 }
-                                                className="group border border-white/10 rounded-xl hover:bg-white hover:text-black transition-colors duration-300 px-3 py-2 cursor-pointer"
                                             >
-                                                <EditIcon className="w-[27px] fill-none stroke-white stroke-[2.3] group-hover:stroke-black" />
-                                            </button>
-                                            <button
+                                                <EditIcon className="w-[26px] stroke-white stroke-2 group-hover:stroke-black fill-none" />
+                                            </ButtonWithIcon>
+                                            <DeleteButtonWithIcon
                                                 onClick={() =>
                                                     openDeleteSizeModal(size)
                                                 }
-                                                className="group border border-white/10 rounded-xl hover:bg-white hover:text-black transition-colors duration-300 px-3 py-2 cursor-pointer"
                                             >
-                                                <TrashIcon className="w-[30px] fill-none stroke-white stroke-[2] group-hover:stroke-black" />
-                                            </button>
+                                                <TrashIcon className="w-[30px] stroke-white stroke-[1.7]  fill-none" />
+                                            </DeleteButtonWithIcon>
                                         </div>
                                     </div>
                                 ))}

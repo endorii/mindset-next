@@ -5,6 +5,7 @@ import { createPortal } from "react-dom";
 import InputField from "@/shared/ui/inputs/InputField";
 import { useEscapeKeyClose } from "@/shared/hooks/useEscapeKeyClose";
 import { useCreateType } from "../hooks/useTypes";
+import MonoButton from "@/shared/ui/buttons/MonoButton";
 
 interface AddTypeModalProps {
     isOpen: boolean;
@@ -63,23 +64,21 @@ export default function AddTypeModal({ isOpen, onClose }: AddTypeModalProps) {
                         </div>
                     </div>
                     <div className="flex justify-end gap-4 mt-6">
-                        <button
+                        <MonoButton
                             type="button"
                             onClick={handleClose}
-                            className="px-[20px] py-[7px] border border-transparent bg-black text-white hover:bg-white hover:border-black hover:text-black cursor-pointer transition-all duration-200"
                             disabled={createTypeMutation.isPending}
                         >
                             Скасувати
-                        </button>
-                        <button
+                        </MonoButton>
+                        <MonoButton
                             type="submit"
-                            className="px-[20px] py-[7px] border border-transparent bg-black text-white hover:bg-white hover:border-black hover:text-black cursor-pointer transition-all duration-200"
                             disabled={createTypeMutation.isPending}
                         >
                             {createTypeMutation.isPending
                                 ? "Завантаження..."
                                 : "Додати"}
-                        </button>
+                        </MonoButton>
                     </div>
                 </form>
             </div>

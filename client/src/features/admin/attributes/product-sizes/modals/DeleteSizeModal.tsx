@@ -4,6 +4,8 @@ import { useEscapeKeyClose } from "@/shared/hooks/useEscapeKeyClose";
 import { createPortal } from "react-dom";
 import { useDeleteSize } from "../hooks/useSizes";
 import { ISize } from "../types/product-size.types";
+import MonoButton from "@/shared/ui/buttons/MonoButton";
+import DeleteButton from "@/shared/ui/buttons/DeleteButton";
 
 interface DeleteSizeModalProps {
     isOpen: boolean;
@@ -46,21 +48,15 @@ export default function DeleteSizeModal({
                     Ви дійсно хочете видалити розмір {size?.name}?
                 </p>
                 <div className="flex justify-end gap-4">
-                    <button
-                        onClick={onClose}
-                        className="px-[20px] py-[7px] border border-transparent bg-black text-white hover:bg-white hover:border-black hover:text-black cursor-pointer transition-all duration-200"
-                    >
-                        Скасувати
-                    </button>
-                    <button
+                    <MonoButton onClick={onClose}>Скасувати</MonoButton>
+                    <DeleteButton
                         onClick={async () => {
                             onClose();
                             handleDelete();
                         }}
-                        className="px-[20px] py-[7px] border border-transparent bg-black text-white hover:bg-white hover:border-black hover:text-black cursor-pointer transition-all duration-200"
                     >
                         Видалити
-                    </button>
+                    </DeleteButton>
                 </div>
             </div>
         </div>

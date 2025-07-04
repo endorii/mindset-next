@@ -5,6 +5,7 @@ import { useEscapeKeyClose } from "@/shared/hooks/useEscapeKeyClose";
 import { useCreateSize } from "../hooks/useSizes";
 import { useState } from "react";
 import { createPortal } from "react-dom";
+import MonoButton from "@/shared/ui/buttons/MonoButton";
 
 interface AddSizeModalProps {
     isOpen: boolean;
@@ -63,23 +64,21 @@ export default function AddSizeModal({ isOpen, onClose }: AddSizeModalProps) {
                         </div>
                     </div>
                     <div className="flex justify-end gap-4 mt-6">
-                        <button
+                        <MonoButton
                             type="button"
                             onClick={handleClose}
-                            className="px-[20px] py-[7px] border border-transparent bg-black text-white hover:bg-white hover:border-black hover:text-black cursor-pointer transition-all duration-200"
                             disabled={createSizeMutation.isPending}
                         >
                             Скасувати
-                        </button>
-                        <button
+                        </MonoButton>
+                        <MonoButton
                             type="submit"
-                            className="px-[20px] py-[7px] border border-transparent bg-black text-white hover:bg-white hover:border-black hover:text-black cursor-pointer transition-all duration-200"
                             disabled={createSizeMutation.isPending}
                         >
                             {createSizeMutation.isPending
                                 ? "Завантаження..."
                                 : "Додати"}
-                        </button>
+                        </MonoButton>
                     </div>
                 </form>
             </div>

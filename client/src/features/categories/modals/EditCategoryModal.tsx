@@ -11,6 +11,7 @@ import { useState, useEffect, ChangeEvent } from "react";
 import { createPortal } from "react-dom";
 import { useEditCategory } from "../hooks/useCategories";
 import { ICategory } from "../types/categories.types";
+import MonoButton from "@/shared/ui/buttons/MonoButton";
 
 interface EditCategoryModalProps {
     isOpen: boolean;
@@ -189,16 +190,11 @@ export default function EditCategoryModal({
                             />
                         </div>
                         <div className="flex justify-end gap-4 mt-6">
-                            <button
-                                onClick={onClose}
-                                className="flex gap-[15px] px-[25px] py-[13px] items-center cursor-pointer border border-white/10 rounded-xl hover:bg-white group transition-all duration-300 hover:text-black"
-                                type="button"
-                            >
+                            <MonoButton onClick={onClose} type="button">
                                 Скасувати
-                            </button>
-                            <button
+                            </MonoButton>
+                            <MonoButton
                                 type="submit"
-                                className="flex gap-[15px] px-[25px] py-[13px] items-center cursor-pointer border border-white/10 rounded-xl hover:bg-white group transition-all duration-300 hover:text-black"
                                 disabled={
                                     uploadImageMutation.isPending ||
                                     editCategoryMutation.isPending
@@ -208,7 +204,7 @@ export default function EditCategoryModal({
                                 editCategoryMutation.isPending
                                     ? "Завантаження..."
                                     : "Підтвердити"}
-                            </button>
+                            </MonoButton>
                         </div>
                     </div>
                 </form>

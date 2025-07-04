@@ -18,6 +18,7 @@ import { useEditProduct } from "../hooks/useProducts";
 import { IProduct } from "../types/products.types";
 import { useEscapeKeyClose } from "@/shared/hooks/useEscapeKeyClose";
 import { statuses } from "@/shared/utils/helpers";
+import MonoButton from "@/shared/ui/buttons/MonoButton";
 
 interface EditProductModalProps {
     isOpen: boolean;
@@ -617,19 +618,10 @@ export default function EditProductModal({
                     </div>
                     {message && <p className="text-red-500 mt-4">{message}</p>}
                     <div className="flex justify-end gap-4 mt-[30px]">
-                        <button
-                            type="button"
-                            onClick={handleClose}
-                            className="px-[20px] py-[7px] border border-transparent bg-black text-white hover:bg-white hover:border-black hover:text-black cursor-pointer transition-all duration-200"
-                        >
+                        <MonoButton type="button" onClick={handleClose}>
                             Скасувати
-                        </button>
-                        <button
-                            type="submit"
-                            className="px-[20px] py-[7px] border border-transparent bg-black text-white hover:bg-white hover:border-black hover:text-black cursor-pointer transition-all duration-200"
-                        >
-                            Зберегти
-                        </button>
+                        </MonoButton>
+                        <MonoButton type="submit">Зберегти</MonoButton>
                     </div>
                 </form>
             </div>

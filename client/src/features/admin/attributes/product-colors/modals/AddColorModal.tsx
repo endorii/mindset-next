@@ -5,6 +5,7 @@ import { createPortal } from "react-dom";
 import InputField from "@/shared/ui/inputs/InputField";
 import { useEscapeKeyClose } from "@/shared/hooks/useEscapeKeyClose";
 import { useCreateColor } from "../hooks/useColors";
+import MonoButton from "@/shared/ui/buttons/MonoButton";
 
 interface AddColorModalProps {
     isOpen: boolean;
@@ -14,29 +15,23 @@ interface AddColorModalProps {
 export default function AddColorModal({ isOpen, onClose }: AddColorModalProps) {
     const [name, setName] = useState("");
     const [hexCode, setHexCode] = useState("#");
-    const [isValidHex, setIsValidHex] = useState(true);
 
     const createColorMutation = useCreateColor();
-
-    const hexRegex = /^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/;
 
     const handleHexCodeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const inputValue = e.target.value;
         setHexCode(inputValue);
-        setIsValidHex(hexRegex.test(inputValue));
     };
 
     const handleClose = () => {
         setName("");
         setHexCode("#");
-        setIsValidHex(true);
         onClose();
     };
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        if (!name.trim() || !hexRegex.test(hexCode)) {
-            setIsValidHex(false);
+        if (!name.trim()) {
             return;
         }
         try {
@@ -90,32 +85,29 @@ export default function AddColorModal({ isOpen, onClose }: AddColorModalProps) {
                                     name={"hex"}
                                     placeholder={"#000000"}
                                     type={"text"}
-                                    className={`border rounded px-[10px] py-[7px] outline-0 bg-black/10 text-white ${
-                                        isValidHex
-                                            ? "border-white/20"
-                                            : "border-red-500"
-                                    }`}
                                 />
                             </div>
                         </div>
-                        <div className="flex justify-end gap-4 mt-6">
-                            <button
-                                type="button"
+                        <div className="flex justify-end gap-[15px] mt-6">
+                            <MonoButton
                                 onClick={handleClose}
+                                type="button"
                                 disabled={createColorMutation.isPending}
-                                className="px-[20px] py-[7px] border border-white/10 rounded-xl hover:bg-white hover:text-black hover:border-black cursor-pointer transition-all duration-300"
                             >
                                 Скасувати
-                            </button>
-                            <button
+                            </MonoButton>
+                            <MonoButton
                                 type="submit"
-                                disabled={createColorMutation.isPending}
-                                className="px-[20px] py-[7px] border border-white/10 rounded-xl hover:bg-white hover:text-black hover:border-black cursor-pointer transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+                                disabled={
+                                    !name ||
+                                    !hexCode ||
+                                    createColorMutation.isPending
+                                }
                             >
                                 {createColorMutation.isPending
                                     ? "Завантаження..."
                                     : "Додати"}
-                            </button>
+                            </MonoButton>
                         </div>
                     </form>
                 </div>

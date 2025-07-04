@@ -3,10 +3,27 @@
 import Link from "next/link";
 import { InstagramIcon, TelegramIcon, TiktokIcon } from "@/shared/icons";
 import { useCollections } from "@/features/collections/hooks/useCollections";
+import ChooseLink from "@/shared/ui/buttons/ChooseLink";
+import { ICollection } from "@/features/collections/types/collections.types";
+import { usePathname } from "next/navigation";
+import { useEffect, useState } from "react";
 
 const Footer = () => {
     const { data: collections, isError, error, isLoading } = useCollections();
 
+    const pathname = usePathname();
+    const collectionPath = pathname.split("/").filter(Boolean)[0] || null;
+
+    const [currentCollection, setCurrentCollection] =
+        useState<ICollection | null>(null);
+
+    useEffect(() => {
+        if (collectionPath) {
+            const foundCollection =
+                collections?.find((c) => c.path === collectionPath) || null;
+            setCurrentCollection(foundCollection);
+        }
+    }, [collectionPath]);
     if (isLoading) {
         return <div>Loading...</div>;
     }
@@ -37,16 +54,17 @@ const Footer = () => {
                     {Array.isArray(collections) &&
                         collections.map((collection, i) => {
                             return (
-                                <li
-                                    key={i}
-                                    className="border border-white/10 bg-black/80 shadow-lg rounded-xl hover:bg-white hover:text-black transition-colors duration-300 mt-[10px] w-[100px]"
-                                >
-                                    <Link
+                                <li key={i}>
+                                    <ChooseLink
                                         href={`/${collection.path}`}
-                                        className="flex items-center justify-center cursor-pointer px-4 py-2"
+                                        onClick={() =>
+                                            setCurrentCollection(collection)
+                                        }
+                                        currentCollection={currentCollection}
+                                        collection={collection}
                                     >
                                         {collection.name}
-                                    </Link>
+                                    </ChooseLink>
                                 </li>
                             );
                         })}

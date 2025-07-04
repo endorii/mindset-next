@@ -11,6 +11,8 @@ import {
     MainPageIcon,
 } from "@/shared/icons";
 import Link from "next/link";
+import AdminNavigationLink from "@/shared/ui/buttons/AdminNavigationLink";
+import NavigationLink from "@/shared/ui/buttons/NavigationLink";
 
 function AccountNavigation({ children }: { children: React.ReactNode }) {
     const { data: user } = useCurrentUser();
@@ -71,11 +73,7 @@ function AccountNavigation({ children }: { children: React.ReactNode }) {
                     <hr className="border-t border-white/10" />
                     <div className={`flex flex-col gap-[13px]`}>
                         {links.map(({ href, Icon, text, className }) => (
-                            <Link
-                                key={href}
-                                href={href}
-                                className="flex gap-[15px] px-[25px] py-[13px] items-center cursor-pointer p-[10px] border border-white/10 rounded-xl hover:bg-white group transition-all duration-300"
-                            >
+                            <NavigationLink key={href} href={href}>
                                 <Icon className={className} />
 
                                 <span
@@ -83,35 +81,28 @@ function AccountNavigation({ children }: { children: React.ReactNode }) {
                                 >
                                     {text}
                                 </span>
-                            </Link>
+                            </NavigationLink>
                         ))}
                     </div>
                 </div>
                 <div className="flex flex-col gap-[15px]">
                     {user?.role === "ADMIN" ? (
                         <div>
-                            <Link
-                                href="/admin"
-                                className="flex gap-[15px] px-[25px] py-[13px] items-center cursor-pointer p-[10px] border border-white/10 rounded-xl hover:bg-white group transition-all duration-300"
-                            >
+                            <NavigationLink href="/admin">
                                 <AdminIcon className="w-[25px] fill-white group-hover:fill-black" />
                                 <span className="transition-opacity duration-200 group-hover:text-black">
                                     Адмін панель
                                 </span>
-                            </Link>
+                            </NavigationLink>
                         </div>
                     ) : null}
                     <div>
-                        <Link
-                            href="#"
-                            className="flex gap-[15px] px-[25px] py-[13px] items-center cursor-pointer p-[10px] border border-white/10 rounded-xl hover:bg-white group transition-all duration-300"
-                            onClick={() => logout()}
-                        >
+                        <NavigationLink href="#" onClick={() => logout()}>
                             <LogoutIcon className="w-[25px] fill-white group-hover:fill-black" />
                             <span className="transition-opacity duration-200 group-hover:text-black">
                                 Вийти
                             </span>
-                        </Link>
+                        </NavigationLink>
                     </div>
                 </div>
             </div>

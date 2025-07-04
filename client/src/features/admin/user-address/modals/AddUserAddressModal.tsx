@@ -6,6 +6,7 @@ import { useCreateUserAddress } from "../hooks/useUserAddress";
 import { IUser } from "../../user-info/types/user.types";
 import { useState } from "react";
 import { createPortal } from "react-dom";
+import MonoButton from "@/shared/ui/buttons/MonoButton";
 
 interface AddUserAddressModalProps {
     isOpen: boolean;
@@ -159,18 +160,8 @@ export default function AddUserAddressModal({
                         </div>
                     </div>
                     <div className="flex justify-end gap-4 mt-6">
-                        <button
-                            onClick={onClose}
-                            className="px-[20px] py-[7px] border border-transparent bg-black text-white hover:bg-white hover:border-black hover:text-black cursor-pointer transition-all duration-200"
-                        >
-                            Скасувати
-                        </button>
-                        <button
-                            onClick={handleSubmit}
-                            className="px-[20px] py-[7px] border border-transparent bg-black text-white hover:bg-white hover:border-black hover:text-black cursor-pointer transition-all duration-200"
-                        >
-                            Підтвердити
-                        </button>
+                        <MonoButton onClick={onClose}>Скасувати</MonoButton>
+                        <MonoButton type="submit">Підтвердити</MonoButton>
                     </div>
                 </form>
             </div>
