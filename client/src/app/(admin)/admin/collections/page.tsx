@@ -20,8 +20,7 @@ import DeleteButtonWithIcon from "@/shared/ui/buttons/DeleteButtonWithIcon";
 import LinkWithIcon from "@/shared/ui/buttons/LinkWithIcon";
 import MonoButton from "@/shared/ui/buttons/MonoButton";
 import { formatDate } from "@/shared/utils/formatDate";
-import Link from "next/link";
-import React, { useState } from "react";
+import { useState } from "react";
 
 function AdminCollections() {
     const filters = [
@@ -32,7 +31,7 @@ function AdminCollections() {
         "кількість товарів",
     ];
 
-    const { data, isError, error, isLoading } = useCollections();
+    const { data } = useCollections();
 
     const [activeModal, setActiveModal] = useState<ModalType>(null);
     const [selectedCollection, setSelectedCollection] =

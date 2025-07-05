@@ -3,7 +3,6 @@
 import { useCollections } from "@/features/collections/hooks/useCollections";
 import { ICollection } from "@/features/collections/types/collections.types";
 import ChooseLink from "@/shared/ui/buttons/ChooseLink";
-import Link from "next/link";
 
 interface ChooseCategoryHeaderProps {
     currentCollection: ICollection | null;

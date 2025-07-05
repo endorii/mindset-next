@@ -10,8 +10,6 @@ import {
     LogoutIcon,
     MainPageIcon,
 } from "@/shared/icons";
-import Link from "next/link";
-import AdminNavigationLink from "@/shared/ui/buttons/AdminNavigationLink";
 import NavigationLink from "@/shared/ui/buttons/NavigationLink";
 
 function AccountNavigation({ children }: { children: React.ReactNode }) {

@@ -7,6 +7,7 @@ import { createPortal } from "react-dom";
 import { useEditSize } from "../hooks/useSizes";
 import { ISize } from "../types/product-size.types";
 import MonoButton from "@/shared/ui/buttons/MonoButton";
+import ModalWrapper from "@/shared/ui/wrappers/ModalWrapper";
 
 interface EditSizeProps {
     isOpen: boolean;
@@ -50,52 +51,41 @@ export default function EditSizeModal({
 
     if (!isOpen || !size) return null;
     const modalContent = (
-        <div
-            className="fixed inset-0 bg-black/70 flex items-center products-center justify-center z-100 cursor-pointer"
-            onClick={onClose}
-        >
-            <div
-                className="bg-white p-[30px] h-auto max-h-[80vh] shadow-lg w-[20vw] overflow-y-auto cursor-default"
-                onClick={(e) => e.stopPropagation()}
-            >
-                <h2 className="text-lg font-bold mb-4">
-                    Редагування розміру: {size.name || "Без назви"}
-                </h2>
-                <form onSubmit={handleSubmit}>
-                    <div className="flex gap-[20px] justify-between">
-                        <div className="flex flex-col gap-[20px] w-full">
-                            <InputField
-                                label={"Назва"}
-                                value={name}
-                                onChangeValue={(e) => setName(e.target.value)}
-                                id={"name"}
-                                name={"name"}
-                                placeholder={"Назва розміру"}
-                                type={"text"}
-                            />
-                        </div>
+        <ModalWrapper onClose={onClose} modalTitle={"Редагування розміру"}>
+            <form onSubmit={handleSubmit}>
+                <div className="flex gap-[20px] justify-between">
+                    <div className="flex flex-col gap-[20px] w-full">
+                        <InputField
+                            label={"Назва"}
+                            value={name}
+                            onChangeValue={(e) => setName(e.target.value)}
+                            id={"name"}
+                            name={"name"}
+                            placeholder={"Назва розміру"}
+                            type={"text"}
+                        />
                     </div>
-                    {/* {message && <p className="mt-4 text-red-500">{message}</p>} */}
-                    <div className="flex justify-end gap-4 mt-6">
-                        <MonoButton
-                            type="button"
-                            onClick={onClose}
-                            disabled={editSizeMutation.isPending}
-                        >
-                            Скасувати
-                        </MonoButton>
-                        <MonoButton
-                            type="submit"
-                            disabled={editSizeMutation.isPending}
-                        >
-                            {editSizeMutation.isPending
-                                ? "Завантаження..."
-                                : "Підтвердити"}
-                        </MonoButton>
-                    </div>
-                </form>
-            </div>
-        </div>
+                </div>
+                \
+                <div className="flex justify-end gap-4 mt-6">
+                    <MonoButton
+                        type="button"
+                        onClick={onClose}
+                        disabled={editSizeMutation.isPending}
+                    >
+                        Скасувати
+                    </MonoButton>
+                    <MonoButton
+                        type="submit"
+                        disabled={editSizeMutation.isPending}
+                    >
+                        {editSizeMutation.isPending
+                            ? "Завантаження..."
+                            : "Підтвердити"}
+                    </MonoButton>
+                </div>
+            </form>
+        </ModalWrapper>
     );
 
     return createPortal(modalContent, document.body);

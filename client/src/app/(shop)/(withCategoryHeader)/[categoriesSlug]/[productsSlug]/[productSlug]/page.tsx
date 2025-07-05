@@ -20,7 +20,6 @@ import BasicInput from "@/shared/ui/inputs/BasicInput";
 import { usePathname } from "next/navigation";
 import { useState, useEffect } from "react";
 import MonoButton from "@/shared/ui/buttons/MonoButton";
-import DeleteButton from "@/shared/ui/buttons/DeleteButton";
 
 export default function ProductPage() {
     const pathname = usePathname();

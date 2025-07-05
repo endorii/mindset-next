@@ -2,7 +2,6 @@
 
 import { BackIcon, LogoutIcon } from "@/shared/icons";
 import NavigationHideTextWrapper from "@/shared/ui/wrappers/NavigationHideTextWrapper";
-import Link from "next/link";
 import { useState } from "react";
 import { adminPanelNavigationLinks } from "../../utils/navigationLinks";
 import AdminNavigationLink from "@/shared/ui/buttons/AdminNavigationLink";

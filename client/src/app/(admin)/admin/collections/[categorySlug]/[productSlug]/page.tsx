@@ -41,10 +41,7 @@ function AdminCategory() {
         null
     );
 
-    const { data, isError, error, isLoading } = useCategory(
-        collectionPath,
-        categoryPath
-    );
+    const { data } = useCategory(collectionPath, categoryPath);
 
     const products = data?.products ?? [];
 

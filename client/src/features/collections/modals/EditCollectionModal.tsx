@@ -12,6 +12,7 @@ import { createPortal } from "react-dom";
 import { useEditCollection } from "../hooks/useCollections";
 import { ICollection } from "../types/collections.types";
 import MonoButton from "@/shared/ui/buttons/MonoButton";
+import ModalWrapper from "@/shared/ui/wrappers/ModalWrapper";
 
 interface EditCollectionModalProps {
     isOpen: boolean;
@@ -39,7 +40,7 @@ export default function EditCollectionModal({
             setPath(collection.path || "");
             setBanner(collection.banner || "");
             setStatus(collection.status);
-            setPreview(""); // Очищаємо превʼю при новому колекції
+            setPreview("");
         }
     }, [collection]);
 
@@ -101,141 +102,123 @@ export default function EditCollectionModal({
             : "";
 
     const modalContent = (
-        <div
-            className="fixed inset-0 bg-black/85 flex items-center justify-center z-100 cursor-pointer"
-            onClick={onClose}
+        <ModalWrapper
+            onClose={onClose}
+            modalTitle={`Редагування колекції ${name}`}
         >
-            <div className="bg-black">
-                <div
-                    className="rounded-xl text-white bg-gradient-to-br from-black/0 to-white/3 border border-white/10 p-[30px] h-auto max-h-[80vh] shadow-lg w-[54vw] overflow-y-auto cursor-default"
-                    onClick={(e) => e.stopPropagation()}
-                >
-                    <h2 className="text-3xl font-thin mb-4">
-                        Редагування колекції: {collection.name || "Без назви"}
-                    </h2>
-                    <hr className="border-t border-white/10 py-[10px]" />
-                    <form onSubmit={handleSubmit}>
-                        <div className="flex flex-col gap-[20px]">
-                            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-[20px]">
-                                <InputField
-                                    label={"Назва"}
-                                    value={name}
-                                    onChangeValue={(e) =>
-                                        setName(e.target.value)
-                                    }
-                                    id={"editCollectionName"}
-                                    name={"editCollectionName"}
-                                    placeholder={"Назва колекції"}
-                                    type={"text"}
-                                />
-                                <InputField
-                                    label={"Шлях"}
-                                    value={path}
-                                    onChangeValue={(e) =>
-                                        setPath(e.target.value)
-                                    }
-                                    id={"editCollectionPath"}
-                                    name={"editCollectionPath"}
-                                    placeholder={"Шлях"}
-                                    type={"text"}
-                                />
-                                <div className="flex flex-col gap-[7px]">
-                                    <label
-                                        htmlFor="status"
-                                        className="font-semibold text-sm"
-                                    >
-                                        Статус
-                                    </label>
-                                    <select
-                                        name="status"
-                                        className="border border-white/10 rounded px-[10px] py-[10px] bg-black/20 text-white outline-0 cursor-pointer"
-                                        value={status}
-                                        onChange={(e) =>
-                                            setStatus(e.target.value as TStatus)
-                                        }
-                                    >
-                                        <option
-                                            className="text-white bg-black"
-                                            cursor-pointer
-                                            disabled
-                                        >
-                                            Оберіть статус
-                                        </option>
-                                        {statuses.map((statusOption) => (
-                                            <option
-                                                className="text-white bg-black"
-                                                key={statusOption}
-                                                value={statusOption}
-                                            >
-                                                {statusOption}
-                                            </option>
-                                        ))}
-                                    </select>
-                                </div>
-                            </div>
-                            <div className="flex flex-col gap-[7px] w-full">
-                                <label
-                                    htmlFor="banner"
-                                    className="font-semibold"
-                                >
-                                    Банер
-                                </label>
-                                <label
-                                    htmlFor="banner"
-                                    className="min-h-[100px] max-w-[300px] border border-dashed border-white/10 mt-2 flex items-center justify-center cursor-pointer bg-black/20 hover:bg-white/10 rounded-md overflow-hidden"
-                                >
-                                    {preview ? (
-                                        <Image
-                                            src={preview}
-                                            alt="preview"
-                                            width={250}
-                                            height={250}
-                                            className="object-cover"
-                                        />
-                                    ) : bannerSrc ? (
-                                        <Image
-                                            src={bannerSrc}
-                                            alt="banner"
-                                            width={250}
-                                            height={250}
-                                            className="object-cover"
-                                        />
-                                    ) : (
-                                        <span className="text-4xl text-white/40">
-                                            +
-                                        </span>
-                                    )}
-                                </label>
-                                <input
-                                    type="file"
-                                    id="banner"
-                                    accept="image/*"
-                                    onChange={handleBannerChange}
-                                    className="hidden"
-                                />
-                            </div>
-                        </div>
-                        <div className="flex justify-end gap-4 mt-6">
-                            <MonoButton type="button" onClick={onClose}>
-                                Скасувати
-                            </MonoButton>
-                            <MonoButton
-                                type="submit"
-                                disabled={
-                                    uploadImageMutation.isPending ||
-                                    editCollection.isPending
+            <form onSubmit={handleSubmit}>
+                <div className="flex flex-col gap-[20px]">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-[20px]">
+                        <InputField
+                            label={"Назва"}
+                            value={name}
+                            onChangeValue={(e) => setName(e.target.value)}
+                            id={"editCollectionName"}
+                            name={"editCollectionName"}
+                            placeholder={"Назва колекції"}
+                            type={"text"}
+                        />
+                        <InputField
+                            label={"Шлях"}
+                            value={path}
+                            onChangeValue={(e) => setPath(e.target.value)}
+                            id={"editCollectionPath"}
+                            name={"editCollectionPath"}
+                            placeholder={"Шлях"}
+                            type={"text"}
+                        />
+                        <div className="flex flex-col gap-[7px]">
+                            <label
+                                htmlFor="status"
+                                className="font-semibold text-sm"
+                            >
+                                Статус
+                            </label>
+                            <select
+                                name="status"
+                                className="border border-white/10 rounded px-[10px] py-[10px] bg-black/20 text-white outline-0 cursor-pointer"
+                                value={status}
+                                onChange={(e) =>
+                                    setStatus(e.target.value as TStatus)
                                 }
                             >
-                                {uploadImageMutation.isPending ||
-                                editCollection.isPending
-                                    ? "Завантаження..."
-                                    : "Підтвердити"}
-                            </MonoButton>
+                                <option
+                                    className="text-white bg-black"
+                                    cursor-pointer
+                                    disabled
+                                >
+                                    Оберіть статус
+                                </option>
+                                {statuses.map((statusOption) => (
+                                    <option
+                                        className="text-white bg-black"
+                                        key={statusOption}
+                                        value={statusOption}
+                                    >
+                                        {statusOption}
+                                    </option>
+                                ))}
+                            </select>
                         </div>
-                    </form>
+                    </div>
+                    <div className="flex flex-col gap-[7px] w-full">
+                        <label htmlFor="banner" className="font-semibold">
+                            Банер
+                        </label>
+                        <label
+                            htmlFor="banner"
+                            className="min-h-[100px] max-w-[300px] border border-dashed border-white/10 mt-2 flex items-center justify-center cursor-pointer bg-black/20 hover:bg-white/10 rounded-md overflow-hidden"
+                        >
+                            {preview ? (
+                                <Image
+                                    src={preview}
+                                    alt="preview"
+                                    width={250}
+                                    height={250}
+                                    className="object-cover"
+                                />
+                            ) : bannerSrc ? (
+                                <Image
+                                    src={bannerSrc}
+                                    alt="banner"
+                                    width={250}
+                                    height={250}
+                                    className="object-cover"
+                                />
+                            ) : (
+                                <span className="text-4xl text-white/40">
+                                    +
+                                </span>
+                            )}
+                        </label>
+                        <input
+                            type="file"
+                            id="banner"
+                            accept="image/*"
+                            onChange={handleBannerChange}
+                            className="hidden"
+                        />
+                    </div>
                 </div>
-            </div>
-        </div>
+                <div className="flex justify-end gap-4 mt-6">
+                    <MonoButton type="button" onClick={onClose}>
+                        Скасувати
+                    </MonoButton>
+                    <MonoButton
+                        type="submit"
+                        disabled={
+                            uploadImageMutation.isPending ||
+                            editCollection.isPending
+                        }
+                    >
+                        {uploadImageMutation.isPending ||
+                        editCollection.isPending
+                            ? "Завантаження..."
+                            : "Підтвердити"}
+                    </MonoButton>
+                </div>
+            </form>
+        </ModalWrapper>
     );
 
     return createPortal(modalContent, document.body);

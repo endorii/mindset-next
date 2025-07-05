@@ -10,6 +10,7 @@ import { createPortal } from "react-dom";
 import { useCreateCollection } from "../hooks/useCollections";
 import Image from "next/image";
 import MonoButton from "@/shared/ui/buttons/MonoButton";
+import ModalWrapper from "@/shared/ui/wrappers/ModalWrapper";
 
 interface AddCollectionModalProps {
     isOpen: boolean;
@@ -89,128 +90,118 @@ export default function AddCollectionModal({
     if (!isOpen) return null;
 
     const modalContent = (
-        <div
-            className="fixed inset-0 bg-black/85 flex items-center products-center justify-center z-100 cursor-pointer"
-            onClick={onClose}
-        >
-            <div
-                className="bg-black rounded-xl text-white bg-gradient-to-br from-black/0 to-white/3 border border-white/10 p-[30px] h-auto max-h-[80vh] shadow-lg w-[54vw] overflow-y-auto cursor-default"
-                onClick={(e) => e.stopPropagation()}
-            >
-                <h2 className="text-3xl font-thin mb-4">Додавання колекції</h2>
-                <hr className="border-t border-white/10 py-[10px]" />
-                <form onSubmit={handleSubmit}>
-                    <div className="flex flex-col gap-[20px]">
-                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-[20px]">
-                            <InputField
-                                label={"Назва"}
-                                value={name}
-                                onChangeValue={(e) => setName(e.target.value)}
-                                id={"addCollectionName"}
-                                name={"addCollectionName"}
-                                placeholder={"Назва колекції"}
-                                type={"text"}
-                            />
-                            <InputField
-                                label={"Шлях"}
-                                value={path}
-                                onChangeValue={(e) => setPath(e.target.value)}
-                                id={"addCollectionPath"}
-                                name={"addCollectionPath"}
-                                placeholder={"Шлях"}
-                                type={"text"}
-                            />
-                            <div className="flex flex-col gap-[7px]">
-                                <label
-                                    className="text-sm font-semibold"
-                                    htmlFor="status"
-                                >
-                                    Статус
-                                </label>
-                                <select
-                                    name="status"
-                                    className="border border-white/10 rounded p-[10px] outline-0 cursor-pointer"
-                                    value={status}
-                                    onChange={(e) =>
-                                        setStatus(e.target.value as TStatus)
-                                    }
-                                >
-                                    <option value="" disabled>
-                                        Оберіть статус
-                                    </option>
-                                    {statuses.map((statusOption) => (
-                                        <option
-                                            key={statusOption}
-                                            value={statusOption}
-                                        >
-                                            {statusOption}
-                                        </option>
-                                    ))}
-                                </select>
-                            </div>
-                        </div>
-                        <div className="flex flex-col gap-[7px] w-full">
+        <ModalWrapper onClose={onClose} modalTitle={"Додавання колекції"}>
+            <form onSubmit={handleSubmit}>
+                <div className="flex flex-col gap-[20px]">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-[20px]">
+                        <InputField
+                            label={"Назва"}
+                            value={name}
+                            onChangeValue={(e) => setName(e.target.value)}
+                            id={"addCollectionName"}
+                            name={"addCollectionName"}
+                            placeholder={"Назва колекції"}
+                            type={"text"}
+                        />
+                        <InputField
+                            label={"Шлях"}
+                            value={path}
+                            onChangeValue={(e) => setPath(e.target.value)}
+                            id={"addCollectionPath"}
+                            name={"addCollectionPath"}
+                            placeholder={"Шлях"}
+                            type={"text"}
+                        />
+                        <div className="flex flex-col gap-[7px]">
                             <label
-                                htmlFor="banner"
                                 className="text-sm font-semibold"
+                                htmlFor="status"
                             >
-                                Банер
+                                Статус
                             </label>
-                            <label
-                                htmlFor="banner"
-                                className="min-h-[100px] max-w-[300px] border border-dashed border-white/10 mt-2 flex items-center justify-center cursor-pointer hover:bg-white/3 rounded-md overflow-hidden"
+                            <select
+                                name="status"
+                                className="border border-white/10 rounded p-[10px] outline-0 cursor-pointer"
+                                value={status}
+                                onChange={(e) =>
+                                    setStatus(e.target.value as TStatus)
+                                }
                             >
-                                {preview ? (
-                                    <Image
-                                        src={preview}
-                                        alt="banner"
-                                        width={250}
-                                        height={250}
-                                        className="object-cover"
-                                    />
-                                ) : (
-                                    <span className="text-4xl text-gray-400">
-                                        +
-                                    </span>
-                                )}
-                            </label>
-                            <input
-                                type="file"
-                                id="banner"
-                                accept="image/*"
-                                onChange={handleBannerChange}
-                                className="hidden"
-                            />
+                                <option value="" disabled>
+                                    Оберіть статус
+                                </option>
+                                {statuses.map((statusOption) => (
+                                    <option
+                                        key={statusOption}
+                                        value={statusOption}
+                                    >
+                                        {statusOption}
+                                    </option>
+                                ))}
+                            </select>
                         </div>
                     </div>
-                    {message && <p className="mt-4 text-red-500">{message}</p>}
-                    <div className="flex justify-end gap-4 mt-6">
-                        <MonoButton
-                            type="button"
-                            onClick={handleClose}
-                            disabled={
-                                uploadImageMutation.isPending ||
-                                createCollectionMutation.isPending
-                            }
+                    <div className="flex flex-col gap-[7px] w-full">
+                        <label
+                            htmlFor="banner"
+                            className="text-sm font-semibold"
                         >
-                            Скасувати
-                        </MonoButton>
-                        <MonoButton
-                            type="submit"
-                            disabled={
-                                uploadImageMutation.isPending ||
-                                createCollectionMutation.isPending
-                            }
+                            Банер
+                        </label>
+                        <label
+                            htmlFor="banner"
+                            className="min-h-[100px] max-w-[300px] border border-dashed border-white/10 mt-2 flex items-center justify-center cursor-pointer hover:bg-white/3 rounded-md overflow-hidden"
                         >
-                            {uploadImageMutation.isPending ||
-                            createCollectionMutation.isPending
-                                ? "Завантаження..."
-                                : "Додати"}
-                        </MonoButton>
+                            {preview ? (
+                                <Image
+                                    src={preview}
+                                    alt="banner"
+                                    width={250}
+                                    height={250}
+                                    className="object-cover"
+                                />
+                            ) : (
+                                <span className="text-4xl text-gray-400">
+                                    +
+                                </span>
+                            )}
+                        </label>
+                        <input
+                            type="file"
+                            id="banner"
+                            accept="image/*"
+                            onChange={handleBannerChange}
+                            className="hidden"
+                        />
                     </div>
-                </form>
-            </div>
-        </div>
+                </div>
+                {message && <p className="mt-4 text-red-500">{message}</p>}
+                <div className="flex justify-end gap-4 mt-6">
+                    <MonoButton
+                        type="button"
+                        onClick={handleClose}
+                        disabled={
+                            uploadImageMutation.isPending ||
+                            createCollectionMutation.isPending
+                        }
+                    >
+                        Скасувати
+                    </MonoButton>
+                    <MonoButton
+                        type="submit"
+                        disabled={
+                            uploadImageMutation.isPending ||
+                            createCollectionMutation.isPending
+                        }
+                    >
+                        {uploadImageMutation.isPending ||
+                        createCollectionMutation.isPending
+                            ? "Завантаження..."
+                            : "Додати"}
+                    </MonoButton>
+                </div>
+            </form>
+        </ModalWrapper>
     );
 
     return createPortal(modalContent, document.body);

@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { ICollection } from "../types/collections.types";
 import MonoLink from "@/shared/ui/buttons/MonoLink";
 

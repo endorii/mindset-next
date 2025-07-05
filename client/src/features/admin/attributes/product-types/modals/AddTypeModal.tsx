@@ -6,6 +6,7 @@ import InputField from "@/shared/ui/inputs/InputField";
 import { useEscapeKeyClose } from "@/shared/hooks/useEscapeKeyClose";
 import { useCreateType } from "../hooks/useTypes";
 import MonoButton from "@/shared/ui/buttons/MonoButton";
+import ModalWrapper from "@/shared/ui/wrappers/ModalWrapper";
 
 interface AddTypeModalProps {
     isOpen: boolean;
@@ -40,49 +41,40 @@ export default function AddTypeModal({ isOpen, onClose }: AddTypeModalProps) {
     if (!isOpen) return null;
 
     const modalContent = (
-        <div
-            className="fixed inset-0 bg-black/70 flex items-center products-center justify-center z-100 cursor-pointer"
-            onClick={onClose}
-        >
-            <div
-                className="bg-white p-[30px] h-auto max-h-[80vh] shadow-lg w-[20vw] overflow-y-auto cursor-default"
-                onClick={(e) => e.stopPropagation()}
-            >
-                <h2 className="text-lg font-bold mb-4">Додавання типу</h2>
-                <form onSubmit={handleSubmit}>
-                    <div className="flex gap-[20px] justify-between">
-                        <div className="flex flex-col gap-[20px] w-full">
-                            <InputField
-                                label={"Назва"}
-                                value={name}
-                                onChangeValue={(e) => setName(e.target.value)}
-                                id={"name"}
-                                name={"name"}
-                                placeholder={"Назва типу"}
-                                type={"text"}
-                            />
-                        </div>
+        <ModalWrapper onClose={onClose} modalTitle={"Додавання типу"}>
+            <form onSubmit={handleSubmit}>
+                <div className="flex gap-[20px] justify-between">
+                    <div className="flex flex-col gap-[20px] w-full">
+                        <InputField
+                            label={"Назва"}
+                            value={name}
+                            onChangeValue={(e) => setName(e.target.value)}
+                            id={"name"}
+                            name={"name"}
+                            placeholder={"Назва типу"}
+                            type={"text"}
+                        />
                     </div>
-                    <div className="flex justify-end gap-4 mt-6">
-                        <MonoButton
-                            type="button"
-                            onClick={handleClose}
-                            disabled={createTypeMutation.isPending}
-                        >
-                            Скасувати
-                        </MonoButton>
-                        <MonoButton
-                            type="submit"
-                            disabled={createTypeMutation.isPending}
-                        >
-                            {createTypeMutation.isPending
-                                ? "Завантаження..."
-                                : "Додати"}
-                        </MonoButton>
-                    </div>
-                </form>
-            </div>
-        </div>
+                </div>
+                <div className="flex justify-end gap-4 mt-6">
+                    <MonoButton
+                        type="button"
+                        onClick={handleClose}
+                        disabled={createTypeMutation.isPending}
+                    >
+                        Скасувати
+                    </MonoButton>
+                    <MonoButton
+                        type="submit"
+                        disabled={createTypeMutation.isPending}
+                    >
+                        {createTypeMutation.isPending
+                            ? "Завантаження..."
+                            : "Додати"}
+                    </MonoButton>
+                </div>
+            </form>
+        </ModalWrapper>
     );
 
     return createPortal(modalContent, document.body);
