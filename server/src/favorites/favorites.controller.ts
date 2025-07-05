@@ -12,7 +12,7 @@ export class FavoritesController {
     constructor(private readonly favoritesService: FavoritesService) {}
 
     @Post(":userId")
-    @Roles(Role.ADMIN || Role.USER)
+    @Roles(Role.ADMIN, Role.USER)
     addFavoriteToUser(
         @Param("userId") userId: string,
         @Body() createFavoriteDto: CreateFavoriteDto
@@ -21,13 +21,13 @@ export class FavoritesController {
     }
 
     @Get(":userId")
-    @Roles(Role.ADMIN || Role.USER)
+    @Roles(Role.ADMIN, Role.USER)
     getAllFavoritesFromUser(@Param("userId") userId: string) {
         return this.favoritesService.getAllFavoritesFromUser(userId);
     }
 
     @Delete(":userId/:productId")
-    @Roles(Role.ADMIN || Role.USER)
+    @Roles(Role.ADMIN, Role.USER)
     removeFavorite(@Param("userId") userId: string, @Param("productId") productId: string) {
         return this.favoritesService.removeFromFavorites(userId, productId);
     }
