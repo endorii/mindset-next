@@ -13,13 +13,13 @@ export class UserAddressController {
     constructor(private readonly userAddressService: UserAddressService) {}
 
     @Post()
-    @Roles(Role.ADMIN || Role.USER)
+    @Roles(Role.ADMIN, Role.USER)
     addUserAddress(@Body() createUserAddressDto: CreateUserAddressDto) {
         return this.userAddressService.addUserAddress(createUserAddressDto);
     }
 
     @Patch(":userId")
-    @Roles(Role.ADMIN || Role.USER)
+    @Roles(Role.ADMIN, Role.USER)
     updateUserAddress(
         @Param("userId") userId: string,
         @Body() updateUserAddressDto: UpdateUserAddressDto

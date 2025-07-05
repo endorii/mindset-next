@@ -12,19 +12,19 @@ export class CartController {
     constructor(private readonly cartService: CartService) {}
 
     @Post(":userId")
-    @Roles(Role.ADMIN || Role.USER)
+    @Roles(Role.ADMIN, Role.USER)
     addCartItemToUser(@Param("userId") userId: string, @Body() createCartDto: CreateCartDto) {
         return this.cartService.addCartItemToUser(userId, createCartDto);
     }
 
     @Get(":userId")
-    @Roles(Role.ADMIN || Role.USER)
+    @Roles(Role.ADMIN, Role.USER)
     getAllCartItemsFromUser(@Param("userId") userId: string) {
         return this.cartService.getAllCartItemsFromUser(userId);
     }
 
     @Delete(":userId/:productId")
-    @Roles(Role.ADMIN || Role.USER)
+    @Roles(Role.ADMIN, Role.USER)
     removeCartItemFromUser(@Param("userId") userId: string, @Param("productId") productId: string) {
         return this.cartService.removeCartItemFromUser(userId, productId);
     }
