@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import Link from "next/link";
 import { useRouter, usePathname } from "next/navigation";
 import { useCollection } from "@/features/collections/hooks/useCollections";
 import AddCategoryModal from "@/features/categories/modals/AddCategoryModal";

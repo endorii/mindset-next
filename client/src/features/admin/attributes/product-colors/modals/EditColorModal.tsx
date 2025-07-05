@@ -7,6 +7,7 @@ import { IColor } from "../types/product-color.types";
 import { useState, useEffect } from "react";
 import { createPortal } from "react-dom";
 import MonoButton from "@/shared/ui/buttons/MonoButton";
+import ModalWrapper from "@/shared/ui/wrappers/ModalWrapper";
 
 interface EditColorProps {
     isOpen: boolean;
@@ -72,63 +73,52 @@ export default function EditColorModal({
     if (!isOpen || !color) return null;
 
     const modalContent = (
-        <div
-            className="fixed inset-0 bg-black/85 flex items-center justify-center z-100 cursor-pointer"
-            onClick={onClose}
-        >
-            <div
-                className="bg-black rounded-xl text-white bg-gradient-to-br from-black/0 to-white/5 border border-white/10 p-[30px] max-h-[80vh] shadow-lg w-[34vw] overflow-y-auto cursor-default"
-                onClick={(e) => e.stopPropagation()}
-            >
-                <h2 className="text-3xl font-thin mb-6">
-                    Редагування кольору: {color.name || "Без назви"}
-                </h2>
-                <form onSubmit={handleSubmit}>
-                    <div className="flex flex-col gap-[20px]">
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-[20px]">
-                            <InputField
-                                label="Назва"
-                                value={name}
-                                onChangeValue={(e) => setName(e.target.value)}
-                                id="name"
-                                name="name"
-                                placeholder="Назва кольору"
-                                type="text"
-                            />
-                            <InputField
-                                label="HEX-код"
-                                value={hexCode}
-                                onChangeValue={handleHexCodeChange}
-                                id="hex"
-                                name="hex"
-                                placeholder="#000000"
-                                type="text"
-                                className={`border border-white/10 rounded px-[10px] py-[7px] outline-0 ${
-                                    isValidHex ? "" : "border-red-500"
-                                }`}
-                            />
-                        </div>
+        <ModalWrapper onClose={onClose} modalTitle={"Редагування кольору"}>
+            <form onSubmit={handleSubmit}>
+                <div className="flex flex-col gap-[20px]">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-[20px]">
+                        <InputField
+                            label="Назва"
+                            value={name}
+                            onChangeValue={(e) => setName(e.target.value)}
+                            id="name"
+                            name="name"
+                            placeholder="Назва кольору"
+                            type="text"
+                        />
+                        <InputField
+                            label="HEX-код"
+                            value={hexCode}
+                            onChangeValue={handleHexCodeChange}
+                            id="hex"
+                            name="hex"
+                            placeholder="#000000"
+                            type="text"
+                            className={`border border-white/10 rounded px-[10px] py-[7px] outline-0 ${
+                                isValidHex ? "" : "border-red-500"
+                            }`}
+                        />
                     </div>
-                    <div className="flex justify-end gap-4 mt-6">
-                        <MonoButton
-                            type="button"
-                            onClick={onClose}
-                            disabled={editColorMutation.isPending}
-                        >
-                            Скасувати
-                        </MonoButton>
-                        <MonoButton
-                            type="submit"
-                            disabled={editColorMutation.isPending}
-                        >
-                            {editColorMutation.isPending
-                                ? "Завантаження..."
-                                : "Підтвердити"}
-                        </MonoButton>
-                    </div>
-                </form>
-            </div>
-        </div>
+                </div>
+                <div className="flex justify-end gap-4 mt-6">
+                    <MonoButton
+                        type="button"
+                        onClick={onClose}
+                        disabled={editColorMutation.isPending}
+                    >
+                        Скасувати
+                    </MonoButton>
+                    <MonoButton
+                        type="submit"
+                        disabled={editColorMutation.isPending}
+                    >
+                        {editColorMutation.isPending
+                            ? "Завантаження..."
+                            : "Підтвердити"}
+                    </MonoButton>
+                </div>
+            </form>
+        </ModalWrapper>
     );
 
     return createPortal(modalContent, document.body);
