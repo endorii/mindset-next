@@ -7,6 +7,8 @@ import { useEscapeKeyClose } from "@/shared/hooks/useEscapeKeyClose";
 import { useCreateType } from "../hooks/useTypes";
 import MonoButton from "@/shared/ui/buttons/MonoButton";
 import ModalWrapper from "@/shared/ui/wrappers/ModalWrapper";
+import FormFillingWrapper from "@/shared/ui/wrappers/FormFillingWrapper";
+import FormButtonsWrapper from "@/shared/ui/wrappers/FormButtonsWrapper";
 
 interface AddTypeModalProps {
     isOpen: boolean;
@@ -42,8 +44,8 @@ export default function AddTypeModal({ isOpen, onClose }: AddTypeModalProps) {
 
     const modalContent = (
         <ModalWrapper onClose={onClose} modalTitle={"Додавання типу"}>
-            <form onSubmit={handleSubmit}>
-                <div className="flex gap-[20px] justify-between">
+            <form className="flex flex-col gap-[20px]" onSubmit={handleSubmit}>
+                <FormFillingWrapper>
                     <div className="flex flex-col gap-[20px] w-full">
                         <InputField
                             label={"Назва"}
@@ -55,8 +57,8 @@ export default function AddTypeModal({ isOpen, onClose }: AddTypeModalProps) {
                             type={"text"}
                         />
                     </div>
-                </div>
-                <div className="flex justify-end gap-4 mt-6">
+                </FormFillingWrapper>
+                <FormButtonsWrapper>
                     <MonoButton
                         type="button"
                         onClick={handleClose}
@@ -72,7 +74,7 @@ export default function AddTypeModal({ isOpen, onClose }: AddTypeModalProps) {
                             ? "Завантаження..."
                             : "Додати"}
                     </MonoButton>
-                </div>
+                </FormButtonsWrapper>
             </form>
         </ModalWrapper>
     );

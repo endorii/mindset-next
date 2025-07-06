@@ -13,6 +13,8 @@ import { useEditCategory } from "../hooks/useCategories";
 import { ICategory } from "../types/categories.types";
 import MonoButton from "@/shared/ui/buttons/MonoButton";
 import ModalWrapper from "@/shared/ui/wrappers/ModalWrapper";
+import FormFillingWrapper from "@/shared/ui/wrappers/FormFillingWrapper";
+import FormButtonsWrapper from "@/shared/ui/wrappers/FormButtonsWrapper";
 
 interface EditCategoryModalProps {
     isOpen: boolean;
@@ -96,8 +98,8 @@ export default function EditCategoryModal({
 
     const modalContent = (
         <ModalWrapper onClose={onClose} modalTitle={"Редагування категорії"}>
-            <form onSubmit={handleSubmit}>
-                <div className="flex flex-col gap-[20px]">
+            <form className="flex flex-col gap-[20px]" onSubmit={handleSubmit}>
+                <FormFillingWrapper>
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-[20px]">
                         <InputField
                             label="Назва"
@@ -180,24 +182,24 @@ export default function EditCategoryModal({
                             className="hidden"
                         />
                     </div>
-                    <div className="flex justify-end gap-4 mt-6">
-                        <MonoButton onClick={onClose} type="button">
-                            Скасувати
-                        </MonoButton>
-                        <MonoButton
-                            type="submit"
-                            disabled={
-                                uploadImageMutation.isPending ||
-                                editCategoryMutation.isPending
-                            }
-                        >
-                            {uploadImageMutation.isPending ||
+                </FormFillingWrapper>
+                <FormButtonsWrapper>
+                    <MonoButton onClick={onClose} type="button">
+                        Скасувати
+                    </MonoButton>
+                    <MonoButton
+                        type="submit"
+                        disabled={
+                            uploadImageMutation.isPending ||
                             editCategoryMutation.isPending
-                                ? "Завантаження..."
-                                : "Підтвердити"}
-                        </MonoButton>
-                    </div>
-                </div>
+                        }
+                    >
+                        {uploadImageMutation.isPending ||
+                        editCategoryMutation.isPending
+                            ? "Завантаження..."
+                            : "Підтвердити"}
+                    </MonoButton>
+                </FormButtonsWrapper>
             </form>
         </ModalWrapper>
     );

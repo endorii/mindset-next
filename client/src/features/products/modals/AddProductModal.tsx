@@ -17,6 +17,8 @@ import { useCreateProduct } from "../hooks/useProducts";
 import Image from "next/image";
 import MonoButton from "@/shared/ui/buttons/MonoButton";
 import ModalWrapper from "@/shared/ui/wrappers/ModalWrapper";
+import FormButtonsWrapper from "@/shared/ui/wrappers/FormButtonsWrapper";
+import FormFillingWrapper from "@/shared/ui/wrappers/FormFillingWrapper";
 
 interface AddProductModalProps {
     isOpen: boolean;
@@ -50,8 +52,6 @@ export default function AddProductModal({
     const [colorsToSend, setColorsToSend] = useState<string[]>([]);
     const [sizesToSend, setSizesToSend] = useState<string[]>([]);
     const [typesToSend, setTypesToSend] = useState<string[]>([]);
-
-    const [message, setMessage] = useState("");
 
     const uploadImageMutation = useUploadImage();
     const uploadImagesMutation = useUploadImages();
@@ -116,7 +116,6 @@ export default function AddProductModal({
         setColorsToSend([]);
         setSizesToSend([]);
         setTypesToSend([]);
-        setMessage("");
         onClose();
     };
 
@@ -130,11 +129,9 @@ export default function AddProductModal({
             !composition.trim() ||
             !status
         ) {
-            setMessage("Заповніть усі обов'язкові поля!");
             return;
         }
         if (!banner) {
-            setMessage("Виберіть банер!");
             return;
         }
 
@@ -169,10 +166,8 @@ export default function AddProductModal({
                 },
             });
 
-            setMessage("Товар успішно додано!");
             handleClose();
         } catch (error) {
-            setMessage("Помилка при створенні товару");
             console.error(error);
         }
     };
@@ -180,262 +175,264 @@ export default function AddProductModal({
     const modalContent = (
         <ModalWrapper onClose={onClose} modalTitle={"Додавання товару"}>
             <form onSubmit={handleSubmit} className="flex flex-col gap-[20px]">
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-[20px]">
-                    <InputField
-                        label="Назва"
-                        value={name}
-                        onChangeValue={(e) => setName(e.target.value)}
-                        id="addProductName"
-                        name="addProductName"
-                        placeholder="Назва товару"
-                        type="text"
-                    />
-                    <InputField
-                        label="Шлях"
-                        value={path}
-                        onChangeValue={(e) => setPath(e.target.value)}
-                        id="addProductPath"
-                        name="addProductPath"
-                        placeholder="Шлях"
-                        type="text"
-                    />
-                    <InputField
-                        label="Ціна"
-                        value={price}
-                        onChangeValue={(e) =>
-                            setPrice(
-                                e.target.value === ""
-                                    ? ""
-                                    : Number(e.target.value)
-                            )
-                        }
-                        id="addProductPrice"
-                        name="addProductPrice"
-                        placeholder="Ціна"
-                        type="number"
-                    />
-                    <div className="flex flex-col gap-[7px]">
-                        <label
-                            className="font-semibold text-sm"
-                            htmlFor="available"
-                        >
-                            Доступність
-                        </label>
-                        <select
-                            id="available"
-                            name="available"
-                            className="border border-white/10 rounded p-[10px] outline-0 cursor-pointer bg-black/10"
-                            value={available ? "true" : "false"}
-                            onChange={(e) =>
-                                setAvailable(e.target.value === "true")
+                <FormFillingWrapper>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-[20px]">
+                        <InputField
+                            label="Назва"
+                            value={name}
+                            onChangeValue={(e) => setName(e.target.value)}
+                            id="addProductName"
+                            name="addProductName"
+                            placeholder="Назва товару"
+                            type="text"
+                        />
+                        <InputField
+                            label="Шлях"
+                            value={path}
+                            onChangeValue={(e) => setPath(e.target.value)}
+                            id="addProductPath"
+                            name="addProductPath"
+                            placeholder="Шлях"
+                            type="text"
+                        />
+                        <InputField
+                            label="Ціна"
+                            value={price}
+                            onChangeValue={(e) =>
+                                setPrice(
+                                    e.target.value === ""
+                                        ? ""
+                                        : Number(e.target.value)
+                                )
                             }
-                        >
-                            <option value="true">Доступний</option>
-                            <option value="false">Недоступний</option>
-                        </select>
-                    </div>
-                    <div className="flex flex-col gap-[7px]">
-                        <label
-                            className="font-semibold text-sm"
-                            htmlFor="status"
-                        >
-                            Статус
-                        </label>
-                        <select
-                            id="status"
-                            name="status"
-                            className="border border-white/10 rounded p-[10px] outline-0 cursor-pointer bg-black/10"
-                            value={status ?? ""}
-                            onChange={(e) =>
-                                setStatus(e.target.value as TStatus)
-                            }
-                        >
-                            <option value="" disabled>
-                                Оберіть статус
-                            </option>
-                            {statuses.map((s) => (
-                                <option key={s} value={s}>
-                                    {s}
+                            id="addProductPrice"
+                            name="addProductPrice"
+                            placeholder="Ціна"
+                            type="number"
+                        />
+                        <div className="flex flex-col gap-[7px]">
+                            <label
+                                className="font-semibold text-sm"
+                                htmlFor="available"
+                            >
+                                Доступність
+                            </label>
+                            <select
+                                id="available"
+                                name="available"
+                                className="border border-white/10 rounded p-[10px] outline-0 cursor-pointer bg-black/10"
+                                value={available ? "true" : "false"}
+                                onChange={(e) =>
+                                    setAvailable(e.target.value === "true")
+                                }
+                            >
+                                <option value="true">Доступний</option>
+                                <option value="false">Недоступний</option>
+                            </select>
+                        </div>
+                        <div className="flex flex-col gap-[7px]">
+                            <label
+                                className="font-semibold text-sm"
+                                htmlFor="status"
+                            >
+                                Статус
+                            </label>
+                            <select
+                                id="status"
+                                name="status"
+                                className="border border-white/10 rounded p-[10px] outline-0 cursor-pointer bg-black/10"
+                                value={status ?? ""}
+                                onChange={(e) =>
+                                    setStatus(e.target.value as TStatus)
+                                }
+                            >
+                                <option value="" disabled>
+                                    Оберіть статус
                                 </option>
+                                {statuses.map((s) => (
+                                    <option key={s} value={s}>
+                                        {s}
+                                    </option>
+                                ))}
+                            </select>
+                        </div>
+                    </div>
+
+                    <div className="flex flex-col gap-[7px]">
+                        <label className="font-semibold text-sm">Опис</label>
+                        <textarea
+                            className="resize-none border border-white/10 rounded p-[10px] bg-black/10 outline-0"
+                            rows={3}
+                            value={description}
+                            onChange={(e) => setDescription(e.target.value)}
+                        />
+                    </div>
+
+                    <div className="flex flex-col gap-[7px]">
+                        <label className="font-semibold text-sm">Склад</label>
+                        <textarea
+                            className="resize-none border border-white/10 rounded p-[10px] bg-black/10 outline-0"
+                            rows={3}
+                            value={composition}
+                            onChange={(e) => setComposition(e.target.value)}
+                        />
+                    </div>
+
+                    <div className="flex flex-col gap-2">
+                        <label className="font-semibold text-sm">Кольори</label>
+                        <div className="flex flex-wrap gap-2 max-h-[100px] overflow-y-auto border border-white/10 rounded p-2 bg-black/10">
+                            {allColors?.map((color) => (
+                                <button
+                                    key={color.id}
+                                    type="button"
+                                    onClick={() =>
+                                        toggleSelect(
+                                            color.id,
+                                            colorsToSend,
+                                            setColorsToSend
+                                        )
+                                    }
+                                    className={`px-3 py-1 rounded-full text-sm ${
+                                        colorsToSend.includes(color.id)
+                                            ? "bg-white text-black cursor-default"
+                                            : "border border-white/30 hover:bg-white/20"
+                                    }`}
+                                >
+                                    {color.name}
+                                </button>
                             ))}
-                        </select>
+                        </div>
                     </div>
-                </div>
 
-                <div className="flex flex-col gap-[7px]">
-                    <label className="font-semibold text-sm">Опис</label>
-                    <textarea
-                        className="resize-none border border-white/10 rounded p-[10px] bg-black/10 outline-0"
-                        rows={3}
-                        value={description}
-                        onChange={(e) => setDescription(e.target.value)}
-                    />
-                </div>
-
-                <div className="flex flex-col gap-[7px]">
-                    <label className="font-semibold text-sm">Склад</label>
-                    <textarea
-                        className="resize-none border border-white/10 rounded p-[10px] bg-black/10 outline-0"
-                        rows={3}
-                        value={composition}
-                        onChange={(e) => setComposition(e.target.value)}
-                    />
-                </div>
-
-                <div className="flex flex-col gap-2">
-                    <label className="font-semibold text-sm">Кольори</label>
-                    <div className="flex flex-wrap gap-2 max-h-[100px] overflow-y-auto border border-white/10 rounded p-2 bg-black/10">
-                        {allColors?.map((color) => (
-                            <button
-                                key={color.id}
-                                type="button"
-                                onClick={() =>
-                                    toggleSelect(
-                                        color.id,
-                                        colorsToSend,
-                                        setColorsToSend
-                                    )
-                                }
-                                className={`px-3 py-1 rounded-full text-sm ${
-                                    colorsToSend.includes(color.id)
-                                        ? "bg-white text-black cursor-default"
-                                        : "border border-white/30 hover:bg-white/20"
-                                }`}
-                            >
-                                {color.name}
-                            </button>
-                        ))}
+                    <div className="flex flex-col gap-2">
+                        <label className="font-semibold text-sm">Розміри</label>
+                        <div className="flex flex-wrap gap-2 max-h-[100px] overflow-y-auto border border-white/10 rounded p-2 bg-black/10">
+                            {allSizes?.map((size) => (
+                                <button
+                                    key={size.id}
+                                    type="button"
+                                    onClick={() =>
+                                        toggleSelect(
+                                            size.id,
+                                            sizesToSend,
+                                            setSizesToSend
+                                        )
+                                    }
+                                    className={`px-3 py-1 rounded-full text-sm ${
+                                        sizesToSend.includes(size.id)
+                                            ? "bg-white text-black cursor-default"
+                                            : "border border-white/30 hover:bg-white/20"
+                                    }`}
+                                >
+                                    {size.name}
+                                </button>
+                            ))}
+                        </div>
                     </div>
-                </div>
 
-                <div className="flex flex-col gap-2">
-                    <label className="font-semibold text-sm">Розміри</label>
-                    <div className="flex flex-wrap gap-2 max-h-[100px] overflow-y-auto border border-white/10 rounded p-2 bg-black/10">
-                        {allSizes?.map((size) => (
-                            <button
-                                key={size.id}
-                                type="button"
-                                onClick={() =>
-                                    toggleSelect(
-                                        size.id,
-                                        sizesToSend,
-                                        setSizesToSend
-                                    )
-                                }
-                                className={`px-3 py-1 rounded-full text-sm ${
-                                    sizesToSend.includes(size.id)
-                                        ? "bg-white text-black cursor-default"
-                                        : "border border-white/30 hover:bg-white/20"
-                                }`}
-                            >
-                                {size.name}
-                            </button>
-                        ))}
+                    <div className="flex flex-col gap-2">
+                        <label className="font-semibold text-sm">Типи</label>
+                        <div className="flex flex-wrap gap-2 max-h-[100px] overflow-y-auto border border-white/10 rounded p-2 bg-black/10">
+                            {allTypes?.map((type) => (
+                                <button
+                                    key={type.id}
+                                    type="button"
+                                    onClick={() =>
+                                        toggleSelect(
+                                            type.id,
+                                            typesToSend,
+                                            setTypesToSend
+                                        )
+                                    }
+                                    className={`px-3 py-1 rounded-full text-sm ${
+                                        typesToSend.includes(type.id)
+                                            ? "bg-white text-black cursor-default"
+                                            : "border border-white/30 hover:bg-white/20"
+                                    }`}
+                                >
+                                    {type.name}
+                                </button>
+                            ))}
+                        </div>
                     </div>
-                </div>
 
-                <div className="flex flex-col gap-2">
-                    <label className="font-semibold text-sm">Типи</label>
-                    <div className="flex flex-wrap gap-2 max-h-[100px] overflow-y-auto border border-white/10 rounded p-2 bg-black/10">
-                        {allTypes?.map((type) => (
-                            <button
-                                key={type.id}
-                                type="button"
-                                onClick={() =>
-                                    toggleSelect(
-                                        type.id,
-                                        typesToSend,
-                                        setTypesToSend
-                                    )
-                                }
-                                className={`px-3 py-1 rounded-full text-sm ${
-                                    typesToSend.includes(type.id)
-                                        ? "bg-white text-black cursor-default"
-                                        : "border border-white/30 hover:bg-white/20"
-                                }`}
-                            >
-                                {type.name}
-                            </button>
-                        ))}
-                    </div>
-                </div>
-
-                <div className="flex flex-col gap-[7px] w-full max-w-[300px]">
-                    <label
-                        htmlFor="banner"
-                        className="text-sm font-semibold cursor-pointer"
-                    >
-                        Банер
-                    </label>
-                    <label
-                        htmlFor="banner"
-                        className="min-h-[100px] border border-dashed border-white/20 mt-2 flex items-center justify-center cursor-pointer bg-black/10 hover:bg-black/20 rounded-xl overflow-hidden"
-                    >
-                        {bannerPreview ? (
-                            <Image
-                                src={bannerPreview}
-                                alt="banner"
-                                width={250}
-                                height={250}
-                                className="object-cover"
-                            />
-                        ) : (
-                            <span className="text-5xl text-white">+</span>
-                        )}
-                    </label>
-                    <input
-                        type="file"
-                        id="banner"
-                        accept="image/*"
-                        onChange={handleBannerChange}
-                        className="hidden"
-                    />
-                </div>
-
-                <div className="flex flex-col gap-[7px] w-full max-w-[300px]">
-                    <label htmlFor="images" className="text-sm font-semibold">
-                        Додаткові зображення
-                    </label>
-                    <label
-                        htmlFor="images"
-                        className="min-h-[100px] border border-dashed border-white/20 mt-2 flex items-center justify-center cursor-pointer bg-black/10 hover:bg-black/20 rounded-xl overflow-hidden"
-                    >
-                        <span className="text-4xl text-gray-400">+</span>
-                    </label>
-                    <input
-                        type="file"
-                        id="images"
-                        multiple
-                        accept="image/*"
-                        onChange={handleImagesChange}
-                        className="hidden"
-                    />
-
-                    <div className="flex flex-wrap gap-3 mt-4">
-                        {imagesPreview.map((src, i) => (
-                            <div
-                                key={i}
-                                className="relative group w-[100px] h-[100px] group cursor-pointer"
-                                onClick={() => removeImage(i)}
-                            >
+                    <div className="flex flex-col gap-[7px] w-full max-w-[300px]">
+                        <label
+                            htmlFor="banner"
+                            className="text-sm font-semibold cursor-pointer"
+                        >
+                            Банер
+                        </label>
+                        <label
+                            htmlFor="banner"
+                            className="min-h-[100px] border border-dashed border-white/20 mt-2 flex items-center justify-center cursor-pointer bg-black/10 hover:bg-black/20 rounded-xl overflow-hidden"
+                        >
+                            {bannerPreview ? (
                                 <Image
-                                    src={src}
-                                    alt={`img-${i}`}
-                                    width={100}
-                                    height={100}
-                                    className="object-cover rounded-md"
+                                    src={bannerPreview}
+                                    alt="banner"
+                                    width={250}
+                                    height={250}
+                                    className="object-cover"
                                 />
-                                <div className="absolute flex items-center justify-center opacity-0 rounded group-hover:opacity-100 top-0 right-0 bg-black/40 w-full h-full transition-all duration-200">
-                                    <TrashIcon className=" w-[35px] fill-none  stroke-white stroke-[1.5] " />
-                                </div>
-                            </div>
-                        ))}
+                            ) : (
+                                <span className="text-5xl text-white">+</span>
+                            )}
+                        </label>
+                        <input
+                            type="file"
+                            id="banner"
+                            accept="image/*"
+                            onChange={handleBannerChange}
+                            className="hidden"
+                        />
                     </div>
-                </div>
 
-                {message && <p className="mt-4 text-red-500">{message}</p>}
+                    <div className="flex flex-col gap-[7px] w-full max-w-[300px]">
+                        <label
+                            htmlFor="images"
+                            className="text-sm font-semibold"
+                        >
+                            Додаткові зображення
+                        </label>
+                        <label
+                            htmlFor="images"
+                            className="min-h-[100px] border border-dashed border-white/20 mt-2 flex items-center justify-center cursor-pointer bg-black/10 hover:bg-black/20 rounded-xl overflow-hidden"
+                        >
+                            <span className="text-4xl text-gray-400">+</span>
+                        </label>
+                        <input
+                            type="file"
+                            id="images"
+                            multiple
+                            accept="image/*"
+                            onChange={handleImagesChange}
+                            className="hidden"
+                        />
 
-                <div className="flex justify-end gap-4 mt-6">
+                        <div className="flex flex-wrap gap-3 mt-4">
+                            {imagesPreview.map((src, i) => (
+                                <div
+                                    key={i}
+                                    className="relative group w-[100px] h-[100px] group cursor-pointer"
+                                    onClick={() => removeImage(i)}
+                                >
+                                    <Image
+                                        src={src}
+                                        alt={`img-${i}`}
+                                        width={100}
+                                        height={100}
+                                        className="object-cover rounded-md"
+                                    />
+                                    <div className="absolute flex items-center justify-center opacity-0 rounded group-hover:opacity-100 top-0 right-0 bg-black/40 w-full h-full transition-all duration-200">
+                                        <TrashIcon className=" w-[35px] fill-none  stroke-white stroke-[1.5] " />
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </FormFillingWrapper>
+                <FormButtonsWrapper>
                     <MonoButton
                         type="button"
                         onClick={handleClose}
@@ -458,7 +455,7 @@ export default function AddProductModal({
                             ? "Завантаження..."
                             : "Додати"}
                     </MonoButton>
-                </div>
+                </FormButtonsWrapper>
             </form>
         </ModalWrapper>
     );

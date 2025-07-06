@@ -11,6 +11,8 @@ import { useCreateCollection } from "../hooks/useCollections";
 import Image from "next/image";
 import MonoButton from "@/shared/ui/buttons/MonoButton";
 import ModalWrapper from "@/shared/ui/wrappers/ModalWrapper";
+import FormButtonsWrapper from "@/shared/ui/wrappers/FormButtonsWrapper";
+import FormFillingWrapper from "@/shared/ui/wrappers/FormFillingWrapper";
 
 interface AddCollectionModalProps {
     isOpen: boolean;
@@ -26,7 +28,6 @@ export default function AddCollectionModal({
     const [banner, setBanner] = useState<File | null>(null);
     const [status, setStatus] = useState<TStatus>("INACTIVE");
     const [preview, setPreview] = useState<string | null>(null);
-    const [message, setMessage] = useState<string>("");
 
     const uploadImageMutation = useUploadImage();
     const createCollectionMutation = useCreateCollection();
@@ -46,20 +47,16 @@ export default function AddCollectionModal({
         setBanner(null);
         setStatus("INACTIVE");
         setPreview(null);
-        setMessage("");
         onClose();
     };
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        setMessage("");
 
         if (!name.trim() || !path.trim() || !status) {
-            setMessage("Заповніть усі обов'язкові поля!");
             return;
         }
         if (!banner) {
-            setMessage("Виберіть зображення для банера!");
             return;
         }
 
@@ -75,13 +72,9 @@ export default function AddCollectionModal({
                 status,
             });
 
-            setMessage("Колекцію успішно додано!");
             handleClose();
         } catch (error: any) {
             console.error("Помилка при створенні колекції:", error);
-            const errorMessage =
-                error.message || "Невідома помилка при створенні колекції.";
-            setMessage(`Помилка: ${errorMessage}`);
         }
     };
 
@@ -91,8 +84,8 @@ export default function AddCollectionModal({
 
     const modalContent = (
         <ModalWrapper onClose={onClose} modalTitle={"Додавання колекції"}>
-            <form onSubmit={handleSubmit}>
-                <div className="flex flex-col gap-[20px]">
+            <form className="flex flex-col gap-[20px]" onSubmit={handleSubmit}>
+                <FormFillingWrapper>
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-[20px]">
                         <InputField
                             label={"Назва"}
@@ -174,9 +167,8 @@ export default function AddCollectionModal({
                             className="hidden"
                         />
                     </div>
-                </div>
-                {message && <p className="mt-4 text-red-500">{message}</p>}
-                <div className="flex justify-end gap-4 mt-6">
+                </FormFillingWrapper>
+                <FormButtonsWrapper>
                     <MonoButton
                         type="button"
                         onClick={handleClose}
@@ -199,7 +191,7 @@ export default function AddCollectionModal({
                             ? "Завантаження..."
                             : "Додати"}
                     </MonoButton>
-                </div>
+                </FormButtonsWrapper>
             </form>
         </ModalWrapper>
     );

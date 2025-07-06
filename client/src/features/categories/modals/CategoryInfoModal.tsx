@@ -9,6 +9,8 @@ import { createPortal } from "react-dom";
 import { ICategory } from "../types/categories.types";
 import MonoButton from "@/shared/ui/buttons/MonoButton";
 import ModalWrapper from "@/shared/ui/wrappers/ModalWrapper";
+import FormFillingWrapper from "@/shared/ui/wrappers/FormFillingWrapper";
+import FormButtonsWrapper from "@/shared/ui/wrappers/FormButtonsWrapper";
 
 interface CategoryInfoModalProps {
     isOpen: boolean;
@@ -40,7 +42,7 @@ export default function CategoryInfoModal({
 
     const modalContent = (
         <ModalWrapper onClose={onClose} modalTitle={"Інформація про категорію"}>
-            <div className="flex flex-col gap-[20px]">
+            <FormFillingWrapper>
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-[20px]">
                     <InfoField label="Назва" value={name} />
                     <InfoField label="Шлях" value={path} />
@@ -77,11 +79,11 @@ export default function CategoryInfoModal({
                         />
                     </div>
                 </div>
-            </div>
+            </FormFillingWrapper>
 
-            <div className="flex justify-end mt-6">
+            <FormButtonsWrapper>
                 <MonoButton onClick={onClose}>Закрити</MonoButton>
-            </div>
+            </FormButtonsWrapper>
         </ModalWrapper>
     );
 

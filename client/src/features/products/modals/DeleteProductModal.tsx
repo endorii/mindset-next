@@ -10,6 +10,7 @@ import { IProduct } from "../types/products.types";
 import MonoButton from "@/shared/ui/buttons/MonoButton";
 import DeleteButton from "@/shared/ui/buttons/DeleteButton";
 import ModalWrapper from "@/shared/ui/wrappers/ModalWrapper";
+import FormButtonsWrapper from "@/shared/ui/wrappers/FormButtonsWrapper";
 
 interface DeleteProductModalProps {
     isOpen: boolean;
@@ -56,12 +57,12 @@ export default function DeleteProductModal({
                 </span>
                 ?
             </div>
-            <div className="flex justify-end gap-4">
+            <FormButtonsWrapper>
                 <MonoButton type="button" onClick={onClose}>
                     Скасувати
                 </MonoButton>
                 <DeleteButton onClick={handleDelete}>Видалити</DeleteButton>
-            </div>
+            </FormButtonsWrapper>
         </ModalWrapper>
     );
 

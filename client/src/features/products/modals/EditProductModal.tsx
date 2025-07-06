@@ -20,6 +20,8 @@ import { useEscapeKeyClose } from "@/shared/hooks/useEscapeKeyClose";
 import { statuses } from "@/shared/utils/helpers";
 import MonoButton from "@/shared/ui/buttons/MonoButton";
 import ModalWrapper from "@/shared/ui/wrappers/ModalWrapper";
+import FormFillingWrapper from "@/shared/ui/wrappers/FormFillingWrapper";
+import FormButtonsWrapper from "@/shared/ui/wrappers/FormButtonsWrapper";
 
 interface EditProductModalProps {
     isOpen: boolean;
@@ -42,7 +44,7 @@ export default function EditProductModal({
     const [available, setAvailable] = useState<boolean | null>(null);
     const [description, setDescription] = useState("");
     const [composition, setComposition] = useState("");
-    const [status, setStatus] = useState<TStatus | null>(null);
+    const [status, setStatus] = useState<TStatus>("INACTIVE");
 
     const [banner, setBanner] = useState<File | string | null>(null);
     const [bannerPreview, setBannerPreview] = useState<string | null>(null);
@@ -53,8 +55,6 @@ export default function EditProductModal({
     const [colorsToSend, setColorsToSend] = useState<IColor[] | []>([]);
     const [sizesToSend, setSizesToSend] = useState<ISize[] | []>([]);
     const [typesToSend, setTypesToSend] = useState<IType[] | []>([]);
-
-    const [message, setMessage] = useState("");
 
     const uploadImageMutation = useUploadImage();
     // const uploadImagesMutation = useUploadImages();
@@ -161,10 +161,8 @@ export default function EditProductModal({
             !description ||
             !composition
         ) {
-            return setMessage("Заповніть усі поля!");
         }
         if (!banner) {
-            return setMessage("Оберіть банер!");
         }
 
         try {
@@ -206,11 +204,9 @@ export default function EditProductModal({
                 },
             });
 
-            setMessage("Товар успішно оновлено!");
             handleClose();
         } catch (err) {
             console.error("Помилка при оновленні товару:", err);
-            setMessage("Помилка при оновленні товару");
         }
     };
 
@@ -220,8 +216,8 @@ export default function EditProductModal({
 
     const modalContent = (
         <ModalWrapper onClose={onClose} modalTitle={"Редагування товару"}>
-            <form onSubmit={handleSubmit}>
-                <div className="flex flex-col gap-[20px]">
+            <form className="flex flex-col gap-[20px]" onSubmit={handleSubmit}>
+                <FormFillingWrapper>
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-[20px]">
                         <InputField
                             label={"Назва"}
@@ -591,14 +587,13 @@ export default function EditProductModal({
                             </div>
                         </div>
                     </div>
-                </div>
-                {message && <p className="text-red-500 mt-4">{message}</p>}
-                <div className="flex justify-end gap-4 mt-[30px]">
+                </FormFillingWrapper>
+                <FormButtonsWrapper>
                     <MonoButton type="button" onClick={handleClose}>
                         Скасувати
                     </MonoButton>
                     <MonoButton type="submit">Зберегти</MonoButton>
-                </div>
+                </FormButtonsWrapper>
             </form>
         </ModalWrapper>
     );

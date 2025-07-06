@@ -8,6 +8,7 @@ import { ICollection } from "../types/collections.types";
 import MonoButton from "@/shared/ui/buttons/MonoButton";
 import DeleteButton from "@/shared/ui/buttons/DeleteButton";
 import ModalWrapper from "@/shared/ui/wrappers/ModalWrapper";
+import FormButtonsWrapper from "@/shared/ui/wrappers/FormButtonsWrapper";
 
 interface DeleteCollectionModalProps {
     isOpen: boolean;
@@ -44,7 +45,7 @@ export default function DeleteCollectionModal({
                 </span>
                 ?
             </div>
-            <div className="flex justify-end gap-4 mt-[20px]">
+            <FormButtonsWrapper>
                 <MonoButton onClick={onClose}>Скасувати</MonoButton>
                 <DeleteButton
                     onClick={() => {
@@ -54,7 +55,7 @@ export default function DeleteCollectionModal({
                 >
                     Видалити
                 </DeleteButton>
-            </div>
+            </FormButtonsWrapper>
         </ModalWrapper>
     );
 

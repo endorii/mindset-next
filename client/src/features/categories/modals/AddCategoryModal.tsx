@@ -12,6 +12,8 @@ import { useCreateCategory } from "../hooks/useCategories";
 import Image from "next/image";
 import MonoButton from "@/shared/ui/buttons/MonoButton";
 import ModalWrapper from "@/shared/ui/wrappers/ModalWrapper";
+import FormFillingWrapper from "@/shared/ui/wrappers/FormFillingWrapper";
+import FormButtonsWrapper from "@/shared/ui/wrappers/FormButtonsWrapper";
 
 interface AddCategoryModalProps {
     isOpen: boolean;
@@ -32,7 +34,6 @@ export default function AddCategoryModal({
     const [status, setStatus] = useState<TStatus>("INACTIVE");
 
     const [preview, setPreview] = useState<string | null>(null);
-    const [message, setMessage] = useState<string>("");
 
     const uploadImageMutation = useUploadImage();
     const createCategoryMutation = useCreateCategory();
@@ -52,7 +53,6 @@ export default function AddCategoryModal({
         setBanner(null);
         setStatus("INACTIVE");
         setPreview(null);
-        setMessage("");
         onClose();
     };
 
@@ -60,11 +60,9 @@ export default function AddCategoryModal({
         e.preventDefault();
 
         if (!name.trim() || !path.trim() || !status) {
-            setMessage("Заповніть усі обов'язкові поля!");
             return;
         }
         if (!banner) {
-            setMessage("Виберіть зображення для банера!");
             return;
         }
 
@@ -84,10 +82,8 @@ export default function AddCategoryModal({
                 },
             });
 
-            setMessage("Категорію успішно додано!");
             handleClose();
         } catch (error) {
-            setMessage("Помилка при створенні категорії");
             console.error(error);
         }
     };
@@ -98,8 +94,8 @@ export default function AddCategoryModal({
 
     const modalContent = (
         <ModalWrapper onClose={onClose} modalTitle={"Додавання категорії"}>
-            <form onSubmit={handleSubmit}>
-                <div className="flex flex-col gap-[20px]">
+            <form className="flex flex-col gap-[20px]" onSubmit={handleSubmit}>
+                <FormFillingWrapper>
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-[20px]">
                         <InputField
                             label="Назва"
@@ -184,9 +180,8 @@ export default function AddCategoryModal({
                             className="hidden"
                         />
                     </div>
-                </div>
-                {message && <p className="mt-4 text-red-500">{message}</p>}
-                <div className="flex justify-end gap-4 mt-6">
+                </FormFillingWrapper>
+                <FormButtonsWrapper>
                     <MonoButton
                         type="button"
                         onClick={handleClose}
@@ -209,7 +204,7 @@ export default function AddCategoryModal({
                             ? "Завантаження..."
                             : "Додати"}
                     </MonoButton>
-                </div>
+                </FormButtonsWrapper>
             </form>
         </ModalWrapper>
     );

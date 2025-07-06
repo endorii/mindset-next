@@ -8,6 +8,8 @@ import { useState, useEffect } from "react";
 import { createPortal } from "react-dom";
 import MonoButton from "@/shared/ui/buttons/MonoButton";
 import ModalWrapper from "@/shared/ui/wrappers/ModalWrapper";
+import FormFillingWrapper from "@/shared/ui/wrappers/FormFillingWrapper";
+import FormButtonsWrapper from "@/shared/ui/wrappers/FormButtonsWrapper";
 
 interface EditUserInfoModalProps {
     isOpen: boolean;
@@ -66,8 +68,8 @@ export default function EditUserInfoModal({
             onClose={onClose}
             modalTitle={"Редагування інформації користувача"}
         >
-            <form onSubmit={handleSubmit}>
-                <div className="flex flex-col gap-[20px]">
+            <form className="flex flex-col gap-[20px]" onSubmit={handleSubmit}>
+                <FormFillingWrapper>
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-[20px]">
                         <InputField
                             label={"Нікнейм"}
@@ -99,11 +101,11 @@ export default function EditUserInfoModal({
                             type={"text"}
                         />
                     </div>
-                </div>
-                <div className="flex justify-end gap-4 mt-6">
+                </FormFillingWrapper>
+                <FormButtonsWrapper>
                     <MonoButton onClick={onClose}>Скасувати</MonoButton>
                     <MonoButton type="submit">Підтвердити</MonoButton>
-                </div>
+                </FormButtonsWrapper>
             </form>
         </ModalWrapper>
     );

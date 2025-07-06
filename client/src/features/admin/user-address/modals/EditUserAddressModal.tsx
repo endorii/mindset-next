@@ -8,6 +8,8 @@ import InputField from "@/shared/ui/inputs/InputField";
 import { IUserShippingAdress } from "../../user-info/types/user.types";
 import MonoButton from "@/shared/ui/buttons/MonoButton";
 import ModalWrapper from "@/shared/ui/wrappers/ModalWrapper";
+import FormFillingWrapper from "@/shared/ui/wrappers/FormFillingWrapper";
+import FormButtonsWrapper from "@/shared/ui/wrappers/FormButtonsWrapper";
 
 interface EditUserAddressModalProps {
     isOpen: boolean;
@@ -81,8 +83,8 @@ export default function EditUserAddressModal({
             onClose={onClose}
             modalTitle={"Редагування адреси доставки"}
         >
-            <form onSubmit={handleSubmit}>
-                <div className="flex flex-col gap-[20px]">
+            <form className="flex flex-col gap-[20px]" onSubmit={handleSubmit}>
+                <FormFillingWrapper>
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-[20px]">
                         <InputField
                             label={"Одержувач (ПІБ)"}
@@ -157,11 +159,11 @@ export default function EditUserAddressModal({
                             type={"text"}
                         />
                     </div>
-                </div>
-                <div className="flex justify-end gap-4 mt-6">
+                </FormFillingWrapper>
+                <FormButtonsWrapper>
                     <MonoButton onClick={onClose}>Скасувати</MonoButton>
                     <MonoButton type="submit">Підтвердити</MonoButton>
-                </div>
+                </FormButtonsWrapper>
             </form>
         </ModalWrapper>
     );

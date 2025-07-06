@@ -7,6 +7,8 @@ import { useEscapeKeyClose } from "@/shared/hooks/useEscapeKeyClose";
 import { useCreateColor } from "../hooks/useColors";
 import MonoButton from "@/shared/ui/buttons/MonoButton";
 import ModalWrapper from "@/shared/ui/wrappers/ModalWrapper";
+import FormFillingWrapper from "@/shared/ui/wrappers/FormFillingWrapper";
+import FormButtonsWrapper from "@/shared/ui/wrappers/FormButtonsWrapper";
 
 interface AddColorModalProps {
     isOpen: boolean;
@@ -52,8 +54,8 @@ export default function AddColorModal({ isOpen, onClose }: AddColorModalProps) {
 
     const modalContent = (
         <ModalWrapper onClose={onClose} modalTitle={"Додавання кольору"}>
-            <form onSubmit={handleSubmit}>
-                <div className="flex flex-col gap-[20px]">
+            <form className="flex flex-col gap-[20px]" onSubmit={handleSubmit}>
+                <FormFillingWrapper>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-[20px]">
                         <InputField
                             label={"Назва"}
@@ -74,8 +76,8 @@ export default function AddColorModal({ isOpen, onClose }: AddColorModalProps) {
                             type={"text"}
                         />
                     </div>
-                </div>
-                <div className="flex justify-end gap-[15px] mt-6">
+                </FormFillingWrapper>
+                <FormButtonsWrapper>
                     <MonoButton
                         onClick={handleClose}
                         type="button"
@@ -93,7 +95,7 @@ export default function AddColorModal({ isOpen, onClose }: AddColorModalProps) {
                             ? "Завантаження..."
                             : "Додати"}
                     </MonoButton>
-                </div>
+                </FormButtonsWrapper>
             </form>
         </ModalWrapper>
     );

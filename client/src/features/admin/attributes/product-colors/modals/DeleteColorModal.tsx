@@ -7,6 +7,7 @@ import { createPortal } from "react-dom";
 import MonoButton from "@/shared/ui/buttons/MonoButton";
 import DeleteButton from "@/shared/ui/buttons/DeleteButton";
 import ModalWrapper from "@/shared/ui/wrappers/ModalWrapper";
+import FormButtonsWrapper from "@/shared/ui/wrappers/FormButtonsWrapper";
 
 interface DeleteColorModalProps {
     isOpen: boolean;
@@ -39,7 +40,7 @@ export default function DeleteColorModal({
                 Ви дійсно хочете видалити колір{" "}
                 <span className="font-semibold">{color.name}</span>?
             </div>
-            <div className="flex justify-end gap-4">
+            <FormButtonsWrapper>
                 <MonoButton
                     onClick={onClose}
                     disabled={deleteColorMutation.isPending}
@@ -57,7 +58,7 @@ export default function DeleteColorModal({
                         ? "Видалення..."
                         : "Видалити"}
                 </DeleteButton>
-            </div>
+            </FormButtonsWrapper>
         </ModalWrapper>
     );
 

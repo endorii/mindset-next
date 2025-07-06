@@ -13,6 +13,8 @@ import { useEditCollection } from "../hooks/useCollections";
 import { ICollection } from "../types/collections.types";
 import MonoButton from "@/shared/ui/buttons/MonoButton";
 import ModalWrapper from "@/shared/ui/wrappers/ModalWrapper";
+import FormButtonsWrapper from "@/shared/ui/wrappers/FormButtonsWrapper";
+import FormFillingWrapper from "@/shared/ui/wrappers/FormFillingWrapper";
 
 interface EditCollectionModalProps {
     isOpen: boolean;
@@ -106,8 +108,8 @@ export default function EditCollectionModal({
             onClose={onClose}
             modalTitle={`Редагування колекції ${name}`}
         >
-            <form onSubmit={handleSubmit}>
-                <div className="flex flex-col gap-[20px]">
+            <form className="flex flex-col gap-[20px]" onSubmit={handleSubmit}>
+                <FormFillingWrapper>
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-[20px]">
                         <InputField
                             label={"Назва"}
@@ -199,8 +201,8 @@ export default function EditCollectionModal({
                             className="hidden"
                         />
                     </div>
-                </div>
-                <div className="flex justify-end gap-4 mt-6">
+                </FormFillingWrapper>
+                <FormButtonsWrapper>
                     <MonoButton type="button" onClick={onClose}>
                         Скасувати
                     </MonoButton>
@@ -216,7 +218,7 @@ export default function EditCollectionModal({
                             ? "Завантаження..."
                             : "Підтвердити"}
                     </MonoButton>
-                </div>
+                </FormButtonsWrapper>
             </form>
         </ModalWrapper>
     );

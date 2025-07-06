@@ -8,6 +8,8 @@ import { useState, useEffect } from "react";
 import { createPortal } from "react-dom";
 import MonoButton from "@/shared/ui/buttons/MonoButton";
 import ModalWrapper from "@/shared/ui/wrappers/ModalWrapper";
+import FormFillingWrapper from "@/shared/ui/wrappers/FormFillingWrapper";
+import FormButtonsWrapper from "@/shared/ui/wrappers/FormButtonsWrapper";
 
 interface EditColorProps {
     isOpen: boolean;
@@ -74,8 +76,8 @@ export default function EditColorModal({
 
     const modalContent = (
         <ModalWrapper onClose={onClose} modalTitle={"Редагування кольору"}>
-            <form onSubmit={handleSubmit}>
-                <div className="flex flex-col gap-[20px]">
+            <form className="flex flex-col gap-[20px]" onSubmit={handleSubmit}>
+                <FormFillingWrapper>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-[20px]">
                         <InputField
                             label="Назва"
@@ -99,8 +101,8 @@ export default function EditColorModal({
                             }`}
                         />
                     </div>
-                </div>
-                <div className="flex justify-end gap-4 mt-6">
+                </FormFillingWrapper>
+                <FormButtonsWrapper>
                     <MonoButton
                         type="button"
                         onClick={onClose}
@@ -116,7 +118,7 @@ export default function EditColorModal({
                             ? "Завантаження..."
                             : "Підтвердити"}
                     </MonoButton>
-                </div>
+                </FormButtonsWrapper>
             </form>
         </ModalWrapper>
     );

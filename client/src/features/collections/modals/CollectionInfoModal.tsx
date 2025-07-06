@@ -8,6 +8,8 @@ import { ICollection } from "../types/collections.types";
 import Image from "next/image";
 import MonoButton from "@/shared/ui/buttons/MonoButton";
 import ModalWrapper from "@/shared/ui/wrappers/ModalWrapper";
+import FormFillingWrapper from "@/shared/ui/wrappers/FormFillingWrapper";
+import FormButtonsWrapper from "@/shared/ui/wrappers/FormButtonsWrapper";
 
 export interface CollectionInfoModalProps {
     isOpen: boolean;
@@ -40,7 +42,7 @@ export default function CollectionInfoModal({
             onClose={onClose}
             modalTitle={`Інформація про колекцію ${name}`}
         >
-            <div className="flex flex-col gap-[20px]">
+            <FormFillingWrapper>
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-[20px]">
                     <InfoField label={"Назва"} value={name} />
                     <InfoField label={"Шлях"} value={path} />
@@ -72,11 +74,10 @@ export default function CollectionInfoModal({
                         />
                     </div>
                 </div>
-            </div>
-
-            <div className="flex justify-end mt-6">
+            </FormFillingWrapper>
+            <FormButtonsWrapper>
                 <MonoButton onClick={onClose}>Закрити</MonoButton>
-            </div>
+            </FormButtonsWrapper>
         </ModalWrapper>
     );
 

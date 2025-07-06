@@ -9,6 +9,7 @@ import { ICategory } from "../types/categories.types";
 import MonoButton from "@/shared/ui/buttons/MonoButton";
 import DeleteButton from "@/shared/ui/buttons/DeleteButton";
 import ModalWrapper from "@/shared/ui/wrappers/ModalWrapper";
+import FormButtonsWrapper from "@/shared/ui/wrappers/FormButtonsWrapper";
 
 interface DeleteCategoryModalProps {
     isOpen: boolean;
@@ -49,7 +50,7 @@ export default function DeleteCategoryModal({
                 Ви дійсно хочете видалити категорію{" "}
                 <strong>{category?.name || "Без назви"}</strong>?
             </div>
-            <div className="flex justify-end gap-4">
+            <FormButtonsWrapper>
                 <MonoButton onClick={onClose}>Скасувати</MonoButton>
                 <DeleteButton
                     onClick={() => {
@@ -59,7 +60,7 @@ export default function DeleteCategoryModal({
                 >
                     Видалити
                 </DeleteButton>
-            </div>
+            </FormButtonsWrapper>
         </ModalWrapper>
     );
 

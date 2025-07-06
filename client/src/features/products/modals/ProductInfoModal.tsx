@@ -10,6 +10,8 @@ import { createPortal } from "react-dom";
 import { IProduct } from "../types/products.types";
 import MonoButton from "@/shared/ui/buttons/MonoButton";
 import ModalWrapper from "@/shared/ui/wrappers/ModalWrapper";
+import FormFillingWrapper from "@/shared/ui/wrappers/FormFillingWrapper";
+import FormButtonsWrapper from "@/shared/ui/wrappers/FormButtonsWrapper";
 
 export interface ProductInfoModalProps {
     isOpen: boolean;
@@ -50,7 +52,7 @@ export default function ProductInfoModal({
 
     const modalContent = (
         <ModalWrapper onClose={onClose} modalTitle={"Інформація про товар"}>
-            <div className="flex flex-col gap-[20px]">
+            <FormFillingWrapper>
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-[20px]">
                     <InfoField label="Назва" value={name} />
                     <InfoField label="Шлях" value={path} />
@@ -183,11 +185,10 @@ export default function ProductInfoModal({
                         </div>
                     </div>
                 </div>
-            </div>
-
-            <div className="flex justify-end gap-4 mt-6">
+            </FormFillingWrapper>
+            <FormButtonsWrapper>
                 <MonoButton onClick={onClose}>Закрити</MonoButton>
-            </div>
+            </FormButtonsWrapper>
         </ModalWrapper>
     );
 

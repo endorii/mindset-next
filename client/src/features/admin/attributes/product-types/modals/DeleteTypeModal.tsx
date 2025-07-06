@@ -7,6 +7,7 @@ import { createPortal } from "react-dom";
 import MonoButton from "@/shared/ui/buttons/MonoButton";
 import DeleteButton from "@/shared/ui/buttons/DeleteButton";
 import ModalWrapper from "@/shared/ui/wrappers/ModalWrapper";
+import FormButtonsWrapper from "@/shared/ui/wrappers/FormButtonsWrapper";
 
 interface DeleteTypeModalProps {
     isOpen: boolean;
@@ -38,7 +39,7 @@ export default function DeleteTypeModal({
             <div className="mb-6">
                 Ви дійсно хочете видалити тип {type?.name}?
             </div>
-            <div className="flex justify-end gap-4">
+            <FormButtonsWrapper>
                 <MonoButton onClick={onClose}>Скасувати</MonoButton>
                 <DeleteButton
                     onClick={async () => {
@@ -48,7 +49,7 @@ export default function DeleteTypeModal({
                 >
                     Видалити
                 </DeleteButton>
-            </div>
+            </FormButtonsWrapper>
         </ModalWrapper>
     );
 
