@@ -8,13 +8,13 @@ export async function fetchUser(email: string): Promise<IUser> {
 
         if (!response.ok) {
             const errorData = await response.json().catch(() => ({}));
-            throw new Error(errorData.message || "Помилка отримання юзера");
+            throw new Error(errorData.message || "Помилка отримання користувача");
         }
 
         return await response.json();
     } catch (error) {
         console.error("Fetch error fetching user:", error);
-        throw new Error("Помилка отримання юзера");
+        throw new Error("Помилка отримання користувача");
     }
 }
 
@@ -31,12 +31,12 @@ export async function editUser(id: string, data: Partial<IUser>): Promise<IUser>
 
         if (!response.ok) {
             const errorData = await response.json().catch(() => ({}));
-            throw new Error(errorData.message || "Не вдалося оновити дані про юзера");
+            throw new Error(errorData.message || "Не вдалося оновити дані про користувача");
         }
 
         return await response.json();
     } catch (error) {
         console.error("Fetch error updating user:", error);
-        throw new Error("Не вдалося оновити дані про юзера");
+        throw new Error("Не вдалося оновити дані про користувача");
     }
 }

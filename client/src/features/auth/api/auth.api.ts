@@ -62,13 +62,15 @@ export async function getCurrentUser(): Promise<IUser> {
 
         if (!response.ok) {
             const errorData = await response.json().catch(() => ({}));
-            throw new Error(errorData.message || "Помилка отримання даних користувача");
+            throw new Error(
+                errorData.message || "Помилка отримання даних авторизованого користувача"
+            );
         }
 
         return await response.json();
     } catch (error) {
         console.error("Fetch error getting current user:", error);
-        throw error;
+        throw new Error("Помилка отримання даних авторизованого користувача");
     }
 }
 
@@ -84,13 +86,13 @@ export async function refreshToken(): Promise<IAuthResponse> {
 
         if (!response.ok) {
             const errorData = await response.json().catch(() => ({}));
-            throw new Error(errorData.message || "Помилка оновлення токена");
+            throw new Error(errorData.message || "Помилка оновлення refresh токена");
         }
 
         return await response.json();
     } catch (error) {
         console.error("Fetch error refreshing token:", error);
-        throw new Error("Помилка оновлення токена");
+        throw new Error("Помилка оновлення refresh токена");
     }
 }
 

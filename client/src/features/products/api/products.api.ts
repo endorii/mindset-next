@@ -15,13 +15,13 @@ export async function fetchProducts(
 
         if (!response.ok) {
             const errorData = await response.json().catch(() => ({}));
-            throw new Error(errorData.message || "Помилка отримання продуктів");
+            throw new Error(errorData.message || "Помилка отримання товарів");
         }
 
         return await response.json();
     } catch (error) {
         console.error("Fetch error fetching products:", error);
-        throw new Error("Помилка отримання продуктів");
+        throw new Error("Помилка отримання товарів");
     }
 }
 
@@ -37,13 +37,13 @@ export async function fetchProduct(
 
         if (!response.ok) {
             const errorData = await response.json().catch(() => ({}));
-            throw new Error(errorData.message || "Помилка отримання продукту");
+            throw new Error(errorData.message || "Помилка отримання товару");
         }
 
         return await response.json();
     } catch (error) {
         console.error("Fetch error fetching product:", error);
-        throw new Error("Помилка отримання продукту");
+        throw new Error("Помилка отримання товару");
     }
 }
 
@@ -67,13 +67,13 @@ export async function addProductToCategory(
 
         if (!response.ok) {
             const errorData = await response.json().catch(() => ({}));
-            throw new Error(errorData.message || "Помилка додавання продукту");
+            throw new Error(errorData.message || "Помилка додавання товару");
         }
 
         return await response.json();
     } catch (error) {
         console.error("Fetch error adding product:", error);
-        throw new Error("Помилка додавання продукту");
+        throw new Error("Помилка додавання товару");
     }
 }
 
@@ -101,13 +101,13 @@ export async function editProduct(
 
         if (!response.ok) {
             const errorData = await response.json().catch(() => ({}));
-            throw new Error(errorData.message || "Не вдалося оновити продукт");
+            throw new Error(errorData.message || "Не вдалося оновити товар");
         }
 
         return await response.json();
     } catch (error) {
         console.error("Fetch error updating product:", error);
-        throw new Error("Не вдалося оновити продукт");
+        throw new Error("Не вдалося оновити товар");
     }
 }
 

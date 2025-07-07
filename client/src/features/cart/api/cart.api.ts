@@ -19,7 +19,7 @@ export async function addCartItemToUser(userId: string, cartItem: ICartItem): Pr
         }
         return await response.json();
     } catch (error) {
-        console.error("Fetch error fetching cart:", error);
+        console.error("Fetch error add item to cart:", error);
         throw new Error("Помилка додавання товару в кошик");
     }
 }
@@ -51,10 +51,10 @@ export async function deleteCartItemFromUser(userId: string, productId: string):
 
         if (!response.ok) {
             const errorData = await response.json().catch(() => ({}));
-            throw new Error(errorData.message || "Не вдалося видалити улюблений товар");
+            throw new Error(errorData.message || "Не вдалося видалити товар з кошика");
         }
     } catch (error) {
-        console.error("Fetch error deleting cart item:", error);
+        console.error("Fetch error deleting item from cart:", error);
         throw new Error("Не вдалося видалити товар з кошика");
     }
 }

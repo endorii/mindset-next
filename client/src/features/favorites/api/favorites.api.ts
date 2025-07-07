@@ -18,12 +18,12 @@ export async function addFavoriteToUser(
 
         if (!response.ok) {
             const errorData = await response.json().catch(() => ({}));
-            throw new Error(errorData.message || "Помилка додавання улюбленого товару");
+            throw new Error(errorData.message || "Помилка додавання товару в улюблене");
         }
         return await response.json();
     } catch (error) {
-        console.error("Fetch error fetching favorites:", error);
-        throw new Error("Помилка додавання улюбленого товару");
+        console.error("Fetch error add item to favorites:", error);
+        throw new Error("Помилка додавання товару в улюблене");
     }
 }
 
@@ -35,13 +35,15 @@ export async function fetchFavoritesFromUser(userId: string): Promise<IFavoriteI
 
         if (!response.ok) {
             const errorData = await response.json().catch(() => ({}));
-            throw new Error(errorData.message || "Помилка отримання улюблених товарів");
+            throw new Error(
+                errorData.message || "Помилка отримання товару з улюблених користувача"
+            );
         }
 
         return await response.json();
     } catch (error) {
-        console.error("Fetch error fetching collection:", error);
-        throw new Error("Помилка отримання улюблених товарів");
+        console.error("Fetch error fetching items from user favorites:", error);
+        throw new Error("Помилка отримання товарів з улюблених користувача");
     }
 }
 
@@ -54,10 +56,10 @@ export async function deleteFavoriteFromUser(userId: string, productId: string):
 
         if (!response.ok) {
             const errorData = await response.json().catch(() => ({}));
-            throw new Error(errorData.message || "Не вдалося видалити улюблений товар");
+            throw new Error(errorData.message || "Не вдалося видалити товар з улюблених");
         }
     } catch (error) {
-        console.error("Fetch error deleting favorite item:", error);
-        throw new Error("Не вдалося видалити улюблений товар");
+        console.error("Fetch error deleting item from favorites:", error);
+        throw new Error("Не вдалося видалити товар з улюблених");
     }
 }
