@@ -15,13 +15,12 @@ export async function createUserAddress(data: IUserShippingAdress): Promise<IUse
 
         if (!response.ok) {
             const errorData = await response.json().catch(() => ({}));
-            throw new Error(errorData.message || "Помилка створення адреси доставки");
+            throw new Error(errorData.message);
         }
 
         return await response.json();
-    } catch (error) {
-        console.error("Fetch error creating user address:", error);
-        throw new Error("Помилка створення адреси доставки");
+    } catch (error: any) {
+        throw new Error(error?.message || "Помилка з'єднання із сервером");
     }
 }
 
@@ -41,12 +40,11 @@ export async function editUserAddress(
 
         if (!response.ok) {
             const errorData = await response.json().catch(() => ({}));
-            throw new Error(errorData.message || "Не вдалося оновити адресу доставки");
+            throw new Error(errorData.message);
         }
 
         return await response.json();
-    } catch (error) {
-        console.error("Fetch error updating user address:", error);
-        throw new Error("Не вдалося оновити адресу доставки");
+    } catch (error: any) {
+        throw new Error(error?.message || "Помилка з'єднання із сервером");
     }
 }

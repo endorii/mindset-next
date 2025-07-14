@@ -1,40 +1,43 @@
-import { IsNotEmpty, IsString, MaxLength } from "class-validator";
+import { IsNotEmpty, IsString, Matches } from "class-validator";
 
 export class CreateUserAddressDto {
-    @IsString()
-    @IsNotEmpty({ message: "Назва не може бути порожньою." })
+    @IsString({ message: "ID користувача повинен бути рядком." })
+    @IsNotEmpty({ message: "ID користувача не може бути порожнім." })
     userId: string;
 
-    @IsString({ message: "Назва повинна бути рядком." })
-    @IsNotEmpty({ message: "Назва не може бути порожньою." })
+    @IsString({ message: "Ім'я отримувача повинно бути рядком." })
+    @IsNotEmpty({ message: "Ім'я отримувача не може бути порожнім." })
     recipient: string;
 
-    @IsString()
-    @IsNotEmpty()
+    @IsString({ message: "Країна повинна бути рядком." })
+    @IsNotEmpty({ message: "Країна не може бути порожньою." })
     country: string;
 
-    @IsString()
-    @IsNotEmpty()
+    @IsString({ message: "Область повинна бути рядком." })
+    @IsNotEmpty({ message: "Область не може бути порожньою." })
     region: string;
 
-    @IsString()
-    @IsNotEmpty()
+    @IsString({ message: "Місто повинно бути рядком." })
+    @IsNotEmpty({ message: "Місто не може бути порожнім." })
     city: string;
 
-    @IsString()
-    @IsNotEmpty()
-    @MaxLength(5, { message: "Поштовий індекс не може перевищувати 5 символів." })
+    @IsString({ message: "Поштовий індекс повинен бути рядком." })
+    @IsNotEmpty({ message: "Поштовий індекс не може бути порожнім." })
+    @Matches(/^\d{5}$/, {
+        message: "Поштовий індекс повинен містити рівно 5 цифр.",
+    })
+    // @IsPostalCode()
     postalCode: string;
 
-    @IsString()
-    @IsNotEmpty()
+    @IsString({ message: "Вулиця повинна бути рядком." })
+    @IsNotEmpty({ message: "Вулиця не може бути порожньою." })
     street: string;
 
-    @IsString()
-    @IsNotEmpty()
+    @IsString({ message: "Номер будинку повинен бути рядком." })
+    @IsNotEmpty({ message: "Номер будинку не може бути порожнім." })
     building: string;
 
-    @IsString()
-    @IsNotEmpty()
+    @IsString({ message: "Номер квартири повинен бути рядком." })
+    @IsNotEmpty({ message: "Номер квартири не може бути порожнім." })
     apartment: string;
 }

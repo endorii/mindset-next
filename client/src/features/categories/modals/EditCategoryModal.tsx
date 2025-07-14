@@ -1,16 +1,19 @@
 "use client";
 
-import { ICollection } from "@/features/collections/types/collections.types";
-import { useEscapeKeyClose } from "@/shared/hooks/useEscapeKeyClose";
-import { useUploadImage } from "@/shared/hooks/useImages";
-import { TStatus } from "@/shared/types/types";
-import InputField from "@/shared/ui/inputs/InputField";
-import { statuses } from "@/shared/utils/helpers";
-import Image from "next/image";
-import { useState, useEffect, ChangeEvent } from "react";
+import { useForm } from "react-hook-form";
+import { useEffect, useState, ChangeEvent } from "react";
 import { createPortal } from "react-dom";
-import { useEditCategory } from "../hooks/useCategories";
+import Image from "next/image";
+
+import { ICollection } from "@/features/collections/types/collections.types";
 import { ICategory } from "../types/categories.types";
+import { useEditCategory } from "../hooks/useCategories";
+import { useUploadImage } from "@/shared/hooks/useImages";
+import { useEscapeKeyClose } from "@/shared/hooks/useEscapeKeyClose";
+import { TStatus } from "@/shared/types/types";
+import { statuses } from "@/shared/utils/helpers";
+
+import InputField from "@/shared/ui/inputs/InputField";
 import MonoButton from "@/shared/ui/buttons/MonoButton";
 import ModalWrapper from "@/shared/ui/wrappers/ModalWrapper";
 import FormFillingWrapper from "@/shared/ui/wrappers/FormFillingWrapper";
@@ -23,33 +26,51 @@ interface EditCategoryModalProps {
     category: ICategory;
 }
 
+interface CategoryFormData {
+    name: string;
+    path: string;
+    status: TStatus;
+}
+
 export default function EditCategoryModal({
     isOpen,
     onClose,
     collectionPath,
     category,
 }: EditCategoryModalProps) {
-    const [name, setName] = useState("");
-    const [path, setPath] = useState("");
-    const [status, setStatus] = useState<TStatus>("INACTIVE");
+    const {
+        register,
+        handleSubmit,
+        reset,
+        formState: { errors },
+    } = useForm<CategoryFormData>({
+        defaultValues: {
+            name: "",
+            path: "",
+            status: "INACTIVE",
+        },
+    });
+
     const [banner, setBanner] = useState<string | File>("");
     const [preview, setPreview] = useState<string>("");
+    const [modalMessage, setModalMessage] = useState("");
 
     const uploadImageMutation = useUploadImage();
     const editCategoryMutation = useEditCategory();
 
     useEffect(() => {
         if (category) {
-            setName(category.name || "");
-            setPath(category.path || "");
+            reset({
+                name: category.name,
+                path: category.path,
+                status: category.status,
+            });
             setBanner(category.banner || "");
-            setStatus(category.status || "INACTIVE");
             setPreview("");
         }
-    }, [category]);
+    }, [category, reset]);
 
-    const handleSubmit = async (e: React.FormEvent) => {
-        e.preventDefault();
+    const onSubmit = async (data: CategoryFormData) => {
         try {
             let bannerPath = typeof banner === "string" ? banner : "";
 
@@ -64,16 +85,15 @@ export default function EditCategoryModal({
                 collectionPath,
                 categoryPath: category.path,
                 data: {
-                    name,
-                    path,
-                    status,
+                    ...data,
                     banner: bannerPath,
                 },
             });
 
             onClose();
-        } catch (error) {
+        } catch (error: any) {
             console.error("Помилка при редагуванні категорії:", error);
+            setModalMessage(error?.message || "Помилка при редагуванні");
         }
     };
 
@@ -98,26 +118,42 @@ export default function EditCategoryModal({
 
     const modalContent = (
         <ModalWrapper onClose={onClose} modalTitle={"Редагування категорії"}>
-            <form className="flex flex-col gap-[20px]" onSubmit={handleSubmit}>
+            <form
+                className="flex flex-col gap-[20px]"
+                onSubmit={handleSubmit(onSubmit)}
+            >
                 <FormFillingWrapper>
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-[20px]">
                         <InputField
                             label="Назва"
-                            value={name}
-                            onChangeValue={(e) => setName(e.target.value)}
-                            id="editCategoryName"
-                            name="editCategoryName"
-                            placeholder="Назва категорії"
                             type="text"
+                            placeholder="Назва категорії"
+                            {...register("name", {
+                                required: "Введіть назву",
+                                minLength: {
+                                    value: 3,
+                                    message: "Мінімум 3 символи",
+                                },
+                            })}
+                            errorMessage={errors.name?.message}
                         />
                         <InputField
                             label="Шлях"
-                            value={path}
-                            onChangeValue={(e) => setPath(e.target.value)}
-                            id="editCategoryPath"
-                            name="editCategoryPath"
-                            placeholder="Шлях"
                             type="text"
+                            placeholder="Шлях"
+                            {...register("path", {
+                                required: "Введіть шлях",
+                                minLength: {
+                                    value: 3,
+                                    message: "Мінімум 3 символи",
+                                },
+                                pattern: {
+                                    value: /^[a-z0-9-]+$/,
+                                    message:
+                                        "Допустимі лише малі латинські літери, цифри та дефіс",
+                                },
+                            })}
+                            errorMessage={errors.path?.message}
                         />
                         <div className="flex flex-col gap-[7px]">
                             <label
@@ -127,22 +163,16 @@ export default function EditCategoryModal({
                                 Статус
                             </label>
                             <select
-                                name="status"
+                                {...register("status", {
+                                    required: "Оберіть статус",
+                                })}
                                 className="border border-white/10 rounded px-[10px] py-[10px] bg-black/20 text-white outline-0 cursor-pointer"
-                                value={status}
-                                onChange={(e) =>
-                                    setStatus(e.target.value as TStatus)
-                                }
                             >
-                                <option
-                                    className="text-white bg-black"
-                                    disabled
-                                >
+                                <option value="" disabled>
                                     Оберіть статус
                                 </option>
                                 {statuses.map((statusOption) => (
                                     <option
-                                        className="text-white bg-black"
                                         key={statusOption}
                                         value={statusOption}
                                     >
@@ -183,6 +213,11 @@ export default function EditCategoryModal({
                         />
                     </div>
                 </FormFillingWrapper>
+
+                {modalMessage && (
+                    <p className="text-red-500 text-sm">{modalMessage}</p>
+                )}
+
                 <FormButtonsWrapper>
                     <MonoButton onClick={onClose} type="button">
                         Скасувати

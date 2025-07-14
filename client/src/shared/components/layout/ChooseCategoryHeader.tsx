@@ -28,7 +28,7 @@ const ChooseCategoryHeader = ({
     }
 
     return (
-        <div className="rounded-xl bg-white/5 shadow-lg backdrop-blur-lg border border-white/5 p-[20px]">
+        <div className="rounded-xl bg-white/5 shadow-lg backdrop-blur-lg border border-white/5 p-[10px]">
             <ul className="flex justify-center items-center gap-[10px]">
                 {collections?.map((collection, i) => (
                     <li key={i}>

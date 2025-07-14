@@ -8,13 +8,12 @@ export async function fetchSizes(): Promise<ISize[]> {
 
         if (!response.ok) {
             const errorData = await response.json().catch(() => ({}));
-            throw new Error(errorData.message || "Помилка отримання розмірів");
+            throw new Error(errorData.message);
         }
 
         return await response.json();
-    } catch (error) {
-        console.error("Fetch error fetching sizes:", error);
-        throw new Error("Помилка отримання розмірів");
+    } catch (error: any) {
+        throw new Error(error?.message || "Помилка з'єднання із сервером");
     }
 }
 
@@ -31,15 +30,12 @@ export async function createSize(data: ISizePayload): Promise<ISize> {
 
         if (!response.ok) {
             const errorData = await response.json().catch(() => ({}));
-            throw new Error(errorData.message || "Помилка створення розміру");
+            throw new Error(errorData.message);
         }
 
-        const result = await response.json();
-        console.log(result.message);
-        return result.size;
-    } catch (error) {
-        console.error("Fetch error creating size:", error);
-        throw new Error("Помилка створення розміру");
+        return await response.json();
+    } catch (error: any) {
+        throw new Error(error?.message || "Помилка з'єднання із сервером");
     }
 }
 
@@ -56,13 +52,12 @@ export async function editSize(sizeId: ISize["id"], data: Partial<ISize>): Promi
 
         if (!response.ok) {
             const errorData = await response.json().catch(() => ({}));
-            throw new Error(errorData.message || "Не вдалося оновити розмір");
+            throw new Error(errorData.message);
         }
 
         return await response.json();
-    } catch (error) {
-        console.error("Fetch error updating size:", error);
-        throw new Error("Не вдалося оновити розмір");
+    } catch (error: any) {
+        throw new Error(error?.message || "Помилка з'єднання із сервером");
     }
 }
 
@@ -75,10 +70,11 @@ export async function deleteSize(sizeId: ISize["id"]): Promise<void> {
 
         if (!response.ok) {
             const errorData = await response.json().catch(() => ({}));
-            throw new Error(errorData.message || "Не вдалося видалити розмір");
+            throw new Error(errorData.message);
         }
-    } catch (error) {
-        console.error("Fetch error deleting size:", error);
-        throw new Error("Не вдалося видалити розмір");
+
+        return await response.json();
+    } catch (error: any) {
+        throw new Error(error?.message || "Помилка з'єднання із сервером");
     }
 }

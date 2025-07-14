@@ -8,13 +8,12 @@ export async function fetchTypes(): Promise<IType[]> {
 
         if (!response.ok) {
             const errorData = await response.json().catch(() => ({}));
-            throw new Error(errorData.message || "Помилка отримання типів");
+            throw new Error(errorData.message);
         }
 
         return await response.json();
-    } catch (error) {
-        console.error("Fetch error fetching types:", error);
-        throw new Error("Помилка отримання типів");
+    } catch (error: any) {
+        throw new Error(error?.message || "Помилка з'єднання із сервером");
     }
 }
 
@@ -31,15 +30,12 @@ export async function createType(data: ITypePayload): Promise<IType> {
 
         if (!response.ok) {
             const errorData = await response.json().catch(() => ({}));
-            throw new Error(errorData.message || "Помилка створення типу");
+            throw new Error(errorData.message);
         }
 
-        const result = await response.json();
-        console.log(result.message);
-        return result.type;
-    } catch (error) {
-        console.error("Fetch error creating type:", error);
-        throw new Error("Помилка створення типу");
+        return await response.json();
+    } catch (error: any) {
+        throw new Error(error?.message || "Помилка з'єднання із сервером");
     }
 }
 
@@ -56,13 +52,12 @@ export async function editType(typeId: IType["id"], data: Partial<IType>): Promi
 
         if (!response.ok) {
             const errorData = await response.json().catch(() => ({}));
-            throw new Error(errorData.message || "Не вдалося оновити тип");
+            throw new Error(errorData.message);
         }
 
         return await response.json();
-    } catch (error) {
-        console.error("Fetch error updating type:", error);
-        throw new Error("Не вдалося оновити тип");
+    } catch (error: any) {
+        throw new Error(error?.message || "Помилка з'єднання із сервером");
     }
 }
 
@@ -75,10 +70,11 @@ export async function deleteType(typeId: IType["id"]): Promise<void> {
 
         if (!response.ok) {
             const errorData = await response.json().catch(() => ({}));
-            throw new Error(errorData.message || "Не вдалося видалити тип");
+            throw new Error(errorData.message);
         }
-    } catch (error) {
-        console.error("Fetch error deleting type:", error);
-        throw new Error("Не вдалося видалити тип");
+
+        return await response.json();
+    } catch (error: any) {
+        throw new Error(error?.message || "Помилка з'єднання із сервером");
     }
 }

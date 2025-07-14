@@ -1,51 +1,56 @@
-import { ChangeEvent } from "react";
+import { ChangeEvent, InputHTMLAttributes } from "react";
+import { FieldError, UseFormRegisterReturn } from "react-hook-form";
 
-export interface InputFieldProps {
+export interface InputFieldProps extends InputHTMLAttributes<HTMLInputElement> {
     label?: string;
-    value: string | number;
-    onChangeValue: (e: ChangeEvent<HTMLInputElement>) => void;
-    id?: string;
-    name?: string;
-    placeholder?: string;
-    required?: boolean;
-    disabled?: boolean;
-    type: string;
+    value?: string | number;
+    onChangeValue?: (e: ChangeEvent<HTMLInputElement>) => void;
+    register?: UseFormRegisterReturn;
     className?: string;
-    children?: React.ReactNode;
+    errorMessage?: string;
 }
 
 const InputField: React.FC<InputFieldProps> = ({
     label,
     value,
     onChangeValue,
+    register,
     id,
     name,
     placeholder,
     disabled,
     required,
     type = "text",
-    className = "border border-white/10 rounded px-[10px] py-[8px] outline-0  transition-colors duration-200 bg-black/10 text-white",
-    children,
+    errorMessage,
+    className = `border ${
+        errorMessage ? "border-red-500" : "border-white/10"
+    }  rounded px-[10px] py-[8px] outline-0  transition-colors duration-200 bg-black/10 text-white`,
+
+    ...rest
 }) => (
-    <>
-        <div className="flex flex-col gap-[7px]">
-            <label htmlFor={id} className="text-sm font-semibold">
-                {label}:
+    <div className="flex flex-col gap-[7px]">
+        {label && (
+            <label htmlFor={id || name} className="text-sm font-semibold">
+                {label}
             </label>
-            <input
-                id={id}
-                name={name}
-                type={type}
-                className={className}
-                placeholder={placeholder}
-                value={value}
-                required={required}
-                disabled={disabled}
-                onChange={onChangeValue}
-            />
-        </div>
-        {children}
-    </>
+        )}
+        <input
+            id={id || name}
+            name={name}
+            type={type}
+            placeholder={placeholder}
+            disabled={disabled}
+            required={required}
+            className={className}
+            value={value}
+            onChange={onChangeValue}
+            {...register}
+            {...rest}
+        />
+        {errorMessage && (
+            <span className="text-sm text-red-500">{errorMessage}</span>
+        )}
+    </div>
 );
 
 export default InputField;

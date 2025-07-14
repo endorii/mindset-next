@@ -18,12 +18,12 @@ export async function addFavoriteToUser(
 
         if (!response.ok) {
             const errorData = await response.json().catch(() => ({}));
-            throw new Error(errorData.message || "Помилка додавання товару в улюблене");
+            throw new Error(errorData.message);
         }
+
         return await response.json();
-    } catch (error) {
-        console.error("Fetch error add item to favorites:", error);
-        throw new Error("Помилка додавання товару в улюблене");
+    } catch (error: any) {
+        throw new Error(error?.message || "Помилка з'єднання із сервером");
     }
 }
 
@@ -35,15 +35,12 @@ export async function fetchFavoritesFromUser(userId: string): Promise<IFavoriteI
 
         if (!response.ok) {
             const errorData = await response.json().catch(() => ({}));
-            throw new Error(
-                errorData.message || "Помилка отримання товару з улюблених користувача"
-            );
+            throw new Error(errorData.message);
         }
 
         return await response.json();
-    } catch (error) {
-        console.error("Fetch error fetching items from user favorites:", error);
-        throw new Error("Помилка отримання товарів з улюблених користувача");
+    } catch (error: any) {
+        throw new Error(error?.message || "Помилка з'єднання із сервером");
     }
 }
 
@@ -56,10 +53,11 @@ export async function deleteFavoriteFromUser(userId: string, productId: string):
 
         if (!response.ok) {
             const errorData = await response.json().catch(() => ({}));
-            throw new Error(errorData.message || "Не вдалося видалити товар з улюблених");
+            throw new Error(errorData.message);
         }
-    } catch (error) {
-        console.error("Fetch error deleting item from favorites:", error);
-        throw new Error("Не вдалося видалити товар з улюблених");
+
+        return await response.json();
+    } catch (error: any) {
+        throw new Error(error?.message || "Помилка з'єднання із сервером");
     }
 }

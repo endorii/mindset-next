@@ -10,18 +10,18 @@ export async function fetchProducts(
 ): Promise<IProduct[]> {
     try {
         const response = await fetch(
-            `${API_BASE_URL}/collections/${collectionPath}/categories/${categoryPath}/products`
+            `${API_BASE_URL}/collections/${collectionPath}/categories/${categoryPath}/products`,
+            { credentials: "include" }
         );
 
         if (!response.ok) {
             const errorData = await response.json().catch(() => ({}));
-            throw new Error(errorData.message || "Помилка отримання товарів");
+            throw new Error(errorData.message);
         }
 
         return await response.json();
-    } catch (error) {
-        console.error("Fetch error fetching products:", error);
-        throw new Error("Помилка отримання товарів");
+    } catch (error: any) {
+        throw new Error(error?.message || "Помилка з'єднання із сервером");
     }
 }
 
@@ -32,18 +32,20 @@ export async function fetchProduct(
 ): Promise<IProduct> {
     try {
         const response = await fetch(
-            `${API_BASE_URL}/collections/${collectionPath}/categories/${categoryPath}/products/${productPath}`
+            `${API_BASE_URL}/collections/${collectionPath}/categories/${categoryPath}/products/${productPath}`,
+            {
+                credentials: "include",
+            }
         );
 
         if (!response.ok) {
             const errorData = await response.json().catch(() => ({}));
-            throw new Error(errorData.message || "Помилка отримання товару");
+            throw new Error(errorData.message);
         }
 
         return await response.json();
-    } catch (error) {
-        console.error("Fetch error fetching product:", error);
-        throw new Error("Помилка отримання товару");
+    } catch (error: any) {
+        throw new Error(error?.message || "Помилка з'єднання із сервером");
     }
 }
 
@@ -67,13 +69,12 @@ export async function addProductToCategory(
 
         if (!response.ok) {
             const errorData = await response.json().catch(() => ({}));
-            throw new Error(errorData.message || "Помилка додавання товару");
+            throw new Error(errorData.message);
         }
 
         return await response.json();
-    } catch (error) {
-        console.error("Fetch error adding product:", error);
-        throw new Error("Помилка додавання товару");
+    } catch (error: any) {
+        throw new Error(error?.message || "Помилка з'єднання із сервером");
     }
 }
 
@@ -101,13 +102,12 @@ export async function editProduct(
 
         if (!response.ok) {
             const errorData = await response.json().catch(() => ({}));
-            throw new Error(errorData.message || "Не вдалося оновити товар");
+            throw new Error(errorData.message);
         }
 
         return await response.json();
-    } catch (error) {
-        console.error("Fetch error updating product:", error);
-        throw new Error("Не вдалося оновити товар");
+    } catch (error: any) {
+        throw new Error(error?.message || "Помилка з'єднання із сервером");
     }
 }
 
@@ -127,10 +127,11 @@ export async function deleteProduct(
 
         if (!response.ok) {
             const errorData = await response.json().catch(() => ({}));
-            throw new Error(errorData.message || "Не вдалося видалити товар");
+            throw new Error(errorData.message);
         }
-    } catch (error) {
-        console.error("Fetch error deleting product:", error);
-        throw new Error("Не вдалося видалити товар");
+
+        return await response.json();
+    } catch (error: any) {
+        throw new Error(error?.message || "Помилка з'єднання із сервером");
     }
 }

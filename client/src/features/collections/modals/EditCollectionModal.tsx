@@ -7,7 +7,6 @@ import { TStatus } from "@/shared/types/types";
 import InputField from "@/shared/ui/inputs/InputField";
 import { statuses } from "@/shared/utils/helpers";
 import Image from "next/image";
-import { useState, useEffect, ChangeEvent } from "react";
 import { createPortal } from "react-dom";
 import { useEditCollection } from "../hooks/useCollections";
 import { ICollection } from "../types/collections.types";
@@ -15,6 +14,8 @@ import MonoButton from "@/shared/ui/buttons/MonoButton";
 import ModalWrapper from "@/shared/ui/wrappers/ModalWrapper";
 import FormButtonsWrapper from "@/shared/ui/wrappers/FormButtonsWrapper";
 import FormFillingWrapper from "@/shared/ui/wrappers/FormFillingWrapper";
+import { useForm } from "react-hook-form";
+import { useEffect, useState } from "react";
 
 interface EditCollectionModalProps {
     isOpen: boolean;
@@ -22,37 +23,51 @@ interface EditCollectionModalProps {
     collection: ICollection;
 }
 
+type FormValues = {
+    name: string;
+    path: string;
+    status: TStatus;
+};
+
 export default function EditCollectionModal({
     isOpen,
     onClose,
     collection,
 }: EditCollectionModalProps) {
-    const [name, setName] = useState("");
-    const [path, setPath] = useState("");
-    const [status, setStatus] = useState<TStatus>("INACTIVE");
     const [banner, setBanner] = useState<string | File>("");
-    const [preview, setPreview] = useState("");
+    const [preview, setPreview] = useState<string>("");
 
     const uploadImageMutation = useUploadImage();
     const editCollection = useEditCollection();
 
+    const {
+        register,
+        handleSubmit,
+        reset,
+        formState: { errors },
+    } = useForm<FormValues>({
+        defaultValues: {
+            name: "",
+            path: "",
+            status: "INACTIVE",
+        },
+    });
+
+    const [modalMessage, setModalMessage] = useState("");
+
     useEffect(() => {
         if (collection) {
-            setName(collection.name || "");
-            setPath(collection.path || "");
+            reset({
+                name: collection.name || "",
+                path: collection.path || "",
+                status: collection.status || "INACTIVE",
+            });
             setBanner(collection.banner || "");
-            setStatus(collection.status);
             setPreview("");
         }
-    }, [collection]);
+    }, [collection, reset]);
 
-    const handleSubmit = async (e: React.FormEvent) => {
-        e.preventDefault();
-        if (!status) {
-            alert("Будь ласка, оберіть статус колекції");
-            return;
-        }
-
+    const onSubmit = async (data: FormValues) => {
         try {
             let bannerPath = typeof banner === "string" ? banner : "";
 
@@ -64,34 +79,40 @@ export default function EditCollectionModal({
                     await deleteImage(collection.banner);
                 }
 
-                const uploadImage = await uploadImageMutation.mutateAsync(
+                const uploadResult = await uploadImageMutation.mutateAsync(
                     banner
                 );
-                bannerPath = uploadImage.path;
+                bannerPath = uploadResult.path;
             }
 
             await editCollection.mutateAsync({
                 collectionPath: collection.path,
                 data: {
-                    name,
-                    path,
-                    status,
+                    ...data,
                     banner: bannerPath,
                 },
             });
 
-            onClose();
-        } catch (error) {
-            console.error("Помилка при редагуванні колекції:", error);
+            handleClose();
+        } catch (err: any) {
+            setModalMessage(err?.message || "Помилка при редагуванні колекції");
         }
     };
 
-    const handleBannerChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const handleBannerChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const selectedFile = e.target.files?.[0];
         if (selectedFile) {
             setBanner(selectedFile);
             setPreview(URL.createObjectURL(selectedFile));
         }
+    };
+
+    const handleClose = () => {
+        if (preview) URL.revokeObjectURL(preview);
+        reset();
+        setBanner("");
+        setPreview("");
+        onClose();
     };
 
     useEscapeKeyClose({ isOpen, onClose });
@@ -104,51 +125,53 @@ export default function EditCollectionModal({
             : "";
 
     const modalContent = (
-        <ModalWrapper
-            onClose={onClose}
-            modalTitle={`Редагування колекції ${name}`}
-        >
-            <form className="flex flex-col gap-[20px]" onSubmit={handleSubmit}>
+        <ModalWrapper onClose={onClose} modalTitle={`Редагування колекції`}>
+            <form
+                className="flex flex-col gap-[20px]"
+                onSubmit={handleSubmit(onSubmit)}
+            >
                 <FormFillingWrapper>
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-[20px]">
                         <InputField
-                            label={"Назва"}
-                            value={name}
-                            onChangeValue={(e) => setName(e.target.value)}
-                            id={"editCollectionName"}
-                            name={"editCollectionName"}
-                            placeholder={"Назва колекції"}
-                            type={"text"}
+                            label="Назва"
+                            type="text"
+                            placeholder="Назва колекції"
+                            {...register("name", {
+                                required: "Введіть назву",
+                                minLength: {
+                                    value: 3,
+                                    message: "Мінімум 3 символи",
+                                },
+                            })}
+                            errorMessage={errors.name?.message}
                         />
                         <InputField
-                            label={"Шлях"}
-                            value={path}
-                            onChangeValue={(e) => setPath(e.target.value)}
-                            id={"editCollectionPath"}
-                            name={"editCollectionPath"}
-                            placeholder={"Шлях"}
-                            type={"text"}
+                            label="Шлях"
+                            type="text"
+                            placeholder="Шлях"
+                            {...register("path", {
+                                required: "Введіть шлях",
+                                minLength: {
+                                    value: 3,
+                                    message: "Мінімум 3 символи",
+                                },
+                            })}
+                            errorMessage={errors.path?.message}
                         />
                         <div className="flex flex-col gap-[7px]">
                             <label
                                 htmlFor="status"
-                                className="font-semibold text-sm"
+                                className="text-sm font-semibold"
                             >
                                 Статус
                             </label>
                             <select
-                                name="status"
+                                {...register("status", {
+                                    required: "Оберіть статус",
+                                })}
                                 className="border border-white/10 rounded px-[10px] py-[10px] bg-black/20 text-white outline-0 cursor-pointer"
-                                value={status}
-                                onChange={(e) =>
-                                    setStatus(e.target.value as TStatus)
-                                }
                             >
-                                <option
-                                    className="text-white bg-black"
-                                    cursor-pointer
-                                    disabled
-                                >
+                                <option value="" disabled>
                                     Оберіть статус
                                 </option>
                                 {statuses.map((statusOption) => (
@@ -161,15 +184,24 @@ export default function EditCollectionModal({
                                     </option>
                                 ))}
                             </select>
+                            {errors.status && (
+                                <p className="text-sm text-red-500">
+                                    {errors.status.message}
+                                </p>
+                            )}
                         </div>
                     </div>
+
                     <div className="flex flex-col gap-[7px] w-full">
-                        <label htmlFor="banner" className="font-semibold">
+                        <label
+                            htmlFor="banner"
+                            className="text-sm font-semibold"
+                        >
                             Банер
                         </label>
                         <label
                             htmlFor="banner"
-                            className="min-h-[100px] max-w-[300px] border border-dashed border-white/10 mt-2 flex items-center justify-center cursor-pointer bg-black/20 hover:bg-white/10 rounded-md overflow-hidden"
+                            className="min-h-[100px] max-w-[300px] border border-dashed border-white/10 mt-2 flex items-center justify-center cursor-pointer hover:bg-white/3 rounded-md overflow-hidden"
                         >
                             {preview ? (
                                 <Image
@@ -188,7 +220,7 @@ export default function EditCollectionModal({
                                     className="object-cover"
                                 />
                             ) : (
-                                <span className="text-4xl text-white/40">
+                                <span className="text-4xl text-gray-400">
                                     +
                                 </span>
                             )}
@@ -202,8 +234,11 @@ export default function EditCollectionModal({
                         />
                     </div>
                 </FormFillingWrapper>
+                {modalMessage && (
+                    <p className="text-red-500 text-sm">{modalMessage}</p>
+                )}
                 <FormButtonsWrapper>
-                    <MonoButton type="button" onClick={onClose}>
+                    <MonoButton type="button" onClick={handleClose}>
                         Скасувати
                     </MonoButton>
                     <MonoButton

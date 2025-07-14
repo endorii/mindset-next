@@ -1,19 +1,20 @@
 "use client";
 
-import { ICollection } from "@/features/collections/types/collections.types";
-import { useEscapeKeyClose } from "@/shared/hooks/useEscapeKeyClose";
-import { useUploadImage } from "@/shared/hooks/useImages";
-import { TStatus } from "@/shared/types/types";
-import InputField from "@/shared/ui/inputs/InputField";
-import { statuses } from "@/shared/utils/helpers";
+import { useForm } from "react-hook-form";
 import { useState } from "react";
 import { createPortal } from "react-dom";
-import { useCreateCategory } from "../hooks/useCategories";
 import Image from "next/image";
+import { ICollection } from "@/features/collections/types/collections.types";
+import { useUploadImage } from "@/shared/hooks/useImages";
+import { useCreateCategory } from "../hooks/useCategories";
+import { useEscapeKeyClose } from "@/shared/hooks/useEscapeKeyClose";
+import { TStatus } from "@/shared/types/types";
+import InputField from "@/shared/ui/inputs/InputField";
 import MonoButton from "@/shared/ui/buttons/MonoButton";
 import ModalWrapper from "@/shared/ui/wrappers/ModalWrapper";
-import FormFillingWrapper from "@/shared/ui/wrappers/FormFillingWrapper";
 import FormButtonsWrapper from "@/shared/ui/wrappers/FormButtonsWrapper";
+import FormFillingWrapper from "@/shared/ui/wrappers/FormFillingWrapper";
+import { statuses } from "@/shared/utils/helpers";
 
 interface AddCategoryModalProps {
     isOpen: boolean;
@@ -22,18 +23,34 @@ interface AddCategoryModalProps {
     collectionPath: ICollection["path"];
 }
 
+interface CategoryFormData {
+    name: string;
+    path: string;
+    status: TStatus;
+}
+
 export default function AddCategoryModal({
     isOpen,
     onClose,
     collectionId,
     collectionPath,
 }: AddCategoryModalProps) {
-    const [name, setName] = useState("");
-    const [path, setPath] = useState("");
-    const [banner, setBanner] = useState<File | null>(null);
-    const [status, setStatus] = useState<TStatus>("INACTIVE");
+    const {
+        register,
+        handleSubmit,
+        reset,
+        formState: { errors },
+    } = useForm<CategoryFormData>({
+        defaultValues: {
+            name: "",
+            path: "",
+            status: "INACTIVE",
+        },
+    });
 
+    const [banner, setBanner] = useState<File | null>(null);
     const [preview, setPreview] = useState<string | null>(null);
+    const [modalMessage, setModalMessage] = useState("");
 
     const uploadImageMutation = useUploadImage();
     const createCategoryMutation = useCreateCategory();
@@ -48,21 +65,16 @@ export default function AddCategoryModal({
 
     const handleClose = () => {
         if (preview) URL.revokeObjectURL(preview);
-        setName("");
-        setPath("");
+        reset();
         setBanner(null);
-        setStatus("INACTIVE");
         setPreview(null);
+        setModalMessage("");
         onClose();
     };
 
-    const handleSubmit = async (e: React.FormEvent) => {
-        e.preventDefault();
-
-        if (!name.trim() || !path.trim() || !status) {
-            return;
-        }
+    const onSubmit = async (data: CategoryFormData) => {
         if (!banner) {
+            setModalMessage("Оберіть зображення банера");
             return;
         }
 
@@ -73,18 +85,21 @@ export default function AddCategoryModal({
             await createCategoryMutation.mutateAsync({
                 collectionPath,
                 categoryData: {
-                    name: name.trim(),
-                    path: path.trim(),
+                    name: data.name.trim(),
+                    path: data.path.trim(),
                     banner: imagePath,
                     views: 0,
-                    status,
+                    status: data.status,
                     collectionId,
                 },
             });
 
             handleClose();
-        } catch (error) {
+        } catch (error: any) {
             console.error(error);
+            setModalMessage(
+                error?.message || "Помилка при створенні категорії"
+            );
         }
     };
 
@@ -94,52 +109,57 @@ export default function AddCategoryModal({
 
     const modalContent = (
         <ModalWrapper onClose={onClose} modalTitle={"Додавання категорії"}>
-            <form className="flex flex-col gap-[20px]" onSubmit={handleSubmit}>
+            <form
+                className="flex flex-col gap-[20px]"
+                onSubmit={handleSubmit(onSubmit)}
+            >
                 <FormFillingWrapper>
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-[20px]">
                         <InputField
                             label="Назва"
-                            value={name}
-                            onChangeValue={(e) => setName(e.target.value)}
-                            id="addCategoryName"
-                            name="addCategoryName"
-                            placeholder="Назва категорії"
                             type="text"
+                            placeholder="Назва категорії"
+                            {...register("name", {
+                                required: "Введіть назву",
+                                minLength: {
+                                    value: 2,
+                                    message: "Мінімум 2 символи",
+                                },
+                            })}
+                            errorMessage={errors.name?.message}
                         />
                         <InputField
                             label="Шлях"
-                            value={path}
-                            onChangeValue={(e) => setPath(e.target.value)}
-                            id="addCategoryPath"
-                            name="addCategoryPath"
-                            placeholder="Шлях"
                             type="text"
+                            placeholder="Шлях"
+                            {...register("path", {
+                                required: "Введіть шлях",
+                                pattern: {
+                                    value: /^[a-z0-9-]+$/,
+                                    message:
+                                        "Лише маленькі англійські літери, цифри та дефіс",
+                                },
+                            })}
+                            errorMessage={errors.path?.message}
                         />
                         <div className="flex flex-col gap-[7px]">
                             <label
-                                className="font-semibold text-sm"
                                 htmlFor="status"
+                                className="font-semibold text-sm"
                             >
                                 Статус
                             </label>
                             <select
-                                name="status"
+                                {...register("status", {
+                                    required: "Оберіть статус",
+                                })}
                                 className="border border-white/10 rounded p-[10px] outline-0 cursor-pointer"
-                                value={status ?? ""}
-                                onChange={(e) =>
-                                    setStatus(e.target.value as TStatus)
-                                }
                             >
-                                <option
-                                    className="text-white bg-black"
-                                    value=""
-                                    disabled
-                                >
+                                <option value="" disabled>
                                     Оберіть статус
                                 </option>
                                 {statuses.map((statusOption) => (
                                     <option
-                                        className="text-white bg-black"
                                         key={statusOption}
                                         value={statusOption}
                                     >
@@ -181,6 +201,11 @@ export default function AddCategoryModal({
                         />
                     </div>
                 </FormFillingWrapper>
+
+                {modalMessage && (
+                    <p className="text-red-500 text-sm">{modalMessage}</p>
+                )}
+
                 <FormButtonsWrapper>
                     <MonoButton
                         type="button"

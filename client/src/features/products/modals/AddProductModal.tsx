@@ -1,5 +1,10 @@
 "use client";
 
+import { useForm } from "react-hook-form";
+import { useState, ChangeEvent } from "react";
+import { createPortal } from "react-dom";
+import Image from "next/image";
+
 import { useColors } from "@/features/admin/attributes/product-colors/hooks/useColors";
 import { useSizes } from "@/features/admin/attributes/product-sizes/hooks/useSizes";
 import { useTypes } from "@/features/admin/attributes/product-types/hooks/useTypes";
@@ -11,10 +16,8 @@ import { TrashIcon } from "@/shared/icons";
 import { TStatus } from "@/shared/types/types";
 import InputField from "@/shared/ui/inputs/InputField";
 import { statuses } from "@/shared/utils/helpers";
-import { useState } from "react";
-import { createPortal } from "react-dom";
 import { useCreateProduct } from "../hooks/useProducts";
-import Image from "next/image";
+
 import MonoButton from "@/shared/ui/buttons/MonoButton";
 import ModalWrapper from "@/shared/ui/wrappers/ModalWrapper";
 import FormButtonsWrapper from "@/shared/ui/wrappers/FormButtonsWrapper";
@@ -28,6 +31,16 @@ interface AddProductModalProps {
     categoryPath: ICategory["path"];
 }
 
+interface FormData {
+    name: string;
+    path: string;
+    price: number;
+    available: string;
+    description: string;
+    composition: string;
+    status: TStatus | "";
+}
+
 export default function AddProductModal({
     isOpen,
     onClose,
@@ -35,13 +48,22 @@ export default function AddProductModal({
     collectionPath,
     categoryPath,
 }: AddProductModalProps) {
-    const [name, setName] = useState("");
-    const [path, setPath] = useState("");
-    const [price, setPrice] = useState<number | "">("");
-    const [available, setAvailable] = useState(false);
-    const [description, setDescription] = useState("");
-    const [composition, setComposition] = useState("");
-    const [status, setStatus] = useState<TStatus>("INACTIVE");
+    const {
+        register,
+        handleSubmit,
+        reset,
+        formState: { errors },
+    } = useForm<FormData>({
+        defaultValues: {
+            name: "",
+            path: "",
+            price: 0,
+            available: "false",
+            description: "",
+            composition: "",
+            status: "",
+        },
+    });
 
     const [banner, setBanner] = useState<File | null>(null);
     const [bannerPreview, setBannerPreview] = useState<string | null>(null);
@@ -52,6 +74,9 @@ export default function AddProductModal({
     const [colorsToSend, setColorsToSend] = useState<string[]>([]);
     const [sizesToSend, setSizesToSend] = useState<string[]>([]);
     const [typesToSend, setTypesToSend] = useState<string[]>([]);
+
+    const [bannerError, setBannerError] = useState<string | null>(null);
+    const [modalMessage, setModalMessage] = useState("");
 
     const uploadImageMutation = useUploadImage();
     const uploadImagesMutation = useUploadImages();
@@ -65,7 +90,7 @@ export default function AddProductModal({
 
     if (!isOpen) return null;
 
-    const handleBannerChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleBannerChange = (e: ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
         if (file) {
             setBanner(file);
@@ -73,7 +98,7 @@ export default function AddProductModal({
         }
     };
 
-    const handleImagesChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleImagesChange = (e: ChangeEvent<HTMLInputElement>) => {
         const files = e.target.files ? Array.from(e.target.files) : [];
         setImages((prev) => [...prev, ...files]);
         setImagesPreview((prev) => [
@@ -99,40 +124,12 @@ export default function AddProductModal({
         }
     };
 
-    const handleClose = () => {
-        if (bannerPreview) URL.revokeObjectURL(bannerPreview);
-        imagesPreview.forEach((url) => URL.revokeObjectURL(url));
-        setName("");
-        setPath("");
-        setPrice("");
-        setAvailable(false);
-        setDescription("");
-        setComposition("");
-        setStatus("INACTIVE");
-        setBanner(null);
-        setBannerPreview(null);
-        setImages([]);
-        setImagesPreview([]);
-        setColorsToSend([]);
-        setSizesToSend([]);
-        setTypesToSend([]);
-        onClose();
-    };
-
-    const handleSubmit = async (e: React.FormEvent) => {
-        e.preventDefault();
-        if (
-            !name.trim() ||
-            !path.trim() ||
-            !price ||
-            !description.trim() ||
-            !composition.trim() ||
-            !status
-        ) {
-            return;
-        }
+    const onSubmit = async (data: FormData) => {
         if (!banner) {
+            setBannerError("Оберіть банер");
             return;
+        } else {
+            setBannerError(null);
         }
 
         try {
@@ -149,13 +146,13 @@ export default function AddProductModal({
                 collectionPath,
                 categoryPath,
                 productData: {
-                    name: name.trim(),
-                    path: path.trim(),
-                    price: Number(price),
-                    available,
-                    description: description.trim(),
-                    composition: composition.trim(),
-                    status,
+                    name: data.name.trim(),
+                    path: data.path.trim(),
+                    price: Number(data.price),
+                    available: data.available === "true",
+                    description: data.description.trim(),
+                    composition: data.composition.trim(),
+                    status: data.status as TStatus,
                     categoryId,
                     banner: bannerPath,
                     images: uploadImagesResult.paths,
@@ -166,49 +163,70 @@ export default function AddProductModal({
                 },
             });
 
-            handleClose();
-        } catch (error) {
-            console.error(error);
+            setBanner(null);
+            setBannerPreview(null);
+            setImages([]);
+            setImagesPreview([]);
+            setColorsToSend([]);
+            setSizesToSend([]);
+            setTypesToSend([]);
+            reset();
+            onClose();
+        } catch (err: any) {
+            setModalMessage(err?.message || "Не вдалося додати товар");
         }
     };
 
     const modalContent = (
         <ModalWrapper onClose={onClose} modalTitle={"Додавання товару"}>
-            <form onSubmit={handleSubmit} className="flex flex-col gap-[20px]">
+            <form
+                onSubmit={handleSubmit(onSubmit)}
+                className="flex flex-col gap-[20px]"
+            >
                 <FormFillingWrapper>
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-[20px]">
                         <InputField
                             label="Назва"
-                            value={name}
-                            onChangeValue={(e) => setName(e.target.value)}
                             id="addProductName"
-                            name="addProductName"
                             placeholder="Назва товару"
                             type="text"
+                            {...register("name", {
+                                required: "Введіть назву",
+                                minLength: {
+                                    value: 3,
+                                    message: "Мінімум 3 символи",
+                                },
+                            })}
+                            errorMessage={errors.name?.message}
                         />
                         <InputField
                             label="Шлях"
-                            value={path}
-                            onChangeValue={(e) => setPath(e.target.value)}
                             id="addProductPath"
-                            name="addProductPath"
                             placeholder="Шлях"
                             type="text"
+                            {...register("path", {
+                                required: "Введіть шлях",
+                                minLength: {
+                                    value: 3,
+                                    message: "Мінімум 3 символи",
+                                },
+                            })}
+                            errorMessage={errors.path?.message}
                         />
                         <InputField
                             label="Ціна"
-                            value={price}
-                            onChangeValue={(e) =>
-                                setPrice(
-                                    e.target.value === ""
-                                        ? ""
-                                        : Number(e.target.value)
-                                )
-                            }
                             id="addProductPrice"
-                            name="addProductPrice"
                             placeholder="Ціна"
                             type="number"
+                            {...register("price", {
+                                required: "Введіть ціну",
+                                valueAsNumber: true,
+                                min: {
+                                    value: 0,
+                                    message: "Ціна має бути не від’ємною",
+                                },
+                            })}
+                            errorMessage={errors.price?.message}
                         />
                         <div className="flex flex-col gap-[7px]">
                             <label
@@ -219,12 +237,8 @@ export default function AddProductModal({
                             </label>
                             <select
                                 id="available"
-                                name="available"
+                                {...register("available")}
                                 className="border border-white/10 rounded p-[10px] outline-0 cursor-pointer bg-black/10"
-                                value={available ? "true" : "false"}
-                                onChange={(e) =>
-                                    setAvailable(e.target.value === "true")
-                                }
                             >
                                 <option value="true">Доступний</option>
                                 <option value="false">Недоступний</option>
@@ -239,12 +253,10 @@ export default function AddProductModal({
                             </label>
                             <select
                                 id="status"
-                                name="status"
+                                {...register("status", {
+                                    required: "Оберіть статус",
+                                })}
                                 className="border border-white/10 rounded p-[10px] outline-0 cursor-pointer bg-black/10"
-                                value={status ?? ""}
-                                onChange={(e) =>
-                                    setStatus(e.target.value as TStatus)
-                                }
                             >
                                 <option value="" disabled>
                                     Оберіть статус
@@ -255,29 +267,55 @@ export default function AddProductModal({
                                     </option>
                                 ))}
                             </select>
+                            {errors.status && (
+                                <p className="text-red-500 text-sm">
+                                    {errors.status.message}
+                                </p>
+                            )}
                         </div>
                     </div>
 
                     <div className="flex flex-col gap-[7px]">
                         <label className="font-semibold text-sm">Опис</label>
                         <textarea
-                            className="resize-none border border-white/10 rounded p-[10px] bg-black/10 outline-0"
+                            {...register("description", {
+                                required: "Введіть опис",
+                            })}
+                            className={`resize-none border ${
+                                errors.description?.message
+                                    ? "border-red-500"
+                                    : "border-white/10"
+                            } rounded p-[10px] bg-black/10 outline-0`}
                             rows={3}
-                            value={description}
-                            onChange={(e) => setDescription(e.target.value)}
                         />
+                        {errors.description && (
+                            <p className="text-red-500 text-sm">
+                                {errors.description.message}
+                            </p>
+                        )}
                     </div>
 
                     <div className="flex flex-col gap-[7px]">
                         <label className="font-semibold text-sm">Склад</label>
                         <textarea
-                            className="resize-none border border-white/10 rounded p-[10px] bg-black/10 outline-0"
+                            {...register("composition", {
+                                required: "Введіть склад",
+                            })}
+                            className={`resize-none border ${
+                                errors.composition?.message
+                                    ? "border-red-500"
+                                    : "border-white/10"
+                            } rounded p-[10px] bg-black/10 outline-0`}
                             rows={3}
-                            value={composition}
-                            onChange={(e) => setComposition(e.target.value)}
                         />
+                        {errors.composition && (
+                            <p className="text-red-500 text-sm">
+                                {errors.composition.message}
+                            </p>
+                        )}
                     </div>
 
+                    {/* Кольори */}
                     <div className="flex flex-col gap-2">
                         <label className="font-semibold text-sm">Кольори</label>
                         <div className="flex flex-wrap gap-2 max-h-[100px] overflow-y-auto border border-white/10 rounded p-2 bg-black/10">
@@ -356,6 +394,7 @@ export default function AddProductModal({
                         </div>
                     </div>
 
+                    {/* Банер */}
                     <div className="flex flex-col gap-[7px] w-full max-w-[300px]">
                         <label
                             htmlFor="banner"
@@ -386,8 +425,14 @@ export default function AddProductModal({
                             onChange={handleBannerChange}
                             className="hidden"
                         />
+                        {bannerError && (
+                            <p className="text-red-500 text-sm mt-1">
+                                {bannerError}
+                            </p>
+                        )}
                     </div>
 
+                    {/* Додаткові зображення */}
                     <div className="flex flex-col gap-[7px] w-full max-w-[300px]">
                         <label
                             htmlFor="images"
@@ -432,10 +477,23 @@ export default function AddProductModal({
                         </div>
                     </div>
                 </FormFillingWrapper>
+                {modalMessage && (
+                    <p className="text-red-500 text-sm">{modalMessage}</p>
+                )}
                 <FormButtonsWrapper>
                     <MonoButton
                         type="button"
-                        onClick={handleClose}
+                        onClick={() => {
+                            setBanner(null);
+                            setBannerPreview(null);
+                            setImages([]);
+                            setImagesPreview([]);
+                            setColorsToSend([]);
+                            setSizesToSend([]);
+                            setTypesToSend([]);
+                            reset();
+                            onClose();
+                        }}
                         disabled={
                             uploadImageMutation.isPending ||
                             createProductMutation.isPending

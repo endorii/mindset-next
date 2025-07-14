@@ -50,12 +50,11 @@ export function useAuth() {
             router.push("/auth");
         },
     });
-
     return {
-        login: loginMutation.mutate,
-        register: registerMutation.mutate,
-        logout: logoutMutation.mutate,
-        refreshToken: refreshTokenMutation.mutate,
+        login: loginMutation.mutateAsync,
+        register: registerMutation.mutateAsync,
+        logout: logoutMutation.mutateAsync,
+        refreshToken: refreshTokenMutation.mutateAsync,
         isLoading:
             loginMutation.isPending || registerMutation.isPending || logoutMutation.isPending,
 

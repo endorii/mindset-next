@@ -8,13 +8,12 @@ export async function fetchColors(): Promise<IColor[]> {
 
         if (!response.ok) {
             const errorData = await response.json().catch(() => ({}));
-            throw new Error(errorData.message || "Помилка отримання кольорів");
+            throw new Error(errorData.message);
         }
 
         return await response.json();
-    } catch (error) {
-        console.error("Fetch error fetching colors:", error);
-        throw new Error("Помилка отримання кольорів");
+    } catch (error: any) {
+        throw new Error(error?.message || "Помилка з'єднання із сервером");
     }
 }
 
@@ -31,15 +30,12 @@ export async function createColor(data: IColorPayload): Promise<IColor> {
 
         if (!response.ok) {
             const errorData = await response.json().catch(() => ({}));
-            throw new Error(errorData.message || "Помилка створення кольору");
+            throw new Error(errorData.message);
         }
 
-        const result = await response.json();
-        console.log(result.message);
-        return result.color;
-    } catch (error) {
-        console.error("Fetch error creating color:", error);
-        throw new Error("Помилка створення кольору");
+        return await response.json();
+    } catch (error: any) {
+        throw new Error(error?.message || "Помилка з'єднання із сервером");
     }
 }
 
@@ -56,13 +52,12 @@ export async function editColor(colorId: IColor["id"], data: Partial<IColor>): P
 
         if (!response.ok) {
             const errorData = await response.json().catch(() => ({}));
-            throw new Error(errorData.message || "Не вдалося оновити колір");
+            throw new Error(errorData.message);
         }
 
         return await response.json();
-    } catch (error) {
-        console.error("Fetch error updating color:", error);
-        throw new Error("Не вдалося оновити колір");
+    } catch (error: any) {
+        throw new Error(error?.message || "Помилка з'єднання із сервером");
     }
 }
 
@@ -75,10 +70,11 @@ export async function deleteColor(colorId: IColor["id"]): Promise<void> {
 
         if (!response.ok) {
             const errorData = await response.json().catch(() => ({}));
-            throw new Error(errorData.message || "Не вдалося видалити колір");
+            throw new Error(errorData.message);
         }
-    } catch (error) {
-        console.error("Fetch error deleting color:", error);
-        throw new Error("Не вдалося видалити колір");
+
+        return await response.json();
+    } catch (error: any) {
+        throw new Error(error?.message || "Помилка з'єднання із сервером");
     }
 }

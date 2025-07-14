@@ -15,13 +15,12 @@ export async function uploadImage(file: File): Promise<{ path: string }> {
 
         if (!response.ok) {
             const errorData = await response.json().catch(() => ({}));
-            throw new Error(errorData.message || "Помилка завантаження зображення");
+            throw new Error(errorData.message);
         }
 
         return await response.json();
-    } catch (error) {
-        console.error("Fetch upload image error:", error);
-        throw new Error("Помилка завантаження зображення");
+    } catch (error: any) {
+        throw new Error(error?.message || "Помилка з'єднання із сервером");
     }
 }
 
@@ -40,13 +39,12 @@ export async function uploadImages(files: File[]): Promise<{ paths: string[] }> 
 
         if (!response.ok) {
             const errorData = await response.json().catch(() => ({}));
-            throw new Error(errorData.message || "Помилка завантаження зображень");
+            throw new Error(errorData.message);
         }
 
         return await response.json();
-    } catch (error) {
-        console.error("Fetch upload images error:", error);
-        throw new Error("Помилка завантаження зображень");
+    } catch (error: any) {
+        throw new Error(error?.message || "Помилка з'єднання із сервером");
     }
 }
 
@@ -62,11 +60,12 @@ export async function deleteImage(path: string): Promise<void> {
 
         if (!response.ok) {
             const errorData = await response.json().catch(() => ({}));
-            throw new Error(errorData.message || "Помилка при видаленні зображення");
+            throw new Error(errorData.message);
         }
-    } catch (error) {
-        console.error("Fetch delete image error:", error);
-        throw new Error("Помилка при видаленні зображення");
+
+        return await response.json();
+    } catch (error: any) {
+        throw new Error(error?.message || "Помилка з'єднання із сервером");
     }
 }
 
@@ -83,10 +82,11 @@ export async function deleteImages(imagePaths: IProduct["images"]): Promise<void
 
         if (!response.ok) {
             const errorData = await response.json().catch(() => ({}));
-            throw new Error(errorData.message || "Помилка при масовому видаленні зображень");
+            throw new Error(errorData.message);
         }
-    } catch (error) {
-        console.error("Fetch delete images error:", error);
-        throw new Error("Помилка при масовому видаленні зображень");
+
+        return await response.json();
+    } catch (error: any) {
+        throw new Error(error?.message || "Помилка з'єднання із сервером");
     }
 }

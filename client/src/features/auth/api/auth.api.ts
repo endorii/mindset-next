@@ -17,13 +17,12 @@ export async function registerUser(data: CreateUserDto): Promise<IAuthResponse> 
 
         if (!response.ok) {
             const errorData = await response.json().catch(() => ({}));
-            throw new Error(errorData.message || "Помилка реєстрації");
+            throw new Error(errorData.message);
         }
 
         return await response.json();
-    } catch (error) {
-        console.error("Fetch error registering user:", error);
-        throw new Error("Помилка реєстрації");
+    } catch (error: any) {
+        throw new Error(error?.message || "Помилка з'єднання із сервером");
     }
 }
 
@@ -40,13 +39,12 @@ export async function login(credentials: ILoginCredentials): Promise<IAuthRespon
 
         if (!response.ok) {
             const errorData = await response.json().catch(() => ({}));
-            throw new Error(errorData.message || "Помилка входу");
+            throw new Error(errorData.message);
         }
 
         return await response.json();
-    } catch (error) {
-        console.error("Fetch error logging in:", error);
-        throw new Error("Помилка входу");
+    } catch (error: any) {
+        throw new Error(error?.message || "Помилка з'єднання із сервером");
     }
 }
 
@@ -62,15 +60,12 @@ export async function getCurrentUser(): Promise<IUser> {
 
         if (!response.ok) {
             const errorData = await response.json().catch(() => ({}));
-            throw new Error(
-                errorData.message || "Помилка отримання даних авторизованого користувача"
-            );
+            throw new Error(errorData.message);
         }
 
         return await response.json();
-    } catch (error) {
-        console.error("Fetch error getting current user:", error);
-        throw new Error("Помилка отримання даних авторизованого користувача");
+    } catch (error: any) {
+        throw new Error(error?.message || "Помилка з'єднання із сервером");
     }
 }
 
@@ -86,13 +81,12 @@ export async function refreshToken(): Promise<IAuthResponse> {
 
         if (!response.ok) {
             const errorData = await response.json().catch(() => ({}));
-            throw new Error(errorData.message || "Помилка оновлення refresh токена");
+            throw new Error(errorData.message);
         }
 
         return await response.json();
-    } catch (error) {
-        console.error("Fetch error refreshing token:", error);
-        throw new Error("Помилка оновлення refresh токена");
+    } catch (error: any) {
+        throw new Error(error?.message || "Помилка з'єднання із сервером");
     }
 }
 
@@ -108,10 +102,11 @@ export async function logout(): Promise<void> {
 
         if (!response.ok) {
             const errorData = await response.json().catch(() => ({}));
-            throw new Error(errorData.message || "Помилка виходу");
+            throw new Error(errorData.message);
         }
-    } catch (error) {
-        console.error("Fetch error logging out:", error);
-        throw new Error("Помилка виходу");
+
+        return await response.json();
+    } catch (error: any) {
+        throw new Error(error?.message || "Помилка з'єднання із сервером");
     }
 }

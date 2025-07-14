@@ -13,21 +13,38 @@ import MonoButton from "@/shared/ui/buttons/MonoButton";
 import ModalWrapper from "@/shared/ui/wrappers/ModalWrapper";
 import FormButtonsWrapper from "@/shared/ui/wrappers/FormButtonsWrapper";
 import FormFillingWrapper from "@/shared/ui/wrappers/FormFillingWrapper";
+import { useForm } from "react-hook-form";
+import { ICollection } from "../types/collections.types";
 
 interface AddCollectionModalProps {
     isOpen: boolean;
     onClose: () => void;
 }
 
+type FormValues = {
+    name: string;
+    path: string;
+    status: TStatus;
+};
+
 export default function AddCollectionModal({
     isOpen,
     onClose,
 }: AddCollectionModalProps) {
-    const [name, setName] = useState("");
-    const [path, setPath] = useState("");
     const [banner, setBanner] = useState<File | null>(null);
-    const [status, setStatus] = useState<TStatus>("INACTIVE");
     const [preview, setPreview] = useState<string | null>(null);
+    const [modalMessage, setModalMessage] = useState("");
+
+    const {
+        register,
+        handleSubmit,
+        reset,
+        formState: { errors },
+    } = useForm<FormValues>({
+        defaultValues: {
+            status: "INACTIVE",
+        },
+    });
 
     const uploadImageMutation = useUploadImage();
     const createCollectionMutation = useCreateCollection();
@@ -42,39 +59,34 @@ export default function AddCollectionModal({
 
     const handleClose = () => {
         if (preview) URL.revokeObjectURL(preview);
-        setName("");
-        setPath("");
+        reset();
         setBanner(null);
-        setStatus("INACTIVE");
         setPreview(null);
+        setModalMessage("");
         onClose();
     };
 
-    const handleSubmit = async (e: React.FormEvent) => {
-        e.preventDefault();
-
-        if (!name.trim() || !path.trim() || !status) {
-            return;
-        }
-        if (!banner) {
-            return;
-        }
-
+    const onSubmit = async (data: FormValues) => {
         try {
+            if (!banner) {
+                setModalMessage("Будь ласка, оберіть банер");
+                return;
+            }
+
             const uploadResult = await uploadImageMutation.mutateAsync(banner);
             const imagePath = uploadResult.path;
 
             await createCollectionMutation.mutateAsync({
-                name,
-                path,
+                name: data.name,
+                path: data.path,
                 banner: imagePath,
                 views: 0,
-                status,
+                status: data.status,
             });
 
             handleClose();
-        } catch (error: any) {
-            console.error("Помилка при створенні колекції:", error);
+        } catch (err: any) {
+            setModalMessage(err?.message || "Помилка при створенні колекції");
         }
     };
 
@@ -84,26 +96,37 @@ export default function AddCollectionModal({
 
     const modalContent = (
         <ModalWrapper onClose={onClose} modalTitle={"Додавання колекції"}>
-            <form className="flex flex-col gap-[20px]" onSubmit={handleSubmit}>
+            <form
+                className="flex flex-col gap-[20px]"
+                onSubmit={handleSubmit(onSubmit)}
+            >
                 <FormFillingWrapper>
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-[20px]">
                         <InputField
                             label={"Назва"}
-                            value={name}
-                            onChangeValue={(e) => setName(e.target.value)}
-                            id={"addCollectionName"}
-                            name={"addCollectionName"}
-                            placeholder={"Назва колекції"}
                             type={"text"}
+                            placeholder={"Назва колекції"}
+                            {...register("name", {
+                                required: "Введіть назву",
+                                minLength: {
+                                    value: 3,
+                                    message: "Мінімум 3 символи",
+                                },
+                            })}
+                            errorMessage={errors.name?.message}
                         />
                         <InputField
                             label={"Шлях"}
-                            value={path}
-                            onChangeValue={(e) => setPath(e.target.value)}
-                            id={"addCollectionPath"}
-                            name={"addCollectionPath"}
-                            placeholder={"Шлях"}
                             type={"text"}
+                            placeholder={"Шлях"}
+                            {...register("path", {
+                                required: "Введіть шлях",
+                                minLength: {
+                                    value: 3,
+                                    message: "Мінімум 3 символи",
+                                },
+                            })}
+                            errorMessage={errors.path?.message}
                         />
                         <div className="flex flex-col gap-[7px]">
                             <label
@@ -113,12 +136,10 @@ export default function AddCollectionModal({
                                 Статус
                             </label>
                             <select
-                                name="status"
+                                {...register("status", {
+                                    required: "Оберіть статус",
+                                })}
                                 className="border border-white/10 rounded p-[10px] outline-0 cursor-pointer"
-                                value={status}
-                                onChange={(e) =>
-                                    setStatus(e.target.value as TStatus)
-                                }
                             >
                                 <option value="" disabled>
                                     Оберіть статус
@@ -132,8 +153,14 @@ export default function AddCollectionModal({
                                     </option>
                                 ))}
                             </select>
+                            {errors.status && (
+                                <p className="text-sm text-red-500">
+                                    {errors.status.message}
+                                </p>
+                            )}
                         </div>
                     </div>
+
                     <div className="flex flex-col gap-[7px] w-full">
                         <label
                             htmlFor="banner"
@@ -168,6 +195,9 @@ export default function AddCollectionModal({
                         />
                     </div>
                 </FormFillingWrapper>
+                {modalMessage && (
+                    <p className="text-red-500 text-sm">{modalMessage}</p>
+                )}
                 <FormButtonsWrapper>
                     <MonoButton
                         type="button"

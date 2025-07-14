@@ -8,13 +8,12 @@ export async function fetchCollections(): Promise<ICollection[]> {
 
         if (!response.ok) {
             const errorData = await response.json().catch(() => ({}));
-            throw new Error(errorData.message || "Помилка отримання колекцій");
+            throw new Error(errorData.message);
         }
 
         return await response.json();
-    } catch (error) {
-        console.error("Fetch error fetching collections:", error);
-        throw new Error("Помилка отримання колекцій");
+    } catch (error: any) {
+        throw new Error(error?.message || "Помилка з'єднання із сервером");
     }
 }
 
@@ -24,13 +23,12 @@ export async function fetchCollection(collectionPath: string): Promise<ICollecti
 
         if (!response.ok) {
             const errorData = await response.json().catch(() => ({}));
-            throw new Error(errorData.message || "Помилка отримання колекції");
+            throw new Error(errorData.message);
         }
 
         return await response.json();
-    } catch (error) {
-        console.error("Fetch error fetching collection:", error);
-        throw new Error("Помилка отримання колекції");
+    } catch (error: any) {
+        throw new Error(error?.message || "Помилка з'єднання із сервером");
     }
 }
 
@@ -47,16 +45,12 @@ export async function createCollection(data: ICollectionPayload): Promise<IColle
 
         if (!response.ok) {
             const errorData = await response.json().catch(() => ({}));
-            throw new Error(errorData.message || "Помилка створення колекції");
+            throw new Error(errorData.message);
         }
 
-        const result = await response.json();
-        console.log(result.message);
-
-        return result.collection;
-    } catch (error) {
-        console.error("Fetch error creating collection:", error);
-        throw new Error("Помилка створення колекції");
+        return await response.json();
+    } catch (error: any) {
+        throw new Error(error?.message || "Помилка з'єднання із сервером");
     }
 }
 
@@ -76,13 +70,12 @@ export async function editCollection(
 
         if (!response.ok) {
             const errorData = await response.json().catch(() => ({}));
-            throw new Error(errorData.message || "Не вдалося оновити колекцію");
+            throw new Error(errorData.message);
         }
 
         return await response.json();
-    } catch (error) {
-        console.error("Fetch error updating collection:", error);
-        throw new Error("Не вдалося оновити колекцію");
+    } catch (error: any) {
+        throw new Error(error?.message || "Помилка з'єднання із сервером");
     }
 }
 
@@ -95,10 +88,11 @@ export async function deleteCollection(collectionPath: string): Promise<void> {
 
         if (!response.ok) {
             const errorData = await response.json().catch(() => ({}));
-            throw new Error(errorData.message || "Не вдалося видалити колекцію");
+            throw new Error(errorData.message);
         }
-    } catch (error) {
-        console.error("Fetch error deleting collection:", error);
-        throw new Error("Не вдалося видалити колекцію");
+
+        return await response.json();
+    } catch (error: any) {
+        throw new Error(error?.message || "Помилка з'єднання із сервером");
     }
 }

@@ -1,4 +1,4 @@
-import { Injectable } from "@nestjs/common";
+import { ConflictException, Injectable } from "@nestjs/common";
 import { CreateProductDto } from "./dto/create-product.dto";
 import { PrismaService } from "src/prisma/prisma.service";
 import { UpdateProductDto } from "./dto/update-product.dto";
@@ -54,6 +54,14 @@ export class ProductsService {
     }
 
     async postProduct(createProductDto: CreateProductDto) {
+        const existingProduct = await this.prisma.product.findUnique({
+            where: { path: createProductDto.path },
+        });
+
+        if (existingProduct) {
+            throw new ConflictException("Продукт з таким шляхом вже існує");
+        }
+
         const {
             name,
             path,

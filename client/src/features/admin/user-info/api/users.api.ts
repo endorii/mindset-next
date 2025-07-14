@@ -8,13 +8,12 @@ export async function fetchUser(email: string): Promise<IUser> {
 
         if (!response.ok) {
             const errorData = await response.json().catch(() => ({}));
-            throw new Error(errorData.message || "Помилка отримання користувача");
+            throw new Error(errorData.message);
         }
 
         return await response.json();
-    } catch (error) {
-        console.error("Fetch error fetching user:", error);
-        throw new Error("Помилка отримання користувача");
+    } catch (error: any) {
+        throw new Error(error?.message || "Помилка з'єднання із сервером");
     }
 }
 
@@ -31,12 +30,11 @@ export async function editUser(id: string, data: Partial<IUser>): Promise<IUser>
 
         if (!response.ok) {
             const errorData = await response.json().catch(() => ({}));
-            throw new Error(errorData.message || "Не вдалося оновити дані про користувача");
+            throw new Error(errorData.message);
         }
 
         return await response.json();
-    } catch (error) {
-        console.error("Fetch error updating user:", error);
-        throw new Error("Не вдалося оновити дані про користувача");
+    } catch (error: any) {
+        throw new Error(error?.message || "Помилка з'єднання із сервером");
     }
 }

@@ -29,7 +29,7 @@ export default function CollectionsLayout({
 
     return (
         <>
-            <div className="fixed top-[10px] left-[10px] max-w-[600px] z-100 ">
+            <div className="fixed top-[15px] left-[10px] max-w-[600px] z-100 ">
                 <ChooseCategoryHeader
                     currentCollection={currentCollection}
                     setCurrentCollection={setCurrentCollection}

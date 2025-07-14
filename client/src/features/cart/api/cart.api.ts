@@ -15,12 +15,12 @@ export async function addCartItemToUser(userId: string, cartItem: ICartItem): Pr
 
         if (!response.ok) {
             const errorData = await response.json().catch(() => ({}));
-            throw new Error(errorData.message || "Помилка додавання товару в кошик");
+            throw new Error(errorData.message);
         }
+
         return await response.json();
-    } catch (error) {
-        console.error("Fetch error add item to cart:", error);
-        throw new Error("Помилка додавання товару в кошик");
+    } catch (error: any) {
+        throw new Error(error?.message || "Помилка з'єднання із сервером");
     }
 }
 
@@ -32,13 +32,12 @@ export async function fetchAllCartItemsFromUser(userId: string): Promise<ICartIt
 
         if (!response.ok) {
             const errorData = await response.json().catch(() => ({}));
-            throw new Error(errorData.message || "Помилка отримання товарів з кошика");
+            throw new Error(errorData.message);
         }
 
         return await response.json();
-    } catch (error) {
-        console.error("Fetch error fetching cart:", error);
-        throw new Error("Помилка отримання товарів з кошика");
+    } catch (error: any) {
+        throw new Error(error?.message || "Помилка з'єднання із сервером");
     }
 }
 
@@ -51,10 +50,11 @@ export async function deleteCartItemFromUser(userId: string, productId: string):
 
         if (!response.ok) {
             const errorData = await response.json().catch(() => ({}));
-            throw new Error(errorData.message || "Не вдалося видалити товар з кошика");
+            throw new Error(errorData.message);
         }
-    } catch (error) {
-        console.error("Fetch error deleting item from cart:", error);
-        throw new Error("Не вдалося видалити товар з кошика");
+
+        return await response.json();
+    } catch (error: any) {
+        throw new Error(error?.message || "Помилка з'єднання із сервером");
     }
 }

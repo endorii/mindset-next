@@ -1,23 +1,26 @@
 "use client";
-import Image from "next/image";
 import { useEffect, useState, ChangeEvent } from "react";
+import { useForm, Controller } from "react-hook-form";
+import { createPortal } from "react-dom";
+import Image from "next/image";
+
 import { useColors } from "@/features/admin/attributes/product-colors/hooks/useColors";
-import { IColor } from "@/features/admin/attributes/product-colors/types/product-color.types";
 import { useSizes } from "@/features/admin/attributes/product-sizes/hooks/useSizes";
-import { ISize } from "@/features/admin/attributes/product-sizes/types/product-size.types";
 import { useTypes } from "@/features/admin/attributes/product-types/hooks/useTypes";
-import { IType } from "@/features/admin/attributes/product-types/types/product-type.types";
+
 import { ICategory } from "@/features/categories/types/categories.types";
 import { ICollection } from "@/features/collections/types/collections.types";
+import { IProduct } from "../types/products.types";
+
 import { useUploadImage } from "@/shared/hooks/useImages";
+import { useEditProduct } from "../hooks/useProducts";
+import { useEscapeKeyClose } from "@/shared/hooks/useEscapeKeyClose";
+
 import { TrashIcon } from "@/shared/icons";
 import { TStatus } from "@/shared/types/types";
-import InputField from "@/shared/ui/inputs/InputField";
-import { createPortal } from "react-dom";
-import { useEditProduct } from "../hooks/useProducts";
-import { IProduct } from "../types/products.types";
-import { useEscapeKeyClose } from "@/shared/hooks/useEscapeKeyClose";
 import { statuses } from "@/shared/utils/helpers";
+
+import InputField from "@/shared/ui/inputs/InputField";
 import MonoButton from "@/shared/ui/buttons/MonoButton";
 import ModalWrapper from "@/shared/ui/wrappers/ModalWrapper";
 import FormFillingWrapper from "@/shared/ui/wrappers/FormFillingWrapper";
@@ -31,6 +34,16 @@ interface EditProductModalProps {
     product: IProduct;
 }
 
+interface FormData {
+    name: string;
+    path: string;
+    price: number;
+    available: "true" | "false";
+    description: string;
+    composition: string;
+    status: TStatus | "";
+}
+
 export default function EditProductModal({
     isOpen,
     onClose,
@@ -38,13 +51,23 @@ export default function EditProductModal({
     categoryPath,
     product,
 }: EditProductModalProps) {
-    const [name, setName] = useState("");
-    const [path, setPath] = useState("");
-    const [price, setPrice] = useState<number>(0);
-    const [available, setAvailable] = useState<boolean | null>(null);
-    const [description, setDescription] = useState("");
-    const [composition, setComposition] = useState("");
-    const [status, setStatus] = useState<TStatus>("INACTIVE");
+    const {
+        register,
+        handleSubmit,
+        reset,
+        control,
+        formState: { errors },
+    } = useForm<FormData>({
+        defaultValues: {
+            name: "",
+            path: "",
+            price: 0,
+            available: "false",
+            description: "",
+            composition: "",
+            status: "",
+        },
+    });
 
     const [banner, setBanner] = useState<File | string | null>(null);
     const [bannerPreview, setBannerPreview] = useState<string | null>(null);
@@ -52,38 +75,42 @@ export default function EditProductModal({
     const [images, setImages] = useState<(File | string)[]>([]);
     const [imagePreviews, setImagePreviews] = useState<string[]>([]);
 
-    const [colorsToSend, setColorsToSend] = useState<IColor[] | []>([]);
-    const [sizesToSend, setSizesToSend] = useState<ISize[] | []>([]);
-    const [typesToSend, setTypesToSend] = useState<IType[] | []>([]);
+    const [colorsToSend, setColorsToSend] = useState<string[]>([]);
+    const [sizesToSend, setSizesToSend] = useState<string[]>([]);
+    const [typesToSend, setTypesToSend] = useState<string[]>([]);
 
     const uploadImageMutation = useUploadImage();
-    // const uploadImagesMutation = useUploadImages();
-
     const editProductMutation = useEditProduct();
 
-    const { data: allColors, isLoading: isLoadingColors } = useColors();
-    const { data: allTypes, isLoading: isLoadingTypes } = useTypes();
-    const { data: allSizes, isLoading: isLoadingSizes } = useSizes();
+    const { data: allColors } = useColors();
+    const { data: allSizes } = useSizes();
+    const { data: allTypes } = useTypes();
 
+    useEscapeKeyClose({ isOpen, onClose });
+
+    // Заповнення форми при завантаженні продукту
     useEffect(() => {
         if (product) {
-            setName(product.name);
-            setPath(product.path);
-            setPrice(product.price);
-            setAvailable(product.available);
-            setDescription(product.description);
-            setComposition(product.composition);
-            setStatus(product.status);
-            setColorsToSend(product.productColors.map((item) => item.color));
-            setSizesToSend(product.productSizes.map((item) => item.size));
-            setTypesToSend(product.productTypes.map((item) => item.type));
+            reset({
+                name: product.name,
+                path: product.path,
+                price: product.price,
+                available: product.available ? "true" : "false",
+                description: product.description,
+                composition: product.composition,
+                status: product.status,
+            });
+            setColorsToSend(product.productColors.map((pc) => pc.color.id));
+            setSizesToSend(product.productSizes.map((ps) => ps.size.id));
+            setTypesToSend(product.productTypes.map((pt) => pt.type.id));
             setBanner(product.banner);
             setBannerPreview(product.banner);
             setImages(product.images);
             setImagePreviews(product.images);
         }
-    }, [product]);
+    }, [product, reset]);
 
+    // Обробка вибору банера
     const handleBannerChange = (e: ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
         if (file) {
@@ -92,95 +119,62 @@ export default function EditProductModal({
         }
     };
 
+    // Обробка вибору додаткових зображень
     const handleImagesChange = (e: ChangeEvent<HTMLInputElement>) => {
-        const files = Array.from(e.target.files || []);
+        const files = e.target.files ? Array.from(e.target.files) : [];
         setImages((prev) => [...prev, ...files]);
         setImagePreviews((prev) => [
             ...prev,
-            ...files.map((file) => URL.createObjectURL(file)),
+            ...files.map((f) => URL.createObjectURL(f)),
         ]);
     };
 
+    // Видалення зображення за індексом
     const removeImage = (index: number) => {
         setImages((prev) => prev.filter((_, i) => i !== index));
         setImagePreviews((prev) => prev.filter((_, i) => i !== index));
     };
 
-    const handleAddColor = (color: IColor) => {
-        setColorsToSend((prevColors) => {
-            if (prevColors.some((c) => c.id === color.id)) {
-                return prevColors;
-            }
-            return [...prevColors, color];
-        });
-    };
-
-    const handleRemoveColor = (colorId: string) => {
-        setColorsToSend((prevColors) =>
-            prevColors.filter((c) => c.id !== colorId)
-        );
-    };
-
-    const handleAddSize = (size: ISize) => {
-        setSizesToSend((prevSizes) => {
-            if (prevSizes.some((s) => s.id === size.id)) {
-                return prevSizes;
-            }
-            return [...prevSizes, size];
-        });
-    };
-
-    const handleRemoveSize = (sizeId: string) => {
-        setSizesToSend((prevSizes) => prevSizes.filter((s) => s.id !== sizeId));
-    };
-
-    const handleAddType = (type: IType) => {
-        setTypesToSend((prevTypes) => {
-            if (prevTypes.some((t) => t.id === type.id)) {
-                return prevTypes;
-            }
-            return [...prevTypes, type];
-        });
-    };
-
-    const handleRemoveType = (typeId: string) => {
-        setTypesToSend((prevTypes) => prevTypes.filter((t) => t.id !== typeId));
-    };
-
-    const handleClose = () => {
-        onClose();
-    };
-
-    const handleSubmit = async (e: React.FormEvent) => {
-        e.preventDefault();
-        if (
-            !name ||
-            !path ||
-            !status ||
-            !price ||
-            !description ||
-            !composition
-        ) {
+    // Тогл вибору для кольорів, розмірів, типів
+    const toggleSelect = (
+        id: string,
+        selected: string[],
+        setSelected: React.Dispatch<React.SetStateAction<string[]>>
+    ) => {
+        if (selected.includes(id)) {
+            setSelected(selected.filter((v) => v !== id));
+        } else {
+            setSelected([...selected, id]);
         }
-        if (!banner) {
-        }
+    };
 
+    // Відправка форми
+    const onSubmit = async (data: FormData) => {
         try {
-            let bannerPath = typeof banner === "string" ? banner : "";
-            if (banner instanceof File) {
+            // Завантаження банера, якщо файл
+            let bannerPath = "";
+            if (typeof banner === "string" && banner) {
+                bannerPath = banner;
+            } else if (banner instanceof File) {
                 const uploadResult = await uploadImageMutation.mutateAsync(
                     banner
                 );
                 bannerPath = uploadResult.path;
+            } else {
+                // Якщо банер не вибрано — можна вивести помилку або просто не оновлювати
+                // Тут пропущено, залежно від логіки можна додати
             }
 
+            // Завантаження нових додаткових зображень
             const newImages: string[] = [];
             for (const img of images) {
                 if (typeof img === "string") {
                     newImages.push(img);
                 } else {
-                    const result = await uploadImageMutation.mutateAsync(img);
-                    newImages.push(result.path);
+                    const uploadResult = await uploadImageMutation.mutateAsync(
+                        img
+                    );
+                    newImages.push(uploadResult.path);
                 }
             }
 
@@ -189,126 +183,134 @@ export default function EditProductModal({
                 categoryPath,
                 productPath: product.path,
                 productData: {
-                    name,
-                    path,
-                    price: price || 0,
-                    available: available || false,
-                    description,
-                    composition,
-                    colorIds: colorsToSend.map((c) => c.id),
-                    sizeIds: sizesToSend.map((s) => s.id),
-                    typeIds: typesToSend.map((t) => t.id),
-                    status,
+                    name: data.name.trim(),
+                    path: data.path.trim(),
+                    price: data.price,
+                    available: data.available === "true",
+                    description: data.description.trim(),
+                    composition: data.composition.trim(),
+                    status: data.status as TStatus,
                     banner: bannerPath,
                     images: newImages,
+                    colorIds: colorsToSend,
+                    sizeIds: sizesToSend,
+                    typeIds: typesToSend,
                 },
             });
 
-            handleClose();
-        } catch (err) {
+            onClose();
+        } catch (err: any) {
             console.error("Помилка при оновленні товару:", err);
+            // Тут можна показати повідомлення користувачу
         }
     };
 
-    useEscapeKeyClose({ isOpen, onClose });
-
     if (!isOpen || !product) return null;
 
+    function getFullImageUrl(src: string | null | undefined) {
+        if (!src) return "";
+        // Якщо це локальний URL з бекенда, наприклад /images/abc.jpg
+        if (src.startsWith("/images/")) {
+            return `http://localhost:5000${src}`;
+        }
+        // Якщо це блоб або дата URL, повертаємо як є
+        if (src.startsWith("blob:") || src.startsWith("data:")) {
+            return src;
+        }
+        // Якщо повний URL — повертаємо без змін
+        return src;
+    }
+
+    const bannerDisplaySrc = bannerPreview
+        ? getFullImageUrl(bannerPreview)
+        : typeof banner === "string"
+        ? getFullImageUrl(banner)
+        : "";
+
+    const imageDisplayPreviews = imagePreviews.map((src) =>
+        getFullImageUrl(src)
+    );
+
     const modalContent = (
-        <ModalWrapper onClose={onClose} modalTitle={"Редагування товару"}>
-            <form className="flex flex-col gap-[20px]" onSubmit={handleSubmit}>
+        <ModalWrapper onClose={onClose} modalTitle="Редагування товару">
+            <form
+                onSubmit={handleSubmit(onSubmit)}
+                className="flex flex-col gap-[20px]"
+            >
                 <FormFillingWrapper>
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-[20px]">
                         <InputField
-                            label={"Назва"}
-                            value={name}
-                            onChangeValue={(e) => setName(e.target.value)}
-                            id={"editProductName"}
-                            name={"editProductName"}
-                            placeholder={"Назва колекції"}
-                            type={"text"}
+                            label="Назва"
+                            id="editProductName"
+                            placeholder="Назва товару"
+                            type="text"
+                            {...register("name", {
+                                required: "Введіть назву",
+                                minLength: {
+                                    value: 3,
+                                    message: "Мінімум 3 символи",
+                                },
+                            })}
+                            errorMessage={errors.name?.message}
                         />
                         <InputField
-                            label={"Шлях"}
-                            value={path}
-                            onChangeValue={(e) => setName(e.target.value)}
-                            id={"editProductPath"}
-                            name={"editProductPath"}
-                            placeholder={"Шлях"}
-                            type={"text"}
+                            label="Шлях"
+                            id="editProductPath"
+                            placeholder="Шлях"
+                            type="text"
+                            {...register("path", {
+                                required: "Введіть шлях",
+                                minLength: {
+                                    value: 3,
+                                    message: "Мінімум 3 символи",
+                                },
+                            })}
+                            errorMessage={errors.path?.message}
                         />
                         <InputField
-                            label={"Назва"}
-                            value={name}
-                            onChangeValue={(e) => setName(e.target.value)}
-                            id={"editCollectionName"}
-                            name={"editCollectionName"}
-                            placeholder={"Назва колекції"}
-                            type={"text"}
-                        />
-                        <InputField
-                            label={"Ціна"}
-                            value={price}
-                            onChangeValue={(e) => setPrice(+e.target.value)}
-                            id={"editProductPrice"}
-                            name={"editProductPrice"}
-                            placeholder={"Ціна"}
-                            type={"number"}
+                            label="Ціна"
+                            id="editProductPrice"
+                            placeholder="Ціна"
+                            type="number"
+                            {...register("price", {
+                                required: "Введіть ціну",
+                                min: {
+                                    value: 0,
+                                    message: "Ціна має бути не від’ємною",
+                                },
+                                valueAsNumber: true,
+                            })}
+                            errorMessage={errors.price?.message}
                         />
                         <div className="flex flex-col gap-[7px]">
-                            <label className="text-sm font-semibold">
-                                Опис
-                            </label>
-                            <textarea
-                                className="border border-gray-200 rounded px-[10px] py-[7px] bg-gray-50 outline-0"
-                                value={description}
-                                onChange={(e) => setDescription(e.target.value)}
-                            />
-                        </div>
-                        <div className="flex flex-col gap-[7px]">
-                            <label className="text-sm font-semibold">
-                                Склад
-                            </label>
-                            <textarea
-                                className="border border-gray-200 rounded px-[10px] py-[7px] bg-gray-50 outline-0"
-                                value={composition}
-                                onChange={(e) => setComposition(e.target.value)}
-                            />
-                        </div>
-                        <div className="flex flex-col gap-[7px]">
-                            <label className="text-sm font-semibold">
+                            <label
+                                className="font-semibold text-sm"
+                                htmlFor="available"
+                            >
                                 Доступність
                             </label>
                             <select
-                                className="border border-gray-200 rounded px-[10px] py-[7px] bg-gray-50 outline-0"
-                                value={
-                                    available === null
-                                        ? ""
-                                        : available
-                                        ? "true"
-                                        : "false"
-                                }
-                                onChange={(e) =>
-                                    setAvailable(e.target.value === "true")
-                                }
+                                id="available"
+                                {...register("available", { required: true })}
+                                className="border border-white/10 rounded p-[10px] outline-0 cursor-pointer bg-black/10"
                             >
-                                <option value="" disabled>
-                                    Оберіть доступність
-                                </option>
                                 <option value="true">Доступний</option>
                                 <option value="false">Недоступний</option>
                             </select>
                         </div>
                         <div className="flex flex-col gap-[7px]">
-                            <label className="text-sm font-semibold">
+                            <label
+                                className="font-semibold text-sm"
+                                htmlFor="status"
+                            >
                                 Статус
                             </label>
                             <select
-                                className="border border-gray-200 rounded px-[10px] py-[7px] bg-gray-50 outline-0"
-                                value={status || ""}
-                                onChange={(e) =>
-                                    setStatus(e.target.value as TStatus)
-                                }
+                                id="status"
+                                {...register("status", {
+                                    required: "Оберіть статус",
+                                })}
+                                className="border border-white/10 rounded p-[10px] outline-0 cursor-pointer bg-black/10"
                             >
                                 <option value="" disabled>
                                     Оберіть статус
@@ -319,283 +321,251 @@ export default function EditProductModal({
                                     </option>
                                 ))}
                             </select>
+                            {errors.status && (
+                                <p className="text-red-500 text-sm">
+                                    {errors.status.message}
+                                </p>
+                            )}
                         </div>
                     </div>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-[20px]">
-                        <div className="flex flex-col gap-2">
-                            <label className="text-sm font-semibold">
-                                Оберіть кольори:
-                            </label>
-                            <div className="flex flex-wrap gap-2 p-2 border border-gray-200 rounded max-h-[100px] overflow-y-auto">
-                                {isLoadingColors && (
-                                    <p>Завантаження кольорів...</p>
-                                )}
-                                {allColors?.map((color) => (
-                                    <button
-                                        key={color.id}
-                                        type="button"
-                                        onClick={() => handleAddColor(color)}
-                                        className={`px-3 py-1 rounded-full text-sm flex items-center gap-1
-                              ${
-                                  colorsToSend.some((c) => c.id === color.id)
-                                      ? `bg-black text-white cursor-not-allowed`
-                                      : `border border-gray-300 text-black bg-gray-50 hover:bg-gray-200 cursor-pointer`
-                              }`}
-                                    >
-                                        {color.name}
-                                        <div
-                                            className="w-4 h-4 rounded-full border border-gray-400"
-                                            style={{
-                                                backgroundColor:
-                                                    color.hexCode || "#FFFFFF",
-                                            }}
-                                        ></div>
-                                    </button>
-                                ))}
-                                {allColors?.length === 0 &&
-                                    !isLoadingColors && (
-                                        <p>Кольори не знайдено.</p>
-                                    )}
-                            </div>
-                        </div>
 
-                        <div className="flex flex-col gap-2">
-                            <label className="text-sm font-semibold">
-                                Обрані кольори:
-                            </label>
-                            <div className="flex flex-wrap gap-2 p-2 border border-gray-200 rounded max-h-[100px] overflow-y-auto">
-                                {colorsToSend.length > 0 ? (
-                                    colorsToSend.map((color) => (
-                                        <div
-                                            key={color.id}
-                                            className="flex items-center gap-2 px-3 py-1 bg-black text-white rounded-full text-sm cursor-pointer"
-                                            onClick={() =>
-                                                handleRemoveColor(color.id)
-                                            }
-                                        >
-                                            {color.name}
-                                            <div
-                                                className="w-4 h-4 rounded-full border border-gray-400"
-                                                style={{
-                                                    backgroundColor:
-                                                        color.hexCode ||
-                                                        "#FFFFFF",
-                                                }}
-                                            ></div>
-                                        </div>
-                                    ))
-                                ) : (
-                                    <p className="text-gray-500">
-                                        Не обрано жодного кольору.
-                                    </p>
-                                )}
-                            </div>
-                        </div>
+                    <div className="flex flex-col gap-[7px]">
+                        <label className="font-semibold text-sm">Опис</label>
+                        <textarea
+                            {...register("description", {
+                                required: "Введіть опис",
+                            })}
+                            className={`resize-none border ${
+                                errors.description
+                                    ? "border-red-500"
+                                    : "border-white/10"
+                            } rounded p-[10px] bg-black/10 outline-0`}
+                            rows={3}
+                        />
+                        {errors.description && (
+                            <p className="text-red-500 text-sm">
+                                {errors.description.message}
+                            </p>
+                        )}
+                    </div>
 
-                        <div className="flex flex-col gap-2">
-                            <label className="text-sm font-semibold">
-                                Оберіть розміри:
-                            </label>
-                            <div className="flex flex-wrap gap-2 p-2 border border-gray-200 rounded max-h-[100px] overflow-y-auto">
-                                {isLoadingSizes && (
-                                    <p>Завантаження розмірів...</p>
-                                )}
-                                {allSizes?.map((size) => (
-                                    <button
-                                        key={size.id}
-                                        type="button"
-                                        onClick={() => handleAddSize(size)}
-                                        className={`px-3 py-1 rounded-full text-sm
-                              ${
-                                  sizesToSend.some((s) => s.id === size.id)
-                                      ? `bg-black text-white cursor-not-allowed`
-                                      : `border border-gray-300 text-black bg-gray-50 hover:bg-gray-200 cursor-pointer`
-                              }`}
-                                    >
-                                        {size.name}
-                                    </button>
-                                ))}
-                                {allSizes?.length === 0 && !isLoadingSizes && (
-                                    <p>Розміри не знайдено.</p>
-                                )}
-                            </div>
-                        </div>
+                    <div className="flex flex-col gap-[7px]">
+                        <label className="font-semibold text-sm">Склад</label>
+                        <textarea
+                            {...register("composition", {
+                                required: "Введіть склад",
+                            })}
+                            className={`resize-none border ${
+                                errors.composition
+                                    ? "border-red-500"
+                                    : "border-white/10"
+                            } rounded p-[10px] bg-black/10 outline-0`}
+                            rows={3}
+                        />
+                        {errors.composition && (
+                            <p className="text-red-500 text-sm">
+                                {errors.composition.message}
+                            </p>
+                        )}
+                    </div>
 
-                        <div className="flex flex-col gap-2">
-                            <label className="text-sm font-semibold">
-                                Обрані розміри:
-                            </label>
-                            <div className="flex flex-wrap gap-2 p-2 border border-gray-200 rounded max-h-[100px] overflow-y-auto">
-                                {sizesToSend.length > 0 ? (
-                                    sizesToSend.map((size) => (
-                                        <div
-                                            key={size.id}
-                                            className="flex items-center gap-2 px-3 py-1 bg-black text-white rounded-full text-sm cursor-pointer"
-                                            onClick={() =>
-                                                handleRemoveSize(size.id)
-                                            }
-                                        >
-                                            {size.name}
-                                        </div>
-                                    ))
-                                ) : (
-                                    <p className="text-gray-500">
-                                        Не обрано жодного розміру.
-                                    </p>
-                                )}
-                            </div>
-                        </div>
-
-                        <div className="flex flex-col gap-2">
-                            <label className="text-sm font-semibold">
-                                Оберіть типи:
-                            </label>
-                            <div className="flex flex-wrap gap-2 p-2 border border-gray-200 rounded max-h-[100px] overflow-y-auto">
-                                {isLoadingTypes && <p>Завантаження типів...</p>}
-                                {allTypes?.map((type) => (
-                                    <button
-                                        key={type.id}
-                                        type="button"
-                                        onClick={() => handleAddType(type)}
-                                        className={`px-3 py-1 rounded-full text-sm
-                              ${
-                                  typesToSend.some((t) => t.id === type.id)
-                                      ? `bg-black text-white cursor-not-allowed`
-                                      : `border border-gray-300 text-black bg-gray-50 hover:bg-gray-200 cursor-pointer`
-                              }`}
-                                    >
-                                        {type.name}
-                                    </button>
-                                ))}
-                                {allTypes?.length === 0 && !isLoadingTypes && (
-                                    <p>Типи не знайдено.</p>
-                                )}
-                            </div>
-                        </div>
-
-                        <div className="flex flex-col gap-2">
-                            <label className="text-sm font-semibold">
-                                Обрані типи:
-                            </label>
-                            <div className="flex flex-wrap gap-2 p-2 border border-gray-200 rounded max-h-[100px] overflow-y-auto">
-                                {typesToSend.length > 0 ? (
-                                    typesToSend.map((type) => (
-                                        <div
-                                            key={type.id}
-                                            className="flex items-center gap-2 px-3 py-1 bg-black text-white rounded-full text-sm cursor-pointer"
-                                            onClick={() =>
-                                                handleRemoveType(type.id)
-                                            }
-                                        >
-                                            {type.name}
-                                        </div>
-                                    ))
-                                ) : (
-                                    <p className="text-gray-500">
-                                        Не обрано жодного типу.
-                                    </p>
-                                )}
-                            </div>
+                    {/* Вибір кольорів */}
+                    <div className="flex flex-col gap-2">
+                        <label className="font-semibold text-sm">Кольори</label>
+                        <div className="flex flex-wrap gap-2 max-h-[100px] overflow-y-auto border border-white/10 rounded p-2 bg-black/10">
+                            {allColors?.map((color) => (
+                                <button
+                                    key={color.id}
+                                    type="button"
+                                    onClick={() =>
+                                        toggleSelect(
+                                            color.id,
+                                            colorsToSend,
+                                            setColorsToSend
+                                        )
+                                    }
+                                    className={`px-3 py-1 rounded-full text-sm ${
+                                        colorsToSend.includes(color.id)
+                                            ? "bg-white text-black cursor-default"
+                                            : "border border-white/30 hover:bg-white/20"
+                                    }`}
+                                >
+                                    {color.name}
+                                </button>
+                            ))}
                         </div>
                     </div>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-[20px]">
-                        <div>
-                            <label
-                                htmlFor="banner"
-                                className="text-sm font-semibold"
-                            >
-                                Банер
-                            </label>
-                            <label
-                                htmlFor="banner"
-                                className="min-h-[100px] max-w-[300px] border border-dashed border-gray-400 mt-2 flex justify-center cursor-pointer bg-gray-50 hover:bg-gray-100 rounded-md overflow-hidden"
-                            >
-                                {bannerPreview ? (
-                                    <Image
-                                        src={
-                                            bannerPreview.startsWith("blob:") ||
-                                            bannerPreview.startsWith("data:")
-                                                ? bannerPreview
-                                                : `http://localhost:5000${bannerPreview}`
-                                        }
-                                        alt="banner"
-                                        width={250}
-                                        height={250}
-                                        className="object-cover"
-                                    />
-                                ) : (
-                                    <span className="text-4xl text-gray-400">
-                                        +
-                                    </span>
-                                )}
-                            </label>
-                            <input
-                                type="file"
-                                id="banner"
-                                accept="image/*"
-                                onChange={handleBannerChange}
-                                className="hidden"
-                            />
+
+                    {/* Вибір розмірів */}
+                    <div className="flex flex-col gap-2">
+                        <label className="font-semibold text-sm">Розміри</label>
+                        <div className="flex flex-wrap gap-2 max-h-[100px] overflow-y-auto border border-white/10 rounded p-2 bg-black/10">
+                            {allSizes?.map((size) => (
+                                <button
+                                    key={size.id}
+                                    type="button"
+                                    onClick={() =>
+                                        toggleSelect(
+                                            size.id,
+                                            sizesToSend,
+                                            setSizesToSend
+                                        )
+                                    }
+                                    className={`px-3 py-1 rounded-full text-sm ${
+                                        sizesToSend.includes(size.id)
+                                            ? "bg-white text-black cursor-default"
+                                            : "border border-white/30 hover:bg-white/20"
+                                    }`}
+                                >
+                                    {size.name}
+                                </button>
+                            ))}
                         </div>
-                        <div>
-                            <label
-                                htmlFor="images"
-                                className="text-sm font-semibold"
-                            >
-                                Додаткові зображення
-                            </label>
-                            <label
-                                htmlFor="images"
-                                className="min-h-[100px] max-w-[300px] border border-dashed border-gray-400 mt-2 flex products-center items-center justify-center cursor-pointer bg-gray-50 hover:bg-gray-100 rounded-md overflow-hidden"
-                            >
+                    </div>
+
+                    {/* Вибір типів */}
+                    <div className="flex flex-col gap-2">
+                        <label className="font-semibold text-sm">Типи</label>
+                        <div className="flex flex-wrap gap-2 max-h-[100px] overflow-y-auto border border-white/10 rounded p-2 bg-black/10">
+                            {allTypes?.map((type) => (
+                                <button
+                                    key={type.id}
+                                    type="button"
+                                    onClick={() =>
+                                        toggleSelect(
+                                            type.id,
+                                            typesToSend,
+                                            setTypesToSend
+                                        )
+                                    }
+                                    className={`px-3 py-1 rounded-full text-sm ${
+                                        typesToSend.includes(type.id)
+                                            ? "bg-white text-black cursor-default"
+                                            : "border border-white/30 hover:bg-white/20"
+                                    }`}
+                                >
+                                    {type.name}
+                                </button>
+                            ))}
+                        </div>
+                    </div>
+
+                    {/* Банер і зображення */}
+                    <div className="flex flex-col gap-[7px] w-full max-w-[300px]">
+                        <label
+                            htmlFor="banner"
+                            className="text-sm font-semibold"
+                        >
+                            Банер
+                        </label>
+                        <label
+                            htmlFor="banner"
+                            className="min-h-[100px] max-w-[300px] border border-dashed border-white/20 bg-black/10 mt-2 flex justify-center cursor-pointer rounded-md overflow-hidden"
+                        >
+                            {bannerDisplaySrc ? (
+                                <Image
+                                    src={bannerDisplaySrc}
+                                    alt="banner"
+                                    width={250}
+                                    height={250}
+                                    className="object-cover"
+                                />
+                            ) : (
                                 <span className="text-4xl text-gray-400">
                                     +
                                 </span>
-                            </label>
-                            <input
-                                type="file"
-                                id="images"
-                                multiple
-                                accept="image/*"
-                                onChange={handleImagesChange}
-                                className="hidden"
-                            />
-                            <div className="flex flex-wrap gap-3 mt-4">
-                                {imagePreviews.map((src, i) => (
-                                    <div
-                                        key={i}
-                                        className="relative group w-[100px] h-[100px] group cursor-pointer"
-                                        onClick={() => removeImage(i)}
-                                    >
-                                        <Image
-                                            src={
-                                                src.startsWith("blob:") ||
-                                                src.startsWith("data:")
-                                                    ? src
-                                                    : `http://localhost:5000${src}`
-                                            }
-                                            alt={`img-${i}`}
-                                            width={100}
-                                            height={100}
-                                            className="object-contain rounded-md"
-                                        />
-                                        <div className="absolute flex items-center justify-center opacity-0 rounded group-hover:opacity-100 top-0 right-0 bg-black/40 w-full h-full transition-all duration-200">
-                                            <TrashIcon className=" w-[35px] fill-none  stroke-white stroke-[1.5] " />
-                                        </div>
+                            )}
+                        </label>
+                        <input
+                            type="file"
+                            id="banner"
+                            accept="image/*"
+                            onChange={handleBannerChange}
+                            className="hidden"
+                        />
+                    </div>
+
+                    <div className="flex flex-col gap-[7px] w-full max-w-[300px]">
+                        <label
+                            htmlFor="images"
+                            className="text-sm font-semibold cursor-pointer"
+                        >
+                            Додаткові зображення
+                        </label>
+                        <label
+                            htmlFor="images"
+                            className="min-h-[100px] border border-dashed border-white/20 mt-2 flex items-center justify-center cursor-pointer bg-black/10 hover:bg-black/20 rounded-xl overflow-hidden"
+                        >
+                            <span className="text-4xl text-gray-400">+</span>
+                        </label>
+                        <input
+                            type="file"
+                            id="images"
+                            multiple
+                            accept="image/*"
+                            onChange={handleImagesChange}
+                            className="hidden"
+                        />
+                        <div className="flex flex-wrap gap-3 mt-4">
+                            {imageDisplayPreviews.map((src, i) => (
+                                <div
+                                    key={i}
+                                    className="relative group w-[100px] h-[100px] cursor-pointer"
+                                    onClick={() => removeImage(i)}
+                                >
+                                    <Image
+                                        src={src}
+                                        alt={`img-${i}`}
+                                        width={100}
+                                        height={100}
+                                        className="object-contain rounded-md"
+                                    />
+                                    <div className="absolute flex items-center justify-center opacity-0 rounded group-hover:opacity-100 top-0 right-0 bg-black/40 w-full h-full transition-all duration-200">
+                                        <TrashIcon className="w-[35px] fill-none stroke-white stroke-[1.5]" />
                                     </div>
-                                ))}
-                            </div>
+                                </div>
+                            ))}
                         </div>
                     </div>
                 </FormFillingWrapper>
+
                 <FormButtonsWrapper>
-                    <MonoButton type="button" onClick={handleClose}>
+                    <MonoButton
+                        type="button"
+                        onClick={() => {
+                            reset();
+                            setBanner(null);
+                            setBannerPreview(null);
+                            setImages([]);
+                            setImagePreviews([]);
+                            setColorsToSend([]);
+                            setSizesToSend([]);
+                            setTypesToSend([]);
+                            onClose();
+                        }}
+                        disabled={
+                            uploadImageMutation.isPending ||
+                            editProductMutation.isPending
+                        }
+                    >
                         Скасувати
                     </MonoButton>
-                    <MonoButton type="submit">Зберегти</MonoButton>
+                    <MonoButton
+                        type="submit"
+                        disabled={
+                            uploadImageMutation.isPending ||
+                            editProductMutation.isPending
+                        }
+                    >
+                        {uploadImageMutation.isPending ||
+                        editProductMutation.isPending
+                            ? "Завантаження..."
+                            : "Зберегти"}
+                    </MonoButton>
                 </FormButtonsWrapper>
             </form>
         </ModalWrapper>
     );
+
     return createPortal(modalContent, document.body);
 }

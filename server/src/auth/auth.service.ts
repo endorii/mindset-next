@@ -20,7 +20,7 @@ export class AuthService {
 
     async registerUser(createUserDto: CreateUserDto) {
         const user = await this.userService.findByEmail(createUserDto.email);
-        if (user) throw new ConflictException("User already exists!");
+        if (user) throw new ConflictException("Користувач з такою електронною адресою вже існує");
         return this.userService.create(createUserDto);
     }
 
@@ -54,14 +54,14 @@ export class AuthService {
         await this.userService.updateHashedRefreshToken(userId, null);
         res.clearCookie("accessToken", { path: "/" });
         res.clearCookie("refreshToken", { path: "/" });
-        return { message: "Signed out successfully" };
+        return { message: "Ви успішно вийшли з акаунту" };
     }
 
     async validateLocalUser(email: string, password: string) {
         const user = await this.userService.findByEmail(email);
-        if (!user) throw new UnauthorizedException("User not found!");
+        if (!user) throw new UnauthorizedException("Такого користувача не існує");
         const isPasswordMatched = await bcrypt.compare(password, user.password);
-        if (!isPasswordMatched) throw new UnauthorizedException("Invalid Credentials!");
+        if (!isPasswordMatched) throw new UnauthorizedException("Невірно введено пароль або логін");
 
         return { id: user.id, name: user.name, role: user.role };
     }
@@ -69,7 +69,7 @@ export class AuthService {
     async getCurrentUser(userId: string) {
         const user = await this.userService.findOne(userId);
         if (!user) {
-            throw new UnauthorizedException("User not found!");
+            throw new UnauthorizedException("Користувача не знайдено або сесія завершена");
         }
 
         return {
@@ -100,24 +100,28 @@ export class AuthService {
 
     async validateJwtUser(userId: string) {
         const user = await this.userService.findOne(userId);
-        if (!user) throw new UnauthorizedException("User not found!");
-        const currentUser = { id: user.id, role: user.role };
-        return currentUser;
+        if (!user) {
+            throw new UnauthorizedException("Користувача не знайдено або сесія завершена");
+        }
+        return { id: user.id, role: user.role };
     }
 
     async validateRefreshToken(userId: string, refreshToken: string) {
         const user = await this.userService.findOne(userId);
-        if (!user) throw new UnauthorizedException("User not found!");
+        if (!user) {
+            throw new UnauthorizedException("Користувача не знайдено або сесія завершена");
+        }
 
         if (!user.hashedRefreshToken) {
-            throw new UnauthorizedException("No refresh token stored");
+            throw new UnauthorizedException("Токен оновлення відсутній");
         }
 
         const refreshTokenMatched = await bcrypt.compare(refreshToken, user.hashedRefreshToken);
+        if (!refreshTokenMatched) {
+            throw new UnauthorizedException("Недійсний токен оновлення");
+        }
 
-        if (!refreshTokenMatched) throw new UnauthorizedException("Invalid Refresh Token!");
-        const currentUser = { id: user.id };
-        return currentUser;
+        return { id: user.id };
     }
 
     async refreshToken(userId: string, name: string, res: Response) {
