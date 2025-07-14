@@ -11,6 +11,7 @@ import MonoButton from "@/shared/ui/buttons/MonoButton";
 import DeleteButton from "@/shared/ui/buttons/DeleteButton";
 import ModalWrapper from "@/shared/ui/wrappers/ModalWrapper";
 import FormButtonsWrapper from "@/shared/ui/wrappers/FormButtonsWrapper";
+import { toast } from "sonner";
 
 interface DeleteProductModalProps {
     isOpen: boolean;
@@ -43,8 +44,11 @@ export default function DeleteProductModal({
                 productPath: product.path,
             });
             onClose();
+            toast.success("Товар упішно видалено!");
         } catch (error) {
-            console.error("Помилка при видаленні:", error);
+            console.log(error);
+
+            toast.error("Помилка видалення товару");
         }
     };
 

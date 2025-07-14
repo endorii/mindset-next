@@ -11,6 +11,7 @@ import {
     MainPageIcon,
 } from "@/shared/icons";
 import NavigationLink from "@/shared/ui/buttons/NavigationLink";
+import { toast } from "sonner";
 
 function AccountNavigation({ children }: { children: React.ReactNode }) {
     const { data: user } = useCurrentUser();
@@ -95,7 +96,13 @@ function AccountNavigation({ children }: { children: React.ReactNode }) {
                         </div>
                     ) : null}
                     <div>
-                        <NavigationLink href="#" onClick={() => logout()}>
+                        <NavigationLink
+                            href="#"
+                            onClick={async () => {
+                                await logout();
+                                toast.success("Ви вийшли з Вашого акаунту");
+                            }}
+                        >
                             <LogoutIcon className="w-[25px] fill-white group-hover:fill-black" />
                             <span className="transition-opacity duration-200 group-hover:text-black">
                                 Вийти

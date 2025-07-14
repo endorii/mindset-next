@@ -13,17 +13,11 @@ export function useAuth() {
             queryClient.setQueryData(["currentUser"], data);
             router.push("/");
         },
-        onError: (error) => {
-            console.error("Login error:", error);
-        },
     });
 
     const registerMutation = useMutation({
         mutationFn: registerUser,
         onSuccess: () => {},
-        onError: (error) => {
-            console.error("Register error:", error);
-        },
     });
 
     const logoutMutation = useMutation({
@@ -33,22 +27,10 @@ export function useAuth() {
             queryClient.invalidateQueries({ queryKey: ["currentUser"] });
             router.push("/auth");
         },
-        onError: (error) => {
-            console.error("Logout error:", error);
-            queryClient.setQueryData(["currentUser"], null);
-            queryClient.invalidateQueries({ queryKey: ["currentUser"] });
-            router.push("/auth");
-        },
     });
 
     const refreshTokenMutation = useMutation({
         mutationFn: refreshToken,
-        onError: (error) => {
-            console.error("Refresh token error:", error);
-            queryClient.setQueryData(["currentUser"], null);
-            queryClient.invalidateQueries({ queryKey: ["currentUser"] });
-            router.push("/auth");
-        },
     });
     return {
         login: loginMutation.mutateAsync,

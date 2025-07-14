@@ -5,6 +5,7 @@ import InputField from "@/shared/ui/inputs/InputField";
 import { useForm } from "react-hook-form";
 import { CreateUserDto } from "../types/auth.types";
 import LoginComponentsWrapper from "@/shared/ui/wrappers/LoginComponentsWrapper";
+import { toast } from "sonner";
 
 type RegisterFormInputs = CreateUserDto & {
     rules: boolean;
@@ -32,6 +33,7 @@ function RegisterForm() {
             await registerUser(data);
             setRegisterMessage("Реєстрація успішна!");
             setRegisterIsSuccess(true);
+            toast.success("Реєстрація успішна!");
         } catch (err: any) {
             setRegisterMessage(err?.message || "Помилка реєстрації");
         }
@@ -57,7 +59,7 @@ function RegisterForm() {
                             message: "Максимальна довжина імені — 15 символів",
                         },
                         pattern: {
-                            value: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d@$!%*?&]+$/,
+                            value: /^[A-Za-z0-9]+$/,
                             message:
                                 "Нікнейм має містити лише англійські літери та цифри",
                         },

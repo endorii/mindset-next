@@ -10,6 +10,7 @@ import MonoButton from "@/shared/ui/buttons/MonoButton";
 import DeleteButton from "@/shared/ui/buttons/DeleteButton";
 import ModalWrapper from "@/shared/ui/wrappers/ModalWrapper";
 import FormButtonsWrapper from "@/shared/ui/wrappers/FormButtonsWrapper";
+import { toast } from "sonner";
 
 interface DeleteCategoryModalProps {
     isOpen: boolean;
@@ -37,8 +38,9 @@ export default function DeleteCategoryModal({
                 collectionPath,
                 categoryPath: category.path,
             });
-        } catch (error) {
-            console.error("Помилка при видаленні:", error);
+            toast.success("Категорію упішно видалено!");
+        } catch (e) {
+            toast.error("Помилка при видаленні категорії");
         }
     };
 

@@ -3,6 +3,7 @@ import { Roboto } from "next/font/google";
 import "./globals.css";
 import { AuthProvider } from "@/shared/components/providers/AuthProvider";
 import { QueryProvider } from "@/shared/components/providers/QueryProvider";
+import { Toaster } from "sonner";
 
 const roboto = Roboto({
     subsets: ["cyrillic"],
@@ -20,6 +21,7 @@ export default function RootLayout({
         <html lang="en" className={roboto.className}>
             <body className="bg-black">
                 <QueryProvider>
+                    <Toaster theme="dark" />
                     <AuthProvider>{children}</AuthProvider>
                 </QueryProvider>
             </body>

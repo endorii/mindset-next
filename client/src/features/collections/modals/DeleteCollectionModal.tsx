@@ -9,6 +9,7 @@ import MonoButton from "@/shared/ui/buttons/MonoButton";
 import DeleteButton from "@/shared/ui/buttons/DeleteButton";
 import ModalWrapper from "@/shared/ui/wrappers/ModalWrapper";
 import FormButtonsWrapper from "@/shared/ui/wrappers/FormButtonsWrapper";
+import { toast } from "sonner";
 
 interface DeleteCollectionModalProps {
     isOpen: boolean;
@@ -29,8 +30,9 @@ export default function DeleteCollectionModal({
         try {
             await deleteImage(collection.banner);
             await deleteCollection.mutateAsync(collection.path);
-        } catch (error) {
-            console.error("Помилка при видаленні:", error);
+            toast.success("Коллекцію упішно видалено!");
+        } catch (e) {
+            toast.error("Помилка при видаленні колекції");
         }
     };
 

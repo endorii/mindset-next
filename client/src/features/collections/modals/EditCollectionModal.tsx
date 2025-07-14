@@ -16,6 +16,7 @@ import FormButtonsWrapper from "@/shared/ui/wrappers/FormButtonsWrapper";
 import FormFillingWrapper from "@/shared/ui/wrappers/FormFillingWrapper";
 import { useForm } from "react-hook-form";
 import { useEffect, useState } from "react";
+import { toast } from "sonner";
 
 interface EditCollectionModalProps {
     isOpen: boolean;
@@ -94,6 +95,7 @@ export default function EditCollectionModal({
             });
 
             handleClose();
+            toast.success("Колекцію успішно відредаговано!");
         } catch (err: any) {
             setModalMessage(err?.message || "Помилка при редагуванні колекції");
         }

@@ -25,6 +25,7 @@ import MonoButton from "@/shared/ui/buttons/MonoButton";
 import ModalWrapper from "@/shared/ui/wrappers/ModalWrapper";
 import FormFillingWrapper from "@/shared/ui/wrappers/FormFillingWrapper";
 import FormButtonsWrapper from "@/shared/ui/wrappers/FormButtonsWrapper";
+import { toast } from "sonner";
 
 interface EditProductModalProps {
     isOpen: boolean;
@@ -78,6 +79,8 @@ export default function EditProductModal({
     const [colorsToSend, setColorsToSend] = useState<string[]>([]);
     const [sizesToSend, setSizesToSend] = useState<string[]>([]);
     const [typesToSend, setTypesToSend] = useState<string[]>([]);
+
+    const [modalMessage, setModalMessage] = useState();
 
     const uploadImageMutation = useUploadImage();
     const editProductMutation = useEditProduct();
@@ -199,9 +202,9 @@ export default function EditProductModal({
             });
 
             onClose();
+            toast.success("Товар успішно відредаговано!");
         } catch (err: any) {
-            console.error("Помилка при оновленні товару:", err);
-            // Тут можна показати повідомлення користувачу
+            setModalMessage(err?.message || "Помилка при редагуванні товару");
         }
     };
 
@@ -528,7 +531,9 @@ export default function EditProductModal({
                         </div>
                     </div>
                 </FormFillingWrapper>
-
+                {modalMessage && (
+                    <p className="text-red-500 text-sm">{modalMessage}</p>
+                )}
                 <FormButtonsWrapper>
                     <MonoButton
                         type="button"

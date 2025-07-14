@@ -18,6 +18,7 @@ import MonoButton from "@/shared/ui/buttons/MonoButton";
 import ModalWrapper from "@/shared/ui/wrappers/ModalWrapper";
 import FormFillingWrapper from "@/shared/ui/wrappers/FormFillingWrapper";
 import FormButtonsWrapper from "@/shared/ui/wrappers/FormButtonsWrapper";
+import { toast } from "sonner";
 
 interface EditCategoryModalProps {
     isOpen: boolean;
@@ -91,8 +92,8 @@ export default function EditCategoryModal({
             });
 
             onClose();
+            toast.success("Категорію упішно відредаговано!");
         } catch (error: any) {
-            console.error("Помилка при редагуванні категорії:", error);
             setModalMessage(error?.message || "Помилка при редагуванні");
         }
     };

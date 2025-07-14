@@ -15,6 +15,7 @@ import ModalWrapper from "@/shared/ui/wrappers/ModalWrapper";
 import FormButtonsWrapper from "@/shared/ui/wrappers/FormButtonsWrapper";
 import FormFillingWrapper from "@/shared/ui/wrappers/FormFillingWrapper";
 import { statuses } from "@/shared/utils/helpers";
+import { toast } from "sonner";
 
 interface AddCategoryModalProps {
     isOpen: boolean;
@@ -95,8 +96,8 @@ export default function AddCategoryModal({
             });
 
             handleClose();
+            toast.success("Категорію упішно додано!");
         } catch (error: any) {
-            console.error(error);
             setModalMessage(
                 error?.message || "Помилка при створенні категорії"
             );

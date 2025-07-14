@@ -5,6 +5,7 @@ import NavigationHideTextWrapper from "@/shared/ui/wrappers/NavigationHideTextWr
 import { useState } from "react";
 import { adminPanelNavigationLinks } from "../../utils/navigationLinks";
 import AdminNavigationLink from "@/shared/ui/buttons/AdminNavigationLink";
+import { toast } from "sonner";
 
 function AdminNavigation({ children }: { children: React.ReactNode }) {
     const [navOpen, setNavOpen] = useState(true);
@@ -54,12 +55,20 @@ function AdminNavigation({ children }: { children: React.ReactNode }) {
                         navOpen ? "justify-start" : "justify-center"
                     }`}
                 >
-                    <AdminNavigationLink href={"/"} navOpen={navOpen}>
-                        <LogoutIcon className="w-[25px] h-[25px] min-w-[25px] min-h-[25px] fill-white group-hover:fill-black" />
-                        <NavigationHideTextWrapper navOpen={navOpen}>
-                            Вийти з панелі
-                        </NavigationHideTextWrapper>
-                    </AdminNavigationLink>
+                    <div
+                        onClick={() =>
+                            toast.success(
+                                "Ви успішно вийшли з панелі адміністратора"
+                            )
+                        }
+                    >
+                        <AdminNavigationLink href={"/"} navOpen={navOpen}>
+                            <LogoutIcon className="w-[25px] h-[25px] min-w-[25px] min-h-[25px] fill-white group-hover:fill-black" />
+                            <NavigationHideTextWrapper navOpen={navOpen}>
+                                Вийти з панелі
+                            </NavigationHideTextWrapper>
+                        </AdminNavigationLink>
+                    </div>
                 </div>
             </div>
             <div className="p-[30px] flex-1 overflow-y-auto">{children}</div>

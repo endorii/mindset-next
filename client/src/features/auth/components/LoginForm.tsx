@@ -5,6 +5,7 @@ import { useAuth } from "../hooks/useAuth";
 import InputField from "@/shared/ui/inputs/InputField";
 import MonoButton from "@/shared/ui/buttons/MonoButton";
 import LoginComponentsWrapper from "@/shared/ui/wrappers/LoginComponentsWrapper";
+import { toast } from "sonner";
 
 function LoginForm() {
     const { login, isLoading } = useAuth();
@@ -20,6 +21,7 @@ function LoginForm() {
     const onLoginSubmit = async (data: ILoginCredentials) => {
         try {
             await login(data);
+            toast.success("Ви успішно увійшли до Вашого акаунту");
         } catch (err: any) {
             setLoginMessage(err?.message || "Помилка входу");
         }

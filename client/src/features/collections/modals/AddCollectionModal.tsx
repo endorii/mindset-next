@@ -15,6 +15,7 @@ import FormButtonsWrapper from "@/shared/ui/wrappers/FormButtonsWrapper";
 import FormFillingWrapper from "@/shared/ui/wrappers/FormFillingWrapper";
 import { useForm } from "react-hook-form";
 import { ICollection } from "../types/collections.types";
+import { toast } from "sonner";
 
 interface AddCollectionModalProps {
     isOpen: boolean;
@@ -85,6 +86,7 @@ export default function AddCollectionModal({
             });
 
             handleClose();
+            toast.success("Коллекцію упішно додано!");
         } catch (err: any) {
             setModalMessage(err?.message || "Помилка при створенні колекції");
         }

@@ -22,6 +22,7 @@ import MonoButton from "@/shared/ui/buttons/MonoButton";
 import ModalWrapper from "@/shared/ui/wrappers/ModalWrapper";
 import FormButtonsWrapper from "@/shared/ui/wrappers/FormButtonsWrapper";
 import FormFillingWrapper from "@/shared/ui/wrappers/FormFillingWrapper";
+import { toast } from "sonner";
 
 interface AddProductModalProps {
     isOpen: boolean;
@@ -172,6 +173,7 @@ export default function AddProductModal({
             setTypesToSend([]);
             reset();
             onClose();
+            toast.success("Товар упішно додано!");
         } catch (err: any) {
             setModalMessage(err?.message || "Не вдалося додати товар");
         }

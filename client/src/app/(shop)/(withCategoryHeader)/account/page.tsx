@@ -9,7 +9,9 @@ import { useCurrentUser } from "@/features/admin/user-info/hooks/useUsers";
 import { EditIcon } from "@/shared/icons";
 import { AttributeModalType } from "@/shared/types/types";
 import MonoButton from "@/shared/ui/buttons/MonoButton";
-import { useState } from "react";
+import { redirect } from "next/navigation";
+
+import { useEffect, useState } from "react";
 
 function Account() {
     const { data: user } = useCurrentUser();
@@ -32,6 +34,12 @@ function Account() {
     const closeModal = () => {
         setActiveModal(null);
     };
+
+    useEffect(() => {
+        if (!user) {
+            redirect("/auth");
+        }
+    }, [user]);
 
     return (
         <div>
