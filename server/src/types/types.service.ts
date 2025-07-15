@@ -1,4 +1,4 @@
-import { Injectable } from "@nestjs/common";
+import { ConflictException, Injectable } from "@nestjs/common";
 import { CreateTypeDto } from "./dto/create-type.dto";
 import { PrismaService } from "src/prisma/prisma.service";
 import { UpdateTypeDto } from "./dto/update-type.dto";
@@ -9,6 +9,16 @@ export class TypesService {
 
     async addType(createTypeDto: CreateTypeDto) {
         const { name } = createTypeDto;
+
+        const existingType = await this.prisma.type.findUnique({
+            where: {
+                name,
+            },
+        });
+
+        if (existingType) {
+            throw new ConflictException("Тип з такою назвою вже існує");
+        }
 
         const type = await this.prisma.type.create({
             data: {
@@ -27,6 +37,16 @@ export class TypesService {
     }
 
     async editType(typeId: string, updateTypeDto: UpdateTypeDto) {
+        const existingType = await this.prisma.type.findUnique({
+            where: {
+                name: updateTypeDto.name,
+            },
+        });
+
+        if (existingType) {
+            throw new ConflictException("Тип з такою назвою вже існує");
+        }
+
         return await this.prisma.type.update({
             where: {
                 id: typeId,

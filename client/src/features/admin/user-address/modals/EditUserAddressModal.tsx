@@ -54,7 +54,7 @@ export default function EditUserAddressModal({
         },
     });
 
-    const [modalMessage, setModalMessage] = useState<string | null>(null);
+    const [modalMessage, setModalMessage] = useState("");
 
     useEffect(() => {
         if (address) {
@@ -68,6 +68,7 @@ export default function EditUserAddressModal({
                 building: address.building || "",
                 apartment: address.apartment || "",
             });
+            setModalMessage("");
         }
     }, [address, reset]);
 

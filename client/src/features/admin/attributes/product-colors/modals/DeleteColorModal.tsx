@@ -8,6 +8,7 @@ import MonoButton from "@/shared/ui/buttons/MonoButton";
 import DeleteButton from "@/shared/ui/buttons/DeleteButton";
 import ModalWrapper from "@/shared/ui/wrappers/ModalWrapper";
 import FormButtonsWrapper from "@/shared/ui/wrappers/FormButtonsWrapper";
+import { toast } from "sonner";
 
 interface DeleteColorModalProps {
     isOpen: boolean;
@@ -27,8 +28,9 @@ export default function DeleteColorModal({
     const handleDelete = async () => {
         try {
             await deleteColorMutation.mutateAsync(color.id);
-        } catch (error) {
-            console.error("Помилка при видаленні:", error);
+            toast.success("Колір упішно видалено!");
+        } catch (e) {
+            toast.error("Помилка при видаленні кольору");
         }
     };
 

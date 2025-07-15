@@ -10,6 +10,8 @@ import MonoButton from "@/shared/ui/buttons/MonoButton";
 import ModalWrapper from "@/shared/ui/wrappers/ModalWrapper";
 import FormFillingWrapper from "@/shared/ui/wrappers/FormFillingWrapper";
 import FormButtonsWrapper from "@/shared/ui/wrappers/FormButtonsWrapper";
+import { toast } from "sonner";
+import { useForm } from "react-hook-form";
 
 interface EditColorProps {
     isOpen: boolean;
@@ -17,56 +19,49 @@ interface EditColorProps {
     color: IColor;
 }
 
+type FormValues = {
+    name: string;
+    hexCode: string;
+};
+
 export default function EditColorModal({
     isOpen,
     onClose,
     color,
 }: EditColorProps) {
-    const [name, setName] = useState("");
-    const [hexCode, setHexCode] = useState("#");
+    const [modalMessage, setModalMessage] = useState("");
 
     const editColorMutation = useEditColor();
 
-    const [isValidHex, setIsValidHex] = useState(true);
-
-    const hexRegex = /^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/;
-
-    const handleHexCodeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const inputValue = e.target.value.trim();
-        setHexCode(inputValue);
-        setIsValidHex(hexRegex.test(inputValue));
-    };
+    const {
+        register,
+        reset,
+        handleSubmit,
+        formState: { errors },
+    } = useForm<FormValues>();
 
     useEffect(() => {
         if (color) {
-            setName(color.name || "");
-            setHexCode(color.hexCode || "#");
-            setIsValidHex(color.hexCode ? hexRegex.test(color.hexCode) : false);
+            reset({
+                name: color.name || "",
+                hexCode: color.hexCode || "#",
+            });
+            setModalMessage("");
         }
-    }, [color]);
+    }, [color, reset]);
 
-    const handleSubmit = async (e: React.FormEvent) => {
-        e.preventDefault();
-
-        if (!isValidHex) {
-            alert("Введіть валідний HEX-код");
-            return;
-        }
-
-        if (!name.trim()) {
-            alert("Введіть назву кольору");
-            return;
-        }
-
+    const onSubmit = async (data: FormValues) => {
         try {
             await editColorMutation.mutateAsync({
                 colorId: color.id,
-                data: { name: name.trim(), hexCode },
+                data,
             });
 
             onClose();
-        } catch (error) {
-            console.error("Помилка при редагуванні кольору:", error);
+
+            toast.success("Колір успішно відредаговано!");
+        } catch (err: any) {
+            setModalMessage(err?.message || "Помилка при редагуванні кольору");
         }
     };
 
@@ -76,32 +71,54 @@ export default function EditColorModal({
 
     const modalContent = (
         <ModalWrapper onClose={onClose} modalTitle={"Редагування кольору"}>
-            <form className="flex flex-col gap-[20px]" onSubmit={handleSubmit}>
+            <form
+                className="flex flex-col gap-[20px]"
+                onSubmit={handleSubmit(onSubmit)}
+            >
                 <FormFillingWrapper>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-[20px]">
                         <InputField
-                            label="Назва"
-                            value={name}
-                            onChangeValue={(e) => setName(e.target.value)}
-                            id="name"
-                            name="name"
-                            placeholder="Назва кольору"
-                            type="text"
+                            label={"Назва"}
+                            placeholder={"Назва кольору"}
+                            type={"text"}
+                            {...register("name", {
+                                required: "Введіть назву",
+                                minLength: {
+                                    value: 2,
+                                    message:
+                                        "Назва кольору повинна містити щонайменше 2 символи.",
+                                },
+                                maxLength: {
+                                    value: 25,
+                                    message:
+                                        "Назва кольору не може перевищувати 25 символів.",
+                                },
+                            })}
+                            errorMessage={errors.name?.message}
                         />
+
                         <InputField
-                            label="HEX-код"
-                            value={hexCode}
-                            onChangeValue={handleHexCodeChange}
-                            id="hex"
-                            name="hex"
-                            placeholder="#000000"
-                            type="text"
-                            className={`border border-white/10 rounded px-[10px] py-[7px] outline-0 ${
-                                isValidHex ? "" : "border-red-500"
-                            }`}
+                            label={"HEX-код"}
+                            placeholder={"#000000"}
+                            type={"text"}
+                            {...register("hexCode", {
+                                required: "Введіть hex-код",
+                                validate: (value) => {
+                                    if (!value) return true;
+                                    const hexRegex = /^#([A-Fa-f0-9]{3}){1,2}$/;
+                                    return (
+                                        hexRegex.test(value) ||
+                                        "Недійсний формат HEX-коду. Наприклад: #FF0000 або #FFF."
+                                    );
+                                },
+                            })}
+                            errorMessage={errors.hexCode?.message}
                         />
                     </div>
                 </FormFillingWrapper>
+                {modalMessage && (
+                    <p className="text-red-500 text-sm">{modalMessage}</p>
+                )}
                 <FormButtonsWrapper>
                     <MonoButton
                         type="button"

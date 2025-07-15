@@ -172,6 +172,7 @@ export default function AddProductModal({
             setSizesToSend([]);
             setTypesToSend([]);
             reset();
+            setModalMessage("");
             onClose();
             toast.success("Товар упішно додано!");
         } catch (err: any) {
@@ -494,6 +495,7 @@ export default function AddProductModal({
                             setSizesToSend([]);
                             setTypesToSend([]);
                             reset();
+                            setModalMessage("");
                             onClose();
                         }}
                         disabled={

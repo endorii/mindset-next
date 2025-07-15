@@ -4,12 +4,14 @@ import InputField from "@/shared/ui/inputs/InputField";
 import { useEscapeKeyClose } from "@/shared/hooks/useEscapeKeyClose";
 import { useCreateUserAddress } from "../hooks/useUserAddress";
 import { IUser } from "../../user-info/types/user.types";
-import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import MonoButton from "@/shared/ui/buttons/MonoButton";
 import ModalWrapper from "@/shared/ui/wrappers/ModalWrapper";
 import FormFillingWrapper from "@/shared/ui/wrappers/FormFillingWrapper";
 import FormButtonsWrapper from "@/shared/ui/wrappers/FormButtonsWrapper";
+import { toast } from "sonner";
 
 interface AddUserAddressModalProps {
     isOpen: boolean;
@@ -17,45 +19,50 @@ interface AddUserAddressModalProps {
     userId: IUser["id"];
 }
 
+type FormValues = {
+    recipient: string;
+    country: string;
+    region: string;
+    city: string;
+    postalCode: string;
+    street: string;
+    building: string;
+    apartment: string;
+};
+
 export default function AddUserAddressModal({
     isOpen,
     onClose,
     userId,
 }: AddUserAddressModalProps) {
-    const [recipient, setRecipient] = useState("");
-    const [country, setCountry] = useState("");
-    const [region, setRegion] = useState("");
-    const [city, setCity] = useState("");
-    const [postalCode, setPostalCode] = useState("");
-    const [street, setStreet] = useState("");
-    const [building, setBuilding] = useState("");
-    const [apartment, setApartment] = useState("");
-
     const createUserAddress = useCreateUserAddress();
+    const [modalMessage, setModalMessage] = useState("");
 
-    const handleSubmit = async (e: React.FormEvent) => {
-        e.preventDefault();
-        if (!recipient) {
-            alert("Будь ласка, введіть дані");
-            return;
-        }
+    const {
+        register,
+        handleSubmit,
+        reset,
+        formState: { errors },
+    } = useForm<FormValues>();
 
+    const handleClose = () => {
+        reset();
+        setModalMessage("");
+        onClose();
+    };
+
+    const onSubmit = async (data: FormValues) => {
         try {
             await createUserAddress.mutateAsync({
                 userId,
-                recipient,
-                country,
-                region,
-                city,
-                postalCode,
-                street,
-                building,
-                apartment,
+                ...data,
             });
 
-            onClose();
-        } catch (error) {
-            console.error("Помилка при редагуванні адреси доставки:", error);
+            toast.success("Адресу успішно додано!");
+            handleClose();
+        } catch (error: any) {
+            console.error("Помилка при додаванні адреси доставки:", error);
+            setModalMessage(error?.message || "Сталася помилка");
         }
     };
 
@@ -65,89 +72,107 @@ export default function AddUserAddressModal({
 
     const modalContent = (
         <ModalWrapper
-            onClose={onClose}
+            onClose={handleClose}
             modalTitle={"Додавання адреси доставки"}
         >
-            <form className="flex flex-col gap-[20px]" onSubmit={handleSubmit}>
+            <form
+                className="flex flex-col gap-[20px]"
+                onSubmit={handleSubmit(onSubmit)}
+            >
                 <FormFillingWrapper>
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-[20px]">
                         <InputField
                             label={"Одержувач (ПІБ)"}
-                            value={recipient}
-                            onChangeValue={(e) => setRecipient(e.target.value)}
-                            id={"editUserAddressRecipient"}
-                            name={"editUserAddressRecipient"}
                             placeholder={"Іванов Іван Іванович"}
-                            type={"text"}
+                            type="text"
+                            {...register("recipient", {
+                                required: "Обов'язкове поле",
+                            })}
+                            errorMessage={errors.recipient?.message}
                         />
                         <InputField
                             label={"Країна"}
-                            value={country}
-                            onChangeValue={(e) => setCountry(e.target.value)}
-                            id={"editUserAddressCountry"}
-                            name={"editUserAddressCountry"}
                             placeholder={"Україна"}
-                            type={"text"}
+                            type="text"
+                            {...register("country", {
+                                required: "Обов'язкове поле",
+                            })}
+                            errorMessage={errors.country?.message}
                         />
                         <InputField
                             label={"Область"}
-                            value={region}
-                            onChangeValue={(e) => setRegion(e.target.value)}
-                            id={"editUserAddressRegion"}
-                            name={"editUserAddressRegion"}
                             placeholder={"Київська"}
-                            type={"text"}
+                            type="text"
+                            {...register("region", {
+                                required: "Обов'язкове поле",
+                            })}
+                            errorMessage={errors.region?.message}
                         />
                         <InputField
                             label={"Місто"}
-                            value={city}
-                            onChangeValue={(e) => setCity(e.target.value)}
-                            id={"editUserAddressCity"}
-                            name={"editUserAddressCity"}
                             placeholder={"Київ"}
-                            type={"text"}
+                            type="text"
+                            {...register("city", {
+                                required: "Обов'язкове поле",
+                            })}
+                            errorMessage={errors.city?.message}
                         />
                         <InputField
                             label={"Вулиця"}
-                            value={street}
-                            onChangeValue={(e) => setStreet(e.target.value)}
-                            id={"editUserAddressStreet"}
-                            name={"editUserAddressStreet"}
                             placeholder={"Степана Бандери"}
-                            type={"text"}
+                            type="text"
+                            {...register("street", {
+                                required: "Обов'язкове поле",
+                            })}
+                            errorMessage={errors.street?.message}
                         />
                         <InputField
                             label={"Будинок"}
-                            value={building}
-                            onChangeValue={(e) => setBuilding(e.target.value)}
-                            id={"editUserAddressBuilding"}
-                            name={"editUserAddressBuilding"}
                             placeholder={"45"}
-                            type={"text"}
+                            type="text"
+                            {...register("building", {
+                                required: "Обов'язкове поле",
+                            })}
+                            errorMessage={errors.building?.message}
                         />
                         <InputField
                             label={"Номер квартири/будинку"}
-                            value={apartment}
-                            onChangeValue={(e) => setApartment(e.target.value)}
-                            id={"editUserAddressApartment"}
-                            name={"editUserAddressApartment"}
                             placeholder={"12"}
-                            type={"text"}
+                            type="text"
+                            {...register("apartment", {
+                                required: "Обов'язкове поле",
+                            })}
+                            errorMessage={errors.apartment?.message}
                         />
                         <InputField
                             label={"Поштовий індекс"}
-                            value={postalCode}
-                            onChangeValue={(e) => setPostalCode(e.target.value)}
-                            id={"editUserAddressPostalCode"}
-                            name={"editUserAddressPostalCode"}
                             placeholder={"01001"}
-                            type={"text"}
+                            type="text"
+                            {...register("postalCode", {
+                                required: "Обов'язкове поле",
+                                pattern: {
+                                    value: /^\d{5}$/,
+                                    message: "Має бути рівно 5 цифр",
+                                },
+                            })}
+                            errorMessage={errors.postalCode?.message}
                         />
                     </div>
                 </FormFillingWrapper>
+
+                {modalMessage && (
+                    <p className="text-red-500 text-sm">{modalMessage}</p>
+                )}
+
                 <FormButtonsWrapper>
-                    <MonoButton onClick={onClose}>Скасувати</MonoButton>
-                    <MonoButton type="submit">Підтвердити</MonoButton>
+                    <MonoButton type="button" onClick={handleClose}>
+                        Скасувати
+                    </MonoButton>
+                    <MonoButton type="submit">
+                        {createUserAddress.isPending
+                            ? "Завантаження..."
+                            : "Підтвердити"}
+                    </MonoButton>
                 </FormButtonsWrapper>
             </form>
         </ModalWrapper>

@@ -38,6 +38,8 @@ export default function EditCollectionModal({
     const [banner, setBanner] = useState<string | File>("");
     const [preview, setPreview] = useState<string>("");
 
+    const [modalMessage, setModalMessage] = useState("");
+
     const uploadImageMutation = useUploadImage();
     const editCollection = useEditCollection();
 
@@ -54,8 +56,6 @@ export default function EditCollectionModal({
         },
     });
 
-    const [modalMessage, setModalMessage] = useState("");
-
     useEffect(() => {
         if (collection) {
             reset({
@@ -63,6 +63,7 @@ export default function EditCollectionModal({
                 path: collection.path || "",
                 status: collection.status || "INACTIVE",
             });
+            setModalMessage("");
             setBanner(collection.banner || "");
             setPreview("");
         }
@@ -112,6 +113,7 @@ export default function EditCollectionModal({
     const handleClose = () => {
         if (preview) URL.revokeObjectURL(preview);
         reset();
+        setModalMessage("");
         setBanner("");
         setPreview("");
         onClose();

@@ -11,6 +11,7 @@ import ModalWrapper from "@/shared/ui/wrappers/ModalWrapper";
 import FormFillingWrapper from "@/shared/ui/wrappers/FormFillingWrapper";
 import FormButtonsWrapper from "@/shared/ui/wrappers/FormButtonsWrapper";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 
 interface EditUserInfoModalProps {
     isOpen: boolean;
@@ -38,7 +39,7 @@ export default function EditUserInfoModal({
         formState: { errors: modalErrors },
     } = useForm<EditUserFormData>();
 
-    const [modalMessage, setModalMessage] = useState<string | null>(null);
+    const [modalMessage, setModalMessage] = useState("");
 
     useEffect(() => {
         if (user) {
@@ -47,6 +48,7 @@ export default function EditUserInfoModal({
                 email: user.email || "",
                 phone: user.phone || "",
             });
+            setModalMessage("");
         }
     }, [user, reset]);
 
@@ -61,8 +63,9 @@ export default function EditUserInfoModal({
                 },
             });
             onClose();
+            toast.success("Інформацію успішно відредаговано!");
         } catch (err: any) {
-            setModalMessage(err?.message || "Помилка входу");
+            setModalMessage(err?.message || "Помилка редагування інформації");
         }
     };
 

@@ -56,7 +56,6 @@ export default function EditProductModal({
         register,
         handleSubmit,
         reset,
-        control,
         formState: { errors },
     } = useForm<FormData>({
         defaultValues: {
@@ -80,7 +79,7 @@ export default function EditProductModal({
     const [sizesToSend, setSizesToSend] = useState<string[]>([]);
     const [typesToSend, setTypesToSend] = useState<string[]>([]);
 
-    const [modalMessage, setModalMessage] = useState();
+    const [modalMessage, setModalMessage] = useState("");
 
     const uploadImageMutation = useUploadImage();
     const editProductMutation = useEditProduct();
@@ -91,7 +90,6 @@ export default function EditProductModal({
 
     useEscapeKeyClose({ isOpen, onClose });
 
-    // Заповнення форми при завантаженні продукту
     useEffect(() => {
         if (product) {
             reset({
@@ -103,6 +101,7 @@ export default function EditProductModal({
                 composition: product.composition,
                 status: product.status,
             });
+            setModalMessage("");
             setColorsToSend(product.productColors.map((pc) => pc.color.id));
             setSizesToSend(product.productSizes.map((ps) => ps.size.id));
             setTypesToSend(product.productTypes.map((pt) => pt.type.id));
@@ -113,7 +112,6 @@ export default function EditProductModal({
         }
     }, [product, reset]);
 
-    // Обробка вибору банера
     const handleBannerChange = (e: ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
         if (file) {
@@ -122,7 +120,6 @@ export default function EditProductModal({
         }
     };
 
-    // Обробка вибору додаткових зображень
     const handleImagesChange = (e: ChangeEvent<HTMLInputElement>) => {
         const files = e.target.files ? Array.from(e.target.files) : [];
         setImages((prev) => [...prev, ...files]);
@@ -132,13 +129,11 @@ export default function EditProductModal({
         ]);
     };
 
-    // Видалення зображення за індексом
     const removeImage = (index: number) => {
         setImages((prev) => prev.filter((_, i) => i !== index));
         setImagePreviews((prev) => prev.filter((_, i) => i !== index));
     };
 
-    // Тогл вибору для кольорів, розмірів, типів
     const toggleSelect = (
         id: string,
         selected: string[],
@@ -151,10 +146,8 @@ export default function EditProductModal({
         }
     };
 
-    // Відправка форми
     const onSubmit = async (data: FormData) => {
         try {
-            // Завантаження банера, якщо файл
             let bannerPath = "";
             if (typeof banner === "string" && banner) {
                 bannerPath = banner;
@@ -163,12 +156,8 @@ export default function EditProductModal({
                     banner
                 );
                 bannerPath = uploadResult.path;
-            } else {
-                // Якщо банер не вибрано — можна вивести помилку або просто не оновлювати
-                // Тут пропущено, залежно від логіки можна додати
             }
 
-            // Завантаження нових додаткових зображень
             const newImages: string[] = [];
             for (const img of images) {
                 if (typeof img === "string") {
@@ -539,6 +528,7 @@ export default function EditProductModal({
                         type="button"
                         onClick={() => {
                             reset();
+                            setModalMessage("");
                             setBanner(null);
                             setBannerPreview(null);
                             setImages([]);

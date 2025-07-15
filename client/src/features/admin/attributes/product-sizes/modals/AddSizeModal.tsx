@@ -3,38 +3,48 @@
 import InputField from "@/shared/ui/inputs/InputField";
 import { useEscapeKeyClose } from "@/shared/hooks/useEscapeKeyClose";
 import { useCreateSize } from "../hooks/useSizes";
-import { useState } from "react";
 import { createPortal } from "react-dom";
 import MonoButton from "@/shared/ui/buttons/MonoButton";
 import ModalWrapper from "@/shared/ui/wrappers/ModalWrapper";
 import FormButtonsWrapper from "@/shared/ui/wrappers/FormButtonsWrapper";
 import FormFillingWrapper from "@/shared/ui/wrappers/FormFillingWrapper";
+import { useForm } from "react-hook-form";
+import { useState } from "react";
+import { toast } from "sonner";
 
 interface AddSizeModalProps {
     isOpen: boolean;
     onClose: () => void;
 }
 
-export default function AddSizeModal({ isOpen, onClose }: AddSizeModalProps) {
-    const [name, setName] = useState("");
+type FormValues = {
+    name: string;
+};
 
+export default function AddSizeModal({ isOpen, onClose }: AddSizeModalProps) {
     const createSizeMutation = useCreateSize();
+    const [modalMessage, setModalMessage] = useState("");
+
+    const {
+        register,
+        handleSubmit,
+        reset,
+        formState: { errors },
+    } = useForm<FormValues>();
 
     const handleClose = () => {
-        setName("");
+        reset();
+        setModalMessage("");
         onClose();
     };
 
-    const handleSubmit = async (e: React.FormEvent) => {
-        e.preventDefault();
-
+    const onSubmit = async (data: FormValues) => {
         try {
-            await createSizeMutation.mutateAsync({
-                name,
-            });
+            await createSizeMutation.mutateAsync({ name: data.name });
+            toast.success("Розмір успішно додано!");
             handleClose();
-        } catch (error) {
-            console.error(error);
+        } catch (error: any) {
+            setModalMessage(error?.message || "Помилка при додаванні розміру");
         }
     };
 
@@ -43,21 +53,39 @@ export default function AddSizeModal({ isOpen, onClose }: AddSizeModalProps) {
     if (!isOpen) return null;
 
     const modalContent = (
-        <ModalWrapper onClose={onClose} modalTitle={"Додавання розміру"}>
-            <form className="flex flex-col gap-[20px]" onSubmit={handleSubmit}>
+        <ModalWrapper onClose={handleClose} modalTitle={"Додавання розміру"}>
+            <form
+                className="flex flex-col gap-[20px]"
+                onSubmit={handleSubmit(onSubmit)}
+            >
                 <FormFillingWrapper>
                     <div className="flex flex-col gap-[20px] w-full">
                         <InputField
                             label={"Назва"}
-                            value={name}
-                            onChangeValue={(e) => setName(e.target.value)}
-                            id={"name"}
-                            name={"name"}
                             placeholder={"Назва розміру"}
                             type={"text"}
+                            {...register("name", {
+                                required: "Введіть назву",
+                                minLength: {
+                                    value: 1,
+                                    message:
+                                        "Назва повинна містити хоча б 1 символ",
+                                },
+                                maxLength: {
+                                    value: 25,
+                                    message:
+                                        "Назва не може перевищувати 25 символів",
+                                },
+                            })}
+                            errorMessage={errors.name?.message}
                         />
                     </div>
                 </FormFillingWrapper>
+
+                {modalMessage && (
+                    <p className="text-red-500 text-sm">{modalMessage}</p>
+                )}
+
                 <FormButtonsWrapper>
                     <MonoButton
                         type="button"

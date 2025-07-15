@@ -1,15 +1,17 @@
 "use client";
 
-import InputField from "@/shared/ui/inputs/InputField";
+import { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
+import { useForm } from "react-hook-form";
 import { useEscapeKeyClose } from "@/shared/hooks/useEscapeKeyClose";
+import InputField from "@/shared/ui/inputs/InputField";
 import { useEditType } from "../hooks/useTypes";
 import { IType } from "../types/product-type.types";
-import { useState, useEffect } from "react";
-import { createPortal } from "react-dom";
 import MonoButton from "@/shared/ui/buttons/MonoButton";
 import ModalWrapper from "@/shared/ui/wrappers/ModalWrapper";
 import FormFillingWrapper from "@/shared/ui/wrappers/FormFillingWrapper";
 import FormButtonsWrapper from "@/shared/ui/wrappers/FormButtonsWrapper";
+import { toast } from "sonner";
 
 interface EditTypeProps {
     isOpen: boolean;
@@ -17,57 +19,83 @@ interface EditTypeProps {
     type: IType;
 }
 
+type FormValues = {
+    name: string;
+};
+
 export default function EditTypeModal({
     isOpen,
     onClose,
     type,
 }: EditTypeProps) {
-    const [name, setName] = useState("");
-
     const editTypeMutation = useEditType();
+    const [modalMessage, setModalMessage] = useState("");
+
+    const {
+        register,
+        handleSubmit,
+        reset,
+        formState: { errors },
+    } = useForm<FormValues>();
 
     useEffect(() => {
         if (type) {
-            setName(type.name || "");
+            reset({ name: type.name || "" });
+            setModalMessage("");
         }
-    }, [type]);
+    }, [type, reset]);
 
-    useEscapeKeyClose({ isOpen, onClose });
-
-    const handleSubmit = async (e: React.FormEvent) => {
-        e.preventDefault();
+    const onSubmit = async (data: FormValues) => {
         try {
             await editTypeMutation.mutateAsync({
                 typeId: type.id,
-                data: {
-                    name,
-                },
+                data: data,
             });
 
+            toast.success("Тип успішно оновлено!");
             onClose();
-            console.log("Відправлено на редагування");
-        } catch (error) {
-            console.error("Помилка при редагуванні розміру:", error);
+        } catch (error: any) {
+            setModalMessage(error?.message || "Помилка при редагуванні типу");
         }
     };
 
+    useEscapeKeyClose({ isOpen, onClose });
+
     if (!isOpen || !type) return null;
+
     const modalContent = (
         <ModalWrapper onClose={onClose} modalTitle={"Редагування типу"}>
-            <form className="flex flex-col gap-[20px]" onSubmit={handleSubmit}>
+            <form
+                className="flex flex-col gap-[20px]"
+                onSubmit={handleSubmit(onSubmit)}
+            >
                 <FormFillingWrapper>
                     <div className="flex flex-col gap-[20px] w-full">
                         <InputField
                             label={"Назва"}
-                            value={name}
-                            onChangeValue={(e) => setName(e.target.value)}
-                            id={"name"}
-                            name={"name"}
                             placeholder={"Назва типу"}
                             type={"text"}
+                            {...register("name", {
+                                required: "Введіть назву",
+                                minLength: {
+                                    value: 1,
+                                    message:
+                                        "Назва повинна містити хоча б 1 символ",
+                                },
+                                maxLength: {
+                                    value: 25,
+                                    message:
+                                        "Назва не може перевищувати 25 символів",
+                                },
+                            })}
+                            errorMessage={errors.name?.message}
                         />
                     </div>
                 </FormFillingWrapper>
+
+                {modalMessage && (
+                    <p className="text-red-500 text-sm">{modalMessage}</p>
+                )}
 
                 <FormButtonsWrapper>
                     <MonoButton

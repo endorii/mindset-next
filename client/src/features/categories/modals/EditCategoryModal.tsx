@@ -67,6 +67,7 @@ export default function EditCategoryModal({
                 status: category.status,
             });
             setBanner(category.banner || "");
+            setModalMessage("");
             setPreview("");
         }
     }, [category, reset]);

@@ -8,6 +8,7 @@ import MonoButton from "@/shared/ui/buttons/MonoButton";
 import DeleteButton from "@/shared/ui/buttons/DeleteButton";
 import ModalWrapper from "@/shared/ui/wrappers/ModalWrapper";
 import FormButtonsWrapper from "@/shared/ui/wrappers/FormButtonsWrapper";
+import { toast } from "sonner";
 
 interface DeleteTypeModalProps {
     isOpen: boolean;
@@ -27,8 +28,9 @@ export default function DeleteTypeModal({
     const handleDelete = async () => {
         try {
             await deleteTypeMutation.mutateAsync(type.id);
-        } catch (error) {
-            console.error("Помилка при видаленні:", error);
+            toast.success("Тип упішно видалено!");
+        } catch (e) {
+            toast.error("Помилка при видаленні типу");
         }
     };
 

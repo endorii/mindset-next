@@ -8,6 +8,7 @@ import MonoButton from "@/shared/ui/buttons/MonoButton";
 import DeleteButton from "@/shared/ui/buttons/DeleteButton";
 import ModalWrapper from "@/shared/ui/wrappers/ModalWrapper";
 import FormButtonsWrapper from "@/shared/ui/wrappers/FormButtonsWrapper";
+import { toast } from "sonner";
 
 interface DeleteSizeModalProps {
     isOpen: boolean;
@@ -27,8 +28,9 @@ export default function DeleteSizeModal({
     const handleDelete = async () => {
         try {
             await deleteSizeMutation.mutateAsync(size.id);
-        } catch (error) {
-            console.error("Помилка при видаленні:", error);
+            toast.success("Розмір упішно видалено!");
+        } catch (e) {
+            toast.error("Помилка при видаленні розміру");
         }
     };
 
