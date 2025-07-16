@@ -1,7 +1,9 @@
 import React from "react";
 
 function AdminStats() {
-    return <div>AdminStats</div>;
+    return (
+        <div>Тут буде аналітика, графіки продажів та статистика замовлень.</div>
+    );
 }
 
 export default AdminStats;

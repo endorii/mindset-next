@@ -1,13 +1,24 @@
 interface IChooseButtonProps {
     onClick: () => void;
     children: React.ReactNode;
+    isActive?: boolean;
 }
 
-function ChooseButton({ onClick, children }: IChooseButtonProps) {
+function ChooseButton({
+    onClick,
+    children,
+    isActive = false,
+}: IChooseButtonProps) {
     return (
         <button
-            className="bg-black/80 text-white border border-white/10 shadow-lg rounded-xl hover:bg-white hover:text-black transition-colors duration-300 flex items-center justify-center cursor-pointer px-[20px] py-[8px]"
             onClick={onClick}
+            className={`transition-colors duration-300 flex items-center justify-center cursor-pointer px-[20px] py-[8px] rounded-xl border shadow-lg
+                ${
+                    isActive
+                        ? "bg-white text-black border-white"
+                        : "bg-black/80 text-white border-white/10 hover:bg-white hover:text-black"
+                }
+            `}
         >
             {children}
         </button>

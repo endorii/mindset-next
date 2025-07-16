@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Param, Patch, Delete, UseGuards } from "@nestjs/common";
+import { Controller, Get, Post, Body, Param, Patch, Delete, UseGuards, Req } from "@nestjs/common";
 
 import { CollectionsService } from "./collections.service";
 import { CreateCollectionDto } from "./dto/create-collection.dto";
@@ -8,6 +8,7 @@ import { Roles } from "src/auth/decorators/roles.decorator";
 import { RolesGuard } from "src/auth/guards/roles/roles.guard";
 import { JwtAuthGuard } from "src/auth/guards/jwt-auth/jwt-auth.guard";
 import { Role } from "generated/prisma";
+import { AuthenticatedRequestUser } from "src/auth/types/auth-request-user.type";
 
 @Controller("collections")
 @UseGuards(JwtAuthGuard, RolesGuard)
@@ -28,22 +29,33 @@ export class CollectionsController {
 
     @Post()
     @Roles(Role.ADMIN)
-    postCollection(@Body() createCollectionDto: CreateCollectionDto) {
-        return this.collectionsService.postCollection(createCollectionDto);
+    postCollection(
+        @Body() createCollectionDto: CreateCollectionDto,
+        @Req() req: Request & { user: AuthenticatedRequestUser }
+    ) {
+        return this.collectionsService.postCollection(req.user.id, createCollectionDto);
     }
 
     @Patch(":collectionPath")
     @Roles(Role.ADMIN)
     editCollection(
         @Param("collectionPath") collectionPath: string,
-        @Body() updateCollectionDto: UpdateCollectionDto
+        @Body() updateCollectionDto: UpdateCollectionDto,
+        @Req() req: Request & { user: AuthenticatedRequestUser }
     ) {
-        return this.collectionsService.editCollection(collectionPath, updateCollectionDto);
+        return this.collectionsService.editCollection(
+            req.user.id,
+            collectionPath,
+            updateCollectionDto
+        );
     }
 
     @Delete(":collectionPath")
     @Roles(Role.ADMIN)
-    deleteCollection(@Param("collectionPath") collectionPath: string) {
-        return this.collectionsService.deleteCollection(collectionPath);
+    deleteCollection(
+        @Param("collectionPath") collectionPath: string,
+        @Req() req: Request & { user: AuthenticatedRequestUser }
+    ) {
+        return this.collectionsService.deleteCollection(req.user.id, collectionPath);
     }
 }

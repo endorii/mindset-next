@@ -1,4 +1,4 @@
-import { Controller, Get, Body, Param, Post, Delete, Patch, UseGuards } from "@nestjs/common";
+import { Controller, Get, Body, Param, Post, Delete, Patch, UseGuards, Req } from "@nestjs/common";
 import { ProductsService } from "./products.service";
 import { CreateProductDto } from "./dto/create-product.dto";
 import { UpdateProductDto } from "./dto/update-product.dto";
@@ -7,6 +7,7 @@ import { RolesGuard } from "src/auth/guards/roles/roles.guard";
 import { Public } from "src/auth/decorators/public.decorator";
 import { Roles } from "src/auth/decorators/roles.decorator";
 import { Role } from "generated/prisma";
+import { AuthenticatedRequestUser } from "src/auth/types/auth-request-user.type";
 
 @Controller("collections/:collectionPath/categories/:categoryPath/products")
 @UseGuards(JwtAuthGuard, RolesGuard)
@@ -25,8 +26,11 @@ export class ProductsController {
 
     @Post()
     @Roles(Role.ADMIN)
-    postProduct(@Body() createProductDto: CreateProductDto) {
-        return this.productsService.postProduct(createProductDto);
+    postProduct(
+        @Body() createProductDto: CreateProductDto,
+        @Req() req: Request & { user: AuthenticatedRequestUser }
+    ) {
+        return this.productsService.postProduct(req.user.id, createProductDto);
     }
 
     @Patch(":productPath")
@@ -35,9 +39,11 @@ export class ProductsController {
         @Param("collectionPath") collectionPath: string,
         @Param("categoryPath") categoryPath: string,
         @Param("productPath") productPath: string,
-        @Body() updateProductDto: UpdateProductDto
+        @Body() updateProductDto: UpdateProductDto,
+        @Req() req: Request & { user: AuthenticatedRequestUser }
     ) {
         return this.productsService.editProduct(
+            req.user.id,
             collectionPath,
             categoryPath,
             productPath,
@@ -50,8 +56,14 @@ export class ProductsController {
     deleteProduct(
         @Param("collectionPath") collectionPath: string,
         @Param("categoryPath") categoryPath: string,
-        @Param("productPath") productPath: string
+        @Param("productPath") productPath: string,
+        @Req() req: Request & { user: AuthenticatedRequestUser }
     ) {
-        return this.productsService.deleteProduct(collectionPath, categoryPath, productPath);
+        return this.productsService.deleteProduct(
+            req.user.id,
+            collectionPath,
+            categoryPath,
+            productPath
+        );
     }
 }

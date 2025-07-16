@@ -8,6 +8,7 @@ import {
     Delete,
     Patch,
     UseGuards,
+    Req,
 } from "@nestjs/common";
 import { CreateColorDto } from "./dto/create-color.dto";
 import { ColorsService } from "./colors.service";
@@ -17,6 +18,7 @@ import { Role } from "generated/prisma";
 import { JwtAuthGuard } from "src/auth/guards/jwt-auth/jwt-auth.guard";
 import { RolesGuard } from "src/auth/guards/roles/roles.guard";
 import { Public } from "src/auth/decorators/public.decorator";
+import { AuthenticatedRequestUser } from "src/auth/types/auth-request-user.type";
 
 @Controller("colors")
 @UseGuards(JwtAuthGuard, RolesGuard)
@@ -25,8 +27,11 @@ export class ColorsController {
 
     @Post()
     @Roles(Role.ADMIN)
-    addColor(@Body(new ValidationPipe()) createColorDto: CreateColorDto) {
-        return this.colorsService.addColor(createColorDto);
+    addColor(
+        @Body(new ValidationPipe()) createColorDto: CreateColorDto,
+        @Req() req: Request & { user: AuthenticatedRequestUser }
+    ) {
+        return this.colorsService.addColor(req.user.id, createColorDto);
     }
 
     @Get()
@@ -37,13 +42,20 @@ export class ColorsController {
 
     @Patch(":colorId")
     @Roles(Role.ADMIN)
-    editColor(@Param("colorId") colorId: string, @Body() updateColorDto: UpdateColorDto) {
-        return this.colorsService.editColor(colorId, updateColorDto);
+    editColor(
+        @Param("colorId") colorId: string,
+        @Body() updateColorDto: UpdateColorDto,
+        @Req() req: Request & { user: AuthenticatedRequestUser }
+    ) {
+        return this.colorsService.editColor(req.user.id, colorId, updateColorDto);
     }
 
     @Delete(":colorId")
     @Roles(Role.ADMIN)
-    deleteColor(@Param("colorId") colorId: string) {
-        return this.colorsService.deleteColor(colorId);
+    deleteColor(
+        @Param("colorId") colorId: string,
+        @Req() req: Request & { user: AuthenticatedRequestUser }
+    ) {
+        return this.colorsService.deleteColor(req.user.id, colorId);
     }
 }

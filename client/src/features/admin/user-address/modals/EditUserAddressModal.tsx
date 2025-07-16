@@ -11,6 +11,7 @@ import ModalWrapper from "@/shared/ui/wrappers/ModalWrapper";
 import FormFillingWrapper from "@/shared/ui/wrappers/FormFillingWrapper";
 import FormButtonsWrapper from "@/shared/ui/wrappers/FormButtonsWrapper";
 import { IUserShippingAdress } from "../../user-info/types/user.types";
+import { toast } from "sonner";
 
 interface EditUserAddressModalProps {
     isOpen: boolean;
@@ -79,6 +80,7 @@ export default function EditUserAddressModal({
                 data,
             });
             onClose();
+            toast.success("Адресу успішно відредаговано!");
         } catch (err: any) {
             setModalMessage(
                 err?.message || "Помилка редагування адреси доставки"

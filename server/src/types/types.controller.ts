@@ -1,14 +1,4 @@
-import {
-    Controller,
-    Get,
-    Post,
-    Body,
-    ValidationPipe,
-    Delete,
-    Param,
-    Patch,
-    UseGuards,
-} from "@nestjs/common";
+import { Controller, Get, Post, Body, Delete, Param, Patch, UseGuards, Req } from "@nestjs/common";
 import { TypesService } from "./types.service";
 import { CreateTypeDto } from "./dto/create-type.dto";
 import { UpdateTypeDto } from "./dto/update-type.dto";
@@ -17,6 +7,7 @@ import { JwtAuthGuard } from "src/auth/guards/jwt-auth/jwt-auth.guard";
 import { Public } from "src/auth/decorators/public.decorator";
 import { Roles } from "src/auth/decorators/roles.decorator";
 import { Role } from "generated/prisma";
+import { AuthenticatedRequestUser } from "src/auth/types/auth-request-user.type";
 
 @Controller("types")
 @UseGuards(JwtAuthGuard, RolesGuard)
@@ -25,8 +16,11 @@ export class TypesController {
 
     @Post()
     @Roles(Role.ADMIN)
-    addType(@Body(new ValidationPipe()) createTypeDto: CreateTypeDto) {
-        return this.typesService.addType(createTypeDto);
+    addType(
+        @Body() createTypeDto: CreateTypeDto,
+        @Req() req: Request & { user: AuthenticatedRequestUser }
+    ) {
+        return this.typesService.addType(req.user.id, createTypeDto);
     }
 
     @Get()
@@ -37,13 +31,20 @@ export class TypesController {
 
     @Patch(":typeId")
     @Roles(Role.ADMIN)
-    editType(@Param("typeId") typeId: string, @Body() updatTypeDto: UpdateTypeDto) {
-        return this.typesService.editType(typeId, updatTypeDto);
+    editType(
+        @Param("typeId") typeId: string,
+        @Body() updatTypeDto: UpdateTypeDto,
+        @Req() req: Request & { user: AuthenticatedRequestUser }
+    ) {
+        return this.typesService.editType(req.user.id, typeId, updatTypeDto);
     }
 
     @Delete(":typeId")
     @Roles(Role.ADMIN)
-    deleteType(@Param("typeId") typeId: string) {
-        return this.typesService.deleteType(typeId);
+    deleteType(
+        @Param("typeId") typeId: string,
+        @Req() req: Request & { user: AuthenticatedRequestUser }
+    ) {
+        return this.typesService.deleteType(req.user.id, typeId);
     }
 }

@@ -8,6 +8,7 @@ import {
     Param,
     Patch,
     UseGuards,
+    Req,
 } from "@nestjs/common";
 import { SizesService } from "./sizes.service";
 import { CreateSizeDto } from "./dto/create-size.dto";
@@ -17,6 +18,7 @@ import { Role } from "generated/prisma";
 import { Public } from "src/auth/decorators/public.decorator";
 import { JwtAuthGuard } from "src/auth/guards/jwt-auth/jwt-auth.guard";
 import { RolesGuard } from "src/auth/guards/roles/roles.guard";
+import { AuthenticatedRequestUser } from "src/auth/types/auth-request-user.type";
 
 @Controller("sizes")
 @UseGuards(JwtAuthGuard, RolesGuard)
@@ -25,8 +27,11 @@ export class SizesController {
 
     @Post()
     @Roles(Role.ADMIN)
-    addSize(@Body(new ValidationPipe()) createSizeDto: CreateSizeDto) {
-        return this.sizesService.addSize(createSizeDto);
+    addSize(
+        @Body(new ValidationPipe()) createSizeDto: CreateSizeDto,
+        @Req() req: Request & { user: AuthenticatedRequestUser }
+    ) {
+        return this.sizesService.addSize(req.user.id, createSizeDto);
     }
 
     @Get()
@@ -37,13 +42,20 @@ export class SizesController {
 
     @Patch(":sizeId")
     @Roles(Role.ADMIN)
-    editSize(@Param("sizeId") sizeId: string, @Body() updateSizeDto: UpdateSizeDto) {
-        return this.sizesService.editSize(sizeId, updateSizeDto);
+    editSize(
+        @Param("sizeId") sizeId: string,
+        @Body() updateSizeDto: UpdateSizeDto,
+        @Req() req: Request & { user: AuthenticatedRequestUser }
+    ) {
+        return this.sizesService.editSize(req.user.id, sizeId, updateSizeDto);
     }
 
     @Delete(":sizeId")
     @Roles(Role.ADMIN)
-    deleteSize(@Param("sizeId") sizeId: string) {
-        return this.sizesService.deleteSize(sizeId);
+    deleteSize(
+        @Param("sizeId") sizeId: string,
+        @Req() req: Request & { user: AuthenticatedRequestUser }
+    ) {
+        return this.sizesService.deleteSize(req.user.id, sizeId);
     }
 }

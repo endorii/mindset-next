@@ -82,13 +82,7 @@ function AdminCategory() {
                 <ul className="flex gap-[10px]">
                     {filters.map((name, i) => (
                         <li key={i}>
-                            <ChooseButton
-                                onClick={function (): void {
-                                    throw new Error(
-                                        "Function not implemented."
-                                    );
-                                }}
-                            >
+                            <ChooseButton onClick={function (): void {}}>
                                 {name}
                             </ChooseButton>
                         </li>

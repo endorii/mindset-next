@@ -1,11 +1,15 @@
-import { Injectable } from "@nestjs/common";
+import { BadRequestException, Injectable } from "@nestjs/common";
 import { PrismaService } from "src/prisma/prisma.service";
 import { CreateCategoryDto } from "./dto/create-category.dto";
 import { UpdateCategoryDto } from "./dto/update-category.dto";
+import { RecentActionsService } from "src/recent-actions/recent-actions.service";
 
 @Injectable()
 export class CategoriesService {
-    constructor(private readonly prisma: PrismaService) {}
+    constructor(
+        private readonly prisma: PrismaService,
+        private readonly recentActions: RecentActionsService
+    ) {}
 
     async getCategory(collectionPath: string, categoryPath: string) {
         try {
@@ -19,19 +23,13 @@ export class CategoriesService {
                     products: {
                         include: {
                             productColors: {
-                                include: {
-                                    color: true,
-                                },
+                                include: { color: true },
                             },
                             productTypes: {
-                                include: {
-                                    type: true,
-                                },
+                                include: { type: true },
                             },
                             productSizes: {
-                                include: {
-                                    size: true,
-                                },
+                                include: { size: true },
                             },
                         },
                     },
@@ -43,14 +41,28 @@ export class CategoriesService {
             return category;
         } catch (error) {
             console.error("Помилка отримання категорії:", error);
-            throw new Error("Не вдалося отримати категорію.");
+            throw error;
         }
     }
 
-    async postCategory(createCategoryDto: CreateCategoryDto) {
+    async postCategory(userId: string, createCategoryDto: CreateCategoryDto) {
         const { name, path, banner, views, status, collectionId } = createCategoryDto;
+
         try {
-            return await this.prisma.category.create({
+            const existingCategory = await this.prisma.category.findUnique({
+                where: {
+                    collectionId_path: {
+                        collectionId,
+                        path,
+                    },
+                },
+            });
+
+            if (existingCategory) {
+                throw new BadRequestException("Категорія з таким шляхом уже існує в цій колекції");
+            }
+
+            const category = await this.prisma.category.create({
                 data: {
                     name,
                     path,
@@ -60,70 +72,99 @@ export class CategoriesService {
                     collectionId,
                 },
             });
+
+            await this.recentActions.createAction(userId, `Додано категорію ${category.name}`);
+
+            return category;
         } catch (error) {
             console.error("Помилка створення категорії:", error);
-            throw new Error("Не вдалося створити категорію");
+            throw error;
         }
     }
 
     async editCategory(
+        userId: string,
         collectionPath: string,
         categoryPath: string,
         updateCategoryDto: UpdateCategoryDto
     ) {
-        const collection = await this.prisma.collection.findUnique({
-            where: { path: collectionPath },
-        });
+        try {
+            const { name, path, banner, views, status, collectionId } = updateCategoryDto;
 
-        if (!collection) {
-            throw new Error("Колекцію не знайдено");
-        }
+            const collection = await this.prisma.collection.findUnique({
+                where: { path: collectionPath },
+            });
 
-        const { name, path, banner, views, status, collectionId } = updateCategoryDto;
+            if (!collection) {
+                throw new Error("Колекцію не знайдено");
+            }
 
-        const category = await this.prisma.category.update({
-            where: {
-                collectionId_path: {
-                    collectionId: collection.id,
-                    path: categoryPath,
+            const category = await this.prisma.category.update({
+                where: {
+                    collectionId_path: {
+                        collectionId: collection.id,
+                        path: categoryPath,
+                    },
                 },
-            },
-            data: {
-                name,
-                path,
-                banner,
-                views,
-                status,
-                collectionId,
-            },
-        });
+                data: {
+                    name,
+                    path,
+                    banner,
+                    views,
+                    status,
+                    collectionId,
+                },
+            });
 
-        return {
-            message: "Категорію успішно оновлено",
-            category,
-        };
+            await this.recentActions.createAction(userId, `Редаговано категорію ${category.name}`);
+
+            return {
+                message: "Категорію успішно оновлено",
+                category,
+            };
+        } catch (error) {
+            console.error("Помилка редагування категорії:", error);
+            throw error;
+        }
     }
 
-    async deleteCategory(collectionPath: string, categoryPath: string) {
-        const collection = await this.prisma.collection.findUnique({
-            where: { path: collectionPath },
-        });
+    async deleteCategory(userId: string, collectionPath: string, categoryPath: string) {
+        try {
+            const collection = await this.prisma.collection.findUnique({
+                where: { path: collectionPath },
+            });
 
-        if (!collection) {
-            throw new Error("Колекцію не знайдено");
-        }
+            if (!collection) {
+                throw new Error("Колекцію не знайдено");
+            }
 
-        await this.prisma.category.delete({
-            where: {
-                collectionId_path: {
-                    collectionId: collection.id,
+            const category = await this.prisma.category.findFirst({
+                where: {
                     path: categoryPath,
                 },
-            },
-        });
+            });
 
-        return {
-            message: "Категорію успішно видалено",
-        };
+            if (!category) {
+                throw new Error("Категорію не знайдено");
+            }
+
+            await this.prisma.category.delete({
+                where: {
+                    collectionId_path: {
+                        collectionId: collection.id,
+                        path: categoryPath,
+                    },
+                },
+            });
+
+            await this.recentActions.createAction(userId, `Видалено категорію ${category.name}`);
+
+            return {
+                message: "Категорію успішно видалено",
+            };
+        } catch (error) {
+            console.error("Помилка видалення категорії:", error);
+            throw error;
+        }
     }
 }

@@ -2,65 +2,99 @@ import { ConflictException, Injectable } from "@nestjs/common";
 import { CreateColorDto } from "./dto/create-color.dto";
 import { PrismaService } from "src/prisma/prisma.service";
 import { UpdateColorDto } from "./dto/update-color.dto";
+import { RecentActionsService } from "src/recent-actions/recent-actions.service";
 
 @Injectable()
 export class ColorsService {
-    constructor(private readonly prisma: PrismaService) {}
+    constructor(
+        private readonly prisma: PrismaService,
+        private readonly recentActions: RecentActionsService
+    ) {}
 
-    async addColor(createColorDto: CreateColorDto) {
-        const { name, hexCode } = createColorDto;
+    async addColor(userId: string, createColorDto: CreateColorDto) {
+        try {
+            const { name, hexCode } = createColorDto;
 
-        const existingColor = await this.prisma.color.findUnique({
-            where: {
-                name,
-            },
-        });
+            const existingColor = await this.prisma.color.findUnique({
+                where: { name },
+            });
 
-        if (existingColor) {
-            throw new ConflictException("Колір з такою назвою вже існує");
+            if (existingColor) {
+                throw new ConflictException("Колір з такою назвою вже існує");
+            }
+
+            const color = await this.prisma.color.create({
+                data: { name, hexCode },
+            });
+
+            await this.recentActions.createAction(userId, `Додано колір ${color.name}`);
+
+            return {
+                message: "Колір успішно створено",
+                color,
+            };
+        } catch (error) {
+            console.error("Помилка створення кольору:", error);
+            throw error;
         }
-
-        const color = await this.prisma.color.create({
-            data: {
-                name,
-                hexCode,
-            },
-        });
-
-        return {
-            message: "Колір успішно створено",
-            color,
-        };
     }
 
     async getColors() {
-        return await this.prisma.color.findMany();
-    }
-
-    async editColor(colorId: string, updateColorDto: UpdateColorDto) {
-        const existingColor = await this.prisma.color.findUnique({
-            where: {
-                name: updateColorDto.name,
-            },
-        });
-
-        if (existingColor) {
-            throw new ConflictException("Колір з такою назвою вже існує");
+        try {
+            return await this.prisma.color.findMany();
+        } catch (error) {
+            console.error("Помилка отримання кольорів:", error);
+            throw error;
         }
-
-        return await this.prisma.color.update({
-            where: {
-                id: colorId,
-            },
-            data: updateColorDto,
-        });
     }
 
-    async deleteColor(colorId: string) {
-        return await this.prisma.color.delete({
-            where: {
-                id: colorId,
-            },
-        });
+    async editColor(userId: string, colorId: string, updateColorDto: UpdateColorDto) {
+        try {
+            const existingColor = await this.prisma.color.findUnique({
+                where: { name: updateColorDto.name },
+            });
+
+            if (existingColor && existingColor.id !== colorId) {
+                throw new ConflictException("Колір з такою назвою вже існує");
+            }
+
+            const updatedColor = await this.prisma.color.update({
+                where: { id: colorId },
+                data: updateColorDto,
+            });
+
+            await this.recentActions.createAction(userId, `Редаговано колір ${updatedColor.name}`);
+
+            return {
+                message: "Колір успішно оновлено",
+                color: updatedColor,
+            };
+        } catch (error) {
+            console.error("Помилка редагування кольору:", error);
+            throw error;
+        }
+    }
+
+    async deleteColor(userId: string, colorId: string) {
+        try {
+            const color = await this.prisma.color.findUnique({
+                where: { id: colorId },
+            });
+
+            if (!color) throw new Error("Колір не знайдено");
+
+            await this.prisma.color.delete({
+                where: { id: colorId },
+            });
+
+            await this.recentActions.createAction(userId, `Видалено колір ${color.name}`);
+
+            return {
+                message: "Колір успішно видалено",
+            };
+        } catch (error) {
+            console.error("Помилка видалення кольору:", error);
+            throw error;
+        }
     }
 }

@@ -21,6 +21,17 @@ model User {
     cart               CartItem[]
     favorites          Favorite[]
     shippingAddress    ShippingAddress?
+
+    RecentActions RecentAction[]
+}
+
+model RecentAction {
+    id        String   @id @default(uuid())
+    action    String
+    timestamp DateTime @default(now())
+
+    userId String
+    user   User   @relation(fields: [userId], references: [id])
 }
 
 model Favorite {

@@ -29,9 +29,4 @@ export const adminPanelNavigationLinks = [
         Icon: AccountIcon,
         text: "Акаунт",
     },
-    {
-        href: "/admin/settings",
-        Icon: SettingsIcon,
-        text: "Налаштування",
-    },
 ];

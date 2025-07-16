@@ -20,6 +20,7 @@ import { ConfigModule } from "@nestjs/config";
 // import { ThrottlerModule } from "@nestjs/throttler";
 import { CartModule } from './cart/cart.module';
 import { FavoritesModule } from './favorites/favorites.module';
+import { RecentActionsModule } from './recent-actions/recent-actions.module';
 
 @Module({
     imports: [
@@ -46,6 +47,7 @@ import { FavoritesModule } from './favorites/favorites.module';
         ImagesModule,
         CartModule,
         FavoritesModule,
+        RecentActionsModule,
     ],
     controllers: [],
     providers: [],
