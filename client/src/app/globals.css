@@ -20,3 +20,10 @@
   border: 2px solid black;
 }
 
+.recharts-wrapper {
+  outline: none !important;
+}
+
+.recharts-wrapper * {
+  outline: none !important;
+}
