@@ -18,9 +18,10 @@ import { join } from "path";
 import { ConfigModule } from "@nestjs/config";
 
 // import { ThrottlerModule } from "@nestjs/throttler";
-import { CartModule } from './cart/cart.module';
-import { FavoritesModule } from './favorites/favorites.module';
-import { RecentActionsModule } from './recent-actions/recent-actions.module';
+import { CartModule } from "./cart/cart.module";
+import { FavoritesModule } from "./favorites/favorites.module";
+import { RecentActionsModule } from "./recent-actions/recent-actions.module";
+import { NovaPostModule } from "./nova-post/nova-post.module";
 
 @Module({
     imports: [
@@ -48,6 +49,7 @@ import { RecentActionsModule } from './recent-actions/recent-actions.module';
         CartModule,
         FavoritesModule,
         RecentActionsModule,
+        NovaPostModule,
     ],
     controllers: [],
     providers: [],

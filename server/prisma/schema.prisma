@@ -21,6 +21,7 @@ model User {
     cart               CartItem[]
     favorites          Favorite[]
     shippingAddress    ShippingAddress?
+    orders             Order[]
 
     RecentActions RecentAction[]
 }
@@ -32,6 +33,48 @@ model RecentAction {
 
     userId String
     user   User   @relation(fields: [userId], references: [id])
+}
+
+model Order {
+    id             String      @id @default(uuid())
+    fullName       String      @map("full_name")
+    phoneNumber    String      @map("phone_number")
+    area           String
+    city           String
+    destination    String
+    branch         String
+    additionalInfo String?     @map("additional_info")
+    status         OrderStatus @default(pending)
+    createdAt      DateTime    @default(now()) @map("created_at")
+    userId         String?     @map("user_id")
+    total          Float
+
+    User  User?       @relation(fields: [userId], references: [id])
+    items OrderItem[]
+}
+
+model OrderItem {
+    id      String @id @default(uuid())
+    order   Order  @relation(fields: [orderId], references: [id], onDelete: Cascade)
+    orderId String
+
+    productId String
+    name      String
+    price     Float
+    quantity  Int
+    total     Float
+
+    color String
+    size  String
+    type  String
+}
+
+enum OrderStatus {
+    pending
+    processing
+    shipped
+    delivered
+    cancelled
 }
 
 model Favorite {

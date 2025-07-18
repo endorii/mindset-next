@@ -10,6 +10,7 @@ export function useCartItemsFromUser(userId: string) {
     return useQuery({
         queryKey: ["currentUser"],
         queryFn: () => fetchAllCartItemsFromUser(userId),
+        enabled: !!userId,
     });
 }
 

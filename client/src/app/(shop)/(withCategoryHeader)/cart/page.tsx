@@ -200,7 +200,7 @@ function Cart() {
             {cartToShow.length > 0 ? (
                 <div className="flex justify-between pt-[120px]">
                     <ul className=" flex flex-col gap-[30px] w-[70%] max-h-[80vh] overflow-y-auto">
-                        {cartToShow.map((item) => {
+                        {cartToShow.map((item, i) => {
                             const isServer = !!user;
                             const { product } = item;
 
@@ -222,7 +222,7 @@ function Cart() {
 
                             return (
                                 <li
-                                    key={item.product.id}
+                                    key={i}
                                     className="border-b pb-[30px] rounded-xl bg-white/5 backdrop-blur-[100px] border border-white/5 p-[20px] "
                                 >
                                     <Link

@@ -27,3 +27,8 @@
 .recharts-wrapper * {
   outline: none !important;
 }
+
+select option {
+    background-color: black;
+    color: white;
+}

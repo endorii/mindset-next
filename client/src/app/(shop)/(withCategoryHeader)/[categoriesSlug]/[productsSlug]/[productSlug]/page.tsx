@@ -314,9 +314,6 @@ export default function ProductPage() {
                     </div>
                 </div>
                 <div className="flex justify-between gap-[15px] rounded-xl bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[10px]">
-                    <MonoButton disabled={!product.available}>
-                        Купити
-                    </MonoButton>
                     <MonoButton
                         onClick={handleCartToggle}
                         disabled={
