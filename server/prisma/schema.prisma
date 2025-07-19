@@ -39,39 +39,41 @@ model Order {
     id             String      @id @default(uuid())
     fullName       String      @map("full_name")
     phoneNumber    String      @map("phone_number")
+    email          String
     area           String
     city           String
-    destination    String
-    branch         String
-    additionalInfo String?     @map("additional_info")
+    postDepartment String      @map("post_department")
     status         OrderStatus @default(pending)
-    createdAt      DateTime    @default(now()) @map("created_at")
-    userId         String?     @map("user_id")
-    total          Float
+    total          Int
 
-    User  User?       @relation(fields: [userId], references: [id])
+    additionalInfo String? @map("additional_info")
+
+    createdAt DateTime @default(now()) @map("created_at")
+    updatedAt DateTime @updatedAt @map("updated_at")
+
+    userId String @map("user_id")
+    user   User   @relation(fields: [userId], references: [id])
+
     items OrderItem[]
 }
 
 model OrderItem {
-    id      String @id @default(uuid())
+    id       String @id @default(uuid())
+    quantity Int
+    color    String
+    size     String
+    type     String
+
     order   Order  @relation(fields: [orderId], references: [id], onDelete: Cascade)
     orderId String
 
     productId String
-    name      String
-    price     Float
-    quantity  Int
-    total     Float
-
-    color String
-    size  String
-    type  String
+    product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
 }
 
 enum OrderStatus {
     pending
-    processing
+    paid
     shipped
     delivered
     cancelled
@@ -163,6 +165,7 @@ model Product {
     productColors ProductToColor[]
     productSizes  ProductToSize[]
     productTypes  ProductToType[]
+    OrderItem     OrderItem[]
 
     @@unique([categoryId, path])
 }

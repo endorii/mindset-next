@@ -8,7 +8,7 @@ import { IFavoriteItem } from "../types/favorites.types";
 
 export function useFavoritesFromUser(userId: string) {
     return useQuery({
-        queryKey: ["currentUser"],
+        queryKey: ["favorites"],
         queryFn: () => fetchFavoritesFromUser(userId),
     });
 }
@@ -21,7 +21,7 @@ export function useAddFavorite() {
             addFavoriteToUser(userId, favoriteItem),
         onSuccess: () => {
             queryClient.invalidateQueries({
-                queryKey: ["currentUser"],
+                queryKey: ["favorites"],
             });
         },
     });
@@ -34,7 +34,7 @@ export function useDeleteFavorite() {
         mutationFn: ({ userId, productId }: { userId: string; productId: string }) =>
             deleteFavoriteFromUser(userId, productId),
         onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ["currentUser"] });
+            queryClient.invalidateQueries({ queryKey: ["favorites"] });
         },
     });
 }

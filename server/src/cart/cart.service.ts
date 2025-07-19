@@ -16,11 +16,20 @@ export class CartService {
     }
 
     async getAllCartItemsFromUser(userId: string) {
-        return this.prisma.cartItem.findMany({
-            where: {
-                userId,
-            },
-        });
+        try {
+            const cartItems = this.prisma.cartItem.findMany({
+                include: {
+                    product: true,
+                },
+                where: {
+                    userId,
+                },
+            });
+
+            return cartItems;
+        } catch (error) {
+            console.log(error);
+        }
     }
 
     async removeCartItemFromUser(userId: string, productId: string) {
@@ -28,6 +37,14 @@ export class CartService {
             where: {
                 userId,
                 productId,
+            },
+        });
+    }
+
+    async removeCartFromUser(userId: string) {
+        return this.prisma.cartItem.deleteMany({
+            where: {
+                userId,
             },
         });
     }

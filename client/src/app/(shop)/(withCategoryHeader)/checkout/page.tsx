@@ -1,6 +1,7 @@
 "use client";
 
 import { useCurrentUser } from "@/features/admin/user-info/hooks/useUsers";
+import { useCartItemsFromUser } from "@/features/cart/hooks/useCart";
 import { postOrder } from "@/features/checkout/api/checkout.api";
 import CheckoutInputDetails from "@/features/checkout/components/CheckoutInputDetails";
 import CheckoutResultTable from "@/features/checkout/components/CheckoutResultTable";
@@ -19,13 +20,16 @@ import {
 import MonoButton from "@/shared/ui/buttons/MonoButton";
 import MonoLink from "@/shared/ui/buttons/MonoLink";
 import H3 from "@/shared/ui/text/H3";
-import { data } from "motion/react-client";
 import { redirect } from "next/navigation";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 
 function Checkout() {
     const { data: user, isLoading } = useCurrentUser();
+
+    const { data } = useCartItemsFromUser(user?.id || "");
+
+    const cart = data || [];
 
     const [userInitials, setUserInitials] = useState("");
     const [userPhone, setUserPhone] = useState("");
@@ -43,6 +47,14 @@ function Checkout() {
     );
     const [selectedWarehouse, setSelectedWarehouse] =
         useState<INovaPostDataObj | null>(null);
+
+    useEffect(() => {
+        if (user) {
+            setUserInitials(user.shippingAddress?.recipient || "");
+            setUserPhone(user.phone || "");
+            setUserEmail(user.email || "");
+        }
+    }, [user]);
 
     useEffect(() => {
         const loadAreas = async () => {
@@ -92,23 +104,15 @@ function Checkout() {
         }
     }, [selectedCity]);
 
-    useEffect(() => {
-        if (user) {
-            setUserInitials(user.shippingAddress.recipient || "");
-            setUserPhone(user.phone || "");
-            setUserEmail(user.email || "");
-        }
-    }, [user]);
-
     const onSubmit = async () => {
         const userId = user?.id;
 
         if (!userId) return;
 
         const orderData: IOrder = {
-            id: "",
             fullName: userInitials,
             phoneNumber: userPhone,
+            email: userEmail,
             area: selectedArea?.Description || "",
             city: selectedCity?.Description || "",
             postDepartment: selectedWarehouse?.Description || "",
@@ -116,16 +120,13 @@ function Checkout() {
             status: "pending",
             userId: user?.id,
             total:
-                user?.cart.reduce(
+                cart.reduce(
                     (acc, item) => acc + item.product.price * item.quantity,
                     0
                 ) || 0,
             items:
-                user?.cart.map((item) => ({
-                    id: "",
-                    orderId: "",
+                cart.map((item) => ({
                     productId: item.productId,
-                    name: item.product.name,
                     price: Number(item.price),
                     quantity: Number(item.quantity),
                     color: item.color,
@@ -180,7 +181,7 @@ function Checkout() {
                 </div>
 
                 <div className="flex flex-col gap-[15px] w-1/2 rounded-xl bg-white/5 backdrop-blur-[100px] border border-white/5 p-[30px] text-white">
-                    <CheckoutResultTable cart={user.cart} />
+                    <CheckoutResultTable cart={cart} />
                     <PayMethod />
                     <MonoButton
                         onClick={() => {

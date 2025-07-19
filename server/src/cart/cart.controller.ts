@@ -28,4 +28,10 @@ export class CartController {
     removeCartItemFromUser(@Param("userId") userId: string, @Param("productId") productId: string) {
         return this.cartService.removeCartItemFromUser(userId, productId);
     }
+
+    @Delete(":userId")
+    @Roles(Role.ADMIN, Role.USER)
+    removeCartFromUser(@Param("userId") userId: string) {
+        return this.cartService.removeCartFromUser(userId);
+    }
 }

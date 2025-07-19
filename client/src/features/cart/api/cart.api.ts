@@ -58,3 +58,21 @@ export async function deleteCartItemFromUser(userId: string, productId: string):
         throw new Error(error?.message || "Помилка з'єднання із сервером");
     }
 }
+
+export async function deleteCartFromUser(userId: string): Promise<void> {
+    try {
+        const response = await fetch(`${API_BASE_URL}/cart/${userId}`, {
+            method: "DELETE",
+            credentials: "include",
+        });
+
+        if (!response.ok) {
+            const errorData = await response.json().catch(() => ({}));
+            throw new Error(errorData.message);
+        }
+
+        return await response.json();
+    } catch (error: any) {
+        throw new Error(error?.message || "Помилка з'єднання із сервером");
+    }
+}

@@ -1,11 +1,11 @@
+import { useCartItemsFromUser } from "@/features/cart/hooks/useCart";
 import { ICartItem } from "@/features/cart/types/cart.types";
-import { div } from "motion/react-client";
 
-interface CheckoutResultTableProps {
+interface CheckoutResultTable {
     cart: ICartItem[];
 }
 
-function CheckoutResultTable({ cart }: CheckoutResultTableProps) {
+function CheckoutResultTable({ cart }: CheckoutResultTable) {
     return (
         <>
             <div className="text-3xl font-thin">Інформація про замволення</div>
