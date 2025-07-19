@@ -1,29 +1,21 @@
+import Link from "next/link";
+
 function PreOrderInfo() {
     return (
-        <div className="text-sm mt-2 rounded-lg bg-white/5 border p-[15px] border-white/10 shadow-inner space-y-3 w-1/3">
+        <div className="mt-2 rounded-lg bg-white/5 border p-[15px] border-white/10 shadow-inner">
             <div className="text-white font-medium">
                 Введені вами дані використовуються для автоматичного створення
                 експрес-накладної у системі Нової Пошти.
             </div>
-            <div className="bg-green-500/10 p-[10px] rounded">
-                <b>Область, місто та відділення</b> мають відповідати фактичному
-                місцю отримання. Це дозволить вам швидко отримати посилку без
-                зайвих дзвінків та уточнень.
-            </div>
-            <div className="bg-red-500/10 p-[10px] rounded">
-                Якщо ви оберете неправильне місто або неіснуюче відділення —
-                замовлення може бути відхилене або доставлене за помилковою
-                адресою.
-            </div>
-            <div className="bg-yellow-500/10 p-[10px] rounded">
-                У невеликих населених пунктах відділення можуть бути тимчасово
-                недоступні. У такому разі ми зв’яжемось із вами для
-                підтвердження змін.
-            </div>
-            <div className="text-white italic text-xs mt-[20px]">
+
+            <div className="text-white italic text-xs mt-[10px]">
                 Будь ласка, перевірте адресу перед підтвердженням замовлення.
                 Якщо ви змінюєте номер або місто — оновіть інформацію в акаунті
-                або зверніться в технічну підтримку.
+                або зверніться в{" "}
+                <Link href="#" className="text-blue-400 underline">
+                    технічну підтримку
+                </Link>
+                .
             </div>
         </div>
     );

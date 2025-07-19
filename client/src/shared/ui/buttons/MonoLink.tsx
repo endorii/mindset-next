@@ -6,12 +6,26 @@ interface IMonoLinkProps {
     children?: React.ReactNode;
 }
 
-function MonoLink({ href, children }: IMonoLinkProps) {
+function MonoLink({ href, disabled, children }: IMonoLinkProps) {
+    const baseClasses =
+        "group text-white px-[20px] py-[15px] text-center border rounded-xl transition-all duration-300";
+
+    const enabledClasses =
+        "bg-black/0 border-white/10 hover:bg-white hover:text-black hover:border-black cursor-pointer";
+
+    const disabledClasses =
+        "text-white/20 cursor-not-allowed bg-black/10 border-white/10";
+
+    if (disabled) {
+        return (
+            <span className={`${baseClasses} ${disabledClasses}`}>
+                {children}
+            </span>
+        );
+    }
+
     return (
-        <Link
-            href={href}
-            className="group text-white px-[20px] bg-black/0 py-[15px] text-center border border-white/10 rounded-xl hover:bg-white hover:text-black hover:border-black cursor-pointer transition-all duration-300"
-        >
+        <Link href={href} className={`${baseClasses} ${enabledClasses}`}>
             {children}
         </Link>
     );
