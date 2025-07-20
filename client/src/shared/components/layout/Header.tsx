@@ -5,9 +5,13 @@ import Link from "next/link";
 import { CartIcon, HeartIcon, AccountIcon } from "@/shared/icons";
 import { useCurrentUser } from "@/features/admin/user-info/hooks/useUsers";
 import { getLocalStorageArray } from "@/shared/utils/helpers";
+import { useFavoritesFromUser } from "@/features/favorites/hooks/useFavorites";
+import { useCartItemsFromUser } from "@/features/cart/hooks/useCart";
 
 const Header = () => {
     const { data: user } = useCurrentUser();
+    const { data: userFavorites } = useFavoritesFromUser(user?.id ?? "");
+    const { data: userCart } = useCartItemsFromUser(user?.id ?? "");
 
     const [localCart, setLocalCart] = useState<any[]>([]);
     const [localFavorites, setLocalFavorites] = useState<any[]>([]);
@@ -20,12 +24,9 @@ const Header = () => {
         setLocalFavorites(getLocalStorageArray("favorites"));
     }, []);
 
-    const cart = user?.cart && Array.isArray(user.cart) ? user.cart : localCart;
+    const cart = !!userCart ? userCart : localCart;
 
-    const favorites =
-        user?.favorites && Array.isArray(user.favorites)
-            ? user.favorites
-            : localFavorites;
+    const favorites = !!userFavorites ? userFavorites : localFavorites;
 
     if (!isMounted) {
         return null;

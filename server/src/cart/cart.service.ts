@@ -19,7 +19,15 @@ export class CartService {
         try {
             const cartItems = this.prisma.cartItem.findMany({
                 include: {
-                    product: true,
+                    product: {
+                        include: {
+                            category: {
+                                include: {
+                                    collection: true,
+                                },
+                            },
+                        },
+                    },
                 },
                 where: {
                     userId,

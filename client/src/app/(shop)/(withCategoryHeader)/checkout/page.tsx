@@ -2,16 +2,12 @@
 
 import { useCurrentUser } from "@/features/admin/user-info/hooks/useUsers";
 import { useCartItemsFromUser } from "@/features/cart/hooks/useCart";
-import { postOrder } from "@/features/checkout/api/checkout.api";
 import CheckoutInputDetails from "@/features/checkout/components/CheckoutInputDetails";
 import CheckoutResultTable from "@/features/checkout/components/CheckoutResultTable";
 import ChooseCheckoutDeliveryAddress from "@/features/checkout/components/ChooseCheckoutDeliveryAddress";
 import PayMethod from "@/features/checkout/components/PayMethod";
 import PreOrderInfo from "@/features/checkout/components/PreOrderInfo";
-import {
-    INovaPostDataObj,
-    IOrder,
-} from "@/features/checkout/types/checkout.types";
+import { INovaPostDataObj, IOrder } from "@/features/orders/types/orders.types";
 import {
     fetchAreas,
     fetchCities,
@@ -136,7 +132,7 @@ function Checkout() {
         };
 
         try {
-            await postOrder(orderData);
+            // await postOrder(orderData);
             console.log(user.id, orderData);
 
             toast.success("Замовлення створено, перенаправлення...");
@@ -192,7 +188,8 @@ function Checkout() {
                             !userPhone ||
                             !selectedArea ||
                             !selectedCity ||
-                            !selectedWarehouse
+                            !selectedWarehouse ||
+                            cart.length === 0
                         }
                     >
                         Підтвердити замовлення

@@ -39,7 +39,7 @@ function AccountNavigation({ children }: { children: React.ReactNode }) {
                 "w-[32px] stroke-white fill-none group-hover:stroke-black",
         },
         {
-            href: "/likes",
+            href: "/favorites",
             Icon: HeartIcon,
             text: "Улюблене",
             className:

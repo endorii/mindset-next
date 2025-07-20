@@ -3,33 +3,18 @@
 import Link from "next/link";
 import Image from "next/image";
 import { IProduct } from "@/features/products/types/products.types";
+import { IFavoriteItem } from "../types/favorites.types";
 
-interface Props {
-    product: IProduct;
+interface FavoriteCardProps {
+    item: IFavoriteItem;
     onRemove: () => void;
-    index: number;
-    id: string;
-    color: string;
-    size: string;
-    type: string;
 }
 
-export default function FavoriteCard({
-    product,
-    onRemove,
-    index,
-    id,
-    color,
-    size,
-    type,
-}: Props) {
-    const key = `${id}-${index}`;
+export default function FavoriteCard({ onRemove, item }: FavoriteCardProps) {
+    const { product, productId, color, size, type } = item;
 
     return (
-        <li
-            key={key}
-            className="relative group rounded-xl bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px]"
-        >
+        <li className="relative group rounded-xl bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px]">
             <div className="flex items-center justify-between flex-col absolute top-0 right-0 z-10 w-full h-full bg-black/80 opacity-0 group-hover:opacity-100 transition-all duration-400 rounded-xl">
                 <button
                     onClick={onRemove}

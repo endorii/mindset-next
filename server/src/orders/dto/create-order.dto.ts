@@ -5,9 +5,10 @@ import {
     IsArray,
     ValidateNested,
     IsNumber,
-    IsIn,
+    IsEnum,
 } from "class-validator";
 import { Type } from "class-transformer";
+import { OrderStatus } from "generated/prisma";
 
 export class CreateOrderItemDto {
     @IsString()
@@ -67,9 +68,10 @@ export class CreateOrderDto {
     items: CreateOrderItemDto[];
 
     @IsString()
+    @IsNotEmpty()
     userId: string;
 
-    @IsString()
-    @IsIn(["pending", "paid", "shipped", "delivered", "cancelled"])
-    status: string;
+    @IsEnum(OrderStatus)
+    @IsNotEmpty()
+    status: OrderStatus;
 }

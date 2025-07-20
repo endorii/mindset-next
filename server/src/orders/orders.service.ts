@@ -1,7 +1,8 @@
-import { Injectable } from "@nestjs/common";
+import { Injectable, InternalServerErrorException, NotFoundException } from "@nestjs/common";
 import { CreateOrderDto } from "./dto/create-order.dto";
-// import { UpdateOrderDto } from "./dto/update-order.dto";
+import { UpdateOrderDto } from "./dto/update-order.dto";
 import { PrismaService } from "src/prisma/prisma.service";
+import { Prisma } from "generated/prisma";
 
 @Injectable()
 export class OrdersService {
@@ -67,19 +68,96 @@ export class OrdersService {
         }
     }
 
-    findAll() {
-        return `This action returns all orders`;
+    async getOrders() {
+        try {
+            const orders = await this.prisma.order.findMany({
+                include: {
+                    items: {
+                        include: {
+                            product: true,
+                        },
+                    },
+                },
+            });
+
+            if (orders.length === 0) {
+                throw new NotFoundException("Замовлень не знайдено");
+            }
+
+            return orders;
+        } catch (error) {
+            if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === "P2025") {
+                throw new NotFoundException("Замовлення не знайдено");
+            }
+            throw new InternalServerErrorException("Не вдалося отримати замовлення");
+        }
     }
 
-    findOne(id: number) {
-        return `This action returns a #${id} order`;
+    async getOrdersByUserId(userId: string) {
+        try {
+            const orders = await this.prisma.order.findMany({
+                where: {
+                    userId,
+                },
+                include: {
+                    items: {
+                        include: {
+                            product: true,
+                        },
+                    },
+                },
+            });
+
+            if (orders.length === 0) {
+                throw new NotFoundException("Замовлень не знайдено");
+            }
+
+            return orders;
+        } catch (error) {
+            if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === "P2025") {
+                throw new NotFoundException("Замовлення не знайдено");
+            }
+            throw new InternalServerErrorException("Не вдалося отримати замовлення");
+        }
     }
 
-    // update(id: number, updateOrderDto: UpdateOrderDto) {
-    //     return `This action updates a #${id} order`;
-    // }
+    async updateOrder(orderId: string, updateOrderDto: UpdateOrderDto) {
+        try {
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
+            const { userId, items, ...data } = updateOrderDto;
 
-    remove(id: number) {
-        return `This action removes a #${id} order`;
+            const order = await this.prisma.order.update({
+                where: { id: orderId },
+                data,
+            });
+
+            return {
+                message: "Замовлення успішно оновлено",
+                order,
+            };
+        } catch (error) {
+            if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === "P2025") {
+                throw new NotFoundException("Замовлення не знайдено");
+            }
+            throw new InternalServerErrorException("Не вдалося оновити замовлення");
+        }
+    }
+
+    async deleteOrder(orderId: string) {
+        try {
+            const order = await this.prisma.order.delete({
+                where: { id: orderId },
+            });
+
+            return {
+                message: "Замовлення успішно видалено",
+                order,
+            };
+        } catch (error) {
+            if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === "P2025") {
+                throw new NotFoundException("Замовлення не знайдено");
+            }
+            throw new InternalServerErrorException("Не вдалося видалити замовлення");
+        }
     }
 }

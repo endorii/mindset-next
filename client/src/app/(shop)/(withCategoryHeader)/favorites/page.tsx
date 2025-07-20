@@ -2,7 +2,10 @@
 
 import { useCurrentUser } from "@/features/admin/user-info/hooks/useUsers";
 import FavoriteCard from "@/features/favorites/components/FavoriteCard";
-import { useDeleteFavorite } from "@/features/favorites/hooks/useFavorites";
+import {
+    useDeleteFavorite,
+    useFavoritesFromUser,
+} from "@/features/favorites/hooks/useFavorites";
 import {
     ILocalFavoriteItem,
     IFavoriteItem,
@@ -16,6 +19,8 @@ import React, { useState, useEffect } from "react";
 
 export const Favorites = () => {
     const { data: user, isLoading, error } = useCurrentUser();
+    const { data: userFavorites } = useFavoritesFromUser(user?.id ?? "");
+
     const [localFavorites, setLocalFavorites] = useState<ILocalFavoriteItem[]>(
         []
     );
@@ -35,7 +40,7 @@ export const Favorites = () => {
         productId: string
     ) => {
         try {
-            deleteFavorite.mutate({ userId, productId });
+            deleteFavorite.mutateAsync({ userId, productId });
             console.log("Видалення з серверних вподобань:", productId);
         } catch (error) {
             console.error("Помилка видалення з серверних вподобань:", error);
@@ -49,9 +54,9 @@ export const Favorites = () => {
         }
     }, [user]);
 
-    const serverFavorites: IFavoriteItem[] = user?.favorites || [];
-
-    const favoritesToShow = user ? serverFavorites : localFavorites;
+    const favoritesToShow: IFavoriteItem[] | ILocalFavoriteItem[] = user
+        ? userFavorites ?? []
+        : localFavorites;
 
     if (isLoading) {
         return <p>Завантаження улюбленого...</p>;
@@ -66,15 +71,18 @@ export const Favorites = () => {
         );
     }
 
+    console.log("user:", user);
+    console.log("userFavorites:", userFavorites);
+    console.log("localFavorites:", localFavorites);
+    console.log("favoritesToShow:", favoritesToShow);
+
     return (
         <div className="relative">
             <H3>Вподобане</H3>
-            {favoritesToShow.length > 0 ? (
+            {favoritesToShow && favoritesToShow.length > 0 ? (
                 <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 w-full pt-[120px] p-[30px] gap-[20px]">
                     {favoritesToShow.map((item, i) => {
                         const isServer = !!user;
-
-                        if (!item.product) return null;
 
                         const handleRemove = () => {
                             if (isServer) {
@@ -89,14 +97,9 @@ export const Favorites = () => {
 
                         return (
                             <FavoriteCard
-                                key={`${item.productId}`}
-                                product={item.product}
+                                key={i}
                                 onRemove={handleRemove}
-                                color={item.color}
-                                type={item.type}
-                                size={item.size}
-                                index={i}
-                                id={item.productId}
+                                item={item}
                             />
                         );
                     })}

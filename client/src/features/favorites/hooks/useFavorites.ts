@@ -10,6 +10,7 @@ export function useFavoritesFromUser(userId: string) {
     return useQuery({
         queryKey: ["favorites"],
         queryFn: () => fetchFavoritesFromUser(userId),
+        enabled: !!userId,
     });
 }
 

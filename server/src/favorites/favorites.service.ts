@@ -25,6 +25,17 @@ export class FavoritesService {
             where: {
                 userId,
             },
+            include: {
+                product: {
+                    include: {
+                        category: {
+                            include: {
+                                collection: true,
+                            },
+                        },
+                    },
+                },
+            },
         });
     }
 

@@ -1,6 +1,9 @@
 "use client";
 
-import { useDeleteCartItemFromUser } from "@/features/cart/hooks/useCart";
+import {
+    useCartItemsFromUser,
+    useDeleteCartItemFromUser,
+} from "@/features/cart/hooks/useCart";
 import { ICartItem } from "@/features/cart/types/cart.types";
 import {
     useAddFavorite,
@@ -21,14 +24,15 @@ import CartReceip from "@/features/cart/components/CartReceip";
 function Cart() {
     const { data: user, isLoading } = useCurrentUser();
 
+    const { data: userCart } = useCartItemsFromUser(user?.id || "");
+
     const [localCart, setLocalCart] = useState<ICartItem[]>([]);
     const [isLocalCartLoaded, setIsLocalCartLoaded] = useState(false);
     const [favoriteStates, setFavoriteStates] = useState<
         Record<string, boolean>
     >({});
 
-    const serverCart: ICartItem[] = user?.cart || [];
-    const cartToShow = user ? serverCart : localCart;
+    const cartToShow = user ? userCart ?? [] : localCart;
 
     const deleteCartItem = useDeleteCartItemFromUser();
     const addToFavorite = useAddFavorite();

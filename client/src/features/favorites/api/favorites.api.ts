@@ -27,7 +27,7 @@ export async function addFavoriteToUser(
     }
 }
 
-export async function fetchFavoritesFromUser(userId: string): Promise<IFavoriteItem> {
+export async function fetchFavoritesFromUser(userId: string): Promise<IFavoriteItem[]> {
     try {
         const response = await fetch(`${API_BASE_URL}/favorites/${userId}`, {
             credentials: "include",

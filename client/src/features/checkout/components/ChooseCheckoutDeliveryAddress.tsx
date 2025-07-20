@@ -1,5 +1,5 @@
 import React from "react";
-import { INovaPostDataObj } from "../types/checkout.types";
+import { INovaPostDataObj } from "../../orders/types/orders.types";
 
 interface ChooseCheckoutDeliveryAddressProps {
     areas: INovaPostDataObj[];
