@@ -1,16 +1,31 @@
 "use client";
 
 import { useCurrentUser } from "@/features/admin/user-info/hooks/useUsers";
-import { useOrders, useUserOrders } from "@/features/orders/hooks/useOrders";
-import { InfoIcon, EditIcon, TrashIcon } from "@/shared/icons";
+import { useUserOrders } from "@/features/orders/hooks/useOrders";
+import OrderInfoModal from "@/features/orders/modals/OrderInfoModal";
+import { IOrder } from "@/features/orders/types/orders.types";
+import { InfoIcon } from "@/shared/icons";
+import { OrderModalType } from "@/shared/types/types";
 import ButtonWithIcon from "@/shared/ui/buttons/ButtonWithIcon";
-import ChooseButton from "@/shared/ui/buttons/ChooseButton";
-import DeleteButtonWithIcon from "@/shared/ui/buttons/DeleteButtonWithIcon";
 import { formatDate } from "@/shared/utils/formatDate";
+import { useState } from "react";
 
 const Orders = () => {
     const { data: user } = useCurrentUser();
     const { data: userOrders } = useUserOrders(user?.id || "");
+
+    const [activeModal, setActiveModal] = useState<OrderModalType>(null);
+    const [selectedOrder, setSelectedOrder] = useState<IOrder | null>(null);
+
+    const openModal = (type: OrderModalType, order: IOrder | null) => {
+        setSelectedOrder(order);
+        setActiveModal(type);
+    };
+
+    const closeModal = () => {
+        setSelectedOrder(null);
+        setActiveModal(null);
+    };
 
     return (
         <div className="flex flex-col gap-[15px]">
@@ -43,7 +58,7 @@ const Orders = () => {
                                             paid: "Оплачено",
                                             shipped: "Відправлено",
                                             delivered: "Доставлено",
-                                            canceled: "Відмінено",
+                                            cancelled: "Відмінено",
                                         }[order.status]
                                     }
                                 </div>
@@ -52,7 +67,11 @@ const Orders = () => {
                                 </div>
                                 <div>{formatDate(order.createdAt || "")}</div>
                                 <div className="flex gap-[10px] justify-end">
-                                    <ButtonWithIcon onClick={() => {}}>
+                                    <ButtonWithIcon
+                                        onClick={() =>
+                                            openModal("infoUserOrder", order)
+                                        }
+                                    >
                                         <InfoIcon className="w-[30px] fill-none stroke-white stroke-2 group-hover:stroke-black" />
                                     </ButtonWithIcon>
                                 </div>
@@ -62,6 +81,13 @@ const Orders = () => {
                 </div>
             ) : (
                 <div>Замовлення відсутні</div>
+            )}
+            {selectedOrder && (
+                <OrderInfoModal
+                    isOpen={activeModal === "infoUserOrder"}
+                    onClose={closeModal}
+                    order={selectedOrder}
+                />
             )}
         </div>
     );

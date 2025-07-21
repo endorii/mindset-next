@@ -1,12 +1,19 @@
 "use client";
 
+import AddCategoryModal from "@/features/categories/modals/AddCategoryModal";
 import { useOrders } from "@/features/orders/hooks/useOrders";
-import { ProductsIcon, InfoIcon, EditIcon, TrashIcon } from "@/shared/icons";
+import DeleteOrderModal from "@/features/orders/modals/DeleteOrderModal";
+import EditOrderModal from "@/features/orders/modals/EditOrderModal";
+import OrderInfoModal from "@/features/orders/modals/OrderInfoModal";
+import { IOrder } from "@/features/orders/types/orders.types";
+import { InfoIcon, EditIcon, TrashIcon } from "@/shared/icons";
+import { OrderModalType } from "@/shared/types/types";
 import ButtonWithIcon from "@/shared/ui/buttons/ButtonWithIcon";
 import ChooseButton from "@/shared/ui/buttons/ChooseButton";
 import DeleteButtonWithIcon from "@/shared/ui/buttons/DeleteButtonWithIcon";
-import LinkWithIcon from "@/shared/ui/buttons/LinkWithIcon";
 import { formatDate } from "@/shared/utils/formatDate";
+import { data } from "motion/react-client";
+import { useState } from "react";
 
 function page() {
     const { data: orders } = useOrders();
@@ -19,6 +26,19 @@ function page() {
         "Доставлено",
         "Відмінено",
     ];
+
+    const [activeModal, setActiveModal] = useState<OrderModalType>(null);
+    const [selectedOrder, setSelectedOrder] = useState<IOrder | null>(null);
+
+    const openModal = (type: OrderModalType, order: IOrder | null) => {
+        setSelectedOrder(order);
+        setActiveModal(type);
+    };
+
+    const closeModal = () => {
+        setSelectedOrder(null);
+        setActiveModal(null);
+    };
 
     return (
         <div className="flex flex-col gap-[15px]">
@@ -87,7 +107,7 @@ function page() {
                                             paid: "Оплачено",
                                             shipped: "Відправлено",
                                             delivered: "Доставлено",
-                                            canceled: "Відмінено",
+                                            cancelled: "Відмінено",
                                         }[order.status]
                                     }
                                 </div>
@@ -97,13 +117,25 @@ function page() {
                                     {formatDate(order.updatedAt || "")}
                                 </div>
                                 <div className="flex gap-[10px] justify-end">
-                                    <ButtonWithIcon onClick={() => {}}>
+                                    <ButtonWithIcon
+                                        onClick={() => {
+                                            openModal("infoOrder", order);
+                                        }}
+                                    >
                                         <InfoIcon className="w-[30px] fill-none stroke-white stroke-2 group-hover:stroke-black" />
                                     </ButtonWithIcon>
-                                    <ButtonWithIcon onClick={() => {}}>
+                                    <ButtonWithIcon
+                                        onClick={() => {
+                                            openModal("editOrder", order);
+                                        }}
+                                    >
                                         <EditIcon className="w-[26px] stroke-white stroke-2 group-hover:stroke-black fill-none" />
                                     </ButtonWithIcon>
-                                    <DeleteButtonWithIcon onClick={() => {}}>
+                                    <DeleteButtonWithIcon
+                                        onClick={() => {
+                                            openModal("deleteOrder", order);
+                                        }}
+                                    >
                                         <TrashIcon className="w-[30px] stroke-white stroke-[1.7] fill-none" />
                                     </DeleteButtonWithIcon>
                                 </div>
@@ -113,6 +145,26 @@ function page() {
                 </div>
             ) : (
                 <div>Замовлення відсутні</div>
+            )}
+
+            {selectedOrder && (
+                <>
+                    <OrderInfoModal
+                        isOpen={activeModal === "infoOrder"}
+                        onClose={closeModal}
+                        order={selectedOrder}
+                    />
+                    <EditOrderModal
+                        isOpen={activeModal === "editOrder"}
+                        onClose={closeModal}
+                        order={selectedOrder}
+                    />
+                    <DeleteOrderModal
+                        isOpen={activeModal === "deleteOrder"}
+                        onClose={closeModal}
+                        order={selectedOrder}
+                    />
+                </>
             )}
         </div>
     );

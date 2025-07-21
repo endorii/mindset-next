@@ -1,5 +1,5 @@
 import { ChangeEvent, InputHTMLAttributes } from "react";
-import { FieldError, UseFormRegisterReturn } from "react-hook-form";
+import { UseFormRegisterReturn } from "react-hook-form";
 
 export interface InputFieldProps extends InputHTMLAttributes<HTMLInputElement> {
     label?: string;
@@ -22,35 +22,42 @@ const InputField: React.FC<InputFieldProps> = ({
     required,
     type = "text",
     errorMessage,
-    className = `border ${
-        errorMessage ? "border-red-500" : "border-white/10"
-    }  rounded px-[10px] py-[8px] outline-0  transition-colors duration-200 bg-black/10 text-white`,
-
+    className,
     ...rest
-}) => (
-    <div className="flex flex-col gap-[7px]">
-        {label && (
-            <label htmlFor={id || name} className="text-sm font-semibold">
-                {label}
-            </label>
-        )}
-        <input
-            id={id || name}
-            name={name}
-            type={type}
-            placeholder={placeholder}
-            disabled={disabled}
-            required={required}
-            className={className}
-            value={value}
-            onChange={onChangeValue}
-            {...register}
-            {...rest}
-        />
-        {errorMessage && (
-            <span className="text-sm text-red-500">{errorMessage}</span>
-        )}
-    </div>
-);
+}) => {
+    const inputId = id || name;
+    const inputClassName =
+        className ??
+        `border ${errorMessage ? "border-red-500" : "border-white/10"} 
+     rounded px-[10px] py-[8px] outline-0 bg-black/10 text-white transition-colors duration-200`;
+
+    return (
+        <div className="flex flex-col gap-[7px]">
+            {label && (
+                <label htmlFor={inputId} className="text-sm font-semibold">
+                    {label}
+                </label>
+            )}
+
+            <input
+                id={inputId}
+                name={name}
+                type={type}
+                placeholder={placeholder}
+                disabled={disabled}
+                required={required}
+                className={inputClassName}
+                {...(value !== undefined && { value })}
+                {...(onChangeValue && { onChange: onChangeValue })}
+                {...register}
+                {...rest}
+            />
+
+            {errorMessage && (
+                <span className="text-sm text-red-500">{errorMessage}</span>
+            )}
+        </div>
+    );
+};
 
 export default InputField;

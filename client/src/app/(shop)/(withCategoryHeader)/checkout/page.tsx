@@ -7,6 +7,7 @@ import CheckoutResultTable from "@/features/checkout/components/CheckoutResultTa
 import ChooseCheckoutDeliveryAddress from "@/features/checkout/components/ChooseCheckoutDeliveryAddress";
 import PayMethod from "@/features/checkout/components/PayMethod";
 import PreOrderInfo from "@/features/checkout/components/PreOrderInfo";
+import { useCreateOrder } from "@/features/orders/hooks/useOrders";
 import { INovaPostDataObj, IOrder } from "@/features/orders/types/orders.types";
 import {
     fetchAreas,
@@ -14,7 +15,6 @@ import {
     fetchWarehouses,
 } from "@/shared/api/nova-post.api";
 import MonoButton from "@/shared/ui/buttons/MonoButton";
-import MonoLink from "@/shared/ui/buttons/MonoLink";
 import H3 from "@/shared/ui/text/H3";
 import { redirect } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -43,6 +43,8 @@ function Checkout() {
     );
     const [selectedWarehouse, setSelectedWarehouse] =
         useState<INovaPostDataObj | null>(null);
+
+    const createOrderMutation = useCreateOrder();
 
     useEffect(() => {
         if (user) {
@@ -132,7 +134,7 @@ function Checkout() {
         };
 
         try {
-            // await postOrder(orderData);
+            await createOrderMutation.mutateAsync(orderData);
             console.log(user.id, orderData);
 
             toast.success("Замовлення створено, перенаправлення...");

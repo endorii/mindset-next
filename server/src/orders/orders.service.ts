@@ -74,7 +74,15 @@ export class OrdersService {
                 include: {
                     items: {
                         include: {
-                            product: true,
+                            product: {
+                                include: {
+                                    category: {
+                                        include: {
+                                            collection: true,
+                                        },
+                                    },
+                                },
+                            },
                         },
                     },
                 },
@@ -102,7 +110,15 @@ export class OrdersService {
                 include: {
                     items: {
                         include: {
-                            product: true,
+                            product: {
+                                include: {
+                                    category: {
+                                        include: {
+                                            collection: true,
+                                        },
+                                    },
+                                },
+                            },
                         },
                     },
                 },

@@ -7,7 +7,7 @@ interface ICartReceipProps {
 
 function CartReceip({ totalPrice }: ICartReceipProps) {
     return (
-        <div className="w-[27%] rounded-xl bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px] text-lg flex flex-col gap-[20px]">
+        <div className="w-1/3 rounded-xl bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px] text-lg flex flex-col gap-[20px]">
             <div>
                 <div className="font-bold">Всього</div>
                 <hr className="border-t border-white/10 my-[15px]" />

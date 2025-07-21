@@ -1,0 +1,59 @@
+"use client";
+
+import { useEscapeKeyClose } from "@/shared/hooks/useEscapeKeyClose";
+import { createPortal } from "react-dom";
+import MonoButton from "@/shared/ui/buttons/MonoButton";
+import DeleteButton from "@/shared/ui/buttons/DeleteButton";
+import ModalWrapper from "@/shared/ui/wrappers/ModalWrapper";
+import FormButtonsWrapper from "@/shared/ui/wrappers/FormButtonsWrapper";
+import { toast } from "sonner";
+import { IOrder } from "../types/orders.types";
+import { useDeleteOrder } from "../hooks/useOrders";
+
+interface DeleteOrderModalProps {
+    isOpen: boolean;
+    onClose: () => void;
+    order: IOrder;
+}
+
+export default function DeleteOrderModal({
+    isOpen,
+    onClose,
+    order,
+}: DeleteOrderModalProps) {
+    const deleteOrderMutation = useDeleteOrder();
+
+    useEscapeKeyClose({ isOpen, onClose });
+
+    if (!isOpen) return null;
+
+    const handleDelete = async () => {
+        if (!order.id) return;
+
+        try {
+            await deleteOrderMutation.mutateAsync(order.id);
+            onClose();
+            toast.success("Замовлення упішно видалено!");
+        } catch (error) {
+            console.log(error);
+
+            toast.error("Помилка видалення замовлення");
+        }
+    };
+
+    const modalContent = (
+        <ModalWrapper onClose={onClose} modalTitle={"Видалення замовлення"}>
+            <div className="mb-6 text-white/80 text-[16px] leading-[1.6]">
+                Ви дійсно хочете видалити замовлення?
+            </div>
+            <FormButtonsWrapper>
+                <MonoButton type="button" onClick={onClose}>
+                    Скасувати
+                </MonoButton>
+                <DeleteButton onClick={handleDelete}>Видалити</DeleteButton>
+            </FormButtonsWrapper>
+        </ModalWrapper>
+    );
+
+    return createPortal(modalContent, document.body);
+}

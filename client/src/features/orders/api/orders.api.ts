@@ -58,7 +58,10 @@ export async function getOrdersByUserId(userId: string): Promise<IOrder[]> {
     }
 }
 
-export async function updateOrder(orderId: string, data: Partial<IOrder>): Promise<IOrder[]> {
+export async function updateOrder(
+    orderId: string | undefined,
+    data: Partial<IOrder>
+): Promise<IOrder[]> {
     try {
         const response = await fetch(`${API_BASE_URL}/orders/${orderId}`, {
             method: "PATCH",

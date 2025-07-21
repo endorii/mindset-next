@@ -31,7 +31,7 @@ export class OrdersController {
     }
 
     @Patch(":orderId")
-    @Roles(Role.ADMIN)
+    // @Roles(Role.ADMIN)
     updateOrder(@Param("orderId") orderId: string, @Body() updateOrderDto: UpdateOrderDto) {
         return this.ordersService.updateOrder(orderId, updateOrderDto);
     }

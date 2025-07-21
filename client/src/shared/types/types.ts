@@ -22,6 +22,14 @@ export type AttributeModalType =
     | "editUserPassword"
     | null;
 
+export type OrderModalType =
+    | "infoUserOrder"
+    | "infoOrder"
+    | "editOrder"
+    | "addOrder"
+    | "deleteOrder"
+    | null;
+
 export type TStatus = "ACTIVE" | "INACTIVE";
 
 export interface IIconsProps {
