@@ -154,7 +154,7 @@ function Checkout() {
             <H3>Оформлення</H3>
             <div className="flex justify-between pt-[120px] gap-[15px]">
                 <div className="flex flex-col gap-[15px] w-1/2 rounded-xl bg-white/5 backdrop-blur-[100px] border border-white/5 p-[30px] h-fit">
-                    <div className="flex gap-[15px]">
+                    <div className="flex gap-[15px] w-full">
                         <CheckoutInputDetails
                             userInitials={userInitials}
                             setUserInitials={setUserInitials}

@@ -23,6 +23,7 @@ import { FavoritesModule } from "./favorites/favorites.module";
 import { RecentActionsModule } from "./recent-actions/recent-actions.module";
 import { NovaPostModule } from "./nova-post/nova-post.module";
 import { OrdersModule } from './orders/orders.module';
+import { TodoModule } from './todo/todo.module';
 
 @Module({
     imports: [
@@ -52,6 +53,7 @@ import { OrdersModule } from './orders/orders.module';
         RecentActionsModule,
         NovaPostModule,
         OrdersModule,
+        TodoModule,
     ],
     controllers: [],
     providers: [],

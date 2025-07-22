@@ -25,7 +25,7 @@ function ChooseCheckoutDeliveryAddress({
     setSelectedWarehouse,
 }: ChooseCheckoutDeliveryAddressProps) {
     return (
-        <div className="flex flex-col gap-[15px] w-full">
+        <div className="flex flex-col gap-[15px] w-1/2">
             <div className="text-3xl font-thin">Адреса доставки</div>
             <hr className="border-t border-white/10" />
             <div className="flex gap-[15px]">

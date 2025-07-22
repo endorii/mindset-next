@@ -22,8 +22,19 @@ model User {
     favorites          Favorite[]
     shippingAddress    ShippingAddress?
     orders             Order[]
+    todo               Todo[]
 
     RecentActions RecentAction[]
+}
+
+model Todo {
+    id        String       @id @default(cuid())
+    title     String
+    priority  TodoPriority @default(low)
+    createdAt DateTime     @default(now()) @map("created_at")
+    updatedAt DateTime     @updatedAt @map("updated_at")
+    userId    String       @map("user_id")
+    user      User         @relation(fields: [userId], references: [id])
 }
 
 model RecentAction {
@@ -77,6 +88,12 @@ enum OrderStatus {
     shipped
     delivered
     cancelled
+}
+
+enum TodoPriority {
+    low
+    medium
+    high
 }
 
 model Favorite {

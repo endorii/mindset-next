@@ -18,7 +18,7 @@ function CheckoutInputDetails({
     setUserEmail,
 }: CheckoutInputDetailsProps) {
     return (
-        <div className="flex flex-col gap-[15px] w-full">
+        <div className="flex flex-col gap-[15px] w-1/2">
             <div className="text-3xl font-thin">Реквізити для відправки</div>
             <hr className="border-t border-white/10" />
             <div className="flex flex-col gap-[13px] w-full">

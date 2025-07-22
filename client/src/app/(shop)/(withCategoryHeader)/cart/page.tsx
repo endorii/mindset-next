@@ -21,6 +21,8 @@ import { useState, useEffect } from "react";
 import H3 from "@/shared/ui/text/H3";
 import CartReceip from "@/features/cart/components/CartReceip";
 import ButtonWithIcon from "@/shared/ui/buttons/ButtonWithIcon";
+import MonoButton from "@/shared/ui/buttons/MonoButton";
+import ButtonWithTextAndIcon from "@/shared/ui/buttons/ButtonWithTextAndIcon";
 
 function Cart() {
     const { data: user, isLoading } = useCurrentUser();
@@ -292,15 +294,15 @@ function Cart() {
                                         </div>
 
                                         <div className="flex justify-between gap-[10px]">
-                                            <ButtonWithIcon
+                                            <ButtonWithTextAndIcon
                                                 onClick={() => {
                                                     handleRemove();
                                                 }}
                                             >
                                                 <CloseIcon className="w-[20px] stroke-white group-hover:stroke-black transition-all duration-300" />
                                                 <div>Видалити</div>
-                                            </ButtonWithIcon>
-                                            <ButtonWithIcon
+                                            </ButtonWithTextAndIcon>
+                                            <ButtonWithTextAndIcon
                                                 onClick={() => {
                                                     handleFavoriteToggle(item);
                                                 }}
@@ -313,7 +315,7 @@ function Cart() {
                                                         ? "Видалити з Вподобаного"
                                                         : "Додати до Вподобаного"}
                                                 </div>
-                                            </ButtonWithIcon>
+                                            </ButtonWithTextAndIcon>
                                         </div>
                                     </div>
                                 </li>

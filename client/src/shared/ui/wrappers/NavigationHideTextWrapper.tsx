@@ -1,5 +1,5 @@
 interface INavigationHideTextWrapperProps {
-    navOpen: boolean;
+    navOpen?: boolean;
     children: React.ReactNode;
 }
 
