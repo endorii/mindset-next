@@ -30,6 +30,8 @@ export type OrderModalType =
     | "deleteOrder"
     | null;
 
+export type TodoModalType = "add" | "edit" | "delete" | null;
+
 export type TStatus = "ACTIVE" | "INACTIVE";
 
 export interface IIconsProps {

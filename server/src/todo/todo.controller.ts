@@ -15,8 +15,13 @@ export class TodoController {
 
     @Post()
     @Roles(Role.ADMIN)
-    createTodoItem(@Body() createTodoDto: CreateTodoDto) {
-        return this.todoService.createTodoItem(createTodoDto);
+    createTodoItem(
+        @Req() req: Request & { user: AuthenticatedRequestUser },
+        @Body() createTodoDto: CreateTodoDto
+    ) {
+        console.log(req);
+
+        return this.todoService.createTodoItem(req.user.id, createTodoDto);
     }
 
     @Get()

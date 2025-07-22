@@ -14,8 +14,4 @@ export class CreateTodoDto {
     @IsEnum(TodoPriority, { message: "Значення повинно бути рядком 'low', 'medium' або 'high'" })
     @IsNotEmpty({ message: "Обов'язкове поле" })
     priority: TodoPriority;
-
-    @IsString()
-    @IsNotEmpty({ message: "Обов'язкове поле" })
-    userId: string;
 }

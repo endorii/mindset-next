@@ -6,10 +6,12 @@ import { PrismaService } from "src/prisma/prisma.service";
 @Injectable()
 export class TodoService {
     constructor(private readonly prisma: PrismaService) {}
-    async createTodoItem(createTodoDto: CreateTodoDto) {
+    async createTodoItem(userId: string, createTodoDto: CreateTodoDto) {
         try {
+            console.log(userId);
+
             const todoItem = await this.prisma.todo.create({
-                data: createTodoDto,
+                data: { userId, ...createTodoDto },
             });
 
             return {
@@ -63,7 +65,7 @@ export class TodoService {
                 where: { id, userId },
             });
 
-            if (!todoItem) throw new Error("Колекцію не знайдено");
+            if (!todoItem) throw new Error("Завдання не знайдено");
 
             await this.prisma.todo.delete({
                 where: {

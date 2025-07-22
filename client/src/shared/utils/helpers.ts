@@ -1,4 +1,5 @@
 export const statuses = ["ACTIVE", "INACTIVE"];
+export const priorities = ["low", "medium", "high"];
 
 export const getLocalStorageArray = (key: string): any[] => {
     try {
