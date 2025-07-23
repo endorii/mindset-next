@@ -12,7 +12,7 @@ function DataListWrapper({
     return (
         <>
             {existData.length > 0 ? (
-                <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 w-full pt-[120px] gap-[20px]">
+                <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 w-full gap-[20px]">
                     {existData.map((item: object, i: number) =>
                         children(item, i)
                     )}

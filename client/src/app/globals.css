@@ -32,3 +32,11 @@ select option {
     background-color: black;
     color: white;
 }
+
+.font-roboto {
+  font-family: 'Roboto', sans-serif;
+}
+
+.font-qwitcher-grypen {
+    font-family: 'Qwitcher Grypen', cursive;
+}

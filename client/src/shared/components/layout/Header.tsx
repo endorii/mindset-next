@@ -7,6 +7,7 @@ import { useCurrentUser } from "@/features/admin/user-info/hooks/useUsers";
 import { getLocalStorageArray } from "@/shared/utils/helpers";
 import { useFavoritesFromUser } from "@/features/favorites/hooks/useFavorites";
 import { useCartItemsFromUser } from "@/features/cart/hooks/useCart";
+import { usePathname } from "next/navigation";
 
 const Header = () => {
     const { data: user } = useCurrentUser();
@@ -17,6 +18,8 @@ const Header = () => {
     const [localFavorites, setLocalFavorites] = useState<any[]>([]);
     const [isMounted, setIsMounted] = useState(false);
 
+    const [showTitle, setShowTitle] = useState(false);
+
     useEffect(() => {
         setIsMounted(true);
 
@@ -24,8 +27,28 @@ const Header = () => {
         setLocalFavorites(getLocalStorageArray("favorites"));
     }, []);
 
-    const cart = !!userCart ? userCart : localCart;
+    const pathname = usePathname();
 
+    useEffect(() => {
+        const handleScroll = () => {
+            if (pathname !== "/") {
+                setShowTitle(true);
+            } else if (window.scrollY > 390 && pathname === "/") {
+                setShowTitle(true);
+            } else {
+                setShowTitle(false);
+            }
+        };
+
+        window.addEventListener("scroll", handleScroll);
+        handleScroll();
+
+        return () => {
+            window.removeEventListener("scroll", handleScroll);
+        };
+    }, [pathname]);
+
+    const cart = !!userCart ? userCart : localCart;
     const favorites = !!userFavorites ? userFavorites : localFavorites;
 
     if (!isMounted) {
@@ -33,24 +56,17 @@ const Header = () => {
     }
 
     return (
-        <header className="fixed top-[10px] py-[10px] px-[20px] md:px-[35px] h-[75px] md:h-[85px] flex justify-end items-center w-full bg-transparent text-white z-[100] shadow-custom ">
+        <header className="fixed py-[10px] px-[20px] h-[85px] flex justify-end items-center w-full bg-black/70 backdrop-blur-xl text-white z-[100] shadow-custom">
             <Link
                 href="/"
-                className="absolute left-1/2 transform -translate-x-1/2 rounded-xl bg-white/5 shadow-lg px-[25px] py-[13px] pb-[18px] backdrop-blur-2xl font-bold text-5xl tracking-tighter leading-10 border border-white/5"
+                className={`absolute left-1/2 transform -translate-x-1/2 transition-opacity duration-300 ${
+                    showTitle ? "opacity-100" : "opacity-0 pointer-events-none"
+                }  px-[25px] py-[13px] pb-[18px]  font-bold text-5xl tracking-tighter leading-10 `}
             >
-                mindset
+                mindset.
             </Link>
 
             <div className="flex items-center gap-[30px]">
-                {/* <div className="relative">
-                    <SearchIcon className="absolute top-[5px] right-0 w-[20px] fill-white stroke-black" />
-                    <input
-                        type="text"
-                        className="border-b text-xs py-2 outline-0 w-[200px] pr-[25px]"
-                        placeholder="знайти щось"
-                    />
-                </div> */}
-
                 <ul className="flex gap-[10px]">
                     <li>
                         <Link

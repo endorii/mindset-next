@@ -25,8 +25,8 @@ export default function CustomCursor() {
         mouse.y.set(clientY - cursorSize.get() / 2);
     };
 
-    const manageMouseEnter = () => cursorSize.set(8);
-    const manageMouseLeave = () => cursorSize.set(12);
+    const manageMouseEnter = () => cursorSize.set(30);
+    const manageMouseLeave = () => cursorSize.set(15);
 
     const applyCursorListeners = () => {
         const elements = document.querySelectorAll("button, a");
@@ -63,13 +63,13 @@ export default function CustomCursor() {
             style={{
                 width: animatedCursorSize,
                 height: animatedCursorSize,
-                border: "none",
+                border: "1px solid white",
                 borderRadius: "50%",
-                backgroundColor: "rgba(255, 255, 255, 0.26)",
-                boxShadow: "0 0 70px 20px rgba(255, 255, 255, 1)",
+                backgroundColor: "#00000080",
+                // boxShadow: "0 0 70px 20px rgba(255, 255, 255, 1)",
                 left: smoothMouse.x,
                 top: smoothMouse.y,
-                zIndex: "-1",
+                zIndex: "10000",
             }}
         />
     );

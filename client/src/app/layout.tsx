@@ -1,12 +1,17 @@
 import type { Metadata } from "next";
-import { Roboto } from "next/font/google";
+import { Roboto, Qwitcher_Grypen } from "next/font/google";
 import "./globals.css";
 import { AuthProvider } from "@/shared/components/providers/AuthProvider";
 import { QueryProvider } from "@/shared/components/providers/QueryProvider";
 import { Toaster } from "sonner";
 
-const roboto = Roboto({
+export const roboto = Roboto({
     subsets: ["cyrillic"],
+});
+
+export const qwitcherGrypen = Qwitcher_Grypen({
+    subsets: ["latin"],
+    weight: ["400", "700"],
 });
 
 export const metadata: Metadata = {
@@ -19,6 +24,16 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
     return (
         <html lang="en" className={roboto.className}>
+            <head>
+                <link
+                    href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap"
+                    rel="stylesheet"
+                />
+                <link
+                    href="https://fonts.googleapis.com/css2?family=Qwitcher+Grypen:wght@400;700&display=swap"
+                    rel="stylesheet"
+                />
+            </head>
             <body className="bg-black">
                 <QueryProvider>
                     <Toaster theme="dark" />

@@ -14,7 +14,9 @@ function CollectionCard({ item, i }: ICollectionCardProps) {
         >
             <div className="group flex flex-col">
                 <div className="flex flex-col gap-[20px] p-[20px]">
-                    <div className="text-white text-3xl font-thin">
+                    <div
+                        className={`text-white text-7xl font-thin font-qwitcher-grypen`}
+                    >
                         {item.name}
                     </div>
                     <MonoLink href={`/${item.path}`}>

@@ -14,15 +14,11 @@ function Admin() {
         <div className="flex flex-col gap-[15px]">
             <div className="flex gap-[15px]">
                 <HomeWelcomeMessage userName={user?.name} />
-
                 <HomeFastNav />
             </div>
-
             <HomeFastStat />
-
             <div className="flex gap-[15px]">
                 <ChartOrdersThisWeek />
-
                 <HomeTodo />
             </div>
         </div>
