@@ -45,8 +45,8 @@ function AdminAccount() {
         });
 
         result.sort((a, b) => {
-            const aDate = new Date(a.timestamp).getTime();
-            const bDate = new Date(b.timestamp).getTime();
+            const aDate = new Date(a.createdAt).getTime();
+            const bDate = new Date(b.createdAt).getTime();
             return selectedSort === "Спочатку старіші"
                 ? aDate - bDate
                 : bDate - aDate;
@@ -137,7 +137,7 @@ function AdminAccount() {
                                     } pl-4 py-2 text-gray-100`}
                                 >
                                     <div className="opacity-70 text-sm">
-                                        {formatDate(action.timestamp)}
+                                        {formatDate(action.createdAt)}
                                     </div>
                                     <div>{action.action}</div>
                                 </div>
@@ -159,7 +159,7 @@ function AdminAccount() {
                             Остання дія:{" "}
                             {actions?.[0]
                                 ? `${actions[0].action} (${formatDate(
-                                      actions[0].timestamp
+                                      actions[0].createdAt
                                   )})`
                                 : "—"}
                         </div>

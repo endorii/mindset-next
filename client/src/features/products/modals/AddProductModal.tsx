@@ -36,6 +36,7 @@ interface FormData {
     name: string;
     path: string;
     price: number;
+    oldPrice: number;
     available: string;
     description: string;
     composition: string;
@@ -59,6 +60,7 @@ export default function AddProductModal({
             name: "",
             path: "",
             price: 0,
+            oldPrice: 0,
             available: "false",
             description: "",
             composition: "",
@@ -150,6 +152,7 @@ export default function AddProductModal({
                     name: data.name.trim(),
                     path: data.path.trim(),
                     price: Number(data.price),
+                    oldPrice: Number(data.oldPrice),
                     available: data.available === "true",
                     description: data.description.trim(),
                     composition: data.composition.trim(),
@@ -230,6 +233,21 @@ export default function AddProductModal({
                                 },
                             })}
                             errorMessage={errors.price?.message}
+                        />
+                        <InputField
+                            label="Стара ціна"
+                            id="addProductOldPrice"
+                            placeholder="Стара ціна"
+                            type="number"
+                            {...register("oldPrice", {
+                                required: "Введіть стару ціну",
+                                valueAsNumber: true,
+                                min: {
+                                    value: 0,
+                                    message: "Ціна має бути не від’ємною",
+                                },
+                            })}
+                            errorMessage={errors.oldPrice?.message}
                         />
                         <div className="flex flex-col gap-[7px]">
                             <label

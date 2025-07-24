@@ -30,6 +30,7 @@ export default function CategoryInfoModal({
     const {
         name,
         path,
+        description,
         status,
         views,
         createdAt,
@@ -46,16 +47,20 @@ export default function CategoryInfoModal({
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-[20px]">
                     <InfoField label="Назва" value={name} />
                     <InfoField label="Шлях" value={path} />
+                    <InfoField label="Опис" value={description} />
                     <InfoField label="Статус" value={status} />
                     <InfoField label="Переглядів" value={views} />
-                    <InfoField label="Створено" value={formatDate(createdAt)} />
+                    <InfoField
+                        label="Створено"
+                        value={formatDate(createdAt || "")}
+                    />
                     <InfoField
                         label="Редаговано"
-                        value={formatDate(updatedAt)}
+                        value={formatDate(updatedAt || "")}
                     />
                     <InfoField
                         label="Кількість товарів"
-                        value={products.length}
+                        value={products?.length}
                     />
                     <InfoField
                         label="Входить до колекції"

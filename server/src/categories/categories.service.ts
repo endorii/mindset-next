@@ -46,7 +46,7 @@ export class CategoriesService {
     }
 
     async postCategory(userId: string, createCategoryDto: CreateCategoryDto) {
-        const { name, path, banner, views, status, collectionId } = createCategoryDto;
+        const { name, path, description, banner, views, status, collectionId } = createCategoryDto;
 
         try {
             const existingCategory = await this.prisma.category.findUnique({
@@ -67,6 +67,7 @@ export class CategoriesService {
                     name,
                     path,
                     banner,
+                    description,
                     views,
                     status,
                     collectionId,
@@ -89,7 +90,8 @@ export class CategoriesService {
         updateCategoryDto: UpdateCategoryDto
     ) {
         try {
-            const { name, path, banner, views, status, collectionId } = updateCategoryDto;
+            const { name, path, description, banner, views, status, collectionId } =
+                updateCategoryDto;
 
             const collection = await this.prisma.collection.findUnique({
                 where: { path: collectionPath },
@@ -109,6 +111,7 @@ export class CategoriesService {
                 data: {
                     name,
                     path,
+                    description,
                     banner,
                     views,
                     status,

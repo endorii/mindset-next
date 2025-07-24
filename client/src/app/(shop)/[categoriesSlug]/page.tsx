@@ -2,9 +2,6 @@
 
 import { notFound, usePathname } from "next/navigation";
 import { useCollection } from "@/features/collections/hooks/useCollections";
-import H3 from "@/shared/ui/text/H3";
-import DataListWrapper from "@/shared/ui/wrappers/DataListWrapper";
-import CategoryCard from "@/features/categories/components/CategoryCard";
 import { ICategory } from "@/features/categories/types/categories.types";
 import Link from "next/link";
 

@@ -128,25 +128,5 @@ export default function CategoryPage() {
                 </div>
             )}
         </div>
-
-        // <div className="relative">
-        //     <H3>
-        //         {category.name} {category.collection?.name}
-        //     </H3>
-        //     <DataListWrapper
-        //         existData={products}
-        //         alternativeText={"Товари відстутні"}
-        //     >
-        // {(item, i) => (
-        //     <ProductCard
-        //         collectionPath={collectionPath}
-        //         categoryPath={categoryPath}
-        //         item={item}
-        //         i={i}
-        //         key={i}
-        //     />
-        // )}
-        //     </DataListWrapper>
-        // </div>
     );
 }

@@ -28,6 +28,7 @@ export default function CollectionInfoModal({
         name,
         path,
         status,
+        description,
         views,
         createdAt,
         updatedAt,
@@ -46,16 +47,20 @@ export default function CollectionInfoModal({
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-[20px]">
                     <InfoField label={"Назва"} value={name} />
                     <InfoField label={"Шлях"} value={path} />
+                    <InfoField label={"Опис"} value={description} />
                     <InfoField label={"Статус"} value={status} />
                     <InfoField label={"Переглядів"} value={views} />
-                    <InfoField label="Створено" value={formatDate(createdAt)} />
+                    <InfoField
+                        label="Створено"
+                        value={formatDate(createdAt || "")}
+                    />
                     <InfoField
                         label="Редаговано"
-                        value={formatDate(updatedAt)}
+                        value={formatDate(updatedAt || "")}
                     />
                     <InfoField
                         label={"Кількість категорій"}
-                        value={categories.length}
+                        value={categories?.length}
                     />
                 </div>
                 <div className="flex flex-col gap-[7px] w-full">

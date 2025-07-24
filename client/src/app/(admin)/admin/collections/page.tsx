@@ -31,7 +31,9 @@ function AdminCollections() {
         "кількість товарів",
     ];
 
-    const { data } = useCollections();
+    const { data, error, isLoading, isError } = useCollections();
+
+    const collections = data || [];
 
     const [activeModal, setActiveModal] = useState<ModalType>(null);
     const [selectedCollection, setSelectedCollection] =
@@ -49,6 +51,14 @@ function AdminCollections() {
         setSelectedCollection(null);
         setActiveModal(null);
     };
+
+    if (isLoading) return <div className="text-center">Завантаження...</div>;
+    if (isError)
+        return (
+            <div className="text-center text-red-500">
+                Помилка: {error?.message || "Невідома помилка"}
+            </div>
+        );
 
     return (
         <div className="flex flex-col gap-[15px]">
@@ -72,7 +82,7 @@ function AdminCollections() {
                     ))}
                 </ul>
             </div>
-            {(data ?? []).length > 0 ? (
+            {collections && collections.length > 0 ? (
                 <div className="rounded-xl bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px]">
                     <div className="grid grid-cols-[120px_0.7fr_150px_150px_1fr_230px] gap-[20px]  p-4 rounded-t-lg font-semibold text-sm">
                         <div>Банер</div>
@@ -84,7 +94,7 @@ function AdminCollections() {
                     </div>
 
                     <div className="border border-white/10 rounded-xl">
-                        {data?.map((collection) => (
+                        {collections?.map((collection) => (
                             <div
                                 key={collection.id}
                                 className="grid grid-cols-[120px_0.7fr_150px_150px_1fr_230px] gap-[20px] p-4  border-b border-white/10 last:border-b-0 items-center"
@@ -104,13 +114,15 @@ function AdminCollections() {
                                 </div>
                                 <div>{collection.views}</div>
                                 <div>
-                                    {formatDate(collection.createdAt)} /{" "}
-                                    {formatDate(collection.updatedAt)}
+                                    {formatDate(collection.createdAt || "")} /{" "}
+                                    {formatDate(collection.updatedAt || "")}
                                 </div>
                                 <div className="flex gap-[10px] justify-end">
                                     <LinkWithIcon
                                         href={`collections/${collection.path}`}
-                                        counter={collection.categories?.length}
+                                        counter={
+                                            collection.categories?.length || 0
+                                        }
                                     >
                                         <CategoriesIcon className="w-[30px] fill-white group-hover:fill-black" />
                                     </LinkWithIcon>

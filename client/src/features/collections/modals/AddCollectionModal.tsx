@@ -25,6 +25,7 @@ interface AddCollectionModalProps {
 type FormValues = {
     name: string;
     path: string;
+    description: string;
     status: TStatus;
 };
 
@@ -80,6 +81,7 @@ export default function AddCollectionModal({
             await createCollectionMutation.mutateAsync({
                 name: data.name,
                 path: data.path,
+                description: data.description,
                 banner: imagePath,
                 views: 0,
                 status: data.status,
@@ -130,6 +132,29 @@ export default function AddCollectionModal({
                             })}
                             errorMessage={errors.path?.message}
                         />
+                        <div className="flex flex-col gap-[7px]">
+                            <label
+                                className="text-sm font-semibold"
+                                htmlFor="status"
+                            >
+                                Опис
+                            </label>
+                            <textarea
+                                placeholder={"Опис"}
+                                {...register("description", {
+                                    required: "Введіть опис",
+                                    minLength: {
+                                        value: 3,
+                                        message: "Мінімум 3 символи",
+                                    },
+                                })}
+                            ></textarea>
+                            {errors.description && (
+                                <p className="text-sm text-red-500">
+                                    {errors.description.message}
+                                </p>
+                            )}
+                        </div>
                         <div className="flex flex-col gap-[7px]">
                             <label
                                 className="text-sm font-semibold"

@@ -38,8 +38,6 @@ function AdminCollection() {
 
     const { data, isError, error, isLoading } = useCollection(collectionPath);
 
-    const categories = data?.categories ?? [];
-
     const [activeModal, setActiveModal] = useState<ModalType>(null);
     const [selectedCategory, setSelectedCategory] = useState<ICategory | null>(
         null
@@ -62,6 +60,8 @@ function AdminCollection() {
                 Помилка: {error?.message || "Невідома помилка"}
             </div>
         );
+
+    const categories = data?.categories ?? [];
 
     return (
         <div className="flex flex-col gap-[15px]">
@@ -92,7 +92,7 @@ function AdminCollection() {
                 </ul>
             </div>
 
-            {categories.length > 0 ? (
+            {categories && categories.length > 0 ? (
                 <div className="rounded-xl bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px]">
                     <div className="grid grid-cols-[120px_0.7fr_150px_150px_1fr_230px] gap-[20px] p-4 rounded-t-lg font-semibold text-sm">
                         <div>Банер</div>
@@ -123,8 +123,8 @@ function AdminCollection() {
                                 </div>
                                 <div>{category.views}</div>
                                 <div>
-                                    {formatDate(category.createdAt)} /{" "}
-                                    {formatDate(category.updatedAt)}
+                                    {formatDate(category.createdAt || "")} /{" "}
+                                    {formatDate(category.updatedAt || "")}
                                 </div>
                                 <div className="flex gap-[10px] justify-end">
                                     <LinkWithIcon

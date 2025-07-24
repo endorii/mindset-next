@@ -42,13 +42,11 @@ function Account() {
     }, [user, isLoading]);
 
     if (isLoading) {
-        // Можете відобразити спіннер або лоадер поки дані завантажуються
         return <div>Loading user data...</div>;
     }
 
     if (isError) {
-        // Обробка помилки завантаження даних
-        return <div>Error loading user data. Please try again.</div>;
+        redirect("/auth");
     }
 
     return (

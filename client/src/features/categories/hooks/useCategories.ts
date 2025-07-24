@@ -5,7 +5,7 @@ import {
     editCategory,
     fetchCategory,
 } from "../api/categories.api";
-import { ICategory, ICategoryPayload } from "../types/categories.types";
+import { ICategory } from "../types/categories.types";
 import { ICollection } from "@/features/collections/types/collections.types";
 
 export function useCategory(collectionPath: ICollection["path"], categoryPath: ICategory["path"]) {
@@ -24,7 +24,7 @@ export function useCreateCategory() {
             categoryData,
         }: {
             collectionPath: ICollection["path"];
-            categoryData: ICategoryPayload;
+            categoryData: ICategory;
         }) => addCategoryToCollection(collectionPath, categoryData),
         onSuccess: (_data, variables) => {
             queryClient.invalidateQueries({

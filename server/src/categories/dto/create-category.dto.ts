@@ -18,6 +18,10 @@ export class CreateCategoryDto {
     @IsNotEmpty({ message: "Банер повинен бути вказаний" })
     banner: string;
 
+    @IsString()
+    @IsNotEmpty({ message: "Опис повинен бути вказаний" })
+    description: string;
+
     @IsInt({ message: "Перегляди мають бути цілим числом" })
     @Min(0, { message: "Перегляди не можуть бути від’ємними" })
     views: number;

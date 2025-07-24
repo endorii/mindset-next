@@ -32,6 +32,7 @@ export default function ProductInfoModal({
         name,
         path,
         price,
+        oldPrice,
         available,
         status,
         description,
@@ -57,6 +58,7 @@ export default function ProductInfoModal({
                     <InfoField label="Назва" value={name} />
                     <InfoField label="Шлях" value={path} />
                     <InfoField label="Ціна" value={price} />
+                    <InfoField label="Стара ціна" value={oldPrice} />
                     <InfoField
                         label="Доступність"
                         value={available ? "Доступно" : "Не доступно"}

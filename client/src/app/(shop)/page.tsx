@@ -127,7 +127,7 @@ export default function HomePage() {
                                                     справжню сутність.
                                                 </div>
                                                 <Link
-                                                    className="flex items-center pr-[9%] w-full h-full justify-end" // Змінено на justify-end для вирівнювання справа
+                                                    className="flex items-center pr-[9%] w-full h-full justify-end"
                                                     href={collection.path}
                                                 >
                                                     <div className="border-b">
@@ -161,18 +161,11 @@ export default function HomePage() {
                     </ul>
                 ) : (
                     <div className="flex justify-center items-center">
-                        <div className="text-white text-center mt-[230px] text-[24px] uppercase font-bold rounded-xl bg-white/5 shadow-lg backdrop-blur-lg border border-white/5 px-[30px] py-[15px]">
+                        <div className="text-white text-center my-[70px] text-[24px] uppercase font-bold rounded-xl bg-white/5 shadow-lg backdrop-blur-lg border border-white/5 px-[30px] py-[15px]">
                             Колекції відсутні
                         </div>
                     </div>
                 )}
-
-                {/* <DataListWrapper
-                    existData={existCollections}
-                    alternativeText="Немає доступних колекцій."
-                >
-                    {(item, i) => <CollectionCard item={item} i={i} key={i} />}
-                </DataListWrapper> */}
             </div>
         </div>
     );

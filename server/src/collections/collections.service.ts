@@ -40,7 +40,7 @@ export class CollectionsService {
     }
 
     async postCollection(userId: string, createCollectionDto: CreateCollectionDto) {
-        const { name, path, banner, views, status } = createCollectionDto;
+        const { name, path, description, banner, views, status } = createCollectionDto;
 
         try {
             const existingCollection = await this.prisma.collection.findUnique({
@@ -54,6 +54,7 @@ export class CollectionsService {
                 data: {
                     name,
                     path,
+                    description,
                     banner,
                     views,
                     status,
@@ -82,7 +83,7 @@ export class CollectionsService {
         }
 
         try {
-            const { name, path, banner, status } = updateCollectionDto;
+            const { name, path, description, banner, status } = updateCollectionDto;
 
             const collection = await this.prisma.collection.update({
                 where: {
@@ -91,6 +92,7 @@ export class CollectionsService {
                 data: {
                     name,
                     path,
+                    description,
                     banner,
                     status,
                 },

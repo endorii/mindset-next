@@ -1,8 +1,8 @@
-import { IUser } from "../user-info/types/user.types";
+import { IUser } from "../../user-info/types/user.types";
 
 export interface IRecentActions {
     id: string;
     action: string;
-    timestamp: string;
+    createdAt: string;
     userId: IUser["id"];
 }

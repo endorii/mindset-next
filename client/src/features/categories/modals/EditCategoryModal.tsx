@@ -30,6 +30,7 @@ interface EditCategoryModalProps {
 interface CategoryFormData {
     name: string;
     path: string;
+    description: string;
     status: TStatus;
 }
 
@@ -48,6 +49,7 @@ export default function EditCategoryModal({
         defaultValues: {
             name: "",
             path: "",
+            description: "",
             status: "INACTIVE",
         },
     });
@@ -64,6 +66,7 @@ export default function EditCategoryModal({
             reset({
                 name: category.name,
                 path: category.path,
+                description: category.description,
                 status: category.status,
             });
             setBanner(category.banner || "");
@@ -157,6 +160,29 @@ export default function EditCategoryModal({
                             })}
                             errorMessage={errors.path?.message}
                         />
+                        <div className="flex flex-col gap-[7px]">
+                            <label
+                                className="text-sm font-semibold"
+                                htmlFor="status"
+                            >
+                                Опис
+                            </label>
+                            <textarea
+                                placeholder={"Опис"}
+                                {...register("description", {
+                                    required: "Введіть опис",
+                                    minLength: {
+                                        value: 3,
+                                        message: "Мінімум 3 символи",
+                                    },
+                                })}
+                            ></textarea>
+                            {errors.description && (
+                                <p className="text-sm text-red-500">
+                                    {errors.description.message}
+                                </p>
+                            )}
+                        </div>
                         <div className="flex flex-col gap-[7px]">
                             <label
                                 htmlFor="status"

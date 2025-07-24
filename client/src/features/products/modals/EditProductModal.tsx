@@ -39,6 +39,7 @@ interface FormData {
     name: string;
     path: string;
     price: number;
+    oldPrice: number;
     available: "true" | "false";
     description: string;
     composition: string;
@@ -62,6 +63,7 @@ export default function EditProductModal({
             name: "",
             path: "",
             price: 0,
+            oldPrice: 0,
             available: "false",
             description: "",
             composition: "",
@@ -96,6 +98,7 @@ export default function EditProductModal({
                 name: product.name,
                 path: product.path,
                 price: product.price,
+                oldPrice: product.oldPrice,
                 available: product.available ? "true" : "false",
                 description: product.description,
                 composition: product.composition,
@@ -178,6 +181,7 @@ export default function EditProductModal({
                     name: data.name.trim(),
                     path: data.path.trim(),
                     price: data.price,
+                    oldPrice: data.oldPrice,
                     available: data.available === "true",
                     description: data.description.trim(),
                     composition: data.composition.trim(),
@@ -273,6 +277,22 @@ export default function EditProductModal({
                                 valueAsNumber: true,
                             })}
                             errorMessage={errors.price?.message}
+                        />
+
+                        <InputField
+                            label="Стара ціна"
+                            id="editProductOldPrice"
+                            placeholder="Стара ціна"
+                            type="number"
+                            {...register("oldPrice", {
+                                required: "Введіть ціну",
+                                min: {
+                                    value: 0,
+                                    message: "Ціна має бути не від’ємною",
+                                },
+                                valueAsNumber: true,
+                            })}
+                            errorMessage={errors.oldPrice?.message}
                         />
                         <div className="flex flex-col gap-[7px]">
                             <label

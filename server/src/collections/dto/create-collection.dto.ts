@@ -15,6 +15,10 @@ export class CreateCollectionDto {
     path: string;
 
     @IsString()
+    @IsNotEmpty({ message: "Опис не може бути порожнім" })
+    description: string;
+
+    @IsString()
     @IsNotEmpty({ message: "Банер повинен бути вказаний" })
     banner: string;
 

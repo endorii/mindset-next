@@ -31,6 +31,10 @@ export class CreateProductDto {
     @IsDefined({ message: "Ціна повинна бути визначена." })
     price: number;
 
+    @IsInt({ message: "Попередня ціна повинна бути цілим числом." })
+    @IsDefined({ message: "Попередня ціна повинна бути визначена." })
+    oldPrice: number;
+
     @IsBoolean({ message: "Доступність повинна бути логічним значенням." })
     @IsDefined({ message: "Доступність повинна бути визначена." })
     available: boolean;

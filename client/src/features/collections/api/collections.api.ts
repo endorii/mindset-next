@@ -1,4 +1,4 @@
-import { ICollection, ICollectionPayload } from "../types/collections.types";
+import { ICollection } from "../types/collections.types";
 
 const API_BASE_URL = "http://localhost:5000/api";
 
@@ -32,7 +32,7 @@ export async function fetchCollection(collectionPath: string): Promise<ICollecti
     }
 }
 
-export async function createCollection(data: ICollectionPayload): Promise<ICollection> {
+export async function createCollection(data: ICollection): Promise<ICollection> {
     try {
         const response = await fetch(`${API_BASE_URL}/collections`, {
             method: "POST",
@@ -79,7 +79,7 @@ export async function editCollection(
     }
 }
 
-export async function deleteCollection(collectionPath: string): Promise<void> {
+export async function deleteCollection(collectionPath: string): Promise<ICollection> {
     try {
         const response = await fetch(`${API_BASE_URL}/collections/${collectionPath}`, {
             method: "DELETE",

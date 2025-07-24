@@ -1,4 +1,4 @@
-import { ICategory, ICategoryPayload } from "../types/categories.types";
+import { ICategory } from "../types/categories.types";
 import { ICollection } from "@/features/collections/types/collections.types";
 
 const API_BASE_URL = "http://localhost:5000/api";
@@ -42,7 +42,7 @@ export async function fetchCategory(
 
 export async function addCategoryToCollection(
     collectionPath: ICollection["path"],
-    categoryData: ICategoryPayload
+    categoryData: ICategory
 ): Promise<ICategory> {
     try {
         const response = await fetch(`${API_BASE_URL}/collections/${collectionPath}/categories`, {

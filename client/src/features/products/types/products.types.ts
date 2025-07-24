@@ -8,6 +8,7 @@ export interface IProduct {
     id: string;
     name: string;
     price: number;
+    oldPrice: number;
     path: string;
     views: number;
     banner: string;
@@ -31,10 +32,11 @@ export interface ICreateProductPayload {
     name: string;
     path: string;
     price: number;
+    oldPrice: number;
     available: boolean;
     description: string;
     composition: string;
-    categoryId: string;
+    categoryId?: string;
     status: TStatus;
     views: number;
     banner: string;
