@@ -32,6 +32,8 @@ const Login = () => {
     useEffect(() => {
         if (!isUserLoading && currentUser) {
             router.push("/");
+        } else {
+            router.push("/account");
         }
     }, [currentUser, isUserLoading, isUserError, router]);
 

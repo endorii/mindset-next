@@ -201,10 +201,15 @@ function Cart() {
     }
 
     return (
-        <div className="relative text-white">
-            <H3>Кошик</H3>
+        <div className="flex flex-col gap-[50px] mt-[50px] text-white">
+            <div className="text-white relative px-[70px]">
+                <div className="text-8xl font-extrabold">Кошик</div>
+                <div className="absolute top-[40px] left-[70px] text-8xl font-qwitcher-grypen text-white/40">
+                    Cart
+                </div>
+            </div>
             {cartToShow.length > 0 ? (
-                <div className="flex justify-between gap-[15px] pt-[120px]">
+                <div className="flex justify-between gap-[20px] w-full px-[30px]">
                     <ul className=" flex flex-col gap-[20px] w-2/3 max-h-[80vh] overflow-y-auto">
                         {cartToShow.map((item, i) => {
                             const isServer = !!user;

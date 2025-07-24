@@ -240,16 +240,19 @@ export default function ProductPage() {
                                 {product.productColors.map((item, i) => (
                                     <li
                                         key={i}
-                                        className={`px-[15px] py-[8px] border border-white/10 rounded-xl hover:border-white/20 cursor-pointer ${
-                                            chosenColor === item.color.name
-                                                ? "bg-white text-black"
-                                                : "border-gray-200"
-                                        }`}
                                         onClick={() =>
                                             setChosenColor(item.color.name)
                                         }
                                     >
-                                        {item.color.name}
+                                        <button
+                                            className={`px-[15px] py-[8px] border border-white/10 rounded-xl hover:border-white/20 cursor-pointer ${
+                                                chosenColor === item.color.name
+                                                    ? "bg-white text-black"
+                                                    : "border-gray-200"
+                                            }`}
+                                        >
+                                            {item.color.name}
+                                        </button>
                                     </li>
                                 ))}
                             </ul>
@@ -262,16 +265,19 @@ export default function ProductPage() {
                                 {product.productTypes.map((item, i) => (
                                     <li
                                         key={i}
-                                        className={`px-[15px] py-[8px] border border-white/10 rounded-xl hover:border-white/20 cursor-pointer ${
-                                            chosenType === item.type.name
-                                                ? "bg-white text-black"
-                                                : "border-gray-200"
-                                        } `}
                                         onClick={() =>
                                             setChosenType(item.type.name)
                                         }
                                     >
-                                        {item.type.name}
+                                        <button
+                                            className={`px-[15px] py-[8px] border border-white/10 rounded-xl hover:border-white/20 cursor-pointer ${
+                                                chosenType === item.type.name
+                                                    ? "bg-white text-black"
+                                                    : "border-gray-200"
+                                            } `}
+                                        >
+                                            {item.type.name}
+                                        </button>
                                     </li>
                                 ))}
                             </ul>
@@ -284,16 +290,19 @@ export default function ProductPage() {
                                 {product.productSizes.map((item, i) => (
                                     <li
                                         key={i}
-                                        className={`px-[15px] py-[8px] border border-white/10 rounded-xl hover:border-white/20 cursor-pointer ${
-                                            chosenSize === item.size.name
-                                                ? "bg-white text-black"
-                                                : "border-gray-200"
-                                        }`}
                                         onClick={() =>
                                             setChosenSize(item.size.name)
                                         }
                                     >
-                                        {item.size.name}
+                                        <button
+                                            className={`px-[15px] py-[8px] border border-white/10 rounded-xl hover:border-white/20 cursor-pointer ${
+                                                chosenSize === item.size.name
+                                                    ? "bg-white text-black"
+                                                    : "border-gray-200"
+                                            }`}
+                                        >
+                                            {item.size.name}
+                                        </button>
                                     </li>
                                 ))}
                             </ul>

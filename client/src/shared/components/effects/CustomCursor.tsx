@@ -5,8 +5,8 @@ import { useEffect } from "react";
 
 export default function CustomCursor() {
     const mouse = {
-        x: useMotionValue(0),
-        y: useMotionValue(0),
+        x: useMotionValue(-30),
+        y: useMotionValue(-30),
     };
 
     const smoothOptions = { damping: 30, stiffness: 400, mass: 0.3 };
@@ -61,6 +61,7 @@ export default function CustomCursor() {
         <motion.div
             className="fixed pointer-events-none"
             style={{
+                // position: "absolute",
                 width: animatedCursorSize,
                 height: animatedCursorSize,
                 border: "1px solid white",

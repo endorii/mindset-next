@@ -14,7 +14,7 @@ import { redirect } from "next/navigation";
 import { useEffect, useState } from "react";
 
 function Account() {
-    const { data: user } = useCurrentUser();
+    const { data: user, isLoading, isError } = useCurrentUser();
     const [activeModal, setActiveModal] = useState<AttributeModalType>(null);
 
     const replasePassword = (password?: string) => {
@@ -36,10 +36,20 @@ function Account() {
     };
 
     useEffect(() => {
-        if (!user) {
+        if (!isLoading && !user) {
             redirect("/auth");
         }
-    }, [user]);
+    }, [user, isLoading]);
+
+    if (isLoading) {
+        // Можете відобразити спіннер або лоадер поки дані завантажуються
+        return <div>Loading user data...</div>;
+    }
+
+    if (isError) {
+        // Обробка помилки завантаження даних
+        return <div>Error loading user data. Please try again.</div>;
+    }
 
     return (
         <div>

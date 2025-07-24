@@ -34,7 +34,7 @@ export default function RootLayout({
                     rel="stylesheet"
                 />
             </head>
-            <body className="bg-black">
+            <body className="relative bg-black">
                 <QueryProvider>
                     <Toaster theme="dark" />
                     <AuthProvider>{children}</AuthProvider>

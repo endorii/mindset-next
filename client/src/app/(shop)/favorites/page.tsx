@@ -77,10 +77,15 @@ export const Favorites = () => {
     console.log("favoritesToShow:", favoritesToShow);
 
     return (
-        <div className="relative">
-            <H3>Вподобане</H3>
+        <div className="flex flex-col gap-[50px] mt-[50px]">
+            <div className="text-white relative px-[70px]">
+                <div className="text-8xl font-extrabold">Вподобані</div>
+                <div className="absolute top-[40px] left-[70px] text-8xl font-qwitcher-grypen text-white/40">
+                    Favorites
+                </div>
+            </div>
             {favoritesToShow && favoritesToShow.length > 0 ? (
-                <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 w-full pt-[120px] p-[30px] gap-[20px]">
+                <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 w-full gap-[20px] px-[30px]">
                     {favoritesToShow.map((item, i) => {
                         const isServer = !!user;
 
