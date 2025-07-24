@@ -77,7 +77,7 @@ export const Favorites = () => {
     console.log("favoritesToShow:", favoritesToShow);
 
     return (
-        <div className="flex flex-col gap-[50px] mt-[50px]">
+        <div className="flex flex-col gap-[50px] mt-[30px]">
             <div className="text-white relative px-[70px]">
                 <div className="text-8xl font-extrabold">Вподобані</div>
                 <div className="absolute top-[40px] left-[70px] text-8xl font-qwitcher-grypen text-white/40">

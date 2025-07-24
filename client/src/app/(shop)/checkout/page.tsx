@@ -15,8 +15,6 @@ import {
     fetchWarehouses,
 } from "@/shared/api/nova-post.api";
 import MonoButton from "@/shared/ui/buttons/MonoButton";
-import H3 from "@/shared/ui/text/H3";
-import { redirect } from "next/navigation";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 
@@ -150,9 +148,16 @@ function Checkout() {
     if (!user) return <p>Не авторизовано</p>;
 
     return (
-        <div className="relative text-white">
-            <H3>Оформлення</H3>
-            <div className="flex justify-between pt-[120px] gap-[15px]">
+        <div className="flex flex-col gap-[50px] mt-[30px] text-white">
+            <div className="text-white relative px-[70px]">
+                <div className="text-8xl font-extrabold">
+                    Оформлення замовлення
+                </div>
+                <div className="absolute top-[40px] left-[70px] text-8xl font-qwitcher-grypen text-white/40">
+                    Placing an order
+                </div>
+            </div>
+            <div className="flex justify-between px-[30px] gap-[15px]">
                 <div className="flex flex-col gap-[15px] w-1/2 rounded-xl bg-white/5 backdrop-blur-[100px] border border-white/5 p-[30px] h-fit">
                     <div className="flex gap-[15px] w-full">
                         <CheckoutInputDetails

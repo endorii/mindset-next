@@ -32,7 +32,7 @@ export default function Collection() {
     if (isError || !collection) return <p>Колекція не знайдена</p>;
 
     return (
-        <div className="flex flex-col gap-[50px] mt-[50px]">
+        <div className="flex flex-col gap-[50px] mt-[30px]">
             <div className="text-white relative px-[70px]">
                 <div className="text-8xl font-extrabold">
                     Категорії {collection.name}

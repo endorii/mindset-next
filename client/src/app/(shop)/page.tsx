@@ -4,11 +4,9 @@ import { useCollections } from "@/features/collections/hooks/useCollections";
 import { useTypewriter } from "@/shared/hooks/useTypewriter";
 import { ICollection } from "@/features/collections/types/collections.types";
 import Link from "next/link";
-import Image from "next/image";
 
 export default function HomePage() {
     const { data: collections, error, isLoading, isError } = useCollections();
-    const existCollections = collections || [];
 
     const text = "mindset.";
     const typedText = useTypewriter(text, 160);

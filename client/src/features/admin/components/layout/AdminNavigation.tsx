@@ -34,7 +34,7 @@ function AdminNavigation({ children }: { children: React.ReactNode }) {
                     />
                 </button>
                 <div
-                    className={`flex flex-col gap-[15px] mt-[50px] rounded-xl bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[15px]`}
+                    className={`flex flex-col gap-[15px] mt-[30px] rounded-xl bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[15px]`}
                 >
                     {adminPanelNavigationLinks.map(({ href, Icon, text }) => (
                         <AdminNavigationLink

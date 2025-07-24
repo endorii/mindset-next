@@ -18,10 +18,7 @@ import { CloseIcon, HeartIcon } from "@/shared/icons";
 import Image from "next/image";
 import Link from "next/link";
 import { useState, useEffect } from "react";
-import H3 from "@/shared/ui/text/H3";
 import CartReceip from "@/features/cart/components/CartReceip";
-import ButtonWithIcon from "@/shared/ui/buttons/ButtonWithIcon";
-import MonoButton from "@/shared/ui/buttons/MonoButton";
 import ButtonWithTextAndIcon from "@/shared/ui/buttons/ButtonWithTextAndIcon";
 
 function Cart() {
@@ -201,7 +198,7 @@ function Cart() {
     }
 
     return (
-        <div className="flex flex-col gap-[50px] mt-[50px] text-white">
+        <div className="flex flex-col gap-[50px] mt-[30px] text-white">
             <div className="text-white relative px-[70px]">
                 <div className="text-8xl font-extrabold">Кошик</div>
                 <div className="absolute top-[40px] left-[70px] text-8xl font-qwitcher-grypen text-white/40">

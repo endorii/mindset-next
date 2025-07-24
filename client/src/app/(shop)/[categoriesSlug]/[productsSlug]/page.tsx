@@ -2,9 +2,6 @@
 
 import { notFound, usePathname } from "next/navigation";
 import { useCategory } from "@/features/categories/hooks/useCategories";
-import ProductCard from "@/features/products/components/ProductCard";
-import DataListWrapper from "@/shared/ui/wrappers/DataListWrapper";
-import H3 from "@/shared/ui/text/H3";
 import { IProduct } from "@/features/products/types/products.types";
 import Link from "next/link";
 import Image from "next/image";
@@ -33,7 +30,7 @@ export default function CategoryPage() {
     }
 
     return (
-        <div className="flex flex-col gap-[50px] mt-[50px]">
+        <div className="flex flex-col gap-[50px] mt-[30px]">
             <div className="text-white relative px-[70px]">
                 <div className="text-8xl font-extrabold">
                     Товари {category.collection?.path} / {category.path}

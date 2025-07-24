@@ -1,7 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
-
 import { CartIcon, HeartIcon, AccountIcon } from "@/shared/icons";
 import { useCurrentUser } from "@/features/admin/user-info/hooks/useUsers";
 import { getLocalStorageArray } from "@/shared/utils/helpers";
@@ -9,7 +8,6 @@ import { useFavoritesFromUser } from "@/features/favorites/hooks/useFavorites";
 import { useCartItemsFromUser } from "@/features/cart/hooks/useCart";
 import { usePathname } from "next/navigation";
 import ChooseCategoryHeader from "./ChooseCategoryHeader";
-import { ICollection } from "@/features/collections/types/collections.types";
 
 const Header = () => {
     const { data: user } = useCurrentUser();
