@@ -13,7 +13,7 @@ function AdminNavigation({ children }: { children: React.ReactNode }) {
     return (
         <div className="fixed pt-[90px] flex h-screen w-full z-[5] text-white">
             <div
-                className={`relative flex flex-col gap-[15px] transition-all duration-300 ease-in-out ml-[10px] ${
+                className={`relative flex flex-col gap-[15px] transition-all duration-500 ease-in-out ml-[10px] ${
                     navOpen ? "w-[300px]" : "w-[90px]"
                 }`}
                 onMouseEnter={() => {
@@ -34,7 +34,7 @@ function AdminNavigation({ children }: { children: React.ReactNode }) {
                     />
                 </button>
                 <div
-                    className={`flex flex-col gap-[15px] mt-[30px] rounded-xl bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[15px]`}
+                    className={`flex flex-col gap-[15px] mt-[50px] rounded-xl bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[15px]`}
                 >
                     {adminPanelNavigationLinks.map(({ href, Icon, text }) => (
                         <AdminNavigationLink

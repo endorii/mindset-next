@@ -17,7 +17,9 @@ import { useSizes } from "@/features/admin/attributes/product-sizes/hooks/useSiz
 import { ISize } from "@/features/admin/attributes/product-sizes/types/product-size.types";
 import { useTypes } from "@/features/admin/attributes/product-types/hooks/useTypes";
 import { IType } from "@/features/admin/attributes/product-types/types/product-type.types";
-import { EditIcon, PlusIcon, TrashIcon } from "@/shared/icons";
+import { EditIcon, PlusIcon, TagIcon, TrashIcon } from "@/shared/icons";
+import PaletteIcon from "@/shared/icons/PaletteIcon";
+import WearIcon from "@/shared/icons/WearIcon";
 import { AttributeModalType } from "@/shared/types/types";
 import ButtonWithIcon from "@/shared/ui/buttons/ButtonWithIcon";
 import DeleteButtonWithIcon from "@/shared/ui/buttons/DeleteButtonWithIcon";
@@ -181,7 +183,12 @@ function AdminAttributes() {
                             </div>
                         </div>
                     ) : (
-                        <div>Кольори відсутні</div>
+                        <div className="relative flex min-h-[200px] items-center rounded-xl bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px] overflow-hidden">
+                            <div className="font-bold text-3xl z-1">
+                                Список кольорів порожній
+                            </div>
+                            <PaletteIcon className="absolute fill-black top-[-60] right-20 w-[400px] opacity-20 pointer-events-none" />
+                        </div>
                     )}
                 </>
             ) : selectedAttribute === "типи" ? (
@@ -227,7 +234,12 @@ function AdminAttributes() {
                             </div>
                         </div>
                     ) : (
-                        <div>Типи відсутні</div>
+                        <div className="relative flex min-h-[200px] items-center rounded-xl bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px] overflow-hidden">
+                            <div className="font-bold text-3xl z-1">
+                                Список типів порожній
+                            </div>
+                            <WearIcon className="absolute fill-black top-[-60] right-20 w-[400px] rotate-330 opacity-20 pointer-events-none" />
+                        </div>
                     )}
                 </>
             ) : selectedAttribute === "розміри" ? (
@@ -275,7 +287,12 @@ function AdminAttributes() {
                             </div>
                         </div>
                     ) : (
-                        <div>Розміри відсутні</div>
+                        <div className="relative flex min-h-[200px] items-center rounded-xl bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px] overflow-hidden">
+                            <div className="font-bold text-3xl z-1">
+                                Список розмірів порожній
+                            </div>
+                            <WearIcon className="absolute fill-black top-[-60] right-20 w-[400px] rotate-330 opacity-20 pointer-events-none" />
+                        </div>
                     )}
                 </>
             ) : (

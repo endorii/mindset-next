@@ -7,6 +7,7 @@ import EditOrderModal from "@/features/orders/modals/EditOrderModal";
 import OrderInfoModal from "@/features/orders/modals/OrderInfoModal";
 import { IOrder } from "@/features/orders/types/orders.types";
 import { InfoIcon, EditIcon, TrashIcon } from "@/shared/icons";
+import OrderIcon from "@/shared/icons/OrderIcon";
 import { OrderModalType } from "@/shared/types/types";
 import ButtonWithIcon from "@/shared/ui/buttons/ButtonWithIcon";
 import ChooseButton from "@/shared/ui/buttons/ChooseButton";
@@ -144,7 +145,12 @@ function page() {
                     </div>
                 </div>
             ) : (
-                <div>Замовлення відсутні</div>
+                <div className="relative flex min-h-[200px] items-center rounded-xl bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px] overflow-hidden">
+                    <div className="font-bold text-3xl z-1">
+                        Список замовлень порожній
+                    </div>
+                    {/* <OrderIcon className="absolute fill-none stroke-2 stroke-black top-[-60] right-20 w-[400px] rotate-20 opacity-20 pointer-events-none" /> ЗАМІНИТИ */}
+                </div>
             )}
 
             {selectedOrder && (

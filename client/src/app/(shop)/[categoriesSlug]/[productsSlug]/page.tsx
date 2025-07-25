@@ -121,9 +121,65 @@ export default function CategoryPage() {
                     ))}
                 </ul>
             ) : (
-                <div className="flex justify-center items-center">
-                    <div className="text-white text-center m-[50px] text-[24px] uppercase font-bold rounded-xl bg-white/5 shadow-lg backdrop-blur-lg border border-white/5 px-[30px] py-[15px]">
-                        Товари відсутні
+                <div className="p-[30px]">
+                    <div className="relative">
+                        <div className="absolute opacity-0 hover:opacity-100 bg-black/80 backdrop-blur-xl w-full h-full font-thin text-3xl text-white z-[1] transition-all duration-400 flex items-center justify-center">
+                            <div className="absolute top-[50%] translate-y-[-50%] left-[2%] w-[20%] text-base text-white">
+                                Наші полиці зараз оновлюються, щоб запропонувати
+                                вам найкраще з того, що ми готуємо. Можливо,
+                                саме зараз нові товари прямують до нашого
+                                онлайн-стелажа. Ми ретельно підбираємо кожну
+                                річ, щоб вона відповідала вашому стилю та
+                                очікуванням. Кожен товар — це не просто продукт,
+                                а частинка історії, яку ми хочемо вам
+                                розповісти. Незабаром тут з’явиться щось свіже,
+                                стильне й актуальне. Ми цінуємо ваш інтерес і
+                                вже працюємо над тим, щоб наповнити цю сторінку
+                                натхненням. Поки що можете переглянути інші
+                                розділи — там на вас чекає багато цікавого. Або
+                                залишайтеся з нами — ми обов’язково вас
+                                здивуємо! Дякуємо за терпіння й довіру —
+                                попереду лише найкраще!
+                            </div>
+                            <div className="flex flex-col gap-[10px]">
+                                <Link
+                                    className="flex items-center pr-[9%] w-full h-full"
+                                    href={"#"}
+                                >
+                                    <div className="border-b border-transparent hover:border-white">
+                                        Instagram
+                                    </div>
+                                </Link>
+                                <Link
+                                    className="flex items-center pr-[9%] w-full h-full"
+                                    href={"#"}
+                                >
+                                    <div className="border-b border-transparent hover:border-white">
+                                        Telegram
+                                    </div>
+                                </Link>
+                                <Link
+                                    className="flex items-center pr-[9%] w-full h-full"
+                                    href={"#"}
+                                >
+                                    <div className="border-b border-transparent hover:border-white">
+                                        Facebook
+                                    </div>
+                                </Link>
+                            </div>
+                        </div>
+                        <div className="group flex flex-col">
+                            <div
+                                className={`absolute bg-black/25 border border-white/10 shadow-xl px-[50px] py-[15px] backdrop-blur-lg rounded-xl top-[50%] translate-y-[-50%] text-white text-3xl font-thin left-[10%] translate-x-[-10%]`}
+                            >
+                                Поки що тут порожньо — але це не надовго
+                            </div>
+                            <img
+                                src={`/images/product.png`}
+                                alt={"1234"}
+                                className="w-full h-[650px] object-cover filter transition-all duration-500"
+                            />
+                        </div>
                     </div>
                 </div>
             )}

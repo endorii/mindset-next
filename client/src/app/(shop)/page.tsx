@@ -67,70 +67,24 @@ export default function HomePage() {
                                                     className="flex items-center pl-[9%] w-full h-full"
                                                     href={collection.path}
                                                 >
-                                                    <div className="border-b">
+                                                    <div className="border-b border-transparent hover:border-white">
                                                         Переглянути
                                                     </div>
                                                 </Link>
                                                 <div className="absolute top-[50%] translate-y-[-50%] right-[2%] w-[20%] text-base text-white">
-                                                    Зустрічайте Aesthetic –
-                                                    шепіт сутінків, відлуння
-                                                    минулого, що танцює з
-                                                    майбутнім. Це стан душі,
-                                                    витканий з тіней і світла.
-                                                    Кожен виріб – загадка,
-                                                    створена з матеріалів, що
-                                                    відчувають ваш подих, та
-                                                    ліній, що малюють силуети
-                                                    невимовної краси. Лише чиста
-                                                    форма та прихована глибина,
-                                                    що промовляє до тих, хто
-                                                    слухає тишу. Aesthetic – це
-                                                    запрошення до подорожі у
-                                                    власну індивідуальність, де
-                                                    кожен елемент стає
-                                                    артефактом вашої історії. Це
-                                                    вибір тих, хто цінує
-                                                    стриману елегантність, що
-                                                    розкривається лише обраним,
-                                                    залишаючи шлейф таємниці.
-                                                    Одягніть Aesthetic і
-                                                    дозвольте йому розкрити вашу
-                                                    справжню сутність.
+                                                    {collection.description}
                                                 </div>
                                             </>
                                         ) : (
                                             <>
                                                 <div className="absolute top-[50%] translate-y-[-50%] left-[2%] w-[20%] text-base text-white">
-                                                    Зустрічайте Aesthetic –
-                                                    шепіт сутінків, відлуння
-                                                    минулого, що танцює з
-                                                    майбутнім. Це стан душі,
-                                                    витканий з тіней і світла.
-                                                    Кожен виріб – загадка,
-                                                    створена з матеріалів, що
-                                                    відчувають ваш подих, та
-                                                    ліній, що малюють силуети
-                                                    невимовної краси. Лише чиста
-                                                    форма та прихована глибина,
-                                                    що промовляє до тих, хто
-                                                    слухає тишу. Aesthetic – це
-                                                    запрошення до подорожі у
-                                                    власну індивідуальність, де
-                                                    кожен елемент стає
-                                                    артефактом вашої історії. Це
-                                                    вибір тих, хто цінує
-                                                    стриману елегантність, що
-                                                    розкривається лише обраним,
-                                                    залишаючи шлейф таємниці.
-                                                    Одягніть Aesthetic і
-                                                    дозвольте йому розкрити вашу
-                                                    справжню сутність.
+                                                    {collection.description}
                                                 </div>
                                                 <Link
                                                     className="flex items-center pr-[9%] w-full h-full justify-end"
                                                     href={collection.path}
                                                 >
-                                                    <div className="border-b">
+                                                    <div className="border-b border-transparent hover:border-white">
                                                         Переглянути
                                                     </div>
                                                 </Link>
@@ -160,9 +114,66 @@ export default function HomePage() {
                         )}
                     </ul>
                 ) : (
-                    <div className="flex justify-center items-center">
-                        <div className="text-white text-center my-[70px] text-[24px] uppercase font-bold rounded-xl bg-white/5 shadow-lg backdrop-blur-lg border border-white/5 px-[30px] py-[15px]">
-                            Колекції відсутні
+                    <div className="p-[30px]">
+                        <div className="relative">
+                            <div className="absolute opacity-0 hover:opacity-100 bg-black/80 backdrop-blur-xl w-full h-full font-thin text-3xl text-white z-[1] transition-all duration-400 flex items-center justify-center">
+                                <div className="absolute top-[50%] translate-y-[-50%] left-[2%] w-[20%] text-base text-white">
+                                    Зараз тут спокій — але це лише затишшя перед
+                                    вибухом стилю. За лаштунками кипить робота,
+                                    щоб створити для вас щось по-справжньому
+                                    унікальне. Ми готуємо колекції, які
+                                    перевершать очікування навіть
+                                    найвибагливіших модників. Сміливі кольори,
+                                    трендові фасони та бездоганний стиль — усе
+                                    це вже на шляху до вас. Мода не стоїть на
+                                    місці, і ми разом з нею рухаємось у ногу з
+                                    часом. Скоро ви побачите новинки, від яких
+                                    неможливо буде відвести погляд. Кожна
+                                    колекція — це історія, створена з любов’ю до
+                                    деталей та натхненням до краси. Те, що зараз
+                                    приховане, незабаром відкриється у всій
+                                    своїй модній величі.
+                                </div>
+                                <div className="flex flex-col gap-[10px]">
+                                    <Link
+                                        className="flex items-center pr-[9%] w-full h-full"
+                                        href={"#"}
+                                    >
+                                        <div className="border-b border-transparent hover:border-white">
+                                            Instagram
+                                        </div>
+                                    </Link>
+                                    <Link
+                                        className="flex items-center pr-[9%] w-full h-full"
+                                        href={"#"}
+                                    >
+                                        <div className="border-b border-transparent hover:border-white">
+                                            Telegram
+                                        </div>
+                                    </Link>
+                                    <Link
+                                        className="flex items-center pr-[9%] w-full h-full"
+                                        href={"#"}
+                                    >
+                                        <div className="border-b border-transparent hover:border-white">
+                                            Facebook
+                                        </div>
+                                    </Link>
+                                </div>
+                            </div>
+                            <div className="group flex flex-col">
+                                <div
+                                    className={`absolute bg-black/25 border border-white/10 shadow-xl px-[50px] py-[15px] backdrop-blur-lg rounded-xl top-[50%] translate-y-[-50%] text-white text-3xl font-thin left-[10%] translate-x-[-10%]`}
+                                >
+                                    Колекцій ще немає, але вже скоро вони
+                                    з’являться!
+                                </div>
+                                <img
+                                    src={`images/waves.png`}
+                                    alt={"123"}
+                                    className="w-full h-[500px] object-cover filter transition-all duration-600"
+                                />
+                            </div>
                         </div>
                     </div>
                 )}

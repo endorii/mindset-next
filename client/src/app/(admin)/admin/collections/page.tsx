@@ -11,6 +11,7 @@ import {
     EditIcon,
     InfoIcon,
     PlusIcon,
+    ProductsIcon,
     TrashIcon,
 } from "@/shared/icons";
 import { ModalType } from "@/shared/types/types";
@@ -153,7 +154,12 @@ function AdminCollections() {
                     </div>
                 </div>
             ) : (
-                <div>Колекції відсутні</div>
+                <div className="relative flex min-h-[200px] items-center rounded-xl bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px] overflow-hidden">
+                    <div className="font-bold text-3xl z-1">
+                        Список колекцій порожній
+                    </div>
+                    <ProductsIcon className="absolute top-[-150] right-40 w-[600px] opacity-20 rotate-[340deg] pointer-events-none" />
+                </div>
             )}
             <>
                 <AddCollectionModal

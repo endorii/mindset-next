@@ -15,6 +15,7 @@ import {
     saveFavoritesToStorage,
 } from "@/features/favorites/utils/favorites.utils";
 import H3 from "@/shared/ui/text/H3";
+import Link from "next/link";
 import React, { useState, useEffect } from "react";
 
 export const Favorites = () => {
@@ -110,9 +111,49 @@ export const Favorites = () => {
                     })}
                 </ul>
             ) : (
-                <div className="flex justify-center items-center">
-                    <div className="text-white text-center mt-[230px] text-[24px] uppercase font-bold rounded-xl bg-white/5 shadow-lg backdrop-blur-lg border border-white/5 px-[30px] py-[15px]">
-                        У вас поки немає вподобаних товарів
+                <div className="p-[30px]">
+                    <div className="relative">
+                        <div className="absolute opacity-0 hover:opacity-100 bg-black/80 backdrop-blur-xl w-full h-full font-thin text-3xl text-white z-[1] transition-all duration-400 flex items-center justify-center">
+                            <div className="absolute top-[50%] translate-y-[-50%] left-[2%] w-[30%] text-base text-white">
+                                Хочете легко знайти улюблене пізніше? Просто
+                                натисніть сердечко на товарі — і він з'явиться
+                                тут! Це зручне місце, щоб повернутись до
+                                улюбленого без зайвих пошуків. Список
+                                вподобаного допоможе вам зберегти натхнення,
+                                створити свій стиль і не забути про речі, які
+                                вам сподобались. Навіть якщо ви ще не готові
+                                купувати — просто додайте у вподобане, щоб
+                                повернутися пізніше. Це може бути ваша майбутня
+                                покупка, подарунок або просто гарна ідея. Поки
+                                що тут порожньо, але ми впевнені — щось
+                                обов’язково припаде вам до душі. Загляньте у
+                                колекції, перегляньте новинки, надихніться
+                                стилем. Зробіть перший крок — і сторінка
+                                наповниться вашими фаворитами.
+                            </div>
+                            <div className="flex flex-col gap-[10px]">
+                                <Link
+                                    className="flex items-center pr-[9%] w-full h-full"
+                                    href={"/"}
+                                >
+                                    <div className="border-b border-transparent hover:border-white">
+                                        Обрати
+                                    </div>
+                                </Link>
+                            </div>
+                        </div>
+                        <div className="group flex flex-col">
+                            <div
+                                className={`absolute bg-black/25 border border-white/10 shadow-xl px-[50px] py-[15px] backdrop-blur-lg rounded-xl top-[50%] translate-y-[-50%] text-white text-3xl font-thin left-[10%] translate-x-[-10%]`}
+                            >
+                                Цей розділ чекає на ваші модні симпатії
+                            </div>
+                            <img
+                                src={`/images/favorites.png`}
+                                alt={"1234"}
+                                className="w-full h-[350px] object-cover filter transition-all duration-500"
+                            />
+                        </div>
                     </div>
                 </div>
             )}
