@@ -13,7 +13,7 @@ function ModalWrapper({ onClose, children, modalTitle }: IModalWrapperProps) {
             onClick={onClose}
         >
             <div
-                className="bg-black rounded-xl text-white bg-gradient-to-br from-black/0 to-white/3 border border-white/10 p-[30px] h-auto max-h-[80vh] shadow-lg w-[64vw] overflow-y-auto cursor-default"
+                className="bg-black rounded-xl text-white bg-gradient-to-br from-black/0 to-white/3 border border-white/10 p-[40px] h-auto max-h-[80vh] shadow-lg overflow-y-auto cursor-default"
                 onClick={(e) => e.stopPropagation()}
             >
                 <h4 className="text-3xl font-thin mb-4">{modalTitle}</h4>

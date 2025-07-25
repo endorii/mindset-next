@@ -117,7 +117,7 @@ export default function AddCategoryModal({
                 <FormFillingWrapper>
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-[20px]">
                         <InputField
-                            label="Назва"
+                            label="Назва*"
                             type="text"
                             placeholder="Назва категорії"
                             {...register("name", {
@@ -130,7 +130,7 @@ export default function AddCategoryModal({
                             errorMessage={errors.name?.message}
                         />
                         <InputField
-                            label="Шлях"
+                            label="Шлях*"
                             type="text"
                             placeholder="Шлях"
                             {...register("path", {
@@ -145,33 +145,10 @@ export default function AddCategoryModal({
                         />
                         <div className="flex flex-col gap-[7px]">
                             <label
-                                className="text-sm font-semibold"
-                                htmlFor="status"
-                            >
-                                Опис
-                            </label>
-                            <textarea
-                                placeholder={"Опис"}
-                                {...register("description", {
-                                    required: "Введіть опис",
-                                    minLength: {
-                                        value: 3,
-                                        message: "Мінімум 3 символи",
-                                    },
-                                })}
-                            ></textarea>
-                            {errors.description && (
-                                <p className="text-sm text-red-500">
-                                    {errors.description.message}
-                                </p>
-                            )}
-                        </div>
-                        <div className="flex flex-col gap-[7px]">
-                            <label
                                 htmlFor="status"
                                 className="font-semibold text-sm"
                             >
-                                Статус
+                                Статус*
                             </label>
                             <select
                                 {...register("status", {
@@ -192,6 +169,25 @@ export default function AddCategoryModal({
                                 ))}
                             </select>
                         </div>
+                    </div>
+                    <div className="flex flex-col gap-[7px]">
+                        <label className="font-semibold text-sm">Опис*</label>
+                        <textarea
+                            {...register("description", {
+                                required: "Введіть опис",
+                            })}
+                            className={`resize-none border ${
+                                errors.description?.message
+                                    ? "border-red-500"
+                                    : "border-white/10"
+                            } rounded p-[10px] bg-black/10 outline-0`}
+                            rows={3}
+                        />
+                        {errors.description && (
+                            <p className="text-red-500 text-sm">
+                                {errors.description.message}
+                            </p>
+                        )}
                     </div>
                     <div className="flex flex-col gap-[7px] w-full">
                         <label

@@ -41,6 +41,9 @@ interface FormData {
     description: string;
     composition: string;
     status: TStatus | "";
+    colorIds?: string[];
+    sizeIds?: string[];
+    typeIds?: string[];
 }
 
 export default function AddProductModal({
@@ -54,6 +57,8 @@ export default function AddProductModal({
         register,
         handleSubmit,
         reset,
+        setError,
+        clearErrors,
         formState: { errors },
     } = useForm<FormData>({
         defaultValues: {
@@ -61,10 +66,13 @@ export default function AddProductModal({
             path: "",
             price: 0,
             oldPrice: 0,
-            available: "false",
+            available: "",
             description: "",
             composition: "",
             status: "",
+            colorIds: [],
+            sizeIds: [],
+            typeIds: [],
         },
     });
 
@@ -127,15 +135,78 @@ export default function AddProductModal({
         }
     };
 
-    const onSubmit = async (data: FormData) => {
-        if (!banner) {
-            setBannerError("Оберіть банер");
-            return;
-        } else {
-            setBannerError(null);
-        }
+    const renderAttributeField = (
+        label: string,
+        allItems: { id: string; name: string }[] | undefined,
+        selected: string[],
+        setSelected: React.Dispatch<React.SetStateAction<string[]>>,
+        error?: string
+    ) => (
+        <div className="flex flex-col gap-2">
+            <label className="font-semibold text-sm">{label}</label>
+            <div className="flex flex-wrap gap-2 max-h-[100px] overflow-y-auto border border-white/10 rounded p-2 bg-black/10">
+                {allItems?.map((item) => (
+                    <button
+                        key={item.id}
+                        type="button"
+                        onClick={() => {
+                            console.log(item);
 
+                            toggleSelect(item.id, selected, setSelected);
+                        }}
+                        className={`px-3 py-1 rounded-full text-sm ${
+                            selected.includes(item.id)
+                                ? "bg-white text-black cursor-default"
+                                : "border border-white/30 hover:bg-white/20"
+                        }`}
+                    >
+                        {item.name}
+                    </button>
+                ))}
+            </div>
+            {error && <p className="text-red-500 text-sm">{error}</p>}
+        </div>
+    );
+
+    const onSubmit = async (data: FormData) => {
         try {
+            let hasError = false;
+
+            if (colorsToSend.length === 0) {
+                setError("colorIds", {
+                    type: "manual",
+                    message: "Оберіть хоча б один колір",
+                });
+                hasError = true;
+            } else clearErrors("colorIds");
+
+            if (sizesToSend.length === 0) {
+                setError("sizeIds", {
+                    type: "manual",
+                    message: "Оберіть хоча б один розмір",
+                });
+                hasError = true;
+            } else clearErrors("sizeIds");
+
+            if (typesToSend.length === 0) {
+                setError("typeIds", {
+                    type: "manual",
+                    message: "Оберіть хоча б один тип",
+                });
+                hasError = true;
+            } else clearErrors("typeIds");
+
+            if (!banner) {
+                setBannerError("Оберіть банер");
+                hasError = true;
+                return;
+            } else {
+                setBannerError(null);
+            }
+
+            console.log(typesToSend);
+
+            if (hasError) return;
             const uploadBannerResult = await uploadImageMutation.mutateAsync(
                 banner
             );
@@ -192,7 +263,7 @@ export default function AddProductModal({
                 <FormFillingWrapper>
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-[20px]">
                         <InputField
-                            label="Назва"
+                            label="Назва*"
                             id="addProductName"
                             placeholder="Назва товару"
                             type="text"
@@ -206,7 +277,7 @@ export default function AddProductModal({
                             errorMessage={errors.name?.message}
                         />
                         <InputField
-                            label="Шлях"
+                            label="Шлях*"
                             id="addProductPath"
                             placeholder="Шлях"
                             type="text"
@@ -220,7 +291,7 @@ export default function AddProductModal({
                             errorMessage={errors.path?.message}
                         />
                         <InputField
-                            label="Ціна"
+                            label="Ціна*"
                             id="addProductPrice"
                             placeholder="Ціна"
                             type="number"
@@ -228,14 +299,14 @@ export default function AddProductModal({
                                 required: "Введіть ціну",
                                 valueAsNumber: true,
                                 min: {
-                                    value: 0,
-                                    message: "Ціна має бути не від’ємною",
+                                    value: 1,
+                                    message: "Ціна має бути не менше 1",
                                 },
                             })}
                             errorMessage={errors.price?.message}
                         />
                         <InputField
-                            label="Стара ціна"
+                            label="Стара ціна*"
                             id="addProductOldPrice"
                             placeholder="Стара ціна"
                             type="number"
@@ -243,8 +314,8 @@ export default function AddProductModal({
                                 required: "Введіть стару ціну",
                                 valueAsNumber: true,
                                 min: {
-                                    value: 0,
-                                    message: "Ціна має бути не від’ємною",
+                                    value: 1,
+                                    message: "Ціна має бути не менше 1",
                                 },
                             })}
                             errorMessage={errors.oldPrice?.message}
@@ -254,30 +325,48 @@ export default function AddProductModal({
                                 className="font-semibold text-sm"
                                 htmlFor="available"
                             >
-                                Доступність
+                                Доступність*
                             </label>
                             <select
                                 id="available"
-                                {...register("available")}
-                                className="border border-white/10 rounded p-[10px] outline-0 cursor-pointer bg-black/10"
+                                {...register("available", {
+                                    required: "Оберіть доступність",
+                                })}
+                                className={`border ${
+                                    errors.available
+                                        ? "border-red-500"
+                                        : "border-white/10"
+                                }   rounded p-[10px] outline-0 cursor-pointer bg-black/10`}
                             >
+                                <option value="" disabled>
+                                    Оберіть доступність
+                                </option>
                                 <option value="true">Доступний</option>
                                 <option value="false">Недоступний</option>
                             </select>
+                            {errors.available && (
+                                <p className="text-red-500 text-sm">
+                                    {errors.available.message}
+                                </p>
+                            )}
                         </div>
                         <div className="flex flex-col gap-[7px]">
                             <label
                                 className="font-semibold text-sm"
                                 htmlFor="status"
                             >
-                                Статус
+                                Статус*
                             </label>
                             <select
                                 id="status"
                                 {...register("status", {
                                     required: "Оберіть статус",
                                 })}
-                                className="border border-white/10 rounded p-[10px] outline-0 cursor-pointer bg-black/10"
+                                className={`border ${
+                                    errors.status
+                                        ? "border-red-500"
+                                        : "border-white/10"
+                                }   rounded p-[10px] outline-0 cursor-pointer bg-black/10`}
                             >
                                 <option value="" disabled>
                                     Оберіть статус
@@ -297,7 +386,7 @@ export default function AddProductModal({
                     </div>
 
                     <div className="flex flex-col gap-[7px]">
-                        <label className="font-semibold text-sm">Опис</label>
+                        <label className="font-semibold text-sm">Опис*</label>
                         <textarea
                             {...register("description", {
                                 required: "Введіть опис",
@@ -317,7 +406,7 @@ export default function AddProductModal({
                     </div>
 
                     <div className="flex flex-col gap-[7px]">
-                        <label className="font-semibold text-sm">Склад</label>
+                        <label className="font-semibold text-sm">Склад*</label>
                         <textarea
                             {...register("composition", {
                                 required: "Введіть склад",
@@ -337,83 +426,31 @@ export default function AddProductModal({
                     </div>
 
                     {/* Кольори */}
-                    <div className="flex flex-col gap-2">
-                        <label className="font-semibold text-sm">Кольори</label>
-                        <div className="flex flex-wrap gap-2 max-h-[100px] overflow-y-auto border border-white/10 rounded p-2 bg-black/10">
-                            {allColors?.map((color) => (
-                                <button
-                                    key={color.id}
-                                    type="button"
-                                    onClick={() =>
-                                        toggleSelect(
-                                            color.id,
-                                            colorsToSend,
-                                            setColorsToSend
-                                        )
-                                    }
-                                    className={`px-3 py-1 rounded-full text-sm ${
-                                        colorsToSend.includes(color.id)
-                                            ? "bg-white text-black cursor-default"
-                                            : "border border-white/30 hover:bg-white/20"
-                                    }`}
-                                >
-                                    {color.name}
-                                </button>
-                            ))}
-                        </div>
-                    </div>
+                    {renderAttributeField(
+                        "Кольори",
+                        allColors,
+                        colorsToSend,
+                        setColorsToSend,
+                        errors.colorIds?.message
+                    )}
 
-                    <div className="flex flex-col gap-2">
-                        <label className="font-semibold text-sm">Розміри</label>
-                        <div className="flex flex-wrap gap-2 max-h-[100px] overflow-y-auto border border-white/10 rounded p-2 bg-black/10">
-                            {allSizes?.map((size) => (
-                                <button
-                                    key={size.id}
-                                    type="button"
-                                    onClick={() =>
-                                        toggleSelect(
-                                            size.id,
-                                            sizesToSend,
-                                            setSizesToSend
-                                        )
-                                    }
-                                    className={`px-3 py-1 rounded-full text-sm ${
-                                        sizesToSend.includes(size.id)
-                                            ? "bg-white text-black cursor-default"
-                                            : "border border-white/30 hover:bg-white/20"
-                                    }`}
-                                >
-                                    {size.name}
-                                </button>
-                            ))}
-                        </div>
-                    </div>
+                    {/* Розміри */}
+                    {renderAttributeField(
+                        "Розміри",
+                        allSizes,
+                        sizesToSend,
+                        setSizesToSend,
+                        errors.sizeIds?.message
+                    )}
 
-                    <div className="flex flex-col gap-2">
-                        <label className="font-semibold text-sm">Типи</label>
-                        <div className="flex flex-wrap gap-2 max-h-[100px] overflow-y-auto border border-white/10 rounded p-2 bg-black/10">
-                            {allTypes?.map((type) => (
-                                <button
-                                    key={type.id}
-                                    type="button"
-                                    onClick={() =>
-                                        toggleSelect(
-                                            type.id,
-                                            typesToSend,
-                                            setTypesToSend
-                                        )
-                                    }
-                                    className={`px-3 py-1 rounded-full text-sm ${
-                                        typesToSend.includes(type.id)
-                                            ? "bg-white text-black cursor-default"
-                                            : "border border-white/30 hover:bg-white/20"
-                                    }`}
-                                >
-                                    {type.name}
-                                </button>
-                            ))}
-                        </div>
-                    </div>
+                    {/* Типи */}
+                    {renderAttributeField(
+                        "Типи",
+                        allTypes,
+                        typesToSend,
+                        setTypesToSend,
+                        errors.typeIds?.message
+                    )}
 
                     {/* Банер */}
                     <div className="flex flex-col gap-[7px] w-full max-w-[300px]">

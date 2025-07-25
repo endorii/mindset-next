@@ -78,7 +78,7 @@ export default function EditColorModal({
                 <FormFillingWrapper>
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-[20px]">
                         <InputField
-                            label={"Назва"}
+                            label={"Назва*"}
                             placeholder={"Назва кольору"}
                             type={"text"}
                             {...register("name", {
@@ -98,7 +98,7 @@ export default function EditColorModal({
                         />
 
                         <InputField
-                            label={"HEX-код"}
+                            label={"HEX-код*"}
                             placeholder={"#000000"}
                             type={"text"}
                             {...register("hexCode", {

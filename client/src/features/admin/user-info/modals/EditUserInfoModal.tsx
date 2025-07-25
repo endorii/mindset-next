@@ -85,7 +85,7 @@ export default function EditUserInfoModal({
                 <FormFillingWrapper>
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-[20px]">
                         <InputField
-                            label="Нікнейм"
+                            label="Нікнейм*"
                             type="text"
                             {...register("name", {
                                 required: "Введіть нікнейм",
@@ -106,7 +106,7 @@ export default function EditUserInfoModal({
                             errorMessage={modalErrors.name?.message}
                         />
                         <InputField
-                            label="Електронна пошта"
+                            label="Електронна пошта*"
                             type="email"
                             {...register("email", {
                                 required: "Введіть email",
@@ -118,7 +118,7 @@ export default function EditUserInfoModal({
                             errorMessage={modalErrors.email?.message}
                         />
                         <InputField
-                            label="Номер телефону"
+                            label="Номер телефону*"
                             type="tel"
                             {...register("phone", {
                                 required: "Введіть номер телефону",

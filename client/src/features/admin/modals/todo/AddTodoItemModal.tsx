@@ -77,7 +77,7 @@ export default function AddTodoItemModal({
                 <FormFillingWrapper>
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-[20px]">
                         <InputField
-                            label="Назва завдання"
+                            label="Назва завдання*"
                             type="text"
                             placeholder="Назва категорії"
                             {...register("title", {
@@ -95,7 +95,7 @@ export default function AddTodoItemModal({
                                 htmlFor="status"
                                 className="font-semibold text-sm"
                             >
-                                Пріорітет
+                                Пріорітет*
                             </label>
                             <select
                                 {...register("priority", {

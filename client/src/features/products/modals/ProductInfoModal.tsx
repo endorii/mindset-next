@@ -12,6 +12,8 @@ import MonoButton from "@/shared/ui/buttons/MonoButton";
 import ModalWrapper from "@/shared/ui/wrappers/ModalWrapper";
 import FormFillingWrapper from "@/shared/ui/wrappers/FormFillingWrapper";
 import FormButtonsWrapper from "@/shared/ui/wrappers/FormButtonsWrapper";
+import TextareaInfoField from "@/shared/ui/components/TextareaInfoField";
+import AtributesInfoField from "@/shared/ui/components/AtributesInfoField";
 
 export interface ProductInfoModalProps {
     isOpen: boolean;
@@ -70,81 +72,22 @@ export default function ProductInfoModal({
                         label="Редаговано"
                         value={formatDate(updatedAt)}
                     />
-                    <InfoField
-                        label="Входить до колекції та категорії"
-                        value={`${collectionPath || "-"} / ${
-                            categoryPath || "-"
-                        }`}
+                </div>
+                <TextareaInfoField label={"Опис"} value={description} />
+                <TextareaInfoField label={"Склад"} value={composition} />
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-[20px]">
+                    <AtributesInfoField
+                        label={"Кольори"}
+                        atributeList={productColors}
                     />
-
-                    <div className="flex flex-col gap-[7px]">
-                        <label>Опис</label>
-                        <div className="border break-words border-white/20 rounded px-[10px] py-[7px] bg-black/10 max-h-[130px] overflow-y-auto">
-                            {description || "Не вказано"}
-                        </div>
-                    </div>
-
-                    <div className="flex flex-col gap-[7px]">
-                        <label>Склад</label>
-                        <div className="border break-words border-white/20 rounded px-[10px] py-[7px] bg-black/10 max-h-[130px] overflow-y-auto">
-                            {composition || "Не вказано"}
-                        </div>
-                    </div>
-
-                    <div className="flex flex-col gap-[7px]">
-                        <label>Кольори</label>
-                        <div className="border border-white/20 rounded px-[10px] py-[7px] bg-black/10 flex flex-wrap gap-[10px]">
-                            {productColors.length > 0
-                                ? productColors.map((item, i) => (
-                                      <div
-                                          key={i}
-                                          className="flex gap-[5px] items-center px-3 py-1 rounded-full text-sm border border-white/30 bg-black text-white"
-                                      >
-                                          <div>{item.color.name}</div>
-                                          <div
-                                              className="border border-white/30 rounded-full w-[15px] h-[15px]"
-                                              style={{
-                                                  backgroundColor:
-                                                      item.color.hexCode,
-                                              }}
-                                          />
-                                      </div>
-                                  ))
-                                : "Не вказано"}
-                        </div>
-                    </div>
-
-                    <div className="flex flex-col gap-[7px]">
-                        <label>Розміри</label>
-                        <div className="border border-white/20 rounded px-[10px] py-[7px] bg-black/10 flex flex-wrap gap-[10px]">
-                            {productSizes.length > 0
-                                ? productSizes.map((item, i) => (
-                                      <div
-                                          className="flex gap-[5px] items-center px-3 py-1 rounded-full text-sm border border-white/30 bg-black text-white"
-                                          key={i}
-                                      >
-                                          {item.size.name}
-                                      </div>
-                                  ))
-                                : "Не вказано"}
-                        </div>
-                    </div>
-
-                    <div className="flex flex-col gap-[7px]">
-                        <label>Типи</label>
-                        <div className="border border-white/20 rounded px-[10px] py-[7px] bg-black/10 flex flex-wrap gap-[10px]">
-                            {productTypes.length > 0
-                                ? productTypes.map((item, i) => (
-                                      <div
-                                          className="flex gap-[5px] items-center px-3 py-1 rounded-full text-sm border border-white/30 bg-black text-white"
-                                          key={i}
-                                      >
-                                          {item.type.name}
-                                      </div>
-                                  ))
-                                : "Не вказано"}
-                        </div>
-                    </div>
+                    <AtributesInfoField
+                        label={"Розміри"}
+                        atributeList={productSizes}
+                    />
+                    <AtributesInfoField
+                        label={"Типи"}
+                        atributeList={productTypes}
+                    />
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-[20px]">

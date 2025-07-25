@@ -73,7 +73,7 @@ export default function EditSizeModal({
                 <FormFillingWrapper>
                     <div className="flex flex-col gap-[20px] w-full">
                         <InputField
-                            label={"Назва"}
+                            label={"Назва*"}
                             placeholder={"Назва розміру"}
                             type={"text"}
                             {...register("name", {

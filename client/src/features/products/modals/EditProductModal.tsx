@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useState, ChangeEvent } from "react";
-import { useForm, Controller } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { createPortal } from "react-dom";
 import Image from "next/image";
 
@@ -236,7 +236,7 @@ export default function EditProductModal({
                 <FormFillingWrapper>
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-[20px]">
                         <InputField
-                            label="Назва"
+                            label="Назва*"
                             id="editProductName"
                             placeholder="Назва товару"
                             type="text"
@@ -250,7 +250,7 @@ export default function EditProductModal({
                             errorMessage={errors.name?.message}
                         />
                         <InputField
-                            label="Шлях"
+                            label="Шлях*"
                             id="editProductPath"
                             placeholder="Шлях"
                             type="text"
@@ -264,15 +264,15 @@ export default function EditProductModal({
                             errorMessage={errors.path?.message}
                         />
                         <InputField
-                            label="Ціна"
+                            label="Ціна*"
                             id="editProductPrice"
                             placeholder="Ціна"
                             type="number"
                             {...register("price", {
                                 required: "Введіть ціну",
                                 min: {
-                                    value: 0,
-                                    message: "Ціна має бути не від’ємною",
+                                    value: 1,
+                                    message: "Ціна має бути не менеш 1",
                                 },
                                 valueAsNumber: true,
                             })}
@@ -280,15 +280,15 @@ export default function EditProductModal({
                         />
 
                         <InputField
-                            label="Стара ціна"
+                            label="Стара ціна*"
                             id="editProductOldPrice"
                             placeholder="Стара ціна"
                             type="number"
                             {...register("oldPrice", {
                                 required: "Введіть ціну",
                                 min: {
-                                    value: 0,
-                                    message: "Ціна має бути не від’ємною",
+                                    value: 1,
+                                    message: "Ціна має бути не менеш 1",
                                 },
                                 valueAsNumber: true,
                             })}
@@ -299,23 +299,31 @@ export default function EditProductModal({
                                 className="font-semibold text-sm"
                                 htmlFor="available"
                             >
-                                Доступність
+                                Доступність*
                             </label>
                             <select
                                 id="available"
                                 {...register("available", { required: true })}
                                 className="border border-white/10 rounded p-[10px] outline-0 cursor-pointer bg-black/10"
                             >
+                                <option value="" disabled>
+                                    Оберіть даступність
+                                </option>
                                 <option value="true">Доступний</option>
                                 <option value="false">Недоступний</option>
                             </select>
+                            {errors.available && (
+                                <p className="text-red-500 text-sm">
+                                    {errors.available.message}
+                                </p>
+                            )}
                         </div>
                         <div className="flex flex-col gap-[7px]">
                             <label
                                 className="font-semibold text-sm"
                                 htmlFor="status"
                             >
-                                Статус
+                                Статус*
                             </label>
                             <select
                                 id="status"
@@ -342,7 +350,7 @@ export default function EditProductModal({
                     </div>
 
                     <div className="flex flex-col gap-[7px]">
-                        <label className="font-semibold text-sm">Опис</label>
+                        <label className="font-semibold text-sm">Опис*</label>
                         <textarea
                             {...register("description", {
                                 required: "Введіть опис",
@@ -362,7 +370,7 @@ export default function EditProductModal({
                     </div>
 
                     <div className="flex flex-col gap-[7px]">
-                        <label className="font-semibold text-sm">Склад</label>
+                        <label className="font-semibold text-sm">Склад*</label>
                         <textarea
                             {...register("composition", {
                                 required: "Введіть склад",

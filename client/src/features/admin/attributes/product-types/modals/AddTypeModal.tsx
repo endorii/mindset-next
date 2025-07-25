@@ -61,7 +61,7 @@ export default function AddTypeModal({ isOpen, onClose }: AddTypeModalProps) {
                 <FormFillingWrapper>
                     <div className="flex flex-col gap-[20px] w-full">
                         <InputField
-                            label={"Назва"}
+                            label={"Назва*"}
                             placeholder={"Назва типу"}
                             type={"text"}
                             {...register("name", {

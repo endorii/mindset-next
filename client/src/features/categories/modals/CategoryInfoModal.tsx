@@ -11,6 +11,7 @@ import MonoButton from "@/shared/ui/buttons/MonoButton";
 import ModalWrapper from "@/shared/ui/wrappers/ModalWrapper";
 import FormFillingWrapper from "@/shared/ui/wrappers/FormFillingWrapper";
 import FormButtonsWrapper from "@/shared/ui/wrappers/FormButtonsWrapper";
+import TextareaInfoField from "@/shared/ui/components/TextareaInfoField";
 
 interface CategoryInfoModalProps {
     isOpen: boolean;
@@ -46,9 +47,11 @@ export default function CategoryInfoModal({
             <FormFillingWrapper>
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-[20px]">
                     <InfoField label="Назва" value={name} />
-                    <InfoField label="Шлях" value={path} />
-                    <InfoField label="Опис" value={description} />
+                    <InfoField label="Шлях" value={path} />{" "}
                     <InfoField label="Статус" value={status} />
+                </div>
+                <TextareaInfoField label={"Опис"} value={description} />
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-[20px]">
                     <InfoField label="Переглядів" value={views} />
                     <InfoField
                         label="Створено"

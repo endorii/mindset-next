@@ -104,7 +104,7 @@ export default function EditUserAddressModal({
                 <FormFillingWrapper>
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-[20px]">
                         <InputField
-                            label="Одержувач (ПІБ)"
+                            label="Одержувач (ПІБ)*"
                             type="text"
                             {...register("recipient", {
                                 required: "Обов'язкове поле",
@@ -112,7 +112,7 @@ export default function EditUserAddressModal({
                             errorMessage={errors.recipient?.message}
                         />
                         <InputField
-                            label="Країна"
+                            label="Країна*"
                             type="text"
                             {...register("country", {
                                 required: "Обов'язкове поле",
@@ -120,7 +120,7 @@ export default function EditUserAddressModal({
                             errorMessage={errors.country?.message}
                         />
                         <InputField
-                            label="Область"
+                            label="Область*"
                             type="text"
                             {...register("region", {
                                 required: "Обов'язкове поле",
@@ -128,7 +128,7 @@ export default function EditUserAddressModal({
                             errorMessage={errors.region?.message}
                         />
                         <InputField
-                            label="Місто"
+                            label="Місто*"
                             type="text"
                             {...register("city", {
                                 required: "Обов'язкове поле",
@@ -136,7 +136,7 @@ export default function EditUserAddressModal({
                             errorMessage={errors.city?.message}
                         />
                         <InputField
-                            label="Вулиця"
+                            label="Вулиця*"
                             type="text"
                             {...register("street", {
                                 required: "Обов'язкове поле",
@@ -144,7 +144,7 @@ export default function EditUserAddressModal({
                             errorMessage={errors.street?.message}
                         />
                         <InputField
-                            label="Будинок"
+                            label="Будинок*"
                             type="text"
                             {...register("building", {
                                 required: "Обов'язкове поле",
@@ -152,7 +152,7 @@ export default function EditUserAddressModal({
                             errorMessage={errors.building?.message}
                         />
                         <InputField
-                            label="Номер квартири/будинку"
+                            label="Номер квартири/будинку*"
                             type="text"
                             {...register("apartment", {
                                 required: "Обов'язкове поле",
@@ -160,7 +160,7 @@ export default function EditUserAddressModal({
                             errorMessage={errors.apartment?.message}
                         />
                         <InputField
-                            label="Поштовий індекс"
+                            label="Поштовий індекс*"
                             type="text"
                             {...register("postalCode", {
                                 required: "Обов'язкове поле",

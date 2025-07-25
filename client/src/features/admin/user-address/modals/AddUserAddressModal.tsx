@@ -82,7 +82,7 @@ export default function AddUserAddressModal({
                 <FormFillingWrapper>
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-[20px]">
                         <InputField
-                            label={"Одержувач (ПІБ)"}
+                            label={"Одержувач (ПІБ)*"}
                             placeholder={"Іванов Іван Іванович"}
                             type="text"
                             {...register("recipient", {
@@ -91,7 +91,7 @@ export default function AddUserAddressModal({
                             errorMessage={errors.recipient?.message}
                         />
                         <InputField
-                            label={"Країна"}
+                            label={"Країна*"}
                             placeholder={"Україна"}
                             type="text"
                             {...register("country", {
@@ -100,7 +100,7 @@ export default function AddUserAddressModal({
                             errorMessage={errors.country?.message}
                         />
                         <InputField
-                            label={"Область"}
+                            label={"Область*"}
                             placeholder={"Київська"}
                             type="text"
                             {...register("region", {
@@ -109,7 +109,7 @@ export default function AddUserAddressModal({
                             errorMessage={errors.region?.message}
                         />
                         <InputField
-                            label={"Місто"}
+                            label={"Місто*"}
                             placeholder={"Київ"}
                             type="text"
                             {...register("city", {
@@ -118,7 +118,7 @@ export default function AddUserAddressModal({
                             errorMessage={errors.city?.message}
                         />
                         <InputField
-                            label={"Вулиця"}
+                            label={"Вулиця*"}
                             placeholder={"Степана Бандери"}
                             type="text"
                             {...register("street", {
@@ -127,7 +127,7 @@ export default function AddUserAddressModal({
                             errorMessage={errors.street?.message}
                         />
                         <InputField
-                            label={"Будинок"}
+                            label={"Будинок*"}
                             placeholder={"45"}
                             type="text"
                             {...register("building", {
@@ -136,7 +136,7 @@ export default function AddUserAddressModal({
                             errorMessage={errors.building?.message}
                         />
                         <InputField
-                            label={"Номер квартири/будинку"}
+                            label={"Номер квартири/будинку*"}
                             placeholder={"12"}
                             type="text"
                             {...register("apartment", {
@@ -145,7 +145,7 @@ export default function AddUserAddressModal({
                             errorMessage={errors.apartment?.message}
                         />
                         <InputField
-                            label={"Поштовий індекс"}
+                            label={"Поштовий індекс*"}
                             placeholder={"01001"}
                             type="text"
                             {...register("postalCode", {

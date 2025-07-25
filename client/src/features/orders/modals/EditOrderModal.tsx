@@ -195,7 +195,7 @@ export default function EditOrderModal({
                             <div className="text-lg">Контактна інформація</div>
                             <div className="flex flex-col gap-[20px]">
                                 <InputField
-                                    label="Ініціали замовника (ПІБ)"
+                                    label="Ініціали замовника (ПІБ)*"
                                     placeholder="Іванов Іван Іванович"
                                     {...register("fullName", {
                                         required: "Введіть ініціали (ПІБ)",
@@ -212,7 +212,7 @@ export default function EditOrderModal({
                                     errorMessage={errors.fullName?.message}
                                 />
                                 <InputField
-                                    label="Номер телефону"
+                                    label="Номер телефону*"
                                     {...register("phoneNumber", {
                                         required: "Введіть номер телефону",
                                         pattern: {
@@ -225,7 +225,7 @@ export default function EditOrderModal({
                                 />
 
                                 <InputField
-                                    label="Електронна пошта"
+                                    label="Електронна пошта*"
                                     {...register("email", {
                                         pattern: {
                                             value: /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/,
@@ -247,7 +247,7 @@ export default function EditOrderModal({
                                 render={({ field }) => (
                                     <div className="flex flex-col gap-[7px]">
                                         <label className="text-sm font-semibold">
-                                            Область
+                                            Область*
                                         </label>
                                         <select
                                             {...field}
@@ -406,7 +406,7 @@ export default function EditOrderModal({
                             </div>
                             <div className="flex flex-col gap-[20px]">
                                 <InputField
-                                    label="Додаткова інформація"
+                                    label="Додаткова інформація*"
                                     {...register("additionalInfo")}
                                 />
 

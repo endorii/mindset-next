@@ -14,7 +14,6 @@ import ModalWrapper from "@/shared/ui/wrappers/ModalWrapper";
 import FormButtonsWrapper from "@/shared/ui/wrappers/FormButtonsWrapper";
 import FormFillingWrapper from "@/shared/ui/wrappers/FormFillingWrapper";
 import { useForm } from "react-hook-form";
-import { ICollection } from "../types/collections.types";
 import { toast } from "sonner";
 
 interface AddCollectionModalProps {
@@ -107,7 +106,7 @@ export default function AddCollectionModal({
                 <FormFillingWrapper>
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-[20px]">
                         <InputField
-                            label={"Назва"}
+                            label={"Назва*"}
                             type={"text"}
                             placeholder={"Назва колекції"}
                             {...register("name", {
@@ -120,7 +119,7 @@ export default function AddCollectionModal({
                             errorMessage={errors.name?.message}
                         />
                         <InputField
-                            label={"Шлях"}
+                            label={"Шлях*"}
                             type={"text"}
                             placeholder={"Шлях"}
                             {...register("path", {
@@ -132,35 +131,13 @@ export default function AddCollectionModal({
                             })}
                             errorMessage={errors.path?.message}
                         />
+
                         <div className="flex flex-col gap-[7px]">
                             <label
                                 className="text-sm font-semibold"
                                 htmlFor="status"
                             >
-                                Опис
-                            </label>
-                            <textarea
-                                placeholder={"Опис"}
-                                {...register("description", {
-                                    required: "Введіть опис",
-                                    minLength: {
-                                        value: 3,
-                                        message: "Мінімум 3 символи",
-                                    },
-                                })}
-                            ></textarea>
-                            {errors.description && (
-                                <p className="text-sm text-red-500">
-                                    {errors.description.message}
-                                </p>
-                            )}
-                        </div>
-                        <div className="flex flex-col gap-[7px]">
-                            <label
-                                className="text-sm font-semibold"
-                                htmlFor="status"
-                            >
-                                Статус
+                                Статус*
                             </label>
                             <select
                                 {...register("status", {
@@ -187,7 +164,25 @@ export default function AddCollectionModal({
                             )}
                         </div>
                     </div>
-
+                    <div className="flex flex-col gap-[7px]">
+                        <label className="font-semibold text-sm">Опис*</label>
+                        <textarea
+                            {...register("description", {
+                                required: "Введіть опис",
+                            })}
+                            className={`resize-none border ${
+                                errors.description?.message
+                                    ? "border-red-500"
+                                    : "border-white/10"
+                            } rounded p-[10px] bg-black/10 outline-0`}
+                            rows={3}
+                        />
+                        {errors.description && (
+                            <p className="text-red-500 text-sm">
+                                {errors.description.message}
+                            </p>
+                        )}
+                    </div>
                     <div className="flex flex-col gap-[7px] w-full">
                         <label
                             htmlFor="banner"

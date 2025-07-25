@@ -10,6 +10,7 @@ import MonoButton from "@/shared/ui/buttons/MonoButton";
 import ModalWrapper from "@/shared/ui/wrappers/ModalWrapper";
 import FormFillingWrapper from "@/shared/ui/wrappers/FormFillingWrapper";
 import FormButtonsWrapper from "@/shared/ui/wrappers/FormButtonsWrapper";
+import TextareaInfoField from "@/shared/ui/components/TextareaInfoField";
 
 export interface CollectionInfoModalProps {
     isOpen: boolean;
@@ -47,8 +48,10 @@ export default function CollectionInfoModal({
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-[20px]">
                     <InfoField label={"Назва"} value={name} />
                     <InfoField label={"Шлях"} value={path} />
-                    <InfoField label={"Опис"} value={description} />
                     <InfoField label={"Статус"} value={status} />
+                </div>
+                <TextareaInfoField label={"Опис"} value={description} />
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-[20px]">
                     <InfoField label={"Переглядів"} value={views} />
                     <InfoField
                         label="Створено"
@@ -63,6 +66,7 @@ export default function CollectionInfoModal({
                         value={categories?.length}
                     />
                 </div>
+
                 <div className="flex flex-col gap-[7px] w-full">
                     <label className="text-sm font-semibold">Банер:</label>
                     <div className="min-h-[100px] max-w-[300px] border border-dashed border-white/10 mt-2 flex items-center justify-center rounded-md overflow-hidden">
