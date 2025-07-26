@@ -2,7 +2,6 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { IProduct } from "@/features/products/types/products.types";
 import { IFavoriteItem } from "../types/favorites.types";
 
 interface FavoriteCardProps {
@@ -11,7 +10,7 @@ interface FavoriteCardProps {
 }
 
 export default function FavoriteCard({ onRemove, item }: FavoriteCardProps) {
-    const { product, productId, color, size, type } = item;
+    const { product, color, size, type } = item;
 
     return (
         <li className="relative group rounded-xl bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px]">
@@ -44,7 +43,7 @@ export default function FavoriteCard({ onRemove, item }: FavoriteCardProps) {
                     className="rounded-xl"
                 />
                 <div className="flex flex-col justify-between text-white gap-[15px]">
-                    <div className="flex justify-between items-end">
+                    <div className="flex justify-between items-end flex-wrap gap-[10px]">
                         <div className="text-white text-3xl font-thin">
                             {product.name}
                         </div>
@@ -53,7 +52,7 @@ export default function FavoriteCard({ onRemove, item }: FavoriteCardProps) {
                                 {product.price} грн.
                             </div>
                             <div className="font-semibold line-through text-lg text-gray-500">
-                                999 грн.
+                                {product.oldPrice} грн.
                             </div>
                         </div>
                     </div>

@@ -20,7 +20,7 @@ function AdminHeader() {
                 </div>
 
                 <Link
-                    href="account"
+                    href="/admin/account"
                     className="flex items-center gap-[30px] rounded-xl bg-white/5 shadow-lg px-[20px] py-[13px] pb-[18px] backdrop-blur-2xl border border-white/5 text-white hover:bg-white/12 hover:border-white/7"
                 >
                     <div className="flex items-center gap-[10px]">

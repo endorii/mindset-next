@@ -43,7 +43,7 @@ export default function CategoryPage() {
             {products && products.length > 0 ? (
                 <ul className="flex gap-[20px] w-full px-[30px]">
                     {products.map((product: IProduct, i: number) => (
-                        <li key={i} className="flex">
+                        <li key={i} className="flex max-w-[450px]">
                             <Link
                                 href={`/${collectionPath}/${categoryPath}/${product.path}`}
                                 className="relative flex flex-col gap-[15px] group rounded-xl bg-white/5 shadow-lg backdrop-blur-lg border border-white/5 p-[20px]"
@@ -58,7 +58,7 @@ export default function CategoryPage() {
                                     src={`http://localhost:5000/${product.banner}`}
                                     alt={product.name}
                                 />
-                                <ul className="absolute top-[430px] left-[30px] flex gap-[5px] rounded-[50px] bg-white/5 backdrop-blur-lg border border-white/20 p-[5px]">
+                                <ul className="absolute top-[390px] left-[30px] flex gap-[5px] rounded-[50px] bg-white/5 backdrop-blur-lg border border-white/20 p-[5px]">
                                     {product.productColors.map((color) => (
                                         <li
                                             key={color.color.hexCode}
@@ -71,7 +71,7 @@ export default function CategoryPage() {
                                     ))}
                                 </ul>
                                 <div className="flex flex-col gap-[7px]">
-                                    <div className="flex justify-between items-end">
+                                    <div className="flex justify-between items-end gap-[10px] flex-wrap">
                                         <div className="text-white text-3xl font-thin">
                                             {product.name}
                                         </div>
@@ -80,13 +80,13 @@ export default function CategoryPage() {
                                                 {product.price} грн.
                                             </div>
                                             <div className="font-semibold line-through text-lg text-gray-500">
-                                                999 грн.
+                                                {product.oldPrice} грн.
                                             </div>
                                         </div>
                                     </div>
                                     <hr className="border-top border-white/10 mt-[5px]" />
                                     <div className="flex gap-[15px] text-white justify-between">
-                                        <ul className="flex gap-[5px]">
+                                        <ul className="flex gap-[5px] flex-wrap">
                                             {product.productSizes.map(
                                                 (size) => (
                                                     <li
@@ -100,7 +100,7 @@ export default function CategoryPage() {
                                                 )
                                             )}
                                         </ul>
-                                        <ul className="flex gap-[5px]">
+                                        <ul className="flex gap-[5px] flex-wrap">
                                             {product.productTypes.map(
                                                 (type) => (
                                                     <li
