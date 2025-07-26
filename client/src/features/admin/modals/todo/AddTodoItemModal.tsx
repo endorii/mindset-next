@@ -13,6 +13,7 @@ import { toast } from "sonner";
 import { TodoPriority } from "../../admin.types";
 import { useCreateTodoItem } from "../../hooks/useTodo";
 import { priorities } from "@/shared/utils/helpers";
+import BasicSelector from "@/shared/ui/selectors/BasicSelector";
 
 interface AddTodoItemModalProps {
     isOpen: boolean;
@@ -69,17 +70,17 @@ export default function AddTodoItemModal({
     if (!isOpen) return null;
 
     const modalContent = (
-        <ModalWrapper onClose={onClose} modalTitle={"Додавання категорії"}>
+        <ModalWrapper onClose={onClose} modalTitle={"Додавання завдання"}>
             <form
                 className="flex flex-col gap-[20px]"
                 onSubmit={handleSubmit(onSubmit)}
             >
                 <FormFillingWrapper>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-[20px]">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-[20px]">
                         <InputField
                             label="Назва завдання*"
                             type="text"
-                            placeholder="Назва категорії"
+                            placeholder="Назва завдання"
                             {...register("title", {
                                 required: "Введіть назву",
                                 minLength: {
@@ -90,29 +91,19 @@ export default function AddTodoItemModal({
                             errorMessage={errors.title?.message}
                         />
 
-                        <div className="flex flex-col gap-[7px]">
-                            <label
-                                htmlFor="status"
-                                className="font-semibold text-sm"
-                            >
-                                Пріорітет*
-                            </label>
-                            <select
-                                {...register("priority", {
+                        <BasicSelector<string>
+                            label={"Пріорітет*"}
+                            register={{
+                                ...register("priority", {
                                     required: "Оберіть пріорітет",
-                                })}
-                                className="border border-white/10 rounded p-[10px] outline-0 cursor-pointer"
-                            >
-                                <option value="" disabled>
-                                    Оберіть статус
-                                </option>
-                                {priorities.map((priority) => (
-                                    <option key={priority} value={priority}>
-                                        {priority}
-                                    </option>
-                                ))}
-                            </select>
-                        </div>
+                                }),
+                            }}
+                            itemsList={priorities}
+                            basicOptionLabel="Оберіть пріорітет"
+                            getOptionLabel={(priority) => priority}
+                            getOptionValue={(priority) => priority}
+                            errorMessage={errors.priority?.message}
+                        />
                     </div>
                 </FormFillingWrapper>
 

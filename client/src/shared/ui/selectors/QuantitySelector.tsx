@@ -1,3 +1,5 @@
+import Label from "../components/Label";
+
 interface QuantitySelectorProps {
     quantity: number;
     setQuantity: (value: number) => void;
@@ -8,7 +10,7 @@ const QuantitySelector = ({ quantity, setQuantity }: QuantitySelectorProps) => {
 
     return (
         <div className="relative flex gap-[30px] items-center">
-            <label className="text-white">Кількість</label>
+            <Label>Кількість</Label>
 
             <select
                 className="bg-black border border-white/ text-white rounded px-4 py-2 "

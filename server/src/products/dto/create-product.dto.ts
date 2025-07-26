@@ -3,15 +3,19 @@ import {
     IsNotEmpty,
     IsInt,
     IsEnum,
-    IsBoolean,
     IsArray,
     IsOptional,
     IsDefined,
 } from "class-validator";
 
 export enum EStatus {
-    ACTIVE = "ACTIVE",
-    INACTIVE = "INACTIVE",
+    ACTIVE = "Активно",
+    NOTACTIVE = "Не активно",
+}
+
+export enum EAvailable {
+    AVAILABLE = "Доступно",
+    NOTAVAILABLE = "Не доступно",
 }
 
 export class CreateProductDto {
@@ -35,9 +39,9 @@ export class CreateProductDto {
     @IsDefined({ message: "Попередня ціна повинна бути визначена." })
     oldPrice: number;
 
-    @IsBoolean({ message: "Доступність повинна бути логічним значенням." })
+    @IsEnum(EAvailable, { message: "Недійсна доступність продукту." })
     @IsDefined({ message: "Доступність повинна бути визначена." })
-    available: boolean;
+    available: EAvailable;
 
     @IsString({ message: "Опис повинен бути рядком." })
     @IsNotEmpty({ message: "Опис не може бути порожнім." })
@@ -52,6 +56,7 @@ export class CreateProductDto {
     views: number;
 
     @IsEnum(EStatus, { message: "Недійсний статус продукту." })
+    @IsDefined({ message: "Cтатус повинен бути визначений." })
     status: EStatus;
 
     @IsString({ message: "ID категорії повинен бути рядком." })

@@ -114,13 +114,7 @@ function AdminCategory() {
                                         alt="banner"
                                     />
                                     <div>{product.name}</div>
-                                    <div>
-                                        {product.status === "ACTIVE"
-                                            ? "Опубліковано"
-                                            : product.status === "INACTIVE"
-                                            ? "Не опубліковано"
-                                            : "Невідомий статус"}
-                                    </div>
+                                    <div>{product.status}</div>
                                     <div>{product.views}</div>
 
                                     <div>

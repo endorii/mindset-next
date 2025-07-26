@@ -18,6 +18,7 @@ import {
     fetchWarehouses,
 } from "@/shared/api/nova-post.api";
 import { useUpdateOrder } from "../hooks/useOrders";
+import Label from "@/shared/ui/components/Label";
 
 interface EditOrderModalProps {
     isOpen: boolean;
@@ -246,9 +247,7 @@ export default function EditOrderModal({
                                 rules={{ required: "Оберіть область" }}
                                 render={({ field }) => (
                                     <div className="flex flex-col gap-[7px]">
-                                        <label className="text-sm font-semibold">
-                                            Область*
-                                        </label>
+                                        <Label>Область*</Label>
                                         <select
                                             {...field}
                                             onChange={(e) => {
@@ -298,9 +297,7 @@ export default function EditOrderModal({
                                 rules={{ required: "Оберіть місто" }}
                                 render={({ field }) => (
                                     <div className="flex flex-col gap-[7px]">
-                                        <label className="text-sm font-semibold">
-                                            Місто
-                                        </label>
+                                        <Label>Місто</Label>
                                         <select
                                             {...field}
                                             onChange={(e) => {
@@ -352,9 +349,7 @@ export default function EditOrderModal({
                                 }}
                                 render={({ field }) => (
                                     <div className="flex flex-col gap-[7px]">
-                                        <label className="text-sm font-semibold">
-                                            Відділення/поштомат
-                                        </label>
+                                        <Label>Відділення/поштомат</Label>
                                         <select
                                             {...field}
                                             onChange={(e) => {
@@ -421,12 +416,7 @@ export default function EditOrderModal({
                                     }}
                                     render={({ field }) => (
                                         <div className="flex flex-col gap-[7px]">
-                                            <label
-                                                className="text-sm font-semibold"
-                                                htmlFor="status"
-                                            >
-                                                Статус
-                                            </label>
+                                            <Label>Статус</Label>
                                             <select
                                                 {...field}
                                                 id="status"

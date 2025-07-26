@@ -11,6 +11,7 @@ import ModalWrapper from "@/shared/ui/wrappers/ModalWrapper";
 import FormFillingWrapper from "@/shared/ui/wrappers/FormFillingWrapper";
 import FormButtonsWrapper from "@/shared/ui/wrappers/FormButtonsWrapper";
 import TextareaInfoField from "@/shared/ui/components/TextareaInfoField";
+import Label from "@/shared/ui/components/Label";
 
 export interface CollectionInfoModalProps {
     isOpen: boolean;
@@ -68,7 +69,7 @@ export default function CollectionInfoModal({
                 </div>
 
                 <div className="flex flex-col gap-[7px] w-full">
-                    <label className="text-sm font-semibold">Банер:</label>
+                    <Label>Банер</Label>
                     <div className="min-h-[100px] max-w-[300px] border border-dashed border-white/10 mt-2 flex items-center justify-center rounded-md overflow-hidden">
                         <Image
                             className="object-cover rounded"

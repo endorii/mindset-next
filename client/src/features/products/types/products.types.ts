@@ -2,7 +2,7 @@ import { IColor } from "@/features/admin/attributes/product-colors/types/product
 import { ISize } from "@/features/admin/attributes/product-sizes/types/product-size.types";
 import { IType } from "@/features/admin/attributes/product-types/types/product-type.types";
 import { ICategory } from "@/features/categories/types/categories.types";
-import { TStatus } from "@/shared/types/types";
+import { TAvailble, TStatus } from "@/shared/types/types";
 
 export interface IProduct {
     id: string;
@@ -14,7 +14,7 @@ export interface IProduct {
     banner: string;
     status: TStatus;
     images: string[];
-    available: boolean;
+    available: TAvailble;
     description: string;
     composition: string;
     categoryId: string;
@@ -33,7 +33,7 @@ export interface ICreateProductPayload {
     path: string;
     price: number;
     oldPrice: number;
-    available: boolean;
+    available: TAvailble;
     description: string;
     composition: string;
     categoryId?: string;

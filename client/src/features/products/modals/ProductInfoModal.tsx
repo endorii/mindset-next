@@ -14,6 +14,7 @@ import FormFillingWrapper from "@/shared/ui/wrappers/FormFillingWrapper";
 import FormButtonsWrapper from "@/shared/ui/wrappers/FormButtonsWrapper";
 import TextareaInfoField from "@/shared/ui/components/TextareaInfoField";
 import AtributesInfoField from "@/shared/ui/components/AtributesInfoField";
+import Label from "@/shared/ui/components/Label";
 
 export interface ProductInfoModalProps {
     isOpen: boolean;
@@ -26,8 +27,6 @@ export interface ProductInfoModalProps {
 export default function ProductInfoModal({
     isOpen,
     onClose,
-    collectionPath,
-    categoryPath,
     product,
 }: ProductInfoModalProps) {
     const {
@@ -61,10 +60,7 @@ export default function ProductInfoModal({
                     <InfoField label="Шлях" value={path} />
                     <InfoField label="Ціна" value={price} />
                     <InfoField label="Стара ціна" value={oldPrice} />
-                    <InfoField
-                        label="Доступність"
-                        value={available ? "Доступно" : "Не доступно"}
-                    />
+                    <InfoField label="Доступність" value={available} />
                     <InfoField label="Статус" value={status} />
                     <InfoField label="Перегляди" value={views} />
                     <InfoField label="Створено" value={formatDate(createdAt)} />
@@ -92,7 +88,7 @@ export default function ProductInfoModal({
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-[20px]">
                     <div className="flex flex-col gap-[7px] w-full">
-                        <label>Банер</label>
+                        <Label>Банер</Label>
                         <div className="border border-white/20 rounded px-[10px] py-[7px] bg-black/10 flex justify-center">
                             {banner ? (
                                 <img
@@ -109,7 +105,7 @@ export default function ProductInfoModal({
                     </div>
 
                     <div className="flex flex-col gap-[7px] w-full">
-                        <label>Додаткові зображення</label>
+                        <Label>Додаткові зображення</Label>
                         <div className="flex gap-[10px] overflow-x-auto">
                             {images.length > 0 ? (
                                 images.map((image, i) => (

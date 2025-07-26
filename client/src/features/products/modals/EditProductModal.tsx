@@ -17,7 +17,7 @@ import { useEditProduct } from "../hooks/useProducts";
 import { useEscapeKeyClose } from "@/shared/hooks/useEscapeKeyClose";
 
 import { TrashIcon } from "@/shared/icons";
-import { TStatus } from "@/shared/types/types";
+import { TAvailble, TStatus } from "@/shared/types/types";
 import { statuses } from "@/shared/utils/helpers";
 
 import InputField from "@/shared/ui/inputs/InputField";
@@ -26,6 +26,9 @@ import ModalWrapper from "@/shared/ui/wrappers/ModalWrapper";
 import FormFillingWrapper from "@/shared/ui/wrappers/FormFillingWrapper";
 import FormButtonsWrapper from "@/shared/ui/wrappers/FormButtonsWrapper";
 import { toast } from "sonner";
+import BasicSelector from "@/shared/ui/selectors/BasicSelector";
+import BasicTextarea from "@/shared/ui/textareas/BasicTextarea";
+import Label from "@/shared/ui/components/Label";
 
 interface EditProductModalProps {
     isOpen: boolean;
@@ -40,10 +43,10 @@ interface FormData {
     path: string;
     price: number;
     oldPrice: number;
-    available: "true" | "false";
+    available: TAvailble;
     description: string;
     composition: string;
-    status: TStatus | "";
+    status: TStatus;
 }
 
 export default function EditProductModal({
@@ -64,10 +67,10 @@ export default function EditProductModal({
             path: "",
             price: 0,
             oldPrice: 0,
-            available: "false",
+            available: "Не доступно",
             description: "",
             composition: "",
-            status: "",
+            status: "Не активно",
         },
     });
 
@@ -99,7 +102,7 @@ export default function EditProductModal({
                 path: product.path,
                 price: product.price,
                 oldPrice: product.oldPrice,
-                available: product.available ? "true" : "false",
+                available: product.available,
                 description: product.description,
                 composition: product.composition,
                 status: product.status,
@@ -182,10 +185,10 @@ export default function EditProductModal({
                     path: data.path.trim(),
                     price: data.price,
                     oldPrice: data.oldPrice,
-                    available: data.available === "true",
+                    available: data.available,
                     description: data.description.trim(),
                     composition: data.composition.trim(),
-                    status: data.status as TStatus,
+                    status: data.status,
                     banner: bannerPath,
                     images: newImages,
                     colorIds: colorsToSend,
@@ -294,104 +297,61 @@ export default function EditProductModal({
                             })}
                             errorMessage={errors.oldPrice?.message}
                         />
-                        <div className="flex flex-col gap-[7px]">
-                            <label
-                                className="font-semibold text-sm"
-                                htmlFor="available"
-                            >
-                                Доступність*
-                            </label>
-                            <select
-                                id="available"
-                                {...register("available", { required: true })}
-                                className="border border-white/10 rounded p-[10px] outline-0 cursor-pointer bg-black/10"
-                            >
-                                <option value="" disabled>
-                                    Оберіть даступність
-                                </option>
-                                <option value="true">Доступний</option>
-                                <option value="false">Недоступний</option>
-                            </select>
-                            {errors.available && (
-                                <p className="text-red-500 text-sm">
-                                    {errors.available.message}
-                                </p>
-                            )}
-                        </div>
-                        <div className="flex flex-col gap-[7px]">
-                            <label
-                                className="font-semibold text-sm"
-                                htmlFor="status"
-                            >
-                                Статус*
-                            </label>
-                            <select
-                                id="status"
-                                {...register("status", {
+                        <BasicSelector<boolean>
+                            label={"Доступність*"}
+                            register={{
+                                ...register("available", {
+                                    required: "Оберіть доступність",
+                                }),
+                            }}
+                            itemsList={[true, false]}
+                            basicOptionLabel="Оберіть доступність"
+                            getOptionLabel={(available) =>
+                                available ? "Доступно" : "Не доступно"
+                            }
+                            getOptionValue={(available) =>
+                                available ? "Доступно" : "Не доступно"
+                            }
+                            errorMessage={errors.available?.message}
+                        />
+                        <BasicSelector<string>
+                            label={"Статус*"}
+                            register={{
+                                ...register("status", {
                                     required: "Оберіть статус",
-                                })}
-                                className="border border-white/10 rounded p-[10px] outline-0 cursor-pointer bg-black/10"
-                            >
-                                <option value="" disabled>
-                                    Оберіть статус
-                                </option>
-                                {statuses.map((s) => (
-                                    <option key={s} value={s}>
-                                        {s}
-                                    </option>
-                                ))}
-                            </select>
-                            {errors.status && (
-                                <p className="text-red-500 text-sm">
-                                    {errors.status.message}
-                                </p>
-                            )}
-                        </div>
+                                }),
+                            }}
+                            itemsList={statuses}
+                            basicOptionLabel="Оберіть статус"
+                            getOptionLabel={(status) => status}
+                            getOptionValue={(status) => status}
+                            errorMessage={errors.status?.message}
+                        />
                     </div>
 
-                    <div className="flex flex-col gap-[7px]">
-                        <label className="font-semibold text-sm">Опис*</label>
-                        <textarea
-                            {...register("description", {
+                    <BasicTextarea
+                        label="Опис*"
+                        register={{
+                            ...register("description", {
                                 required: "Введіть опис",
-                            })}
-                            className={`resize-none border ${
-                                errors.description
-                                    ? "border-red-500"
-                                    : "border-white/10"
-                            } rounded p-[10px] bg-black/10 outline-0`}
-                            rows={3}
-                        />
-                        {errors.description && (
-                            <p className="text-red-500 text-sm">
-                                {errors.description.message}
-                            </p>
-                        )}
-                    </div>
+                            }),
+                        }}
+                        errorMessage={errors.description?.message}
+                    />
 
-                    <div className="flex flex-col gap-[7px]">
-                        <label className="font-semibold text-sm">Склад*</label>
-                        <textarea
-                            {...register("composition", {
+                    <BasicTextarea
+                        label="Склад*"
+                        register={{
+                            ...register("composition", {
                                 required: "Введіть склад",
-                            })}
-                            className={`resize-none border ${
-                                errors.composition
-                                    ? "border-red-500"
-                                    : "border-white/10"
-                            } rounded p-[10px] bg-black/10 outline-0`}
-                            rows={3}
-                        />
-                        {errors.composition && (
-                            <p className="text-red-500 text-sm">
-                                {errors.composition.message}
-                            </p>
-                        )}
-                    </div>
+                            }),
+                        }}
+                        errorMessage={errors.composition?.message}
+                    />
 
                     {/* Вибір кольорів */}
                     <div className="flex flex-col gap-2">
-                        <label className="font-semibold text-sm">Кольори</label>
+                        <Label>Кольори</Label>
                         <div className="flex flex-wrap gap-2 max-h-[100px] overflow-y-auto border border-white/10 rounded p-2 bg-black/10">
                             {allColors?.map((color) => (
                                 <button
@@ -418,7 +378,7 @@ export default function EditProductModal({
 
                     {/* Вибір розмірів */}
                     <div className="flex flex-col gap-2">
-                        <label className="font-semibold text-sm">Розміри</label>
+                        <Label>Розміри</Label>
                         <div className="flex flex-wrap gap-2 max-h-[100px] overflow-y-auto border border-white/10 rounded p-2 bg-black/10">
                             {allSizes?.map((size) => (
                                 <button
@@ -445,7 +405,7 @@ export default function EditProductModal({
 
                     {/* Вибір типів */}
                     <div className="flex flex-col gap-2">
-                        <label className="font-semibold text-sm">Типи</label>
+                        <Label>Типи</Label>
                         <div className="flex flex-wrap gap-2 max-h-[100px] overflow-y-auto border border-white/10 rounded p-2 bg-black/10">
                             {allTypes?.map((type) => (
                                 <button
@@ -472,12 +432,7 @@ export default function EditProductModal({
 
                     {/* Банер і зображення */}
                     <div className="flex flex-col gap-[7px] w-full max-w-[300px]">
-                        <label
-                            htmlFor="banner"
-                            className="text-sm font-semibold"
-                        >
-                            Банер
-                        </label>
+                        <Label>Банер</Label>
                         <label
                             htmlFor="banner"
                             className="min-h-[100px] max-w-[300px] border border-dashed border-white/20 bg-black/10 mt-2 flex justify-center cursor-pointer rounded-md overflow-hidden"
@@ -506,12 +461,7 @@ export default function EditProductModal({
                     </div>
 
                     <div className="flex flex-col gap-[7px] w-full max-w-[300px]">
-                        <label
-                            htmlFor="images"
-                            className="text-sm font-semibold cursor-pointer"
-                        >
-                            Додаткові зображення
-                        </label>
+                        <Label>Додаткові зображення</Label>
                         <label
                             htmlFor="images"
                             className="min-h-[100px] border border-dashed border-white/20 mt-2 flex items-center justify-center cursor-pointer bg-black/10 hover:bg-black/20 rounded-xl overflow-hidden"

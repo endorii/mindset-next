@@ -155,7 +155,7 @@ model Product {
     path          String           @unique
     price         Int
     oldPrice      Int              @map("old_price")
-    available     Boolean
+    available     String
     description   String
     composition   String
     categoryId    String           @map("category_id")

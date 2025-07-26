@@ -12,6 +12,7 @@ import ModalWrapper from "@/shared/ui/wrappers/ModalWrapper";
 import FormFillingWrapper from "@/shared/ui/wrappers/FormFillingWrapper";
 import FormButtonsWrapper from "@/shared/ui/wrappers/FormButtonsWrapper";
 import TextareaInfoField from "@/shared/ui/components/TextareaInfoField";
+import Label from "@/shared/ui/components/Label";
 
 interface CategoryInfoModalProps {
     isOpen: boolean;
@@ -72,7 +73,7 @@ export default function CategoryInfoModal({
                 </div>
 
                 <div className="flex flex-col gap-[7px] w-full">
-                    <label className="text-sm font-semibold">Банер:</label>
+                    <Label>Банер</Label>
                     <div className="rounded">
                         <Image
                             className="max-h-[300px] object-contain rounded border border-white/10 px-[10px] py-[7px] bg-black/10"

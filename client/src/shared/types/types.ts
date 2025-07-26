@@ -32,7 +32,8 @@ export type OrderModalType =
 
 export type TodoModalType = "add" | "edit" | "delete" | null;
 
-export type TStatus = "ACTIVE" | "INACTIVE";
+export type TStatus = "Активно" | "Не активно";
+export type TAvailble = "Доступно" | "Не доступно";
 
 export interface IIconsProps {
     className?: string;

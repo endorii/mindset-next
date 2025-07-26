@@ -1,5 +1,6 @@
 import { ChangeEvent, InputHTMLAttributes } from "react";
 import { UseFormRegisterReturn } from "react-hook-form";
+import Label from "../components/Label";
 
 export interface InputFieldProps extends InputHTMLAttributes<HTMLInputElement> {
     label?: string;
@@ -33,11 +34,7 @@ const InputField: React.FC<InputFieldProps> = ({
 
     return (
         <div className="flex flex-col gap-[7px]">
-            {label && (
-                <label htmlFor={inputId} className="text-sm font-semibold">
-                    {label}
-                </label>
-            )}
+            {label && <Label>{label}</Label>}
 
             <input
                 id={inputId}

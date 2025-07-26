@@ -1,5 +1,6 @@
 import React from "react";
 import { INovaPostDataObj } from "../../orders/types/orders.types";
+import Label from "@/shared/ui/components/Label";
 
 interface ChooseCheckoutDeliveryAddressProps {
     areas: INovaPostDataObj[];
@@ -31,7 +32,7 @@ function ChooseCheckoutDeliveryAddress({
             <div className="flex gap-[15px]">
                 <div className="flex flex-col gap-[13px] w-full">
                     <div className="flex flex-col gap-[7px]">
-                        <label className="text-sm font-semibold">Область</label>
+                        <Label>Область</Label>
                         <select
                             className="border border-white/10 rounded px-[10px] py-[10px] bg-black/20 text-white outline-0 cursor-pointer"
                             value={selectedArea?.Ref || ""}
@@ -55,7 +56,7 @@ function ChooseCheckoutDeliveryAddress({
                     </div>
 
                     <div className="flex flex-col gap-[7px]">
-                        <label className="text-sm font-semibold">Місто</label>
+                        <Label>Місто</Label>
                         <select
                             className="border border-white/10 rounded px-[10px] py-[10px] bg-black/20 text-white outline-0 cursor-pointer"
                             value={selectedCity?.Ref || ""}
@@ -80,9 +81,7 @@ function ChooseCheckoutDeliveryAddress({
                     </div>
 
                     <div className="flex flex-col gap-[7px]">
-                        <label className="text-sm font-semibold">
-                            Відділення / Поштомати
-                        </label>
+                        <Label>Відділення/поштомати</Label>
                         <select
                             className="border border-white/10 rounded px-[10px] py-[10px] bg-black/20 text-white outline-0 cursor-pointer"
                             value={selectedWarehouse?.Ref || ""}

@@ -1,11 +1,9 @@
-import { IColor } from "@/features/admin/attributes/product-colors/types/product-color.types";
-import { ISize } from "@/features/admin/attributes/product-sizes/types/product-size.types";
-import { IType } from "@/features/admin/attributes/product-types/types/product-type.types";
 import {
     IProductToColor,
     IProductToSize,
     IProductToType,
 } from "@/features/products/types/products.types";
+import Label from "./Label";
 
 interface AtributesInfoFieldProps {
     label: string;
@@ -24,7 +22,7 @@ function getAtributeName(
 function AtributesInfoField({ label, atributeList }: AtributesInfoFieldProps) {
     return (
         <div className="flex flex-col gap-[7px]">
-            <label className="font-semibold text-sm">{label}</label>
+            <Label>{label}</Label>
             <div className="border border-white/10 bg-black/10 rounded px-[10px] py-[7px] flex flex-wrap gap-[10px] w-[300px]">
                 {atributeList.length > 0
                     ? atributeList.map((item, i) => (

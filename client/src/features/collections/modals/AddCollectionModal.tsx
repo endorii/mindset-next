@@ -15,6 +15,9 @@ import FormButtonsWrapper from "@/shared/ui/wrappers/FormButtonsWrapper";
 import FormFillingWrapper from "@/shared/ui/wrappers/FormFillingWrapper";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
+import BasicSelector from "@/shared/ui/selectors/BasicSelector";
+import BasicTextarea from "@/shared/ui/textareas/BasicTextarea";
+import Label from "@/shared/ui/components/Label";
 
 interface AddCollectionModalProps {
     isOpen: boolean;
@@ -43,7 +46,7 @@ export default function AddCollectionModal({
         formState: { errors },
     } = useForm<FormValues>({
         defaultValues: {
-            status: "INACTIVE",
+            status: "Не активно",
         },
     });
 
@@ -132,64 +135,31 @@ export default function AddCollectionModal({
                             errorMessage={errors.path?.message}
                         />
 
-                        <div className="flex flex-col gap-[7px]">
-                            <label
-                                className="text-sm font-semibold"
-                                htmlFor="status"
-                            >
-                                Статус*
-                            </label>
-                            <select
-                                {...register("status", {
+                        <BasicSelector<string>
+                            label={"Статус*"}
+                            register={{
+                                ...register("status", {
                                     required: "Оберіть статус",
-                                })}
-                                className="border border-white/10 rounded p-[10px] outline-0 cursor-pointer"
-                            >
-                                <option value="" disabled>
-                                    Оберіть статус
-                                </option>
-                                {statuses.map((statusOption) => (
-                                    <option
-                                        key={statusOption}
-                                        value={statusOption}
-                                    >
-                                        {statusOption}
-                                    </option>
-                                ))}
-                            </select>
-                            {errors.status && (
-                                <p className="text-sm text-red-500">
-                                    {errors.status.message}
-                                </p>
-                            )}
-                        </div>
-                    </div>
-                    <div className="flex flex-col gap-[7px]">
-                        <label className="font-semibold text-sm">Опис*</label>
-                        <textarea
-                            {...register("description", {
-                                required: "Введіть опис",
-                            })}
-                            className={`resize-none border ${
-                                errors.description?.message
-                                    ? "border-red-500"
-                                    : "border-white/10"
-                            } rounded p-[10px] bg-black/10 outline-0`}
-                            rows={3}
+                                }),
+                            }}
+                            itemsList={statuses}
+                            basicOptionLabel="Оберіть статус"
+                            getOptionLabel={(status) => status}
+                            getOptionValue={(status) => status}
+                            errorMessage={errors.status?.message}
                         />
-                        {errors.description && (
-                            <p className="text-red-500 text-sm">
-                                {errors.description.message}
-                            </p>
-                        )}
                     </div>
+                    <BasicTextarea
+                        label="Опис*"
+                        register={{
+                            ...register("description", {
+                                required: "Введіть опис",
+                            }),
+                        }}
+                        errorMessage={errors.description?.message}
+                    />
                     <div className="flex flex-col gap-[7px] w-full">
-                        <label
-                            htmlFor="banner"
-                            className="text-sm font-semibold"
-                        >
-                            Банер
-                        </label>
+                        <Label>Банер</Label>
                         <label
                             htmlFor="banner"
                             className="min-h-[100px] max-w-[300px] border border-dashed border-white/10 mt-2 flex items-center justify-center cursor-pointer hover:bg-white/3 rounded-md overflow-hidden"

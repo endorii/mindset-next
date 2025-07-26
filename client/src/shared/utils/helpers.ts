@@ -1,4 +1,5 @@
-export const statuses = ["ACTIVE", "INACTIVE"];
+export const statuses = ["Активно", "Не активно"];
+export const availables = ["Доступно", "Не доступно"];
 export const priorities = ["low", "medium", "high"];
 
 export const getLocalStorageArray = (key: string): any[] => {
