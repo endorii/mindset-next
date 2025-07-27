@@ -37,7 +37,9 @@ export default function DeleteProductModal({
     const handleDelete = async () => {
         try {
             await deleteImage(product.banner);
-            await deleteImages(product.images);
+            if (product.images.length > 0) {
+                await deleteImages(product.images);
+            }
             await deleteProduct.mutateAsync({
                 collectionPath,
                 categoryPath,
@@ -47,7 +49,6 @@ export default function DeleteProductModal({
             toast.success("Товар упішно видалено!");
         } catch (error) {
             console.log(error);
-
             toast.error("Помилка видалення товару");
         }
     };

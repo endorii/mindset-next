@@ -15,6 +15,7 @@ import FormButtonsWrapper from "@/shared/ui/wrappers/FormButtonsWrapper";
 import TextareaInfoField from "@/shared/ui/components/TextareaInfoField";
 import AtributesInfoField from "@/shared/ui/components/AtributesInfoField";
 import Label from "@/shared/ui/components/Label";
+import InfoModalBanner from "@/shared/ui/components/InfoModalBanner";
 
 export interface ProductInfoModalProps {
     isOpen: boolean;
@@ -86,44 +87,27 @@ export default function ProductInfoModal({
                     />
                 </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-[20px]">
-                    <div className="flex flex-col gap-[7px] w-full">
-                        <Label>Банер</Label>
-                        <div className="border border-white/20 rounded px-[10px] py-[7px] bg-black/10 flex justify-center">
-                            {banner ? (
-                                <img
-                                    src={`http://localhost:5000${banner}`}
-                                    alt={name || "Банер"}
-                                    className="max-h-[300px] object-contain"
-                                />
-                            ) : (
-                                <div className="text-white opacity-50">
-                                    Немає банера
-                                </div>
-                            )}
-                        </div>
-                    </div>
+                <InfoModalBanner image={banner} />
 
-                    <div className="flex flex-col gap-[7px] w-full">
-                        <Label>Додаткові зображення</Label>
-                        <div className="flex gap-[10px] overflow-x-auto">
-                            {images.length > 0 ? (
-                                images.map((image, i) => (
-                                    <Image
-                                        key={i}
-                                        src={`http://localhost:5000${image}`}
-                                        alt={`Зображення ${i + 1}`}
-                                        width={250}
-                                        height={250}
-                                        className="border border-white/20 rounded object-cover"
-                                    />
-                                ))
-                            ) : (
-                                <div className="text-white opacity-50">
-                                    Немає зображень
-                                </div>
-                            )}
-                        </div>
+                <div className="flex flex-col gap-[7px]">
+                    <Label>Додаткові зображення</Label>
+                    <div className="flex gap-[10px]">
+                        {images.length > 0 ? (
+                            images.map((image, i) => (
+                                <Image
+                                    key={i}
+                                    src={`http://localhost:5000${image}`}
+                                    alt={`Зображення ${i + 1}`}
+                                    width={100}
+                                    height={0}
+                                    className="border border-white/20 rounded w-[200px]"
+                                />
+                            ))
+                        ) : (
+                            <div className="text-white opacity-50">
+                                Немає зображень
+                            </div>
+                        )}
                     </div>
                 </div>
             </FormFillingWrapper>

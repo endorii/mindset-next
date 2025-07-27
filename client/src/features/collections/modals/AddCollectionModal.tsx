@@ -18,6 +18,7 @@ import { toast } from "sonner";
 import BasicSelector from "@/shared/ui/selectors/BasicSelector";
 import BasicTextarea from "@/shared/ui/textareas/BasicTextarea";
 import Label from "@/shared/ui/components/Label";
+import UploadBannerWithPreview from "@/shared/ui/components/UploadBannerWithPreview";
 
 interface AddCollectionModalProps {
     isOpen: boolean;
@@ -37,7 +38,9 @@ export default function AddCollectionModal({
 }: AddCollectionModalProps) {
     const [banner, setBanner] = useState<File | null>(null);
     const [preview, setPreview] = useState<string | null>(null);
+
     const [modalMessage, setModalMessage] = useState("");
+    const [bannerError, setBannerError] = useState<string | null>(null);
 
     const {
         register,
@@ -73,8 +76,10 @@ export default function AddCollectionModal({
     const onSubmit = async (data: FormValues) => {
         try {
             if (!banner) {
-                setModalMessage("Будь ласка, оберіть банер");
+                setBannerError("Оберіть банер");
                 return;
+            } else {
+                setBannerError(null);
             }
 
             const uploadResult = await uploadImageMutation.mutateAsync(banner);
@@ -158,34 +163,11 @@ export default function AddCollectionModal({
                         }}
                         errorMessage={errors.description?.message}
                     />
-                    <div className="flex flex-col gap-[7px] w-full">
-                        <Label>Банер</Label>
-                        <label
-                            htmlFor="banner"
-                            className="min-h-[100px] max-w-[300px] border border-dashed border-white/10 mt-2 flex items-center justify-center cursor-pointer hover:bg-white/3 rounded-md overflow-hidden"
-                        >
-                            {preview ? (
-                                <Image
-                                    src={preview}
-                                    alt="banner"
-                                    width={250}
-                                    height={250}
-                                    className="object-cover"
-                                />
-                            ) : (
-                                <span className="text-4xl text-gray-400">
-                                    +
-                                </span>
-                            )}
-                        </label>
-                        <input
-                            type="file"
-                            id="banner"
-                            accept="image/*"
-                            onChange={handleBannerChange}
-                            className="hidden"
-                        />
-                    </div>
+                    <UploadBannerWithPreview
+                        image={preview}
+                        handleBannerChange={handleBannerChange}
+                        bannerError={bannerError}
+                    />
                 </FormFillingWrapper>
                 {modalMessage && (
                     <p className="text-red-500 text-sm">{modalMessage}</p>

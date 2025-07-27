@@ -19,6 +19,7 @@ import { toast } from "sonner";
 import BasicSelector from "@/shared/ui/selectors/BasicSelector";
 import BasicTextarea from "@/shared/ui/textareas/BasicTextarea";
 import Label from "@/shared/ui/components/Label";
+import UploadBannerWithPreview from "@/shared/ui/components/UploadBannerWithPreview";
 
 interface AddCategoryModalProps {
     isOpen: boolean;
@@ -53,6 +54,8 @@ export default function AddCategoryModal({
 
     const [banner, setBanner] = useState<File | null>(null);
     const [preview, setPreview] = useState<string | null>(null);
+
+    const [bannerError, setBannerError] = useState<string | null>(null);
     const [modalMessage, setModalMessage] = useState("");
 
     const uploadImageMutation = useUploadImage();
@@ -77,8 +80,10 @@ export default function AddCategoryModal({
 
     const onSubmit = async (data: CategoryFormData) => {
         if (!banner) {
-            setModalMessage("Оберіть зображення банера");
+            setBannerError("Оберіть банер");
             return;
+        } else {
+            setBannerError(null);
         }
 
         try {
@@ -170,38 +175,15 @@ export default function AddCategoryModal({
                         errorMessage={errors.description?.message}
                     />
 
-                    <div className="flex flex-col gap-[7px] w-full">
-                        <Label>Банер</Label>
-                        <label
-                            htmlFor="banner"
-                            className="min-h-[100px] max-w-[300px] border border-dashed border-white/20 mt-2 flex items-center justify-center cursor-pointer bg-black/10 hover:bg-black/20 rounded-xl overflow-hidden"
-                        >
-                            {preview ? (
-                                <Image
-                                    src={preview}
-                                    alt="banner"
-                                    width={250}
-                                    height={250}
-                                    className="object-cover"
-                                />
-                            ) : (
-                                <span className="text-5xl text-white">+</span>
-                            )}
-                        </label>
-                        <input
-                            type="file"
-                            id="banner"
-                            accept="image/*"
-                            onChange={handleBannerChange}
-                            className="hidden"
-                        />
-                    </div>
+                    <UploadBannerWithPreview
+                        image={preview}
+                        handleBannerChange={handleBannerChange}
+                        bannerError={bannerError}
+                    />
                 </FormFillingWrapper>
-
                 {modalMessage && (
                     <p className="text-red-500 text-sm">{modalMessage}</p>
                 )}
-
                 <FormButtonsWrapper>
                     <MonoButton
                         type="button"

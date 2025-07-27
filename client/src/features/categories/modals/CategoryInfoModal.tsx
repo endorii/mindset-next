@@ -4,7 +4,6 @@ import { ICollection } from "@/features/collections/types/collections.types";
 import { useEscapeKeyClose } from "@/shared/hooks/useEscapeKeyClose";
 import InfoField from "@/shared/ui/inputs/InfoField";
 import { formatDate } from "@/shared/utils/formatDate";
-import Image from "next/image";
 import { createPortal } from "react-dom";
 import { ICategory } from "../types/categories.types";
 import MonoButton from "@/shared/ui/buttons/MonoButton";
@@ -12,7 +11,7 @@ import ModalWrapper from "@/shared/ui/wrappers/ModalWrapper";
 import FormFillingWrapper from "@/shared/ui/wrappers/FormFillingWrapper";
 import FormButtonsWrapper from "@/shared/ui/wrappers/FormButtonsWrapper";
 import TextareaInfoField from "@/shared/ui/components/TextareaInfoField";
-import Label from "@/shared/ui/components/Label";
+import InfoModalBanner from "@/shared/ui/components/InfoModalBanner";
 
 interface CategoryInfoModalProps {
     isOpen: boolean;
@@ -71,25 +70,8 @@ export default function CategoryInfoModal({
                         value={collectionPath}
                     />
                 </div>
-
-                <div className="flex flex-col gap-[7px] w-full">
-                    <Label>Банер</Label>
-                    <div className="rounded">
-                        <Image
-                            className="max-h-[300px] object-contain rounded border border-white/10 px-[10px] py-[7px] bg-black/10"
-                            src={
-                                banner
-                                    ? `http://localhost:5000/${banner}`
-                                    : "/placeholder.png"
-                            }
-                            alt={name || "Банер"}
-                            width={250}
-                            height={250}
-                        />
-                    </div>
-                </div>
+                <InfoModalBanner image={banner} />
             </FormFillingWrapper>
-
             <FormButtonsWrapper>
                 <MonoButton onClick={onClose}>Закрити</MonoButton>
             </FormButtonsWrapper>

@@ -5,13 +5,12 @@ import InfoField from "@/shared/ui/inputs/InfoField";
 import { formatDate } from "@/shared/utils/formatDate";
 import { createPortal } from "react-dom";
 import { ICollection } from "../types/collections.types";
-import Image from "next/image";
 import MonoButton from "@/shared/ui/buttons/MonoButton";
 import ModalWrapper from "@/shared/ui/wrappers/ModalWrapper";
 import FormFillingWrapper from "@/shared/ui/wrappers/FormFillingWrapper";
 import FormButtonsWrapper from "@/shared/ui/wrappers/FormButtonsWrapper";
 import TextareaInfoField from "@/shared/ui/components/TextareaInfoField";
-import Label from "@/shared/ui/components/Label";
+import InfoModalBanner from "@/shared/ui/components/InfoModalBanner";
 
 export interface CollectionInfoModalProps {
     isOpen: boolean;
@@ -67,23 +66,7 @@ export default function CollectionInfoModal({
                         value={categories?.length}
                     />
                 </div>
-
-                <div className="flex flex-col gap-[7px] w-full">
-                    <Label>Банер</Label>
-                    <div className="min-h-[100px] max-w-[300px] border border-dashed border-white/10 mt-2 flex items-center justify-center rounded-md overflow-hidden">
-                        <Image
-                            className="object-cover rounded"
-                            src={
-                                banner
-                                    ? `http://localhost:5000/${banner}`
-                                    : "/placeholder.png"
-                            }
-                            alt={name || "Банер"}
-                            width={250}
-                            height={250}
-                        />
-                    </div>
-                </div>
+                <InfoModalBanner image={banner} />
             </FormFillingWrapper>
             <FormButtonsWrapper>
                 <MonoButton onClick={onClose}>Закрити</MonoButton>

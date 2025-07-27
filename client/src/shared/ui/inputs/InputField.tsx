@@ -30,7 +30,7 @@ const InputField: React.FC<InputFieldProps> = ({
     const inputClassName =
         className ??
         `border ${errorMessage ? "border-red-500" : "border-white/10"} 
-     rounded px-[10px] py-[8px] outline-0 bg-black/10 text-white transition-colors duration-200 w-[300px]`;
+     rounded px-[10px] py-[8px] outline-0 bg-black/10 text-white transition-colors duration-200 w-full`;
 
     return (
         <div className="flex flex-col gap-[7px]">

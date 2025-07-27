@@ -1,7 +1,7 @@
 "use client";
 
 import { useForm } from "react-hook-form";
-import { useState, ChangeEvent } from "react";
+import { useState, ChangeEvent, SetStateAction, useEffect } from "react";
 import { createPortal } from "react-dom";
 import Image from "next/image";
 
@@ -25,7 +25,9 @@ import FormFillingWrapper from "@/shared/ui/wrappers/FormFillingWrapper";
 import { toast } from "sonner";
 import BasicSelector from "@/shared/ui/selectors/BasicSelector";
 import BasicTextarea from "@/shared/ui/textareas/BasicTextarea";
-import { Label } from "recharts";
+import UploadBannerWithPreview from "@/shared/ui/components/UploadBannerWithPreview";
+import Label from "@/shared/ui/components/Label";
+import RenderAttributeField from "@/shared/ui/components/RenderAttributeField";
 
 interface AddProductModalProps {
     isOpen: boolean;
@@ -80,7 +82,7 @@ export default function AddProductModal({
     });
 
     const [banner, setBanner] = useState<File | null>(null);
-    const [bannerPreview, setBannerPreview] = useState<string | null>(null);
+    const [preview, setPreview] = useState<string | null>(null);
 
     const [images, setImages] = useState<File[]>([]);
     const [imagesPreview, setImagesPreview] = useState<string[]>([]);
@@ -100,6 +102,24 @@ export default function AddProductModal({
     const { data: allSizes } = useSizes();
     const { data: allTypes } = useTypes();
 
+    useEffect(() => {
+        if (colorsToSend.length > 0) {
+            clearErrors("colorIds");
+        }
+    }, [colorsToSend, clearErrors]);
+
+    useEffect(() => {
+        if (sizesToSend.length > 0) {
+            clearErrors("sizeIds");
+        }
+    }, [sizesToSend, clearErrors]);
+
+    useEffect(() => {
+        if (typesToSend.length > 0) {
+            clearErrors("typeIds");
+        }
+    }, [typesToSend, clearErrors]);
+
     useEscapeKeyClose({ isOpen, onClose });
 
     if (!isOpen) return null;
@@ -108,7 +128,7 @@ export default function AddProductModal({
         const file = e.target.files?.[0];
         if (file) {
             setBanner(file);
-            setBannerPreview(URL.createObjectURL(file));
+            setPreview(URL.createObjectURL(file));
         }
     };
 
@@ -125,51 +145,6 @@ export default function AddProductModal({
         setImages((prev) => prev.filter((_, i) => i !== index));
         setImagesPreview((prev) => prev.filter((_, i) => i !== index));
     };
-
-    const toggleSelect = (
-        id: string,
-        selected: string[],
-        setSelected: React.Dispatch<React.SetStateAction<string[]>>
-    ) => {
-        if (selected.includes(id)) {
-            setSelected(selected.filter((v) => v !== id));
-        } else {
-            setSelected([...selected, id]);
-        }
-    };
-
-    const renderAttributeField = (
-        label: string,
-        allItems: { id: string; name: string }[] | undefined,
-        selected: string[],
-        setSelected: React.Dispatch<React.SetStateAction<string[]>>,
-        error?: string
-    ) => (
-        <div className="flex flex-col gap-2">
-            <Label>{label}</Label>
-            <div className="flex flex-wrap gap-2 max-h-[100px] overflow-y-auto border border-white/10 rounded p-2 bg-black/10">
-                {allItems?.map((item) => (
-                    <button
-                        key={item.id}
-                        type="button"
-                        onClick={() => {
-                            console.log(item);
-
-                            toggleSelect(item.id, selected, setSelected);
-                        }}
-                        className={`px-3 py-1 rounded-full text-sm ${
-                            selected.includes(item.id)
-                                ? "bg-white text-black cursor-default"
-                                : "border border-white/30 hover:bg-white/20"
-                        }`}
-                    >
-                        {item.name}
-                    </button>
-                ))}
-            </div>
-            {error && <p className="text-red-500 text-sm">{error}</p>}
-        </div>
-    );
 
     const onSubmit = async (data: FormData) => {
         try {
@@ -196,6 +171,7 @@ export default function AddProductModal({
                     type: "manual",
                     message: "Оберіть хоча б один тип",
                 });
+                console.log(hasError);
                 hasError = true;
             } else clearErrors("typeIds");
 
@@ -204,10 +180,11 @@ export default function AddProductModal({
                 hasError = true;
                 return;
             } else {
+                hasError = false;
                 setBannerError(null);
             }
 
-            console.log(typesToSend);
+            console.log(hasError);
 
             if (hasError) return;
             const uploadBannerResult = await uploadImageMutation.mutateAsync(
@@ -242,7 +219,7 @@ export default function AddProductModal({
             });
 
             setBanner(null);
-            setBannerPreview(null);
+            setPreview(null);
             setImages([]);
             setImagesPreview([]);
             setColorsToSend([]);
@@ -351,7 +328,6 @@ export default function AddProductModal({
                             errorMessage={errors.status?.message}
                         />
                     </div>
-
                     <BasicTextarea
                         label="Опис*"
                         register={{
@@ -361,7 +337,6 @@ export default function AddProductModal({
                         }}
                         errorMessage={errors.description?.message}
                     />
-
                     <BasicTextarea
                         label="Склад*"
                         register={{
@@ -371,75 +346,42 @@ export default function AddProductModal({
                         }}
                         errorMessage={errors.composition?.message}
                     />
+                    <RenderAttributeField
+                        label={"Кольори"}
+                        allItems={allColors}
+                        selected={colorsToSend}
+                        setSelected={setColorsToSend}
+                        errorMessage={errors.colorIds?.message}
+                    />
+                    <RenderAttributeField
+                        label={"Розміри"}
+                        allItems={allSizes}
+                        selected={sizesToSend}
+                        setSelected={setSizesToSend}
+                        errorMessage={errors.sizeIds?.message}
+                    />
+                    <RenderAttributeField
+                        label={"Типи"}
+                        allItems={allTypes}
+                        selected={typesToSend}
+                        setSelected={setTypesToSend}
+                        errorMessage={errors.typeIds?.message}
+                    />
 
-                    {/* Кольори */}
-                    {renderAttributeField(
-                        "Кольори",
-                        allColors,
-                        colorsToSend,
-                        setColorsToSend,
-                        errors.colorIds?.message
-                    )}
-
-                    {/* Розміри */}
-                    {renderAttributeField(
-                        "Розміри",
-                        allSizes,
-                        sizesToSend,
-                        setSizesToSend,
-                        errors.sizeIds?.message
-                    )}
-
-                    {/* Типи */}
-                    {renderAttributeField(
-                        "Типи",
-                        allTypes,
-                        typesToSend,
-                        setTypesToSend,
-                        errors.typeIds?.message
-                    )}
-
-                    {/* Банер */}
-                    <div className="flex flex-col gap-[7px] w-full max-w-[300px]">
-                        <Label>Банер</Label>
-                        <label
-                            htmlFor="banner"
-                            className="min-h-[100px] border border-dashed border-white/20 mt-2 flex items-center justify-center cursor-pointer bg-black/10 hover:bg-black/20 rounded-xl overflow-hidden"
-                        >
-                            {bannerPreview ? (
-                                <Image
-                                    src={bannerPreview}
-                                    alt="banner"
-                                    width={250}
-                                    height={250}
-                                    className="object-cover"
-                                />
-                            ) : (
-                                <span className="text-5xl text-white">+</span>
-                            )}
-                        </label>
-                        <input
-                            type="file"
-                            id="banner"
-                            accept="image/*"
-                            onChange={handleBannerChange}
-                            className="hidden"
-                        />
-                        {bannerError && (
-                            <p className="text-red-500 text-sm mt-1">
-                                {bannerError}
-                            </p>
-                        )}
-                    </div>
-
-                    {/* Додаткові зображення */}
+                    <UploadBannerWithPreview
+                        image={preview}
+                        handleBannerChange={handleBannerChange}
+                        bannerError={bannerError}
+                    />
                     <div className="flex flex-col gap-[7px] w-full max-w-[300px]">
                         <Label>Додаткові зображення</Label>
                         <label
                             htmlFor="images"
-                            className="min-h-[100px] border border-dashed border-white/20 mt-2 flex items-center justify-center cursor-pointer bg-black/10 hover:bg-black/20 rounded-xl overflow-hidden"
+                            className={`group border min-h-[200px] border-dashed border-white/10 flex items-center justify-center cursor-pointer hover:bg-white/3 rounded-md overflow-hidden group-hover:text-white transition-all duration-300`}
                         >
-                            <span className="text-4xl text-gray-400">+</span>
+                            <span className="text-4xl text-white/40 group-hover:text-white transition-all duration-300">
+                                +
+                            </span>
                         </label>
                         <input
                             type="file"
@@ -480,7 +422,7 @@ export default function AddProductModal({
                         type="button"
                         onClick={() => {
                             setBanner(null);
-                            setBannerPreview(null);
+                            setPreview(null);
                             setImages([]);
                             setImagesPreview([]);
                             setColorsToSend([]);

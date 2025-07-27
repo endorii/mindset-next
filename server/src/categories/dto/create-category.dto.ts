@@ -1,8 +1,8 @@
 import { IsString, IsNotEmpty, IsInt, IsEnum, Min } from "class-validator";
 
 export enum EStatus {
-    ACTIVE = "ACTIVE",
-    INACTIVE = "INACTIVE",
+    ACTIVE = "Активно",
+    NOTACTIVE = "Не активно",
 }
 
 export class CreateCategoryDto {
@@ -26,7 +26,7 @@ export class CreateCategoryDto {
     @Min(0, { message: "Перегляди не можуть бути від’ємними" })
     views: number;
 
-    @IsEnum(EStatus, { message: "Статус повинен бути ACTIVE або INACTIVE" })
+    @IsEnum(EStatus, { message: "Статус повинен бути Активно або Не активно" })
     status: EStatus;
 
     @IsString()

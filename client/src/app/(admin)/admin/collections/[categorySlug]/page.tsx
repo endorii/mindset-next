@@ -115,9 +115,9 @@ function AdminCollection() {
                                 />
                                 <div>{category.name}</div>
                                 <div>
-                                    {category.status === "ACTIVE"
+                                    {category.status === "Активно"
                                         ? "Опубліковано"
-                                        : category.status === "INACTIVE"
+                                        : category.status === "Не активно"
                                         ? "Не опубліковано"
                                         : "Невідомий статус"}
                                 </div>

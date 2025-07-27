@@ -1,8 +1,8 @@
 import { IsString, IsNotEmpty, IsInt, IsEnum, Min } from "class-validator";
 
 export enum CollectionStatus {
-    ACTIVE = "ACTIVE",
-    INACTIVE = "INACTIVE",
+    ACTIVE = "Активно",
+    NOTACTIVE = "Не активно",
 }
 
 export class CreateCollectionDto {
@@ -26,6 +26,6 @@ export class CreateCollectionDto {
     @Min(0, { message: "Кількість переглядів не може бути від’ємною" })
     views: number;
 
-    @IsEnum(CollectionStatus, { message: "Статус повинен бути ACTIVE або INACTIVE" })
+    @IsEnum(CollectionStatus, { message: "Статус повинен бути Активно або Не активно" })
     status: CollectionStatus;
 }

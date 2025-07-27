@@ -1,34 +1,34 @@
 "use client";
-import { useEffect, useState, ChangeEvent } from "react";
+
 import { useForm } from "react-hook-form";
+import { useState, ChangeEvent, useEffect } from "react";
 import { createPortal } from "react-dom";
 import Image from "next/image";
 
 import { useColors } from "@/features/admin/attributes/product-colors/hooks/useColors";
 import { useSizes } from "@/features/admin/attributes/product-sizes/hooks/useSizes";
 import { useTypes } from "@/features/admin/attributes/product-types/hooks/useTypes";
-
 import { ICategory } from "@/features/categories/types/categories.types";
 import { ICollection } from "@/features/collections/types/collections.types";
 import { IProduct } from "../types/products.types";
-
-import { useUploadImage } from "@/shared/hooks/useImages";
-import { useEditProduct } from "../hooks/useProducts";
 import { useEscapeKeyClose } from "@/shared/hooks/useEscapeKeyClose";
-
+import { useUploadImage, useUploadImages } from "@/shared/hooks/useImages";
 import { TrashIcon } from "@/shared/icons";
 import { TAvailble, TStatus } from "@/shared/types/types";
-import { statuses } from "@/shared/utils/helpers";
-
 import InputField from "@/shared/ui/inputs/InputField";
+import { availables, statuses } from "@/shared/utils/helpers";
+import { useEditProduct } from "../hooks/useProducts";
+
 import MonoButton from "@/shared/ui/buttons/MonoButton";
 import ModalWrapper from "@/shared/ui/wrappers/ModalWrapper";
-import FormFillingWrapper from "@/shared/ui/wrappers/FormFillingWrapper";
 import FormButtonsWrapper from "@/shared/ui/wrappers/FormButtonsWrapper";
+import FormFillingWrapper from "@/shared/ui/wrappers/FormFillingWrapper";
 import { toast } from "sonner";
 import BasicSelector from "@/shared/ui/selectors/BasicSelector";
 import BasicTextarea from "@/shared/ui/textareas/BasicTextarea";
+import UploadBannerWithPreview from "@/shared/ui/components/UploadBannerWithPreview";
 import Label from "@/shared/ui/components/Label";
+import RenderAttributeField from "@/shared/ui/components/RenderAttributeField";
 
 interface EditProductModalProps {
     isOpen: boolean;
@@ -47,6 +47,9 @@ interface FormData {
     description: string;
     composition: string;
     status: TStatus;
+    colorIds?: string[];
+    sizeIds?: string[];
+    typeIds?: string[];
 }
 
 export default function EditProductModal({
@@ -60,6 +63,8 @@ export default function EditProductModal({
         register,
         handleSubmit,
         reset,
+        setError,
+        clearErrors,
         formState: { errors },
     } = useForm<FormData>({
         defaultValues: {
@@ -71,30 +76,53 @@ export default function EditProductModal({
             description: "",
             composition: "",
             status: "Не активно",
+            colorIds: [],
+            sizeIds: [],
+            typeIds: [],
         },
     });
 
     const [banner, setBanner] = useState<File | string | null>(null);
-    const [bannerPreview, setBannerPreview] = useState<string | null>(null);
+    const [preview, setPreview] = useState<string | null>(null);
 
     const [images, setImages] = useState<(File | string)[]>([]);
-    const [imagePreviews, setImagePreviews] = useState<string[]>([]);
+    const [imagesPreview, setImagesPreview] = useState<string[]>([]);
 
     const [colorsToSend, setColorsToSend] = useState<string[]>([]);
     const [sizesToSend, setSizesToSend] = useState<string[]>([]);
     const [typesToSend, setTypesToSend] = useState<string[]>([]);
 
+    const [bannerError, setBannerError] = useState<string | null>(null);
     const [modalMessage, setModalMessage] = useState("");
 
     const uploadImageMutation = useUploadImage();
+    const uploadImagesMutation = useUploadImages();
     const editProductMutation = useEditProduct();
 
     const { data: allColors } = useColors();
     const { data: allSizes } = useSizes();
     const { data: allTypes } = useTypes();
 
-    useEscapeKeyClose({ isOpen, onClose });
+    // Автоочищення помилок при виборі атрибутів
+    useEffect(() => {
+        if (colorsToSend.length > 0) {
+            clearErrors("colorIds");
+        }
+    }, [colorsToSend, clearErrors]);
 
+    useEffect(() => {
+        if (sizesToSend.length > 0) {
+            clearErrors("sizeIds");
+        }
+    }, [sizesToSend, clearErrors]);
+
+    useEffect(() => {
+        if (typesToSend.length > 0) {
+            clearErrors("typeIds");
+        }
+    }, [typesToSend, clearErrors]);
+
+    // Ініціалізація даних продукту
     useEffect(() => {
         if (product) {
             reset({
@@ -106,30 +134,54 @@ export default function EditProductModal({
                 description: product.description,
                 composition: product.composition,
                 status: product.status,
+                colorIds: product.productColors.map((pc) => pc.color.id),
+                sizeIds: product.productSizes.map((ps) => ps.size.id),
+                typeIds: product.productTypes.map((pt) => pt.type.id),
             });
+
             setModalMessage("");
             setColorsToSend(product.productColors.map((pc) => pc.color.id));
             setSizesToSend(product.productSizes.map((ps) => ps.size.id));
             setTypesToSend(product.productTypes.map((pt) => pt.type.id));
+
+            // Встановлення банера
             setBanner(product.banner);
-            setBannerPreview(product.banner);
+            setPreview(getFullImageUrl(product.banner));
+
+            // Встановлення зображень
             setImages(product.images);
-            setImagePreviews(product.images);
+            setImagesPreview(product.images.map((img) => getFullImageUrl(img)));
         }
     }, [product, reset]);
+
+    useEscapeKeyClose({ isOpen, onClose });
+
+    if (!isOpen || !product) return null;
+
+    function getFullImageUrl(src: string | null | undefined) {
+        if (!src) return "";
+        if (src.startsWith("/images/")) {
+            return `http://localhost:5000${src}`;
+        }
+        if (src.startsWith("blob:") || src.startsWith("data:")) {
+            return src;
+        }
+        return src;
+    }
 
     const handleBannerChange = (e: ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
         if (file) {
             setBanner(file);
-            setBannerPreview(URL.createObjectURL(file));
+            setPreview(URL.createObjectURL(file));
+            setBannerError(null); // Очищення помилки при виборі файлу
         }
     };
 
     const handleImagesChange = (e: ChangeEvent<HTMLInputElement>) => {
         const files = e.target.files ? Array.from(e.target.files) : [];
         setImages((prev) => [...prev, ...files]);
-        setImagePreviews((prev) => [
+        setImagesPreview((prev) => [
             ...prev,
             ...files.map((f) => URL.createObjectURL(f)),
         ]);
@@ -137,44 +189,78 @@ export default function EditProductModal({
 
     const removeImage = (index: number) => {
         setImages((prev) => prev.filter((_, i) => i !== index));
-        setImagePreviews((prev) => prev.filter((_, i) => i !== index));
-    };
-
-    const toggleSelect = (
-        id: string,
-        selected: string[],
-        setSelected: React.Dispatch<React.SetStateAction<string[]>>
-    ) => {
-        if (selected.includes(id)) {
-            setSelected(selected.filter((v) => v !== id));
-        } else {
-            setSelected([...selected, id]);
-        }
+        setImagesPreview((prev) => prev.filter((_, i) => i !== index));
     };
 
     const onSubmit = async (data: FormData) => {
         try {
-            let bannerPath = "";
-            if (typeof banner === "string" && banner) {
-                bannerPath = banner;
-            } else if (banner instanceof File) {
-                const uploadResult = await uploadImageMutation.mutateAsync(
-                    banner
-                );
-                bannerPath = uploadResult.path;
+            let hasError = false;
+
+            // Валідація атрибутів
+            if (colorsToSend.length === 0) {
+                setError("colorIds", {
+                    type: "manual",
+                    message: "Оберіть хоча б один колір",
+                });
+                hasError = true;
+            } else clearErrors("colorIds");
+
+            if (sizesToSend.length === 0) {
+                setError("sizeIds", {
+                    type: "manual",
+                    message: "Оберіть хоча б один розмір",
+                });
+                hasError = true;
+            } else clearErrors("sizeIds");
+
+            if (typesToSend.length === 0) {
+                setError("typeIds", {
+                    type: "manual",
+                    message: "Оберіть хоча б один тип",
+                });
+                hasError = true;
+            } else clearErrors("typeIds");
+
+            // Валідація банера
+            if (!banner) {
+                setBannerError("Оберіть банер");
+                hasError = true;
+            } else {
+                setBannerError(null);
             }
 
-            const newImages: string[] = [];
-            for (const img of images) {
-                if (typeof img === "string") {
-                    newImages.push(img);
-                } else {
-                    const uploadResult = await uploadImageMutation.mutateAsync(
-                        img
-                    );
-                    newImages.push(uploadResult.path);
-                }
+            if (hasError) return;
+
+            // Завантаження банера
+            let bannerPath = "";
+            if (typeof banner === "string") {
+                bannerPath = banner;
+            } else if (banner instanceof File) {
+                const uploadBannerResult =
+                    await uploadImageMutation.mutateAsync(banner);
+                bannerPath = uploadBannerResult.path;
             }
+
+            // Завантаження зображень
+            const imagesToUpload: File[] = [];
+            const existingImagePaths: string[] = [];
+
+            images.forEach((img) => {
+                if (typeof img === "string") {
+                    existingImagePaths.push(img);
+                } else {
+                    imagesToUpload.push(img);
+                }
+            });
+
+            const uploadImagesResult = imagesToUpload.length
+                ? await uploadImagesMutation.mutateAsync(imagesToUpload)
+                : { paths: [] };
+
+            const allImagePaths = [
+                ...existingImagePaths,
+                ...uploadImagesResult.paths,
+            ];
 
             await editProductMutation.mutateAsync({
                 collectionPath,
@@ -183,55 +269,39 @@ export default function EditProductModal({
                 productData: {
                     name: data.name.trim(),
                     path: data.path.trim(),
-                    price: data.price,
-                    oldPrice: data.oldPrice,
+                    price: Number(data.price),
+                    oldPrice: Number(data.oldPrice),
                     available: data.available,
                     description: data.description.trim(),
                     composition: data.composition.trim(),
                     status: data.status,
                     banner: bannerPath,
-                    images: newImages,
+                    images: allImagePaths,
                     colorIds: colorsToSend,
                     sizeIds: sizesToSend,
                     typeIds: typesToSend,
                 },
             });
 
+            // Очищення стану
+            setBanner(null);
+            setPreview(null);
+            setImages([]);
+            setImagesPreview([]);
+            setColorsToSend([]);
+            setSizesToSend([]);
+            setTypesToSend([]);
+            reset();
+            setModalMessage("");
             onClose();
             toast.success("Товар успішно відредаговано!");
         } catch (err: any) {
-            setModalMessage(err?.message || "Помилка при редагуванні товару");
+            setModalMessage(err?.message || "Не вдалося відредагувати товар");
         }
     };
 
-    if (!isOpen || !product) return null;
-
-    function getFullImageUrl(src: string | null | undefined) {
-        if (!src) return "";
-        // Якщо це локальний URL з бекенда, наприклад /images/abc.jpg
-        if (src.startsWith("/images/")) {
-            return `http://localhost:5000${src}`;
-        }
-        // Якщо це блоб або дата URL, повертаємо як є
-        if (src.startsWith("blob:") || src.startsWith("data:")) {
-            return src;
-        }
-        // Якщо повний URL — повертаємо без змін
-        return src;
-    }
-
-    const bannerDisplaySrc = bannerPreview
-        ? getFullImageUrl(bannerPreview)
-        : typeof banner === "string"
-        ? getFullImageUrl(banner)
-        : "";
-
-    const imageDisplayPreviews = imagePreviews.map((src) =>
-        getFullImageUrl(src)
-    );
-
     const modalContent = (
-        <ModalWrapper onClose={onClose} modalTitle="Редагування товару">
+        <ModalWrapper onClose={onClose} modalTitle={"Редагування товару"}>
             <form
                 onSubmit={handleSubmit(onSubmit)}
                 className="flex flex-col gap-[20px]"
@@ -273,45 +343,41 @@ export default function EditProductModal({
                             type="number"
                             {...register("price", {
                                 required: "Введіть ціну",
+                                valueAsNumber: true,
                                 min: {
                                     value: 1,
-                                    message: "Ціна має бути не менеш 1",
+                                    message: "Ціна має бути не менше 1",
                                 },
-                                valueAsNumber: true,
                             })}
                             errorMessage={errors.price?.message}
                         />
-
                         <InputField
                             label="Стара ціна*"
                             id="editProductOldPrice"
                             placeholder="Стара ціна"
                             type="number"
                             {...register("oldPrice", {
-                                required: "Введіть ціну",
+                                required: "Введіть стару ціну",
+                                valueAsNumber: true,
                                 min: {
                                     value: 1,
-                                    message: "Ціна має бути не менеш 1",
+                                    message: "Ціна має бути не менше 1",
                                 },
-                                valueAsNumber: true,
                             })}
                             errorMessage={errors.oldPrice?.message}
                         />
-                        <BasicSelector<boolean>
+
+                        <BasicSelector<string>
                             label={"Доступність*"}
                             register={{
                                 ...register("available", {
                                     required: "Оберіть доступність",
                                 }),
                             }}
-                            itemsList={[true, false]}
+                            itemsList={availables}
                             basicOptionLabel="Оберіть доступність"
-                            getOptionLabel={(available) =>
-                                available ? "Доступно" : "Не доступно"
-                            }
-                            getOptionValue={(available) =>
-                                available ? "Доступно" : "Не доступно"
-                            }
+                            getOptionLabel={(available) => available}
+                            getOptionValue={(available) => available}
                             errorMessage={errors.available?.message}
                         />
                         <BasicSelector<string>
@@ -328,7 +394,6 @@ export default function EditProductModal({
                             errorMessage={errors.status?.message}
                         />
                     </div>
-
                     <BasicTextarea
                         label="Опис*"
                         register={{
@@ -338,7 +403,6 @@ export default function EditProductModal({
                         }}
                         errorMessage={errors.description?.message}
                     />
-
                     <BasicTextarea
                         label="Склад*"
                         register={{
@@ -348,125 +412,42 @@ export default function EditProductModal({
                         }}
                         errorMessage={errors.composition?.message}
                     />
+                    <RenderAttributeField
+                        label={"Кольори"}
+                        allItems={allColors}
+                        selected={colorsToSend}
+                        setSelected={setColorsToSend}
+                        errorMessage={errors.colorIds?.message}
+                    />
+                    <RenderAttributeField
+                        label={"Розміри"}
+                        allItems={allSizes}
+                        selected={sizesToSend}
+                        setSelected={setSizesToSend}
+                        errorMessage={errors.sizeIds?.message}
+                    />
+                    <RenderAttributeField
+                        label={"Типи"}
+                        allItems={allTypes}
+                        selected={typesToSend}
+                        setSelected={setTypesToSend}
+                        errorMessage={errors.typeIds?.message}
+                    />
 
-                    {/* Вибір кольорів */}
-                    <div className="flex flex-col gap-2">
-                        <Label>Кольори</Label>
-                        <div className="flex flex-wrap gap-2 max-h-[100px] overflow-y-auto border border-white/10 rounded p-2 bg-black/10">
-                            {allColors?.map((color) => (
-                                <button
-                                    key={color.id}
-                                    type="button"
-                                    onClick={() =>
-                                        toggleSelect(
-                                            color.id,
-                                            colorsToSend,
-                                            setColorsToSend
-                                        )
-                                    }
-                                    className={`px-3 py-1 rounded-full text-sm ${
-                                        colorsToSend.includes(color.id)
-                                            ? "bg-white text-black cursor-default"
-                                            : "border border-white/30 hover:bg-white/20"
-                                    }`}
-                                >
-                                    {color.name}
-                                </button>
-                            ))}
-                        </div>
-                    </div>
-
-                    {/* Вибір розмірів */}
-                    <div className="flex flex-col gap-2">
-                        <Label>Розміри</Label>
-                        <div className="flex flex-wrap gap-2 max-h-[100px] overflow-y-auto border border-white/10 rounded p-2 bg-black/10">
-                            {allSizes?.map((size) => (
-                                <button
-                                    key={size.id}
-                                    type="button"
-                                    onClick={() =>
-                                        toggleSelect(
-                                            size.id,
-                                            sizesToSend,
-                                            setSizesToSend
-                                        )
-                                    }
-                                    className={`px-3 py-1 rounded-full text-sm ${
-                                        sizesToSend.includes(size.id)
-                                            ? "bg-white text-black cursor-default"
-                                            : "border border-white/30 hover:bg-white/20"
-                                    }`}
-                                >
-                                    {size.name}
-                                </button>
-                            ))}
-                        </div>
-                    </div>
-
-                    {/* Вибір типів */}
-                    <div className="flex flex-col gap-2">
-                        <Label>Типи</Label>
-                        <div className="flex flex-wrap gap-2 max-h-[100px] overflow-y-auto border border-white/10 rounded p-2 bg-black/10">
-                            {allTypes?.map((type) => (
-                                <button
-                                    key={type.id}
-                                    type="button"
-                                    onClick={() =>
-                                        toggleSelect(
-                                            type.id,
-                                            typesToSend,
-                                            setTypesToSend
-                                        )
-                                    }
-                                    className={`px-3 py-1 rounded-full text-sm ${
-                                        typesToSend.includes(type.id)
-                                            ? "bg-white text-black cursor-default"
-                                            : "border border-white/30 hover:bg-white/20"
-                                    }`}
-                                >
-                                    {type.name}
-                                </button>
-                            ))}
-                        </div>
-                    </div>
-
-                    {/* Банер і зображення */}
-                    <div className="flex flex-col gap-[7px] w-full max-w-[300px]">
-                        <Label>Банер</Label>
-                        <label
-                            htmlFor="banner"
-                            className="min-h-[100px] max-w-[300px] border border-dashed border-white/20 bg-black/10 mt-2 flex justify-center cursor-pointer rounded-md overflow-hidden"
-                        >
-                            {bannerDisplaySrc ? (
-                                <Image
-                                    src={bannerDisplaySrc}
-                                    alt="banner"
-                                    width={250}
-                                    height={250}
-                                    className="object-cover"
-                                />
-                            ) : (
-                                <span className="text-4xl text-gray-400">
-                                    +
-                                </span>
-                            )}
-                        </label>
-                        <input
-                            type="file"
-                            id="banner"
-                            accept="image/*"
-                            onChange={handleBannerChange}
-                            className="hidden"
-                        />
-                    </div>
-
+                    <UploadBannerWithPreview
+                        image={preview}
+                        handleBannerChange={handleBannerChange}
+                        bannerError={bannerError}
+                    />
                     <div className="flex flex-col gap-[7px] w-full max-w-[300px]">
                         <Label>Додаткові зображення</Label>
                         <label
                             htmlFor="images"
-                            className="min-h-[100px] border border-dashed border-white/20 mt-2 flex items-center justify-center cursor-pointer bg-black/10 hover:bg-black/20 rounded-xl overflow-hidden"
+                            className={`group border min-h-[200px] border-dashed border-white/10 flex items-center justify-center cursor-pointer hover:bg-white/3 rounded-md overflow-hidden group-hover:text-white transition-all duration-300`}
                         >
-                            <span className="text-4xl text-gray-400">+</span>
+                            <span className="text-4xl text-white/40 group-hover:text-white transition-all duration-300">
+                                +
+                            </span>
                         </label>
                         <input
                             type="file"
@@ -476,11 +457,12 @@ export default function EditProductModal({
                             onChange={handleImagesChange}
                             className="hidden"
                         />
+
                         <div className="flex flex-wrap gap-3 mt-4">
-                            {imageDisplayPreviews.map((src, i) => (
+                            {imagesPreview.map((src, i) => (
                                 <div
                                     key={i}
-                                    className="relative group w-[100px] h-[100px] cursor-pointer"
+                                    className="relative group w-[100px] h-[100px] group cursor-pointer"
                                     onClick={() => removeImage(i)}
                                 >
                                     <Image
@@ -488,10 +470,10 @@ export default function EditProductModal({
                                         alt={`img-${i}`}
                                         width={100}
                                         height={100}
-                                        className="object-contain rounded-md"
+                                        className="object-cover rounded-md"
                                     />
                                     <div className="absolute flex items-center justify-center opacity-0 rounded group-hover:opacity-100 top-0 right-0 bg-black/40 w-full h-full transition-all duration-200">
-                                        <TrashIcon className="w-[35px] fill-none stroke-white stroke-[1.5]" />
+                                        <TrashIcon className=" w-[35px] fill-none  stroke-white stroke-[1.5] " />
                                     </div>
                                 </div>
                             ))}
@@ -505,19 +487,20 @@ export default function EditProductModal({
                     <MonoButton
                         type="button"
                         onClick={() => {
-                            reset();
-                            setModalMessage("");
                             setBanner(null);
-                            setBannerPreview(null);
+                            setPreview(null);
                             setImages([]);
-                            setImagePreviews([]);
+                            setImagesPreview([]);
                             setColorsToSend([]);
                             setSizesToSend([]);
                             setTypesToSend([]);
+                            reset();
+                            setModalMessage("");
                             onClose();
                         }}
                         disabled={
                             uploadImageMutation.isPending ||
+                            uploadImagesMutation.isPending ||
                             editProductMutation.isPending
                         }
                     >
@@ -527,10 +510,12 @@ export default function EditProductModal({
                         type="submit"
                         disabled={
                             uploadImageMutation.isPending ||
+                            uploadImagesMutation.isPending ||
                             editProductMutation.isPending
                         }
                     >
                         {uploadImageMutation.isPending ||
+                        uploadImagesMutation.isPending ||
                         editProductMutation.isPending
                             ? "Завантаження..."
                             : "Зберегти"}
