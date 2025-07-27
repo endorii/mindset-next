@@ -114,13 +114,7 @@ function AdminCollection() {
                                     alt={`Банер категорії ${category.name}`}
                                 />
                                 <div>{category.name}</div>
-                                <div>
-                                    {category.status === "Активно"
-                                        ? "Опубліковано"
-                                        : category.status === "Не активно"
-                                        ? "Не опубліковано"
-                                        : "Невідомий статус"}
-                                </div>
+                                <div>{category.status}</div>
                                 <div>{category.views}</div>
                                 <div>
                                     {formatDate(category.createdAt || "")} /{" "}

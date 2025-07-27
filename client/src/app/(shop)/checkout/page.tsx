@@ -15,8 +15,21 @@ import {
     fetchWarehouses,
 } from "@/shared/api/nova-post.api";
 import MonoButton from "@/shared/ui/buttons/MonoButton";
+import Label from "@/shared/ui/components/Label";
+import InputField from "@/shared/ui/inputs/InputField";
+import { NovaPoshtaSelect } from "@/shared/ui/selectors/NovaPoshtaSelect";
 import { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
 import { toast } from "sonner";
+
+interface FormData {
+    fullName: string;
+    phoneNumber: string;
+    email: string;
+    area: string;
+    city: string;
+    postDepartment: string;
+}
 
 function Checkout() {
     const { data: user, isLoading } = useCurrentUser();
@@ -24,10 +37,6 @@ function Checkout() {
     const { data } = useCartItemsFromUser(user?.id || "");
 
     const cart = data || [];
-
-    const [userInitials, setUserInitials] = useState("");
-    const [userPhone, setUserPhone] = useState("");
-    const [userEmail, setUserEmail] = useState("");
 
     const [areas, setAreas] = useState<INovaPostDataObj[]>([]);
     const [cities, setCities] = useState<INovaPostDataObj[]>([]);
@@ -42,13 +51,37 @@ function Checkout() {
     const [selectedWarehouse, setSelectedWarehouse] =
         useState<INovaPostDataObj | null>(null);
 
+    const [modalMessage, setModalMessage] = useState("");
+
+    const {
+        register,
+        handleSubmit,
+        reset,
+        setError,
+        clearErrors,
+        formState: { errors },
+    } = useForm<FormData>({
+        defaultValues: {
+            fullName: "",
+            phoneNumber: "",
+            email: "",
+            area: "",
+            city: "",
+            postDepartment: "",
+        },
+    });
+
     const createOrderMutation = useCreateOrder();
 
     useEffect(() => {
         if (user) {
-            setUserInitials(user.shippingAddress?.recipient || "");
-            setUserPhone(user.phone || "");
-            setUserEmail(user.email || "");
+            reset({
+                fullName: user.shippingAddress?.recipient,
+                phoneNumber: user.phone,
+                email: user.email,
+            });
+
+            setModalMessage("");
         }
     }, [user]);
 
@@ -56,6 +89,7 @@ function Checkout() {
         const loadAreas = async () => {
             try {
                 const data = await fetchAreas();
+                // clearErrors("area");
                 setAreas(data);
             } catch (error) {
                 console.error("Помилка завантаження областей:", error);
@@ -69,6 +103,7 @@ function Checkout() {
             const loadCities = async () => {
                 try {
                     const data = await fetchCities(selectedArea.Ref);
+                    // clearErrors("city");
                     setCities(data);
                 } catch (error) {
                     console.error("Помилка завантаження міст:", error);
@@ -88,6 +123,7 @@ function Checkout() {
             const loadWarehouses = async () => {
                 try {
                     const data = await fetchWarehouses(selectedCity.Ref);
+                    // clearErrors("postDepartment");
                     setWarehouses(data);
                 } catch (error) {
                     console.error("Помилка завантаження відділень:", error);
@@ -100,18 +136,18 @@ function Checkout() {
         }
     }, [selectedCity]);
 
-    const onSubmit = async () => {
+    const onSubmit = async (data: FormData) => {
         const userId = user?.id;
 
         if (!userId) return;
 
         const orderData: IOrder = {
-            fullName: userInitials,
-            phoneNumber: userPhone,
-            email: userEmail,
-            area: selectedArea?.Description || "",
-            city: selectedCity?.Description || "",
-            postDepartment: selectedWarehouse?.Description || "",
+            fullName: data.fullName,
+            phoneNumber: data.phoneNumber,
+            email: data.email,
+            area: data.area,
+            city: data.city,
+            postDepartment: data.postDepartment,
             additionalInfo: "",
             status: "pending",
             userId: user?.id,
@@ -157,52 +193,152 @@ function Checkout() {
                     Placing an order
                 </div>
             </div>
-            <div className="flex justify-between px-[30px] gap-[15px]">
-                <div className="flex flex-col gap-[15px] w-1/2 rounded-xl bg-white/5 backdrop-blur-[100px] border border-white/5 p-[30px] h-fit">
-                    <div className="flex gap-[15px] w-full">
-                        <CheckoutInputDetails
-                            userInitials={userInitials}
-                            setUserInitials={setUserInitials}
-                            userPhone={userPhone}
-                            setUserPhone={setUserPhone}
-                            userEmail={userEmail}
-                            setUserEmail={setUserEmail}
-                        />
-                        <ChooseCheckoutDeliveryAddress
-                            areas={areas}
-                            selectedArea={selectedArea}
-                            setSelectedArea={setSelectedArea}
-                            cities={cities}
-                            selectedCity={selectedCity}
-                            setSelectedCity={setSelectedCity}
-                            warehouses={warehouses}
-                            selectedWarehouse={selectedWarehouse}
-                            setSelectedWarehouse={setSelectedWarehouse}
-                        />
-                    </div>
-                    <PreOrderInfo />
-                </div>
+            <form onSubmit={handleSubmit(onSubmit)}>
+                <div className="flex justify-between px-[30px] gap-[15px]">
+                    <div className="flex flex-col gap-[15px] w-1/2 rounded-xl bg-white/5 backdrop-blur-[100px] border border-white/5 p-[30px] h-fit">
+                        <div className="flex gap-[15px] w-full">
+                            <div className="flex flex-col gap-[15px] w-1/2">
+                                <div className="text-3xl font-thin">
+                                    Реквізити для відправки
+                                </div>
+                                <hr className="border-t border-white/10" />
+                                <div className="flex flex-col gap-[13px] w-full">
+                                    <InputField
+                                        label="Ініціали (ПІБ)*"
+                                        placeholder="Петренко Петро Петрович"
+                                        register={{
+                                            ...register("fullName", {
+                                                required: "Введіть ініціали",
+                                                pattern: {
+                                                    value: /^[А-ЯІЇЄҐ][а-яіїєґ']+\s[А-ЯІЇЄҐ][а-яіїєґ']+\s[А-ЯІЇЄҐ][а-яіїєґ']+$/,
+                                                    message:
+                                                        "Введіть ПІБ у форматі: Прізвище Ім’я По батькові",
+                                                },
+                                            }),
+                                        }}
+                                        errorMessage={errors.fullName?.message}
+                                    />
 
-                <div className="flex flex-col gap-[15px] w-1/2 rounded-xl bg-white/5 backdrop-blur-[100px] border border-white/5 p-[30px] text-white">
-                    <CheckoutResultTable cart={cart} />
-                    <PayMethod />
-                    <MonoButton
-                        onClick={() => {
-                            onSubmit();
-                        }}
-                        disabled={
-                            !userInitials ||
-                            !userPhone ||
-                            !selectedArea ||
-                            !selectedCity ||
-                            !selectedWarehouse ||
-                            cart.length === 0
-                        }
-                    >
-                        Підтвердити замовлення
-                    </MonoButton>
+                                    <InputField
+                                        label="Номер телефону*"
+                                        placeholder="+380*********"
+                                        register={{
+                                            ...register("phoneNumber", {
+                                                required:
+                                                    "Введіть номер телефону",
+                                                pattern: {
+                                                    value: /^(?:\+380\d{9}|380\d{9}|0\d{9}|\(\d{3}\)-\d{2}-\d{2}-\d{3})$/,
+                                                    message:
+                                                        "Невірний формат телефону",
+                                                },
+                                            }),
+                                        }}
+                                        errorMessage={
+                                            errors.phoneNumber?.message
+                                        }
+                                    />
+
+                                    <InputField
+                                        label="Електронна пошта"
+                                        placeholder="petro@gmail.com"
+                                        register={{
+                                            ...register("email", {
+                                                required: "Введіть email",
+                                                pattern: {
+                                                    value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+                                                    message:
+                                                        "Невірний формат email",
+                                                },
+                                            }),
+                                        }}
+                                        errorMessage={errors.email?.message}
+                                    />
+                                </div>
+                            </div>
+                            <div className="flex flex-col gap-[15px] w-1/2">
+                                <div className="text-3xl font-thin">
+                                    Адреса доставки
+                                </div>
+                                <hr className="border-t border-white/10" />
+                                <div className="flex gap-[15px]">
+                                    <div className="flex flex-col gap-[13px] w-full">
+                                        <NovaPoshtaSelect
+                                            label="Область"
+                                            options={areas}
+                                            onChange={(e) => {
+                                                const area =
+                                                    areas.find(
+                                                        (a) =>
+                                                            a.Ref ===
+                                                            e.target.value
+                                                    ) || null;
+                                                setSelectedArea(area);
+                                            }}
+                                            register={register("area", {
+                                                required: "Оберіть область",
+                                            })}
+                                            errorMessage={errors.area?.message}
+                                        />
+
+                                        <NovaPoshtaSelect
+                                            label="Місто"
+                                            options={cities}
+                                            onChange={(e) => {
+                                                const city =
+                                                    cities.find(
+                                                        (c) =>
+                                                            c.Ref ===
+                                                            e.target.value
+                                                    ) || null;
+                                                setSelectedCity(city);
+                                            }}
+                                            register={register("city", {
+                                                required: "Оберіть місто",
+                                            })}
+                                            errorMessage={errors.city?.message}
+                                            disabled={!selectedArea}
+                                        />
+
+                                        <NovaPoshtaSelect
+                                            label="Відділення"
+                                            options={warehouses}
+                                            onChange={(e) => {
+                                                const wh =
+                                                    warehouses.find(
+                                                        (w) =>
+                                                            w.Ref ===
+                                                            e.target.value
+                                                    ) || null;
+                                                setSelectedWarehouse(wh);
+                                            }}
+                                            register={register(
+                                                "postDepartment",
+                                                {
+                                                    required:
+                                                        "Оберіть відділення або поштомат",
+                                                }
+                                            )}
+                                            errorMessage={
+                                                errors.postDepartment?.message
+                                            }
+                                            disabled={!selectedCity}
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <PreOrderInfo />
+                    </div>
+
+                    <div className="flex flex-col gap-[15px] w-1/2 rounded-xl bg-white/5 backdrop-blur-[100px] border border-white/5 p-[30px] text-white">
+                        <CheckoutResultTable cart={cart} />
+                        <PayMethod />
+                        <MonoButton type="submit" disabled={cart.length === 0}>
+                            Підтвердити замовлення
+                        </MonoButton>
+                    </div>
                 </div>
-            </div>
+            </form>
         </div>
     );
 }

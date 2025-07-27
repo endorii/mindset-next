@@ -10,6 +10,7 @@ interface BasicSelectorProps<T> {
     getOptionLabel: (item: T) => string;
     className?: string;
     errorMessage?: string;
+    disabled?: boolean;
 }
 
 function BasicSelector<T>({
@@ -21,6 +22,7 @@ function BasicSelector<T>({
     getOptionLabel,
     className = "",
     errorMessage,
+    disabled,
 }: BasicSelectorProps<T>) {
     return (
         <div className="flex flex-col gap-[7px]">
@@ -30,6 +32,7 @@ function BasicSelector<T>({
                 className={`border ${
                     errorMessage ? "border-red-500" : "border-white/10"
                 } rounded p-[10px] outline-0 cursor-pointer ${className}`}
+                disabled={disabled}
             >
                 <option value="" disabled hidden>
                     {basicOptionLabel}

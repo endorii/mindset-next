@@ -30,7 +30,11 @@ function RenderAttributeField({
     return (
         <div className="flex flex-col gap-2">
             <Label>{label}</Label>
-            <div className="flex flex-wrap gap-2 max-h-[100px] overflow-y-auto border border-white/10 rounded p-2 bg-black/10">
+            <div
+                className={`flex flex-wrap gap-2 max-h-[100px] overflow-y-auto border ${
+                    errorMessage ? "border-red-500" : "border-white/10"
+                } rounded p-2 bg-black/10`}
+            >
                 {allItems?.map((item) => (
                     <button
                         key={item.id}

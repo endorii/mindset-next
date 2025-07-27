@@ -106,13 +106,7 @@ function AdminCollections() {
                                     alt="banner"
                                 />
                                 <div>{collection.name}</div>
-                                <div>
-                                    {collection.status === "ACTIVE"
-                                        ? "Опубліковано"
-                                        : collection.status === "INACTIVE"
-                                        ? "Не опубліковано"
-                                        : "Невідомий статус"}
-                                </div>
+                                <div>{collection.status}</div>
                                 <div>{collection.views}</div>
                                 <div>
                                     {formatDate(collection.createdAt || "")} /{" "}
