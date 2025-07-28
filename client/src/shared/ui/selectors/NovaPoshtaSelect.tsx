@@ -36,7 +36,7 @@ export const NovaPoshtaSelect = ({
                 value={value}
                 onChange={(e) => {
                     onChange?.(e);
-                    register?.onChange?.(e); // дозволяємо RHF також обробити
+                    register?.onChange?.(e);
                 }}
                 onBlur={register?.onBlur}
                 name={register?.name}

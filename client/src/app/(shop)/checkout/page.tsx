@@ -57,8 +57,6 @@ function Checkout() {
         register,
         handleSubmit,
         reset,
-        setError,
-        clearErrors,
         formState: { errors },
     } = useForm<FormData>({
         defaultValues: {
@@ -145,9 +143,9 @@ function Checkout() {
             fullName: data.fullName,
             phoneNumber: data.phoneNumber,
             email: data.email,
-            area: data.area,
-            city: data.city,
-            postDepartment: data.postDepartment,
+            area: selectedArea?.Description || "",
+            city: selectedCity?.Description || "",
+            postDepartment: selectedWarehouse?.Description || "",
             additionalInfo: "",
             status: "pending",
             userId: user?.id,

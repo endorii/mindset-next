@@ -21,6 +21,8 @@ import { useState, useEffect } from "react";
 import MonoButton from "@/shared/ui/buttons/MonoButton";
 import AttributeSelector from "@/features/products/components/AttributeSelector";
 import QuantitySelector from "@/shared/ui/selectors/QuantitySelector";
+import { div } from "motion/react-client";
+import ReviewsOnProductPage from "@/features/reviews/components/ReviewsOnProductPage";
 
 export default function ProductPage() {
     const pathname = usePathname();
@@ -164,168 +166,180 @@ export default function ProductPage() {
     }
 
     return (
-        <div className="flex flex-col md:flex-row gap-[20px] items-start text-white min-h-[45vw] p-[30px] w-full">
-            <div className="flex gap-[10px] relative rounded-xl bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px] w-[55%]">
-                <div className="relative">
-                    <button
-                        onClick={handleLikeToggle}
-                        className="absolute group top-[10px] right-[10px] m-[0_auto] text-xs flex justify-center items-center gap-[10px] transition-all duration-300 cursor-pointer min-w-[60px] w-[60px] min-h-[60px] h-[60px] rounded-xl bg-black/30 hover:bg-black/40 shadow-lg backdrop-blur-[100px] border border-black/5 p-[10px]"
-                    >
-                        <HeartIcon
-                            className={`group-hover:fill-white transition-all duration-300 ${
-                                liked
-                                    ? "w-[42px] stroke-white fill-white"
-                                    : "w-[35px] stroke-white stroke-[1.5] fill-none"
-                            }`}
-                        />
-                    </button>
-                    <img
-                        src={`http://localhost:5000/${product.banner}`}
-                        alt={product.name}
-                        className="w-full rounded-xl"
-                    />
-                </div>
-                <ul className="flex flex-col w-[150px] gap-[10px] overflow-y-auto max-h-[600px]">
-                    {product.images?.map((image, i) => (
-                        <li key={i}>
-                            <img
-                                src={`http://localhost:5000/${image}`}
-                                alt={product.name}
-                                className="w-full h-auto rounded-xl"
+        <div className="flex flex-col px-[30px] py-[10px] gap-[30px]">
+            <div className="flex flex-col md:flex-row gap-[20px] items-start text-white h-full w-full">
+                <div className="flex gap-[10px] relative rounded-xl bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 min-w-fit max-w-[55%]">
+                    <div className="relative">
+                        <button
+                            onClick={handleLikeToggle}
+                            className="absolute group top-[10px] right-[10px] m-[0_auto] text-xs flex justify-center items-center gap-[10px] transition-all duration-300 cursor-pointer min-w-[60px] w-[60px] min-h-[60px] h-[60px] rounded-xl bg-black/30 hover:bg-black/40 shadow-lg backdrop-blur-[100px] border border-black/5 p-[10px]"
+                        >
+                            <HeartIcon
+                                className={`group-hover:fill-white transition-all duration-300 ${
+                                    liked
+                                        ? "w-[42px] stroke-white fill-white"
+                                        : "w-[35px] stroke-white stroke-[1.5] fill-none"
+                                }`}
                             />
-                        </li>
-                    ))}
-                </ul>
-            </div>
-
-            <div className="flex flex-col gap-[15px] w-[45%] h-full">
-                <div className="flex flex-col gap-[15px] rounded-xl bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 px-[40px] py-[20px]">
-                    <div className="text-sm font-light text-white/30">
-                        {product.category?.collection?.name} /{" "}
-                        {product.category?.name}
+                        </button>
+                        <img
+                            src={`http://localhost:5000/${product.banner}`}
+                            alt={product.name}
+                            className="w-full rounded-xl"
+                        />
                     </div>
+                    {product.images.length > 0 ? (
+                        <ul className="flex flex-col w-[150px] gap-[10px] overflow-y-auto max-h-[600px]">
+                            {product.images?.map((image, i) => (
+                                <li key={i}>
+                                    <img
+                                        src={`http://localhost:5000/${image}`}
+                                        alt={product.name}
+                                        className="w-full h-auto rounded-xl"
+                                    />
+                                </li>
+                            ))}
+                        </ul>
+                    ) : (
+                        ""
+                    )}
+                </div>
 
-                    <h3 className="text-5xl font-bold">{product.name}</h3>
-
-                    <div className="flex gap-[20px] items-center mt-[10px]">
-                        <div className="flex gap-[10px] items-center">
-                            <div className="text-xl font-semibold">
-                                {product.price} грн.
-                            </div>
-                            <div className="text-lg line-through text-gray-400 font-light">
-                                {product.oldPrice} грн.
-                            </div>
+                <div className="flex flex-col gap-[15px] min-w-[45%] w-full h-full">
+                    <div className="flex flex-col gap-[15px] rounded-xl bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 px-[40px] py-[20px]">
+                        <div className="text-sm font-light text-white/30">
+                            {product.category?.collection?.name} /{" "}
+                            {product.category?.name}
                         </div>
-                    </div>
-                    <div
-                        className={`text-sm ${
-                            product.available
-                                ? "text-green-600"
-                                : "text-red-500"
-                        }`}
-                    >
-                        {product.available
-                            ? "В наявності"
-                            : "Немає в наявності"}
-                    </div>
 
-                    <div className="mt-[20px] text-white/80 break-words">
-                        {product.description}
-                    </div>
-                    <hr className="w-full border-white/10 border-t " />
-                    <div className="text-white/80 break-words">
-                        {product.composition}
-                    </div>
+                        <h3 className="text-5xl font-bold">{product.name}</h3>
 
-                    <div className="flex flex-col gap-[35px] mt-[30px]">
-                        {product.productColors.length > 0 && (
-                            <div className="flex items-center gap-[30px]">
-                                <div>Колір:</div>
-                                <ul className="flex gap-[10px]">
-                                    {product.productColors.map((item, i) => (
-                                        <li
-                                            key={i}
-                                            onClick={() =>
-                                                setChosenColor(item.color.name)
-                                            }
-                                        >
-                                            <button
-                                                className={`w-[25px] h-[25px] rounded-full border border-transparent  hover:border-white/20 cursor-pointer ${
-                                                    chosenColor ===
-                                                    item.color.name
-                                                        ? " border-white/100"
-                                                        : "border-black"
-                                                }`}
-                                                style={{
-                                                    backgroundColor:
-                                                        item.color.hexCode,
-                                                }}
-                                            ></button>
-                                        </li>
-                                    ))}
-                                </ul>
-                                <div className="flex gap-[10px] items-center">
-                                    <div className="text-xs text-white/40">
-                                        Обраний колір:{" "}
-                                    </div>
-                                    <div>{chosenColor}</div>
+                        <div className="flex gap-[20px] items-center mt-[10px]">
+                            <div className="flex gap-[10px] items-center">
+                                <div className="text-xl font-semibold">
+                                    {product.price} грн.
+                                </div>
+                                <div className="text-lg line-through text-gray-400 font-light">
+                                    {product.oldPrice} грн.
                                 </div>
                             </div>
-                        )}
-                        <AttributeSelector
-                            attributeItems={product.productTypes}
-                            label="Тип"
-                            getName={(item) => item.type.name}
-                            chosenValue={chosenType}
-                            setFunction={setChosenType}
-                        />
-                        <AttributeSelector
-                            attributeItems={product.productSizes}
-                            label="Розмір"
-                            getName={(item) => item.size.name}
-                            chosenValue={chosenSize}
-                            setFunction={setChosenSize}
-                        />
+                        </div>
+                        <div
+                            className={`text-sm ${
+                                product.available
+                                    ? "text-green-600"
+                                    : "text-red-500"
+                            }`}
+                        >
+                            {product.available
+                                ? "В наявності"
+                                : "Немає в наявності"}
+                        </div>
 
-                        <QuantitySelector
-                            quantity={quantity}
-                            setQuantity={setQuantity}
-                        />
+                        <div className="mt-[20px] text-white/80 break-words">
+                            {product.description}
+                        </div>
+                        <hr className="w-full border-white/10 border-t " />
+                        <div className="text-white/80 break-words">
+                            {product.composition}
+                        </div>
+
+                        <div className="flex flex-col gap-[35px] mt-[30px]">
+                            {product.productColors.length > 0 && (
+                                <div className="flex items-center gap-[30px]">
+                                    <div>Колір:</div>
+                                    <ul className="flex gap-[10px]">
+                                        {product.productColors.map(
+                                            (item, i) => (
+                                                <li
+                                                    key={i}
+                                                    onClick={() =>
+                                                        setChosenColor(
+                                                            item.color.name
+                                                        )
+                                                    }
+                                                >
+                                                    <button
+                                                        className={`w-[25px] h-[25px] rounded-full border border-transparent  hover:border-white/20 cursor-pointer ${
+                                                            chosenColor ===
+                                                            item.color.name
+                                                                ? " border-white/100"
+                                                                : "border-black"
+                                                        }`}
+                                                        style={{
+                                                            backgroundColor:
+                                                                item.color
+                                                                    .hexCode,
+                                                        }}
+                                                    ></button>
+                                                </li>
+                                            )
+                                        )}
+                                    </ul>
+                                    <div className="flex gap-[10px] items-center">
+                                        <div className="text-xs text-white/40">
+                                            Обраний колір:{" "}
+                                        </div>
+                                        <div>{chosenColor}</div>
+                                    </div>
+                                </div>
+                            )}
+                            <AttributeSelector
+                                attributeItems={product.productTypes}
+                                label="Тип"
+                                getName={(item) => item.type.name}
+                                chosenValue={chosenType}
+                                setFunction={setChosenType}
+                            />
+                            <AttributeSelector
+                                attributeItems={product.productSizes}
+                                label="Розмір"
+                                getName={(item) => item.size.name}
+                                chosenValue={chosenSize}
+                                setFunction={setChosenSize}
+                            />
+
+                            <QuantitySelector
+                                quantity={quantity}
+                                setQuantity={setQuantity}
+                            />
+                        </div>
+                    </div>
+                    <div className="flex justify-between gap-[10px] rounded-xl bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[10px]">
+                        <MonoButton
+                            onClick={handleCartToggle}
+                            className={`w-full h-[50px] ${
+                                alreadyInCart
+                                    ? "bg-black text-white"
+                                    : "bg-white text-black"
+                            }`}
+                            disabled={
+                                !product.available ||
+                                !chosenColor ||
+                                !chosenSize ||
+                                !chosenType ||
+                                quantity < 1
+                            }
+                        >
+                            {alreadyInCart ? "Видалити з кошика" : "В кошик"}
+                        </MonoButton>
+                        <MonoButton
+                            onClick={handleLikeToggle}
+                            className={`w-full h-[50px] `}
+                            disabled={
+                                !product.available ||
+                                !chosenColor ||
+                                !chosenSize ||
+                                !chosenType ||
+                                quantity < 1
+                            }
+                        >
+                            {liked ? "Видалити з вподобаного" : "В вподобане"}
+                        </MonoButton>
                     </div>
                 </div>
-                <div className="flex justify-between gap-[10px] rounded-xl bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[10px]">
-                    <MonoButton
-                        onClick={handleCartToggle}
-                        className={`w-full h-[50px] ${
-                            alreadyInCart
-                                ? "bg-black text-white"
-                                : "bg-white text-black"
-                        }`}
-                        disabled={
-                            !product.available ||
-                            !chosenColor ||
-                            !chosenSize ||
-                            !chosenType ||
-                            quantity < 1
-                        }
-                    >
-                        {alreadyInCart ? "Видалити з кошика" : "В кошик"}
-                    </MonoButton>
-                    <MonoButton
-                        onClick={handleLikeToggle}
-                        className={`w-full h-[50px] `}
-                        disabled={
-                            !product.available ||
-                            !chosenColor ||
-                            !chosenSize ||
-                            !chosenType ||
-                            quantity < 1
-                        }
-                    >
-                        {liked ? "Видалити з вподобаного" : "В вподобане"}
-                    </MonoButton>
-                </div>
             </div>
+            <ReviewsOnProductPage />
         </div>
     );
 }

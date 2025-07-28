@@ -9,6 +9,8 @@ export default function Collection() {
     const pathname = usePathname();
     const collectionPath = pathname.split("/")[1] || "";
 
+    console.log(collectionPath);
+
     const {
         data: collection,
         isError,
@@ -16,6 +18,8 @@ export default function Collection() {
     } = useCollection(collectionPath);
 
     const categories = collection?.categories || [];
+
+    console.log(collection, categories);
 
     if (isLoading) {
         return <p>Завантаження...</p>;
@@ -65,7 +69,7 @@ export default function Collection() {
                                         </div>
                                         <Link
                                             className="flex items-center pr-[9%] w-full h-full justify-end"
-                                            href={category.path}
+                                            href={`${collection.path}/${category.path}`}
                                         >
                                             <div className="border-b">
                                                 Переглянути

@@ -25,6 +25,7 @@ model User {
     todo               Todo[]
 
     recentActions RecentAction[]
+    reviews       Review[]
 }
 
 model Todo {
@@ -80,6 +81,7 @@ model OrderItem {
 
     productId String
     product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+    review    Review?
 }
 
 model Favorite {
@@ -171,7 +173,8 @@ model Product {
     productColors ProductToColor[]
     productSizes  ProductToSize[]
     productTypes  ProductToType[]
-    OrderItem     OrderItem[]
+    orderItems    OrderItem[]
+    reviews       Review[]
 
     @@unique([categoryId, path])
 }
@@ -220,6 +223,32 @@ model ProductToType {
     type      Type    @relation(fields: [typeId], references: [id], onDelete: Cascade)
 
     @@id([productId, typeId])
+}
+
+model Review {
+    id String @id @default(uuid())
+
+    content String @db.Text //@db.Text для довгих текстів.
+    rating  Int
+
+    userId      String
+    user        User       @relation(fields: [userId], references: [id])
+    productId   String
+    product     Product    @relation(fields: [productId], references: [id])
+    orderItemId String?    @unique
+    orderItem   OrderItem? @relation(fields: [orderItemId], references: [id])
+
+    createdAt DateTime @default(now()) @map("created_at")
+    updatedAt DateTime @updatedAt @map("updated_at")
+
+    isApproved   Boolean @default(false)
+    isHelpful    Int     @default(0)
+    isNotHelpful Int     @default(0)
+
+    images String[]
+
+    adminReply   String?   @db.Text
+    adminReplyAt DateTime?
 }
 
 enum Role {
