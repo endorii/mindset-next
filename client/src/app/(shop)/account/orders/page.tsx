@@ -4,90 +4,290 @@ import { useCurrentUser } from "@/features/admin/user-info/hooks/useUsers";
 import { useUserOrders } from "@/features/orders/hooks/useOrders";
 import OrderInfoModal from "@/features/orders/modals/OrderInfoModal";
 import { IOrder } from "@/features/orders/types/orders.types";
-import { InfoIcon } from "@/shared/icons";
+import { BackIcon } from "@/shared/icons";
 import { OrderModalType } from "@/shared/types/types";
-import ButtonWithIcon from "@/shared/ui/buttons/ButtonWithIcon";
+import MonoButton from "@/shared/ui/buttons/MonoButton";
 import { formatDate } from "@/shared/utils/formatDate";
 import { useState } from "react";
 
 const Orders = () => {
     const { data: user } = useCurrentUser();
-    const { data: userOrders } = useUserOrders(user?.id || "");
+    const { data: userOrders = [] } = useUserOrders(user?.id || "");
 
-    const [activeModal, setActiveModal] = useState<OrderModalType>(null);
-    const [selectedOrder, setSelectedOrder] = useState<IOrder | null>(null);
+    const [expandedOrderId, setExpandedOrderId] = useState<string | null>(null);
 
-    const openModal = (type: OrderModalType, order: IOrder | null) => {
-        setSelectedOrder(order);
-        setActiveModal(type);
-    };
-
-    const closeModal = () => {
-        setSelectedOrder(null);
-        setActiveModal(null);
+    const toggleExpand = (orderId: string) => {
+        setExpandedOrderId((prevId) => (prevId === orderId ? null : orderId));
     };
 
     return (
         <div className="flex flex-col gap-[15px]">
-            <div className="flex gap-[15px] justify-between items-center rounded-xl bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px]">
+            <div className="flex justify-between items-center rounded-xl bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px]">
                 <div className="text-2xl font-bold">Ваш список замовлень</div>
             </div>
 
-            {userOrders && userOrders.length > 0 ? (
+            {userOrders.length > 0 ? (
                 <div className="rounded-xl bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px]">
-                    <div className="grid grid-cols-[1.5fr_1fr_1fr_1fr_1fr_1fr] gap-[20px] p-4 rounded-t-lg font-semibold text-sm">
-                        <div>Ім'я</div>
-                        <div>Телефон</div>
-                        <div>Статус</div>
-                        <div>Сума, грн</div>
-                        <div>Дата створення</div>
-                        <div className="text-right">Дії</div>
-                    </div>
                     <div className="border border-white/10 rounded-xl">
-                        {userOrders?.map((order) => (
-                            <div
-                                key={order.id}
-                                className="grid grid-cols-[1.5fr_1fr_1fr_1fr_1fr_1fr] gap-[20px] p-4 border-b border-white/10 last:border-b-0 items-center"
-                            >
-                                <div>{order.fullName}</div>
-                                <div>{order.phoneNumber}</div>
-                                <div>
-                                    {
-                                        {
-                                            pending: "Обробляється",
-                                            paid: "Оплачено",
-                                            shipped: "Відправлено",
-                                            delivered: "Доставлено",
-                                            cancelled: "Відмінено",
-                                        }[order.status]
-                                    }
+                        {userOrders.map((order) => {
+                            const isExpanded = expandedOrderId === order.id;
+
+                            return (
+                                <div
+                                    key={order.id}
+                                    className="border-b border-white/10 last:border-b-0"
+                                >
+                                    <div className="relative flex gap-[40px] p-[20px]">
+                                        <button
+                                            onClick={() =>
+                                                toggleExpand(order.id || "")
+                                            }
+                                            className={`absolute top-[20px] right-[20px] transition-transform duration-300 bg-white/10 border border-white/10 p-[5px] rounded-xl cursor-pointer ${
+                                                isExpanded
+                                                    ? "rotate-90"
+                                                    : "rotate-270"
+                                            }`}
+                                        >
+                                            <BackIcon className="fill-white stroke-80 stroke-white w-[23px]" />
+                                        </button>
+
+                                        <div className="flex flex-col justify-between gap-[10px]">
+                                            <div>
+                                                <div className="text-sm text-white/40">
+                                                    {formatDate(
+                                                        order.createdAt || "-"
+                                                    )}
+                                                </div>
+                                                <div>№ {order.id}</div>
+                                            </div>
+
+                                            <div
+                                                className={`font-semibold ${
+                                                    order.status === "pending"
+                                                        ? "text-yellow-500"
+                                                        : order.status ===
+                                                          "paid"
+                                                        ? "text-blue-500"
+                                                        : order.status ===
+                                                          "shipped"
+                                                        ? "text-blue-500"
+                                                        : order.status ===
+                                                          "delivered"
+                                                        ? "text-green-500"
+                                                        : "text-red-500"
+                                                }`}
+                                            >
+                                                {
+                                                    {
+                                                        pending: "Обробляється",
+                                                        paid: "Оплачено",
+                                                        shipped: "Відправлено",
+                                                        delivered: "Доставлено",
+                                                        cancelled: "Відмінено",
+                                                    }[order.status]
+                                                }
+                                            </div>
+                                        </div>
+
+                                        <div className="flex gap-[15px]">
+                                            {order.items.length > 0 ? (
+                                                order.items.map((item) => (
+                                                    <img
+                                                        key={item.id}
+                                                        src={`http://localhost:5000/${item.product?.banner}`}
+                                                        className="max-h-[120px] w-full object-cover rounded"
+                                                        alt="banner"
+                                                    />
+                                                ))
+                                            ) : (
+                                                <span>Не знайдено</span>
+                                            )}
+                                        </div>
+                                    </div>
+
+                                    {isExpanded && (
+                                        <div className="px-[20px] pb-[20px] text-sm bg-white/3 border-t border-white/10">
+                                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 py-4">
+                                                <div>
+                                                    <div className="text-white/60">
+                                                        Email
+                                                    </div>
+                                                    <div className="text-white font-medium">
+                                                        {order.email || "—"}
+                                                    </div>
+                                                </div>
+                                                <div>
+                                                    <div className="text-white/60">
+                                                        Нова Пошта
+                                                    </div>
+                                                    <div className="text-white font-medium">
+                                                        {order.area},{" "}
+                                                        {order.city}, відділення{" "}
+                                                        {order.postDepartment}
+                                                    </div>
+                                                </div>
+                                                <div>
+                                                    <div className="text-white/60">
+                                                        ПІБ
+                                                    </div>
+                                                    <div className="text-white font-medium">
+                                                        {order.fullName}
+                                                    </div>
+                                                </div>
+                                                <div>
+                                                    <div className="text-white/60">
+                                                        Сума
+                                                    </div>
+                                                    <div className="text-white font-medium">
+                                                        {order.total.toLocaleString()}{" "}
+                                                        грн
+                                                    </div>
+                                                </div>
+                                                <div>
+                                                    <div className="text-white/60">
+                                                        Телефон
+                                                    </div>
+                                                    <div className="text-white font-medium">
+                                                        {order.phoneNumber}
+                                                    </div>
+                                                </div>
+                                                <div>
+                                                    <div className="text-white/60">
+                                                        Додаткова інформація
+                                                    </div>
+                                                    <div className="text-white font-medium">
+                                                        {order.additionalInfo ||
+                                                            "—"}
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div className="mt-4">
+                                                <div className="text-white/60 mb-2 font-semibold">
+                                                    Товари
+                                                </div>
+                                                <div className="flex flex-col gap-4">
+                                                    {order.items.map((item) => (
+                                                        <div
+                                                            key={item.id}
+                                                            className="grid grid-cols-[2fr_1fr_0.5fr_230px] gap-4 items-center border border-white/10 rounded-lg p-3 bg-white/5"
+                                                        >
+                                                            {/* Колонка 1: Зображення + Назва + деталі */}
+                                                            <div className="flex gap-4 items-center">
+                                                                <img
+                                                                    src={
+                                                                        item
+                                                                            .product
+                                                                            ?.banner
+                                                                            ? `http://localhost:5000/${item.product.banner}`
+                                                                            : "/no-image.jpg"
+                                                                    }
+                                                                    alt={
+                                                                        item
+                                                                            .product
+                                                                            ?.name ||
+                                                                        "Товар"
+                                                                    }
+                                                                    className="object-cover rounded w-[80px] h-[80px]"
+                                                                />
+                                                                <div className="flex flex-col gap-1">
+                                                                    <div className="font-medium text-lg">
+                                                                        {item
+                                                                            .product
+                                                                            ?.name ||
+                                                                            "—"}
+                                                                    </div>
+                                                                    <div className="text-white/40 text-sm">
+                                                                        Колір:{" "}
+                                                                        {
+                                                                            item.color
+                                                                        }{" "}
+                                                                        |
+                                                                        Розмір:{" "}
+                                                                        {
+                                                                            item.size
+                                                                        }{" "}
+                                                                        | Тип:{" "}
+                                                                        {
+                                                                            item.type
+                                                                        }
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                            {/* Колонка 2: Ціна × К-сть */}
+                                                            <div className="text-white text-sm">
+                                                                {
+                                                                    item.product
+                                                                        ?.price
+                                                                }
+                                                                .00 ₴ ×{" "}
+                                                                {item.quantity}{" "}
+                                                                од.
+                                                            </div>
+
+                                                            {/* Колонка 3: Загальна ціна + стара ціна */}
+                                                            <div className="flex flex-col gap-1">
+                                                                <div className="text-white/50 text-xs line-through">
+                                                                    {Number(
+                                                                        item
+                                                                            .product
+                                                                            ?.oldPrice
+                                                                    ) *
+                                                                        Number(
+                                                                            item.quantity
+                                                                        )}
+                                                                    .00 ₴
+                                                                </div>
+                                                                <div className="text-white text-base font-semibold">
+                                                                    {Number(
+                                                                        item
+                                                                            .product
+                                                                            ?.price
+                                                                    ) *
+                                                                        Number(
+                                                                            item.quantity
+                                                                        )}
+                                                                    .00 ₴
+                                                                </div>
+                                                            </div>
+
+                                                            {/* Колонка 4: Кнопки */}
+                                                            <div className="flex flex-col gap-2">
+                                                                <MonoButton
+                                                                    disabled={
+                                                                        order.status ===
+                                                                            "pending" ||
+                                                                        order.status ===
+                                                                            "paid" ||
+                                                                        order.status ===
+                                                                            "shipped"
+                                                                    }
+                                                                    className="w-full h-[40px] py-[10px] font-semibold text-sm"
+                                                                >
+                                                                    Залишити
+                                                                    відгук
+                                                                </MonoButton>
+                                                                <MonoButton className="w-full h-[40px] py-[10px] font-semibold text-sm">
+                                                                    Повторити
+                                                                    замовлення
+                                                                </MonoButton>
+                                                            </div>
+                                                        </div>
+                                                    ))}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    )}
                                 </div>
-                                <div className="">
-                                    {order.total.toLocaleString()}
-                                </div>
-                                <div>{formatDate(order.createdAt || "")}</div>
-                                <div className="flex gap-[10px] justify-end">
-                                    <ButtonWithIcon
-                                        onClick={() =>
-                                            openModal("infoUserOrder", order)
-                                        }
-                                    >
-                                        <InfoIcon className="w-[30px] fill-none stroke-white stroke-2 group-hover:stroke-black" />
-                                    </ButtonWithIcon>
-                                </div>
-                            </div>
-                        ))}
+                            );
+                        })}
                     </div>
                 </div>
             ) : (
-                <div>Замовлення відсутні</div>
-            )}
-            {selectedOrder && (
-                <OrderInfoModal
-                    isOpen={activeModal === "infoUserOrder"}
-                    onClose={closeModal}
-                    order={selectedOrder}
-                />
+                <div className="text-center text-white/60 p-10">
+                    Замовлення відсутні
+                </div>
             )}
         </div>
     );

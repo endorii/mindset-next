@@ -30,6 +30,7 @@ export function useCreateOrder() {
         mutationFn: (data: IOrder) => createOrder(data),
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["orders"] });
+            queryClient.invalidateQueries({ queryKey: ["cart"] });
         },
     });
 }
