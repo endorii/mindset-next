@@ -1,22 +1,19 @@
 "use client";
 
-import AddCategoryModal from "@/features/categories/modals/AddCategoryModal";
 import { useOrders } from "@/features/orders/hooks/useOrders";
 import DeleteOrderModal from "@/features/orders/modals/DeleteOrderModal";
 import EditOrderModal from "@/features/orders/modals/EditOrderModal";
 import OrderInfoModal from "@/features/orders/modals/OrderInfoModal";
 import { IOrder } from "@/features/orders/types/orders.types";
 import { InfoIcon, EditIcon, TrashIcon } from "@/shared/icons";
-import OrderIcon from "@/shared/icons/OrderIcon";
 import { OrderModalType } from "@/shared/types/types";
 import ButtonWithIcon from "@/shared/ui/buttons/ButtonWithIcon";
 import ChooseButton from "@/shared/ui/buttons/ChooseButton";
 import DeleteButtonWithIcon from "@/shared/ui/buttons/DeleteButtonWithIcon";
 import { formatDate } from "@/shared/utils/formatDate";
-import { data } from "motion/react-client";
 import { useState } from "react";
 
-function page() {
+function Orders() {
     const { data: orders } = useOrders();
 
     const sortFilters = ["Спочатку новіші", "Спочатку старіші"];
@@ -176,4 +173,4 @@ function page() {
     );
 }
 
-export default page;
+export default Orders;

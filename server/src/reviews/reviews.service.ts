@@ -13,7 +13,14 @@ export class ReviewsService {
     ) {}
 
     async createReview(userId: string, createReviewDto: CreateReviewDto) {
-        const { content, rating, productId, orderItemId, images } = createReviewDto;
+        const { content, rating, productId, senderEmail, senderName, orderItemId, images } =
+            createReviewDto;
+
+        if (!orderItemId) {
+            throw new BadRequestException(
+                "Не вказано orderItemId — неможливо перевірити існуючий відгук."
+            );
+        }
 
         const existingReviewForOrderItem = await this.prisma.review.findUnique({
             where: {
@@ -60,6 +67,8 @@ export class ReviewsService {
                 data: {
                     content,
                     rating,
+                    senderEmail,
+                    senderName,
                     productId,
                     orderItemId,
                     userId,
@@ -80,10 +89,24 @@ export class ReviewsService {
         }
     }
 
-    async getReviewsByProductId(productId: string) {
+    async getAllReviews() {
         try {
             const reviews = await this.prisma.review.findMany({
-                where: { productId },
+                include: {
+                    orderItem: {
+                        include: {
+                            product: {
+                                include: {
+                                    category: {
+                                        include: {
+                                            collection: true,
+                                        },
+                                    },
+                                },
+                            },
+                        },
+                    },
+                },
             });
 
             if (!reviews) throw new Error("Відгуки відсутні");
@@ -91,6 +114,107 @@ export class ReviewsService {
         } catch (error) {
             console.error("Помилка отримання відгуків:", error);
             throw new Error("Не вдалося отримати відгуки");
+        }
+    }
+
+    async getReviewsByUserId(userId: string) {
+        try {
+            const reviews = await this.prisma.review.findMany({
+                where: { userId },
+                include: {
+                    orderItem: {
+                        include: {
+                            product: {
+                                include: {
+                                    category: {
+                                        include: {
+                                            collection: true,
+                                        },
+                                    },
+                                },
+                            },
+                        },
+                    },
+                },
+            });
+
+            if (!reviews) throw new Error("Відгуки відсутні");
+            return reviews;
+        } catch (error) {
+            console.error("Помилка отримання відгуків:", error);
+            throw new Error("Не вдалося отримати відгуки");
+        }
+    }
+
+    async getReviewsByProductId(productId: string) {
+        try {
+            const reviews = await this.prisma.review.findMany({
+                where: { productId },
+                include: {
+                    orderItem: {
+                        include: {
+                            product: {
+                                include: {
+                                    category: {
+                                        include: {
+                                            collection: true,
+                                        },
+                                    },
+                                },
+                            },
+                        },
+                    },
+                },
+            });
+
+            if (!reviews) throw new Error("Відгуки відсутні");
+            return reviews;
+        } catch (error) {
+            console.error("Помилка отримання відгуків:", error);
+            throw new Error("Не вдалося отримати відгуки");
+        }
+    }
+
+    async approveReview(userId: string, id: string) {
+        try {
+            const review = await this.prisma.review.findFirst({
+                where: {
+                    id,
+                },
+                include: {
+                    orderItem: {
+                        include: {
+                            product: true,
+                        },
+                    },
+                },
+            });
+
+            if (!review) {
+                throw new BadRequestException("Відгук не знайдено");
+            }
+
+            const reviewToApprove = await this.prisma.review.update({
+                where: {
+                    id,
+                },
+                data: {
+                    isApproved: true,
+                },
+            });
+
+            await this.recentActions.createAction(
+                userId,
+                `Відгук до товару "${review.orderItem.product.name}" погоджено ${review.id}`
+            );
+
+            return {
+                message: "Відгук успішно оновлено",
+                reviewToApprove,
+            };
+        } catch (error) {
+            console.error("Помилка редагування відгуку:", error);
+            throw new Error("Не вдалося оновити відгук");
         }
     }
 

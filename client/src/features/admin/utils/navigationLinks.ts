@@ -7,9 +7,15 @@ import {
     TagIcon,
 } from "@/shared/icons";
 import OrderIcon from "@/shared/icons/OrderIcon";
+import ReviewIcon from "@/shared/icons/ReviewIcon";
 
 export const adminPanelNavigationLinks = [
     { href: "/admin", Icon: MainPageIcon, text: "Головна" },
+    {
+        href: "/admin/stats",
+        Icon: StatsIcon,
+        text: "Статистика",
+    },
     {
         href: "/admin/collections",
         Icon: CollectionsIcon,
@@ -26,9 +32,9 @@ export const adminPanelNavigationLinks = [
         text: "Замовлення",
     },
     {
-        href: "/admin/stats",
-        Icon: StatsIcon,
-        text: "Статистика",
+        href: "/admin/reviews",
+        Icon: ReviewIcon,
+        text: "Відгуки",
     },
     {
         href: "/admin/account",

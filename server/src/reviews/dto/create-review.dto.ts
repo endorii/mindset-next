@@ -12,8 +12,20 @@ export class CreateReviewDto {
     @Type(() => Number)
     rating: number;
 
+    @IsString()
+    @IsNotEmpty({ message: "Поле електронної пошти не може бути пустим" })
+    senderEmail: string;
+
+    @IsString()
+    @IsNotEmpty({ message: "Поле імені та прізвища відправника не може бути пустим" })
+    senderName: string;
+
+    @IsString({ message: "productId має бути рядком." })
+    @IsNotEmpty({ message: "productId є обовʼязковим." })
     productId: string;
 
+    @IsString({ message: "orderItemId має бути рядком." })
+    @IsNotEmpty({ message: "orderItemId є обовʼязковим." })
     orderItemId: string;
 
     @IsOptional()

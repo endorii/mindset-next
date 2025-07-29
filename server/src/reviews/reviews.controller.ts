@@ -23,11 +23,34 @@ export class ReviewsController {
         return this.reviewsService.createReview(req.user.id, createReviewDto);
     }
 
+    @Get("")
+    @Roles(Role.ADMIN)
+    async getAllReviews() {
+        const reviews = await this.reviewsService.getAllReviews();
+        return reviews;
+    }
+
+    @Get("user")
+    @Public()
+    async getReviewsByUserId(@Req() req: Request & { user: AuthenticatedRequestUser }) {
+        const reviews = await this.reviewsService.getReviewsByUserId(req.user.id);
+        return reviews;
+    }
+
     @Get("product/:productId")
     @Public()
     async getReviewsByProductId(@Param("productId") productId: string) {
         const reviews = await this.reviewsService.getReviewsByProductId(productId);
         return reviews;
+    }
+
+    @Patch(":id")
+    @Roles(Role.ADMIN)
+    async approveReview(
+        @Req() req: Request & { user: AuthenticatedRequestUser },
+        @Param("id") id: string
+    ) {
+        return this.reviewsService.approveReview(req.user.id, id);
     }
 
     @Patch("admin/:id")

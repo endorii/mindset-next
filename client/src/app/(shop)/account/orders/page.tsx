@@ -2,12 +2,13 @@
 
 import { useCurrentUser } from "@/features/admin/user-info/hooks/useUsers";
 import { useUserOrders } from "@/features/orders/hooks/useOrders";
-import OrderInfoModal from "@/features/orders/modals/OrderInfoModal";
-import { IOrder } from "@/features/orders/types/orders.types";
+import { IOrderItem } from "@/features/orders/types/orders.types";
+import AddReviewModal from "@/features/reviews/modals/AddReviewModal";
 import { BackIcon } from "@/shared/icons";
-import { OrderModalType } from "@/shared/types/types";
+import { ModalType } from "@/shared/types/types";
 import MonoButton from "@/shared/ui/buttons/MonoButton";
 import { formatDate } from "@/shared/utils/formatDate";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 const Orders = () => {
@@ -15,6 +16,11 @@ const Orders = () => {
     const { data: userOrders = [] } = useUserOrders(user?.id || "");
 
     const [expandedOrderId, setExpandedOrderId] = useState<string | null>(null);
+    const [activeModal, setActiveModal] = useState<boolean>(false);
+    const [selectedOrderItem, setSelectedOrderItem] =
+        useState<IOrderItem | null>(null);
+
+    const router = useRouter();
 
     const toggleExpand = (orderId: string) => {
         setExpandedOrderId((prevId) => (prevId === orderId ? null : orderId));
@@ -48,7 +54,7 @@ const Orders = () => {
                                                     : "rotate-270"
                                             }`}
                                         >
-                                            <BackIcon className="fill-white stroke-80 stroke-white w-[23px]" />
+                                            <BackIcon className="fill-white stroke-80 stroke-white w-[20px]" />
                                         </button>
 
                                         <div className="flex flex-col justify-between gap-[10px]">
@@ -172,7 +178,6 @@ const Orders = () => {
                                                             key={item.id}
                                                             className="grid grid-cols-[2fr_1fr_0.5fr_230px] gap-4 items-center border border-white/10 rounded-lg p-3 bg-white/5"
                                                         >
-                                                            {/* Колонка 1: Зображення + Назва + деталі */}
                                                             <div className="flex gap-4 items-center">
                                                                 <img
                                                                     src={
@@ -215,7 +220,6 @@ const Orders = () => {
                                                                 </div>
                                                             </div>
 
-                                                            {/* Колонка 2: Ціна × К-сть */}
                                                             <div className="text-white text-sm">
                                                                 {
                                                                     item.product
@@ -226,7 +230,6 @@ const Orders = () => {
                                                                 од.
                                                             </div>
 
-                                                            {/* Колонка 3: Загальна ціна + стара ціна */}
                                                             <div className="flex flex-col gap-1">
                                                                 <div className="text-white/50 text-xs line-through">
                                                                     {Number(
@@ -252,7 +255,6 @@ const Orders = () => {
                                                                 </div>
                                                             </div>
 
-                                                            {/* Колонка 4: Кнопки */}
                                                             <div className="flex flex-col gap-2">
                                                                 <MonoButton
                                                                     disabled={
@@ -264,11 +266,26 @@ const Orders = () => {
                                                                             "shipped"
                                                                     }
                                                                     className="w-full h-[40px] py-[10px] font-semibold text-sm"
+                                                                    onClick={() => {
+                                                                        setActiveModal(
+                                                                            true
+                                                                        );
+                                                                        setSelectedOrderItem(
+                                                                            item
+                                                                        );
+                                                                    }}
                                                                 >
                                                                     Залишити
                                                                     відгук
                                                                 </MonoButton>
-                                                                <MonoButton className="w-full h-[40px] py-[10px] font-semibold text-sm">
+                                                                <MonoButton
+                                                                    className="w-full h-[40px] py-[10px] font-semibold text-sm"
+                                                                    onClick={() =>
+                                                                        router.push(
+                                                                            `/${item.product?.category?.collection?.path}/${item.product?.category?.path}/${item.product?.path}`
+                                                                        )
+                                                                    }
+                                                                >
                                                                     Повторити
                                                                     замовлення
                                                                 </MonoButton>
@@ -289,6 +306,15 @@ const Orders = () => {
                     Замовлення відсутні
                 </div>
             )}
+
+            <AddReviewModal
+                isOpen={activeModal}
+                selectedOrderItem={selectedOrderItem}
+                onClose={() => {
+                    setActiveModal(false);
+                    setSelectedOrderItem(null);
+                }}
+            />
         </div>
     );
 };

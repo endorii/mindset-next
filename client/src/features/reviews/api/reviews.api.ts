@@ -1,10 +1,12 @@
-import { ICollection } from "../types/collections.types";
+import { IReview } from "../types/reviews.types";
 
 const API_BASE_URL = "http://localhost:5000/api";
 
-export async function fetchCollections(): Promise<ICollection[]> {
+export async function fetchAllReviews(): Promise<IReview[]> {
     try {
-        const response = await fetch(`${API_BASE_URL}/collections`);
+        const response = await fetch(`${API_BASE_URL}/reviews`, {
+            credentials: "include",
+        });
 
         if (!response.ok) {
             const errorData = await response.json().catch(() => ({}));
@@ -17,9 +19,11 @@ export async function fetchCollections(): Promise<ICollection[]> {
     }
 }
 
-export async function fetchCollection(collectionPath: string): Promise<ICollection> {
+export async function fetchReviewsByProductId(productId: string): Promise<IReview[]> {
     try {
-        const response = await fetch(`${API_BASE_URL}/collections/${collectionPath}`);
+        const response = await fetch(`${API_BASE_URL}/reviews/product/${productId}`, {
+            credentials: "include",
+        });
 
         if (!response.ok) {
             const errorData = await response.json().catch(() => ({}));
@@ -32,9 +36,26 @@ export async function fetchCollection(collectionPath: string): Promise<ICollecti
     }
 }
 
-export async function createCollection(data: ICollection): Promise<ICollection> {
+export async function fetchReviewsByUserId(): Promise<IReview[]> {
     try {
-        const response = await fetch(`${API_BASE_URL}/collections`, {
+        const response = await fetch(`${API_BASE_URL}/reviews/user`, {
+            credentials: "include",
+        });
+
+        if (!response.ok) {
+            const errorData = await response.json().catch(() => ({}));
+            throw new Error(errorData.message);
+        }
+
+        return await response.json();
+    } catch (error: any) {
+        throw new Error(error?.message || "Помилка з'єднання із сервером");
+    }
+}
+
+export async function createReview(data: IReview): Promise<IReview> {
+    try {
+        const response = await fetch(`${API_BASE_URL}/reviews`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -54,12 +75,9 @@ export async function createCollection(data: ICollection): Promise<ICollection> 
     }
 }
 
-export async function editCollection(
-    collectionPath: string,
-    data: Partial<ICollection>
-): Promise<ICollection> {
+export async function updateReview(reviewId: string, data: Partial<IReview>): Promise<IReview> {
     try {
-        const response = await fetch(`${API_BASE_URL}/collections/${collectionPath}`, {
+        const response = await fetch(`${API_BASE_URL}/reviews/admin/${reviewId}`, {
             method: "PATCH",
             headers: {
                 "Content-Type": "application/json",
@@ -79,9 +97,30 @@ export async function editCollection(
     }
 }
 
-export async function deleteCollection(collectionPath: string): Promise<ICollection> {
+export async function approveReview(reviewId: string): Promise<IReview> {
     try {
-        const response = await fetch(`${API_BASE_URL}/collections/${collectionPath}`, {
+        const response = await fetch(`${API_BASE_URL}/reviews/${reviewId}`, {
+            method: "PATCH",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            credentials: "include",
+        });
+
+        if (!response.ok) {
+            const errorData = await response.json().catch(() => ({}));
+            throw new Error(errorData.message);
+        }
+
+        return await response.json();
+    } catch (error: any) {
+        throw new Error(error?.message || "Помилка з'єднання із сервером");
+    }
+}
+
+export async function deleteReview(reviewId: string): Promise<IReview> {
+    try {
+        const response = await fetch(`${API_BASE_URL}/reviews/${reviewId}`, {
             method: "DELETE",
             credentials: "include",
         });

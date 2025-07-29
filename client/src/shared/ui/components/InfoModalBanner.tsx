@@ -3,9 +3,10 @@ import Label from "./Label";
 
 interface InfoModalBannerProps {
     image: string;
+    w?: number;
 }
 
-function InfoModalBanner({ image }: InfoModalBannerProps) {
+function InfoModalBanner({ image, w = 400 }: InfoModalBannerProps) {
     return (
         <div className="flex flex-col gap-[7px] w-full">
             <Label>Банер</Label>
@@ -18,7 +19,7 @@ function InfoModalBanner({ image }: InfoModalBannerProps) {
                             : "/placeholder.png"
                     }
                     alt={image ? "Банер" : "Зображення відсутнє"}
-                    width={400}
+                    width={w}
                     height={0}
                 />
             </div>

@@ -1,49 +1,49 @@
 "use client";
 
-import { deleteImage } from "@/shared/api/images.api";
 import { useEscapeKeyClose } from "@/shared/hooks/useEscapeKeyClose";
 import { createPortal } from "react-dom";
-import { useDeleteCollection } from "../hooks/useCollections";
-import { ICollection } from "../types/collections.types";
 import MonoButton from "@/shared/ui/buttons/MonoButton";
 import DeleteButton from "@/shared/ui/buttons/DeleteButton";
 import ModalWrapper from "@/shared/ui/wrappers/ModalWrapper";
 import FormButtonsWrapper from "@/shared/ui/wrappers/FormButtonsWrapper";
 import { toast } from "sonner";
+import { useDeleteReview } from "../hooks/useReviews";
+import { IReview } from "../types/reviews.types";
 
-interface DeleteCollectionModalProps {
+interface DeleteReviewModalProps {
     isOpen: boolean;
     onClose: () => void;
-    collection: ICollection;
+    review: IReview;
 }
 
-export default function DeleteCollectionModal({
+export default function DeleteReviewModal({
     isOpen,
     onClose,
-    collection,
-}: DeleteCollectionModalProps) {
+    review,
+}: DeleteReviewModalProps) {
     if (!isOpen) return null;
 
-    const deleteCollection = useDeleteCollection();
+    const deleteReviewMutation = useDeleteReview();
 
     const handleDelete = async () => {
+        if (!review.id) return;
+
         try {
-            await deleteImage(collection.banner);
-            await deleteCollection.mutateAsync(collection.path);
-            toast.success("Коллекцію упішно видалено!");
+            await deleteReviewMutation.mutateAsync(review.id);
+            toast.success("Відгук упішно видалено!");
         } catch (e) {
-            toast.error("Помилка при видаленні колекції");
+            toast.error("Помилка при видаленні відгуку");
         }
     };
 
     useEscapeKeyClose({ isOpen, onClose });
 
     const modalContent = (
-        <ModalWrapper onClose={onClose} modalTitle={"Видалення колекції"}>
+        <ModalWrapper onClose={onClose} modalTitle={"Видалення відгуку"}>
             <div className="mb-6 text-white/80 text-[16px] leading-[1.6]">
-                Ви дійсно хочете видалити колекцію{" "}
+                Ви дійсно хочете видалити відгук до товару{" "}
                 <span className="font-semibold text-white">
-                    {collection.name}
+                    {review.product?.name}
                 </span>
                 ?
             </div>

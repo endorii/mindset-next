@@ -30,6 +30,13 @@ export type OrderModalType =
     | "deleteOrder"
     | null;
 
+export type ReviewModalType =
+    | "reviewInfo"
+    | "reviewReply"
+    | "reviewApprove"
+    | "reviewDelete"
+    | null;
+
 export type TodoModalType = "add" | "edit" | "delete" | null;
 
 export type TStatus = "Активно" | "Не активно";
