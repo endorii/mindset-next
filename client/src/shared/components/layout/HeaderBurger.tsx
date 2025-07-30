@@ -6,7 +6,7 @@ import { BurgerMenuIcon, CloseIcon } from "@/shared/icons";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
-const ChooseCategoryHeader = () => {
+const HeaderBurger = () => {
     const { data: collections, isError, error, isLoading } = useCollections();
 
     const [isOpen, setIsOpen] = useState(false);
@@ -50,29 +50,31 @@ const ChooseCategoryHeader = () => {
                     <CloseIcon className="w-[30px] fill-none stroke-2 stroke-white" />
                 </button>
                 <div className="flex flex-col w-[53%] p-[30px] gap-[70px] overflow-y-auto">
-                    <div className="flex gap-[20px] justify-between">
-                        <div className="text-white relative px-[40px]">
-                            <div className="text-6xl font-extrabold">
-                                Наші колекції
+                    {collections && collections.length > 0 ? (
+                        <div className="flex gap-[20px] justify-between">
+                            <div className="text-white relative px-[40px]">
+                                <div className="text-6xl font-extrabold">
+                                    Наші колекції
+                                </div>
+                                <div className="absolute top-[40px] text-8xl font-qwitcher-grypen text-white/40">
+                                    Collections
+                                </div>
                             </div>
-                            <div className="absolute top-[40px] text-8xl font-qwitcher-grypen text-white/40">
-                                Collections
-                            </div>
+                            <ul className="flex flex-col gap-4 text-2xl items-end">
+                                {collections?.map((collection) => (
+                                    <li
+                                        key={collection.id}
+                                        onClick={() => setIsOpen(false)}
+                                        className="border-b border-transparent hover:border-b hover:border-white transition-all duration-200"
+                                    >
+                                        <Link href={`/${collection.path}`}>
+                                            {collection.name}
+                                        </Link>
+                                    </li>
+                                ))}
+                            </ul>
                         </div>
-                        <ul className="flex flex-col gap-4 text-2xl items-end">
-                            {collections?.map((collection) => (
-                                <li
-                                    key={collection.id}
-                                    onClick={() => setIsOpen(false)}
-                                    className="border-b border-transparent hover:border-b hover:border-white transition-all duration-200"
-                                >
-                                    <Link href={`/${collection.path}`}>
-                                        {collection.name}
-                                    </Link>
-                                </li>
-                            ))}
-                        </ul>
-                    </div>
+                    ) : null}
                     <div className="flex gap-[20px] justify-between">
                         <div className="text-white relative px-[40px]">
                             <div className="text-6xl font-extrabold">
@@ -183,4 +185,4 @@ const ChooseCategoryHeader = () => {
     );
 };
 
-export default ChooseCategoryHeader;
+export default HeaderBurger;

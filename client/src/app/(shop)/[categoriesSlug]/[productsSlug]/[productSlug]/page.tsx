@@ -21,7 +21,6 @@ import { useState, useEffect } from "react";
 import MonoButton from "@/shared/ui/buttons/MonoButton";
 import AttributeSelector from "@/features/products/components/AttributeSelector";
 import QuantitySelector from "@/shared/ui/selectors/QuantitySelector";
-import { div } from "motion/react-client";
 import ReviewsOnProductPage from "@/features/reviews/components/ReviewsOnProductPage";
 
 export default function ProductPage() {
@@ -189,7 +188,7 @@ export default function ProductPage() {
                         />
                     </div>
                     {product.images.length > 0 ? (
-                        <ul className="flex flex-col w-[150px] gap-[10px] overflow-y-auto max-h-[600px]">
+                        <ul className="flex flex-col w-[150px] gap-[10px] overflow-y-auto max-h-[800px]">
                             {product.images?.map((image, i) => (
                                 <li key={i}>
                                     <img
@@ -310,8 +309,8 @@ export default function ProductPage() {
                             onClick={handleCartToggle}
                             className={`w-full h-[50px] ${
                                 alreadyInCart
-                                    ? "bg-black text-white"
-                                    : "bg-white text-black"
+                                    ? "bg-black"
+                                    : "bg-white text-black!"
                             }`}
                             disabled={
                                 !product.available ||
@@ -339,7 +338,7 @@ export default function ProductPage() {
                     </div>
                 </div>
             </div>
-            <ReviewsOnProductPage productId={product.id} />
+            <ReviewsOnProductPage product={product} />
         </div>
     );
 }

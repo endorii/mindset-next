@@ -31,14 +31,23 @@ export default function DeleteCategoryModal({
 
     const handleDelete = async () => {
         try {
+            if (category.products && category.products.length > 0) {
+                toast.info(
+                    "Категорія містить товари, щоб її видалити, видаліть товари, які у ній знаходяться"
+                );
+                return;
+            }
+
             if (category.banner) {
                 await deleteImage(category.banner);
             }
+
             await deleteCategoryMutation.mutateAsync({
                 collectionPath,
                 categoryPath: category.path,
             });
-            toast.success("Категорію упішно видалено!");
+
+            toast.success("Категорію успішно видалено!");
         } catch (e) {
             toast.error("Помилка при видаленні категорії");
         }

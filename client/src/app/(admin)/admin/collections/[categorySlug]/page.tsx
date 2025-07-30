@@ -36,7 +36,12 @@ function AdminCollection() {
     const pathname = usePathname();
     const collectionPath = pathname.split("/")[3] || "";
 
-    const { data, isError, error, isLoading } = useCollection(collectionPath);
+    const {
+        data: collection,
+        isError,
+        error,
+        isLoading,
+    } = useCollection(collectionPath);
 
     const [activeModal, setActiveModal] = useState<ModalType>(null);
     const [selectedCategory, setSelectedCategory] = useState<ICategory | null>(
@@ -61,7 +66,7 @@ function AdminCollection() {
             </div>
         );
 
-    const categories = data?.categories ?? [];
+    const categories = collection?.categories ?? [];
 
     return (
         <div className="flex flex-col gap-[15px]">
@@ -72,7 +77,9 @@ function AdminCollection() {
                 </MonoButton>
             </div>
             <div className="flex gap-[15px] justify-between items-center rounded-xl bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px]">
-                <div className="text-2xl font-bold">Список колекцій:</div>
+                <div className="text-2xl font-bold">
+                    Список категорій [ {collection?.name} ]:
+                </div>
                 <MonoButton onClick={() => openModal("add")}>
                     <div>Додати категорію</div>
                     <PlusIcon className="stroke-white stroke-2 w-[30px] group-hover:stroke-black" />
@@ -162,11 +169,11 @@ function AdminCollection() {
                 </div>
             )}
 
-            {data && (
+            {collection && (
                 <AddCategoryModal
                     isOpen={activeModal === "add"}
                     onClose={closeModal}
-                    collectionId={data.id}
+                    collectionId={collection.id}
                     collectionPath={collectionPath}
                 />
             )}

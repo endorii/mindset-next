@@ -149,7 +149,7 @@ export class ReviewsService {
     async getReviewsByProductId(productId: string) {
         try {
             const reviews = await this.prisma.review.findMany({
-                where: { productId },
+                where: { productId, isApproved: true },
                 include: {
                     orderItem: {
                         include: {

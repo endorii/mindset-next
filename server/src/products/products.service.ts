@@ -14,14 +14,22 @@ export class ProductsService {
 
     async getProduct(collectionPath: string, categoryPath: string, productPath: string) {
         try {
+            const category = await this.prisma.category.findFirst({
+                where: {
+                    path: categoryPath,
+                    collection: {
+                        path: collectionPath,
+                    },
+                },
+            });
+
+            if (!category) throw new Error("Категорію не знайдено");
+
             const product = await this.prisma.product.findUnique({
                 where: {
-                    path: productPath,
-                    category: {
-                        path: categoryPath,
-                        collection: {
-                            path: collectionPath,
-                        },
+                    categoryId_path: {
+                        categoryId: category.id,
+                        path: productPath,
                     },
                 },
                 include: {
@@ -43,14 +51,6 @@ export class ProductsService {
 
     async postProduct(userId: string, createProductDto: CreateProductDto) {
         try {
-            const existingProduct = await this.prisma.product.findUnique({
-                where: { path: createProductDto.path },
-            });
-
-            if (existingProduct) {
-                throw new ConflictException("Товар з таким шляхом вже існує");
-            }
-
             const {
                 name,
                 path,
@@ -68,6 +68,19 @@ export class ProductsService {
                 sizeIds,
                 typeIds,
             } = createProductDto;
+
+            const existingProduct = await this.prisma.product.findUnique({
+                where: {
+                    categoryId_path: {
+                        categoryId,
+                        path,
+                    },
+                },
+            });
+
+            if (existingProduct) {
+                throw new ConflictException("Товар з таким шляхом вже існує");
+            }
 
             const product = await this.prisma.product.create({
                 data: {

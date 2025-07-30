@@ -263,7 +263,9 @@ const Orders = () => {
                                                                         order.status ===
                                                                             "paid" ||
                                                                         order.status ===
-                                                                            "shipped"
+                                                                            "shipped" ||
+                                                                        order.status ===
+                                                                            "cancelled"
                                                                     }
                                                                     className="w-full h-[40px] py-[10px] font-semibold text-sm"
                                                                     onClick={() => {

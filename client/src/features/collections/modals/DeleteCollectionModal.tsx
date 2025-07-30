@@ -28,6 +28,13 @@ export default function DeleteCollectionModal({
 
     const handleDelete = async () => {
         try {
+            if (collection.categories && collection.categories.length > 0) {
+                toast.error(
+                    "Колекція містить категорії, щоб її видалити, видаліть категорії, які у ній знаходяться"
+                );
+                return;
+            }
+
             await deleteImage(collection.banner);
             await deleteCollection.mutateAsync(collection.path);
             toast.success("Коллекцію упішно видалено!");

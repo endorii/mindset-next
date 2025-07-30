@@ -7,7 +7,7 @@ import { getLocalStorageArray } from "@/shared/utils/helpers";
 import { useFavoritesFromUser } from "@/features/favorites/hooks/useFavorites";
 import { useCartItemsFromUser } from "@/features/cart/hooks/useCart";
 import { usePathname } from "next/navigation";
-import ChooseCategoryHeader from "./ChooseCategoryHeader";
+import HeaderBurger from "./HeaderBurger";
 
 const Header = () => {
     const { data: user } = useCurrentUser();
@@ -57,7 +57,7 @@ const Header = () => {
 
     return (
         <header className="fixed py-[10px] px-[20px] h-[85px] flex justify-between items-center w-full bg-black/70 backdrop-blur-xl text-white z-[100] shadow-custom">
-            <ChooseCategoryHeader />
+            <HeaderBurger />
             <Link
                 href="/"
                 className={`absolute left-1/2 transform -translate-x-1/2 transition-opacity duration-300 ${

@@ -48,28 +48,34 @@ const Footer = () => {
                     кого його стиль - це його вайб.
                 </div>
             </div>
-            <div className="absolute top-[30px] left-[50%] translate-x-[-50%] rounded-xl bg-white/5 shadow-lg backdrop-blur-lg border border-white/5 p-[20px]">
-                <div className="text-center font-bold mb-[5px]">Колекції:</div>
-                <ul className="flex gap-[10px] max-w-[450px] flex-wrap justify-center">
-                    {Array.isArray(collections) &&
-                        collections.map((collection, i) => {
-                            return (
-                                <li key={i}>
-                                    <ChooseLink
-                                        href={`/${collection.path}`}
-                                        onClick={() =>
-                                            setCurrentCollection(collection)
-                                        }
-                                        currentCollection={currentCollection}
-                                        collection={collection}
-                                    >
-                                        {collection.name}
-                                    </ChooseLink>
-                                </li>
-                            );
-                        })}
-                </ul>
-            </div>
+            {collections && collections.length > 0 ? (
+                <div className="absolute top-[30px] left-[50%] translate-x-[-50%] rounded-xl bg-white/5 shadow-lg backdrop-blur-lg border border-white/5 p-[20px]">
+                    <div className="text-center font-bold mb-[5px]">
+                        Колекції:
+                    </div>
+                    <ul className="flex gap-[10px] max-w-[450px] flex-wrap justify-center">
+                        {Array.isArray(collections) &&
+                            collections.map((collection, i) => {
+                                return (
+                                    <li key={i}>
+                                        <ChooseLink
+                                            href={`/${collection.path}`}
+                                            onClick={() =>
+                                                setCurrentCollection(collection)
+                                            }
+                                            currentCollection={
+                                                currentCollection
+                                            }
+                                            collection={collection}
+                                        >
+                                            {collection.name}
+                                        </ChooseLink>
+                                    </li>
+                                );
+                            })}
+                    </ul>
+                </div>
+            ) : null}
             <div className="flex flex-col gap-[20px] ">
                 <ul className="flex flex-col gap-[7px] text-sm rounded-xl bg-white/5 shadow-lg backdrop-blur-lg border border-white/5 p-[20px]">
                     <li className="hover:underline">

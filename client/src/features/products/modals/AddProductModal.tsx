@@ -171,7 +171,6 @@ export default function AddProductModal({
                     type: "manual",
                     message: "Оберіть хоча б один тип",
                 });
-                console.log(hasError);
                 hasError = true;
             } else clearErrors("typeIds");
 
@@ -183,8 +182,6 @@ export default function AddProductModal({
                 hasError = false;
                 setBannerError(null);
             }
-
-            console.log(hasError);
 
             if (hasError) return;
             const uploadBannerResult = await uploadImageMutation.mutateAsync(

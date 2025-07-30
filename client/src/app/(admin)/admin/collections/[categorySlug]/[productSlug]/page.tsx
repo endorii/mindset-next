@@ -71,7 +71,7 @@ function AdminCategory() {
 
             <div className="flex gap-[15px] justify-between items-center rounded-xl bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px]">
                 <div className="text-2xl font-bold">
-                    Список товарів {data?.collection?.name}/{data?.name}:
+                    Список товарів [ {data?.collection?.name} / {data?.name} ]:
                 </div>
                 <MonoButton onClick={() => openModal("add")}>
                     <div>Додати товар</div>

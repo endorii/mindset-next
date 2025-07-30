@@ -1,277 +1,277 @@
 generator client {
-    provider = "prisma-client-js"
-    output   = "../generated/prisma"
+  provider = "prisma-client-js"
+  output   = "../generated/prisma"
 }
 
 datasource db {
-    provider = "postgresql"
-    url      = env("DATABASE_URL")
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
 }
 
 model User {
-    id                 String           @id @default(cuid())
-    email              String           @unique
-    password           String
-    phone              String
-    createdAt          DateTime         @default(now()) @map("created_at")
-    updatedAt          DateTime         @updatedAt @map("updated_at")
-    hashedRefreshToken String?
-    name               String
-    role               Role             @default(USER)
-    cart               CartItem[]
-    favorites          Favorite[]
-    shippingAddress    ShippingAddress?
-    orders             Order[]
-    todo               Todo[]
+  id                 String           @id @default(cuid())
+  email              String           @unique
+  password           String
+  phone              String
+  createdAt          DateTime         @default(now()) @map("created_at")
+  updatedAt          DateTime         @updatedAt @map("updated_at")
+  hashedRefreshToken String?
+  name               String
+  role               Role             @default(USER)
+  cart               CartItem[]
+  favorites          Favorite[]
+  shippingAddress    ShippingAddress?
+  orders             Order[]
+  todo               Todo[]
 
-    recentActions RecentAction[]
-    reviews       Review[]
+  recentActions RecentAction[]
+  reviews       Review[]
 }
 
 model Todo {
-    id        String       @id @default(cuid())
-    title     String
-    priority  TodoPriority @default(low)
-    createdAt DateTime     @default(now()) @map("created_at")
-    updatedAt DateTime     @updatedAt @map("updated_at")
-    userId    String       @map("user_id")
-    user      User         @relation(fields: [userId], references: [id])
+  id        String       @id @default(cuid())
+  title     String
+  priority  TodoPriority @default(low)
+  createdAt DateTime     @default(now()) @map("created_at")
+  updatedAt DateTime     @updatedAt @map("updated_at")
+  userId    String       @map("user_id")
+  user      User         @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model RecentAction {
-    id        String   @id @default(uuid())
-    action    String
-    createdAt DateTime @default(now()) @map("created_at")
+  id        String   @id @default(uuid())
+  action    String
+  createdAt DateTime @default(now()) @map("created_at")
 
-    userId String
-    user   User   @relation(fields: [userId], references: [id])
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model Order {
-    id             String      @id @default(uuid())
-    fullName       String      @map("full_name")
-    phoneNumber    String      @map("phone_number")
-    email          String
-    area           String
-    city           String
-    postDepartment String      @map("post_department")
-    status         OrderStatus @default(pending)
-    total          Int
+  id             String      @id @default(uuid())
+  fullName       String      @map("full_name")
+  phoneNumber    String      @map("phone_number")
+  email          String
+  area           String
+  city           String
+  postDepartment String      @map("post_department")
+  status         OrderStatus @default(pending)
+  total          Int
 
-    additionalInfo String? @map("additional_info")
+  additionalInfo String? @map("additional_info")
 
-    createdAt DateTime @default(now()) @map("created_at")
-    updatedAt DateTime @updatedAt @map("updated_at")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
 
-    userId String @map("user_id")
-    user   User   @relation(fields: [userId], references: [id])
+  userId String @map("user_id")
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-    items OrderItem[]
+  items OrderItem[]
 }
 
 model OrderItem {
-    id       String @id @default(uuid())
-    quantity Int
-    color    String
-    size     String
-    type     String
+  id       String @id @default(uuid())
+  quantity Int
+  color    String
+  size     String
+  type     String
 
-    order   Order  @relation(fields: [orderId], references: [id], onDelete: Cascade)
-    orderId String
+  order   Order  @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  orderId String
 
-    productId String
-    product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
-    review    Review?
+  productId String
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  review    Review?
 }
 
 model Favorite {
-    id        String  @id @default(cuid())
-    userId    String  @map("user_id")
-    productId String  @map("product_id")
-    size      String
-    type      String
-    color     String
-    product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
-    user      User    @relation(fields: [userId], references: [id])
+  id        String  @id @default(cuid())
+  userId    String  @map("user_id")
+  productId String  @map("product_id")
+  size      String
+  type      String
+  color     String
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  user      User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model CartItem {
-    id        String  @id @default(cuid())
-    userId    String  @map("user_id")
-    productId String  @map("product_id")
-    quantity  Int
-    size      String
-    type      String
-    color     String
-    product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
-    user      User    @relation(fields: [userId], references: [id])
+  id        String  @id @default(cuid())
+  userId    String  @map("user_id")
+  productId String  @map("product_id")
+  quantity  Int
+  size      String
+  type      String
+  color     String
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  user      User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model ShippingAddress {
-    id         String @id @default(cuid())
-    userId     String @unique @map("user_id")
-    recipient  String
-    country    String
-    region     String
-    city       String
-    postalCode String @map("postal_code")
-    street     String
-    building   String
-    apartment  String
-    user       User   @relation(fields: [userId], references: [id])
+  id         String @id @default(cuid())
+  userId     String @unique @map("user_id")
+  recipient  String
+  country    String
+  region     String
+  city       String
+  postalCode String @map("postal_code")
+  street     String
+  building   String
+  apartment  String
+  user       User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model Collection {
-    id          String     @id @default(cuid())
-    name        String
-    path        String     @unique
-    description String
-    banner      String
-    createdAt   DateTime   @default(now()) @map("created_at")
-    updatedAt   DateTime   @updatedAt @map("updated_at")
-    status      String
-    views       Int
-    categories  Category[]
+  id          String     @id @default(cuid())
+  name        String
+  path        String     @unique
+  description String
+  banner      String
+  createdAt   DateTime   @default(now()) @map("created_at")
+  updatedAt   DateTime   @updatedAt @map("updated_at")
+  status      String
+  views       Int
+  categories  Category[]
 }
 
 model Category {
-    id           String     @id @default(cuid())
-    name         String
-    path         String
-    description  String
-    banner       String
-    collectionId String     @map("collection_id")
-    createdAt    DateTime   @default(now()) @map("created_at")
-    updatedAt    DateTime   @updatedAt @map("updated_at")
-    status       String
-    views        Int
-    collection   Collection @relation(fields: [collectionId], references: [id])
-    products     Product[]
+  id           String     @id @default(cuid())
+  name         String
+  path         String
+  description  String
+  banner       String
+  collectionId String     @map("collection_id")
+  createdAt    DateTime   @default(now()) @map("created_at")
+  updatedAt    DateTime   @updatedAt @map("updated_at")
+  status       String
+  views        Int
+  collection   Collection @relation(fields: [collectionId], references: [id])
+  products     Product[]
 
-    @@unique([collectionId, path])
+  @@unique([collectionId, path])
 }
 
 model Product {
-    id            String           @id @default(cuid())
-    name          String
-    path          String           @unique
-    price         Int
-    oldPrice      Int              @map("old_price")
-    available     String
-    description   String
-    composition   String
-    categoryId    String           @map("category_id")
-    createdAt     DateTime         @default(now()) @map("created_at")
-    updatedAt     DateTime         @updatedAt @map("updated_at")
-    status        String
-    views         Int
-    banner        String
-    images        String[]
-    cartItems     CartItem[]
-    favorites     Favorite[]
-    category      Category         @relation(fields: [categoryId], references: [id])
-    productColors ProductToColor[]
-    productSizes  ProductToSize[]
-    productTypes  ProductToType[]
-    orderItems    OrderItem[]
-    reviews       Review[]
+  id            String           @id @default(cuid())
+  name          String
+  path          String
+  price         Int
+  oldPrice      Int              @map("old_price")
+  available     String
+  description   String
+  composition   String
+  categoryId    String           @map("category_id")
+  createdAt     DateTime         @default(now()) @map("created_at")
+  updatedAt     DateTime         @updatedAt @map("updated_at")
+  status        String
+  views         Int
+  banner        String
+  images        String[]
+  cartItems     CartItem[]
+  favorites     Favorite[]
+  category      Category         @relation(fields: [categoryId], references: [id])
+  productColors ProductToColor[]
+  productSizes  ProductToSize[]
+  productTypes  ProductToType[]
+  orderItems    OrderItem[]
+  reviews       Review[]
 
-    @@unique([categoryId, path])
+  @@unique([categoryId, path])
 }
 
 model Color {
-    id            String           @id @default(cuid())
-    name          String           @unique
-    hexCode       String?          @map("hex_code")
-    productColors ProductToColor[]
+  id            String           @id @default(cuid())
+  name          String           @unique
+  hexCode       String?          @map("hex_code")
+  productColors ProductToColor[]
 }
 
 model Size {
-    id           String          @id @default(cuid())
-    name         String          @unique
-    productSizes ProductToSize[]
+  id           String          @id @default(cuid())
+  name         String          @unique
+  productSizes ProductToSize[]
 }
 
 model Type {
-    id           String          @id @default(cuid())
-    name         String          @unique
-    productTypes ProductToType[]
+  id           String          @id @default(cuid())
+  name         String          @unique
+  productTypes ProductToType[]
 }
 
 model ProductToColor {
-    productId String  @map("product_id")
-    colorId   String  @map("color_id")
-    color     Color   @relation(fields: [colorId], references: [id], onDelete: Cascade)
-    product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  productId String  @map("product_id")
+  colorId   String  @map("color_id")
+  color     Color   @relation(fields: [colorId], references: [id], onDelete: Cascade)
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
 
-    @@id([productId, colorId])
+  @@id([productId, colorId])
 }
 
 model ProductToSize {
-    productId String  @map("product_id")
-    sizeId    String  @map("size_id")
-    product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
-    size      Size    @relation(fields: [sizeId], references: [id], onDelete: Cascade)
+  productId String  @map("product_id")
+  sizeId    String  @map("size_id")
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  size      Size    @relation(fields: [sizeId], references: [id], onDelete: Cascade)
 
-    @@id([productId, sizeId])
+  @@id([productId, sizeId])
 }
 
 model ProductToType {
-    productId String  @map("product_id")
-    typeId    String  @map("type_id")
-    product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
-    type      Type    @relation(fields: [typeId], references: [id], onDelete: Cascade)
+  productId String  @map("product_id")
+  typeId    String  @map("type_id")
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  type      Type    @relation(fields: [typeId], references: [id], onDelete: Cascade)
 
-    @@id([productId, typeId])
+  @@id([productId, typeId])
 }
 
 model Review {
-    id String @id @default(uuid())
+  id String @id @default(uuid())
 
-    content String @db.Text //@db.Text для довгих текстів.
-    rating  Int
+  content String @db.Text //@db.Text для довгих текстів.
+  rating  Int
 
-    senderName  String
-    senderEmail String
+  senderName  String
+  senderEmail String
 
-    userId String
-    user   User   @relation(fields: [userId], references: [id])
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-    productId String
-    product   Product @relation(fields: [productId], references: [id])
+  productId String
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
 
-    orderItemId String    @unique
-    orderItem   OrderItem @relation(fields: [orderItemId], references: [id])
+  orderItemId String    @unique
+  orderItem   OrderItem @relation(fields: [orderItemId], references: [id], onDelete: Cascade)
 
-    createdAt DateTime @default(now()) @map("created_at")
-    updatedAt DateTime @updatedAt @map("updated_at")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
 
-    isApproved   Boolean @default(false)
-    isHelpful    Int     @default(0)
-    isNotHelpful Int     @default(0)
+  isApproved   Boolean @default(false)
+  isHelpful    Int     @default(0)
+  isNotHelpful Int     @default(0)
 
-    images String[]
+  images String[]
 
-    adminReply   String?   @db.Text
-    adminReplyAt DateTime?
+  adminReply   String?   @db.Text
+  adminReplyAt DateTime?
 }
 
 enum Role {
-    ADMIN
-    EDITOR
-    USER
+  ADMIN
+  EDITOR
+  USER
 }
 
 enum OrderStatus {
-    pending
-    paid
-    shipped
-    delivered
-    cancelled
+  pending
+  paid
+  shipped
+  delivered
+  cancelled
 }
 
 enum TodoPriority {
-    low
-    medium
-    high
+  low
+  medium
+  high
 }

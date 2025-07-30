@@ -30,7 +30,7 @@ export default function CategoryPage() {
     }
 
     return (
-        <div className="flex flex-col gap-[50px] mt-[30px]">
+        <div className="flex flex-col gap-[50px] mt-[10px]">
             <div className="text-white relative px-[70px]">
                 <div className="text-8xl font-extrabold">
                     Товари {category.collection?.path} / {category.path}
@@ -41,9 +41,9 @@ export default function CategoryPage() {
             </div>
 
             {products && products.length > 0 ? (
-                <ul className="flex gap-[20px] w-full px-[30px]">
+                <ul className="grid gap-[20px] w-full px-[30px] grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4">
                     {products.map((product: IProduct, i: number) => (
-                        <li key={i} className="flex max-w-[450px]">
+                        <li key={i} className="w-full">
                             <Link
                                 href={`/${collectionPath}/${categoryPath}/${product.path}`}
                                 className="relative flex flex-col gap-[15px] group rounded-xl bg-white/5 shadow-lg backdrop-blur-lg border border-white/5 p-[20px]"
@@ -53,12 +53,12 @@ export default function CategoryPage() {
                                 </div>
                                 <Image
                                     className="relative rounded-xl"
-                                    width={450}
-                                    height={450}
+                                    width={400}
+                                    height={0}
                                     src={`http://localhost:5000/${product.banner}`}
                                     alt={product.name}
                                 />
-                                <ul className="absolute top-[390px] left-[30px] flex gap-[5px] rounded-[50px] bg-white/5 backdrop-blur-lg border border-white/20 p-[5px]">
+                                <ul className="absolute top-[30px] left-[30px] flex gap-[5px] rounded-[50px] bg-white/5 backdrop-blur-lg border border-white/20 p-[5px]">
                                     {product.productColors.map((color) => (
                                         <li
                                             key={color.color.hexCode}
@@ -85,13 +85,13 @@ export default function CategoryPage() {
                                         </div>
                                     </div>
                                     <hr className="border-top border-white/10 mt-[5px]" />
-                                    <div className="flex gap-[15px] text-white justify-between">
+                                    <div className="flex flex-col gap-[3px] text-white justify-between">
                                         <ul className="flex gap-[5px] flex-wrap">
                                             {product.productSizes.map(
                                                 (size) => (
                                                     <li
                                                         key={size.size.name}
-                                                        className="text-white rounded-xl bg-black/80 shadow-lg backdrop-blur-lg border border-white/5 px-[15px] py-[7px] text-sm"
+                                                        className="text-white rounded-xl bg-black/80 shadow-lg backdrop-blur-lg border border-white/5 px-[15px] py-[5px] text-xs"
                                                     >
                                                         <div>
                                                             {size.size.name}
@@ -105,7 +105,7 @@ export default function CategoryPage() {
                                                 (type) => (
                                                     <li
                                                         key={type.type.name}
-                                                        className="text-white rounded-xl bg-black/80 shadow-lg backdrop-blur-lg border border-white/5 px-[15px] py-[7px] text-sm"
+                                                        className="text-white rounded-xl bg-black/80 shadow-lg backdrop-blur-lg border border-white/5 px-[15px] py-[5px] text-xs"
                                                     >
                                                         <div>
                                                             {type.type.name}
