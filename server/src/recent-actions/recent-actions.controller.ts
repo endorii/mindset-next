@@ -11,9 +11,4 @@ export class RecentActionsController {
 
         return this.recentActionsService.getActionsFromUser(userId);
     }
-
-    // @Delete(":userId")
-    // remove(@Param("userId") id: string) {
-    //     return this.recentActionsService.remove(+id);
-    // }
 }

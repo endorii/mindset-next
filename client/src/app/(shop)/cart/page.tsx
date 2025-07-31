@@ -15,11 +15,12 @@ import {
 } from "@/features/favorites/types/favorites.types";
 import { useCurrentUser } from "@/features/admin/user-info/hooks/useUsers";
 import { CloseIcon, HeartIcon } from "@/shared/icons";
-import Image from "next/image";
 import Link from "next/link";
 import { useState, useEffect } from "react";
 import CartReceip from "@/features/cart/components/CartReceip";
 import ButtonWithTextAndIcon from "@/shared/ui/buttons/ButtonWithTextAndIcon";
+import PopularProducts from "@/shared/components/PopularProducts";
+import Image from "next/image";
 
 function Cart() {
     const { data: user, isLoading } = useCurrentUser();
@@ -198,7 +199,7 @@ function Cart() {
     }
 
     return (
-        <div className="flex flex-col gap-[50px] mt-[30px] text-white">
+        <div className="flex flex-col gap-[50px] mt-[10px] text-white">
             <div className="text-white relative px-[70px]">
                 <div className="text-8xl font-extrabold">Кошик</div>
                 <div className="absolute top-[40px] left-[70px] text-8xl font-qwitcher-grypen text-white/40">
@@ -327,43 +328,22 @@ function Cart() {
                     <CartReceip totalPrice={totalPrice} />
                 </div>
             ) : (
-                <div className="p-[30px]">
-                    <div className="relative">
-                        <div className="absolute opacity-0 hover:opacity-100 bg-black/80 backdrop-blur-xl w-full h-full font-thin text-3xl text-white z-[1] transition-all duration-400 flex items-center justify-center">
-                            <div className="absolute top-[50%] translate-y-[-50%] left-[2%] w-[30%] text-base text-white">
-                                Ви ще не додали жодного товару до кошика. Це
-                                ідеальний момент, щоб почати шопінг! Оберіть
-                                щось із новинок, популярних колекцій або просто
-                                дозвольте собі маленьку покупку для натхнення.
-                                Ми впевнені — щось точно сподобається. Ваш
-                                майбутній улюблений товар вже чекає на вас!
-                            </div>
-                            <div className="flex flex-col gap-[10px]">
-                                <Link
-                                    className="flex items-center pr-[9%] w-full h-full"
-                                    href={"/"}
-                                >
-                                    <div className="border-b border-transparent hover:border-white">
-                                        Додати
-                                    </div>
-                                </Link>
-                            </div>
-                        </div>
-                        <div className="group flex flex-col">
-                            <div
-                                className={`absolute bg-black/25 border border-white/10 shadow-xl px-[50px] py-[15px] backdrop-blur-lg rounded-xl top-[50%] translate-y-[-50%] text-white text-3xl font-thin left-[10%] translate-x-[-10%]`}
-                            >
-                                Кошик ще чекає на свої перші покупки
-                            </div>
-                            <img
-                                src={`/images/favorites.png`}
-                                alt={"1234"}
-                                className="w-full h-[350px] object-cover filter transition-all duration-500"
-                            />
-                        </div>
+                <div className="flex flex-col justify-center items-center p-[30px] pt-30px] pb-[100px]">
+                    <Image
+                        src="/images/emptycart.png"
+                        alt={"1"}
+                        width={300}
+                        height={0}
+                    />
+                    <div className="font-semibold text-4xl text-white/70">
+                        Ваш кошик порожній
+                    </div>
+                    <div className="font mt-[7px] text-white/30">
+                        Наповніть його товарами!
                     </div>
                 </div>
             )}
+            <PopularProducts />
         </div>
     );
 }

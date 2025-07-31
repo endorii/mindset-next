@@ -103,7 +103,6 @@ export default function EditProductModal({
     const { data: allSizes } = useSizes();
     const { data: allTypes } = useTypes();
 
-    // Автоочищення помилок при виборі атрибутів
     useEffect(() => {
         if (colorsToSend.length > 0) {
             clearErrors("colorIds");
@@ -122,7 +121,6 @@ export default function EditProductModal({
         }
     }, [typesToSend, clearErrors]);
 
-    // Ініціалізація даних продукту
     useEffect(() => {
         if (product) {
             reset({
@@ -144,11 +142,9 @@ export default function EditProductModal({
             setSizesToSend(product.productSizes.map((ps) => ps.size.id));
             setTypesToSend(product.productTypes.map((pt) => pt.type.id));
 
-            // Встановлення банера
             setBanner(product.banner);
             setPreview(getFullImageUrl(product.banner));
 
-            // Встановлення зображень
             setImages(product.images);
             setImagesPreview(product.images.map((img) => getFullImageUrl(img)));
         }
@@ -174,7 +170,7 @@ export default function EditProductModal({
         if (file) {
             setBanner(file);
             setPreview(URL.createObjectURL(file));
-            setBannerError(null); // Очищення помилки при виборі файлу
+            setBannerError(null);
         }
     };
 
@@ -196,7 +192,6 @@ export default function EditProductModal({
         try {
             let hasError = false;
 
-            // Валідація атрибутів
             if (colorsToSend.length === 0) {
                 setError("colorIds", {
                     type: "manual",
@@ -221,7 +216,6 @@ export default function EditProductModal({
                 hasError = true;
             } else clearErrors("typeIds");
 
-            // Валідація банера
             if (!banner) {
                 setBannerError("Оберіть банер");
                 hasError = true;
@@ -231,7 +225,6 @@ export default function EditProductModal({
 
             if (hasError) return;
 
-            // Завантаження банера
             let bannerPath = "";
             if (typeof banner === "string") {
                 bannerPath = banner;
@@ -241,7 +234,6 @@ export default function EditProductModal({
                 bannerPath = uploadBannerResult.path;
             }
 
-            // Завантаження зображень
             const imagesToUpload: File[] = [];
             const existingImagePaths: string[] = [];
 
@@ -283,7 +275,6 @@ export default function EditProductModal({
                 },
             });
 
-            // Очищення стану
             setBanner(null);
             setPreview(null);
             setImages([]);

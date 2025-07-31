@@ -25,6 +25,36 @@ export async function fetchProducts(
     }
 }
 
+export async function fetchPopularProducts(): Promise<IProduct[]> {
+    try {
+        const response = await fetch(`${API_BASE_URL}/products/popular`);
+
+        if (!response.ok) {
+            const errorData = await response.json().catch(() => ({}));
+            throw new Error(errorData.message);
+        }
+
+        return await response.json();
+    } catch (error: any) {
+        throw new Error(error?.message || "Помилка з'єднання із сервером");
+    }
+}
+
+export async function fetchProductsFromOneCollection(collectionPath: string): Promise<IProduct[]> {
+    try {
+        const response = await fetch(`${API_BASE_URL}/products/collections/${collectionPath}`);
+
+        if (!response.ok) {
+            const errorData = await response.json().catch(() => ({}));
+            throw new Error(errorData.message);
+        }
+
+        return await response.json();
+    } catch (error: any) {
+        throw new Error(error?.message || "Помилка з'єднання із сервером");
+    }
+}
+
 export async function fetchProduct(
     collectionPath: string,
     categoryPath: string,

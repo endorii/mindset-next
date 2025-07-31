@@ -13,7 +13,6 @@ export class CreateUserDto {
     email: string;
 
     @IsString({ message: "Номер телефону обов'язковий" })
-    // @IsPhoneNumber()
     @Matches(/^\+?[\d\s-]{10,15}$/, {
         message: "Некоректний формат телефону",
     })

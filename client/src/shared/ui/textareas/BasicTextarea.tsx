@@ -27,7 +27,6 @@ function BasicTextarea({
                 className={`resize-none border ${
                     errorMessage ? "border-red-500" : "border-white/10"
                 } rounded p-[10px] bg-black/10 outline-0 resize-none overflow-hidden ${className}`}
-                // rows={3}
             />
             {errorMessage && (
                 <p className="text-red-500 text-sm">{errorMessage}</p>

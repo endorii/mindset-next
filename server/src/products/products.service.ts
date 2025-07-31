@@ -49,6 +49,70 @@ export class ProductsService {
         }
     }
 
+    async getPopularProducts() {
+        try {
+            const popularProductGroups = await this.prisma.orderItem.groupBy({
+                by: ["productId"],
+                _sum: {
+                    quantity: true,
+                },
+                orderBy: {
+                    _sum: {
+                        quantity: "desc",
+                    },
+                },
+                take: 20,
+            });
+
+            const productIds = popularProductGroups.map((group) => group.productId);
+
+            const products = await this.prisma.product.findMany({
+                where: {
+                    id: {
+                        in: productIds,
+                    },
+                },
+                include: {
+                    productColors: { include: { color: true } },
+                    productTypes: { include: { type: true } },
+                    productSizes: { include: { size: true } },
+                    category: { include: { collection: true } },
+                },
+            });
+
+            return products;
+        } catch (error) {
+            console.error("Помилка отримання популярних товарів:", error);
+            throw new Error("Не вдалося отримати популярні товари.");
+        }
+    }
+
+    async getProductsFromCollection(collectionPath: string) {
+        try {
+            const products = await this.prisma.product.findMany({
+                where: {
+                    category: {
+                        collection: {
+                            path: collectionPath,
+                        },
+                    },
+                },
+                include: {
+                    productColors: { include: { color: true } },
+                    productTypes: { include: { type: true } },
+                    productSizes: { include: { size: true } },
+                    category: { include: { collection: true } },
+                },
+                take: 20,
+            });
+
+            return products;
+        } catch (error) {
+            console.error("Помилка отримання товарів з колекції:", error);
+            throw new Error("Не вдалося отримати товари з колекції.");
+        }
+    }
+
     async postProduct(userId: string, createProductDto: CreateProductDto) {
         try {
             const {

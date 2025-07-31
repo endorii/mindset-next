@@ -22,6 +22,10 @@ import MonoButton from "@/shared/ui/buttons/MonoButton";
 import AttributeSelector from "@/features/products/components/AttributeSelector";
 import QuantitySelector from "@/shared/ui/selectors/QuantitySelector";
 import ReviewsOnProductPage from "@/features/reviews/components/ReviewsOnProductPage";
+import PopularProducts from "@/shared/components/PopularProducts";
+import ProductsFromOneCategory from "@/shared/components/ProductsFromOneCategory";
+import addToRecentlyViewed from "@/shared/utils/addToRecentlyViewed";
+import RecentlyViewedProducts from "@/shared/components/RecentlyViewedProducts";
 
 export default function ProductPage() {
     const pathname = usePathname();
@@ -52,6 +56,10 @@ export default function ProductPage() {
         setChosenSize(product?.productSizes[0]?.size.name || "");
         setChosenType(product?.productTypes[0]?.type.name || "");
         setChosenColor(product?.productColors[0]?.color.name || "");
+
+        if (product) {
+            addToRecentlyViewed(product);
+        }
 
         if (!product) return;
 
@@ -165,7 +173,7 @@ export default function ProductPage() {
     }
 
     return (
-        <div className="flex flex-col px-[30px] py-[10px] gap-[30px]">
+        <div className="flex flex-col px-[30px] py-[10px] gap-x-[30px] gap-y-[20px]">
             <div className="flex flex-col md:flex-row gap-[20px] items-start text-white h-full w-full">
                 <div className="flex gap-[10px] relative rounded-xl bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 min-w-fit max-w-[55%]">
                     <div className="relative">
@@ -338,7 +346,11 @@ export default function ProductPage() {
                     </div>
                 </div>
             </div>
+
             <ReviewsOnProductPage product={product} />
+            <RecentlyViewedProducts />
+            <ProductsFromOneCategory collectionPath={collectionPath} />
+            <PopularProducts />
         </div>
     );
 }

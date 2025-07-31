@@ -17,7 +17,6 @@ function ReviewsOnProductPage({ product }: ReviewsOnProductPageProps) {
         isError,
     } = useReviewByProductId(product.id);
 
-    // Підрахунок кількості відгуків за рейтингом
     const ratingCounts = useMemo(() => {
         const counts: { [key: number]: number } = {
             5: 0,
@@ -35,16 +34,6 @@ function ReviewsOnProductPage({ product }: ReviewsOnProductPageProps) {
         });
 
         return counts;
-    }, [reviews]);
-
-    const total = useMemo(() => {
-        return Object.values(ratingCounts).reduce((sum, val) => sum + val, 0);
-    }, [ratingCounts]);
-
-    const averageRating = useMemo(() => {
-        if (!reviews || reviews.length === 0) return 0;
-        const sum = reviews.reduce((acc, r) => acc + Number(r.rating), 0);
-        return sum / reviews.length;
     }, [reviews]);
 
     if (isLoading) return <div>Завантаження відгуків...</div>;

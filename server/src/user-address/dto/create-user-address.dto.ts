@@ -26,7 +26,6 @@ export class CreateUserAddressDto {
     @Matches(/^\d{5}$/, {
         message: "Поштовий індекс повинен містити рівно 5 цифр.",
     })
-    // @IsPostalCode()
     postalCode: string;
 
     @IsString({ message: "Вулиця повинна бути рядком." })

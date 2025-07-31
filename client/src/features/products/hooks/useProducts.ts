@@ -3,11 +3,27 @@ import {
     addProductToCategory,
     deleteProduct,
     editProduct,
+    fetchPopularProducts,
     fetchProduct,
+    fetchProductsFromOneCollection,
 } from "../api/products.api";
 import { ICategory } from "@/features/categories/types/categories.types";
 import { ICollection } from "@/features/collections/types/collections.types";
 import { IProduct, ICreateProductPayload } from "../types/products.types";
+
+export function usePopularProducts() {
+    return useQuery({
+        queryKey: ["popularProducts"],
+        queryFn: () => fetchPopularProducts(),
+    });
+}
+
+export function useProductsFromOneCollection(collectionPath: string) {
+    return useQuery({
+        queryKey: ["productsFromOneCollection"],
+        queryFn: () => fetchProductsFromOneCollection(collectionPath),
+    });
+}
 
 export function useProduct(
     collectionPath: ICollection["path"],

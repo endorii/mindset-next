@@ -53,7 +53,7 @@ export default function CategoryPage() {
                                 </div>
                                 <Image
                                     className="relative rounded-xl"
-                                    width={400}
+                                    width={500}
                                     height={0}
                                     src={`http://localhost:5000/${product.banner}`}
                                     alt={product.name}
@@ -71,7 +71,7 @@ export default function CategoryPage() {
                                     ))}
                                 </ul>
                                 <div className="flex flex-col gap-[7px]">
-                                    <div className="flex justify-between items-end gap-[10px] flex-wrap">
+                                    <div className="flex flex-col gap-[10px] flex-wrap">
                                         <div className="text-white text-3xl font-thin">
                                             {product.name}
                                         </div>
@@ -84,6 +84,18 @@ export default function CategoryPage() {
                                             </div>
                                         </div>
                                     </div>
+                                    <div
+                                        className={`text-sm ${
+                                            product.available
+                                                ? "text-green-600"
+                                                : "text-red-500"
+                                        }`}
+                                    >
+                                        {product.available
+                                            ? "В наявності"
+                                            : "Немає в наявності"}
+                                    </div>
+
                                     <hr className="border-top border-white/10 mt-[5px]" />
                                     <div className="flex flex-col gap-[3px] text-white justify-between">
                                         <ul className="flex gap-[5px] flex-wrap">
