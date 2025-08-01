@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Param, Delete, UseGuards, Patch } from "@nestjs/common";
+import { Controller, Get, Post, Body, Param, Delete, UseGuards, Patch, Req } from "@nestjs/common";
 import { OrdersService } from "./orders.service";
 import { CreateOrderDto } from "./dto/create-order.dto";
 import { UpdateOrderDto } from "./dto/update-order.dto";
@@ -6,6 +6,7 @@ import { JwtAuthGuard } from "src/auth/guards/jwt-auth/jwt-auth.guard";
 import { RolesGuard } from "src/auth/guards/roles/roles.guard";
 import { Roles } from "src/auth/decorators/roles.decorator";
 import { Role } from "generated/prisma";
+import { AuthenticatedRequestUser } from "src/auth/types/auth-request-user.type";
 
 @Controller("orders")
 @UseGuards(JwtAuthGuard, RolesGuard)
@@ -32,13 +33,20 @@ export class OrdersController {
 
     @Patch(":orderId")
     @Roles(Role.ADMIN)
-    updateOrder(@Param("orderId") orderId: string, @Body() updateOrderDto: UpdateOrderDto) {
-        return this.ordersService.updateOrder(orderId, updateOrderDto);
+    updateOrder(
+        @Req() req: Request & { user: AuthenticatedRequestUser },
+        @Param("orderId") orderId: string,
+        @Body() updateOrderDto: UpdateOrderDto
+    ) {
+        return this.ordersService.updateOrder(req.user.id, orderId, updateOrderDto);
     }
 
     @Delete(":orderId")
     @Roles(Role.ADMIN)
-    deleteOrder(@Param("orderId") orderId: string) {
-        return this.ordersService.deleteOrder(orderId);
+    deleteOrder(
+        @Req() req: Request & { user: AuthenticatedRequestUser },
+        @Param("orderId") orderId: string
+    ) {
+        return this.ordersService.deleteOrder(req.user.id, orderId);
     }
 }

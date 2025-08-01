@@ -21,6 +21,7 @@ import DeleteButtonWithIcon from "@/shared/ui/buttons/DeleteButtonWithIcon";
 import LinkWithIcon from "@/shared/ui/buttons/LinkWithIcon";
 import MonoButton from "@/shared/ui/buttons/MonoButton";
 import { formatDate } from "@/shared/utils/formatDate";
+import Link from "next/link";
 import { useState } from "react";
 
 function AdminCollections() {
@@ -85,12 +86,13 @@ function AdminCollections() {
             </div>
             {collections && collections.length > 0 ? (
                 <div className="rounded-xl bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px]">
-                    <div className="grid grid-cols-[120px_0.7fr_150px_150px_1fr_230px] gap-[20px]  p-4 rounded-t-lg font-semibold text-sm">
+                    <div className="grid grid-cols-[120px_0.7fr_150px_150px_1fr_0.4fr_230px] gap-[20px]  p-4 rounded-t-lg font-semibold text-sm">
                         <div>Банер</div>
                         <div>Назва</div>
                         <div>Статус</div>
                         <div>Переглядів</div>
                         <div>Додано/оновлено</div>
+                        <div>Посилання</div>
                         <div className="text-right">Дії</div>
                     </div>
 
@@ -98,7 +100,7 @@ function AdminCollections() {
                         {collections?.map((collection) => (
                             <div
                                 key={collection.id}
-                                className="grid grid-cols-[120px_0.7fr_150px_150px_1fr_230px] gap-[20px] p-4  border-b border-white/10 last:border-b-0 items-center"
+                                className="grid grid-cols-[120px_0.7fr_150px_150px_1fr_0.4fr_230px] gap-[20px] p-4  border-b border-white/10 last:border-b-0 items-center"
                             >
                                 <img
                                     src={`http://localhost:5000/${collection.banner}`}
@@ -112,6 +114,12 @@ function AdminCollections() {
                                     {formatDate(collection.createdAt || "")} /{" "}
                                     {formatDate(collection.updatedAt || "")}
                                 </div>
+                                <Link
+                                    href={`/${collection.path}`}
+                                    className="text-blue-500 hover:text-white hover:underline"
+                                >
+                                    Колекція
+                                </Link>
                                 <div className="flex gap-[10px] justify-end">
                                     <LinkWithIcon
                                         href={`collections/${collection.path}`}

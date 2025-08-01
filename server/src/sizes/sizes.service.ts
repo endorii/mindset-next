@@ -1,4 +1,4 @@
-import { ConflictException, Injectable, InternalServerErrorException } from "@nestjs/common";
+import { ConflictException, Injectable } from "@nestjs/common";
 import { CreateSizeDto } from "./dto/create-size.dto";
 import { UpdateSizeDto } from "./dto/update-size.dto";
 import { PrismaService } from "src/prisma/prisma.service";
@@ -36,7 +36,6 @@ export class SizesService {
         } catch (error) {
             console.error("Помилка створення розміру:", error);
             throw error;
-            ("Не вдалося створити розмір");
         }
     }
 
@@ -46,7 +45,6 @@ export class SizesService {
         } catch (error) {
             console.error("Помилка отримання розмірів:", error);
             throw error;
-            ("Не вдалося отримати розміри");
         }
     }
 
@@ -74,7 +72,6 @@ export class SizesService {
         } catch (error) {
             console.error("Помилка редагування розміру:", error);
             throw error;
-            ("Не вдалося оновити розмір");
         }
     }
 
@@ -98,7 +95,6 @@ export class SizesService {
         } catch (error) {
             console.error("Помилка видалення розміру:", error);
             throw error;
-            ("Не вдалося видалити розмір");
         }
     }
 }

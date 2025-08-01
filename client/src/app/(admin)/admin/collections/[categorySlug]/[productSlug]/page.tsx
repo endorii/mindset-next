@@ -20,6 +20,7 @@ import ChooseButton from "@/shared/ui/buttons/ChooseButton";
 import DeleteButtonWithIcon from "@/shared/ui/buttons/DeleteButtonWithIcon";
 import MonoButton from "@/shared/ui/buttons/MonoButton";
 import { formatDate } from "@/shared/utils/formatDate";
+import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import React, { useState } from "react";
 
@@ -93,12 +94,13 @@ function AdminCategory() {
 
             {products.length > 0 ? (
                 <div className="rounded-xl bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px]">
-                    <div className="grid grid-cols-[120px_0.7fr_150px_150px_1fr_230px] gap-[20px] p-4 rounded-t-lg font-semibold text-sm">
+                    <div className="grid grid-cols-[120px_0.7fr_150px_150px_1fr_0.2fr_230px] gap-[20px] p-4 rounded-t-lg font-semibold text-sm">
                         <div>Банер</div>
                         <div>Назва</div>
                         <div>Статус</div>
                         <div>Переглядів</div>
                         <div>Додано/оновлено</div>
+                        <div>Посилання</div>
                         <div className="text-right">Дії</div>
                     </div>
                     <div className="border border-white/10 rounded-xl">
@@ -106,7 +108,7 @@ function AdminCategory() {
                             return (
                                 <div
                                     key={i}
-                                    className="grid grid-cols-[120px_0.7fr_150px_150px_1fr_230px] gap-[20px] p-4 border-b border-white/10 last:border-b-0 items-center"
+                                    className="grid grid-cols-[120px_0.7fr_150px_150px_1fr_0.2fr_230px] gap-[20px] p-4 border-b border-white/10 last:border-b-0 items-center"
                                 >
                                     <img
                                         src={`http://localhost:5000/${product.banner}`}
@@ -121,6 +123,12 @@ function AdminCategory() {
                                         {formatDate(product.createdAt)} /{" "}
                                         {formatDate(product.updatedAt)}
                                     </div>
+                                    <Link
+                                        href={`/${collectionPath}/${categoryPath}/${product.path}`}
+                                        className="text-blue-500 hover:text-white hover:underline"
+                                    >
+                                        Товар
+                                    </Link>
                                     <div className="flex gap-[10px] justify-end">
                                         <ButtonWithIcon
                                             onClick={() =>

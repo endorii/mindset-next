@@ -13,8 +13,8 @@ export class UserController {
 
     @Get()
     @Roles(Role.ADMIN)
-    getAllUSers() {
-        return this.userService.getAllUSers();
+    getAllUsers() {
+        return this.userService.getAllUsers();
     }
 
     @Patch(":id")

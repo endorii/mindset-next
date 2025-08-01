@@ -3,10 +3,14 @@ import { CreateOrderDto } from "./dto/create-order.dto";
 import { UpdateOrderDto } from "./dto/update-order.dto";
 import { PrismaService } from "src/prisma/prisma.service";
 import { Prisma } from "generated/prisma";
+import { RecentActionsService } from "src/recent-actions/recent-actions.service";
 
 @Injectable()
 export class OrdersService {
-    constructor(private readonly prisma: PrismaService) {}
+    constructor(
+        private readonly prisma: PrismaService,
+        private readonly recentActions: RecentActionsService
+    ) {}
     async createOrder(createOrderDto: CreateOrderDto) {
         try {
             const {
@@ -137,15 +141,17 @@ export class OrdersService {
         }
     }
 
-    async updateOrder(orderId: string, updateOrderDto: UpdateOrderDto) {
+    async updateOrder(userId: string, orderId: string, updateOrderDto: UpdateOrderDto) {
         try {
             // eslint-disable-next-line @typescript-eslint/no-unused-vars
-            const { userId, items, ...data } = updateOrderDto;
+            const { items, ...data } = updateOrderDto;
 
             const order = await this.prisma.order.update({
                 where: { id: orderId },
                 data,
             });
+
+            await this.recentActions.createAction(userId, `Оновлено замовлення ID:${order.id}`);
 
             return {
                 message: "Замовлення успішно оновлено",
@@ -159,11 +165,13 @@ export class OrdersService {
         }
     }
 
-    async deleteOrder(orderId: string) {
+    async deleteOrder(userId: string, orderId: string) {
         try {
             const order = await this.prisma.order.delete({
                 where: { id: orderId },
             });
+
+            await this.recentActions.createAction(userId, `Видалено замовлення ID:${order.id}`);
 
             return {
                 message: "Замовлення успішно видалено",

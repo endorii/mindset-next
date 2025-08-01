@@ -23,6 +23,7 @@ import MonoButton from "@/shared/ui/buttons/MonoButton";
 import DeleteButtonWithIcon from "@/shared/ui/buttons/DeleteButtonWithIcon";
 import ButtonWithIcon from "@/shared/ui/buttons/ButtonWithIcon";
 import LinkWithIcon from "@/shared/ui/buttons/LinkWithIcon";
+import Link from "next/link";
 
 const filters = [
     "спочатку нові",
@@ -101,19 +102,20 @@ function AdminCollection() {
 
             {categories && categories.length > 0 ? (
                 <div className="rounded-xl bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px]">
-                    <div className="grid grid-cols-[120px_0.7fr_150px_150px_1fr_230px] gap-[20px] p-4 rounded-t-lg font-semibold text-sm">
+                    <div className="grid grid-cols-[120px_0.7fr_150px_150px_1fr_0.4fr_230px] gap-[20px] p-4 rounded-t-lg font-semibold text-sm">
                         <div>Банер</div>
                         <div>Назва</div>
                         <div>Статус</div>
                         <div>Переглядів</div>
                         <div>Додано/оновлено</div>
+                        <div>Посилання</div>
                         <div className="text-right">Дії</div>
                     </div>
                     <div className="border border-white/10 rounded-xl">
                         {categories?.map((category) => (
                             <div
                                 key={category.id}
-                                className="grid grid-cols-[120px_0.7fr_150px_150px_1fr_230px] gap-[20px] p-4 border-b border-white/10 last:border-b-0 items-center"
+                                className="grid grid-cols-[120px_0.7fr_150px_150px_1fr_0.4fr_230px] gap-[20px] p-4 border-b border-white/10 last:border-b-0 items-center"
                             >
                                 <img
                                     src={`http://localhost:5000/${category.banner}`}
@@ -127,6 +129,12 @@ function AdminCollection() {
                                     {formatDate(category.createdAt || "")} /{" "}
                                     {formatDate(category.updatedAt || "")}
                                 </div>
+                                <Link
+                                    href={`/${collectionPath}/${category.path}`}
+                                    className="text-blue-500 hover:text-white hover:underline"
+                                >
+                                    Категорія
+                                </Link>
                                 <div className="flex gap-[10px] justify-end">
                                     <LinkWithIcon
                                         href={`/admin/collections/${collectionPath}/${category.path}`}
