@@ -1,240 +1,303 @@
 "use client";
 
-import MyChart from "@/features/admin/components/MyChart";
-import { CartIcon } from "@/shared/icons";
 import React from "react";
-import {
-    LineChart,
-    Line,
-    XAxis,
-    YAxis,
-    CartesianGrid,
-    Tooltip,
-    Legend,
-    ResponsiveContainer,
-    PieChart,
-    Pie,
-    BarChart,
-    Bar,
-    Cell, // Для кольорів у PieChart
-} from "recharts";
+import { useOrders } from "@/features/orders/hooks/useOrders";
+import StatCard from "@/shared/components/cards/StatCard";
+import OrdersAndSalesChart from "@/shared/components/charts/OrdersAndSalesChart";
+import OrdersByCategoriesChart from "@/shared/components/charts/OrdersByCategoriesChart";
+import { useUsers } from "@/features/admin/hooks/useUsers";
+import OrdersByCollectionsChart from "@/shared/components/charts/OrdersByCollectionsChart";
+import UsersRegistrationChart from "@/shared/components/charts/UsersRegistrationsChart";
 
-// --- Фейкові дані для графіків ---
+export default function AnalyticsPage() {
+    const { data: orders } = useOrders();
+    const { data: users } = useUsers();
 
-// 1. Дані для продажів за місяцями (LineChart)
-const monthlySalesData = [
-    { name: "Січ", Продажі: 4000, Замовлення: 240 },
-    { name: "Лют", Продажі: 3000, Замовлення: 139 },
-    { name: "Бер", Продажі: 2000, Замовлення: 980 },
-    { name: "Кві", Продажі: 2780, Замовлення: 390 },
-    { name: "Тра", Продажі: 1890, Замовлення: 480 },
-    { name: "Чер", Продажі: 2390, Замовлення: 380 },
-    { name: "Лип", Продажі: 3490, Замовлення: 430 },
-    { name: "Сер", Продажі: 4200, Замовлення: 500 },
-    { name: "Вер", Продажі: 3800, Замовлення: 450 },
-    { name: "Жов", Продажі: 4500, Замовлення: 550 },
-    { name: "Лис", Продажі: 5000, Замовлення: 600 },
-    { name: "Гру", Продажі: 6000, Замовлення: 700 },
-];
+    if (!orders) return null;
+    if (!users) return null;
 
-// 2. Дані для розподілу продажів за категоріями (PieChart)
-const categorySalesData = [
-    { name: "Футболки", value: 400 },
-    { name: "Джинси", value: 300 },
-    { name: "Сукні", value: 300 },
-    { name: "Верхній одяг", value: 200 },
-    { name: "Аксесуари", value: 278 },
-    { name: "Взуття", value: 189 },
-];
-const PIE_COLORS = [
-    "#F0F0E0", // Off-white (м'який, майже кремовий білий)
-    "#C8B490", // Muted Tan (приглушений світло-коричневий)
-    "#7D5A47", // Desaturated Brown (ненасичений, м'який коричневий)
-    "#A7D9A7", // Pastel Green (пастельний, дуже ніжний зелений)
-    "#6FA38B", // Sage Green (шавлієвий зелений, спокійний)
-    "#4B7850", // Forest Green (глибокий, але приглушений лісовий зелений)
-];
+    const totalOrders = orders.length;
+    const paidOrders = orders.filter(
+        (o) => o.status === "paid" || o.status === "delivered"
+    );
+    const unpaidOrders = orders.filter(
+        (o) => o.status !== "paid" && o.status !== "delivered"
+    );
 
-function AdminStats() {
+    const cancelledOrders = orders.filter((o) => o.status === "cancelled");
+
+    const totalSales = paidOrders.reduce((sum, order) => sum + order.total, 0);
+
+    const avgCheck = paidOrders.length
+        ? (totalSales / paidOrders.length).toFixed(2)
+        : "0";
+
+    const now = new Date();
+    const weekAgo = new Date(now);
+    weekAgo.setDate(now.getDate() - 7);
+    const ordersLastWeek = orders.filter(
+        (o) =>
+            new Date(o.createdAt!) >= weekAgo && new Date(o.createdAt!) <= now
+    );
+
+    const conversionRate = totalOrders
+        ? ((paidOrders.length / totalOrders) * 100).toFixed(2)
+        : "0";
+
+    type CollectionStat = {
+        name: string;
+        ordersCount: number;
+        salesSum: number;
+    };
+
+    const collectionMap: Record<string, CollectionStat> = {};
+
+    orders.forEach((order) => {
+        order.items.forEach((item) => {
+            const collectionName =
+                item.product?.category?.collection?.name || "Інше";
+
+            if (!collectionMap[collectionName]) {
+                collectionMap[collectionName] = {
+                    name: collectionName,
+                    ordersCount: 0,
+                    salesSum: 0,
+                };
+            }
+
+            collectionMap[collectionName].ordersCount += 1;
+            collectionMap[collectionName].salesSum += item.product?.price
+                ? item.product.price * item.quantity
+                : 0;
+        });
+    });
+
+    const collectionStats = Object.values(collectionMap);
+    const totalCollections = collectionStats.length;
+    const mostPopularCollection =
+        collectionStats.reduce(
+            (prev, curr) => (curr.ordersCount > prev.ordersCount ? curr : prev),
+            collectionStats[0] || { ordersCount: 0, name: "" }
+        ) || null;
+    const highestSalesCollection =
+        collectionStats.reduce(
+            (prev, curr) => (curr.salesSum > prev.salesSum ? curr : prev),
+            collectionStats[0] || { salesSum: 0, name: "" }
+        ) || null;
+
+    // Дані по категоріях
+    type CategoryStat = {
+        name: string;
+        ordersCount: number;
+        salesSum: number;
+    };
+
+    const categoryMap: Record<string, CategoryStat> = {};
+
+    orders.forEach((order) => {
+        order.items.forEach((item) => {
+            const categoryName = item.product?.category?.name || "Інше";
+
+            if (!categoryMap[categoryName]) {
+                categoryMap[categoryName] = {
+                    name: categoryName,
+                    ordersCount: 0,
+                    salesSum: 0,
+                };
+            }
+
+            categoryMap[categoryName].ordersCount += 1;
+            categoryMap[categoryName].salesSum += item.product?.price
+                ? item.product.price * item.quantity
+                : 0;
+        });
+    });
+
+    const categoryStats = Object.values(categoryMap);
+    const totalCategories = categoryStats.length;
+    const mostPopularCategory =
+        categoryStats.reduce(
+            (prev, curr) => (curr.ordersCount > prev.ordersCount ? curr : prev),
+            categoryStats[0] || { ordersCount: 0, name: "" }
+        ) || null;
+    const highestSalesCategory =
+        categoryStats.reduce(
+            (prev, curr) => (curr.salesSum > prev.salesSum ? curr : prev),
+            categoryStats[0] || { salesSum: 0, name: "" }
+        ) || null;
+
+    // Дані по користувачах
+    const totalUsers = users.length;
+
+    // Активні користувачі за останній місяць
+    const monthAgo = new Date(now);
+    monthAgo.setMonth(now.getMonth() - 1);
+    const activeUsersLastMonth = users.filter(
+        (user) => new Date(user.createdAt) >= monthAgo
+    ).length;
+
+    // Ролі користувачів
+    const roleCounts = users.reduce<Record<string, number>>((acc, user) => {
+        acc[user.role] = (acc[user.role] || 0) + 1;
+        return acc;
+    }, {});
+
+    // Користувачі, які зробили замовлення
+    const userIdsWithOrders = new Set(orders.map((o) => o.userId));
+    const usersWithOrdersCount = users.filter((u) =>
+        userIdsWithOrders.has(u.id)
+    ).length;
+
+    // Середня кількість замовлень на користувача (тільки серед тих, хто щось замовляв)
+    const avgOrdersPerUser = usersWithOrdersCount
+        ? (totalOrders / usersWithOrdersCount).toFixed(2)
+        : "0";
+
     return (
-        <div className="flex flex-col gap-[15px]">
-            <div className="flex gap-[15px] justify-between items-center rounded-xl bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px]">
-                <div className="text-2xl font-bold">
-                    Аналітика та статистика магазину
-                </div>
-            </div>
-            {/* --- Графік продажів за місяцями --- */}
-            <div className="rounded-xl bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px] flex flex-col gap-[15px]">
-                <h2>Продажі та замовлення за останні 12 місяців</h2>
-                <ResponsiveContainer width="100%" height={450}>
-                    <LineChart data={monthlySalesData}>
-                        <CartesianGrid
-                            strokeDasharray="3 3"
-                            strokeOpacity={0.2}
-                        />
-                        <XAxis dataKey="name" />
-                        <YAxis yAxisId="left" orientation="left" />
-                        <YAxis yAxisId="right" orientation="right" />
-                        <Tooltip
-                            contentStyle={{
-                                backgroundColor: "black",
-                                border: "1px solid #ffffff20",
-                                borderRadius: "5px",
-                                padding: "10px",
-                            }}
-                        />
-                        <Legend />
-                        <Line
-                            yAxisId="left"
-                            type="monotone"
-                            dataKey="Продажі"
-                            stroke="#8884d8"
-                        />
-                        <Line
-                            yAxisId="right"
-                            type="monotone"
-                            dataKey="Замовлення"
-                            stroke="#82ca9d"
-                        />
-                    </LineChart>
-                </ResponsiveContainer>
-            </div>
+        <div className="p-4 md:p-8 space-y-10">
+            <h1 className="text-2xl md:text-3xl font-semibold">
+                Аналітика та статистика магазину
+            </h1>
+
+            {/* Статистика замовлень та продажів */}
             <div>
-                <div className="flex gap-[15px]">
-                    <div className="rounded-xl bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px] flex gap-[70px] items-center">
-                        <div className="flex flex-col gap-[3px]">
-                            <div>Сьогоднішні продажі</div>
-                            <div className="flex gap-[15px] items-end">
-                                <div className="text-2xl font-semibold">
-                                    $9,000
-                                </div>
-                                <div className="text-sm text-green-500 mb-[2px]">
-                                    +0%
-                                </div>
-                            </div>
-                        </div>
-                        <div className="rounded-xl bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px]">
-                            <CartIcon className="w-[25px] stroke-white " />
+                <h2 className="text-xl font-semibold mb-4">
+                    Статистика замовлень та продажів
+                </h2>
+                <OrdersAndSalesChart orders={orders} />
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-6">
+                    <StatCard
+                        title="Загальна кількість замовлень"
+                        value={totalOrders}
+                    />
+                    <StatCard
+                        title="Успішні замовлення"
+                        value={paidOrders.length}
+                    />
+                    <StatCard
+                        title="Незакінчені замовлення"
+                        value={unpaidOrders.length}
+                    />
+                    <StatCard
+                        title="Відмінені замовлення"
+                        value={cancelledOrders.length}
+                    />
+                    <StatCard
+                        title="Сума продажів"
+                        value={totalSales.toFixed(2) + " ₴"}
+                    />
+                    <StatCard title="Середній чек" value={avgCheck + " ₴"} />
+                    <StatCard
+                        title="Замовлення за останній тиждень"
+                        value={ordersLastWeek.length}
+                    />
+                    <StatCard
+                        title="Конверсія замовлень"
+                        value={conversionRate + " %"}
+                    />
+                </div>
+            </div>
+
+            {/* Продажі за колекціями */}
+            <div className="flex flex-col gap-[40px]">
+                <div>
+                    <h2 className="text-xl font-semibold mb-4">
+                        Продажі за колекціями
+                    </h2>
+                    <div className="flex gap-[20px]">
+                        <OrdersByCollectionsChart orders={orders} />
+                        <div className="w-1/3 grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <StatCard
+                                title="Кількість колекцій"
+                                value={totalCollections}
+                            />
+                            <StatCard
+                                title="Найпопулярніша колекція"
+                                value={mostPopularCollection?.name || "-"}
+                            />
+                            <StatCard
+                                title="Колекція з найбільшим обсягом продажів"
+                                value={
+                                    highestSalesCollection
+                                        ? `${
+                                              highestSalesCollection.name
+                                          } (${highestSalesCollection.salesSum.toFixed(
+                                              2
+                                          )} ₴)`
+                                        : "-"
+                                }
+                            />
                         </div>
                     </div>
-                    <div className="rounded-xl bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px] flex gap-[70px] items-center">
-                        <div className="flex flex-col gap-[3px]">
-                            <div>Сьогоднішні відвідувачі</div>
-                            <div className="flex gap-[15px] items-end">
-                                <div className="text-2xl font-semibold">
-                                    120
-                                </div>
-                                <div className="text-sm text-green-500 mb-[2px]">
-                                    +0%
-                                </div>
-                            </div>
-                        </div>
-                        <div className="rounded-xl bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px]">
-                            <CartIcon className="w-[25px] stroke-white " />
-                        </div>
-                    </div>
-                    <div className="rounded-xl bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px] flex gap-[70px] items-center">
-                        <div className="flex flex-col gap-[3px]">
-                            <div>Нових користувачів</div>
-                            <div className="flex gap-[15px] items-end">
-                                <div className="text-2xl font-semibold">23</div>
-                                <div className="text-sm text-green-500 mb-[2px]">
-                                    +0%
-                                </div>
-                            </div>
-                        </div>
-                        <div className="rounded-xl bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px]">
-                            <CartIcon className="w-[25px] stroke-white " />
-                        </div>
-                    </div>
-                    <div className="rounded-xl bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px] flex gap-[70px] items-center">
-                        <div className="flex flex-col gap-[3px]">
-                            <div>Загальних переглядів товарів</div>
-                            <div className="flex gap-[15px] items-end">
-                                <div className="text-2xl font-semibold">
-                                    591
-                                </div>
-                                <div className="text-sm text-green-500 mb-[2px]">
-                                    +0%
-                                </div>
-                            </div>
-                        </div>
-                        <div className="rounded-xl bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px]">
-                            <CartIcon className="w-[25px] stroke-white" />
-                        </div>
-                    </div>
-                    <div className="rounded-xl bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px] flex gap-[70px] items-center">
-                        <div className="flex flex-col gap-[3px]">
-                            <div>Сьогоднішні замовлення</div>
-                            <div className="flex gap-[15px] items-end">
-                                <div className="text-2xl font-semibold">68</div>
-                                <div className="text-sm text-green-500 mb-[2px]">
-                                    +0%
-                                </div>
-                            </div>
-                        </div>
-                        <div className="rounded-xl bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px]">
-                            <CartIcon className="w-[25px] stroke-white " />
+                </div>
+
+                {/* Продажі за категоріями */}
+                <div>
+                    <h2 className="text-xl font-semibold mb-4">
+                        Продажі за категоріями
+                    </h2>
+                    <div className="flex gap-[20px]">
+                        <OrdersByCategoriesChart orders={orders} />
+                        <div className="w-1/3 grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            <StatCard
+                                title="Кількість категорій"
+                                value={totalCategories}
+                            />
+                            <StatCard
+                                title="Найпопулярніша категорія"
+                                value={mostPopularCategory?.name || "-"}
+                            />
+                            <StatCard
+                                title="Категорія з найбільшим обсягом продажів"
+                                value={
+                                    highestSalesCategory
+                                        ? `${
+                                              highestSalesCategory.name
+                                          } (${highestSalesCategory.salesSum.toFixed(
+                                              2
+                                          )} ₴)`
+                                        : "-"
+                                }
+                            />
                         </div>
                     </div>
                 </div>
             </div>
-            <div className="flex gap-[15px] w-full justify-between">
-                {/* --- Розподіл продажів за категоріями --- */}
-                <div className="rounded-xl bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px] flex flex-col gap-[15px] w-1/2">
-                    <h2>Розподіл продажів за категоріями товарів</h2>
-                    <ResponsiveContainer width="100%" height={350}>
-                        <PieChart>
-                            <Pie
-                                data={categorySalesData}
-                                cx="50%"
-                                cy="50%"
-                                labelLine={false}
-                                outerRadius={100}
-                                fill="#8884d8"
-                                dataKey="value"
-                                nameKey="name" // Дозволяє Tooltip відображати назву категорії
-                                label={({ name, percent }) =>
-                                    `${name} ${(percent! * 100).toFixed(0)}%`
-                                }
-                            >
-                                {categorySalesData.map((entry, index) => (
-                                    <Cell
-                                        key={`cell-${index}`}
-                                        fill={
-                                            PIE_COLORS[
-                                                index % PIE_COLORS.length
-                                            ]
-                                        }
-                                        stroke="none"
-                                    />
-                                ))}
-                            </Pie>
-                            <Tooltip
-                                formatter={(value) => `${value} од.`} // Форматуємо значення
-                                contentStyle={{
-                                    backgroundColor: "black",
-                                    border: "1px solid #ffffff20",
-                                    borderRadius: "5px",
-                                    padding: "10px",
-                                }}
-                                itemStyle={{
-                                    color: "white",
-                                    fontWeight: "normal",
-                                }}
-                            />
-                            <Legend />
-                        </PieChart>
-                    </ResponsiveContainer>
-                </div>
-                {/* --- Кількість замовлень за днями тижня --- */}
-                <div className="rounded-xl bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px] flex flex-col gap-[15px] w-1/2">
-                    <h2>Кількість замовлень за днями тижня</h2>
-                    <MyChart />
+
+            {/* Статистика користувачів */}
+            <div>
+                <h2 className="text-xl font-semibold mb-4">
+                    Статистика користувачів
+                </h2>
+                <UsersRegistrationChart users={users} />
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-6">
+                    <StatCard
+                        title="Загальна кількість користувачів"
+                        value={totalUsers}
+                    />
+                    <StatCard
+                        title="Активні користувачі за останній місяць"
+                        value={activeUsersLastMonth}
+                    />
+                    <StatCard
+                        title="Користувачі з роллю ADMIN"
+                        value={roleCounts.ADMIN || 0}
+                    />
+                    <StatCard
+                        title="Користувачі з роллю USER"
+                        value={roleCounts.USER || 0}
+                    />
+                    <StatCard
+                        title="Користувачі, які зробили замовлення"
+                        value={usersWithOrdersCount}
+                    />
+                    <StatCard
+                        title="Середня кількість замовлень на користувача"
+                        value={avgOrdersPerUser}
+                    />
                 </div>
             </div>
         </div>
     );
 }
-
-export default AdminStats;

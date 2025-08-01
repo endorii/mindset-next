@@ -5,6 +5,7 @@ import { useRecentActions } from "@/features/admin/recent-actions/hooks/useRecen
 import { useCurrentUser } from "@/features/admin/user-info/hooks/useUsers";
 import { formatDate } from "@/shared/utils/formatDate";
 import ChooseButton from "@/shared/ui/buttons/ChooseButton";
+import AdminRecentActions from "@/shared/components/AdminRecentActions";
 
 const actionTypeFilters = ["Всі", "Додано", "Редаговано", "Видалено"];
 const entityFilters = [
@@ -108,45 +109,7 @@ function AdminAccount() {
             </div>
 
             <div className="flex gap-[15px]">
-                <div className="flex flex-col gap-[20px] rounded-xl bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px] w-2/3">
-                    <div className="flex gap-[15px] items-center">
-                        <h2 className="text-lg font-semibold">Останні дії</h2>
-                        <div className="text-gray-600 text-sm mt-[3px]">
-                            (Останні дії очищуються автоматично, якщо період
-                            вище 30-ти днів)
-                        </div>
-                    </div>
-
-                    {filteredActions.length > 0 ? (
-                        <div className="flex flex-col gap-[7px] max-h-[470px] overflow-y-auto">
-                            {filteredActions.map((action) => (
-                                <div
-                                    key={action.id}
-                                    className={`border-l-4 ${
-                                        action.action.startsWith("Додано")
-                                            ? "border-green-500"
-                                            : action.action.startsWith(
-                                                  "Редаговано"
-                                              )
-                                            ? "border-yellow-300"
-                                            : action.action.startsWith(
-                                                  "Видалено"
-                                              )
-                                            ? "border-red-500"
-                                            : "border-blue-500"
-                                    } pl-4 py-2 text-gray-100`}
-                                >
-                                    <div className="opacity-70 text-sm">
-                                        {formatDate(action.createdAt)}
-                                    </div>
-                                    <div>{action.action}</div>
-                                </div>
-                            ))}
-                        </div>
-                    ) : (
-                        <p className="text-sm">Немає дій за цими фільтрами</p>
-                    )}
-                </div>
+                <AdminRecentActions actions={filteredActions} />
                 <div className="grid grid-cols-1 gap-[15px] w-1/3 bg-white/5 p-4 rounded-xl border border-white/10">
                     <h3 className="font-semibold">Зведення</h3>
 

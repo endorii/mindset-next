@@ -1,83 +1,58 @@
+import { IOrder } from "@/features/orders/types/orders.types";
+import StatCard from "@/shared/components/cards/StatCard";
 import { CartIcon } from "@/shared/icons";
 
-function HomeFastStat() {
+function HomeFastStat({ orders }: { orders: IOrder[] }) {
+    const totalOrders = orders.length;
+    const paidOrders = orders.filter(
+        (o) => o.status === "paid" || o.status === "delivered"
+    );
+    const unpaidOrders = orders.filter(
+        (o) => o.status !== "paid" && o.status !== "delivered"
+    );
+    const cancelledOrders = orders.filter((o) => o.status === "cancelled");
+    const totalSales = paidOrders.reduce((sum, order) => sum + order.total, 0);
+    const avgCheck = paidOrders.length
+        ? (totalSales / paidOrders.length).toFixed(2)
+        : "0";
+    const now = new Date();
+    const weekAgo = new Date(now);
+    weekAgo.setDate(now.getDate() - 7);
+    const ordersLastWeek = orders.filter(
+        (o) =>
+            new Date(o.createdAt!) >= weekAgo && new Date(o.createdAt!) <= now
+    );
+    const conversionRate = totalOrders
+        ? ((paidOrders.length / totalOrders) * 100).toFixed(2)
+        : "0";
     return (
-        <div className="flex flex-col gap-[15px]">
-            <div className="rounded-xl bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 px-[20px] py-[10px] flex flex-col gap-[4px]">
-                <div className="">Статистика за сьогодні</div>
-            </div>
-            <div className="flex gap-[15px]">
-                <div className="rounded-xl bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px] flex gap-[70px] items-center">
-                    <div className="flex flex-col gap-[3px]">
-                        <div>Сума продажів</div>
-                        <div className="flex gap-[15px] items-end">
-                            <div className="text-2xl font-semibold">$9,000</div>
-                            <div className="text-sm text-green-500 mb-[2px]">
-                                +0%
-                            </div>
-                        </div>
-                    </div>
-                    <div className="rounded-xl bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px]">
-                        <CartIcon className="w-[25px] stroke-white " />
-                    </div>
-                </div>
-                <div className="rounded-xl bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px] flex gap-[70px] items-center">
-                    <div className="flex flex-col gap-[3px]">
-                        <div>Кількість відвідувачів</div>
-                        <div className="flex gap-[15px] items-end">
-                            <div className="text-2xl font-semibold">120</div>
-                            <div className="text-sm text-green-500 mb-[2px]">
-                                +0%
-                            </div>
-                        </div>
-                    </div>
-                    <div className="rounded-xl bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px]">
-                        <CartIcon className="w-[25px] stroke-white " />
-                    </div>
-                </div>
-                <div className="rounded-xl bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px] flex gap-[70px] items-center">
-                    <div className="flex flex-col gap-[3px]">
-                        <div>Нових реєстрацій</div>
-                        <div className="flex gap-[15px] items-end">
-                            <div className="text-2xl font-semibold">23</div>
-                            <div className="text-sm text-green-500 mb-[2px]">
-                                +0%
-                            </div>
-                        </div>
-                    </div>
-                    <div className="rounded-xl bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px]">
-                        <CartIcon className="w-[25px] stroke-white " />
-                    </div>
-                </div>
-                <div className="rounded-xl bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px] flex gap-[70px] items-center">
-                    <div className="flex flex-col gap-[3px]">
-                        <div>Загальних переглядів товарів</div>
-                        <div className="flex gap-[15px] items-end">
-                            <div className="text-2xl font-semibold">591</div>
-                            <div className="text-sm text-green-500 mb-[2px]">
-                                +0%
-                            </div>
-                        </div>
-                    </div>
-                    <div className="rounded-xl bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px]">
-                        <CartIcon className="w-[25px] stroke-white" />
-                    </div>
-                </div>
-                <div className="rounded-xl bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px] flex gap-[70px] items-center">
-                    <div className="flex flex-col gap-[3px]">
-                        <div>Кількість замовлень</div>
-                        <div className="flex gap-[15px] items-end">
-                            <div className="text-2xl font-semibold">68</div>
-                            <div className="text-sm text-green-500 mb-[2px]">
-                                +0%
-                            </div>
-                        </div>
-                    </div>
-                    <div className="rounded-xl bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px]">
-                        <CartIcon className="w-[25px] stroke-white " />
-                    </div>
-                </div>
-            </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-[20px]">
+            <StatCard
+                title="Загальна кількість замовлень"
+                value={totalOrders}
+            />
+            <StatCard title="Успішні замовлення" value={paidOrders.length} />
+            <StatCard
+                title="Незакінчені замовлення"
+                value={unpaidOrders.length}
+            />
+            <StatCard
+                title="Відмінені замовлення"
+                value={cancelledOrders.length}
+            />
+            <StatCard
+                title="Сума продажів"
+                value={totalSales.toFixed(2) + " ₴"}
+            />
+            <StatCard title="Середній чек" value={avgCheck + " ₴"} />
+            <StatCard
+                title="Замовлення за останній тиждень"
+                value={ordersLastWeek.length}
+            />
+            <StatCard
+                title="Конверсія замовлень"
+                value={conversionRate + " %"}
+            />
         </div>
     );
 }

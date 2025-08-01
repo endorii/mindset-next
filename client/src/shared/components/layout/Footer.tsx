@@ -7,6 +7,9 @@ import ChooseLink from "@/shared/ui/buttons/ChooseLink";
 import { ICollection } from "@/features/collections/types/collections.types";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
+import FooterNavList from "../FooterNavList";
+import { div } from "motion/react-client";
+import FooterNavListItem from "../FooterNavListItem";
 
 const Footer = () => {
     const { data: collections, isError, error, isLoading } = useCollections();
@@ -37,87 +40,99 @@ const Footer = () => {
     }
 
     return (
-        <div className="relative bg-transparent p-[30px] flex justify-between text-white">
-            <div className="flex flex-col gap-[25px] w-[350px] text-sm rounded-xl bg-white/5 shadow-lg backdrop-blur-lg border border-white/5 p-[20px]">
-                <Link href="/" className="font-bold text-5xl tracking-tighter">
-                    mindset
-                </Link>
-                <hr className="w-[60%] border border-white/10" />
-                <div className="">
-                    Створено для тих, кому є різниця у чому ходити. Для тих, у
-                    кого його стиль - це його вайб.
-                </div>
-            </div>
-            {collections && collections.length > 0 ? (
-                <div className="absolute top-[30px] left-[50%] translate-x-[-50%] rounded-xl bg-white/5 shadow-lg backdrop-blur-lg border border-white/5 p-[20px]">
-                    <div className="text-center font-bold mb-[5px]">
-                        Колекції:
+        <footer className="bg-transparent flex flex-col text-white mt-[30px]">
+            <div className="relative flex justify-between gap-[20px] p-[50px]">
+                <div className="flex flex-col justify-between gap-[25px] text-sm min-w-[500px]">
+                    <Link
+                        href="/"
+                        className="font-bold text-5xl tracking-tighter"
+                    >
+                        mindset
+                    </Link>
+                    <div className="text-xs font-light text-white/70 ">
+                        Це більше, ніж одяг. Це ти. <br />
+                        Для тих, хто не йде — а залишає слід. <br />
+                        Твій стиль. Твоя енергія. Твій вайб.
                     </div>
-                    <ul className="flex gap-[10px] max-w-[450px] flex-wrap justify-center">
-                        {Array.isArray(collections) &&
-                            collections.map((collection, i) => {
-                                return (
-                                    <li key={i}>
-                                        <ChooseLink
-                                            href={`/${collection.path}`}
-                                            onClick={() =>
-                                                setCurrentCollection(collection)
-                                            }
-                                            currentCollection={
-                                                currentCollection
-                                            }
-                                            collection={collection}
-                                        >
-                                            {collection.name}
-                                        </ChooseLink>
-                                    </li>
-                                );
-                            })}
-                    </ul>
                 </div>
-            ) : null}
-            <div className="flex flex-col gap-[20px] ">
-                <ul className="flex flex-col gap-[7px] text-sm rounded-xl bg-white/5 shadow-lg backdrop-blur-lg border border-white/5 p-[20px]">
-                    <li className="hover:underline">
-                        <a href="tel:+380974000000">+380 97 400 0000</a>
-                    </li>
-                    <li className="hover:underline">
-                        <a href="mailto:mindset.support@gmail.com">
-                            mindsetsupport@gmail.com
-                        </a>
-                    </li>
-                    <li className="hover:underline">
-                        <a
-                            href="https://www.google.com/maps/place/%D0%9B%D1%83%D1%86%D1%8C%D0%BA,+%D0%92%D0%BE%D0%BB%D0%B8%D0%BD%D1%81%D1%8C%D0%BA%D0%B0+%D0%BE%D0%B1%D0%BB%D0%B0%D1%81%D1%82%D1%8C/"
-                            target="_blank"
-                        >
-                            Україна, м. Луцьк
-                        </a>
-                    </li>
-                </ul>
-                <ul className="flex gap-[20px] justify-center rounded-xl bg-white/5 shadow-lg backdrop-blur-xl border border-white/5 p-[20px]">
-                    <li>
-                        <button className="cursor-pointer p-[10px] border border-white/10 rounded-[50%] hover:bg-white group transition-all duration-300">
-                            <Link href={"#"}>
-                                <TiktokIcon className="w-[20px] fill-white group-hover:fill-black" />
-                            </Link>
-                        </button>
-                    </li>
-                    <li>
-                        <button className="cursor-pointer p-[10px] border border-white/10 rounded-[50%] hover:bg-white group transition-all duration-300">
-                            <Link href={"#"}></Link>
-                            <InstagramIcon className="w-[20px] fill-white group-hover:fill-black" />
-                        </button>
-                    </li>
-                    <li>
-                        <button className="cursor-pointer p-[10px] border border-white/10 rounded-[50%] hover:bg-white group transition-all duration-300">
-                            <Link href={"#"}></Link>
-                            <TelegramIcon className="w-[20px] fill-white group-hover:fill-black" />
-                        </button>
-                    </li>
-                </ul>
+                {collections && (
+                    <FooterNavList title="Колекції">
+                        {collections.map((collection) => (
+                            <FooterNavListItem
+                                href={collection.path}
+                                key={collection.id}
+                            >
+                                {collection.name}
+                            </FooterNavListItem>
+                        ))}
+                    </FooterNavList>
+                )}
+                <FooterNavList title="Навігація">
+                    <FooterNavListItem href="/">Головна</FooterNavListItem>
+                    <FooterNavListItem href="/cart">Корзина</FooterNavListItem>
+                    <FooterNavListItem href="/favorites">
+                        Вподобані
+                    </FooterNavListItem>
+                    <FooterNavListItem href="/account">
+                        Акаунт/вхід
+                    </FooterNavListItem>
+                </FooterNavList>
+                <FooterNavList title="Інформація">
+                    <FooterNavListItem href="/policy">
+                        Наша політика
+                    </FooterNavListItem>
+                    <FooterNavListItem href="/return">
+                        Повернення
+                    </FooterNavListItem>
+                    <FooterNavListItem href="/faq">FAQ</FooterNavListItem>
+                </FooterNavList>
+                <FooterNavList title="Навігація">
+                    <div className="text-white/80 text-sm">
+                        <div></div>
+                        <div>342342344234</div>
+                    </div>
+                    <div className="text-white/80 text-sm">
+                        <div></div>
+                        <div>fdffsd@sfd.com</div>
+                    </div>
+                    <div className="text-white/80 text-sm">
+                        <div></div>
+                        <div>Україна, м. Луцьк</div>
+                    </div>
+                    <div className="flex gap-[15px] mt-[10px]">
+                        <div>
+                            <button className="cursor-pointer p-[10px] border border-white/10 rounded-[50%] hover:bg-white group transition-all duration-300">
+                                <Link href={"#"}>
+                                    <TiktokIcon className="w-[20px] fill-white group-hover:fill-black" />
+                                </Link>
+                            </button>
+                        </div>
+                        <div>
+                            <button className="cursor-pointer p-[10px] border border-white/10 rounded-[50%] hover:bg-white group transition-all duration-300">
+                                <Link href={"#"}></Link>
+                                <InstagramIcon className="w-[20px] fill-white group-hover:fill-black" />
+                            </button>
+                        </div>
+                        <div>
+                            <button className="cursor-pointer p-[10px] border border-white/10 rounded-[50%] hover:bg-white group transition-all duration-300">
+                                <Link href={"#"}></Link>
+                                <TelegramIcon className="w-[20px] fill-white group-hover:fill-black" />
+                            </button>
+                        </div>
+                    </div>
+                </FooterNavList>
             </div>
-        </div>
+            <div className="relative flex gap-[10px] justify-end p-[10px] border-t border-white/10 text-xs text-white/50 font-semibold">
+                <div className="items-end">Наша політика</div>
+                <div className="items-end">FAQ</div>
+                <div className="items-end">
+                    Працюємо без вихідних з 9:00 до 20:00
+                </div>
+                <div className="absolute w-full flex justify-center items-center">
+                    Mindset © 2025
+                </div>
+            </div>
+        </footer>
     );
 };
 

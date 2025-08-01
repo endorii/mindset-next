@@ -35,7 +35,7 @@ function HomeTodo() {
     };
 
     return (
-        <div className="rounded-xl bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px] flex flex-col gap-[15px] w-2/5">
+        <div className="rounded-xl bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px] flex flex-col gap-[15px] w-1/2 ">
             <div className="flex gap-[15px] justify-between">
                 <div className="text-xl font-semibold">ToDo</div>
                 <MonoButton onClick={() => openModal("add")}>

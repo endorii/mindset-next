@@ -2,6 +2,7 @@ import { IColor } from "@/features/admin/attributes/product-colors/types/product
 import { ISize } from "@/features/admin/attributes/product-sizes/types/product-size.types";
 import { IType } from "@/features/admin/attributes/product-types/types/product-type.types";
 import { ICategory } from "@/features/categories/types/categories.types";
+import { ICollection } from "@/features/collections/types/collections.types";
 import { IReview } from "@/features/reviews/types/reviews.types";
 import { TAvailble, TStatus } from "@/shared/types/types";
 
@@ -27,6 +28,7 @@ export interface IProduct {
     productSizes: IProductToSize[];
 
     reviews?: IReview[];
+    collection?: ICollection;
     category?: ICategory;
 }
 
