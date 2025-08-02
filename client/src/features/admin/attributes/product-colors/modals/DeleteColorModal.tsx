@@ -1,14 +1,12 @@
 "use client";
 
-import { useDeleteColor } from "../hooks/useColors";
-import { useEscapeKeyClose } from "@/shared/hooks/useEscapeKeyClose";
-import { IColor } from "../types/product-color.types";
+import { useEscapeKeyClose } from "@/shared/hooks";
+import { MonoButton, DeleteButton } from "@/shared/ui/buttons";
+import { ModalWrapper, FormButtonsWrapper } from "@/shared/ui/wrappers";
 import { createPortal } from "react-dom";
-import MonoButton from "@/shared/ui/buttons/MonoButton";
-import DeleteButton from "@/shared/ui/buttons/DeleteButton";
-import ModalWrapper from "@/shared/ui/wrappers/ModalWrapper";
-import FormButtonsWrapper from "@/shared/ui/wrappers/FormButtonsWrapper";
 import { toast } from "sonner";
+import { useDeleteColor } from "../hooks/useColors";
+import { IColor } from "../types/product-color.types";
 
 interface DeleteColorModalProps {
     isOpen: boolean;

@@ -1,17 +1,19 @@
 "use client";
 
+import { useEscapeKeyClose } from "@/shared/hooks";
+import { MonoButton } from "@/shared/ui/buttons";
 import InputField from "@/shared/ui/inputs/InputField";
-import { useEscapeKeyClose } from "@/shared/hooks/useEscapeKeyClose";
-import { useCreateUserAddress } from "../hooks/useUserAddress";
-import { IUser } from "../../user-info/types/user.types";
-import { useForm } from "react-hook-form";
-import { useEffect, useState } from "react";
+import {
+    ModalWrapper,
+    FormFillingWrapper,
+    FormButtonsWrapper,
+} from "@/shared/ui/wrappers";
+import { useState } from "react";
 import { createPortal } from "react-dom";
-import MonoButton from "@/shared/ui/buttons/MonoButton";
-import ModalWrapper from "@/shared/ui/wrappers/ModalWrapper";
-import FormFillingWrapper from "@/shared/ui/wrappers/FormFillingWrapper";
-import FormButtonsWrapper from "@/shared/ui/wrappers/FormButtonsWrapper";
+import { useForm } from "react-hook-form";
 import { toast } from "sonner";
+import { IUser } from "../../user-info/types/user.types";
+import { useCreateUserAddress } from "../hooks/useUserAddress";
 
 interface AddUserAddressModalProps {
     isOpen: boolean;

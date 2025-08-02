@@ -2,11 +2,11 @@
 
 import { useCurrentUser } from "@/features/admin/user-info/hooks/useUsers";
 import { useCartItemsFromUser } from "@/features/cart/hooks/useCart";
-import CheckoutInputDetails from "@/features/checkout/components/CheckoutInputDetails";
-import CheckoutResultTable from "@/features/checkout/components/CheckoutResultTable";
-import ChooseCheckoutDeliveryAddress from "@/features/checkout/components/ChooseCheckoutDeliveryAddress";
-import PayMethod from "@/features/checkout/components/PayMethod";
-import PreOrderInfo from "@/features/checkout/components/PreOrderInfo";
+import {
+    PreOrderInfo,
+    CheckoutResultTable,
+    PayMethod,
+} from "@/features/checkout/components";
 import { useCreateOrder } from "@/features/orders/hooks/useOrders";
 import { INovaPostDataObj, IOrder } from "@/features/orders/types/orders.types";
 import {
@@ -14,11 +14,10 @@ import {
     fetchCities,
     fetchWarehouses,
 } from "@/shared/api/nova-post.api";
-import MonoButton from "@/shared/ui/buttons/MonoButton";
-import Label from "@/shared/ui/components/Label";
+import { MonoButton } from "@/shared/ui/buttons";
 import InputField from "@/shared/ui/inputs/InputField";
 import { NovaPoshtaSelect } from "@/shared/ui/selectors/NovaPoshtaSelect";
-import { useEffect, useState } from "react";
+import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 

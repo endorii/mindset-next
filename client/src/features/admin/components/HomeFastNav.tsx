@@ -1,4 +1,4 @@
-import AdminNavigationLink from "@/shared/ui/buttons/AdminNavigationLink";
+import { AdminNavigationLink } from "@/shared/ui/buttons";
 import { adminPanelNavigationLinks } from "../utils/navigationLinks";
 
 function HomeFastNav() {

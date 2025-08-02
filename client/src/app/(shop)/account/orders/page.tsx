@@ -3,12 +3,11 @@
 import { useCurrentUser } from "@/features/admin/user-info/hooks/useUsers";
 import { useUserOrders } from "@/features/orders/hooks/useOrders";
 import { IOrderItem } from "@/features/orders/types/orders.types";
-import AddReviewModal from "@/features/reviews/modals/AddReviewModal";
+import { AddReviewModal } from "@/features/reviews/modals";
 import { BackIcon } from "@/shared/icons";
-import { ModalType } from "@/shared/types/types";
-import MonoButton from "@/shared/ui/buttons/MonoButton";
+import { MonoButton } from "@/shared/ui/buttons";
 import { formatDate } from "@/shared/utils/formatDate";
-import { useRouter } from "next/navigation";
+import { useRouter } from "next/router";
 import { useState } from "react";
 
 const Orders = () => {

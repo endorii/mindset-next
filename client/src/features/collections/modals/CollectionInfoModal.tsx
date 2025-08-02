@@ -1,16 +1,17 @@
 "use client";
 
-import { useEscapeKeyClose } from "@/shared/hooks/useEscapeKeyClose";
+import { useEscapeKeyClose } from "@/shared/hooks";
+import { MonoButton } from "@/shared/ui/buttons";
+import { TextareaInfoField, InfoModalBanner } from "@/shared/ui/components";
 import InfoField from "@/shared/ui/inputs/InfoField";
-import { formatDate } from "@/shared/utils/formatDate";
+import {
+    ModalWrapper,
+    FormFillingWrapper,
+    FormButtonsWrapper,
+} from "@/shared/ui/wrappers";
 import { createPortal } from "react-dom";
 import { ICollection } from "../types/collections.types";
-import MonoButton from "@/shared/ui/buttons/MonoButton";
-import ModalWrapper from "@/shared/ui/wrappers/ModalWrapper";
-import FormFillingWrapper from "@/shared/ui/wrappers/FormFillingWrapper";
-import FormButtonsWrapper from "@/shared/ui/wrappers/FormButtonsWrapper";
-import TextareaInfoField from "@/shared/ui/components/TextareaInfoField";
-import InfoModalBanner from "@/shared/ui/components/InfoModalBanner";
+import { formatDate } from "@/shared/utils/formatDate";
 
 export interface CollectionInfoModalProps {
     isOpen: boolean;

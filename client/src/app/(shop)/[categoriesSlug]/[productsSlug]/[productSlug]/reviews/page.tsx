@@ -1,16 +1,16 @@
 "use client";
 
 import { useProduct } from "@/features/products/hooks/useProducts";
-import AvgRatingStat from "@/features/reviews/components/AvgRatingStat";
-import ProductReviewsList from "@/features/reviews/components/ProductReviewsList";
+import {
+    AvgRatingStat,
+    ProductReviewsList,
+} from "@/features/reviews/components";
 import { useReviewByProductId } from "@/features/reviews/hooks/useReviews";
 import { BackIcon } from "@/shared/icons";
-import MonoButton from "@/shared/ui/buttons/MonoButton";
-
+import { MonoButton } from "@/shared/ui/buttons";
 import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
-
-import React, { useMemo } from "react";
+import { usePathname } from "next/navigation";
+import { useRouter } from "next/router";
 
 function Reviews() {
     const pathname = usePathname();

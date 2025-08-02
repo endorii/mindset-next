@@ -1,10 +1,12 @@
 "use client";
 
 import { useCategory } from "@/features/categories/hooks/useCategories";
-import AddProductModal from "@/features/products/modals/AddProductModal";
-import DeleteProductModal from "@/features/products/modals/DeleteProductModal";
-import EditProductModal from "@/features/products/modals/EditProductModal";
-import ProductInfoModal from "@/features/products/modals/ProductInfoModal";
+import {
+    AddProductModal,
+    ProductInfoModal,
+    EditProductModal,
+    DeleteProductModal,
+} from "@/features/products/modals";
 import { IProduct } from "@/features/products/types/products.types";
 import {
     BackIcon,
@@ -15,14 +17,17 @@ import {
     ProductsIcon,
 } from "@/shared/icons";
 import { ModalType } from "@/shared/types/types";
-import ButtonWithIcon from "@/shared/ui/buttons/ButtonWithIcon";
-import ChooseButton from "@/shared/ui/buttons/ChooseButton";
-import DeleteButtonWithIcon from "@/shared/ui/buttons/DeleteButtonWithIcon";
-import MonoButton from "@/shared/ui/buttons/MonoButton";
+import {
+    MonoButton,
+    ChooseButton,
+    ButtonWithIcon,
+    DeleteButtonWithIcon,
+} from "@/shared/ui/buttons";
 import { formatDate } from "@/shared/utils/formatDate";
 import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
-import React, { useState } from "react";
+import { usePathname } from "next/navigation";
+import { useRouter } from "next/router";
+import { useState } from "react";
 
 function AdminCategory() {
     const filters = [

@@ -1,14 +1,12 @@
 "use client";
 
-import Link from "next/link";
-import { InstagramIcon, TelegramIcon, TiktokIcon } from "@/shared/icons";
 import { useCollections } from "@/features/collections/hooks/useCollections";
-import ChooseLink from "@/shared/ui/buttons/ChooseLink";
 import { ICollection } from "@/features/collections/types/collections.types";
+import { TiktokIcon, InstagramIcon, TelegramIcon } from "@/shared/icons";
+import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useState, useEffect } from "react";
 import FooterNavList from "../FooterNavList";
-import { div } from "motion/react-client";
 import FooterNavListItem from "../FooterNavListItem";
 
 const Footer = () => {

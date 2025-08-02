@@ -1,19 +1,21 @@
 "use client";
 
-import { useEscapeKeyClose } from "@/shared/hooks/useEscapeKeyClose";
+import { IOrderItem } from "@/features/orders/types/orders.types";
+import { useEscapeKeyClose } from "@/shared/hooks";
+import { MonoButton } from "@/shared/ui/buttons";
 import InputField from "@/shared/ui/inputs/InputField";
+import BasicTextarea from "@/shared/ui/textareas/BasicTextarea";
+import {
+    ModalWrapper,
+    FormFillingWrapper,
+    FormButtonsWrapper,
+} from "@/shared/ui/wrappers";
 import { useState } from "react";
 import { createPortal } from "react-dom";
-import { useCreateReview } from "../hooks/useReviews";
-import MonoButton from "@/shared/ui/buttons/MonoButton";
-import ModalWrapper from "@/shared/ui/wrappers/ModalWrapper";
-import FormButtonsWrapper from "@/shared/ui/wrappers/FormButtonsWrapper";
-import FormFillingWrapper from "@/shared/ui/wrappers/FormFillingWrapper";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
-import BasicTextarea from "@/shared/ui/textareas/BasicTextarea";
-import StarRating from "../components/StarRating";
-import { IOrderItem } from "@/features/orders/types/orders.types";
+import { StarRating } from "../components";
+import { useCreateReview } from "../hooks/useReviews";
 
 interface AddReviewModalProps {
     isOpen: boolean;

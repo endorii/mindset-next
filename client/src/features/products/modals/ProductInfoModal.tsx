@@ -2,20 +2,24 @@
 
 import { ICategory } from "@/features/categories/types/categories.types";
 import { ICollection } from "@/features/collections/types/collections.types";
-import { useEscapeKeyClose } from "@/shared/hooks/useEscapeKeyClose";
+import { useEscapeKeyClose } from "@/shared/hooks";
+import { MonoButton } from "@/shared/ui/buttons";
+import {
+    TextareaInfoField,
+    AtributesInfoField,
+    InfoModalBanner,
+} from "@/shared/ui/components";
 import InfoField from "@/shared/ui/inputs/InfoField";
-import { formatDate } from "@/shared/utils/formatDate";
-import Image from "next/image";
+import {
+    ModalWrapper,
+    FormFillingWrapper,
+    FormButtonsWrapper,
+} from "@/shared/ui/wrappers";
 import { createPortal } from "react-dom";
+import { Label } from "recharts";
 import { IProduct } from "../types/products.types";
-import MonoButton from "@/shared/ui/buttons/MonoButton";
-import ModalWrapper from "@/shared/ui/wrappers/ModalWrapper";
-import FormFillingWrapper from "@/shared/ui/wrappers/FormFillingWrapper";
-import FormButtonsWrapper from "@/shared/ui/wrappers/FormButtonsWrapper";
-import TextareaInfoField from "@/shared/ui/components/TextareaInfoField";
-import AtributesInfoField from "@/shared/ui/components/AtributesInfoField";
-import Label from "@/shared/ui/components/Label";
-import InfoModalBanner from "@/shared/ui/components/InfoModalBanner";
+import Image from "next/image";
+import { formatDate } from "@/shared/utils/formatDate";
 
 export interface ProductInfoModalProps {
     isOpen: boolean;

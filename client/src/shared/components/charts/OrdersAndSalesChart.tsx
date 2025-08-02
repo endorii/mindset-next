@@ -1,4 +1,20 @@
-import React, { useState, useMemo } from "react";
+import { IOrder } from "@/features/orders/types/orders.types";
+import { ChooseButton } from "@/shared/ui/buttons";
+import {
+    parseISO,
+    isWithinInterval,
+    startOfDay,
+    endOfDay,
+    subDays,
+    startOfMonth,
+    endOfMonth,
+    startOfYear,
+    endOfYear,
+    getMonth,
+    formatDate,
+} from "date-fns";
+import { uk } from "date-fns/locale";
+import { useState, useMemo } from "react";
 import {
     ResponsiveContainer,
     LineChart,
@@ -9,23 +25,6 @@ import {
     Legend,
     Line,
 } from "recharts";
-import {
-    parseISO,
-    startOfDay,
-    endOfDay,
-    isWithinInterval,
-    subDays,
-    format,
-    startOfMonth,
-    endOfMonth,
-    startOfYear,
-    endOfYear,
-    getMonth,
-} from "date-fns";
-
-import { IOrder } from "@/features/orders/types/orders.types";
-import { uk } from "date-fns/locale";
-import ChooseButton from "@/shared/ui/buttons/ChooseButton";
 
 const monthNames = [
     "Січ",
@@ -88,7 +87,7 @@ function generateChartData(orders: IOrder[], period: Period): ChartPoint[] {
         for (let i = 6; i >= 0; i--) {
             const day = subDays(now, i);
             data.push({
-                name: format(day, "EEE dd.MM", { locale: uk }),
+                name: formatDate(day, "EEE dd.MM", { locale: uk }),
                 Замовлення: 0,
                 Продажі: 0,
             }); // Наприклад: Пн 31.07
@@ -103,7 +102,7 @@ function generateChartData(orders: IOrder[], period: Period): ChartPoint[] {
                 })
             ) {
                 const index = data.findIndex(
-                    (d) => d.name === format(date, "EEE dd.MM")
+                    (d) => d.name === formatDate(date, "EEE dd.MM")
                 );
                 if (index !== -1) {
                     data[index].Замовлення += 1;

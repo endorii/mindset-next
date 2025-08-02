@@ -1,5 +1,4 @@
-import MonoButton from "@/shared/ui/buttons/MonoButton";
-import MonoLink from "@/shared/ui/buttons/MonoLink";
+import { MonoLink } from "@/shared/ui/buttons";
 
 interface ICartReceipProps {
     totalPrice: number;

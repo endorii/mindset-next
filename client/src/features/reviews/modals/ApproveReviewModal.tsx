@@ -1,13 +1,12 @@
 "use client";
 
-import { useEscapeKeyClose } from "@/shared/hooks/useEscapeKeyClose";
+import { useEscapeKeyClose } from "@/shared/hooks";
+import { MonoButton } from "@/shared/ui/buttons";
+import { ModalWrapper, FormButtonsWrapper } from "@/shared/ui/wrappers";
 import { createPortal } from "react-dom";
-import MonoButton from "@/shared/ui/buttons/MonoButton";
-import ModalWrapper from "@/shared/ui/wrappers/ModalWrapper";
-import FormButtonsWrapper from "@/shared/ui/wrappers/FormButtonsWrapper";
 import { toast } from "sonner";
-import { IReview } from "../types/reviews.types";
 import { useApproveReview } from "../hooks/useReviews";
+import { IReview } from "../types/reviews.types";
 
 interface ApproveReviewModalProps {
     isOpen: boolean;

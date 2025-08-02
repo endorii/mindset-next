@@ -1,17 +1,21 @@
 "use client";
 
 import { PlusIcon, EditIcon, TrashIcon } from "@/shared/icons";
-import ButtonWithIcon from "@/shared/ui/buttons/ButtonWithIcon";
-import DeleteButtonWithIcon from "@/shared/ui/buttons/DeleteButtonWithIcon";
-import MonoButton from "@/shared/ui/buttons/MonoButton";
-import { formatDate } from "@/shared/utils/formatDate";
-import React, { useState } from "react";
-import { useTodoList } from "../hooks/useTodo";
-import AddTodoItemModal from "../modals/todo/AddTodoItemModal";
 import { TodoModalType } from "@/shared/types/types";
+import {
+    MonoButton,
+    ButtonWithIcon,
+    DeleteButtonWithIcon,
+} from "@/shared/ui/buttons";
+import { useState } from "react";
 import { ITodoItem } from "../admin.types";
-import EditTodoItemModal from "../modals/todo/EditTodoItemModal";
-import DeleteTodoItemModal from "../modals/todo/DeleteTodoItemModal";
+import { useTodoList } from "../hooks/useTodo";
+import {
+    AddTodoItemModal,
+    EditTodoItemModal,
+    DeleteTodoItemModal,
+} from "../modals/todo";
+import { formatDate } from "@/shared/utils/formatDate";
 
 function HomeTodo() {
     const { data: todos } = useTodoList();

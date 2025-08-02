@@ -6,13 +6,15 @@ import DeleteReviewModal from "@/features/reviews/modals/DeleteReviewModal";
 import ReviewInfoModal from "@/features/reviews/modals/ReviewInfoModal";
 import ReviewReplyModal from "@/features/reviews/modals/ReviewReplyModal";
 import { IReview } from "@/features/reviews/types/reviews.types";
-import { InfoIcon, TrashIcon, ArrowIcon } from "@/shared/icons";
+import { InfoIcon, ArrowIcon, TrashIcon } from "@/shared/icons";
 import ApproveIcon from "@/shared/icons/ApproveIcon";
 import { ReviewModalType } from "@/shared/types/types";
-import ApproveButtonWithIcon from "@/shared/ui/buttons/ApproveButtonWithIcon";
-import ButtonWithIcon from "@/shared/ui/buttons/ButtonWithIcon";
-import ChooseButton from "@/shared/ui/buttons/ChooseButton";
-import DeleteButtonWithIcon from "@/shared/ui/buttons/DeleteButtonWithIcon";
+import {
+    ChooseButton,
+    ButtonWithIcon,
+    ApproveButtonWithIcon,
+    DeleteButtonWithIcon,
+} from "@/shared/ui/buttons";
 import { formatDate } from "@/shared/utils/formatDate";
 import { useState } from "react";
 

@@ -3,21 +3,20 @@
 import { useCurrentUser } from "@/features/admin/user-info/hooks/useUsers";
 import FavoriteCard from "@/features/favorites/components/FavoriteCard";
 import {
-    useDeleteFavorite,
     useFavoritesFromUser,
+    useDeleteFavorite,
 } from "@/features/favorites/hooks/useFavorites";
 import {
     ILocalFavoriteItem,
     IFavoriteItem,
 } from "@/features/favorites/types/favorites.types";
 import {
-    getFavoritesFromStorage,
     saveFavoritesToStorage,
+    getFavoritesFromStorage,
 } from "@/features/favorites/utils/favorites.utils";
-import PopularProducts from "@/shared/components/PopularProducts";
+import { PopularProducts } from "@/shared/components";
 import Image from "next/image";
-import Link from "next/link";
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 
 export const Favorites = () => {
     const { data: user, isLoading, error } = useCurrentUser();

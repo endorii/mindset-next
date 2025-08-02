@@ -3,7 +3,10 @@ import { ILocalFavoriteItem } from "@/features/favorites/types/favorites.types";
 import { IProduct } from "@/features/products/types/products.types";
 import { useEffect, useState } from "react";
 
-export function useIsProductInFavorites(product: IProduct | undefined, user: IUser | undefined) {
+export default function useIsProductInFavorites(
+    product: IProduct | undefined,
+    user: IUser | undefined
+) {
     const [isFavorite, setIsFavorite] = useState(false);
 
     useEffect(() => {

@@ -1,25 +1,29 @@
 "use client";
 
 import { useCollections } from "@/features/collections/hooks/useCollections";
-import AddCollectionModal from "@/features/collections/modals/AddCollectionModal";
-import CollectionInfoModal from "@/features/collections/modals/CollectionInfoModal";
-import DeleteCollectionModal from "@/features/collections/modals/DeleteCollectionModal";
-import EditCollectionModal from "@/features/collections/modals/EditCollectionModal";
+import {
+    AddCollectionModal,
+    CollectionInfoModal,
+    EditCollectionModal,
+    DeleteCollectionModal,
+} from "@/features/collections/modals";
 import { ICollection } from "@/features/collections/types/collections.types";
 import {
-    CategoriesIcon,
-    EditIcon,
-    InfoIcon,
     PlusIcon,
-    ProductsIcon,
+    CategoriesIcon,
+    InfoIcon,
+    EditIcon,
     TrashIcon,
+    ProductsIcon,
 } from "@/shared/icons";
 import { ModalType } from "@/shared/types/types";
-import ButtonWithIcon from "@/shared/ui/buttons/ButtonWithIcon";
-import ChooseButton from "@/shared/ui/buttons/ChooseButton";
-import DeleteButtonWithIcon from "@/shared/ui/buttons/DeleteButtonWithIcon";
-import LinkWithIcon from "@/shared/ui/buttons/LinkWithIcon";
-import MonoButton from "@/shared/ui/buttons/MonoButton";
+import {
+    MonoButton,
+    ChooseButton,
+    LinkWithIcon,
+    ButtonWithIcon,
+    DeleteButtonWithIcon,
+} from "@/shared/ui/buttons";
 import { formatDate } from "@/shared/utils/formatDate";
 import Link from "next/link";
 import { useState } from "react";

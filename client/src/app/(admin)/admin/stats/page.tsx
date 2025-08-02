@@ -1,12 +1,13 @@
 "use client";
 
-import React from "react";
+import { useUsers } from "@/features/admin/hooks/useUsers";
 import { useOrders } from "@/features/orders/hooks/useOrders";
 import StatCard from "@/shared/components/cards/StatCard";
-import OrdersAndSalesChart from "@/shared/components/charts/OrdersAndSalesChart";
-import OrdersByCategoriesChart from "@/shared/components/charts/OrdersByCategoriesChart";
-import { useUsers } from "@/features/admin/hooks/useUsers";
-import OrdersByCollectionsChart from "@/shared/components/charts/OrdersByCollectionsChart";
+import {
+    OrdersAndSalesChart,
+    OrdersByCollectionsChart,
+    OrdersByCategoriesChart,
+} from "@/shared/components/charts";
 import UsersRegistrationChart from "@/shared/components/charts/UsersRegistrationsChart";
 
 export default function AnalyticsPage() {

@@ -2,14 +2,14 @@
 
 import {
     AddColorModal,
-    AddSizeModal,
-    AddTypeModal,
     DeleteColorModal,
-    DeleteSizeModal,
-    DeleteTypeModal,
     EditColorModal,
-    EditSizeModal,
+    AddTypeModal,
+    DeleteTypeModal,
     EditTypeModal,
+    AddSizeModal,
+    DeleteSizeModal,
+    EditSizeModal,
 } from "@/features/admin";
 import { useColors } from "@/features/admin/attributes/product-colors/hooks/useColors";
 import { IColor } from "@/features/admin/attributes/product-colors/types/product-color.types";
@@ -17,13 +17,19 @@ import { useSizes } from "@/features/admin/attributes/product-sizes/hooks/useSiz
 import { ISize } from "@/features/admin/attributes/product-sizes/types/product-size.types";
 import { useTypes } from "@/features/admin/attributes/product-types/hooks/useTypes";
 import { IType } from "@/features/admin/attributes/product-types/types/product-type.types";
-import { EditIcon, PlusIcon, TagIcon, TrashIcon } from "@/shared/icons";
-import PaletteIcon from "@/shared/icons/PaletteIcon";
-import WearIcon from "@/shared/icons/WearIcon";
+import {
+    PlusIcon,
+    EditIcon,
+    TrashIcon,
+    PaletteIcon,
+    WearIcon,
+} from "@/shared/icons";
 import { AttributeModalType } from "@/shared/types/types";
-import ButtonWithIcon from "@/shared/ui/buttons/ButtonWithIcon";
-import DeleteButtonWithIcon from "@/shared/ui/buttons/DeleteButtonWithIcon";
-import MonoButton from "@/shared/ui/buttons/MonoButton";
+import {
+    MonoButton,
+    ButtonWithIcon,
+    DeleteButtonWithIcon,
+} from "@/shared/ui/buttons";
 import { useState } from "react";
 
 function AdminAttributes() {

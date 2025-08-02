@@ -1,6 +1,5 @@
 import { IOrder } from "@/features/orders/types/orders.types";
 import StatCard from "@/shared/components/cards/StatCard";
-import { CartIcon } from "@/shared/icons";
 
 function HomeFastStat({ orders }: { orders: IOrder[] }) {
     const totalOrders = orders.length;

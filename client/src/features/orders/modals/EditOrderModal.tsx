@@ -1,24 +1,25 @@
 "use client";
-import { useEffect, useState } from "react";
-import { Controller, useForm } from "react-hook-form";
-import { createPortal } from "react-dom";
-import { useEscapeKeyClose } from "@/shared/hooks/useEscapeKeyClose";
-import { TStatus } from "@/shared/types/types";
 
-import InputField from "@/shared/ui/inputs/InputField";
-import MonoButton from "@/shared/ui/buttons/MonoButton";
-import ModalWrapper from "@/shared/ui/wrappers/ModalWrapper";
-import FormFillingWrapper from "@/shared/ui/wrappers/FormFillingWrapper";
-import FormButtonsWrapper from "@/shared/ui/wrappers/FormButtonsWrapper";
-import { toast } from "sonner";
-import { INovaPostDataObj, IOrder, OrderStatus } from "../types/orders.types";
 import {
     fetchAreas,
     fetchCities,
     fetchWarehouses,
 } from "@/shared/api/nova-post.api";
+import { useEscapeKeyClose } from "@/shared/hooks";
+import { MonoButton } from "@/shared/ui/buttons";
+import InputField from "@/shared/ui/inputs/InputField";
+import {
+    ModalWrapper,
+    FormFillingWrapper,
+    FormButtonsWrapper,
+} from "@/shared/ui/wrappers";
+import { useState, useEffect } from "react";
+import { createPortal } from "react-dom";
+import { useForm, Controller } from "react-hook-form";
+import { Label } from "recharts";
+import { toast } from "sonner";
 import { useUpdateOrder } from "../hooks/useOrders";
-import Label from "@/shared/ui/components/Label";
+import { IOrder, OrderStatus, INovaPostDataObj } from "../types/orders.types";
 
 interface EditOrderModalProps {
     isOpen: boolean;

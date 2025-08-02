@@ -1,8 +1,8 @@
 "use client";
 
 import { useCollections } from "@/features/collections/hooks/useCollections";
-import { useTypewriter } from "@/shared/hooks/useTypewriter";
 import { ICollection } from "@/features/collections/types/collections.types";
+import { useTypewriter } from "@/shared/hooks";
 import Link from "next/link";
 
 export default function HomePage() {

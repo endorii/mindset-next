@@ -23,3 +23,5 @@ export { default as TelegramIcon } from "./TelegramIcon";
 export { default as TiktokIcon } from "./TiktokIcon";
 export { default as TrashIcon } from "./TrashIcon";
 export { default as BurgerMenuIcon } from "./BurgerMenuIcon";
+export { default as PaletteIcon } from "./PaletteIcon";
+export { default as WearIcon } from "./WearIcon";

@@ -7,9 +7,11 @@ import OrderInfoModal from "@/features/orders/modals/OrderInfoModal";
 import { IOrder } from "@/features/orders/types/orders.types";
 import { InfoIcon, EditIcon, TrashIcon } from "@/shared/icons";
 import { OrderModalType } from "@/shared/types/types";
-import ButtonWithIcon from "@/shared/ui/buttons/ButtonWithIcon";
-import ChooseButton from "@/shared/ui/buttons/ChooseButton";
-import DeleteButtonWithIcon from "@/shared/ui/buttons/DeleteButtonWithIcon";
+import {
+    ChooseButton,
+    ButtonWithIcon,
+    DeleteButtonWithIcon,
+} from "@/shared/ui/buttons";
 import { formatDate } from "@/shared/utils/formatDate";
 import { useState } from "react";
 

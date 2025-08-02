@@ -8,10 +8,9 @@ import {
 import { useCurrentUser } from "@/features/admin/user-info/hooks/useUsers";
 import { EditIcon } from "@/shared/icons";
 import { AttributeModalType } from "@/shared/types/types";
-import MonoButton from "@/shared/ui/buttons/MonoButton";
+import { MonoButton } from "@/shared/ui/buttons";
 import { redirect } from "next/navigation";
-
-import { useEffect, useState } from "react";
+import { useState, useEffect } from "react";
 
 function Account() {
     const { data: user, isLoading, isError } = useCurrentUser();

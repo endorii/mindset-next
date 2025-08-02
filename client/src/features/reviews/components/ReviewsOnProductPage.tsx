@@ -1,8 +1,7 @@
-import MonoLink from "@/shared/ui/buttons/MonoLink";
-import React, { useMemo } from "react";
-import { useReviewByProductId } from "../hooks/useReviews";
-import { formatDate } from "@/shared/utils/formatDate";
 import { IProduct } from "@/features/products/types/products.types";
+import { MonoLink } from "@/shared/ui/buttons";
+import { useMemo } from "react";
+import { useReviewByProductId } from "../hooks/useReviews";
 import AvgRatingStat from "./AvgRatingStat";
 import ProductReviewsList from "./ProductReviewsList";
 

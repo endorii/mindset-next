@@ -1,15 +1,11 @@
 "use client";
 
-import HomeFastNav from "@/features/admin/components/HomeFastNav";
-import HomeFastStat from "@/features/admin/components/HomeFastStat";
-import HomeTodo from "@/features/admin/components/HomeTodo";
-import HomeWelcomeMessage from "@/features/admin/components/HomeWelcomeMessage";
+import { HomeFastStat, HomeTodo } from "@/features/admin/components";
 import { useRecentActions } from "@/features/admin/recent-actions/hooks/useRecentActions";
 import { useCurrentUser } from "@/features/admin/user-info/hooks/useUsers";
 import { useOrders } from "@/features/orders/hooks/useOrders";
-import AdminRecentActions from "@/shared/components/AdminRecentActions";
-import StatCard from "@/shared/components/cards/StatCard";
-import OrdersAndSalesChart from "@/shared/components/charts/OrdersAndSalesChart";
+import { AdminRecentActions } from "@/shared/components";
+import { OrdersAndSalesChart } from "@/shared/components/charts";
 
 function Admin() {
     const { data: user } = useCurrentUser();

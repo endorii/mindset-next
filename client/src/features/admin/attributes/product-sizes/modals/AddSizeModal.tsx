@@ -1,16 +1,18 @@
 "use client";
 
+import { useEscapeKeyClose } from "@/shared/hooks";
+import { MonoButton } from "@/shared/ui/buttons";
 import InputField from "@/shared/ui/inputs/InputField";
-import { useEscapeKeyClose } from "@/shared/hooks/useEscapeKeyClose";
-import { useCreateSize } from "../hooks/useSizes";
-import { createPortal } from "react-dom";
-import MonoButton from "@/shared/ui/buttons/MonoButton";
-import ModalWrapper from "@/shared/ui/wrappers/ModalWrapper";
-import FormButtonsWrapper from "@/shared/ui/wrappers/FormButtonsWrapper";
-import FormFillingWrapper from "@/shared/ui/wrappers/FormFillingWrapper";
-import { useForm } from "react-hook-form";
+import {
+    ModalWrapper,
+    FormFillingWrapper,
+    FormButtonsWrapper,
+} from "@/shared/ui/wrappers";
 import { useState } from "react";
+import { createPortal } from "react-dom";
+import { useForm } from "react-hook-form";
 import { toast } from "sonner";
+import { useCreateSize } from "../hooks/useSizes";
 
 interface AddSizeModalProps {
     isOpen: boolean;

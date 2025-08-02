@@ -1,4 +1,4 @@
-import LoginComponentsWrapper from "@/shared/ui/wrappers/LoginComponentsWrapper";
+import { LoginComponentsWrapper } from "@/shared/ui/wrappers";
 
 function Security() {
     return (

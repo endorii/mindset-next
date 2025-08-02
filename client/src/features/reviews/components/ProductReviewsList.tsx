@@ -1,5 +1,4 @@
 import { formatDate } from "@/shared/utils/formatDate";
-import React from "react";
 import { IReview } from "../types/reviews.types";
 import { IProduct } from "@/features/products/types/products.types";
 

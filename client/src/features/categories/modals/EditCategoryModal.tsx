@@ -1,27 +1,26 @@
 "use client";
 
-import { useForm } from "react-hook-form";
-import { useEffect, useState, ChangeEvent } from "react";
-import { createPortal } from "react-dom";
-import Image from "next/image";
-
 import { ICollection } from "@/features/collections/types/collections.types";
-import { ICategory } from "../types/categories.types";
-import { useEditCategory } from "../hooks/useCategories";
-import { useUploadImage } from "@/shared/hooks/useImages";
-import { useEscapeKeyClose } from "@/shared/hooks/useEscapeKeyClose";
+import { useUploadImage, useEscapeKeyClose } from "@/shared/hooks";
 import { TStatus } from "@/shared/types/types";
-import { statuses } from "@/shared/utils/helpers";
-
+import { MonoButton } from "@/shared/ui/buttons";
 import InputField from "@/shared/ui/inputs/InputField";
-import MonoButton from "@/shared/ui/buttons/MonoButton";
-import ModalWrapper from "@/shared/ui/wrappers/ModalWrapper";
-import FormFillingWrapper from "@/shared/ui/wrappers/FormFillingWrapper";
-import FormButtonsWrapper from "@/shared/ui/wrappers/FormButtonsWrapper";
-import { toast } from "sonner";
 import BasicSelector from "@/shared/ui/selectors/BasicSelector";
 import BasicTextarea from "@/shared/ui/textareas/BasicTextarea";
-import Label from "@/shared/ui/components/Label";
+import {
+    ModalWrapper,
+    FormFillingWrapper,
+    FormButtonsWrapper,
+} from "@/shared/ui/wrappers";
+import { statuses } from "@/shared/utils/helpers";
+import { useState, useEffect, ChangeEvent } from "react";
+import { createPortal } from "react-dom";
+import { useForm } from "react-hook-form";
+import { Label } from "recharts";
+import { toast } from "sonner";
+import { useEditCategory } from "../hooks/useCategories";
+import { ICategory } from "../types/categories.types";
+import Image from "next/image";
 
 interface EditCategoryModalProps {
     isOpen: boolean;

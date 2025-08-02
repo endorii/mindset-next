@@ -1,10 +1,9 @@
 "use client";
 
 import { useCollections } from "@/features/collections/hooks/useCollections";
-import { ICollection } from "@/features/collections/types/collections.types";
 import { BurgerMenuIcon, CloseIcon } from "@/shared/icons";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 const HeaderBurger = () => {
     const { data: collections, isError, error, isLoading } = useCollections();

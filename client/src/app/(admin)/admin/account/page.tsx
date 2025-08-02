@@ -1,11 +1,11 @@
 "use client";
 
-import React, { useMemo, useState } from "react";
 import { useRecentActions } from "@/features/admin/recent-actions/hooks/useRecentActions";
 import { useCurrentUser } from "@/features/admin/user-info/hooks/useUsers";
+import { AdminRecentActions } from "@/shared/components";
+import { ChooseButton } from "@/shared/ui/buttons";
 import { formatDate } from "@/shared/utils/formatDate";
-import ChooseButton from "@/shared/ui/buttons/ChooseButton";
-import AdminRecentActions from "@/shared/components/AdminRecentActions";
+import { useState, useMemo } from "react";
 
 const actionTypeFilters = ["Всі", "Додано", "Редаговано", "Видалено"];
 const entityFilters = [

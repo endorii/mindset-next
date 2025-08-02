@@ -1,17 +1,19 @@
 "use client";
 
+import { useEscapeKeyClose } from "@/shared/hooks";
+import { MonoButton } from "@/shared/ui/buttons";
 import InputField from "@/shared/ui/inputs/InputField";
-import { useEditColor } from "../hooks/useColors";
-import { useEscapeKeyClose } from "@/shared/hooks/useEscapeKeyClose";
-import { IColor } from "../types/product-color.types";
+import {
+    ModalWrapper,
+    FormFillingWrapper,
+    FormButtonsWrapper,
+} from "@/shared/ui/wrappers";
 import { useState, useEffect } from "react";
 import { createPortal } from "react-dom";
-import MonoButton from "@/shared/ui/buttons/MonoButton";
-import ModalWrapper from "@/shared/ui/wrappers/ModalWrapper";
-import FormFillingWrapper from "@/shared/ui/wrappers/FormFillingWrapper";
-import FormButtonsWrapper from "@/shared/ui/wrappers/FormButtonsWrapper";
-import { toast } from "sonner";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
+import { useEditColor } from "../hooks/useColors";
+import { IColor } from "../types/product-color.types";
 
 interface EditColorProps {
     isOpen: boolean;

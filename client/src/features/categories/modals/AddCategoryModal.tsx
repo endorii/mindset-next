@@ -1,25 +1,24 @@
 "use client";
 
-import { useForm } from "react-hook-form";
-import { useState } from "react";
-import { createPortal } from "react-dom";
-import Image from "next/image";
 import { ICollection } from "@/features/collections/types/collections.types";
-import { useUploadImage } from "@/shared/hooks/useImages";
-import { useCreateCategory } from "../hooks/useCategories";
-import { useEscapeKeyClose } from "@/shared/hooks/useEscapeKeyClose";
+import { useUploadImage, useEscapeKeyClose } from "@/shared/hooks";
 import { TStatus } from "@/shared/types/types";
+import { MonoButton } from "@/shared/ui/buttons";
+import { UploadBannerWithPreview } from "@/shared/ui/components";
 import InputField from "@/shared/ui/inputs/InputField";
-import MonoButton from "@/shared/ui/buttons/MonoButton";
-import ModalWrapper from "@/shared/ui/wrappers/ModalWrapper";
-import FormButtonsWrapper from "@/shared/ui/wrappers/FormButtonsWrapper";
-import FormFillingWrapper from "@/shared/ui/wrappers/FormFillingWrapper";
-import { statuses } from "@/shared/utils/helpers";
-import { toast } from "sonner";
 import BasicSelector from "@/shared/ui/selectors/BasicSelector";
 import BasicTextarea from "@/shared/ui/textareas/BasicTextarea";
-import Label from "@/shared/ui/components/Label";
-import UploadBannerWithPreview from "@/shared/ui/components/UploadBannerWithPreview";
+import {
+    ModalWrapper,
+    FormFillingWrapper,
+    FormButtonsWrapper,
+} from "@/shared/ui/wrappers";
+import { statuses } from "@/shared/utils/helpers";
+import { useState } from "react";
+import { createPortal } from "react-dom";
+import { useForm } from "react-hook-form";
+import { toast } from "sonner";
+import { useCreateCategory } from "../hooks/useCategories";
 
 interface AddCategoryModalProps {
     isOpen: boolean;

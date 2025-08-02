@@ -1,9 +1,9 @@
 "use client";
 
-import { notFound, usePathname } from "next/navigation";
-import { useCollection } from "@/features/collections/hooks/useCollections";
 import { ICategory } from "@/features/categories/types/categories.types";
+import { useCollection } from "@/features/collections/hooks/useCollections";
 import Link from "next/link";
+import { usePathname, notFound } from "next/navigation";
 
 export default function Collection() {
     const pathname = usePathname();

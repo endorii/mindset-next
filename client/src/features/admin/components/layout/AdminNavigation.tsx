@@ -1,11 +1,11 @@
 "use client";
 
 import { BackIcon, LogoutIcon } from "@/shared/icons";
-import NavigationHideTextWrapper from "@/shared/ui/wrappers/NavigationHideTextWrapper";
+import { AdminNavigationLink } from "@/shared/ui/buttons";
+import { NavigationHideTextWrapper } from "@/shared/ui/wrappers";
 import { useState } from "react";
-import { adminPanelNavigationLinks } from "../../utils/navigationLinks";
-import AdminNavigationLink from "@/shared/ui/buttons/AdminNavigationLink";
 import { toast } from "sonner";
+import { adminPanelNavigationLinks } from "../../utils/navigationLinks";
 
 function AdminNavigation({ children }: { children: React.ReactNode }) {
     const [navOpen, setNavOpen] = useState(true);

@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import { Roboto, Qwitcher_Grypen } from "next/font/google";
 import "./globals.css";
+import { Toaster } from "sonner";
 import { AuthProvider } from "@/shared/components/providers/AuthProvider";
 import { QueryProvider } from "@/shared/components/providers/QueryProvider";
-import { Toaster } from "sonner";
 
 export const roboto = Roboto({
     subsets: ["cyrillic"],

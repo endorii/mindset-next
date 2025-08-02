@@ -1,7 +1,6 @@
-import Container from "@/shared/ui/layout/Container";
 import CustomCursor from "@/shared/components/effects/CustomCursor";
-import Footer from "@/shared/components/layout/Footer";
-import Header from "@/shared/components/layout/Header";
+import { Header, Footer } from "@/shared/components/layout";
+import Container from "@/shared/ui/layout/Container";
 
 function SiteLayout({ children }: Readonly<{ children: React.ReactNode }>) {
     return (

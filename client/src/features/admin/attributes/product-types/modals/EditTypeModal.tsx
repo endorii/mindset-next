@@ -1,17 +1,19 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEscapeKeyClose } from "@/shared/hooks";
+import { MonoButton } from "@/shared/ui/buttons";
+import InputField from "@/shared/ui/inputs/InputField";
+import {
+    ModalWrapper,
+    FormFillingWrapper,
+    FormButtonsWrapper,
+} from "@/shared/ui/wrappers";
+import { useState, useEffect } from "react";
 import { createPortal } from "react-dom";
 import { useForm } from "react-hook-form";
-import { useEscapeKeyClose } from "@/shared/hooks/useEscapeKeyClose";
-import InputField from "@/shared/ui/inputs/InputField";
+import { toast } from "sonner";
 import { useEditType } from "../hooks/useTypes";
 import { IType } from "../types/product-type.types";
-import MonoButton from "@/shared/ui/buttons/MonoButton";
-import ModalWrapper from "@/shared/ui/wrappers/ModalWrapper";
-import FormFillingWrapper from "@/shared/ui/wrappers/FormFillingWrapper";
-import FormButtonsWrapper from "@/shared/ui/wrappers/FormButtonsWrapper";
-import { toast } from "sonner";
 
 interface EditTypeProps {
     isOpen: boolean;

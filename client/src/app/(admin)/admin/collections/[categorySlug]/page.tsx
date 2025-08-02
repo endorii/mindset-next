@@ -1,13 +1,13 @@
 "use client";
 
-import { useState } from "react";
-import { useRouter, usePathname } from "next/navigation";
-import { useCollection } from "@/features/collections/hooks/useCollections";
-import AddCategoryModal from "@/features/categories/modals/AddCategoryModal";
-import CategoryInfoModal from "@/features/categories/modals/CategoryInfoModal";
-import DeleteCategoryModal from "@/features/categories/modals/DeleteCategoryModal";
-import EditCategoryModal from "@/features/categories/modals/EditCategoryModal";
+import {
+    AddCategoryModal,
+    CategoryInfoModal,
+    EditCategoryModal,
+    DeleteCategoryModal,
+} from "@/features/categories/modals";
 import { ICategory } from "@/features/categories/types/categories.types";
+import { useCollection } from "@/features/collections/hooks/useCollections";
 import {
     BackIcon,
     PlusIcon,
@@ -17,13 +17,18 @@ import {
     TrashIcon,
 } from "@/shared/icons";
 import { ModalType } from "@/shared/types/types";
+import {
+    MonoButton,
+    ChooseButton,
+    LinkWithIcon,
+    ButtonWithIcon,
+    DeleteButtonWithIcon,
+} from "@/shared/ui/buttons";
 import { formatDate } from "@/shared/utils/formatDate";
-import ChooseButton from "@/shared/ui/buttons/ChooseButton";
-import MonoButton from "@/shared/ui/buttons/MonoButton";
-import DeleteButtonWithIcon from "@/shared/ui/buttons/DeleteButtonWithIcon";
-import ButtonWithIcon from "@/shared/ui/buttons/ButtonWithIcon";
-import LinkWithIcon from "@/shared/ui/buttons/LinkWithIcon";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { useRouter } from "next/router";
+import { useState } from "react";
 
 const filters = [
     "спочатку нові",

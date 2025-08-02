@@ -1,5 +1,7 @@
 "use client";
 
+import { useCurrentUser } from "@/features/admin/user-info/hooks/useUsers";
+import CartReceip from "@/features/cart/components/CartReceip";
 import {
     useCartItemsFromUser,
     useDeleteCartItemFromUser,
@@ -13,14 +15,12 @@ import {
     ILocalFavoriteItem,
     IFavoriteItem,
 } from "@/features/favorites/types/favorites.types";
-import { useCurrentUser } from "@/features/admin/user-info/hooks/useUsers";
+import { PopularProducts } from "@/shared/components";
 import { CloseIcon, HeartIcon } from "@/shared/icons";
+import { ButtonWithTextAndIcon } from "@/shared/ui/buttons";
+import Image from "next/image";
 import Link from "next/link";
 import { useState, useEffect } from "react";
-import CartReceip from "@/features/cart/components/CartReceip";
-import ButtonWithTextAndIcon from "@/shared/ui/buttons/ButtonWithTextAndIcon";
-import PopularProducts from "@/shared/components/PopularProducts";
-import Image from "next/image";
 
 function Cart() {
     const { data: user, isLoading } = useCurrentUser();

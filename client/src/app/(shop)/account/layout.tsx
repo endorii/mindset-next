@@ -1,6 +1,6 @@
 "use client";
 
-import AccountNavigation from "@/shared/components/layout/AccountNavigation";
+import { AccountNavigation } from "@/shared/components/layout";
 
 export default function AccountLayout({
     children,

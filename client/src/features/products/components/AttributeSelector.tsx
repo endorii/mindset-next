@@ -1,5 +1,3 @@
-import React from "react";
-
 interface AttributeSelectorProps<T> {
     attributeItems: T[];
     label: string;

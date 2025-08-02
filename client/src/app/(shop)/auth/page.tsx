@@ -1,11 +1,9 @@
 "use client";
 
-import { useEffect } from "react";
-import { useRouter } from "next/navigation";
 import { useCurrentUser } from "@/features/admin/user-info/hooks/useUsers";
-import Security from "@/features/auth/components/Security";
-import LoginForm from "@/features/auth/components/LoginForm";
-import RegisterForm from "@/features/auth/components/RegisterFrom";
+import { Security, LoginForm, RegisterForm } from "@/features/auth/components";
+import { useRouter } from "next/router";
+import { useEffect } from "react";
 
 const Login = () => {
     const router = useRouter();

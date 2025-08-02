@@ -1,10 +1,10 @@
 "use client";
 
-import { notFound, usePathname } from "next/navigation";
 import { useCategory } from "@/features/categories/hooks/useCategories";
 import { IProduct } from "@/features/products/types/products.types";
-import Link from "next/link";
 import Image from "next/image";
+import Link from "next/link";
+import { usePathname, notFound } from "next/navigation";
 
 export default function CategoryPage() {
     const pathname = usePathname();

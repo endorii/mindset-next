@@ -1,11 +1,11 @@
-import { useState } from "react";
-import { useAuth } from "../hooks/useAuth";
-import MonoButton from "@/shared/ui/buttons/MonoButton";
+import { MonoButton } from "@/shared/ui/buttons";
 import InputField from "@/shared/ui/inputs/InputField";
+import { LoginComponentsWrapper } from "@/shared/ui/wrappers";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { CreateUserDto } from "../types/auth.types";
-import LoginComponentsWrapper from "@/shared/ui/wrappers/LoginComponentsWrapper";
 import { toast } from "sonner";
+import { useAuth } from "../hooks/useAuth";
+import { CreateUserDto } from "../types/auth.types";
 
 type RegisterFormInputs = CreateUserDto & {
     rules: boolean;

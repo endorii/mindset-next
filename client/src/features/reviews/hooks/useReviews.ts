@@ -1,14 +1,12 @@
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-
-import { TStatus } from "@/shared/types/types";
+import { useQuery, useQueryClient, useMutation } from "@tanstack/react-query";
 import {
-    approveReview,
-    createReview,
-    deleteReview,
     fetchAllReviews,
     fetchReviewsByProductId,
     fetchReviewsByUserId,
+    createReview,
     updateReview,
+    approveReview,
+    deleteReview,
 } from "../api/reviews.api";
 import { IReview } from "../types/reviews.types";
 

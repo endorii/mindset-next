@@ -1,16 +1,16 @@
 "use client";
 
-import { useAuth } from "@/features/auth/hooks/useAuth";
 import { useCurrentUser } from "@/features/admin/user-info/hooks/useUsers";
+import { useAuth } from "@/features/auth/hooks/useAuth";
 import {
-    AdminIcon,
-    CartIcon,
-    CollectionsIcon,
-    HeartIcon,
-    LogoutIcon,
     MainPageIcon,
+    CollectionsIcon,
+    CartIcon,
+    HeartIcon,
+    AdminIcon,
+    LogoutIcon,
 } from "@/shared/icons";
-import NavigationLink from "@/shared/ui/buttons/NavigationLink";
+import { NavigationLink } from "@/shared/ui/buttons";
 import { toast } from "sonner";
 
 function AccountNavigation({ children }: { children: React.ReactNode }) {

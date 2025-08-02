@@ -1,4 +1,4 @@
-import { Controller, Control, FieldErrors } from "react-hook-form";
+import { Controller, Control } from "react-hook-form";
 
 interface StarRatingProps {
     control: Control<any>;

@@ -1,16 +1,18 @@
 "use client";
 
-import { useEscapeKeyClose } from "@/shared/hooks/useEscapeKeyClose";
+import { useEscapeKeyClose } from "@/shared/hooks";
+import { MonoButton } from "@/shared/ui/buttons";
+import { InfoModalBanner } from "@/shared/ui/components";
 import InfoField from "@/shared/ui/inputs/InfoField";
-import { formatDate } from "@/shared/utils/formatDate";
-import { createPortal } from "react-dom";
-import MonoButton from "@/shared/ui/buttons/MonoButton";
-import ModalWrapper from "@/shared/ui/wrappers/ModalWrapper";
-import FormFillingWrapper from "@/shared/ui/wrappers/FormFillingWrapper";
-import FormButtonsWrapper from "@/shared/ui/wrappers/FormButtonsWrapper";
-import { IReview } from "../types/reviews.types";
-import InfoModalBanner from "@/shared/ui/components/InfoModalBanner";
+import {
+    ModalWrapper,
+    FormFillingWrapper,
+    FormButtonsWrapper,
+} from "@/shared/ui/wrappers";
 import Link from "next/link";
+import { createPortal } from "react-dom";
+import { IReview } from "../types/reviews.types";
+import { formatDate } from "@/shared/utils/formatDate";
 
 export interface ReviewInfoModalProps {
     isOpen: boolean;

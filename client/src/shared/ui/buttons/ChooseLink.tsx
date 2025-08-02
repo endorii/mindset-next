@@ -1,6 +1,5 @@
 import { ICollection } from "@/features/collections/types/collections.types";
 import Link from "next/link";
-import React from "react";
 
 interface IChooseLinkProps {
     href: string;

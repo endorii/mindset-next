@@ -1,14 +1,14 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import {
-    addProductToCategory,
-    deleteProduct,
-    editProduct,
-    fetchPopularProducts,
-    fetchProduct,
-    fetchProductsFromOneCollection,
-} from "../api/products.api";
 import { ICategory } from "@/features/categories/types/categories.types";
 import { ICollection } from "@/features/collections/types/collections.types";
+import { useQuery, useQueryClient, useMutation } from "@tanstack/react-query";
+import {
+    fetchPopularProducts,
+    fetchProductsFromOneCollection,
+    fetchProduct,
+    addProductToCategory,
+    editProduct,
+    deleteProduct,
+} from "../api/products.api";
 import { IProduct, ICreateProductPayload } from "../types/products.types";
 
 export function usePopularProducts() {

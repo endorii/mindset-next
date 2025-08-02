@@ -1,6 +1,5 @@
-import React from "react";
-import { formatDate } from "../utils/formatDate";
 import { IRecentActions } from "@/features/admin/recent-actions/types/recent-actions.types";
+import { formatDate } from "../utils/formatDate";
 
 function AdminRecentActions({ actions }: { actions: IRecentActions[] }) {
     return (

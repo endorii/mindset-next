@@ -1,5 +1,6 @@
 "use client";
 
+import { useCurrentUser } from "@/features/admin/user-info/hooks/useUsers";
 import {
     useAddCartItemToUser,
     useDeleteCartItemFromUser,
@@ -13,19 +14,20 @@ import {
     ILocalFavoriteItem,
     IFavoriteItem,
 } from "@/features/favorites/types/favorites.types";
+import AttributeSelector from "@/features/products/components/AttributeSelector";
 import { useProduct } from "@/features/products/hooks/useProducts";
-import { useCurrentUser } from "@/features/admin/user-info/hooks/useUsers";
+import { ReviewsOnProductPage } from "@/features/reviews/components";
+import {
+    RecentlyViewedProducts,
+    ProductsFromOneCategory,
+    PopularProducts,
+} from "@/shared/components";
 import { HeartIcon } from "@/shared/icons";
+import { MonoButton } from "@/shared/ui/buttons";
+import QuantitySelector from "@/shared/ui/selectors/QuantitySelector";
+import addToRecentlyViewed from "@/shared/utils/addToRecentlyViewed";
 import { usePathname } from "next/navigation";
 import { useState, useEffect } from "react";
-import MonoButton from "@/shared/ui/buttons/MonoButton";
-import AttributeSelector from "@/features/products/components/AttributeSelector";
-import QuantitySelector from "@/shared/ui/selectors/QuantitySelector";
-import ReviewsOnProductPage from "@/features/reviews/components/ReviewsOnProductPage";
-import PopularProducts from "@/shared/components/PopularProducts";
-import ProductsFromOneCategory from "@/shared/components/ProductsFromOneCategory";
-import addToRecentlyViewed from "@/shared/utils/addToRecentlyViewed";
-import RecentlyViewedProducts from "@/shared/components/RecentlyViewedProducts";
 
 export default function ProductPage() {
     const pathname = usePathname();

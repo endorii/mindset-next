@@ -1,4 +1,3 @@
-import { useCartItemsFromUser } from "@/features/cart/hooks/useCart";
 import { ICartItem } from "@/features/cart/types/cart.types";
 
 interface CheckoutResultTable {

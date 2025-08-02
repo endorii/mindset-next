@@ -1,6 +1,5 @@
-import React from "react";
-import { INovaPostDataObj } from "../../orders/types/orders.types";
-import Label from "@/shared/ui/components/Label";
+import { INovaPostDataObj } from "@/features/orders/types/orders.types";
+import { Label } from "recharts";
 
 interface ChooseCheckoutDeliveryAddressProps {
     areas: INovaPostDataObj[];
