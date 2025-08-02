@@ -27,7 +27,7 @@ import {
 import { formatDate } from "@/shared/utils/formatDate";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 const filters = [

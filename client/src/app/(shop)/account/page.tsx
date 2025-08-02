@@ -6,7 +6,7 @@ import {
     EditUserAddressModal,
 } from "@/features/admin";
 import { useCurrentUser } from "@/features/admin/user-info/hooks/useUsers";
-import { EditIcon } from "@/shared/icons";
+import { ChangePasswordModal } from "@/features/admin/user-info/modals";
 import { AttributeModalType } from "@/shared/types/types";
 import { MonoButton } from "@/shared/ui/buttons";
 import { redirect } from "next/navigation";
@@ -15,16 +15,6 @@ import { useState, useEffect } from "react";
 function Account() {
     const { data: user, isLoading, isError } = useCurrentUser();
     const [activeModal, setActiveModal] = useState<AttributeModalType>(null);
-
-    const replasePassword = (password?: string) => {
-        let result = "";
-        if (password) {
-            for (let i = 0; i < password.length; i++) {
-                result += "*";
-            }
-        }
-        return result;
-    };
 
     const openModal = (type: AttributeModalType) => {
         setActiveModal(type);
@@ -49,9 +39,9 @@ function Account() {
     }
 
     return (
-        <div>
+        <div className="flex flex-col gap-[20px]">
             <div className="flex w-full justify-between gap-[20px]">
-                <div className="relative flex flex-col group gap-[10px] w-1/3 rounded-xl bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px]">
+                <div className="relative flex flex-col group gap-[10px] w-1/2 rounded-xl bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px]">
                     <button
                         className="absolute top-0 right-0 flex h-full w-full items-center justify-center rounded-xl bg-black/80 uppercase text-2xl font-light opacity-0 group-hover:opacity-100 transition-all duration-400 cursor-pointer z-10"
                         onClick={() => openModal("editUserInfo")}
@@ -65,7 +55,7 @@ function Account() {
                         <li>{user?.phone}</li>
                     </ul>
                 </div>
-                <div className="relative flex flex-col group gap-[10px] w-1/3 rounded-xl bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px]">
+                <div className="relative flex flex-col group gap-[10px] w-1/2 rounded-xl bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px]">
                     <div className="font-bold">Адреса доставки</div>
                     <div className="p-[30px] flex flex-col gap-[7px] h-full">
                         {user?.shippingAddress ? (
@@ -98,38 +88,91 @@ function Account() {
                         )}
                     </div>
                 </div>
+            </div>
+
+            <div className="flex gap-[20px]">
                 <div className="flex flex-col gap-[10px] w-1/3 rounded-xl bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px]">
-                    <div className="font-bold">Доставка та оплата</div>
-                    <div className="relative p-[30px] flex flex-col gap-[7px] h-full">
-                        <div className="flex gap-[10px] items-center">
-                            <img
-                                // src={NewPostLogo}
-                                alt=""
-                                className="max-w-[40px]"
-                            />
-                            <div>У відділення Нова Пошта</div>
+                    <div className="font-bold">Зміна паролю</div>
+                    <MonoButton onClick={() => openModal("changePassword")}>
+                        Змінити пароль
+                    </MonoButton>
+                </div>
+                <div className="flex flex-col gap-[10px] w-2/3 rounded-xl bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px]">
+                    <div className="font-bold text-xl mb-4">
+                        Доставка та оплата
+                    </div>
+
+                    <div className="flex gap-[15px] items-start">
+                        <img
+                            // src={NewPostLogo}
+                            alt="Нова Пошта"
+                            className="max-w-[50px] flex-shrink-0"
+                        />
+                        <div className="flex gap-[20px]">
+                            <div className="flex flex-col gap-[10px]">
+                                <div className="font-semibold text-lg">
+                                    Доставка у відділення "Нова Пошта"
+                                </div>
+                                <div className="text-sm text-gray-300  max-w-md">
+                                    Отримуйте свої замовлення у найближчому
+                                    відділенні "Нова Пошта". Зручне
+                                    самовивезення, швидка обробка та відстеження
+                                    посилки.
+                                </div>
+                            </div>
+                            <ul className="list-disc list-inside mt-2 text-sm text-gray-400">
+                                <li>Термін доставки: 1-3 робочі дні</li>
+                                <li>Відстеження посилки у реальному часі</li>
+                                <li>Можливість оплатити при отриманні</li>
+                            </ul>
                         </div>
-                        <hr className="mt-[10px] border-t border-white/10" />
-                        <div className="flex gap-[10px] items-center">
-                            <img
-                                // src={CardLogo}
-                                alt=""
-                                className="max-w-[40px]"
-                            />
-                            <div>Оплата карткою онлайн</div>
+                    </div>
+
+                    <hr className="border-t border-white/10" />
+
+                    {/* Оплата */}
+                    <div className="flex gap-[15px] items-start">
+                        <img
+                            // src={CardLogo}
+                            alt="Оплата карткою"
+                            className="max-w-[50px] flex-shrink-0"
+                        />
+                        <div className="flex gap-[20px]">
+                            <div className="flex flex-col gap-[10px]">
+                                <div className="font-semibold text-lg">
+                                    Оплата карткою онлайн
+                                </div>
+                                <div className="text-sm text-gray-300 max-w-md">
+                                    Швидка і безпечна оплата банківськими
+                                    картками Visa, MasterCard та іншими
+                                    популярними платіжними системами.
+                                    Підтвердження платежу відразу.
+                                </div>
+                            </div>
+                            <ul className="list-disc list-inside mt-2 text-sm text-gray-400">
+                                <li>
+                                    Підтримка 3D Secure для безпеки платежів
+                                </li>
+                                <li>
+                                    Оплата з мобільних пристроїв та комп’ютерів
+                                </li>
+                                <li>
+                                    Можливість збереження даних для швидших
+                                    покупок
+                                </li>
+                            </ul>
                         </div>
                     </div>
                 </div>
             </div>
-
-            <div className="flex flex-col gap-[10px] mt-[20px] rounded-xl bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px]">
-                <div className="font-bold">Зміна паролю</div>
-                <div className="relative p-[30px] flex flex-col gap-[7px]">
-                    <button className="absolute top-0 right-0 group flex text-xs items-center gap-[20px] border border-transparent hover:text-black hover:border-black hover:bg-white bg-black text-white p-[10px] transition-all duration-300 cursor-pointer disabled:bg-gray-200 disabled:text-gray-400 disabled:border-0 disabled:cursor-not-allowed">
-                        <EditIcon className="w-[20px] stroke-white fill-none stroke-2 group-hover:stroke-black transition-all duration-300" />
-                    </button>
-                    <div>{replasePassword(user?.password)}</div>
-                </div>
+            <div className="flex flex-col gap-[10px] w-full h-fit rounded-xl bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px]">
+                <div className="font-bold">Видалити акаунт </div>
+                <MonoButton
+                    className="bg-red-500/15 border border-white/10 hover:bg-red-500/70! hover:text-white!"
+                    onClick={() => openModal("changePassword")}
+                >
+                    Видалити акаунт
+                </MonoButton>
             </div>
             <>
                 <EditUserInfoModal
@@ -147,6 +190,14 @@ function Account() {
                     onClose={closeModal}
                     address={user?.shippingAddress}
                 />
+                <ChangePasswordModal
+                    isOpen={activeModal === "changePassword"}
+                    onClose={closeModal}
+                />
+                {/* <ChangePasswordModal
+                    isOpen={activeModal === "changePassword"}
+                    onClose={closeModal}
+                /> */}
             </>
         </div>
     );

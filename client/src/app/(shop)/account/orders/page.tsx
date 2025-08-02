@@ -7,7 +7,7 @@ import { AddReviewModal } from "@/features/reviews/modals";
 import { BackIcon } from "@/shared/icons";
 import { MonoButton } from "@/shared/ui/buttons";
 import { formatDate } from "@/shared/utils/formatDate";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 const Orders = () => {

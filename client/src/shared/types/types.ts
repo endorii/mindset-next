@@ -20,6 +20,8 @@ export type AttributeModalType =
     | "editUserAddress"
     | "editUserInfo"
     | "editUserPassword"
+    | "changePassword"
+    | "deleteAccount"
     | null;
 
 export type OrderModalType =

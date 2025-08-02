@@ -2,7 +2,7 @@
 
 import { useCurrentUser } from "@/features/admin/user-info/hooks/useUsers";
 import { Security, LoginForm, RegisterForm } from "@/features/auth/components";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 
 const Login = () => {

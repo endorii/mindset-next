@@ -10,7 +10,7 @@ import { BackIcon } from "@/shared/icons";
 import { MonoButton } from "@/shared/ui/buttons";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 
 function Reviews() {
     const pathname = usePathname();

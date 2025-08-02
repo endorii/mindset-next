@@ -105,7 +105,7 @@ function AccountNavigation({ children }: { children: React.ReactNode }) {
                         >
                             <LogoutIcon className="w-[25px] fill-white group-hover:fill-black" />
                             <span className="transition-opacity duration-200 group-hover:text-black">
-                                Вийти
+                                Вийти з акаунту
                             </span>
                         </NavigationLink>
                     </div>

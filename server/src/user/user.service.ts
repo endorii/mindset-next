@@ -1,4 +1,10 @@
-import { Injectable } from "@nestjs/common";
+import {
+    BadRequestException,
+    HttpException,
+    Injectable,
+    InternalServerErrorException,
+    NotFoundException,
+} from "@nestjs/common";
 import { CreateUserDto } from "./dto/create-user.dto";
 import { PrismaService } from "src/prisma/prisma.service";
 import * as bcrypt from "bcryptjs";
@@ -69,10 +75,12 @@ export class UserService {
     }
 
     async editUserInfo(id: string, updateUserDto: UpdateUserDto) {
+        const user = await this.prisma.user.findUnique({ where: { id } });
+        if (!user) {
+            throw new NotFoundException(`Користувач з id ${id} не знайдений`);
+        }
         return await this.prisma.user.update({
-            where: {
-                id,
-            },
+            where: { id },
             data: updateUserDto,
         });
     }
@@ -86,5 +94,73 @@ export class UserService {
                 hashedRefreshToken: hashedRT,
             },
         });
+    }
+
+    async changePassword(userId: string, data: { oldPassword: string; newPassword: string }) {
+        try {
+            const existingUser = await this.prisma.user.findUnique({
+                where: { id: userId },
+            });
+
+            if (!existingUser) {
+                throw new NotFoundException(`Користувач з id ${userId} не знайдений`);
+            }
+
+            const isComparedPassword = await bcrypt.compare(
+                data.oldPassword,
+                existingUser.password
+            );
+
+            if (!isComparedPassword) {
+                throw new BadRequestException("Неправильний старий пароль");
+            }
+
+            const hashedPassword = await bcrypt.hash(data.newPassword, 10);
+
+            await this.prisma.user.update({
+                where: { id: userId },
+                data: { password: hashedPassword },
+            });
+
+            return { message: "Пароль успішно змінено" };
+        } catch (error) {
+            console.error("Помилка зміни пароля:", error);
+            if (error instanceof HttpException) {
+                throw error;
+            }
+            throw new InternalServerErrorException("Не вдалося змінити пароль.");
+        }
+    }
+
+    async deleteAccount(userId: string, password: string) {
+        try {
+            const existingUser = await this.prisma.user.findUnique({
+                where: { id: userId },
+            });
+
+            if (!existingUser) {
+                throw new NotFoundException(`Користувач з id ${userId} не знайдений`);
+            }
+
+            const isComparedPassword = await bcrypt.compare(password, existingUser.password);
+
+            if (!isComparedPassword) {
+                throw new BadRequestException("Неправильний пароль");
+            }
+
+            await this.prisma.user.delete({
+                where: {
+                    id: userId,
+                },
+            });
+
+            return { message: "Акаунт успішно видалено" };
+        } catch (error) {
+            console.error("Помилка видалення акаунту:", error);
+            if (error instanceof HttpException) {
+                throw error;
+            }
+            throw new InternalServerErrorException("Не вдалося вмидалити акаунт.");
+        }
     }
 }

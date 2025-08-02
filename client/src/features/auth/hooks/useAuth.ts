@@ -1,7 +1,7 @@
 import { useQueryClient, useMutation } from "@tanstack/react-query";
-import { useRouter } from "next/router";
 import { login, registerUser, logout, refreshToken } from "../api/auth.api";
 import { IAuthResponse } from "../types/auth.types";
+import { useRouter } from "next/navigation";
 
 export function useAuth() {
     const queryClient = useQueryClient();
