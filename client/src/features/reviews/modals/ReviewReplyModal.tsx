@@ -96,7 +96,7 @@ export default function ReviewReplyModal({
                 <FormFillingWrapper>
                     <div className="flex flex-col gap-[20px]">
                         <div className="text-lg">Інформація про відгук</div>
-                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-[20px]">
+                        <div className="grid grid-cols-3 gap-[20px]">
                             <InfoField
                                 label="Ім'я та прізвище відправника"
                                 value={senderName}

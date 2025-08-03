@@ -112,7 +112,7 @@ const Orders = () => {
 
                                     {isExpanded && (
                                         <div className="px-[20px] pb-[20px] text-sm bg-white/3 border-t border-white/10">
-                                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 py-4">
+                                            <div className="grid grid-cols-2 gap-4 py-4">
                                                 <div>
                                                     <div className="text-white/60">
                                                         Email

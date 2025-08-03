@@ -82,7 +82,7 @@ export default function AddUserAddressModal({
                 onSubmit={handleSubmit(onSubmit)}
             >
                 <FormFillingWrapper>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-[20px]">
+                    <div className="grid grid-cols-3 gap-[20px]">
                         <InputField
                             label={"Одержувач (ПІБ)*"}
                             placeholder={"Іванов Іван Іванович"}

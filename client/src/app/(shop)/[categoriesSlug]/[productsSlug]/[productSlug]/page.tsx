@@ -176,7 +176,7 @@ export default function ProductPage() {
 
     return (
         <div className="flex flex-col px-[30px] py-[10px] gap-x-[30px] gap-y-[20px]">
-            <div className="flex flex-col md:flex-row gap-[20px] items-start text-white h-full w-full">
+            <div className="flex flex-row gap-[20px] items-start text-white h-full w-full">
                 <div className="flex gap-[10px] relative rounded-xl bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 min-w-fit max-w-[55%]">
                     <div className="relative">
                         <button

@@ -155,8 +155,8 @@ export default function AnalyticsPage() {
         : "0";
 
     return (
-        <div className="p-4 md:p-8 space-y-10">
-            <h1 className="text-2xl md:text-3xl font-semibold">
+        <div className="p-8 space-y-10">
+            <h1 className="text-3xl font-semibold">
                 Аналітика та статистика магазину
             </h1>
 
@@ -167,7 +167,7 @@ export default function AnalyticsPage() {
                 </h2>
                 <OrdersAndSalesChart orders={orders} />
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-6">
+                <div className="grid grid-cols-4 gap-4 mt-6">
                     <StatCard
                         title="Загальна кількість замовлень"
                         value={totalOrders}
@@ -208,7 +208,7 @@ export default function AnalyticsPage() {
                     </h2>
                     <div className="flex gap-[20px]">
                         <OrdersByCollectionsChart orders={orders} />
-                        <div className="w-1/3 grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div className="w-1/3 grid grid-cols-2 gap-4">
                             <StatCard
                                 title="Кількість колекцій"
                                 value={totalCollections}
@@ -240,7 +240,7 @@ export default function AnalyticsPage() {
                     </h2>
                     <div className="flex gap-[20px]">
                         <OrdersByCategoriesChart orders={orders} />
-                        <div className="w-1/3 grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div className="w-1/3 grid grid-cols-2 gap-4">
                             <StatCard
                                 title="Кількість категорій"
                                 value={totalCategories}
@@ -272,7 +272,7 @@ export default function AnalyticsPage() {
                     Статистика користувачів
                 </h2>
                 <UsersRegistrationChart users={users} />
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-6">
+                <div className="grid grid-cols-4 gap-4 mt-6">
                     <StatCard
                         title="Загальна кількість користувачів"
                         value={totalUsers}

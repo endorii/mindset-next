@@ -24,10 +24,13 @@ const Login = () => {
     }
 
     return (
-        <div className="flex flex-col md:flex-row justify-between gap-[30px] pt-[50px] p-[10px] text-white">
-            <Security />
+        <div
+            className="flex flex-row justify-between gap-[20px] p-[30px] pt-[10px] md:p-[10px] text-white
+                        md:flex-col"
+        >
             <LoginForm />
             <RegisterForm />
+            <Security />
         </div>
     );
 };

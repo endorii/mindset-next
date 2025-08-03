@@ -4,3 +4,6 @@ export { default as FooterNavListItem } from "./FooterNavListItem";
 export { default as PopularProducts } from "./PopularProducts";
 export { default as ProductsFromOneCategory } from "./ProductsFromOneCategory";
 export { default as RecentlyViewedProducts } from "./RecentlyViewedProducts";
+export { default as Welcome } from "./Welcome";
+export { default as CollectionList } from "./CollectionList";
+export { default as EmptyCategories } from "./EmptyCategories";

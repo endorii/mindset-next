@@ -2,6 +2,8 @@
 
 import { useCategory } from "@/features/categories/hooks/useCategories";
 import { IProduct } from "@/features/products/types/products.types";
+import { EmptyCategories } from "@/shared/components";
+import ShopTitle from "@/shared/ui/titles/ShopTitle";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname, notFound } from "next/navigation";
@@ -30,18 +32,14 @@ export default function CategoryPage() {
     }
 
     return (
-        <div className="flex flex-col gap-[50px] mt-[10px]">
-            <div className="text-white relative px-[70px]">
-                <div className="text-8xl font-extrabold">
-                    Товари {category.collection?.path} / {category.path}
-                </div>
-                <div className="absolute top-[40px] left-[70px] text-8xl font-qwitcher-grypen text-white/40">
-                    Products {category.collection?.path} / {category.path}
-                </div>
-            </div>
+        <div className="flex flex-col gap-[50px]">
+            <ShopTitle
+                title={`Товари ${category.collection?.path} / ${category.path}`}
+                subtitle={`Products ${category.collection?.path} / ${category.path}`}
+            />
 
             {products && products.length > 0 ? (
-                <ul className="grid gap-[20px] w-full px-[30px] grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4">
+                <ul className="grid gap-[20px] w-full px-[30px] grid-cols-4">
                     {products.map((product: IProduct, i: number) => (
                         <li key={i} className="w-full">
                             <Link
@@ -133,67 +131,12 @@ export default function CategoryPage() {
                     ))}
                 </ul>
             ) : (
-                <div className="p-[30px]">
-                    <div className="relative">
-                        <div className="absolute opacity-0 hover:opacity-100 bg-black/80 backdrop-blur-xl w-full h-full font-thin text-3xl text-white z-[1] transition-all duration-400 flex items-center justify-center">
-                            <div className="absolute top-[50%] translate-y-[-50%] left-[2%] w-[20%] text-base text-white">
-                                Наші полиці зараз оновлюються, щоб запропонувати
-                                вам найкраще з того, що ми готуємо. Можливо,
-                                саме зараз нові товари прямують до нашого
-                                онлайн-стелажа. Ми ретельно підбираємо кожну
-                                річ, щоб вона відповідала вашому стилю та
-                                очікуванням. Кожен товар — це не просто продукт,
-                                а частинка історії, яку ми хочемо вам
-                                розповісти. Незабаром тут з’явиться щось свіже,
-                                стильне й актуальне. Ми цінуємо ваш інтерес і
-                                вже працюємо над тим, щоб наповнити цю сторінку
-                                натхненням. Поки що можете переглянути інші
-                                розділи — там на вас чекає багато цікавого. Або
-                                залишайтеся з нами — ми обов’язково вас
-                                здивуємо! Дякуємо за терпіння й довіру —
-                                попереду лише найкраще!
-                            </div>
-                            <div className="flex flex-col gap-[10px]">
-                                <Link
-                                    className="flex items-center pr-[9%] w-full h-full"
-                                    href={"#"}
-                                >
-                                    <div className="border-b border-transparent hover:border-white">
-                                        Instagram
-                                    </div>
-                                </Link>
-                                <Link
-                                    className="flex items-center pr-[9%] w-full h-full"
-                                    href={"#"}
-                                >
-                                    <div className="border-b border-transparent hover:border-white">
-                                        Telegram
-                                    </div>
-                                </Link>
-                                <Link
-                                    className="flex items-center pr-[9%] w-full h-full"
-                                    href={"#"}
-                                >
-                                    <div className="border-b border-transparent hover:border-white">
-                                        Facebook
-                                    </div>
-                                </Link>
-                            </div>
-                        </div>
-                        <div className="group flex flex-col">
-                            <div
-                                className={`absolute bg-black/25 border border-white/10 shadow-xl px-[50px] py-[15px] backdrop-blur-lg rounded-xl top-[50%] translate-y-[-50%] text-white text-3xl font-thin left-[10%] translate-x-[-10%]`}
-                            >
-                                Поки що тут порожньо — але це не надовго
-                            </div>
-                            <img
-                                src={`/images/product.png`}
-                                alt={"1234"}
-                                className="w-full h-[650px] object-cover filter transition-all duration-500"
-                            />
-                        </div>
-                    </div>
-                </div>
+                <EmptyCategories
+                    title={"Наш віртуальний склад щойно отримав оновлення..."}
+                    subtitle={
+                        "Вибачте за незручності — товари ще в процесі сортування"
+                    }
+                />
             )}
         </div>
     );

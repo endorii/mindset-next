@@ -86,7 +86,7 @@ export const Favorites = () => {
                 </div>
             </div>
             {favoritesToShow && favoritesToShow.length > 0 ? (
-                <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 w-full gap-[20px] px-[30px]">
+                <ul className="grid grid-cols-4 w-full gap-[20px] px-[30px]">
                     {favoritesToShow.map((item, i) => {
                         const isServer = !!user;
 

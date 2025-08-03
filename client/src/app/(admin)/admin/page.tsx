@@ -20,9 +20,7 @@ function Admin() {
 
     return (
         <div className="flex flex-col gap-[15px]">
-            <h1 className="text-2xl md:text-3xl font-semibold">
-                Головна сторінка
-            </h1>
+            <h1 className="text-3xl font-semibold">Головна сторінка</h1>
 
             {orders && <OrdersAndSalesChart orders={orders} />}
             <HomeFastStat orders={orders} />

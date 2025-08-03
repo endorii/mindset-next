@@ -87,7 +87,7 @@ function Reviews() {
                     Відгуки про товар ({reviews?.length || 0})
                 </h2>
 
-                <div className="flex flex-col md:flex-row gap-8">
+                <div className="flex flex-row gap-8">
                     <AvgRatingStat reviews={reviews} />
 
                     <div className="w-2/3">

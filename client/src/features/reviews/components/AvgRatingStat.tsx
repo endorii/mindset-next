@@ -36,7 +36,7 @@ function AvgRatingStat({ reviews }: AvgRatingStatProps) {
     }, [reviews]);
 
     return (
-        <div className="flex flex-col gap-[20px] w-full md:w-1/3">
+        <div className="flex flex-col gap-[20px] w-1/3">
             <div className="flex gap-[7px] text-xl mb-4 ">
                 <div className="font-light text-white/40">
                     Середня оцінка користувачів

@@ -57,20 +57,20 @@ const Header = () => {
     }
 
     return (
-        <header className="fixed py-[10px] px-[20px] h-[85px] flex justify-between items-center w-full bg-black/70 backdrop-blur-xl text-white z-[100] shadow-custom">
+        <header className="fixed py-[20px] px-[30px] sm:px-[10px] sm:p-[10px] flex justify-between items-center w-full bg-black/70 backdrop-blur-xl text-white z-[100] shadow-custom">
             <HeaderBurger />
             <Link
                 href="/"
                 className={`absolute left-1/2 transform -translate-x-1/2 transition-opacity duration-300 ${
                     showTitle ? "opacity-100" : "opacity-0 pointer-events-none"
-                }  px-[25px] py-[13px] pb-[18px]  font-bold text-5xl tracking-tighter leading-10 `}
+                }  px-[25px] py-[13px] pb-[18px] font-bold text-5xl md:text-4xl tracking-tighter leading-10 `}
             >
                 mindset.
             </Link>
 
             <div className="flex items-center gap-[30px]">
                 <ul className="flex gap-[10px]">
-                    <li>
+                    <li className="md:hidden">
                         <Link
                             href="/cart"
                             className="relative flex gap-[10px] rounded-xl bg-white/5 shadow-lg px-[20px] py-[13px] backdrop-blur-2xl border border-white/5 hover:bg-white/15 transition-all duration-300"
@@ -83,7 +83,7 @@ const Header = () => {
                             <CartIcon className="w-[25px] fill-none stroke-2 stroke-white" />
                         </Link>
                     </li>
-                    <li>
+                    <li className="md:hidden">
                         <Link
                             href="/favorites"
                             className="relative flex gap-[10px] rounded-xl bg-white/5 shadow-lg px-[20px] py-[13px] backdrop-blur-2xl border border-white/5 hover:bg-white/15 transition-all duration-300"
@@ -97,11 +97,11 @@ const Header = () => {
                             <HeartIcon className="w-[25px] fill-none stroke-2 stroke-white" />
                         </Link>
                     </li>
-                    <li>
+                    <li className="sm:hidden">
                         {user ? (
                             <Link
                                 href="/account"
-                                className="flex gap-[10px] rounded-xl bg-white/5 shadow-lg px-[20px] py-[13px] backdrop-blur-2xl border border-white/5 hover:bg-white/15 transition-all duration-300"
+                                className="flex  gap-[10px] rounded-xl bg-white/5 shadow-lg px-[20px] py-[13px] backdrop-blur-2xl border border-white/5 hover:bg-white/15 transition-all duration-300"
                             >
                                 <AccountIcon className="w-[25px] fill-white" />
                                 <div>{user.name}</div>

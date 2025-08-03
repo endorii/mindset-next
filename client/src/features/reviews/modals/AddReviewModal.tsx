@@ -111,7 +111,7 @@ export default function AddReviewModal({
                         errorMessage={errors.content?.message}
                     />
 
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-[20px]">
+                    <div className="grid grid-cols-2 gap-[20px]">
                         <InputField
                             label={"Ваше ім'я та прізвище*"}
                             type={"text"}

@@ -48,7 +48,7 @@ export default function OrderInfoModal({
             modalTitle={"Інформація про замовлення"}
         >
             <FormFillingWrapper>
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-[20px]">
+                <div className="grid grid-cols-3 gap-[20px]">
                     <div className="flex flex-col gap-[20px]">
                         <div className="text-lg">Контактна інформація</div>
                         <div className="flex flex-col gap-[20px]">

@@ -8,7 +8,7 @@ function AdminHeader() {
     const { data: user } = useCurrentUser();
 
     return (
-        <header className="fixed top-0 py-[10px] px-[20px] md:px-[35px] h-[65px] md:h-[90px] flex gap-[5%] items-center w-full shadow-custom bg-transparent border-b border-white/10 z-[10]">
+        <header className="fixed top-0 py-[10px] px-[35px] h-[90px] flex gap-[5%] items-center w-full shadow-custom bg-transparent border-b border-white/10 z-[10]">
             <div className="min-w-[220px] rounded-xl bg-white/5 shadow-lg px-[25px] py-[10px] pb-[13px] backdrop-blur-2xl border border-white/5 text-white font-bold text-4xl tracking-tighter">
                 mind panel
             </div>

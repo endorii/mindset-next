@@ -72,7 +72,7 @@ export default function AddColorModal({ isOpen, onClose }: AddColorModalProps) {
                 onSubmit={handleSubmit(onSubmit)}
             >
                 <FormFillingWrapper>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-[20px]">
+                    <div className="grid grid-cols-2 gap-[20px]">
                         <InputField
                             label={"Назва*"}
                             placeholder={"Назва кольору"}

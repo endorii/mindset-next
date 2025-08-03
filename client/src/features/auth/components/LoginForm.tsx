@@ -35,6 +35,7 @@ function LoginForm() {
             >
                 <InputField
                     label="електронна пошта*"
+                    id={"loginEmail"}
                     type="email"
                     {...loginRegister("email", {
                         required: "Введіть email",
@@ -48,6 +49,7 @@ function LoginForm() {
 
                 <InputField
                     label="пароль*"
+                    id={"loginPassword"}
                     type="password"
                     {...loginRegister("password", {
                         required: "Введіть пароль",

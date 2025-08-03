@@ -45,7 +45,7 @@ function ReviewsOnProductPage({ product }: ReviewsOnProductPageProps) {
                 Відгуки про товар ({reviews?.length || 0})
             </h2>
 
-            <div className="flex flex-col md:flex-row gap-8">
+            <div className="flex flex-row gap-8">
                 {reviews.length > 0 ? (
                     <AvgRatingStat reviews={reviews} />
                 ) : null}

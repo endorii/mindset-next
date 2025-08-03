@@ -46,13 +46,13 @@ export default function CollectionInfoModal({
             modalTitle={`Інформація про колекцію ${name}`}
         >
             <FormFillingWrapper>
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-[20px]">
+                <div className="grid grid-cols-3 gap-[20px]">
                     <InfoField label={"Назва"} value={name} />
                     <InfoField label={"Шлях"} value={path} />
                     <InfoField label={"Статус"} value={status} />
                 </div>
                 <TextareaInfoField label={"Опис"} value={description} />
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-[20px]">
+                <div className="grid grid-cols-3 gap-[20px]">
                     <InfoField label={"Переглядів"} value={views} />
                     <InfoField
                         label="Створено"

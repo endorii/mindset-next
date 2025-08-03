@@ -70,6 +70,7 @@ function RegisterForm() {
 
                 <InputField
                     label="електронна пошта*"
+                    id={"registerEmail"}
                     type="email"
                     {...registerForm("email", {
                         required: "Введіть email",
@@ -96,6 +97,7 @@ function RegisterForm() {
 
                 <InputField
                     label="пароль*"
+                    id={"registerPassword"}
                     type="password"
                     {...registerForm("password", {
                         required: "Введіть пароль",
