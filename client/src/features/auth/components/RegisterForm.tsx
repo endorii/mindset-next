@@ -20,9 +20,9 @@ function RegisterForm() {
 
     const {
         register: registerForm,
+        reset,
         handleSubmit: handleRegisterSubmit,
         formState: { errors: registerErrors },
-        watch,
     } = useForm<RegisterFormInputs>();
 
     const onRegisterSubmit = async (data: RegisterFormInputs) => {
@@ -33,6 +33,7 @@ function RegisterForm() {
             await registerUser(data);
             setRegisterMessage("Реєстрація успішна!");
             setRegisterIsSuccess(true);
+            reset();
             toast.success("Реєстрація успішна!");
         } catch (err: any) {
             setRegisterMessage(err?.message || "Помилка реєстрації");

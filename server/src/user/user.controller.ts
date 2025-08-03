@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Patch, Req, UseGuards } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Param, Patch, Req, UseGuards } from "@nestjs/common";
 import { UserService } from "./user.service";
 import { Roles } from "src/auth/decorators/roles.decorator";
 import { UpdateUserDto } from "./dto/update-user.dto";
@@ -35,9 +35,12 @@ export class UserController {
         return this.userService.editUserInfo(userId, updateUserDto);
     }
 
-    @Patch("")
+    @Delete("")
     @Roles(Role.ADMIN, Role.USER)
-    deleteUser(@Req() req: Request & { user: AuthenticatedRequestUser }, @Body() password: string) {
-        return this.userService.deleteAccount(req.user.id, password);
+    deleteUser(
+        @Req() req: Request & { user: AuthenticatedRequestUser },
+        @Body() body: { password: string }
+    ) {
+        return this.userService.deleteAccount(req.user.id, body.password);
     }
 }

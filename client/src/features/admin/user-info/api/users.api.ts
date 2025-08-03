@@ -71,7 +71,8 @@ export async function deleteUser(password: string): Promise<IUser> {
             headers: {
                 "Content-Type": "application/json",
             },
-            body: JSON.stringify(password),
+            body: JSON.stringify({ password }),
+
             credentials: "include",
         });
 

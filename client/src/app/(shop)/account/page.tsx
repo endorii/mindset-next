@@ -6,7 +6,10 @@ import {
     EditUserAddressModal,
 } from "@/features/admin";
 import { useCurrentUser } from "@/features/admin/user-info/hooks/useUsers";
-import { ChangePasswordModal } from "@/features/admin/user-info/modals";
+import {
+    ChangePasswordModal,
+    DeleteAccountModal,
+} from "@/features/admin/user-info/modals";
 import { AttributeModalType } from "@/shared/types/types";
 import { MonoButton } from "@/shared/ui/buttons";
 import { redirect } from "next/navigation";
@@ -169,7 +172,7 @@ function Account() {
                 <div className="font-bold">Видалити акаунт </div>
                 <MonoButton
                     className="bg-red-500/15 border border-white/10 hover:bg-red-500/70! hover:text-white!"
-                    onClick={() => openModal("changePassword")}
+                    onClick={() => openModal("deleteAccount")}
                 >
                     Видалити акаунт
                 </MonoButton>
@@ -194,10 +197,10 @@ function Account() {
                     isOpen={activeModal === "changePassword"}
                     onClose={closeModal}
                 />
-                {/* <ChangePasswordModal
-                    isOpen={activeModal === "changePassword"}
+                <DeleteAccountModal
+                    isOpen={activeModal === "deleteAccount"}
                     onClose={closeModal}
-                /> */}
+                />
             </>
         </div>
     );
