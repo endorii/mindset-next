@@ -26,7 +26,7 @@ model User {
 
   recentActions RecentAction[]
   reviews       Review[]
-  ReviewVote    ReviewVote[]
+  reviewVotes   ReviewVote[]
 }
 
 model Todo {
@@ -247,9 +247,9 @@ model Review {
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
-  isApproved   Boolean @default(false)
-  isHelpful    Int     @default(0)
-  isNotHelpful Int     @default(0)
+  isApproved   Boolean @default(false) @map("is_approved")
+  isHelpful    Int     @default(0) @map("is_helpful")
+  isNotHelpful Int     @default(0) @map("is_not_helpful")
 
   images String[]
 
@@ -263,7 +263,7 @@ model ReviewVote {
   userId    String
   reviewId  String
   isHelpful Boolean
-  createdAt DateTime @default(now())
+  createdAt DateTime @default(now()) @map("created_at")
 
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
   review Review @relation(fields: [reviewId], references: [id], onDelete: Cascade)
