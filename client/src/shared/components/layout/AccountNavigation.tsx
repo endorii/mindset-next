@@ -9,13 +9,17 @@ import {
     HeartIcon,
     AdminIcon,
     LogoutIcon,
+    BackIcon,
 } from "@/shared/icons";
 import { NavigationLink } from "@/shared/ui/buttons";
+import { useState } from "react";
 import { toast } from "sonner";
 
 function AccountNavigation({ children }: { children: React.ReactNode }) {
     const { data: user } = useCurrentUser();
     const { logout } = useAuth();
+
+    const [isOpen, setIsOpen] = useState<boolean>(true);
 
     const links = [
         {
@@ -48,14 +52,28 @@ function AccountNavigation({ children }: { children: React.ReactNode }) {
     ];
 
     return (
-        <div className="flex gap-[20px] p-[30px] py-[10px] text-white">
-            <div className="sticky border-r h-full w-full max-w-[350px] flex flex-col justify-between gap-[100px] rounded-xl bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px]">
+        <div className="relative flex gap-[20px] p-[30px] sm:p-[10px] text-white">
+            <button
+                className="hidden sm:flex top-[90px] fixed w-[40px] h-[40px] items-center justify-center cursor-pointer z-2 bg-white/5 rounded-xl border border-white/10 shadow-lg backdrop-blur-[100px]"
+                onClick={() => setIsOpen(!isOpen)}
+            >
+                <BackIcon
+                    className={`w-[18px] stroke-white stroke-[50] fill-white group-hover:stroke-black transition-all duration-200 ${
+                        isOpen ? "rotate-0" : "rotate-180"
+                    }`}
+                />
+            </button>
+            <div
+                className={`sm:fixed sm:top-[135px] border-r h-fit w-full max-w-[350px] ${
+                    isOpen ? "left-[10px]" : "left-[-350px]"
+                } flex flex-col justify-between gap-[100px] sm:gap-[15px] rounded-xl bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px] z-1 transition-all duration-600 ease-in-out`}
+            >
                 <div className="flex gap-[30px] flex-col">
                     <div className="flex gap-[30px] items-center">
                         <img
                             src="./images/user.png"
                             alt="user image"
-                            className="w-[100px] rounded-full border-2 border-white/5"
+                            className="w-[100px] lg:w-[70px] rounded-full border-2 border-white/5"
                         />
                         <div className="flex flex-col gap-[2px]">
                             <div className="text-2xl font-thin">
@@ -111,7 +129,7 @@ function AccountNavigation({ children }: { children: React.ReactNode }) {
                     </div>
                 </div>
             </div>
-            <div className="w-full">{children}</div>
+            <div className="w-full sm:mt-[40px]">{children}</div>
         </div>
     );
 }

@@ -266,4 +266,74 @@ export class ReviewsService {
             throw new Error("Не вдалося видалити відгук");
         }
     }
+
+    async toggleReviewVote(
+        userId: string,
+        reviewId: string,
+        body: {
+            isHelpful: boolean;
+        }
+    ) {
+        const { isHelpful } = body;
+
+        const existingVote = await this.prisma.reviewVote.findUnique({
+            where: {
+                userId_reviewId: {
+                    userId,
+                    reviewId,
+                },
+            },
+        });
+
+        if (!existingVote) {
+            await this.prisma.reviewVote.create({
+                data: { userId, reviewId, isHelpful },
+            });
+
+            return this.prisma.review.update({
+                where: { id: reviewId },
+                data: {
+                    isHelpful: { increment: isHelpful ? 1 : 0 },
+                    isNotHelpful: { increment: !isHelpful ? 1 : 0 },
+                },
+            });
+        }
+
+        if (existingVote.isHelpful === isHelpful) {
+            await this.prisma.reviewVote.delete({
+                where: {
+                    userId_reviewId: {
+                        userId,
+                        reviewId,
+                    },
+                },
+            });
+
+            return this.prisma.review.update({
+                where: { id: reviewId },
+                data: {
+                    isHelpful: { decrement: isHelpful ? 1 : 0 },
+                    isNotHelpful: { decrement: !isHelpful ? 1 : 0 },
+                },
+            });
+        } else {
+            await this.prisma.reviewVote.update({
+                where: {
+                    userId_reviewId: {
+                        userId,
+                        reviewId,
+                    },
+                },
+                data: { isHelpful },
+            });
+
+            return this.prisma.review.update({
+                where: { id: reviewId },
+                data: {
+                    isHelpful: { increment: isHelpful ? 1 : -1 },
+                    isNotHelpful: { increment: !isHelpful ? 1 : -1 },
+                },
+            });
+        }
+    }
 }

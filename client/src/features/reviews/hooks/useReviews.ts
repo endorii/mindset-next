@@ -10,6 +10,19 @@ import {
 } from "../api/reviews.api";
 import { IReview } from "../types/reviews.types";
 
+import { toggleReviewVote } from "../api/reviews.api";
+
+export function useToggleReviewVote() {
+    const queryClient = useQueryClient();
+
+    return useMutation({
+        mutationFn: (data: { reviewId: string; isHelpful: boolean }) => toggleReviewVote(data),
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ["reviews"] });
+        },
+    });
+}
+
 export function useReviews() {
     return useQuery({
         queryKey: ["reviews"],

@@ -60,7 +60,7 @@ const HeaderBurger = () => {
                             ? "opacity-100 pointer-events-auto"
                             : "opacity-0 pointer-events-none"
                     }
-                    z-50 flex flex-col justify-center text-white overflow-y-auto
+                    z-50 flex flex-col justify-center text-white overflow-y-auto pb-[100px]
                 `}
             >
                 <button

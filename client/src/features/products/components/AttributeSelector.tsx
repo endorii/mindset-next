@@ -18,7 +18,7 @@ function AttributeSelector<T>({
     return (
         <div className="flex items-center gap-[30px]">
             <div>{label}:</div>
-            <ul className="flex gap-[10px]">
+            <ul className="flex flex-wrap gap-[10px]">
                 {attributeItems.map((item, i) => {
                     const name = getName(item);
                     const isSelected = chosenValue === name;

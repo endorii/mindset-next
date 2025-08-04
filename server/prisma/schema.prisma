@@ -26,6 +26,7 @@ model User {
 
   recentActions RecentAction[]
   reviews       Review[]
+  ReviewVote    ReviewVote[]
 }
 
 model Todo {
@@ -252,8 +253,22 @@ model Review {
 
   images String[]
 
-  adminReply   String?   @db.Text
+  adminReply   String?      @db.Text
   adminReplyAt DateTime?
+  reviewVotes  ReviewVote[]
+}
+
+model ReviewVote {
+  id        String   @id @default(cuid())
+  userId    String
+  reviewId  String
+  isHelpful Boolean
+  createdAt DateTime @default(now())
+
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  review Review @relation(fields: [reviewId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, reviewId])
 }
 
 enum Role {

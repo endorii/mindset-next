@@ -36,12 +36,12 @@ function AvgRatingStat({ reviews }: AvgRatingStatProps) {
     }, [reviews]);
 
     return (
-        <div className="flex flex-col gap-[20px] w-1/3">
-            <div className="flex gap-[7px] text-xl mb-4 ">
-                <div className="font-light text-white/40">
+        <div className="flex flex-col gap-[20px] w-1/3 sm:w-full">
+            <div className="flex items-center gap-[10px] mb-[10px] ">
+                <div className="font-light md:text-base text-white/40">
                     Середня оцінка користувачів
                 </div>
-                <span className="font-semibold text-white">
+                <span className=" text-xl font-semibold text-white">
                     {averageRating.toFixed(2)}/5 ★
                 </span>
             </div>

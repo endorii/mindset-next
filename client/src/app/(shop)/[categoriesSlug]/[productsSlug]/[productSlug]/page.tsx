@@ -24,10 +24,11 @@ import {
 } from "@/shared/components";
 import { HeartIcon } from "@/shared/icons";
 import { MonoButton } from "@/shared/ui/buttons";
-import QuantitySelector from "@/shared/ui/selectors/QuantitySelector";
+import { Label } from "@/shared/ui/components";
 import addToRecentlyViewed from "@/shared/utils/addToRecentlyViewed";
 import { usePathname } from "next/navigation";
 import { useState, useEffect } from "react";
+import { toast } from "sonner";
 
 export default function ProductPage() {
     const pathname = usePathname();
@@ -112,11 +113,13 @@ export default function ProductPage() {
                     userId: user.id,
                     favoriteItem: dataToSend,
                 });
+                toast.success("Товар додано у вподобане");
             } else {
                 deleteFromFavorite.mutate({
                     userId: user.id,
                     productId: product.id,
                 });
+                toast.success("Товар видалено з вподобаних");
             }
         } else {
             const favorites = localStorage.getItem("favorites");
@@ -127,6 +130,7 @@ export default function ProductPage() {
                 ? [...parsed, dataToSend]
                 : parsed.filter((item) => item.product.id !== product.id);
             localStorage.setItem("favorites", JSON.stringify(updated));
+            toast.success("Вподобані оновлено");
         }
     };
 
@@ -150,11 +154,13 @@ export default function ProductPage() {
                     userId: user.id,
                     cartItem: dataToSend,
                 });
+                toast.success("Товар додано в корзину");
             } else {
                 deleteCartItem.mutate({
                     userId: user.id,
                     productId: product.id,
                 });
+                toast.success("Товар видалено з корзини");
             }
         } else {
             const cart = localStorage.getItem("cart");
@@ -163,6 +169,7 @@ export default function ProductPage() {
                 ? [...parsed, dataToSend]
                 : parsed.filter((item) => item.productId !== product.id);
             localStorage.setItem("cart", JSON.stringify(updated));
+            toast.success("Корзину оновлено");
         }
     };
 
@@ -175,10 +182,10 @@ export default function ProductPage() {
     }
 
     return (
-        <div className="flex flex-col px-[30px] py-[10px] gap-x-[30px] gap-y-[20px]">
-            <div className="flex flex-row gap-[20px] items-start text-white h-full w-full">
-                <div className="flex gap-[10px] relative rounded-xl bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 min-w-fit max-w-[55%]">
-                    <div className="relative">
+        <div className="flex flex-col px-[30px] sm:p-[10px] py-[10px] gap-x-[30px] gap-y-[20px]">
+            <div className="flex lg:flex-col gap-[20px] items-start text-white">
+                <div className="flex xl:flex-col gap-[10px] relative rounded-xl bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 max-h-[80vh] xl:max-h-[90vh] xl:w-full w-[55%]">
+                    <div className="relative w-[85%] xl:w-full">
                         <button
                             onClick={handleLikeToggle}
                             className="absolute group top-[10px] right-[10px] m-[0_auto] text-xs flex justify-center items-center gap-[10px] transition-all duration-300 cursor-pointer min-w-[60px] w-[60px] min-h-[60px] h-[60px] rounded-xl bg-black/30 hover:bg-black/40 shadow-lg backdrop-blur-[100px] border border-black/5 p-[10px]"
@@ -194,34 +201,33 @@ export default function ProductPage() {
                         <img
                             src={`http://localhost:5000/${product.banner}`}
                             alt={product.name}
-                            className="w-full rounded-xl"
+                            className="rounded-xl w-full h-[80vh] xl:max-h-[70vh] object-cover"
                         />
                     </div>
-                    {product.images.length > 0 ? (
-                        <ul className="flex flex-col w-[150px] gap-[10px] overflow-y-auto max-h-[800px]">
-                            {product.images?.map((image, i) => (
-                                <li key={i}>
-                                    <img
-                                        src={`http://localhost:5000/${image}`}
-                                        alt={product.name}
-                                        className="w-full h-auto rounded-xl"
-                                    />
-                                </li>
+                    {product.images.length > 0 && (
+                        <div className="flex flex-col xl:flex-row gap-[10px] w-[15%] xl:w-full xl:h-[150px] overflow-y-auto xl:overflow-x-auto">
+                            {product.images.map((image, i) => (
+                                <img
+                                    key={i}
+                                    src={`http://localhost:5000/${image}`}
+                                    alt={product.name}
+                                    className="rounded-xl"
+                                />
                             ))}
-                        </ul>
-                    ) : (
-                        ""
+                        </div>
                     )}
                 </div>
 
-                <div className="flex flex-col gap-[15px] min-w-[45%] w-full h-full">
-                    <div className="flex flex-col gap-[15px] rounded-xl bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 px-[40px] py-[20px]">
+                <div className="flex flex-col gap-[15px] w-[45%] lg:w-full">
+                    <div className="flex flex-col gap-[15px] rounded-xl bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 px-[40px] xl:p-[15px] py-[20px]">
                         <div className="text-sm font-light text-white/30">
                             {product.category?.collection?.name} /{" "}
                             {product.category?.name}
                         </div>
 
-                        <h3 className="text-5xl font-bold">{product.name}</h3>
+                        <h3 className="text-5xl 2xl:text-4xl font-bold">
+                            {product.name}
+                        </h3>
 
                         <div className="flex gap-[20px] items-center mt-[10px]">
                             <div className="flex gap-[10px] items-center">
@@ -245,46 +251,48 @@ export default function ProductPage() {
                                 : "Немає в наявності"}
                         </div>
 
-                        <div className="mt-[20px] text-white/80 break-words">
+                        <div className="mt-[20px] xl:mt-[10px] text-sm text-white/80 break-words">
                             {product.description}
                         </div>
                         <hr className="w-full border-white/10 border-t " />
-                        <div className="text-white/80 break-words">
+                        <div className=" text-sm text-white/80 break-words">
                             {product.composition}
                         </div>
 
-                        <div className="flex flex-col gap-[35px] mt-[30px]">
+                        <div className="flex flex-col gap-[35px] mt-[30px] text-sm">
                             {product.productColors.length > 0 && (
-                                <div className="flex items-center gap-[30px]">
-                                    <div>Колір:</div>
-                                    <ul className="flex gap-[10px]">
-                                        {product.productColors.map(
-                                            (item, i) => (
-                                                <li
-                                                    key={i}
-                                                    onClick={() =>
-                                                        setChosenColor(
-                                                            item.color.name
-                                                        )
-                                                    }
-                                                >
-                                                    <button
-                                                        className={`w-[25px] h-[25px] rounded-full border border-transparent  hover:border-white/20 cursor-pointer ${
-                                                            chosenColor ===
-                                                            item.color.name
-                                                                ? " border-white/100"
-                                                                : "border-black"
-                                                        }`}
-                                                        style={{
-                                                            backgroundColor:
-                                                                item.color
-                                                                    .hexCode,
-                                                        }}
-                                                    ></button>
-                                                </li>
-                                            )
-                                        )}
-                                    </ul>
+                                <div className="flex flex-wrap gap-[10px] items-center">
+                                    <div className="flex gap-[30px]">
+                                        <div>Колір:</div>
+                                        <ul className="flex flex-wrap gap-[10px]">
+                                            {product.productColors.map(
+                                                (item, i) => (
+                                                    <li
+                                                        key={i}
+                                                        onClick={() =>
+                                                            setChosenColor(
+                                                                item.color.name
+                                                            )
+                                                        }
+                                                    >
+                                                        <button
+                                                            className={`w-[25px] h-[25px] rounded-full border border-transparent  hover:border-white/20 cursor-pointer ${
+                                                                chosenColor ===
+                                                                item.color.name
+                                                                    ? " border-white/100"
+                                                                    : "border-black"
+                                                            }`}
+                                                            style={{
+                                                                backgroundColor:
+                                                                    item.color
+                                                                        .hexCode,
+                                                            }}
+                                                        ></button>
+                                                    </li>
+                                                )
+                                            )}
+                                        </ul>
+                                    </div>
                                     <div className="flex gap-[10px] items-center">
                                         <div className="text-xs text-white/40">
                                             Обраний колір:{" "}
@@ -308,13 +316,33 @@ export default function ProductPage() {
                                 setFunction={setChosenSize}
                             />
 
-                            <QuantitySelector
-                                quantity={quantity}
-                                setQuantity={setQuantity}
-                            />
+                            <div className="relative flex gap-[30px] items-center">
+                                <Label>Кількість</Label>
+                                <div className="flex gap-[15px] items-center">
+                                    <button
+                                        className="p-[7px] text-center border border-white/10 rounded-xl w-[40px] h-[40px] cursor-pointer bg-white/5 hover:bg-white/10 active:bg-white active:text-black transition-all duration-200"
+                                        onClick={() => {
+                                            setQuantity((prev) =>
+                                                prev > 1 ? prev - 1 : prev
+                                            );
+                                        }}
+                                    >
+                                        -
+                                    </button>
+                                    <div>{quantity}</div>
+                                    <button
+                                        className="p-[7px] text-center border border-white/10 rounded-xl w-[40px] h-[40px] cursor-pointer bg-white/5 hover:bg-white/10 active:bg-white active:text-black transition-all duration-200"
+                                        onClick={() =>
+                                            setQuantity((prev) => prev + 1)
+                                        }
+                                    >
+                                        +
+                                    </button>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    <div className="flex justify-between gap-[10px] rounded-xl bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[10px]">
+                    <div className="flex md:flex-col justify-between gap-[10px] rounded-xl bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[10px]">
                         <MonoButton
                             onClick={handleCartToggle}
                             className={`w-full h-[50px] ${

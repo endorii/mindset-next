@@ -24,7 +24,7 @@ function SliderWrapper({
     emptyProductsTitle,
 }: SliderWrapperProps) {
     return (
-        <div className="p-[30px] text-white">
+        <div className="p-[30px] sm:p-[10px] text-white">
             {productsList && productsList.length > 0 ? (
                 <div className="flex flex-col gap-[20px]">
                     <div className="text-2xl font-semibold">{title}</div>
@@ -42,19 +42,23 @@ function SliderWrapper({
                             disableOnInteraction: false,
                         }}
                         breakpoints={{
-                            640: {
+                            480: {
                                 slidesPerView: 2,
                                 spaceBetween: 15,
                             },
                             768: {
-                                slidesPerView: 3,
+                                slidesPerView: 2,
                                 spaceBetween: 15,
                             },
                             1024: {
-                                slidesPerView: 4,
+                                slidesPerView: 3,
                                 spaceBetween: 15,
                             },
                             1280: {
+                                slidesPerView: 4,
+                                spaceBetween: 15,
+                            },
+                            1440: {
                                 slidesPerView: 5,
                                 spaceBetween: 15,
                             },

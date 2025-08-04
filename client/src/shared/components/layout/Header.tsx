@@ -57,7 +57,7 @@ const Header = () => {
     }
 
     return (
-        <header className="fixed py-[20px] px-[30px] sm:px-[10px] sm:p-[10px] flex justify-between items-center w-full bg-black/70 backdrop-blur-xl text-white z-[100] shadow-custom">
+        <header className="fixed py-[10px] px-[30px] sm:px-[10px] sm:p-[10px] flex justify-between items-center w-full bg-black/70 backdrop-blur-xl text-white z-[100] shadow-custom">
             <HeaderBurger />
             <Link
                 href="/"

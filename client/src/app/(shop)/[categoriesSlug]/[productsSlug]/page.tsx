@@ -39,7 +39,7 @@ export default function CategoryPage() {
             />
 
             {products && products.length > 0 ? (
-                <ul className="grid gap-[20px] w-full px-[30px] grid-cols-4">
+                <ul className="grid gap-[20px] w-full px-[30px] grid-cols-4 2xl:grid-cols-3 md:grid-cols-2 sm:grid-cols-1">
                     {products.map((product: IProduct, i: number) => (
                         <li key={i} className="w-full">
                             <Link
@@ -50,7 +50,7 @@ export default function CategoryPage() {
                                     Переглянути
                                 </div>
                                 <Image
-                                    className="relative rounded-xl"
+                                    className="relative rounded-xl w-full"
                                     width={500}
                                     height={0}
                                     src={`http://localhost:5000/${product.banner}`}

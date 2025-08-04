@@ -4,15 +4,13 @@ import SliderWrapper from "./layout/SliderWrapper";
 function PopularProducts() {
     const { data: popularProducts } = usePopularProducts();
 
-    if (!popularProducts) return <div>Товари вісутні</div>;
-
-    return (
+    return popularProducts ? (
         <SliderWrapper
             productsList={popularProducts}
             title={"Найбільш популярні товари"}
             emptyProductsTitle={"Популярні товари відсутні"}
         />
-    );
+    ) : null;
 }
 
 export default PopularProducts;

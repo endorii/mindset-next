@@ -15,6 +15,7 @@ import {
     getFavoritesFromStorage,
 } from "@/features/favorites/utils/favorites.utils";
 import { PopularProducts } from "@/shared/components";
+import ShopTitle from "@/shared/ui/titles/ShopTitle";
 import Image from "next/image";
 import { useState, useEffect } from "react";
 
@@ -72,19 +73,9 @@ export const Favorites = () => {
         );
     }
 
-    console.log("user:", user);
-    console.log("userFavorites:", userFavorites);
-    console.log("localFavorites:", localFavorites);
-    console.log("favoritesToShow:", favoritesToShow);
-
     return (
-        <div className="flex flex-col gap-[50px] mt-[30px]">
-            <div className="text-white relative px-[70px]">
-                <div className="text-8xl font-extrabold">Вподобані</div>
-                <div className="absolute top-[40px] left-[70px] text-8xl font-qwitcher-grypen text-white/40">
-                    Favorites
-                </div>
-            </div>
+        <div className="flex flex-col gap-[50px]">
+            <ShopTitle title="Вподобані" subtitle="Favorites" />
             {favoritesToShow && favoritesToShow.length > 0 ? (
                 <ul className="grid grid-cols-4 w-full gap-[20px] px-[30px]">
                     {favoritesToShow.map((item, i) => {
@@ -111,14 +102,15 @@ export const Favorites = () => {
                     })}
                 </ul>
             ) : (
-                <div className="flex flex-col justify-center items-center p-[30px] pt-30px] pb-[100px]">
+                <div className="flex flex-col justify-center text-center items-center p-[30px] sm:p-[10px] sm:pb-[150px]">
                     <Image
                         src="/images/emptyfavorites.png"
                         alt={"1"}
                         width={300}
                         height={0}
+                        className="opacity-30 w-[300px] sm:w-[200px]"
                     />
-                    <div className="font-semibold text-4xl text-white/70">
+                    <div className="font-semibold text-4xl md:text-3xl text-white/50">
                         Немає вподобаних товарів
                     </div>
                     <div className="font mt-[7px] text-white/30">

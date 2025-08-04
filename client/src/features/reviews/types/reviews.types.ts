@@ -20,4 +20,10 @@ export interface IReview {
     images?: string[];
     adminReply?: string;
     adminReplyAt?: string;
+
+    reviewVotes?: { userId: string; isHelpful: boolean }[];
+
+    userVote?: {
+        isHelpful: boolean;
+    } | null;
 }

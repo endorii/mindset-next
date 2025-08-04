@@ -23,6 +23,19 @@ export class ReviewsController {
         return this.reviewsService.createReview(req.user.id, createReviewDto);
     }
 
+    @Post(":id/vote")
+    @Roles(Role.ADMIN, Role.USER)
+    toggleReviewVote(
+        @Req() req: Request & { user: AuthenticatedRequestUser },
+        @Param("id") reviewId: string,
+        @Body()
+        body: {
+            isHelpful: boolean;
+        }
+    ) {
+        return this.reviewsService.toggleReviewVote(req.user.id, reviewId, body);
+    }
+
     @Get("")
     @Roles(Role.ADMIN)
     async getAllReviews() {
