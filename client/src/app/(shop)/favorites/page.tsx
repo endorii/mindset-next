@@ -77,7 +77,7 @@ export const Favorites = () => {
         <div className="flex flex-col gap-[50px]">
             <ShopTitle title="Вподобані" subtitle="Favorites" />
             {favoritesToShow && favoritesToShow.length > 0 ? (
-                <ul className="grid grid-cols-4 w-full gap-[20px] px-[30px]">
+                <ul className="grid grid-cols-4 w-full gap-[15px] px-[30px]">
                     {favoritesToShow.map((item, i) => {
                         const isServer = !!user;
 

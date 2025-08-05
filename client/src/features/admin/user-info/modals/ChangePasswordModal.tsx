@@ -71,11 +71,11 @@ export default function ChangePasswordModal({
     const modalContent = (
         <ModalWrapper onClose={onClose} modalTitle={"Зміна паролю"}>
             <form
-                className="flex flex-col gap-[20px]"
+                className="flex flex-col gap-[15px]"
                 onSubmit={handleSubmit(onSubmit)}
             >
                 <FormFillingWrapper>
-                    <div className="grid grid-cols-2 gap-[20px]">
+                    <div className="grid grid-cols-2 gap-[15px]">
                         <InputField
                             label={"Старий пароль*"}
                             type="password"

@@ -52,7 +52,7 @@ function AccountNavigation({ children }: { children: React.ReactNode }) {
     ];
 
     return (
-        <div className="relative flex gap-[20px] p-[30px] pt-[10px] sm:p-[10px] text-white">
+        <div className="relative flex gap-[15px] p-[30px] pt-[10px] sm:p-[10px] text-white">
             <button
                 className="hidden md:flex top-[75px] fixed w-[40px] h-[40px] items-center justify-center cursor-pointer z-2 bg-white/5 rounded-xl border border-white/10 shadow-lg backdrop-blur-[100px]"
                 onClick={() => setIsOpen(!isOpen)}

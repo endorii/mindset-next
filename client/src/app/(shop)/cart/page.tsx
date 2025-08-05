@@ -201,8 +201,8 @@ function Cart() {
         <div className="flex flex-col gap-[50px] mt-[10px] text-white">
             <ShopTitle title="Кошик" subtitle="Cart" />
             {cartToShow.length > 0 ? (
-                <div className="flex justify-between gap-[20px] w-full px-[30px]">
-                    <ul className=" flex flex-col gap-[20px] w-2/3 max-h-[80vh] overflow-y-auto">
+                <div className="flex justify-between gap-[15px] w-full px-[30px]">
+                    <ul className=" flex flex-col gap-[15px] w-2/3 max-h-[80vh] overflow-y-auto">
                         {cartToShow.map((item, i) => {
                             const isServer = !!user;
                             const { product } = item;

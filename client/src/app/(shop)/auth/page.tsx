@@ -25,7 +25,7 @@ const Login = () => {
 
     return (
         <div
-            className="flex flex-row justify-between gap-[20px] p-[30px] pt-[10px] md:p-[10px] text-white
+            className="flex flex-row justify-between gap-[15px] p-[30px] pt-[10px] md:p-[10px] text-white
                         md:flex-col"
         >
             <LoginForm />

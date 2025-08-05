@@ -1,5 +1,7 @@
 "use client";
 
+import { FilterSection } from "@/features/admin/attributes/components/FilterSection";
+import Title from "@/features/admin/attributes/components/Title";
 import { useOrders } from "@/features/orders/hooks/useOrders";
 import DeleteOrderModal from "@/features/orders/modals/DeleteOrderModal";
 import EditOrderModal from "@/features/orders/modals/EditOrderModal";
@@ -7,11 +9,7 @@ import OrderInfoModal from "@/features/orders/modals/OrderInfoModal";
 import { IOrder } from "@/features/orders/types/orders.types";
 import { InfoIcon, EditIcon, TrashIcon } from "@/shared/icons";
 import { OrderModalType } from "@/shared/types/types";
-import {
-    ChooseButton,
-    ButtonWithIcon,
-    DeleteButtonWithIcon,
-} from "@/shared/ui/buttons";
+import { ButtonWithIcon, DeleteButtonWithIcon } from "@/shared/ui/buttons";
 import { formatDate } from "@/shared/utils/formatDate";
 import { useState } from "react";
 
@@ -42,49 +40,28 @@ function Orders() {
 
     return (
         <div className="flex flex-col gap-[15px]">
-            <div className="flex gap-[15px] justify-between items-center rounded-xl bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px]">
-                <div className="text-2xl font-bold">Список замовлень:</div>
-            </div>
+            <Title title="Список замовлень" />
 
-            <div className="flex items-center gap-[15px] rounded-xl bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 px-[20px] py-[10px]">
-                <div className="font-semibold">Фільтрувати за часом:</div>
-                <ul className="flex gap-[10px]">
-                    {sortFilters.map((name, i) => (
-                        <li key={i}>
-                            <ChooseButton
-                                onClick={function (): void {
-                                    throw new Error(
-                                        "Function not implemented."
-                                    );
-                                }}
-                            >
-                                {name}
-                            </ChooseButton>
-                        </li>
-                    ))}
-                </ul>
-            </div>
-            <div className="flex items-center gap-[15px] rounded-xl bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 px-[20px] py-[10px]">
-                <div className="font-semibold">Фільтрувати з статусом:</div>
-                <ul className="flex gap-[10px]">
-                    {statusFilters.map((name, i) => (
-                        <li key={i}>
-                            <ChooseButton
-                                onClick={function (): void {
-                                    throw new Error(
-                                        "Function not implemented."
-                                    );
-                                }}
-                            >
-                                {name}
-                            </ChooseButton>
-                        </li>
-                    ))}
-                </ul>
-            </div>
+            <FilterSection
+                title={"Фільтрувати за часом"}
+                filters={sortFilters}
+                onFilterClick={function (filter: string): void {
+                    throw new Error("Function not implemented.");
+                }}
+                selectedItem={""}
+            />
+            <FilterSection
+                title={"Фільтрувати за статусом"}
+                filters={statusFilters}
+                onFilterClick={function (filter: string): void {
+                    throw new Error("Function not implemented.");
+                }}
+                selectedItem={""}
+            />
+
             {orders && orders.length > 0 ? (
                 <div className="rounded-xl bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px]">
-                    <div className="grid grid-cols-[1.5fr_1fr_1fr_1fr_2fr_230px] gap-[20px] p-4 rounded-t-lg font-semibold text-sm">
+                    <div className="grid grid-cols-[1.5fr_1fr_1fr_1fr_2fr_230px] gap-[15px] p-4 rounded-t-lg font-semibold text-sm">
                         <div>Ім'я</div>
                         <div>Телефон</div>
                         <div>Статус</div>
@@ -96,7 +73,7 @@ function Orders() {
                         {orders?.map((order) => (
                             <div
                                 key={order.id}
-                                className="grid grid-cols-[1.5fr_1fr_1fr_1fr_2fr_230px] gap-[20px] p-4 border-b border-white/10 last:border-b-0 items-center"
+                                className="grid grid-cols-[1.5fr_1fr_1fr_1fr_2fr_230px] gap-[15px] p-4 border-b border-white/10 last:border-b-0 items-center"
                             >
                                 <div>{order.fullName}</div>
                                 <div>{order.phoneNumber}</div>

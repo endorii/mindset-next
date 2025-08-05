@@ -1,9 +1,10 @@
 "use client";
 
+import { FilterSection } from "@/features/admin/attributes/components/FilterSection";
+import Title from "@/features/admin/attributes/components/Title";
 import { useRecentActions } from "@/features/admin/recent-actions/hooks/useRecentActions";
 import { useCurrentUser } from "@/features/admin/user-info/hooks/useUsers";
 import { AdminRecentActions } from "@/shared/components";
-import { ChooseButton } from "@/shared/ui/buttons";
 import { formatDate } from "@/shared/utils/formatDate";
 import { useState, useMemo } from "react";
 
@@ -18,11 +19,6 @@ const entityFilters = [
     "розмір",
 ];
 const sortFilters = ["Спочатку новіші", "Спочатку старіші"];
-
-function capitalizeFirstLetter(str: string) {
-    if (!str) return "";
-    return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
-}
 
 function AdminAccount() {
     const { data: user } = useCurrentUser();
@@ -58,55 +54,28 @@ function AdminAccount() {
 
     return (
         <div className="flex flex-col gap-[15px]">
-            <div className="text-2xl font-bold">Акаунт адміністратора</div>
+            <Title title="Акаунт адміністратора" />
 
-            <div className="flex items-center gap-[15px] rounded-xl bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 px-[20px] py-[10px]">
-                <div className="font-semibold">Фільтрувати за дією:</div>
-                <ul className="flex gap-[10px]">
-                    {actionTypeFilters.map((name) => (
-                        <li key={name}>
-                            <ChooseButton
-                                isActive={selectedType === name}
-                                onClick={() => setSelectedType(name)}
-                            >
-                                {capitalizeFirstLetter(name)}
-                            </ChooseButton>
-                        </li>
-                    ))}
-                </ul>
-            </div>
+            <FilterSection
+                title="Фільтрувати за дією:"
+                filters={actionTypeFilters}
+                onFilterClick={(filter) => setSelectedType(filter)}
+                selectedItem={selectedType}
+            />
 
-            <div className="flex items-center gap-[15px] rounded-xl bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 px-[20px] py-[10px]">
-                <div className="font-semibold">Фільтрувати за об'єктом:</div>
-                <ul className="flex gap-[10px] flex-wrap">
-                    {entityFilters.map((name) => (
-                        <li key={name}>
-                            <ChooseButton
-                                isActive={selectedEntity === name}
-                                onClick={() => setSelectedEntity(name)}
-                            >
-                                {capitalizeFirstLetter(name)}
-                            </ChooseButton>
-                        </li>
-                    ))}
-                </ul>
-            </div>
+            <FilterSection
+                title="Фільтрувати за об'єктом:"
+                filters={entityFilters}
+                onFilterClick={(filter) => setSelectedEntity(filter)}
+                selectedItem={selectedEntity}
+            />
 
-            <div className="flex items-center gap-[15px] rounded-xl bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 px-[20px] py-[10px]">
-                <div className="font-semibold">Сортування:</div>
-                <ul className="flex gap-[10px]">
-                    {sortFilters.map((name) => (
-                        <li key={name}>
-                            <ChooseButton
-                                isActive={selectedSort === name}
-                                onClick={() => setSelectedSort(name)}
-                            >
-                                {capitalizeFirstLetter(name)}
-                            </ChooseButton>
-                        </li>
-                    ))}
-                </ul>
-            </div>
+            <FilterSection
+                title="Сортування:"
+                filters={sortFilters}
+                onFilterClick={(filter) => setSelectedSort(filter)}
+                selectedItem={selectedSort}
+            />
 
             <div className="flex gap-[15px]">
                 <AdminRecentActions actions={filteredActions} />

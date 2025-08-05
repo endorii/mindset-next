@@ -43,7 +43,7 @@ function RegisterForm() {
     return (
         <LoginComponentsWrapper title={"Реєстрація"}>
             <form
-                className="flex flex-col gap-[20px]"
+                className="flex flex-col gap-[15px]"
                 onSubmit={handleRegisterSubmit(onRegisterSubmit)}
             >
                 <InputField

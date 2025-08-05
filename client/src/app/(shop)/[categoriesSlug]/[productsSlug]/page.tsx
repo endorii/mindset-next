@@ -39,7 +39,7 @@ export default function CategoryPage() {
             />
 
             {products && products.length > 0 ? (
-                <ul className="grid gap-[20px] w-full px-[30px] grid-cols-4 2xl:grid-cols-3 md:grid-cols-2 sm:grid-cols-1">
+                <ul className="grid gap-[15px] w-full px-[30px] grid-cols-4 2xl:grid-cols-3 md:grid-cols-2 sm:grid-cols-1">
                     {products.map((product: IProduct, i: number) => (
                         <li key={i} className="w-full">
                             <Link

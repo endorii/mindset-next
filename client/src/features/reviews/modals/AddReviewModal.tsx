@@ -89,7 +89,7 @@ export default function AddReviewModal({
     const modalContent = (
         <ModalWrapper onClose={onClose} modalTitle={"Залишити відгук"}>
             <form
-                className="flex flex-col gap-[20px]"
+                className="flex flex-col gap-[15px]"
                 onSubmit={handleSubmit(onSubmit)}
             >
                 <FormFillingWrapper>
@@ -111,7 +111,7 @@ export default function AddReviewModal({
                         errorMessage={errors.content?.message}
                     />
 
-                    <div className="grid grid-cols-2 gap-[20px]">
+                    <div className="grid grid-cols-2 gap-[15px]">
                         <InputField
                             label={"Ваше ім'я та прізвище*"}
                             type={"text"}

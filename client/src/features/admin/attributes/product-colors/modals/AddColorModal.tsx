@@ -68,11 +68,11 @@ export default function AddColorModal({ isOpen, onClose }: AddColorModalProps) {
             modalTitle={"Додавання кольору"}
         >
             <form
-                className="flex flex-col gap-[20px]"
+                className="flex flex-col gap-[15px]"
                 onSubmit={handleSubmit(onSubmit)}
             >
                 <FormFillingWrapper>
-                    <div className="grid grid-cols-2 gap-[20px]">
+                    <div className="grid grid-cols-2 gap-[15px]">
                         <InputField
                             label={"Назва*"}
                             placeholder={"Назва кольору"}

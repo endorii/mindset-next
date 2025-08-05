@@ -24,9 +24,9 @@ function ProductReviewsList({ reviews }: ProductReviewsListProps) {
                         return (
                             <div
                                 key={review.id}
-                                className="flex flex-col gap-[20px]"
+                                className="flex flex-col gap-[15px]"
                             >
-                                <div className="flex flex-col gap-[20px] border border-white/10 bg-white/3 rounded-lg p-4 shadow-sm">
+                                <div className="flex flex-col gap-[15px] border border-white/10 bg-white/3 rounded-lg p-4 shadow-sm">
                                     <div>
                                         <div className="flex justify-between mb-1">
                                             <span className="font-semibold">

@@ -3,7 +3,7 @@ import { formatDate } from "../utils/formatDate";
 
 function AdminRecentActions({ actions }: { actions: IRecentActions[] }) {
     return (
-        <div className="flex flex-col gap-[20px] rounded-xl bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px] w-2/3 lg:w-full">
+        <div className="flex flex-col gap-[15px] rounded-xl bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px] w-2/3 lg:w-full">
             <div className="flex gap-[15px] items-center">
                 <h2 className="text-lg font-semibold">Останні дії</h2>
                 <div className="text-gray-600 text-sm mt-[3px]">

@@ -240,10 +240,10 @@ export default function AddProductModal({
         <ModalWrapper onClose={onClose} modalTitle={"Додавання товару"}>
             <form
                 onSubmit={handleSubmit(onSubmit)}
-                className="flex flex-col gap-[20px]"
+                className="flex flex-col gap-[15px]"
             >
                 <FormFillingWrapper>
-                    <div className="grid grid-cols-3 gap-[20px]">
+                    <div className="grid grid-cols-3 gap-[15px]">
                         <InputField
                             label="Назва*"
                             id="addProductName"

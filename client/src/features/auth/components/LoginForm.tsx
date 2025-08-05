@@ -30,7 +30,7 @@ function LoginForm() {
     return (
         <LoginComponentsWrapper title="Вхід">
             <form
-                className="flex flex-col gap-[20px]"
+                className="flex flex-col gap-[15px]"
                 onSubmit={handleLoginSubmit(onLoginSubmit)}
             >
                 <InputField

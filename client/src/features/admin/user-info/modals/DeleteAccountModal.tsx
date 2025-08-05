@@ -69,7 +69,7 @@ export default function DeleteAccountModal({
                 <div className="mb-6 text-white/80 text-[16px]">
                     Ви дійсно хочете видалити ваш акаунт?
                 </div>
-                <div className="mb-6 text-white/80 text-[16px] flex flex-col gap-[20px]">
+                <div className="mb-6 text-white/80 text-[16px] flex flex-col gap-[15px]">
                     <div>Для підтвердження введіть пароль</div>
                     <InputField
                         label={"Пароль*"}

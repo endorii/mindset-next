@@ -26,7 +26,7 @@ function SliderWrapper({
     return (
         <div className="p-[30px] sm:p-[10px] text-white">
             {productsList && productsList.length > 0 ? (
-                <div className="flex flex-col gap-[20px]">
+                <div className="flex flex-col gap-[15px]">
                     <div className="text-2xl font-semibold">{title}</div>
                     <Swiper
                         spaceBetween={20}

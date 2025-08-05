@@ -42,8 +42,8 @@ function Account() {
     }
 
     return (
-        <div className="flex flex-col gap-[20px]">
-            <div className="flex lg:flex-wrap w-full justify-between gap-[20px]">
+        <div className="flex flex-col gap-[15px]">
+            <div className="flex lg:flex-wrap w-full justify-between gap-[15px]">
                 <div className="relative flex flex-col group gap-[10px] w-1/2 lg:w-full rounded-xl bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px]">
                     <button
                         className="absolute top-0 right-0 flex h-full w-full items-center justify-center rounded-xl bg-black/80 uppercase text-2xl font-light opacity-0 group-hover:opacity-100 transition-all duration-400 cursor-pointer z-10"
@@ -93,7 +93,7 @@ function Account() {
                 </div>
             </div>
 
-            <div className="flex lg:flex-wrap gap-[20px]">
+            <div className="flex lg:flex-wrap gap-[15px]">
                 <div className="flex flex-col gap-[10px] w-1/3 lg:w-full rounded-xl bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px]">
                     <div className="font-bold">Зміна паролю</div>
                     <MonoButton onClick={() => openModal("changePassword")}>
@@ -111,7 +111,7 @@ function Account() {
                             alt="Нова Пошта"
                             className="max-w-[50px] flex-shrink-0"
                         />
-                        <div className="flex md:flex-wrap gap-[20px]">
+                        <div className="flex md:flex-wrap gap-[15px]">
                             <div className="flex flex-col gap-[10px]">
                                 <div className="font-semibold text-lg">
                                     Доставка у відділення "Нова Пошта"
@@ -140,7 +140,7 @@ function Account() {
                             alt="Оплата карткою"
                             className="max-w-[50px] flex-shrink-0"
                         />
-                        <div className="flex md:flex-wrap gap-[20px]">
+                        <div className="flex md:flex-wrap gap-[15px]">
                             <div className="flex flex-col gap-[10px]">
                                 <div className="font-semibold text-lg">
                                     Оплата карткою онлайн

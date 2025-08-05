@@ -300,10 +300,10 @@ export default function EditProductModal({
         <ModalWrapper onClose={onClose} modalTitle={"Редагування товару"}>
             <form
                 onSubmit={handleSubmit(onSubmit)}
-                className="flex flex-col gap-[20px]"
+                className="flex flex-col gap-[15px]"
             >
                 <FormFillingWrapper>
-                    <div className="grid grid-cols-3 gap-[20px]">
+                    <div className="grid grid-cols-3 gap-[15px]">
                         <InputField
                             label="Назва*"
                             id="editProductName"

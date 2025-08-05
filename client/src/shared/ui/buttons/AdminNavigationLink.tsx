@@ -23,7 +23,7 @@ function AdminNavigationLink({
             }`}
         >
             <div
-                className={`truncate flex items-center gap-[20px] w-full text-white hover:text-black ${
+                className={`truncate flex items-center gap-[15px] w-full text-white hover:text-black ${
                     navOpen ? "justify-start" : "justify-center"
                 }`}
             >

@@ -60,7 +60,7 @@ export default function ProductInfoModal({
     const modalContent = (
         <ModalWrapper onClose={onClose} modalTitle={"Інформація про товар"}>
             <FormFillingWrapper>
-                <div className="grid grid-cols-3 gap-[20px]">
+                <div className="grid grid-cols-3 gap-[15px]">
                     <InfoField label="Назва" value={name} />
                     <InfoField label="Шлях" value={path} />
                     <InfoField label="Ціна" value={price} />
@@ -76,7 +76,7 @@ export default function ProductInfoModal({
                 </div>
                 <TextareaInfoField label={"Опис"} value={description} />
                 <TextareaInfoField label={"Склад"} value={composition} />
-                <div className="grid grid-cols-3 gap-[20px]">
+                <div className="grid grid-cols-3 gap-[15px]">
                     <AtributesInfoField
                         label={"Кольори"}
                         atributeList={productColors}

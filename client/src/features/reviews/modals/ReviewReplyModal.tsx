@@ -90,13 +90,13 @@ export default function ReviewReplyModal({
     const modalContent = (
         <ModalWrapper onClose={onClose} modalTitle={"Відповідь на відгук"}>
             <form
-                className="flex flex-col gap-[20px]"
+                className="flex flex-col gap-[15px]"
                 onSubmit={handleSubmit(onSubmit)}
             >
                 <FormFillingWrapper>
-                    <div className="flex flex-col gap-[20px]">
+                    <div className="flex flex-col gap-[15px]">
                         <div className="text-lg">Інформація про відгук</div>
-                        <div className="grid grid-cols-3 gap-[20px]">
+                        <div className="grid grid-cols-3 gap-[15px]">
                             <InfoField
                                 label="Ім'я та прізвище відправника"
                                 value={senderName}
@@ -110,11 +110,11 @@ export default function ReviewReplyModal({
                     </div>
                     <InfoField label="Текст відгуку" value={content} />
                     {/* <InfoField label="Прикладені зображення" value={images} /> */}
-                    <div className="flex flex-col gap-[20px]">
+                    <div className="flex flex-col gap-[15px]">
                         <div className="text-lg">
                             Написати відовідь на відгук
                         </div>
-                        <div className="flex flex-col gap-[20px]">
+                        <div className="flex flex-col gap-[15px]">
                             <BasicTextarea
                                 label="Відповідь адміністратора"
                                 register={register("adminReply", {

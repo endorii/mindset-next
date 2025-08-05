@@ -1,5 +1,6 @@
 "use client";
 
+import Title from "@/features/admin/attributes/components/Title";
 import { HomeFastStat, HomeTodo } from "@/features/admin/components";
 import { useRecentActions } from "@/features/admin/recent-actions/hooks/useRecentActions";
 import { useCurrentUser } from "@/features/admin/user-info/hooks/useUsers";
@@ -20,11 +21,11 @@ function Admin() {
 
     return (
         <div className="flex flex-col gap-[15px]">
-            <h1 className="text-3xl font-semibold">Головна сторінка</h1>
+            <Title title="Головна сторінка" />
 
             {orders && <OrdersAndSalesChart orders={orders} />}
             <HomeFastStat orders={orders} />
-            <div className="flex lg:flex-col gap-[20px]">
+            <div className="flex lg:flex-col gap-[15px]">
                 <AdminRecentActions actions={actions} />
                 <HomeTodo />
             </div>

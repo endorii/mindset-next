@@ -49,12 +49,12 @@ export default function ReviewInfoModal({
     const modalContent = (
         <ModalWrapper onClose={onClose} modalTitle={"Інформація про відгук"}>
             <FormFillingWrapper>
-                <div className="grid grid-cols-3 gap-[20px]">
-                    <div className="flex flex-col gap-[20px]">
+                <div className="grid grid-cols-3 gap-[15px]">
+                    <div className="flex flex-col gap-[15px]">
                         <div className="text-lg">
                             Інформація про відправника
                         </div>
-                        <div className="flex flex-col gap-[20px]">
+                        <div className="flex flex-col gap-[15px]">
                             <InfoField label="ID користувача" value={userId} />
                             <InfoField
                                 label="Ім'я та прізвище відправника"
@@ -66,9 +66,9 @@ export default function ReviewInfoModal({
                             />
                         </div>
                     </div>
-                    <div className="flex flex-col gap-[20px]">
+                    <div className="flex flex-col gap-[15px]">
                         <div className="text-lg">Інформація про відгук</div>
-                        <div className="flex flex-col gap-[20px]">
+                        <div className="flex flex-col gap-[15px]">
                             <InfoField label="Оцінка" value={rating} />
                             <InfoField
                                 label="Статус"
@@ -82,9 +82,9 @@ export default function ReviewInfoModal({
                             <InfoField label="Дизлайків" value={isNotHelpful} />
                         </div>
                     </div>
-                    <div className="flex flex-col gap-[20px]">
+                    <div className="flex flex-col gap-[15px]">
                         <div className="text-lg">Допоміжна інформація</div>
-                        <div className="flex flex-col gap-[20px]">
+                        <div className="flex flex-col gap-[15px]">
                             <InfoField
                                 label="Відповідь адміністратора"
                                 value={adminReply ? adminReply : "Не вказано"}
@@ -109,7 +109,7 @@ export default function ReviewInfoModal({
                 <div className="flex flex-col gap-[10px]">
                     <div className="text-lg">Інформація про товар</div>
                     <div className="rounded-xl bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[15px]">
-                        <div className="grid grid-cols-[1fr_1fr_1fr_1fr_1fr_1fr_1fr+1fr] gap-[20px] p-4 rounded-t-lg font-semibold text-sm">
+                        <div className="grid grid-cols-[1fr_1fr_1fr_1fr_1fr_1fr_1fr+1fr] gap-[15px] p-4 rounded-t-lg font-semibold text-sm">
                             <div>Банер</div>
                             <div>Назва</div>
                             <div>Колір</div>
@@ -124,7 +124,7 @@ export default function ReviewInfoModal({
                             {orderItem ? (
                                 <div
                                     key={orderItem.id}
-                                    className="grid grid-cols-[1fr_1fr_1fr_1fr_1fr_1fr_1fr_1fr] gap-[20px] p-4 border-b border-white/10 last:border-b-0 items-center"
+                                    className="grid grid-cols-[1fr_1fr_1fr_1fr_1fr_1fr_1fr_1fr] gap-[15px] p-4 border-b border-white/10 last:border-b-0 items-center"
                                 >
                                     <InfoModalBanner
                                         w={100}

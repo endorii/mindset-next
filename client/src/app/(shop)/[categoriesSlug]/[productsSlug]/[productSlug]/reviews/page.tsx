@@ -53,7 +53,7 @@ function Reviews() {
     if (!reviews) return <div>Немає відгуків</div>;
 
     return (
-        <div className="flex flex-col gap-[20px] px-[30px] py-[10px] sm:p-[10px] text-white/70 text-sm">
+        <div className="flex flex-col gap-[15px] px-[30px] py-[10px] sm:p-[10px] text-white/70 text-sm">
             <div className="flex gap-[7px]">
                 <Link
                     className="hover:underline hover:text-white"
@@ -87,7 +87,7 @@ function Reviews() {
                     Відгуки про товар ({reviews?.length || 0})
                 </h2>
 
-                <div className="flex sm:flex-col gap-[20px]">
+                <div className="flex sm:flex-col gap-[15px]">
                     {reviews.length > 0 ? (
                         <AvgRatingStat reviews={reviews} />
                     ) : null}

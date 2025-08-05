@@ -78,11 +78,11 @@ export default function AddUserAddressModal({
             modalTitle={"Додавання адреси доставки"}
         >
             <form
-                className="flex flex-col gap-[20px]"
+                className="flex flex-col gap-[15px]"
                 onSubmit={handleSubmit(onSubmit)}
             >
                 <FormFillingWrapper>
-                    <div className="grid grid-cols-3 gap-[20px]">
+                    <div className="grid grid-cols-3 gap-[15px]">
                         <InputField
                             label={"Одержувач (ПІБ)*"}
                             placeholder={"Іванов Іван Іванович"}

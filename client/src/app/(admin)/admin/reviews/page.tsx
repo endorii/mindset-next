@@ -1,5 +1,7 @@
 "use client";
 
+import { FilterSection } from "@/features/admin/attributes/components/FilterSection";
+import Title from "@/features/admin/attributes/components/Title";
 import { useReviews } from "@/features/reviews/hooks/useReviews";
 import ApproveReviewModal from "@/features/reviews/modals/ApproveReviewModal";
 import DeleteReviewModal from "@/features/reviews/modals/DeleteReviewModal";
@@ -10,7 +12,6 @@ import { InfoIcon, ArrowIcon, TrashIcon } from "@/shared/icons";
 import ApproveIcon from "@/shared/icons/ApproveIcon";
 import { ReviewModalType } from "@/shared/types/types";
 import {
-    ChooseButton,
     ButtonWithIcon,
     ApproveButtonWithIcon,
     DeleteButtonWithIcon,
@@ -38,32 +39,20 @@ function Reviews() {
 
     return (
         <div className="flex flex-col gap-[15px]">
-            <div className="flex gap-[15px] justify-between items-center rounded-xl bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px]">
-                <div className="text-2xl font-bold">Список відгуків:</div>
-            </div>
+            <Title title="Список відгуків до товарів" />
 
-            <div className="flex items-center gap-[15px] rounded-xl bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 px-[20px] py-[10px]">
-                <div className="font-semibold">Фільтрувати за часом:</div>
-                <ul className="flex gap-[10px]">
-                    {sortFilters.map((name, i) => (
-                        <li key={i}>
-                            <ChooseButton
-                                onClick={function (): void {
-                                    throw new Error(
-                                        "Function not implemented."
-                                    );
-                                }}
-                            >
-                                {name}
-                            </ChooseButton>
-                        </li>
-                    ))}
-                </ul>
-            </div>
+            <FilterSection
+                title={"Сортувати"}
+                filters={sortFilters}
+                selectedItem={""}
+                onFilterClick={function (filter: string): void {
+                    throw new Error("Function not implemented.");
+                }}
+            />
 
             {reviews && reviews.length > 0 ? (
                 <div className="rounded-xl bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px]">
-                    <div className="grid grid-cols-[1fr_1fr_3fr_1fr_2fr_280px]  gap-[20px] p-4 rounded-t-lg font-semibold text-sm">
+                    <div className="grid grid-cols-[1fr_1fr_3fr_1fr_2fr_280px]  gap-[15px] p-4 rounded-t-lg font-semibold text-sm">
                         <div>Ім'я</div>
                         <div>Оцінка</div>
                         <div>Відгук</div>
@@ -75,7 +64,7 @@ function Reviews() {
                         {reviews.map((review) => (
                             <div
                                 key={review.id}
-                                className="grid grid-cols-[1fr_1fr_3fr_1fr_2fr_280px] gap-[20px] p-4 border-b border-white/10 last:border-b-0 items-center"
+                                className="grid grid-cols-[1fr_1fr_3fr_1fr_2fr_280px] gap-[15px] p-4 border-b border-white/10 last:border-b-0 items-center"
                             >
                                 <div>{review.senderName}</div>
                                 <div className="flex text-white-500 text-2xl mb-2">

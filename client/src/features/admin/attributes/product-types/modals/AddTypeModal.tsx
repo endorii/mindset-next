@@ -57,11 +57,11 @@ export default function AddTypeModal({ isOpen, onClose }: AddTypeModalProps) {
     const modalContent = (
         <ModalWrapper onClose={handleClose} modalTitle={"Додавання типу"}>
             <form
-                className="flex flex-col gap-[20px]"
+                className="flex flex-col gap-[15px]"
                 onSubmit={handleSubmit(onSubmit)}
             >
                 <FormFillingWrapper>
-                    <div className="flex flex-col gap-[20px] w-full">
+                    <div className="flex flex-col gap-[15px] w-full">
                         <InputField
                             label={"Назва*"}
                             placeholder={"Назва типу"}

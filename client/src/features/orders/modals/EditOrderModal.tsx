@@ -189,13 +189,13 @@ export default function EditOrderModal({
         <ModalWrapper onClose={onClose} modalTitle={"Редагування замовлення"}>
             <form
                 onSubmit={handleSubmit(onSubmit)}
-                className="flex flex-col gap-[20px]"
+                className="flex flex-col gap-[15px]"
             >
                 <FormFillingWrapper>
-                    <div className="grid grid-cols-3 gap-[20px]">
-                        <div className="flex flex-col gap-[20px]">
+                    <div className="grid grid-cols-3 gap-[15px]">
+                        <div className="flex flex-col gap-[15px]">
                             <div className="text-lg">Контактна інформація</div>
-                            <div className="flex flex-col gap-[20px]">
+                            <div className="flex flex-col gap-[15px]">
                                 <InputField
                                     label="Ініціали замовника (ПІБ)*"
                                     placeholder="Іванов Іван Іванович"
@@ -238,7 +238,7 @@ export default function EditOrderModal({
                                 />
                             </div>
                         </div>
-                        <div className="flex flex-col gap-[20px]">
+                        <div className="flex flex-col gap-[15px]">
                             <div className="text-lg">
                                 Адреса доставки інформація
                             </div>
@@ -396,11 +396,11 @@ export default function EditOrderModal({
                                 )}
                             />
                         </div>
-                        <div className="flex flex-col gap-[20px]">
+                        <div className="flex flex-col gap-[15px]">
                             <div className="text-lg">
                                 Інформація про замовлення
                             </div>
-                            <div className="flex flex-col gap-[20px]">
+                            <div className="flex flex-col gap-[15px]">
                                 <InputField
                                     label="Додаткова інформація*"
                                     {...register("additionalInfo")}

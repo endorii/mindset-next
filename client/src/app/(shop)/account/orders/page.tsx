@@ -195,7 +195,7 @@ const Orders = () => {
                                                 <div className="text-white/60 mb-2 font-semibold">
                                                     Товари
                                                 </div>
-                                                <div className="flex flex-col gap-[20px]">
+                                                <div className="flex flex-col gap-[15px]">
                                                     {order.items.map((item) => (
                                                         <div
                                                             key={item.id}

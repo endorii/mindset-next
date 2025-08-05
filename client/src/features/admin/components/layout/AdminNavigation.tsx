@@ -48,7 +48,7 @@ function AdminNavigation({ children }: { children: React.ReactNode }) {
                 </div>
 
                 <div
-                    className={`flex flex-col gap-[20px] rounded-xl bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[15px] ${
+                    className={`flex flex-col gap-[15px] rounded-xl bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[15px] ${
                         navOpen ? "justify-start" : "justify-center"
                     }`}
                 >

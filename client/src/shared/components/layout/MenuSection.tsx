@@ -11,7 +11,7 @@ export const MenuSection = ({
     items: { name: string; href: string }[];
     onItemClick: () => void;
 }) => (
-    <div className="flex sm:flex-col gap-[20px] justify-between">
+    <div className="flex sm:flex-col gap-[15px] justify-between">
         <div className="text-white relative px-[20px] sm:px-0">
             <div className="text-6xl md:text-5xl font-extrabold">{title}</div>
             <div className="absolute top-[0px] md:top-[20px] sm:top-[10px] text-8xl md:text-7xl font-qwitcher-grypen text-white/40">

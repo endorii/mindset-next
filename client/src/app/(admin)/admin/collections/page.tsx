@@ -1,5 +1,7 @@
 "use client";
 
+import { FilterSection } from "@/features/admin/attributes/components/FilterSection";
+import TitleWithAddElementButton from "@/features/admin/attributes/components/TitleWithAddElementButton";
 import { useCollections } from "@/features/collections/hooks/useCollections";
 import {
     AddCollectionModal,
@@ -9,7 +11,6 @@ import {
 } from "@/features/collections/modals";
 import { ICollection } from "@/features/collections/types/collections.types";
 import {
-    PlusIcon,
     CategoriesIcon,
     InfoIcon,
     EditIcon,
@@ -18,8 +19,6 @@ import {
 } from "@/shared/icons";
 import { ModalType } from "@/shared/types/types";
 import {
-    MonoButton,
-    ChooseButton,
     LinkWithIcon,
     ButtonWithIcon,
     DeleteButtonWithIcon,
@@ -68,35 +67,28 @@ function AdminCollections() {
 
     return (
         <div className="flex flex-col gap-[15px]">
-            <div className="flex xs:flex-col gap-[15px] justify-between items-center xs:items-start rounded-xl bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px]">
-                <div className="text-2xl sm:text-xl font-bold">
-                    Список колекцій:
-                </div>
-                <MonoButton onClick={() => openModal("add")}>
-                    <div>Додати колекцію</div>
-                    <PlusIcon className="stroke-white stroke-2 w-[30px] group-hover:stroke-black" />
-                </MonoButton>
-            </div>
-
-            <div className="flex sm:flex-col items-center sm:items-start gap-[15px] rounded-xl bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px]">
-                <div className="font-semibold">Фільтрувати:</div>
-                <div className="flex flex-wrap gap-[10px] w-full">
-                    {filters.map((name, i) => (
-                        <ChooseButton key={i} onClick={function (): void {}}>
-                            {name}
-                        </ChooseButton>
-                    ))}
-                </div>
-            </div>
+            <TitleWithAddElementButton
+                title={"Список колекцій"}
+                onClick={() => setActiveModal("add")}
+                buttonText={"Додати колекцію"}
+            />
+            <FilterSection
+                title={"Фільтрувати"}
+                filters={filters}
+                onFilterClick={function (filter: string): void {
+                    throw new Error("Function not implemented.");
+                }}
+                selectedItem={""}
+            />
             {collections && collections.length > 0 ? (
                 <div className="rounded-xl bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px] sm:p-[10px]">
-                    <div className="grid grid-cols-[120px_0.5fr_150px_150px_0.4fr_230px] xl:grid-cols-[120px_0.5fr_150px_0.4fr_230px] lg:grid-cols-[1fr_0.5fr_1fr_2fr] sm:grid-cols-[2fr_0.5fr] xs:grid-cols-1 gap-[20px] p-[20px] sm:p-[10px] pt-0 rounded-t-lg font-semibold text-sm">
+                    <div className="grid grid-cols-[120px_0.5fr_0.5fr_0.5fr_0.6fr_1fr] xl:grid-cols-[120px_0.5fr_0.5fr_0.4fr_1fr] lg:grid-cols-[1fr_0.5fr_1fr_2fr] sm:grid-cols-[2fr_0.5fr] xs:grid-cols-1 gap-[15px] p-[20px] sm:p-[10px] pt-0 rounded-t-lg font-semibold text-sm">
                         <div className="hidden xs:block">Колекції</div>
                         <div className="xs:hidden">Банер</div>
                         <div className="xs:hidden">Назва</div>
                         <div className="sm:hidden">Статус</div>
                         <div className="xl:hidden">Додано/оновлено</div>
-                        <div className="lg:hidden">Посилання</div>
+                        <div className="lg:hidden text-center">Посилання</div>
                         <div className="text-right sm:hidden">Дії</div>
                     </div>
 
@@ -104,7 +96,7 @@ function AdminCollections() {
                         {collections?.map((collection) => (
                             <div
                                 key={collection.id}
-                                className="grid grid-cols-[120px_0.5fr_150px_150px_0.4fr_230px] xl:grid-cols-[120px_0.5fr_150px_0.4fr_230px] lg:grid-cols-[1fr_0.5fr_1fr_2fr] sm:grid-cols-[2fr_0.5fr] xs:grid-cols-1 gap-[20px] p-[20px] sm:p-[10px] border-b border-white/10 last:border-b-0 items-center"
+                                className="grid grid-cols-[120px_0.5fr_0.5fr_0.5fr_0.6fr_1fr] xl:grid-cols-[120px_0.5fr_0.5fr_0.4fr_1fr] lg:grid-cols-[1fr_0.5fr_1fr_2fr] sm:grid-cols-[2fr_0.5fr] xs:grid-cols-1 gap-[15px] p-[20px] sm:p-[10px] border-b border-white/10 last:border-b-0 items-center"
                             >
                                 <img
                                     src={`http://localhost:5000/${collection.banner}`}
@@ -121,7 +113,7 @@ function AdminCollections() {
                                 </div>
                                 <Link
                                     href={`/${collection.path}`}
-                                    className="text-blue-500 hover:text-white hover:underline lg:hidden"
+                                    className="text-blue-500 hover:text-white hover:underline lg:hidden text-center"
                                 >
                                     Колекція
                                 </Link>

@@ -46,13 +46,13 @@ export default function CategoryInfoModal({
     const modalContent = (
         <ModalWrapper onClose={onClose} modalTitle={"Інформація про категорію"}>
             <FormFillingWrapper>
-                <div className="grid grid-cols-3 gap-[20px]">
+                <div className="grid grid-cols-3 gap-[15px]">
                     <InfoField label="Назва" value={name} />
                     <InfoField label="Шлях" value={path} />{" "}
                     <InfoField label="Статус" value={status} />
                 </div>
                 <TextareaInfoField label={"Опис"} value={description} />
-                <div className="grid grid-cols-3 gap-[20px]">
+                <div className="grid grid-cols-3 gap-[15px]">
                     <InfoField label="Переглядів" value={views} />
                     <InfoField
                         label="Створено"

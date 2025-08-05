@@ -1,5 +1,7 @@
 "use client";
 
+import { FilterSection } from "@/features/admin/attributes/components/FilterSection";
+import TitleWithAddElementButton from "@/features/admin/attributes/components/TitleWithAddElementButton";
 import {
     AddCategoryModal,
     CategoryInfoModal,
@@ -10,7 +12,6 @@ import { ICategory } from "@/features/categories/types/categories.types";
 import { useCollection } from "@/features/collections/hooks/useCollections";
 import {
     BackIcon,
-    PlusIcon,
     ProductsIcon,
     InfoIcon,
     EditIcon,
@@ -19,15 +20,13 @@ import {
 import { ModalType } from "@/shared/types/types";
 import {
     MonoButton,
-    ChooseButton,
     LinkWithIcon,
     ButtonWithIcon,
     DeleteButtonWithIcon,
 } from "@/shared/ui/buttons";
 import { formatDate } from "@/shared/utils/formatDate";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
 
 const filters = [
@@ -37,7 +36,7 @@ const filters = [
     "кількість товарів",
 ];
 
-function AdminCollection() {
+function AdminCategoriesInCollection() {
     const router = useRouter();
     const pathname = usePathname();
     const collectionPath = pathname.split("/")[3] || "";
@@ -82,45 +81,38 @@ function AdminCollection() {
                     <div>Назад до колекцій</div>
                 </MonoButton>
             </div>
-            <div className="flex gap-[15px] justify-between items-center rounded-xl bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px]">
-                <div className="text-2xl font-bold">
-                    Список категорій [ {collection?.name} ]:
-                </div>
-                <MonoButton onClick={() => openModal("add")}>
-                    <div>Додати категорію</div>
-                    <PlusIcon className="stroke-white stroke-2 w-[30px] group-hover:stroke-black" />
-                </MonoButton>
-            </div>
 
-            <div className="flex items-center gap-[15px] rounded-xl bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px]">
-                <div className="font-semibold">Фільтрувати:</div>
-                <ul className="flex gap-[10px]">
-                    {filters.map((name, i) => (
-                        <li key={i}>
-                            <ChooseButton onClick={function (): void {}}>
-                                {name}
-                            </ChooseButton>
-                        </li>
-                    ))}
-                </ul>
-            </div>
+            <TitleWithAddElementButton
+                title={`Список категорій [${collectionPath}]`}
+                onClick={() => setActiveModal("add")}
+                buttonText={"Додати категорію"}
+            />
 
-            {categories && categories.length > 0 ? (
-                <div className="rounded-xl bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px]">
-                    <div className="grid grid-cols-[120px_0.7fr_150px_150px_1fr_0.4fr_230px] gap-[20px] p-4 rounded-t-lg font-semibold text-sm">
-                        <div>Банер</div>
-                        <div>Назва</div>
-                        <div>Статус</div>
-                        <div>Переглядів</div>
-                        <div>Додано/оновлено</div>
-                        <div>Посилання</div>
-                        <div className="text-right">Дії</div>
+            <FilterSection
+                title={"Фільтрувати"}
+                filters={filters}
+                onFilterClick={function (filter: string): void {
+                    throw new Error("Function not implemented.");
+                }}
+                selectedItem={""}
+            />
+
+            {categories.length > 0 ? (
+                <div className="rounded-xl bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px] sm:p-[10px]">
+                    <div className="grid grid-cols-[120px_0.5fr_0.5fr_0.5fr_0.6fr_1fr] xl:grid-cols-[120px_0.5fr_0.5fr_0.4fr_1fr] lg:grid-cols-[1fr_0.5fr_1fr_2fr] sm:grid-cols-[2fr_0.5fr] xs:grid-cols-1 gap-[15px] p-[20px] sm:p-[10px] pt-0 rounded-t-lg font-semibold text-sm">
+                        <div className="hidden xs:block">Категорії</div>
+                        <div className="xs:hidden">Банер</div>
+                        <div className="xs:hidden">Назва</div>
+                        <div className="sm:hidden">Статус</div>
+                        <div className="xl:hidden">Додано/оновлено</div>
+                        <div className="lg:hidden text-center">Посилання</div>
+                        <div className="text-right sm:hidden">Дії</div>
                     </div>
                     <div className="border border-white/10 rounded-xl">
-                        {categories?.map((category) => (
+                        {categories.map((category) => (
                             <div
                                 key={category.id}
-                                className="grid grid-cols-[120px_0.7fr_150px_150px_1fr_0.4fr_230px] gap-[20px] p-4 border-b border-white/10 last:border-b-0 items-center"
+                                className="grid grid-cols-[120px_0.5fr_0.5fr_0.5fr_0.6fr_1fr] xl:grid-cols-[120px_0.5fr_0.5fr_0.4fr_1fr] lg:grid-cols-[1fr_0.5fr_1fr_2fr] sm:grid-cols-[2fr_0.5fr] xs:grid-cols-1 gap-[15px] p-[20px] sm:p-[10px] border-b border-white/10 last:border-b-0 items-center"
                             >
                                 <img
                                     src={`http://localhost:5000/${category.banner}`}
@@ -128,19 +120,20 @@ function AdminCollection() {
                                     alt={`Банер категорії ${category.name}`}
                                 />
                                 <div>{category.name}</div>
-                                <div>{category.status}</div>
-                                <div>{category.views}</div>
-                                <div>
+                                <div className="sm:hidden">
+                                    {category.status}
+                                </div>
+                                <div className="xl:hidden">
                                     {formatDate(category.createdAt || "")} /{" "}
                                     {formatDate(category.updatedAt || "")}
                                 </div>
                                 <Link
                                     href={`/${collectionPath}/${category.path}`}
-                                    className="text-blue-500 hover:text-white hover:underline"
+                                    className="text-blue-500 hover:text-white hover:underline lg:hidden text-center"
                                 >
                                     Категорія
                                 </Link>
-                                <div className="flex gap-[10px] justify-end">
+                                <div className="flex gap-[10px] justify-end sm:justify-start">
                                     <LinkWithIcon
                                         href={`/admin/collections/${collectionPath}/${category.path}`}
                                         counter={category.products?.length || 0}
@@ -216,4 +209,4 @@ function AdminCollection() {
     );
 }
 
-export default AdminCollection;
+export default AdminCategoriesInCollection;

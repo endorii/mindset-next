@@ -183,7 +183,7 @@ export default function ProductPage() {
 
     return (
         <div className="flex flex-col px-[30px] sm:p-[10px] py-[10px] gap-x-[30px] gap-y-[20px]">
-            <div className="flex lg:flex-col gap-[20px] items-start text-white">
+            <div className="flex lg:flex-col gap-[15px] items-start text-white">
                 <div className="flex xl:flex-col gap-[10px] relative rounded-xl bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 max-h-[80vh] xl:max-h-[90vh] xl:w-full w-[55%]">
                     <div className="relative w-[85%] xl:w-full">
                         <button
@@ -229,7 +229,7 @@ export default function ProductPage() {
                             {product.name}
                         </h3>
 
-                        <div className="flex gap-[20px] items-center mt-[10px]">
+                        <div className="flex gap-[15px] items-center mt-[10px]">
                             <div className="flex gap-[10px] items-center">
                                 <div className="text-xl font-semibold">
                                     {product.price} грн.
