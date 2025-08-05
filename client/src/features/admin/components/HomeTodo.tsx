@@ -39,7 +39,7 @@ function HomeTodo() {
     };
 
     return (
-        <div className="rounded-xl bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px] flex flex-col gap-[15px] w-1/2 ">
+        <div className="rounded-xl bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px] flex flex-col gap-[15px] w-1/2 lg:w-full">
             <div className="flex gap-[15px] justify-between">
                 <div className="text-xl font-semibold">ToDo</div>
                 <MonoButton onClick={() => openModal("add")}>
@@ -48,11 +48,11 @@ function HomeTodo() {
                 </MonoButton>
             </div>
             {todos && todos.length > 0 ? (
-                <div className="space-y-4 max-h-[470px] overflow-y-auto">
+                <div className="flex flex-col gap-[10px] max-h-[470px] overflow-y-auto">
                     {todos.map((task) => (
                         <div
                             key={task.id}
-                            className="flex items-center justify-between p-4 rounded-xl border border-white/10 shadow-md bg-white/3"
+                            className="flex items-center justify-between p-[20px] gap-[10px] rounded-xl border border-white/10 shadow-md bg-white/3"
                         >
                             <div className="flex flex-col">
                                 <span className="text-base font-medium text-white">
@@ -77,7 +77,7 @@ function HomeTodo() {
                                     {formatDate(task.updatedAt || "")}
                                 </span>
                             </div>
-                            <div className="flex gap-3 mt-1">
+                            <div className="flex xs:flex-col gap-[10px]">
                                 <ButtonWithIcon
                                     onClick={() => openModal("edit", task)}
                                 >

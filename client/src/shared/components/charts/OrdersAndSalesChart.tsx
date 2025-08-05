@@ -191,7 +191,7 @@ function OrdersAndSalesChart({ orders }: { orders: IOrder[] }) {
             <h2 className="text-lg font-semibold">
                 Кількість замовлень та продажі {periodLabels[period]}
             </h2>
-            <div className="flex gap-3 mb-4">
+            <div className="flex flex-wrap gap-[10px] mb-[20px]">
                 {(["day", "week", "month", "year"] as Period[]).map((p) => (
                     <ChooseButton
                         key={p}

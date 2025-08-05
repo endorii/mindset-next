@@ -180,7 +180,7 @@ function UsersRegistrationChart({ users }: { users: IUser[] }) {
             <h2 className="text-lg font-semibold">
                 Статистика реєстрацій користувачів {periodLabels[period]}
             </h2>
-            <div className="flex gap-3 mb-4">
+            <div className="flex flex-wrap gap-[10px] mb-[20px]">
                 {(["day", "week", "month", "year"] as Period[]).map((p) => (
                     <ChooseButton
                         key={p}

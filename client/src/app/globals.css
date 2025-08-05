@@ -12,6 +12,14 @@
 @custom-variant xs (@media (max-width: 480px));
 @custom-variant xxs (@media (max-width: 360px));
 
+@layer utilities {
+  .max-h-screen-minus-header {
+    max-height: calc(100vh - 135px);
+  }
+}
+
+
+
 * {
     /* cursor: none; */
     scrollbar-width: thin;

@@ -86,7 +86,6 @@ export default function AnalyticsPage() {
             collectionStats[0] || { salesSum: 0, name: "" }
         ) || null;
 
-    // Дані по категоріях
     type CategoryStat = {
         name: string;
         ordersCount: number;
@@ -127,47 +126,41 @@ export default function AnalyticsPage() {
             categoryStats[0] || { salesSum: 0, name: "" }
         ) || null;
 
-    // Дані по користувачах
     const totalUsers = users.length;
 
-    // Активні користувачі за останній місяць
     const monthAgo = new Date(now);
     monthAgo.setMonth(now.getMonth() - 1);
     const activeUsersLastMonth = users.filter(
         (user) => new Date(user.createdAt) >= monthAgo
     ).length;
 
-    // Ролі користувачів
     const roleCounts = users.reduce<Record<string, number>>((acc, user) => {
         acc[user.role] = (acc[user.role] || 0) + 1;
         return acc;
     }, {});
 
-    // Користувачі, які зробили замовлення
     const userIdsWithOrders = new Set(orders.map((o) => o.userId));
     const usersWithOrdersCount = users.filter((u) =>
         userIdsWithOrders.has(u.id)
     ).length;
 
-    // Середня кількість замовлень на користувача (тільки серед тих, хто щось замовляв)
     const avgOrdersPerUser = usersWithOrdersCount
         ? (totalOrders / usersWithOrdersCount).toFixed(2)
         : "0";
 
     return (
-        <div className="p-8 space-y-10">
+        <div className="flex flex-col gap-[20px]">
             <h1 className="text-3xl font-semibold">
                 Аналітика та статистика магазину
             </h1>
 
-            {/* Статистика замовлень та продажів */}
-            <div>
-                <h2 className="text-xl font-semibold mb-4">
+            <div className="flex flex-col gap-[10px]">
+                <h2 className="text-xl font-semibold">
                     Статистика замовлень та продажів
                 </h2>
                 <OrdersAndSalesChart orders={orders} />
 
-                <div className="grid grid-cols-4 gap-4 mt-6">
+                <div className="grid grid-cols-4 sm:grid-cols-3 xs:grid-cols-2 xxs:grid-cols-1 gap-[20px]">
                     <StatCard
                         title="Загальна кількість замовлень"
                         value={totalOrders}
@@ -200,15 +193,14 @@ export default function AnalyticsPage() {
                 </div>
             </div>
 
-            {/* Продажі за колекціями */}
             <div className="flex flex-col gap-[40px]">
-                <div>
-                    <h2 className="text-xl font-semibold mb-4">
+                <div className="flex flex-col gap-[10px]">
+                    <h2 className="text-xl font-semibold">
                         Продажі за колекціями
                     </h2>
-                    <div className="flex gap-[20px]">
+                    <div className="flex lg:flex-col gap-[20px]">
                         <OrdersByCollectionsChart orders={orders} />
-                        <div className="w-1/3 grid grid-cols-2 gap-4">
+                        <div className="w-1/3 lg:w-full grid grid-cols-2 xxs:grid-cols-1 gap-[20px]">
                             <StatCard
                                 title="Кількість колекцій"
                                 value={totalCollections}
@@ -233,14 +225,13 @@ export default function AnalyticsPage() {
                     </div>
                 </div>
 
-                {/* Продажі за категоріями */}
-                <div>
-                    <h2 className="text-xl font-semibold mb-4">
+                <div className="flex flex-col gap-[10px]">
+                    <h2 className="text-xl font-semibold">
                         Продажі за категоріями
                     </h2>
-                    <div className="flex gap-[20px]">
+                    <div className="flex lg:flex-col gap-[20px]">
                         <OrdersByCategoriesChart orders={orders} />
-                        <div className="w-1/3 grid grid-cols-2 gap-4">
+                        <div className="w-1/3 lg:w-full grid grid-cols-2 xxs:grid-cols-1 gap-[20px]">
                             <StatCard
                                 title="Кількість категорій"
                                 value={totalCategories}
@@ -266,13 +257,12 @@ export default function AnalyticsPage() {
                 </div>
             </div>
 
-            {/* Статистика користувачів */}
-            <div>
-                <h2 className="text-xl font-semibold mb-4">
+            <div className="flex flex-col gap-[10px]">
+                <h2 className="text-xl font-semibold">
                     Статистика користувачів
                 </h2>
                 <UsersRegistrationChart users={users} />
-                <div className="grid grid-cols-4 gap-4 mt-6">
+                <div className="grid grid-cols-4 sm:grid-cols-3 xs:grid-cols-2 xxs:grid-cols-1 gap-[20px]">
                     <StatCard
                         title="Загальна кількість користувачів"
                         value={totalUsers}

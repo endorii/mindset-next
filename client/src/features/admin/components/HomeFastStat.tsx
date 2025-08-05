@@ -25,7 +25,7 @@ function HomeFastStat({ orders }: { orders: IOrder[] }) {
         ? ((paidOrders.length / totalOrders) * 100).toFixed(2)
         : "0";
     return (
-        <div className="grid grid-cols-4 gap-[20px]">
+        <div className="grid grid-cols-4 sm:grid-cols-3 xs:grid-cols-2 xxs:grid-cols-1 gap-[20px]">
             <StatCard
                 title="Загальна кількість замовлень"
                 value={totalOrders}

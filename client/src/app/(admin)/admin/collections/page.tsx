@@ -68,43 +68,43 @@ function AdminCollections() {
 
     return (
         <div className="flex flex-col gap-[15px]">
-            <div className="flex gap-[15px] justify-between items-center rounded-xl bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px]">
-                <div className="text-2xl font-bold">Список колекцій:</div>
+            <div className="flex xs:flex-col gap-[15px] justify-between items-center xs:items-start rounded-xl bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px]">
+                <div className="text-2xl sm:text-xl font-bold">
+                    Список колекцій:
+                </div>
                 <MonoButton onClick={() => openModal("add")}>
                     <div>Додати колекцію</div>
                     <PlusIcon className="stroke-white stroke-2 w-[30px] group-hover:stroke-black" />
                 </MonoButton>
             </div>
 
-            <div className="flex items-center gap-[15px] rounded-xl bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px]">
+            <div className="flex sm:flex-col items-center sm:items-start gap-[15px] rounded-xl bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px]">
                 <div className="font-semibold">Фільтрувати:</div>
-                <ul className="flex gap-[10px]">
+                <div className="flex flex-wrap gap-[10px] w-full">
                     {filters.map((name, i) => (
-                        <li key={i}>
-                            <ChooseButton onClick={function (): void {}}>
-                                {name}
-                            </ChooseButton>
-                        </li>
+                        <ChooseButton key={i} onClick={function (): void {}}>
+                            {name}
+                        </ChooseButton>
                     ))}
-                </ul>
+                </div>
             </div>
             {collections && collections.length > 0 ? (
-                <div className="rounded-xl bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px]">
-                    <div className="grid grid-cols-[120px_0.7fr_150px_150px_1fr_0.4fr_230px] gap-[20px]  p-4 rounded-t-lg font-semibold text-sm">
-                        <div>Банер</div>
-                        <div>Назва</div>
-                        <div>Статус</div>
-                        <div>Переглядів</div>
-                        <div>Додано/оновлено</div>
-                        <div>Посилання</div>
-                        <div className="text-right">Дії</div>
+                <div className="rounded-xl bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px] sm:p-[10px]">
+                    <div className="grid grid-cols-[120px_0.5fr_150px_150px_0.4fr_230px] xl:grid-cols-[120px_0.5fr_150px_0.4fr_230px] lg:grid-cols-[1fr_0.5fr_1fr_2fr] sm:grid-cols-[2fr_0.5fr] xs:grid-cols-1 gap-[20px] p-[20px] sm:p-[10px] pt-0 rounded-t-lg font-semibold text-sm">
+                        <div className="hidden xs:block">Колекції</div>
+                        <div className="xs:hidden">Банер</div>
+                        <div className="xs:hidden">Назва</div>
+                        <div className="sm:hidden">Статус</div>
+                        <div className="xl:hidden">Додано/оновлено</div>
+                        <div className="lg:hidden">Посилання</div>
+                        <div className="text-right sm:hidden">Дії</div>
                     </div>
 
                     <div className="border border-white/10 rounded-xl">
                         {collections?.map((collection) => (
                             <div
                                 key={collection.id}
-                                className="grid grid-cols-[120px_0.7fr_150px_150px_1fr_0.4fr_230px] gap-[20px] p-4  border-b border-white/10 last:border-b-0 items-center"
+                                className="grid grid-cols-[120px_0.5fr_150px_150px_0.4fr_230px] xl:grid-cols-[120px_0.5fr_150px_0.4fr_230px] lg:grid-cols-[1fr_0.5fr_1fr_2fr] sm:grid-cols-[2fr_0.5fr] xs:grid-cols-1 gap-[20px] p-[20px] sm:p-[10px] border-b border-white/10 last:border-b-0 items-center"
                             >
                                 <img
                                     src={`http://localhost:5000/${collection.banner}`}
@@ -112,19 +112,20 @@ function AdminCollections() {
                                     alt="banner"
                                 />
                                 <div>{collection.name}</div>
-                                <div>{collection.status}</div>
-                                <div>{collection.views}</div>
-                                <div>
+                                <div className="sm:hidden">
+                                    {collection.status}
+                                </div>
+                                <div className="xl:hidden">
                                     {formatDate(collection.createdAt || "")} /{" "}
                                     {formatDate(collection.updatedAt || "")}
                                 </div>
                                 <Link
                                     href={`/${collection.path}`}
-                                    className="text-blue-500 hover:text-white hover:underline"
+                                    className="text-blue-500 hover:text-white hover:underline lg:hidden"
                                 >
                                     Колекція
                                 </Link>
-                                <div className="flex gap-[10px] justify-end">
+                                <div className="flex gap-[10px] justify-end sm:justify-start">
                                     <LinkWithIcon
                                         href={`collections/${collection.path}`}
                                         counter={

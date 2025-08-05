@@ -19,7 +19,7 @@ function AccountNavigation({ children }: { children: React.ReactNode }) {
     const { data: user } = useCurrentUser();
     const { logout } = useAuth();
 
-    const [isOpen, setIsOpen] = useState<boolean>(true);
+    const [isOpen, setIsOpen] = useState<boolean>(false);
 
     const links = [
         {
@@ -52,9 +52,9 @@ function AccountNavigation({ children }: { children: React.ReactNode }) {
     ];
 
     return (
-        <div className="relative flex gap-[20px] p-[30px] sm:p-[10px] text-white">
+        <div className="relative flex gap-[20px] p-[30px] pt-[10px] sm:p-[10px] text-white">
             <button
-                className="hidden sm:flex top-[90px] fixed w-[40px] h-[40px] items-center justify-center cursor-pointer z-2 bg-white/5 rounded-xl border border-white/10 shadow-lg backdrop-blur-[100px]"
+                className="hidden md:flex top-[75px] fixed w-[40px] h-[40px] items-center justify-center cursor-pointer z-2 bg-white/5 rounded-xl border border-white/10 shadow-lg backdrop-blur-[100px]"
                 onClick={() => setIsOpen(!isOpen)}
             >
                 <BackIcon
@@ -64,9 +64,10 @@ function AccountNavigation({ children }: { children: React.ReactNode }) {
                 />
             </button>
             <div
-                className={`sm:fixed sm:top-[135px] border-r h-fit w-full max-w-[350px] ${
+                // style={{ maxHeight: "calc(100vh - 145px)" }}
+                className={`md:fixed md:top-[125px] overflow-y-auto max-h-screen-minus-header w-full max-w-[300px] ${
                     isOpen ? "left-[10px]" : "left-[-350px]"
-                } flex flex-col justify-between gap-[100px] sm:gap-[15px] rounded-xl bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px] z-1 transition-all duration-600 ease-in-out`}
+                } flex flex-col justify-between gap-[100px] md:gap-[15px] rounded-xl bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px] z-1 transition-all duration-600 ease-in-out`}
             >
                 <div className="flex gap-[30px] flex-col">
                     <div className="flex gap-[30px] items-center">
@@ -90,7 +91,11 @@ function AccountNavigation({ children }: { children: React.ReactNode }) {
                     <hr className="border-t border-white/10" />
                     <div className={`flex flex-col gap-[13px]`}>
                         {links.map(({ href, Icon, text, className }) => (
-                            <NavigationLink key={href} href={href}>
+                            <NavigationLink
+                                key={href}
+                                href={href}
+                                onClick={() => setIsOpen(false)}
+                            >
                                 <Icon className={className} />
 
                                 <span
@@ -129,7 +134,7 @@ function AccountNavigation({ children }: { children: React.ReactNode }) {
                     </div>
                 </div>
             </div>
-            <div className="w-full sm:mt-[40px]">{children}</div>
+            <div className="w-full md:mt-[30px] lg:mt-0">{children}</div>
         </div>
     );
 }

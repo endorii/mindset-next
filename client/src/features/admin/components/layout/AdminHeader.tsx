@@ -8,8 +8,8 @@ function AdminHeader() {
     const { data: user } = useCurrentUser();
 
     return (
-        <header className="fixed top-0 py-[10px] px-[35px] h-[90px] flex gap-[5%] items-center w-full shadow-custom bg-transparent border-b border-white/10 z-[10]">
-            <div className="min-w-[220px] rounded-xl bg-white/5 shadow-lg px-[25px] py-[10px] pb-[13px] backdrop-blur-2xl border border-white/5 text-white font-bold text-4xl tracking-tighter">
+        <header className="fixed top-0 py-[10px] px-[30px] sm:px-[10px] h-[80px] flex gap-[5%] items-center w-full shadow-custom bg-transparent border-b border-white/10 z-[10]">
+            <div className="min-w-[220px] rounded-xl bg-white/5 shadow-lg px-[25px] py-[5px] pb-[10px] backdrop-blur-2xl border border-white/5 text-white font-bold text-4xl tracking-tighter">
                 mind panel
             </div>
 
@@ -20,7 +20,7 @@ function AdminHeader() {
 
                 <Link
                     href="/admin/account"
-                    className="flex items-center gap-[30px] rounded-xl bg-white/5 shadow-lg px-[20px] py-[13px] pb-[18px] backdrop-blur-2xl border border-white/5 text-white hover:bg-white/12 hover:border-white/7"
+                    className="xs:hidden flex items-center gap-[30px] rounded-xl bg-white/5 shadow-lg px-[20px] py-[13px] pb-[18px] backdrop-blur-2xl border border-white/5 text-white hover:bg-white/12 hover:border-white/7"
                 >
                     <div className="flex items-center gap-[10px]">
                         <AccountIcon className="w-[25px] fill-white" />

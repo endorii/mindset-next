@@ -27,7 +27,7 @@ const Footer = () => {
     }, [collectionPath]);
 
     return (
-        <footer className="bg-transparent flex flex-col text-white mt-[50px]">
+        <footer className="bg-transparent flex flex-col text-white mt-[50px] xs:mt-[10px]">
             <div className="relative flex sm:flex-col gap-[20px] sm:gap-[30px] p-[50px] sm:p-[20px] ">
                 <div className="flex flex-col gap-[25px] text-sm min-w-[300px] md:min-w-[250px]">
                     <Link

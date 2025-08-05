@@ -27,12 +27,14 @@ const Orders = () => {
 
     return (
         <div className="flex flex-col gap-[15px]">
-            <div className="flex justify-between items-center rounded-xl bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px]">
-                <div className="text-2xl font-bold">Ваш список замовлень</div>
+            <div className="flex justify-between items-center rounded-xl bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px] xs:py-[10px]">
+                <div className="text-2xl xs:text-xl font-bold">
+                    Ваш список замовлень
+                </div>
             </div>
 
             {userOrders.length > 0 ? (
-                <div className="rounded-xl bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px]">
+                <div className="rounded-xl bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px] xs:p-[10px]">
                     <div className="border border-white/10 rounded-xl">
                         {userOrders.map((order) => {
                             const isExpanded = expandedOrderId === order.id;
@@ -47,7 +49,7 @@ const Orders = () => {
                                             onClick={() =>
                                                 toggleExpand(order.id || "")
                                             }
-                                            className={`absolute top-[20px] right-[20px] transition-transform duration-300 bg-white/10 border border-white/10 p-[5px] rounded-xl cursor-pointer ${
+                                            className={`absolute top-[20px] right-[20px] transition-transform duration-300 bg-black/60 border border-white/10 p-[5px] shadow-lg backdrop-blur-xl rounded-xl cursor-pointer ${
                                                 isExpanded
                                                     ? "rotate-90"
                                                     : "rotate-270"
@@ -58,16 +60,19 @@ const Orders = () => {
 
                                         <div className="flex flex-col justify-between gap-[10px]">
                                             <div>
-                                                <div className="text-sm text-white/40">
+                                                <div className="text-sm xs:text-xs text-white/40">
                                                     {formatDate(
                                                         order.createdAt || "-"
                                                     )}
                                                 </div>
-                                                <div>№ {order.id}</div>
+                                                <div className="xs:text-sm">
+                                                    № {order.id?.slice(0, 12)}
+                                                    ...
+                                                </div>
                                             </div>
 
                                             <div
-                                                className={`font-semibold ${
+                                                className={`font-semibold xs:text-sm ${
                                                     order.status === "pending"
                                                         ? "text-yellow-500"
                                                         : order.status ===
@@ -94,16 +99,27 @@ const Orders = () => {
                                             </div>
                                         </div>
 
-                                        <div className="flex gap-[15px]">
+                                        <div className="flex gap-[15px] items-center lg:hidden">
                                             {order.items.length > 0 ? (
-                                                order.items.map((item) => (
-                                                    <img
-                                                        key={item.id}
-                                                        src={`http://localhost:5000/${item.product?.banner}`}
-                                                        className="max-h-[120px] w-full object-cover rounded"
-                                                        alt="banner"
-                                                    />
-                                                ))
+                                                <>
+                                                    {order.items
+                                                        .slice(0, 4)
+                                                        .map((item) => (
+                                                            <img
+                                                                key={item.id}
+                                                                src={`http://localhost:5000/${item.product?.banner}`}
+                                                                className="max-h-[120px] w-full object-cover rounded"
+                                                                alt="banner"
+                                                            />
+                                                        ))}
+                                                    {order.items.length > 4 && (
+                                                        <div className="flex items-center justify-center min-w-[40px] h-[120px] bg-gray-200 rounded text-black text-lg font-semibold">
+                                                            +
+                                                            {order.items
+                                                                .length - 4}
+                                                        </div>
+                                                    )}
+                                                </>
                                             ) : (
                                                 <span>Не знайдено</span>
                                             )}
@@ -113,6 +129,14 @@ const Orders = () => {
                                     {isExpanded && (
                                         <div className="px-[20px] pb-[20px] text-sm bg-white/3 border-t border-white/10">
                                             <div className="grid grid-cols-2 gap-4 py-4">
+                                                <div>
+                                                    <div className="text-white/60">
+                                                        ID замовлення
+                                                    </div>
+                                                    <div className="text-white font-medium">
+                                                        № {order.id}
+                                                    </div>
+                                                </div>
                                                 <div>
                                                     <div className="text-white/60">
                                                         Email
@@ -171,11 +195,11 @@ const Orders = () => {
                                                 <div className="text-white/60 mb-2 font-semibold">
                                                     Товари
                                                 </div>
-                                                <div className="flex flex-col gap-4">
+                                                <div className="flex flex-col gap-[20px]">
                                                     {order.items.map((item) => (
                                                         <div
                                                             key={item.id}
-                                                            className="grid grid-cols-[2fr_1fr_0.5fr_230px] gap-4 items-center border border-white/10 rounded-lg p-3 bg-white/5"
+                                                            className="grid grid-cols-[2fr_1fr_0.5fr_230px] lg:grid-cols-[2fr_1fr_1fr] sm:flex sm:flex-col gap-4 items-center sm:items-start border border-white/10 rounded-lg p-[10px] bg-white/5"
                                                         >
                                                             <div className="flex gap-4 items-center">
                                                                 <img
@@ -194,14 +218,14 @@ const Orders = () => {
                                                                     }
                                                                     className="object-cover rounded w-[80px] h-[80px]"
                                                                 />
-                                                                <div className="flex flex-col gap-1">
-                                                                    <div className="font-medium text-lg">
+                                                                <div className="flex flex-col gap-[5px]">
+                                                                    <div className="font-medium text-lg lg:text-base">
                                                                         {item
                                                                             .product
                                                                             ?.name ||
                                                                             "—"}
                                                                     </div>
-                                                                    <div className="text-white/40 text-sm">
+                                                                    <div className="text-white/40 text-sm xs:text-xs">
                                                                         Колір:{" "}
                                                                         {
                                                                             item.color
@@ -219,7 +243,7 @@ const Orders = () => {
                                                                 </div>
                                                             </div>
 
-                                                            <div className="text-white text-sm">
+                                                            <div className="text-white text-center text-sm">
                                                                 {
                                                                     item.product
                                                                         ?.price
@@ -229,7 +253,7 @@ const Orders = () => {
                                                                 од.
                                                             </div>
 
-                                                            <div className="flex flex-col gap-1">
+                                                            <div className="flex flex-col items-center">
                                                                 <div className="text-white/50 text-xs line-through">
                                                                     {Number(
                                                                         item
@@ -254,7 +278,7 @@ const Orders = () => {
                                                                 </div>
                                                             </div>
 
-                                                            <div className="flex flex-col gap-2">
+                                                            <div className="flex flex-col lg:flex-row gap-[5px]">
                                                                 <MonoButton
                                                                     disabled={
                                                                         order.status ===
@@ -266,7 +290,7 @@ const Orders = () => {
                                                                         order.status ===
                                                                             "cancelled"
                                                                     }
-                                                                    className="w-full h-[40px] py-[10px] font-semibold text-sm"
+                                                                    className="w-full h-[40px] lg:h-[70px] py-[10px] font-semibold text-sm"
                                                                     onClick={() => {
                                                                         setActiveModal(
                                                                             true
@@ -280,7 +304,7 @@ const Orders = () => {
                                                                     відгук
                                                                 </MonoButton>
                                                                 <MonoButton
-                                                                    className="w-full h-[40px] py-[10px] font-semibold text-sm"
+                                                                    className="w-full h-[40px] lg:h-[70px] py-[10px] font-semibold text-sm"
                                                                     onClick={() =>
                                                                         router.push(
                                                                             `/${item.product?.category?.collection?.path}/${item.product?.category?.path}/${item.product?.path}`

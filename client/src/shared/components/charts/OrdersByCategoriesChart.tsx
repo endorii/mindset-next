@@ -49,7 +49,7 @@ function OrdersByCategoriesChart({ orders }: { orders: IOrder[] }) {
     }, [orders]);
 
     return (
-        <div className="rounded-xl bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px] flex flex-col gap-[15px] w-2/3">
+        <div className="rounded-xl bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px] flex flex-col gap-[15px] w-2/3  lg:w-full">
             <h2 className="text-lg font-semibold">
                 Розподіл продажів за категоріями товарів
             </h2>

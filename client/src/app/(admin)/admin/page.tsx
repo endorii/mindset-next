@@ -24,7 +24,7 @@ function Admin() {
 
             {orders && <OrdersAndSalesChart orders={orders} />}
             <HomeFastStat orders={orders} />
-            <div className="flex gap-[20px]">
+            <div className="flex lg:flex-col gap-[20px]">
                 <AdminRecentActions actions={actions} />
                 <HomeTodo />
             </div>
