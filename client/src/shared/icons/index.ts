@@ -25,3 +25,6 @@ export { default as TrashIcon } from "./TrashIcon";
 export { default as BurgerMenuIcon } from "./BurgerMenuIcon";
 export { default as PaletteIcon } from "./PaletteIcon";
 export { default as WearIcon } from "./WearIcon";
+export { default as MailIcon } from "./MailIcon";
+export { default as PhoneIcon } from "./PhoneIcon";
+export { default as LocationIcon } from "./LocationIcon";

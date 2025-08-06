@@ -2,7 +2,14 @@
 
 import { useCollections } from "@/features/collections/hooks/useCollections";
 import { ICollection } from "@/features/collections/types/collections.types";
-import { TiktokIcon, InstagramIcon, TelegramIcon } from "@/shared/icons";
+import {
+    TiktokIcon,
+    InstagramIcon,
+    TelegramIcon,
+    LocationIcon,
+    MailIcon,
+    PhoneIcon,
+} from "@/shared/icons";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState, useEffect } from "react";
@@ -76,19 +83,35 @@ const Footer = () => {
                         </FooterNavListItem>
                         <FooterNavListItem href="/faq">FAQ</FooterNavListItem>
                     </FooterNavList>
-                    <FooterNavList title="Навігація">
-                        <div className="text-white/80 text-sm">
-                            <div></div>
-                            <div>342342344234</div>
-                        </div>
-                        <div className="text-white/80 text-sm">
-                            <div></div>
-                            <div>fdffsd@sfd.com</div>
-                        </div>
-                        <div className="text-white/80 text-sm">
-                            <div></div>
-                            <div>Україна, м. Луцьк</div>
-                        </div>
+                    <FooterNavList title="Контакти">
+                        <Link
+                            href="tel:0970000000"
+                            className="text-white/80 text-sm flex gap-[10px] items-center hover:text-white group"
+                        >
+                            <PhoneIcon className="group-hover:stroke-white fill-none w-[25px] stroke-2 stroke-white/80" />
+                            <div className="group-hover:underline">
+                                +38 (097) 00 00 000
+                            </div>
+                        </Link>
+                        <Link
+                            href="mailto:job.tenshi@gmail.com"
+                            className="text-white/80 text-sm flex gap-[10px] items-center hover:text-white group"
+                        >
+                            <MailIcon className="group-hover:stroke-white fill-none w-[25px] stroke-2 stroke-white/80" />
+                            <div className="group-hover:underline">
+                                job.tenshi@gmail.com
+                            </div>
+                        </Link>
+                        <Link
+                            target="_blank"
+                            href="https://maps.app.goo.gl/B2e3TfjzMYLEjstU6"
+                            className="text-white/80 text-sm flex gap-[10px] items-center hover:text-white group"
+                        >
+                            <LocationIcon className="group-hover:stroke-white fill-none w-[25px] stroke-2 stroke-white/80" />
+                            <div className="group-hover:underline">
+                                Україна, м. Луцьк
+                            </div>
+                        </Link>
                         <div className="flex gap-[15px] mt-[10px]">
                             <div>
                                 <button className="cursor-pointer p-[10px] border border-white/10 rounded-[50%] hover:bg-white group transition-all duration-300">
