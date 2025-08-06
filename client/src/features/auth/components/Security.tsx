@@ -25,7 +25,7 @@ function Security() {
                         <li>Регулярне оновлення політики безпеки</li>
                     </ul>
 
-                    <div className="flex flex-wrap gap-2 mt-2 text-xs text-green-300">
+                    <div className="flex flex-wrap gap-[10px] mt-2 text-xs text-green-300">
                         <span className="bg-green-800/30 px-2 py-1 rounded-md">
                             SSL Secure
                         </span>

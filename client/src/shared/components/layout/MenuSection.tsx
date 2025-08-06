@@ -18,7 +18,7 @@ export const MenuSection = ({
                 {subtitle}
             </div>
         </div>
-        <ul className="flex flex-col gap-4 text-2xl items-end sm:items-start sm:mt-[40px]">
+        <ul className="flex flex-col gap-[20px] text-2xl items-end sm:items-start sm:mt-[40px]">
             {items.map(({ name, href }) => (
                 <li
                     key={name}

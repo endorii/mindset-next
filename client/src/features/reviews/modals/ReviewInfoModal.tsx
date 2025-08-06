@@ -109,7 +109,7 @@ export default function ReviewInfoModal({
                 <div className="flex flex-col gap-[10px]">
                     <div className="text-lg">Інформація про товар</div>
                     <div className="rounded-xl bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[15px]">
-                        <div className="grid grid-cols-[1fr_1fr_1fr_1fr_1fr_1fr_1fr+1fr] gap-[15px] p-4 rounded-t-lg font-semibold text-sm">
+                        <div className="grid grid-cols-[1fr_1fr_1fr_1fr_1fr_1fr_1fr+1fr] gap-[15px] p-[20px] rounded-t-lg font-semibold text-sm">
                             <div>Банер</div>
                             <div>Назва</div>
                             <div>Колір</div>
@@ -124,7 +124,7 @@ export default function ReviewInfoModal({
                             {orderItem ? (
                                 <div
                                     key={orderItem.id}
-                                    className="grid grid-cols-[1fr_1fr_1fr_1fr_1fr_1fr_1fr_1fr] gap-[15px] p-4 border-b border-white/10 last:border-b-0 items-center"
+                                    className="grid grid-cols-[1fr_1fr_1fr_1fr_1fr_1fr_1fr_1fr] gap-[15px] p-[20px] border-b border-white/10 last:border-b-0 items-center"
                                 >
                                     <InfoModalBanner
                                         w={100}
@@ -150,7 +150,7 @@ export default function ReviewInfoModal({
                                     </Link>
                                 </div>
                             ) : (
-                                <div className="p-4 text-sm text-white/60">
+                                <div className="p-[20px] text-sm text-white/60">
                                     Товарів не знайдено
                                 </div>
                             )}

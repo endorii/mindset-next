@@ -106,7 +106,7 @@ export default function OrderInfoModal({
                 <div className="flex flex-col gap-[10px]">
                     <div className="text-lg">Список товарів</div>
                     <div className="rounded-xl bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[15px]">
-                        <div className="grid grid-cols-[1fr_1fr_1fr_1fr_1fr_1fr_1fr_1fr] gap-[15px] p-4 rounded-t-lg font-semibold text-sm">
+                        <div className="grid grid-cols-[1fr_1fr_1fr_1fr_1fr_1fr_1fr_1fr] gap-[15px] p-[20px] rounded-t-lg font-semibold text-sm">
                             <div>Колекція</div>
                             <div>Категорія</div>
                             <div>Назва товару</div>
@@ -122,7 +122,7 @@ export default function OrderInfoModal({
                                 items.map((item) => (
                                     <div
                                         key={item.id}
-                                        className="grid grid-cols-[1fr_1fr_1fr_1fr_1fr_1fr_1fr_1fr] gap-[15px] p-4 border-b border-white/10 last:border-b-0 items-center"
+                                        className="grid grid-cols-[1fr_1fr_1fr_1fr_1fr_1fr_1fr_1fr] gap-[15px] p-[20px] border-b border-white/10 last:border-b-0 items-center"
                                     >
                                         <div>
                                             {item.product?.category?.collection
@@ -144,7 +144,7 @@ export default function OrderInfoModal({
                                     </div>
                                 ))
                             ) : (
-                                <div className="p-4 text-sm text-white/60">
+                                <div className="p-[20px] text-sm text-white/60">
                                     Товарів не знайдено
                                 </div>
                             )}

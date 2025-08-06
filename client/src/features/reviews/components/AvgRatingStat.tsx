@@ -56,7 +56,7 @@ function AvgRatingStat({ reviews }: AvgRatingStatProps) {
                     return (
                         <div
                             key={rating}
-                            className="flex items-center gap-2 mb-1"
+                            className="flex items-center gap-[10px] mb-1"
                         >
                             <span className="w-5 text-sm">{rating}</span>
                             <div className="flex-1 border border-white/10 rounded h-5 overflow-hidden">

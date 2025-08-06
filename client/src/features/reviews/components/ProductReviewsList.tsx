@@ -26,7 +26,7 @@ function ProductReviewsList({ reviews }: ProductReviewsListProps) {
                                 key={review.id}
                                 className="flex flex-col gap-[15px]"
                             >
-                                <div className="flex flex-col gap-[15px] border border-white/10 bg-white/3 rounded-lg p-4 shadow-sm">
+                                <div className="flex flex-col gap-[15px] border border-white/10 bg-white/3 rounded-lg p-[20px] shadow-sm">
                                     <div>
                                         <div className="flex justify-between mb-1">
                                             <span className="font-semibold">
@@ -54,10 +54,10 @@ function ProductReviewsList({ reviews }: ProductReviewsListProps) {
                                             {review.content}
                                         </div>
 
-                                        <div className="mt-3 flex gap-2 text-sm">
+                                        <div className="mt-3 flex gap-[10px] text-sm">
                                             <button
                                                 disabled={isPending}
-                                                className={`flex items-center gap-1 px-[10px] py-[7px] border rounded-xl cursor-pointer transition hover:bg-black/20 disabled:opacity-50 ${
+                                                className={`flex items-center gap-[5px] px-[10px] py-[7px] border rounded-xl cursor-pointer transition hover:bg-black/20 disabled:opacity-50 ${
                                                     isLiked
                                                         ? "bg-white/10 border-white/30"
                                                         : "border-white/10"
@@ -86,7 +86,7 @@ function ProductReviewsList({ reviews }: ProductReviewsListProps) {
 
                                             <button
                                                 disabled={isPending}
-                                                className={`flex items-center gap-1 px-[10px] py-[7px] border rounded-xl cursor-pointer transition hover:bg-black/20 disabled:opacity-50 ${
+                                                className={`flex items-center gap-[5px] px-[10px] py-[7px] border rounded-xl cursor-pointer transition hover:bg-black/20 disabled:opacity-50 ${
                                                     isDisliked
                                                         ? "bg-white/10 border-white/30"
                                                         : "border-white/10"
@@ -116,7 +116,7 @@ function ProductReviewsList({ reviews }: ProductReviewsListProps) {
                                     </div>
 
                                     {review.adminReply && (
-                                        <div className="flex flex-col gap-[10px] border border-white/10 bg-white/3 rounded-lg p-4 mb-4 shadow-sm">
+                                        <div className="flex flex-col gap-[10px] border border-white/10 bg-white/3 rounded-lg p-[20px] mb-4 shadow-sm">
                                             <div className="flex justify-between gap-[10px] text-sm font-semibold text-white/70">
                                                 <div>
                                                     Відповідь адміністратора

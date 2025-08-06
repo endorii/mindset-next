@@ -81,8 +81,8 @@ function AdminCollections() {
                 selectedItem={""}
             />
             {collections && collections.length > 0 ? (
-                <div className="rounded-xl bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px] sm:p-[10px]">
-                    <div className="grid grid-cols-[120px_0.5fr_0.5fr_0.5fr_0.6fr_1fr] xl:grid-cols-[120px_0.5fr_0.5fr_0.4fr_1fr] lg:grid-cols-[1fr_0.5fr_1fr_2fr] sm:grid-cols-[2fr_0.5fr] xs:grid-cols-1 gap-[15px] p-[20px] sm:p-[10px] pt-0 rounded-t-lg font-semibold text-sm">
+                <div className="rounded-xl bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px] sm:px-[10px] pt-0">
+                    <div className="grid grid-cols-[120px_0.5fr_0.5fr_0.5fr_0.6fr_1fr] xl:grid-cols-[120px_0.5fr_0.5fr_0.4fr_1fr] lg:grid-cols-[1fr_0.5fr_1fr_2fr] sm:grid-cols-[2fr_0.5fr] xs:grid-cols-1 gap-[15px] p-[20px] sm:p-[10px] rounded-t-lg font-semibold text-sm">
                         <div className="hidden xs:block">Колекції</div>
                         <div className="xs:hidden">Банер</div>
                         <div className="xs:hidden">Назва</div>
@@ -124,28 +124,28 @@ function AdminCollections() {
                                             collection.categories?.length || 0
                                         }
                                     >
-                                        <CategoriesIcon className="w-[30px] fill-white group-hover:fill-black" />
+                                        <CategoriesIcon className="w-[30px] lg:w-[25px] md:w-[20px] xs:w-[18px] fill-white group-hover:fill-black" />
                                     </LinkWithIcon>
                                     <ButtonWithIcon
                                         onClick={() =>
                                             openModal("info", collection)
                                         }
                                     >
-                                        <InfoIcon className="w-[30px] fill-none stroke-white stroke-2  group-hover:stroke-black" />
+                                        <InfoIcon className="w-[30px] lg:w-[25px] md:w-[20px] xs:w-[18px] fill-none stroke-white stroke-2  group-hover:stroke-black" />
                                     </ButtonWithIcon>
                                     <ButtonWithIcon
                                         onClick={() =>
                                             openModal("edit", collection)
                                         }
                                     >
-                                        <EditIcon className="w-[26px] stroke-white stroke-2 group-hover:stroke-black fill-none" />
+                                        <EditIcon className="w-[26px] lg:w-[25px] md:w-[20px] xs:w-[18px] stroke-white stroke-2 group-hover:stroke-black fill-none" />
                                     </ButtonWithIcon>
                                     <DeleteButtonWithIcon
                                         onClick={() =>
                                             openModal("delete", collection)
                                         }
                                     >
-                                        <TrashIcon className="w-[30px] stroke-white stroke-[1.7]  fill-none" />
+                                        <TrashIcon className="w-[30px] lg:w-[25px] md:w-[20px] xs:w-[18px] stroke-white stroke-[1.7]  fill-none" />
                                     </DeleteButtonWithIcon>
                                 </div>
                             </div>

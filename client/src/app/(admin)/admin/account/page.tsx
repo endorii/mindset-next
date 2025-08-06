@@ -79,15 +79,15 @@ function AdminAccount() {
 
             <div className="flex gap-[15px]">
                 <AdminRecentActions actions={filteredActions} />
-                <div className="grid grid-cols-1 gap-[15px] w-1/3 bg-white/5 p-4 rounded-xl border border-white/10">
+                <div className="grid grid-cols-1 gap-[15px] w-1/3 bg-white/5 p-[20px] rounded-xl border border-white/10">
                     <h3 className="font-semibold">Зведення</h3>
 
                     <div className="flex flex-col gap-[10px]">
-                        <div className="bg-white/5 p-4 rounded-xl border border-white/10">
+                        <div className="bg-white/5 p-[20px] rounded-xl border border-white/10">
                             Всього дій: {actions?.length || 0}
                         </div>
 
-                        <div className="bg-white/5 p-4 rounded-xl border border-white/10">
+                        <div className="bg-white/5 p-[20px] rounded-xl border border-white/10">
                             Остання дія:{" "}
                             {actions?.[0]
                                 ? `${actions[0].action} (${formatDate(
@@ -96,35 +96,35 @@ function AdminAccount() {
                                 : "—"}
                         </div>
 
-                        <div className="bg-white/5 p-4 rounded-xl border border-white/10">
+                        <div className="bg-white/5 p-[20px] rounded-xl border border-white/10">
                             Додано:{" "}
                             {actions?.filter((a) =>
                                 a.action.startsWith("Додано")
                             ).length || 0}
                         </div>
 
-                        <div className="bg-white/5 p-4 rounded-xl border border-white/10">
+                        <div className="bg-white/5 p-[20px] rounded-xl border border-white/10">
                             Редаговано:{" "}
                             {actions?.filter((a) =>
                                 a.action.startsWith("Редаговано")
                             ).length || 0}
                         </div>
 
-                        <div className="bg-white/5 p-4 rounded-xl border border-white/10">
+                        <div className="bg-white/5 p-[20px] rounded-xl border border-white/10">
                             Видалено:{" "}
                             {actions?.filter((a) =>
                                 a.action.startsWith("Видалено")
                             ).length || 0}
                         </div>
 
-                        <div className="bg-white/5 p-4 rounded-xl border border-white/10">
+                        <div className="bg-white/5 p-[20px] rounded-xl border border-white/10">
                             Активна фільтрація: <br />
                             <span className="text-xs opacity-70">
                                 Тип — {selectedType}, Об'єкт — {selectedEntity}
                             </span>
                         </div>
 
-                        <div className="bg-white/5 p-4 rounded-xl border border-white/10">
+                        <div className="bg-white/5 p-[20px] rounded-xl border border-white/10">
                             Унікальних дій:{" "}
                             {new Set(actions?.map((a) => a.action) || []).size}
                         </div>

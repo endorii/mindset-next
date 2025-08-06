@@ -46,7 +46,7 @@ export const ColorSection = () => {
                         {colors.map((color) => (
                             <div
                                 key={color.id}
-                                className="grid grid-cols-4 md:grid-cols-3 xs:grid-cols-2 gap-[15px] p-[20px] border-b border-white/10 items-center xs:text-sm"
+                                className="grid grid-cols-4 md:grid-cols-3 xs:grid-cols-2 gap-[15px] p-[20px] border-b border-white/10 items-center text-sm"
                             >
                                 <div className="border border-white/10 rounded w-[52px] h-[52px] xs:hidden">
                                     <div
@@ -58,14 +58,14 @@ export const ColorSection = () => {
                                 </div>
                                 <div className="truncate">{color.name}</div>
                                 <div className="md:hidden">{color.hexCode}</div>
-                                <div className="flex justify-end gap-2">
+                                <div className="flex justify-end gap-[10px]">
                                     <ButtonWithIcon
                                         onClick={() => {
                                             setSelected(color);
                                             setModalType("edit");
                                         }}
                                     >
-                                        <EditIcon className="w-[26px] stroke-white stroke-2 group-hover:stroke-black fill-none" />
+                                        <EditIcon className="w-[26px] lg:w-[25px] md:w-[20px] xs:w-[18px] stroke-white stroke-2 group-hover:stroke-black fill-none" />
                                     </ButtonWithIcon>
                                     <DeleteButtonWithIcon
                                         onClick={() => {
@@ -73,7 +73,7 @@ export const ColorSection = () => {
                                             setModalType("delete");
                                         }}
                                     >
-                                        <TrashIcon className="w-[30px] stroke-white stroke-[1.7] fill-none" />
+                                        <TrashIcon className="w-[30px] lg:w-[25px] md:w-[20px] xs:w-[18px] stroke-white stroke-[1.7] fill-none" />
                                     </DeleteButtonWithIcon>
                                 </div>
                             </div>

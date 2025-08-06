@@ -7,7 +7,7 @@ interface StarRatingProps {
 
 const StarRating = ({ control, errorMessage }: StarRatingProps) => {
     return (
-        <div className="flex flex-col gap-1">
+        <div className="flex flex-col gap-[5px]">
             <label className="font-semibold text-sm">Оцініть товар*</label>
 
             <Controller
@@ -19,7 +19,7 @@ const StarRating = ({ control, errorMessage }: StarRatingProps) => {
                     max: { value: 5, message: "Максимум 5" },
                 }}
                 render={({ field }) => (
-                    <div className="flex gap-1">
+                    <div className="flex gap-[5px]">
                         {[1, 2, 3, 4, 5].map((num) => (
                             <span
                                 key={num}

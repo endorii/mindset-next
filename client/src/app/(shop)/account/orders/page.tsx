@@ -128,7 +128,7 @@ const Orders = () => {
 
                                     {isExpanded && (
                                         <div className="px-[20px] pb-[20px] text-sm bg-white/3 border-t border-white/10">
-                                            <div className="grid grid-cols-2 gap-4 py-4">
+                                            <div className="grid grid-cols-2 gap-[20px] py-4">
                                                 <div>
                                                     <div className="text-white/60">
                                                         ID замовлення
@@ -199,9 +199,9 @@ const Orders = () => {
                                                     {order.items.map((item) => (
                                                         <div
                                                             key={item.id}
-                                                            className="grid grid-cols-[2fr_1fr_0.5fr_230px] lg:grid-cols-[2fr_1fr_1fr] sm:flex sm:flex-col gap-4 items-center sm:items-start border border-white/10 rounded-lg p-[10px] bg-white/5"
+                                                            className="grid grid-cols-[2fr_1fr_0.5fr_230px] lg:grid-cols-[2fr_1fr_1fr] sm:flex sm:flex-col gap-[20px] items-center sm:items-start border border-white/10 rounded-lg p-[10px] bg-white/5"
                                                         >
-                                                            <div className="flex gap-4 items-center">
+                                                            <div className="flex gap-[20px] items-center">
                                                                 <img
                                                                     src={
                                                                         item

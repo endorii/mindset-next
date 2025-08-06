@@ -68,7 +68,10 @@ function AdminNavigation({ children }: { children: React.ReactNode }) {
                     </div>
                 </div>
             </div>
-            <div className="p-[20px] pt-[30px] sm:p-[10px] sm:pt-[30px] flex-1 overflow-y-auto">
+            <div
+                className="p-[20px] pt-[30px] sm:p-[10px] sm:pt-[30px] flex-1 overflow-y-auto"
+                onClick={() => setNavOpen(false)}
+            >
                 {children}
             </div>
         </div>

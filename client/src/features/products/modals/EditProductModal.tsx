@@ -454,7 +454,7 @@ export default function EditProductModal({
                             className="hidden"
                         />
 
-                        <div className="flex flex-wrap gap-3 mt-4">
+                        <div className="flex flex-wrap gap-[15px] mt-4">
                             {imagesPreview.map((src, i) => (
                                 <div
                                     key={i}

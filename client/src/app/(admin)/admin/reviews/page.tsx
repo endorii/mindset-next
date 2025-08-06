@@ -51,70 +51,124 @@ function Reviews() {
             />
 
             {reviews && reviews.length > 0 ? (
-                <div className="rounded-xl bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px]">
-                    <div className="grid grid-cols-[1fr_1fr_3fr_1fr_2fr_280px]  gap-[15px] p-4 rounded-t-lg font-semibold text-sm">
+                <div className="rounded-xl bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px] sm:px-[10px] pt-0">
+                    <div className="grid grid-cols-[1fr_1fr_2.5fr_1fr_2fr_280px] lg:grid-cols-[120px_1fr_2.5fr_1fr] xs:grid-cols-[120px_1fr] md:grid-cols-3 gap-[15px] p-[20px] sm:px-[10px] rounded-t-lg font-semibold text-sm">
                         <div>Ім'я</div>
-                        <div>Оцінка</div>
-                        <div>Відгук</div>
-                        <div>Статус</div>
-                        <div>Дата створення / оновлення</div>
-                        <div className="text-right">Дії</div>
+                        <div className=" xs:hidden">Оцінка</div>
+                        <div className="md:hidden">Відгук</div>
+                        <div className="xs:text-right">Статус</div>
+                        <div className="lg:hidden">
+                            Дата створення / оновлення
+                        </div>
+                        <div className="text-right lg:hidden">Дії</div>
                     </div>
                     <div className="border border-white/10 rounded-xl">
                         {reviews.map((review) => (
                             <div
                                 key={review.id}
-                                className="grid grid-cols-[1fr_1fr_3fr_1fr_2fr_280px] gap-[15px] p-4 border-b border-white/10 last:border-b-0 items-center"
+                                className="flex flex-col gap-[25px] p-[20px] border-b border-white/10 last:border-b-0 text-sm"
                             >
-                                <div>{review.senderName}</div>
-                                <div className="flex text-white-500 text-2xl mb-2">
-                                    {Array.from({ length: 5 }).map((_, i) => (
-                                        <span key={i}>
-                                            {i < Number(review.rating)
-                                                ? "★"
-                                                : ""}
-                                        </span>
-                                    ))}
-                                </div>
-                                <div>{review.content}</div>
-                                <div>
-                                    {review.isApproved
-                                        ? "Опубліковано"
-                                        : "Не опубліковано"}
-                                </div>
+                                <div className="grid grid-cols-[1fr_1fr_2.5fr_1fr_2fr_280px] lg:grid-cols-[120px_1fr_2.5fr_1fr] md:grid-cols-3 xs:grid-cols-[120px_1fr] gap-[15px]">
+                                    <div>{review.senderName}</div>
+                                    <div className="flex text-white-500 text-xl mb-2 xs:hidden">
+                                        {Array.from({ length: 5 }).map(
+                                            (_, i) => (
+                                                <span key={i}>
+                                                    {i < Number(review.rating)
+                                                        ? "★"
+                                                        : ""}
+                                                </span>
+                                            )
+                                        )}
+                                    </div>
+                                    <div className="md:hidden">
+                                        {review.content.length > 100
+                                            ? review.content.slice(0, 100) +
+                                              "..."
+                                            : review.content}
+                                    </div>
+                                    <div className="xs:text-right">
+                                        {review.isApproved
+                                            ? "Опубліковано"
+                                            : "Не опубліковано"}
+                                    </div>
 
-                                <div>
-                                    {formatDate(review.createdAt || "")} /{" "}
-                                    {formatDate(review.updatedAt || "")}
+                                    <div className="lg:hidden">
+                                        {formatDate(review.createdAt || "")} /{" "}
+                                        {formatDate(review.updatedAt || "")}
+                                    </div>
+                                    <div className="flex gap-[10px] justify-end lg:justify-start lg:hidden">
+                                        <ButtonWithIcon
+                                            onClick={() => {
+                                                openModal("reviewInfo", review);
+                                            }}
+                                        >
+                                            <InfoIcon className="w-[30px] lg:w-[25px] md:w-[20px] xs:w-[18px] fill-none stroke-white stroke-2 group-hover:stroke-black" />
+                                        </ButtonWithIcon>
+                                        <ButtonWithIcon
+                                            onClick={() => {
+                                                openModal(
+                                                    "reviewReply",
+                                                    review
+                                                );
+                                            }}
+                                        >
+                                            <ArrowIcon className="rotate-270 transform scale-x-[-1] w-[30px] lg:w-[25px] md:w-[20px] xs:w-[18px] stroke-white stroke-[2.5] group-hover:stroke-black fill-none" />
+                                        </ButtonWithIcon>
+                                        <ApproveButtonWithIcon
+                                            onClick={() => {
+                                                openModal(
+                                                    "reviewApprove",
+                                                    review
+                                                );
+                                            }}
+                                        >
+                                            <ApproveIcon className="w-[24px] lg:w-[25px] md:w-[20px] xs:w-[18px] fill-none stroke-white stroke-2 group-hover:stroke-white" />
+                                        </ApproveButtonWithIcon>
+                                        <DeleteButtonWithIcon
+                                            onClick={() => {
+                                                openModal(
+                                                    "reviewDelete",
+                                                    review
+                                                );
+                                            }}
+                                        >
+                                            <TrashIcon className="w-[30px] lg:w-[25px] md:w-[20px] xs:w-[18px] stroke-white stroke-[1.7] fill-none" />
+                                        </DeleteButtonWithIcon>
+                                    </div>
                                 </div>
-                                <div className="flex gap-[10px] justify-end">
+                                <div className="gap-[10px] hidden lg:flex w-full">
                                     <ButtonWithIcon
+                                        className="w-full"
                                         onClick={() => {
                                             openModal("reviewInfo", review);
                                         }}
                                     >
-                                        <InfoIcon className="w-[30px] fill-none stroke-white stroke-2 group-hover:stroke-black" />
+                                        <InfoIcon className="w-[30px] lg:w-[25px] md:w-[20px] xs:w-[18px] fill-none stroke-white stroke-2 group-hover:stroke-black" />
                                     </ButtonWithIcon>
                                     <ButtonWithIcon
+                                        className="w-full"
                                         onClick={() => {
                                             openModal("reviewReply", review);
                                         }}
                                     >
-                                        <ArrowIcon className="rotate-270 transform scale-x-[-1] w-[30px] stroke-white stroke-[2.5] group-hover:stroke-black fill-none" />
+                                        <ArrowIcon className="rotate-270 transform scale-x-[-1] w-[30px] lg:w-[25px] md:w-[20px] xs:w-[18px] stroke-white stroke-[2.5] group-hover:stroke-black fill-none" />
                                     </ButtonWithIcon>
                                     <ApproveButtonWithIcon
+                                        className="w-full flex items-center justify-center"
                                         onClick={() => {
                                             openModal("reviewApprove", review);
                                         }}
                                     >
-                                        <ApproveIcon className="w-[24px] fill-none stroke-white stroke-2 group-hover:stroke-white" />
+                                        <ApproveIcon className="w-[24px] lg:w-[25px] md:w-[20px] xs:w-[18px] fill-none stroke-white stroke-2 group-hover:stroke-white" />
                                     </ApproveButtonWithIcon>
                                     <DeleteButtonWithIcon
+                                        className="w-full flex items-center justify-center"
                                         onClick={() => {
                                             openModal("reviewDelete", review);
                                         }}
                                     >
-                                        <TrashIcon className="w-[30px] stroke-white stroke-[1.7] fill-none" />
+                                        <TrashIcon className="w-[30px] lg:w-[25px] md:w-[20px] xs:w-[18px] stroke-white stroke-[1.7] fill-none" />
                                     </DeleteButtonWithIcon>
                                 </div>
                             </div>
