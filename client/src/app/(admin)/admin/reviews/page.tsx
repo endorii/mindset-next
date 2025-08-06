@@ -52,7 +52,14 @@ function Reviews() {
 
             {reviews && reviews.length > 0 ? (
                 <div className="rounded-xl bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px] sm:px-[10px] pt-0">
-                    <div className="grid grid-cols-[1fr_1fr_2.5fr_1fr_2fr_280px] lg:grid-cols-[120px_1fr_2.5fr_1fr] xs:grid-cols-[120px_1fr] md:grid-cols-3 gap-[15px] p-[20px] sm:px-[10px] rounded-t-lg font-semibold text-sm">
+                    <div
+                        className="grid 
+                    grid-cols-[1fr_1fr_2.5fr_1fr_2fr_280px] 
+                    lg:grid-cols-[120px_1fr_2.5fr_1fr] 
+                    md:grid-cols-3 
+                    xs:grid-cols-2
+                    gap-[15px] p-[20px] sm:px-[10px] rounded-t-lg font-semibold text-sm"
+                    >
                         <div>Ім'я</div>
                         <div className=" xs:hidden">Оцінка</div>
                         <div className="md:hidden">Відгук</div>
@@ -68,7 +75,14 @@ function Reviews() {
                                 key={review.id}
                                 className="flex flex-col gap-[25px] p-[20px] border-b border-white/10 last:border-b-0 text-sm"
                             >
-                                <div className="grid grid-cols-[1fr_1fr_2.5fr_1fr_2fr_280px] lg:grid-cols-[120px_1fr_2.5fr_1fr] md:grid-cols-3 xs:grid-cols-[120px_1fr] gap-[15px]">
+                                <div
+                                    className="grid 
+                                grid-cols-[1fr_1fr_2.5fr_1fr_2fr_280px] 
+                                lg:grid-cols-[120px_1fr_2.5fr_1fr] 
+                                md:grid-cols-3 
+                                xs:grid-cols-2
+                                gap-[15px] items-center"
+                                >
                                     <div>{review.senderName}</div>
                                     <div className="flex text-white-500 text-xl mb-2 xs:hidden">
                                         {Array.from({ length: 5 }).map(

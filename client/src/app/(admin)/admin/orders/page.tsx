@@ -61,46 +61,86 @@ function Orders() {
 
             {orders && orders.length > 0 ? (
                 <div className="rounded-xl bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px] sm:px-[10px] pt-0">
-                    <div className="grid grid-cols-[1.5fr_1fr_1fr_1fr_1.5fr_230px] lg:grid-cols-[1.5fr_1fr_1fr_1.5fr_180px] md:grid-cols-[1.5fr_1fr_180px] xs:grid-cols-2 gap-[15px] p-[20px] sm:p-[10px] rounded-t-lg font-semibold text-sm">
+                    <div
+                        className="grid 
+                    grid-cols-[1.5fr_1fr_1fr_1fr_1.5fr_230px] 
+                    lg:grid-cols-4
+                    md:grid-cols-3
+                    xs:grid-cols-2 
+                    gap-[15px] p-[20px] sm:p-[10px] rounded-t-lg font-semibold text-sm"
+                    >
                         <div>Ім'я</div>
                         <div className="lg:hidden">Телефон</div>
                         <div className="xs:text-end">Статус</div>
                         <div className="text-center md:hidden">Сума, грн</div>
-                        <div className="md:hidden">
+                        <div className="xs:hidden">
                             Дата створення / оновлення
                         </div>
-                        <div className="text-right xs:hidden">Дії</div>
+                        <div className="text-right lg:hidden">Дії</div>
                     </div>
                     <div className="border border-white/10 rounded-xl">
                         {orders?.map((order) => (
                             <div
                                 key={order.id}
-                                className="grid grid-cols-[1.5fr_1fr_1fr_1fr_1.5fr_230px] lg:grid-cols-[1.5fr_1fr_1fr_1.5fr_180px] md:grid-cols-[1.5fr_1fr_180px] xs:grid-cols-2 gap-[15px] p-[20px] border-b border-white/10 last:border-b-0 items-center text-sm"
+                                className="flex flex-col gap-[25px] p-[20px] border-b border-white/10 last:border-b-0 text-sm"
                             >
-                                <div>{order.fullName}</div>
-                                <div className="lg:hidden">
-                                    {order.phoneNumber}
-                                </div>
-                                <div className="xs:text-end">
-                                    {
+                                <div
+                                    className="grid 
+                                grid-cols-[1.5fr_1fr_1fr_1fr_1.5fr_230px] 
+                                lg:grid-cols-4 
+                                md:grid-cols-3 
+                                xs:grid-cols-2 
+                                gap-[15px] items-center"
+                                >
+                                    <div>{order.fullName}</div>
+                                    <div className="lg:hidden">
+                                        {order.phoneNumber}
+                                    </div>
+                                    <div className="xs:text-end">
                                         {
-                                            pending: "Обробляється",
-                                            paid: "Оплачено",
-                                            shipped: "Відправлено",
-                                            delivered: "Доставлено",
-                                            cancelled: "Відмінено",
-                                        }[order.status]
-                                    }
+                                            {
+                                                pending: "Обробляється",
+                                                paid: "Оплачено",
+                                                shipped: "Відправлено",
+                                                delivered: "Доставлено",
+                                                cancelled: "Відмінено",
+                                            }[order.status]
+                                        }
+                                    </div>
+                                    <div className="text-center md:hidden">
+                                        {order.total.toLocaleString()}
+                                    </div>
+                                    <div className="xs:hidden">
+                                        {formatDate(order.createdAt || "")} /{" "}
+                                        {formatDate(order.updatedAt || "")}
+                                    </div>
+                                    <div className="flex gap-[10px] md:gap-[5px] justify-end lg:hidden">
+                                        <ButtonWithIcon
+                                            onClick={() => {
+                                                openModal("infoOrder", order);
+                                            }}
+                                        >
+                                            <InfoIcon className="w-[30px] lg:w-[25px] md:w-[20px] xs:w-[18px] fill-none stroke-white stroke-2 group-hover:stroke-black" />
+                                        </ButtonWithIcon>
+                                        <ButtonWithIcon
+                                            onClick={() => {
+                                                openModal("editOrder", order);
+                                            }}
+                                        >
+                                            <EditIcon className="w-[26px] lg:w-[25px] md:w-[20px] xs:w-[18px] stroke-white stroke-2 group-hover:stroke-black fill-none" />
+                                        </ButtonWithIcon>
+                                        <DeleteButtonWithIcon
+                                            onClick={() => {
+                                                openModal("deleteOrder", order);
+                                            }}
+                                        >
+                                            <TrashIcon className="w-[30px] lg:w-[25px] md:w-[20px] xs:w-[18px] stroke-white stroke-[1.7] fill-none" />
+                                        </DeleteButtonWithIcon>
+                                    </div>
                                 </div>
-                                <div className="text-center md:hidden">
-                                    {order.total.toLocaleString()}
-                                </div>
-                                <div className="md:hidden">
-                                    {formatDate(order.createdAt || "")} /{" "}
-                                    {formatDate(order.updatedAt || "")}
-                                </div>
-                                <div className="flex gap-[10px] md:gap-[5px] justify-end xs:justify-start">
+                                <div className="gap-[10px] hidden lg:flex w-full">
                                     <ButtonWithIcon
+                                        className="w-full"
                                         onClick={() => {
                                             openModal("infoOrder", order);
                                         }}
@@ -108,6 +148,7 @@ function Orders() {
                                         <InfoIcon className="w-[30px] lg:w-[25px] md:w-[20px] xs:w-[18px] fill-none stroke-white stroke-2 group-hover:stroke-black" />
                                     </ButtonWithIcon>
                                     <ButtonWithIcon
+                                        className="w-full"
                                         onClick={() => {
                                             openModal("editOrder", order);
                                         }}
@@ -115,6 +156,7 @@ function Orders() {
                                         <EditIcon className="w-[26px] lg:w-[25px] md:w-[20px] xs:w-[18px] stroke-white stroke-2 group-hover:stroke-black fill-none" />
                                     </ButtonWithIcon>
                                     <DeleteButtonWithIcon
+                                        className="w-full flex justify-center"
                                         onClick={() => {
                                             openModal("deleteOrder", order);
                                         }}

@@ -99,48 +99,98 @@ function AdminCategoriesInCollection() {
 
             {categories.length > 0 ? (
                 <div className="rounded-xl bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px] sm:px-[10px] pt-0">
-                    <div className="grid grid-cols-[120px_0.5fr_0.5fr_0.5fr_0.6fr_1fr] xl:grid-cols-[120px_0.5fr_0.5fr_0.4fr_1fr] lg:grid-cols-[1fr_0.5fr_1fr_2fr] sm:grid-cols-[2fr_0.5fr] xs:grid-cols-1 gap-[15px] p-[20px] sm:p-[10px] rounded-t-lg font-semibold text-sm">
-                        <div className="hidden xs:block">Категорії</div>
-                        <div className="xs:hidden">Банер</div>
-                        <div className="xs:hidden">Назва</div>
+                    <div
+                        className="grid 
+                    grid-cols-[120px_0.5fr_0.5fr_0.5fr_0.6fr_1fr] 
+                    xl:grid-cols-[120px_0.5fr_0.5fr_0.4fr_1fr] 
+                    lg:grid-cols-4
+                    sm:grid-cols-3 
+                    xs:grid-cols-2 
+                    gap-[15px] p-[20px] sm:p-[10px] rounded-t-lg font-semibold text-sm"
+                    >
+                        <div>Банер</div>
+                        <div>Назва</div>
                         <div className="sm:hidden">Статус</div>
                         <div className="xl:hidden">Додано/оновлено</div>
-                        <div className="lg:hidden text-center">Посилання</div>
-                        <div className="text-right sm:hidden">Дії</div>
+                        <div className="xs:hidden text-center">Посилання</div>
+                        <div className="text-right lg:hidden">Дії</div>
                     </div>
                     <div className="border border-white/10 rounded-xl">
                         {categories.map((category) => (
                             <div
                                 key={category.id}
-                                className="grid grid-cols-[120px_0.5fr_0.5fr_0.5fr_0.6fr_1fr] xl:grid-cols-[120px_0.5fr_0.5fr_0.4fr_1fr] lg:grid-cols-[1fr_0.5fr_1fr_2fr] sm:grid-cols-[2fr_0.5fr] xs:grid-cols-1 gap-[15px] p-[20px] sm:p-[10px] border-b border-white/10 last:border-b-0 items-center text-sm"
+                                className="flex flex-col gap-[25px] p-[20px] border-b border-white/10 last:border-b-0 text-sm"
                             >
-                                <img
-                                    src={`http://localhost:5000/${category.banner}`}
-                                    className="max-h-[120px] w-full object-cover rounded"
-                                    alt={`Банер категорії ${category.name}`}
-                                />
-                                <div>{category.name}</div>
-                                <div className="sm:hidden">
-                                    {category.status}
-                                </div>
-                                <div className="xl:hidden">
-                                    {formatDate(category.createdAt || "")} /{" "}
-                                    {formatDate(category.updatedAt || "")}
-                                </div>
-                                <Link
-                                    href={`/${collectionPath}/${category.path}`}
-                                    className="text-blue-500 hover:text-white hover:underline lg:hidden text-center"
+                                <div
+                                    className="grid 
+                                grid-cols-[120px_0.5fr_0.5fr_0.5fr_0.6fr_1fr] 
+                                xl:grid-cols-[120px_0.5fr_0.5fr_0.4fr_1fr] 
+                                lg:grid-cols-4
+                                sm:grid-cols-3 
+                                xs:grid-cols-2 
+                                gap-[15px] items-center"
                                 >
-                                    Категорія
-                                </Link>
-                                <div className="flex gap-[10px] justify-end sm:justify-start">
+                                    <img
+                                        src={`http://localhost:5000/${category.banner}`}
+                                        className="max-h-[120px] w-full object-cover rounded"
+                                        alt={`Банер категорії ${category.name}`}
+                                    />
+                                    <div>{category.name}</div>
+                                    <div className="sm:hidden">
+                                        {category.status}
+                                    </div>
+                                    <div className="xl:hidden">
+                                        {formatDate(category.createdAt || "")} /{" "}
+                                        {formatDate(category.updatedAt || "")}
+                                    </div>
+                                    <Link
+                                        href={`/${collectionPath}/${category.path}`}
+                                        className="text-blue-500 hover:text-white hover:underline xs:hidden text-center"
+                                    >
+                                        Категорія
+                                    </Link>
+                                    <div className="flex gap-[10px] justify-end sm:justify-start lg:hidden">
+                                        <LinkWithIcon
+                                            href={`/admin/collections/${collectionPath}/${category.path}`}
+                                            counter={
+                                                category.products?.length || 0
+                                            }
+                                        >
+                                            <ProductsIcon className="w-[30px] lg:w-[25px] md:w-[20px] xs:w-[18px] stroke-none fill-white group-hover:fill-black" />
+                                        </LinkWithIcon>
+                                        <ButtonWithIcon
+                                            onClick={() =>
+                                                openModal("info", category)
+                                            }
+                                        >
+                                            <InfoIcon className="w-[30px] lg:w-[25px] md:w-[20px] xs:w-[18px] fill-none stroke-white stroke-2 group-hover:stroke-black" />
+                                        </ButtonWithIcon>
+                                        <ButtonWithIcon
+                                            onClick={() =>
+                                                openModal("edit", category)
+                                            }
+                                        >
+                                            <EditIcon className="w-[26px] lg:w-[25px] md:w-[20px] xs:w-[18px] stroke-white stroke-2 group-hover:stroke-black fill-none" />
+                                        </ButtonWithIcon>
+                                        <DeleteButtonWithIcon
+                                            onClick={() =>
+                                                openModal("delete", category)
+                                            }
+                                        >
+                                            <TrashIcon className="w-[30px] lg:w-[25px] md:w-[20px] xs:w-[18px] stroke-white stroke-[1.7] fill-none" />
+                                        </DeleteButtonWithIcon>
+                                    </div>
+                                </div>
+                                <div className="gap-[10px] hidden lg:flex w-full">
                                     <LinkWithIcon
+                                        className="w-full flex justify-center"
                                         href={`/admin/collections/${collectionPath}/${category.path}`}
                                         counter={category.products?.length || 0}
                                     >
                                         <ProductsIcon className="w-[30px] lg:w-[25px] md:w-[20px] xs:w-[18px] stroke-none fill-white group-hover:fill-black" />
                                     </LinkWithIcon>
                                     <ButtonWithIcon
+                                        className="w-full "
                                         onClick={() =>
                                             openModal("info", category)
                                         }
@@ -148,6 +198,7 @@ function AdminCategoriesInCollection() {
                                         <InfoIcon className="w-[30px] lg:w-[25px] md:w-[20px] xs:w-[18px] fill-none stroke-white stroke-2 group-hover:stroke-black" />
                                     </ButtonWithIcon>
                                     <ButtonWithIcon
+                                        className="w-full "
                                         onClick={() =>
                                             openModal("edit", category)
                                         }
@@ -155,6 +206,7 @@ function AdminCategoriesInCollection() {
                                         <EditIcon className="w-[26px] lg:w-[25px] md:w-[20px] xs:w-[18px] stroke-white stroke-2 group-hover:stroke-black fill-none" />
                                     </ButtonWithIcon>
                                     <DeleteButtonWithIcon
+                                        className="w-full flex justify-center"
                                         onClick={() =>
                                             openModal("delete", category)
                                         }

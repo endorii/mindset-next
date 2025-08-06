@@ -3,17 +3,17 @@ import { formatDate } from "../utils/formatDate";
 
 function AdminRecentActions({ actions }: { actions: IRecentActions[] }) {
     return (
-        <div className="flex flex-col gap-[15px] rounded-xl bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px] w-2/3 lg:w-full">
-            <div className="flex gap-[15px] items-center">
-                <h2 className="text-lg font-semibold">Останні дії</h2>
-                <div className="text-gray-600 text-sm mt-[3px]">
+        <div className="flex flex-col gap-[15px] rounded-xl bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px] w-full">
+            <div className="flex gap-[15px] items-center justify-between">
+                <div className="text-lg font-semibold w-[75%]">Останні дії</div>
+                <div className="text-gray-500 text-sm mt-[3px] sm:text-xs sm:max-w-[200px]">
                     (Останні дії очищуються автоматично, якщо період вище 30-ти
                     днів)
                 </div>
             </div>
 
             {actions.length > 0 ? (
-                <div className="flex flex-col gap-[7px] max-h-[470px] overflow-y-auto">
+                <div className="flex flex-col gap-[7px] max-h-[470px] overflow-y-auto sm:text-sm">
                     {actions.map((action) => (
                         <div
                             key={action.id}
@@ -27,7 +27,7 @@ function AdminRecentActions({ actions }: { actions: IRecentActions[] }) {
                                     : "border-blue-500"
                             } pl-4 py-2 text-gray-100`}
                         >
-                            <div className="opacity-70 text-sm">
+                            <div className="opacity-70 text-sm sm:text-xs">
                                 {formatDate(action.createdAt)}
                             </div>
                             <div>{action.action}</div>

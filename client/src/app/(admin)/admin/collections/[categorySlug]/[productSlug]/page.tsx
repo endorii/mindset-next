@@ -90,42 +90,83 @@ function AdminProductsInCategory() {
 
             {products.length > 0 ? (
                 <div className="rounded-xl bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px] sm:px-[10px] pt-0">
-                    <div className="grid grid-cols-[120px_0.5fr_0.5fr_0.4fr_1fr_0.5fr] xl:grid-cols-[120px_0.5fr_0.5fr_0.4fr_1fr] lg:grid-cols-[1fr_1fr_1fr_1fr] sm:grid-cols-[2fr_0.5fr] xs:grid-cols-1 gap-[15px] p-[20px] sm:p-[10px] rounded-t-lg font-semibold text-sm">
-                        <div className="hidden xs:block">Товари</div>
-                        <div className="xs:hidden">Банер</div>
-                        <div className="xs:hidden">Назва</div>
+                    <div
+                        className="grid 
+                    grid-cols-[120px_0.5fr_0.5fr_0.4fr_1fr_0.5fr] 
+                    xl:grid-cols-[120px_0.5fr_0.5fr_0.4fr_1fr] 
+                    lg:grid-cols-4 
+                    sm:grid-cols-3 
+                    xs:grid-cols-2 
+                    gap-[15px] p-[20px] sm:p-[10px] rounded-t-lg font-semibold text-sm"
+                    >
+                        <div>Банер</div>
+                        <div>Назва</div>
                         <div className="sm:hidden">Статус</div>
                         <div className="xl:hidden">Додано/оновлено</div>
-                        <div className="lg:hidden text-center">Посилання</div>
-                        <div className="text-right sm:hidden">Дії</div>
+                        <div className="xs:hidden text-center">Посилання</div>
+                        <div className="text-right lg:hidden">Дії</div>
                     </div>
                     <div className="border border-white/10 rounded-xl">
                         {products.map((product) => (
                             <div
                                 key={product.id}
-                                className="grid grid-cols-[120px_0.5fr_0.5fr_0.4fr_1fr_0.5fr] xl:grid-cols-[120px_0.5fr_0.5fr_0.4fr_1fr] lg:grid-cols-[1fr_1fr_1fr_1fr] sm:grid-cols-[2fr_0.5fr] xs:grid-cols-1 gap-[15px] p-[20px] sm:p-[10px] border-b border-white/10 last:border-b-0 items-center text-sm"
+                                className="flex flex-col gap-[25px] p-[20px] border-b border-white/10 last:border-b-0 text-sm"
                             >
-                                <img
-                                    src={`http://localhost:5000/${product.banner}`}
-                                    className="max-h-[120px] w-full object-cover rounded"
-                                    alt="banner"
-                                />
-                                <div>{product.name}</div>
-                                <div className="sm:hidden">
-                                    {product.status}
-                                </div>
-                                <div className="xl:hidden">
-                                    {formatDate(product.createdAt)} /{" "}
-                                    {formatDate(product.updatedAt)}
-                                </div>
-                                <Link
-                                    href={`/${collectionPath}/${categoryPath}/${product.path}`}
-                                    className="text-blue-500 hover:text-white hover:underline lg:hidden text-center"
+                                <div
+                                    className="grid 
+                                grid-cols-[120px_0.5fr_0.5fr_0.4fr_1fr_0.5fr] 
+                                xl:grid-cols-[120px_0.5fr_0.5fr_0.4fr_1fr] 
+                                lg:grid-cols-4 
+                                sm:grid-cols-3 
+                                xs:grid-cols-2
+                                gap-[15px] items-center"
                                 >
-                                    Товар
-                                </Link>
-                                <div className="flex gap-[10px] justify-end sm:justify-start">
+                                    <img
+                                        src={`http://localhost:5000/${product.banner}`}
+                                        className="max-h-[120px] w-full object-cover rounded"
+                                        alt="banner"
+                                    />
+                                    <div>{product.name}</div>
+                                    <div className="sm:hidden">
+                                        {product.status}
+                                    </div>
+                                    <div className="xl:hidden">
+                                        {formatDate(product.createdAt)} /{" "}
+                                        {formatDate(product.updatedAt)}
+                                    </div>
+                                    <Link
+                                        href={`/${collectionPath}/${categoryPath}/${product.path}`}
+                                        className="text-blue-500 hover:text-white hover:underline xs:hidden text-center"
+                                    >
+                                        Товар
+                                    </Link>
+                                    <div className="flex gap-[10px] justify-end lg:justify-start lg:hidden">
+                                        <ButtonWithIcon
+                                            onClick={() =>
+                                                openModal("info", product)
+                                            }
+                                        >
+                                            <InfoIcon className="w-[30px] lg:w-[25px] md:w-[20px] xs:w-[18px] fill-none stroke-white stroke-2 group-hover:stroke-black" />
+                                        </ButtonWithIcon>
+                                        <ButtonWithIcon
+                                            onClick={() =>
+                                                openModal("edit", product)
+                                            }
+                                        >
+                                            <EditIcon className="w-[26px] lg:w-[25px] md:w-[20px] xs:w-[18px] stroke-white stroke-2 group-hover:stroke-black fill-none" />
+                                        </ButtonWithIcon>
+                                        <DeleteButtonWithIcon
+                                            onClick={() =>
+                                                openModal("delete", product)
+                                            }
+                                        >
+                                            <TrashIcon className="w-[30px] lg:w-[25px] md:w-[20px] xs:w-[18px] stroke-white stroke-[1.7] fill-none" />
+                                        </DeleteButtonWithIcon>
+                                    </div>
+                                </div>
+                                <div className="gap-[10px] hidden lg:flex w-full">
                                     <ButtonWithIcon
+                                        className="w-full"
                                         onClick={() =>
                                             openModal("info", product)
                                         }
@@ -133,6 +174,7 @@ function AdminProductsInCategory() {
                                         <InfoIcon className="w-[30px] lg:w-[25px] md:w-[20px] xs:w-[18px] fill-none stroke-white stroke-2 group-hover:stroke-black" />
                                     </ButtonWithIcon>
                                     <ButtonWithIcon
+                                        className="w-full"
                                         onClick={() =>
                                             openModal("edit", product)
                                         }
@@ -140,6 +182,7 @@ function AdminProductsInCategory() {
                                         <EditIcon className="w-[26px] lg:w-[25px] md:w-[20px] xs:w-[18px] stroke-white stroke-2 group-hover:stroke-black fill-none" />
                                     </ButtonWithIcon>
                                     <DeleteButtonWithIcon
+                                        className="w-full flex justify-center"
                                         onClick={() =>
                                             openModal("delete", product)
                                         }

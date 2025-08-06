@@ -9,7 +9,7 @@ import {
     DeleteButtonWithIcon,
     MonoButton,
 } from "@/shared/ui/buttons";
-import { PlusIcon, EditIcon, TrashIcon, PaletteIcon } from "@/shared/icons";
+import { EditIcon, TrashIcon, PaletteIcon } from "@/shared/icons";
 import { useColors } from "@/features/admin/attributes/product-colors/hooks/useColors";
 import { useState } from "react";
 import TitleWithAddElementButton from "../../components/TitleWithAddElementButton";
@@ -36,7 +36,13 @@ export const ColorSection = () => {
 
             {colors && (colors ?? []).length > 0 ? (
                 <div className="rounded-xl bg-white/5 shadow-lg border border-white/5 p-[20px] sm:px-[10px] pt-0">
-                    <div className="grid grid-cols-4 md:grid-cols-3 xs:grid-cols-2 gap-[15px] p-[20px] font-semibold text-sm">
+                    <div
+                        className="grid 
+                    grid-cols-4 
+                    md:grid-cols-3 
+                    xs:grid-cols-2 
+                    gap-[15px] p-[20px] font-semibold text-sm"
+                    >
                         <div className="xs:hidden">Колір</div>
                         <div>Назва</div>
                         <div className="md:hidden">Код</div>
@@ -46,7 +52,11 @@ export const ColorSection = () => {
                         {colors.map((color) => (
                             <div
                                 key={color.id}
-                                className="grid grid-cols-4 md:grid-cols-3 xs:grid-cols-2 gap-[15px] p-[20px] border-b border-white/10 items-center text-sm"
+                                className="grid 
+                                grid-cols-4 
+                                md:grid-cols-3 
+                                xs:grid-cols-2 
+                                gap-[15px] p-[20px] border-b border-white/10 items-center text-sm"
                             >
                                 <div className="border border-white/10 rounded w-[52px] h-[52px] xs:hidden">
                                     <div
