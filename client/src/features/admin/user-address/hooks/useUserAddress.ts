@@ -9,7 +9,7 @@ export function useCreateUserAddress() {
         mutationFn: (data: IUserShippingAdress) => createUserAddress(data),
         onSuccess: () => {
             queryClient.invalidateQueries({
-                queryKey: ["user-address"],
+                queryKey: ["currentUser"],
             });
         },
     });
@@ -27,7 +27,7 @@ export function useEditUserAddress() {
             data: Partial<IUserShippingAdress>;
         }) => editUserAddress(userId, data),
         onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ["user-address"] });
+            queryClient.invalidateQueries({ queryKey: ["currentUser"] });
         },
     });
 }

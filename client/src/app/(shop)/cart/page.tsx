@@ -22,7 +22,7 @@ import Image from "next/image";
 import { useState, useEffect } from "react";
 
 function Cart() {
-    const { data: user, isLoading } = useCurrentUser();
+    const { data: user, isPending } = useCurrentUser();
     const { data: userCart } = useCartItemsFromUser(user?.id || "");
 
     const [localCart, setLocalCart] = useState<ICartItem[]>([]);
@@ -170,14 +170,14 @@ function Cart() {
     };
 
     useEffect(() => {
-        if (!user && !isLoading) {
+        if (!user && !isPending) {
             const localCartData = getLocalCart();
             setLocalCart(localCartData);
             setIsLocalCartLoaded(true);
         } else if (user) {
             setIsLocalCartLoaded(true);
         }
-    }, [user, isLoading]);
+    }, [user, isPending]);
 
     useEffect(() => {
         if (cartToShow.length > 0) {
@@ -193,7 +193,7 @@ function Cart() {
         }
     }, [cartToShow, user]);
 
-    if (isLoading || !isLocalCartLoaded) {
+    if (isPending || !isLocalCartLoaded) {
         return <p>Завантаження кошика...</p>;
     }
 

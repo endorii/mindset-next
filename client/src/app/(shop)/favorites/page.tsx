@@ -20,7 +20,7 @@ import Image from "next/image";
 import { useState, useEffect } from "react";
 
 export const Favorites = () => {
-    const { data: user, isLoading, error } = useCurrentUser();
+    const { data: user, isPending, error } = useCurrentUser();
     const { data: userFavorites } = useFavoritesFromUser(user?.id ?? "");
 
     const [localFavorites, setLocalFavorites] = useState<ILocalFavoriteItem[]>(
@@ -60,7 +60,7 @@ export const Favorites = () => {
         ? userFavorites ?? []
         : localFavorites;
 
-    if (isLoading) {
+    if (isPending) {
         return <p>Завантаження улюбленого...</p>;
     }
 

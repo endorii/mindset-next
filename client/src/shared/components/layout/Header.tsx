@@ -11,24 +11,21 @@ import { useState, useEffect } from "react";
 import HeaderBurger from "./HeaderBurger";
 
 const Header = () => {
-    const { data: user } = useCurrentUser();
+    const { data: user, isPending: isUserPending } = useCurrentUser();
     const { data: userFavorites } = useFavoritesFromUser(user?.id ?? "");
     const { data: userCart } = useCartItemsFromUser(user?.id ?? "");
 
     const [localCart, setLocalCart] = useState<any[]>([]);
     const [localFavorites, setLocalFavorites] = useState<any[]>([]);
-    const [isMounted, setIsMounted] = useState(false);
 
     const [showTitle, setShowTitle] = useState(false);
 
-    useEffect(() => {
-        setIsMounted(true);
+    const pathname = usePathname();
 
+    useEffect(() => {
         setLocalCart(getLocalStorageArray("cart"));
         setLocalFavorites(getLocalStorageArray("favorites"));
     }, []);
-
-    const pathname = usePathname();
 
     useEffect(() => {
         const handleScroll = () => {
@@ -51,10 +48,6 @@ const Header = () => {
 
     const cart = !!userCart ? userCart : localCart;
     const favorites = !!userFavorites ? userFavorites : localFavorites;
-
-    if (!isMounted) {
-        return null;
-    }
 
     return (
         <header className="fixed py-[10px] px-[30px] sm:px-[10px] sm:p-[10px] flex justify-between items-center w-full bg-black/70 backdrop-blur-xl text-white z-[100] shadow-custom">
@@ -101,15 +94,22 @@ const Header = () => {
                         {user ? (
                             <Link
                                 href="/account"
-                                className="flex  gap-[10px] rounded-xl bg-white/5 shadow-lg px-[20px] py-[13px] backdrop-blur-2xl border border-white/5 hover:bg-white/15 transition-all duration-300"
+                                className="flex items-center gap-[10px] rounded-xl bg-white/5 shadow-lg px-[20px] py-[13px] backdrop-blur-2xl border border-white/5 hover:bg-white/15 transition-all duration-300"
                             >
                                 <AccountIcon className="w-[25px] fill-white" />
                                 <div>{user.name}</div>
                             </Link>
+                        ) : isUserPending ? (
+                            <div className="flex items-center gap-[10px] rounded-xl bg-white/5 shadow-lg px-[20px] py-[13px] backdrop-blur-xl border border-white/5 hover:bg-white/15 transition-all duration-300">
+                                <AccountIcon className="w-[25px] fill-white" />
+                                <div className="w-[80px] animate-pulse">
+                                    <div className="h-[15px] w-full bg-white/10 rounded" />
+                                </div>
+                            </div>
                         ) : (
                             <Link
                                 href="/auth"
-                                className="flex gap-[10px] rounded-xl bg-white/5 shadow-lg px-[20px] py-[13px] backdrop-blur-xl border border-white/5 hover:bg-white/15 transition-all duration-300"
+                                className="flex items-center gap-[10px] rounded-xl bg-white/5 shadow-lg px-[20px] py-[13px] backdrop-blur-xl border border-white/5 hover:bg-white/15 transition-all duration-300"
                             >
                                 <AccountIcon className="w-[25px] fill-white" />
                                 <div>Увійти</div>

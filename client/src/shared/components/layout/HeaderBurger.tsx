@@ -38,7 +38,7 @@ const sections = [
 ];
 
 const HeaderBurger = () => {
-    const { data: collections, isError, error, isLoading } = useCollections();
+    const { data: collections, isError, error, isPending } = useCollections();
     const [isOpen, setIsOpen] = useState(false);
 
     const handleClose = () => setIsOpen(false);
@@ -73,7 +73,7 @@ const HeaderBurger = () => {
                 <div className="flex flex-col w-[53%] xl:w-[70%] lg:w-full p-[30px] gap-[70px] overflow-y-auto mt-[50px]">
                     {collections &&
                         collections.length > 0 &&
-                        !isLoading &&
+                        !isPending &&
                         !isError && (
                             <MenuSection
                                 title="Наші колекції"

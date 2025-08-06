@@ -20,7 +20,7 @@ import { formatDate } from "@/shared/utils/formatDate";
 import { useState } from "react";
 
 function Reviews() {
-    const { data: reviews, isLoading, isError } = useReviews();
+    const { data: reviews, isPending, isError } = useReviews();
 
     const sortFilters = ["Спочатку новіші", "Спочатку старіші"];
 

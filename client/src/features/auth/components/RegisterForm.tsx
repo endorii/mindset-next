@@ -13,7 +13,7 @@ type RegisterFormInputs = CreateUserDto & {
 };
 
 function RegisterForm() {
-    const { register: registerUser, isLoading } = useAuth();
+    const { register: registerUser, isPending } = useAuth();
 
     const [registerMessage, setRegisterMessage] = useState<string | null>(null);
     const [registerIsSuccess, setRegisterIsSuccess] = useState(false);
@@ -168,8 +168,8 @@ function RegisterForm() {
                         {registerMessage}
                     </p>
                 )}
-                <MonoButton type="submit" disabled={isLoading}>
-                    {isLoading ? "Завантаження..." : "Зареєструватися"}
+                <MonoButton type="submit" disabled={isPending}>
+                    {isPending ? "Завантаження..." : "Зареєструватися"}
                 </MonoButton>
             </form>
         </LoginComponentsWrapper>

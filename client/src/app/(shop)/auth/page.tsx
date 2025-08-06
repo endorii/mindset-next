@@ -9,7 +9,7 @@ const Login = () => {
     const router = useRouter();
     const {
         data: currentUser,
-        isLoading: isUserLoading,
+        isPending: isUserLoading,
         isError: isUserError,
     } = useCurrentUser();
 

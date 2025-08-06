@@ -64,31 +64,11 @@ function AccountNavigation({ children }: { children: React.ReactNode }) {
                 />
             </button>
             <div
-                // style={{ maxHeight: "calc(100vh - 145px)" }}
                 className={`md:fixed md:top-[125px] overflow-y-auto max-h-screen-minus-header w-full max-w-[300px] ${
                     isOpen ? "left-[10px]" : "left-[-350px]"
                 } flex flex-col justify-between gap-[100px] md:gap-[15px] rounded-xl bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px] z-1 transition-all duration-600 ease-in-out`}
             >
                 <div className="flex gap-[30px] flex-col">
-                    <div className="flex gap-[30px] items-center">
-                        <img
-                            src="./images/user.png"
-                            alt="user image"
-                            className="w-[100px] lg:w-[70px] rounded-full border-2 border-white/5"
-                        />
-                        <div className="flex flex-col gap-[2px]">
-                            <div className="text-2xl font-thin">
-                                {user?.name}
-                            </div>
-                            <div className="text-white/40 text-xs font-light">
-                                {user?.phone}
-                            </div>
-                            <div className="text-white/40 text-xs font-light">
-                                {user?.email}
-                            </div>
-                        </div>
-                    </div>
-                    <hr className="border-t border-white/10" />
                     <div className={`flex flex-col gap-[13px]`}>
                         {links.map(({ href, Icon, text, className }) => (
                             <NavigationLink

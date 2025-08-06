@@ -11,11 +11,11 @@ interface ReviewsOnProductPageProps {
 function ReviewsOnProductPage({ product }: ReviewsOnProductPageProps) {
     const {
         data: reviews,
-        isLoading,
+        isPending,
         isError,
     } = useReviewByProductId(product.id);
 
-    if (isLoading) return <div>Завантаження відгуків...</div>;
+    if (isPending) return <div>Завантаження відгуків...</div>;
     if (isError) return <div>Помилка при завантаженні відгуків</div>;
     if (!reviews) return <div>Немає відгуків</div>;
 

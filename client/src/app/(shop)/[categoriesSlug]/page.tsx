@@ -11,14 +11,14 @@ export default function Collection() {
     const {
         data: collection,
         isError,
-        isLoading,
+        isPending,
     } = useCollection(collectionPath);
 
     const categories = collection?.categories || [];
 
     return (
         <div className="flex flex-col gap-[50px] mt-[30px]">
-            {categories.length > 0 && !isError && !isLoading ? (
+            {categories.length > 0 && !isError && !isPending ? (
                 <CollectionList
                     title={`Категорії ${collectionPath}`}
                     subtitle={`Categories ${collectionPath}`}

@@ -8,7 +8,7 @@ import { useAuth } from "../hooks/useAuth";
 import { ILoginCredentials } from "../types/auth.types";
 
 function LoginForm() {
-    const { login, isLoading } = useAuth();
+    const { login, isPending } = useAuth();
 
     const [loginMessage, setLoginMessage] = useState<string | null>(null);
 
@@ -66,8 +66,8 @@ function LoginForm() {
                     <p className="text-red-500 text-sm">{loginMessage}</p>
                 )}
 
-                <MonoButton type="submit" disabled={isLoading}>
-                    {isLoading ? "Завантаження..." : "Увійти"}
+                <MonoButton type="submit" disabled={isPending}>
+                    {isPending ? "Завантаження..." : "Увійти"}
                 </MonoButton>
             </form>
         </LoginComponentsWrapper>

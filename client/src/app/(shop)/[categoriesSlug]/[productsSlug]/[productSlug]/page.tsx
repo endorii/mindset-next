@@ -37,7 +37,7 @@ export default function ProductPage() {
         .filter(Boolean);
 
     const { data: user } = useCurrentUser();
-    const { data: product, isLoading } = useProduct(
+    const { data: product, isPending } = useProduct(
         collectionPath,
         categoryPath,
         productPath
@@ -173,10 +173,10 @@ export default function ProductPage() {
         }
     };
 
-    if (isLoading || !product) {
+    if (isPending || !product) {
         return (
             <div className="pt-[130px] text-center text-[50px]">
-                {isLoading ? "Завантаження..." : "Товар не знайдено 😞"}
+                {isPending ? "Завантаження..." : "Товар не знайдено 😞"}
             </div>
         );
     }

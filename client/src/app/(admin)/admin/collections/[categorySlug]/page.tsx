@@ -45,7 +45,7 @@ function AdminCategoriesInCollection() {
         data: collection,
         isError,
         error,
-        isLoading,
+        isPending,
     } = useCollection(collectionPath);
 
     const [activeModal, setActiveModal] = useState<ModalType>(null);
@@ -63,7 +63,7 @@ function AdminCategoriesInCollection() {
         setActiveModal(null);
     };
 
-    if (isLoading) return <div className="text-center">Завантаження...</div>;
+    if (isPending) return <div className="text-center">Завантаження...</div>;
     if (isError)
         return (
             <div className="text-center text-red-500">

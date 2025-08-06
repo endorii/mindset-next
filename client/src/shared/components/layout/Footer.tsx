@@ -17,7 +17,7 @@ import FooterNavList from "../FooterNavList";
 import FooterNavListItem from "../FooterNavListItem";
 
 const Footer = () => {
-    const { data: collections, isError, error, isLoading } = useCollections();
+    const { data: collections, isError, error, isPending } = useCollections();
 
     const pathname = usePathname();
     const collectionPath = pathname.split("/").filter(Boolean)[0] || null;
@@ -50,7 +50,7 @@ const Footer = () => {
                     </div>
                 </div>
                 <div className="w-full grid grid-cols-4 md:grid-cols-3 sm:grid-cols-2 xxs:grid-cols-1 gap-[150px] 2xl:gap-[100px] xl:gap-[70px] lg:gap-[50px] md:gap-[30px]">
-                    {collections && !isLoading && !isError && (
+                    {collections && !isPending && !isError && (
                         <FooterNavList title="Колекції">
                             {collections.map((collection) => (
                                 <FooterNavListItem

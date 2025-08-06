@@ -31,7 +31,7 @@ interface FormData {
 }
 
 function Checkout() {
-    const { data: user, isLoading } = useCurrentUser();
+    const { data: user, isPending } = useCurrentUser();
 
     const { data } = useCartItemsFromUser(user?.id || "");
 
@@ -177,7 +177,7 @@ function Checkout() {
         }
     };
 
-    if (isLoading) return <p>Завантаження ...</p>;
+    if (isPending) return <p>Завантаження ...</p>;
     if (!user) return <p>Не авторизовано</p>;
 
     return (

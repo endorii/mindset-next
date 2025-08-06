@@ -14,7 +14,7 @@
 
 @layer utilities {
   .max-h-screen-minus-header {
-    max-height: calc(100vh - 135px);
+    max-height: calc(100vh - 105px);
   }
 }
 

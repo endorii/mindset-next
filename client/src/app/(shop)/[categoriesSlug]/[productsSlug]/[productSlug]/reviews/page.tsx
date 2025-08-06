@@ -20,7 +20,7 @@ function Reviews() {
         .split("/")
         .filter(Boolean);
 
-    const { data: product, isLoading: isProductLoading } = useProduct(
+    const { data: product, isPending: isProductLoading } = useProduct(
         collectionPath,
         categoryPath,
         productPath
@@ -28,7 +28,7 @@ function Reviews() {
 
     const {
         data: reviews,
-        isLoading: isReviewsLoading,
+        isPending: isReviewsLoading,
         isError,
     } = useReviewByProductId(product?.id ?? "");
 

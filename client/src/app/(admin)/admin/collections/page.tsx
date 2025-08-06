@@ -36,7 +36,7 @@ function AdminCollections() {
         "кількість товарів",
     ];
 
-    const { data, error, isLoading, isError } = useCollections();
+    const { data, error, isPending, isError } = useCollections();
 
     const collections = data || [];
 
@@ -57,7 +57,7 @@ function AdminCollections() {
         setActiveModal(null);
     };
 
-    if (isLoading) return <div className="text-center">Завантаження...</div>;
+    if (isPending) return <div className="text-center">Завантаження...</div>;
     if (isError)
         return (
             <div className="text-center text-red-500">

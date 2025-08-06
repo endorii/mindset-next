@@ -5,9 +5,9 @@ import { useCurrentUser } from "@/features/admin/user-info/hooks/useUsers";
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
     const router = useRouter();
-    const { data: currentUser, isLoading, isError } = useCurrentUser();
+    const { data: currentUser, isPending, isError } = useCurrentUser();
 
-    useEffect(() => {}, [currentUser, isLoading, isError, router]);
+    useEffect(() => {}, [currentUser, isPending, isError, router]);
 
     return <>{children}</>;
 }

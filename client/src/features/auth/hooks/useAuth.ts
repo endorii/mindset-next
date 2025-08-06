@@ -37,7 +37,7 @@ export function useAuth() {
         register: registerMutation.mutateAsync,
         logout: logoutMutation.mutateAsync,
         refreshToken: refreshTokenMutation.mutateAsync,
-        isLoading:
+        isPending:
             loginMutation.isPending || registerMutation.isPending || logoutMutation.isPending,
 
         error: loginMutation.error,

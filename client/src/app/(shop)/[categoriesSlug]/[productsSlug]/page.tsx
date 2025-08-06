@@ -16,14 +16,14 @@ export default function CategoryPage() {
     const collectionPath = pathSegments[0];
     const categoryPath = pathSegments[1];
 
-    const { data: category, isLoading } = useCategory(
+    const { data: category, isPending } = useCategory(
         collectionPath,
         categoryPath
     );
 
     const products = category?.products || [];
 
-    if (isLoading) {
+    if (isPending) {
         return <p>Завантаження...</p>;
     }
 
