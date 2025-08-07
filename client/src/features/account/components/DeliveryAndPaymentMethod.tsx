@@ -1,13 +1,19 @@
+import MastercardImage from "../../../../public/images/mastercard.png";
+import VisaImage from "../../../../public/images/visa.png";
+import NovaPoshtaImage from "../../../../public/images/nova-poshta.png";
+import Image from "next/image";
+
 function DeliveryAndPaymentMethod() {
     return (
         <div className="flex flex-col gap-[10px] w-full rounded-xl bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px]">
             <div className="font-bold text-xl mb-4">Доставка та оплата</div>
 
-            <div className="flex md:flex-wrap gap-[15px] items-start">
-                <img
-                    // src={NewPostLogo}
-                    alt="Нова Пошта"
-                    className="max-w-[50px] flex-shrink-0"
+            <div className="flex md:flex-wrap items-center gap-[15px]">
+                <Image
+                    src={NovaPoshtaImage}
+                    width={160}
+                    alt="visa"
+                    className="max-w-[160px]"
                 />
                 <div className="flex md:flex-wrap gap-[15px]">
                     <div className="flex flex-col gap-[10px]">
@@ -31,12 +37,21 @@ function DeliveryAndPaymentMethod() {
             <hr className="border-t border-white/10" />
 
             {/* Оплата */}
-            <div className="flex md:flex-wrap gap-[15px] items-start">
-                <img
-                    // src={CardLogo}
-                    alt="Оплата карткою"
-                    className="max-w-[50px] flex-shrink-0"
-                />
+            <div className="flex md:flex-wrap items-center gap-[15px]">
+                <div className="flex items-center gap-[10px]">
+                    <Image
+                        src={VisaImage}
+                        width={75}
+                        alt="visa"
+                        className="max-w-[75px]"
+                    />
+                    <Image
+                        src={MastercardImage}
+                        width={75}
+                        alt="mastercard"
+                        className="max-w-[75px]"
+                    />
+                </div>
                 <div className="flex md:flex-wrap gap-[15px]">
                     <div className="flex flex-col gap-[10px]">
                         <div className="font-semibold text-lg">
