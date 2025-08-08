@@ -89,11 +89,10 @@ model Favorite {
   id        String  @id @default(cuid())
   userId    String  @map("user_id")
   productId String  @map("product_id")
-  size      String
-  type      String
-  color     String
   product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
   user      User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, productId])
 }
 
 model CartItem {
@@ -106,6 +105,8 @@ model CartItem {
   color     String
   product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
   user      User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, productId, size, type, color])
 }
 
 model ShippingAddress {
