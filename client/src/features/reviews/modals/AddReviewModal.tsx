@@ -61,8 +61,6 @@ export default function AddReviewModal({
     };
 
     const onSubmit = async (data: FormValues) => {
-        console.log(selectedOrderItem);
-
         if (!selectedOrderItem?.id || !selectedOrderItem.product?.id) return;
 
         try {

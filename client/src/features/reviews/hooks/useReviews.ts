@@ -40,7 +40,7 @@ export function useReviewByProductId(productId: string) {
 
 export function useReviewByUserId() {
     return useQuery({
-        queryKey: ["reviews", "user"],
+        queryKey: ["reviews", "currentUser"],
         queryFn: () => fetchReviewsByUserId(),
     });
 }

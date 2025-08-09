@@ -171,12 +171,9 @@ export default function EditOrderModal({
                 data,
             });
 
-            console.log("редаговано");
             onClose();
             toast.success("Замовлення успішно відредаговано!");
         } catch (err: any) {
-            console.log("помилка");
-
             setModalMessage(
                 err?.message || "Помилка при редагуванні замовлення"
             );
