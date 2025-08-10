@@ -1,6 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { createSize, deleteSize, editSize, fetchSizes } from "../api/sizes.api";
-import { ISize, ISizePayload } from "../types/product-size.types";
+import { ISizePayload } from "../types/product-size.types";
 
 export function useSizes() {
     return useQuery({
@@ -26,15 +26,8 @@ export function useEditSize() {
     const queryClient = useQueryClient();
 
     return useMutation({
-        mutationFn: ({
-            sizeId,
-            data,
-        }: {
-            sizeId: ISize["id"];
-            data: {
-                name: string;
-            };
-        }) => editSize(sizeId, data),
+        mutationFn: ({ sizeId, data }: { sizeId: string; data: ISizePayload }) =>
+            editSize(sizeId, data),
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["sizes"] });
         },
@@ -45,7 +38,7 @@ export function useDeleteSize() {
     const queryClient = useQueryClient();
 
     return useMutation({
-        mutationFn: (sizeId: ISize["id"]) => deleteSize(sizeId),
+        mutationFn: (sizeId: string) => deleteSize(sizeId),
         onSuccess: () => {
             queryClient.invalidateQueries({
                 queryKey: ["sizes"],

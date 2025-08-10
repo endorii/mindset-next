@@ -1,19 +1,19 @@
 "use client";
 
-import { useCurrentUser } from "@/features/admin/user-info/hooks/useUsers";
-import FavoriteCard from "@/features/favorites/components/FavoriteCard";
+import FavoriteCard from "@/features/shop/favorites/components/FavoriteCard";
 import {
     useFavoritesFromUser,
     useDeleteFavorite,
-} from "@/features/favorites/hooks/useFavorites";
+} from "@/features/shop/favorites/hooks/useFavorites";
 import {
     ILocalFavoriteItem,
     IFavoriteItem,
-} from "@/features/favorites/types/favorites.types";
+} from "@/features/shop/favorites/types/favorites.types";
 import {
     saveFavoritesToStorage,
     getFavoritesFromStorage,
-} from "@/features/favorites/utils/favorites.utils";
+} from "@/features/shop/favorites/utils/favorites.utils";
+import { useCurrentUser } from "@/features/shop/user-info/hooks/useUsers";
 import { PopularProducts } from "@/shared/components";
 import ShopTitle from "@/shared/ui/titles/ShopTitle";
 import Image from "next/image";
@@ -21,13 +21,13 @@ import { useState, useEffect } from "react";
 
 export const Favorites = () => {
     const { data: user, isPending, error } = useCurrentUser();
-    const { data: userFavorites } = useFavoritesFromUser(user?.id ?? "");
+    const { data: userFavorites } = useFavoritesFromUser();
 
     const [localFavorites, setLocalFavorites] = useState<ILocalFavoriteItem[]>(
         []
     );
 
-    const deleteFavorite = useDeleteFavorite();
+    const deleteFavoriteMutation = useDeleteFavorite();
 
     const removeFromLocalStorage = (productId: string) => {
         const updatedFavorites = localFavorites.filter(
@@ -37,12 +37,9 @@ export const Favorites = () => {
         saveFavoritesToStorage(updatedFavorites);
     };
 
-    const removeFromServerFavorites = async (
-        userId: string,
-        productId: string
-    ) => {
+    const removeFromServerFavorites = async (productId: string) => {
         try {
-            deleteFavorite.mutateAsync({ userId, productId });
+            deleteFavoriteMutation.mutateAsync(productId);
             console.log("Видалення з серверних вподобань:", productId);
         } catch (error) {
             console.error("Помилка видалення з серверних вподобань:", error);
@@ -83,10 +80,7 @@ export const Favorites = () => {
 
                         const handleRemove = () => {
                             if (isServer) {
-                                removeFromServerFavorites(
-                                    user.id,
-                                    item.product.id
-                                );
+                                removeFromServerFavorites(item.product.id);
                             } else {
                                 removeFromLocalStorage(item.productId);
                             }

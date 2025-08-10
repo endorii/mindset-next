@@ -38,8 +38,6 @@ import Image from "next/image";
 interface EditProductModalProps {
     isOpen: boolean;
     onClose: () => void;
-    collectionPath: ICollection["path"];
-    categoryPath: ICategory["path"];
     product: IProduct;
 }
 
@@ -60,8 +58,6 @@ interface FormData {
 export default function EditProductModal({
     isOpen,
     onClose,
-    collectionPath,
-    categoryPath,
     product,
 }: EditProductModalProps) {
     const {
@@ -260,9 +256,7 @@ export default function EditProductModal({
             ];
 
             await editProductMutation.mutateAsync({
-                collectionPath,
-                categoryPath,
-                productPath: product.path,
+                productId: product.id,
                 productData: {
                     name: data.name.trim(),
                     path: data.path.trim(),

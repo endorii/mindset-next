@@ -3,9 +3,11 @@
 import { FilterSection } from "@/features/admin/attributes/components/FilterSection";
 import Title from "@/features/admin/attributes/components/Title";
 import { useOrders } from "@/features/orders/hooks/useOrders";
-import DeleteOrderModal from "@/features/orders/modals/DeleteOrderModal";
-import EditOrderModal from "@/features/orders/modals/EditOrderModal";
-import OrderInfoModal from "@/features/orders/modals/OrderInfoModal";
+import {
+    DeleteOrderModal,
+    EditOrderModal,
+    OrderInfoModal,
+} from "@/features/orders/modals";
 import { IOrder } from "@/features/orders/types/orders.types";
 import { InfoIcon, EditIcon, TrashIcon } from "@/shared/icons";
 import { OrderModalType } from "@/shared/types/types";

@@ -1,6 +1,6 @@
 "use client";
 
-import { useCurrentUser } from "@/features/admin/user-info/hooks/useUsers";
+import { useCurrentUser } from "@/features/shop/user-info/hooks/useUsers";
 import { Security, LoginForm, RegisterForm } from "@/features/auth/components";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";

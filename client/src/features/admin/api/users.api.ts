@@ -1,10 +1,10 @@
-import { IUser } from "../user-info/types/user.types";
+import { IUser } from "@/features/shop/user-info/types/user.types";
 
 const API_BASE_URL = "http://localhost:5000/api";
 
 export async function fetchAllUsers(): Promise<IUser[]> {
     try {
-        const response = await fetch(`${API_BASE_URL}/users`, {
+        const response = await fetch(`${API_BASE_URL}/admin/users`, {
             credentials: "include",
         });
 

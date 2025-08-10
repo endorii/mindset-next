@@ -24,7 +24,7 @@ import {
 } from "date-fns";
 import { uk } from "date-fns/locale";
 import ChooseButton from "@/shared/ui/buttons/ChooseButton";
-import { IUser } from "@/features/admin/user-info/types/user.types";
+import { IUser } from "@/features/shop/user-info/types/user.types";
 
 type Period = "day" | "week" | "month" | "year";
 

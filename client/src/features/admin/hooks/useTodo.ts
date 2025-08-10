@@ -26,7 +26,8 @@ export function useUpdateTodoItem() {
     const queryClient = useQueryClient();
 
     return useMutation({
-        mutationFn: ({ id, data }: { id: string; data: ITodoItem }) => updateTodoItem(id, data),
+        mutationFn: ({ todoId, data }: { todoId: string; data: ITodoItem }) =>
+            updateTodoItem(todoId, data),
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["todo"] });
         },
@@ -37,7 +38,7 @@ export function useDeleteTodoItem() {
     const queryClient = useQueryClient();
 
     return useMutation({
-        mutationFn: (id: string) => deleteTodoItem(id),
+        mutationFn: (todoId: string) => deleteTodoItem(todoId),
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["todo"] });
         },

@@ -4,7 +4,9 @@ const API_BASE_URL = "http://localhost:5000/api";
 
 export async function fetchColors(): Promise<IColor[]> {
     try {
-        const response = await fetch(`${API_BASE_URL}/colors`);
+        const response = await fetch(`${API_BASE_URL}/admin/colors`, {
+            credentials: "include",
+        });
 
         if (!response.ok) {
             const errorData = await response.json().catch(() => ({}));
@@ -19,7 +21,7 @@ export async function fetchColors(): Promise<IColor[]> {
 
 export async function createColor(data: IColorPayload): Promise<IColor> {
     try {
-        const response = await fetch(`${API_BASE_URL}/colors`, {
+        const response = await fetch(`${API_BASE_URL}/admin/colors`, {
             method: "POST",
             credentials: "include",
             headers: {
@@ -41,7 +43,7 @@ export async function createColor(data: IColorPayload): Promise<IColor> {
 
 export async function editColor(colorId: IColor["id"], data: Partial<IColor>): Promise<IColor> {
     try {
-        const response = await fetch(`${API_BASE_URL}/colors/${colorId}`, {
+        const response = await fetch(`${API_BASE_URL}/admin/colors/${colorId}`, {
             method: "PATCH",
             credentials: "include",
             headers: {
@@ -63,7 +65,7 @@ export async function editColor(colorId: IColor["id"], data: Partial<IColor>): P
 
 export async function deleteColor(colorId: IColor["id"]): Promise<void> {
     try {
-        const response = await fetch(`${API_BASE_URL}/colors/${colorId}`, {
+        const response = await fetch(`${API_BASE_URL}/admin/colors/${colorId}`, {
             method: "DELETE",
             credentials: "include",
         });

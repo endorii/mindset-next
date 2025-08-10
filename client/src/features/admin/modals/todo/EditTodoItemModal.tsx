@@ -65,7 +65,7 @@ export default function EditTodoItemModal({
             if (!todoItem.id) return;
 
             await editTodoItemMutation.mutateAsync({
-                id: todoItem.id,
+                todoId: todoItem.id,
                 data: {
                     title: data.title,
                     priority: data.priority,

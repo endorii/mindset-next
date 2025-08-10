@@ -1,6 +1,6 @@
 import { formatDate } from "@/shared/utils/formatDate";
 import { IReview } from "../types/reviews.types";
-import { useCurrentUser } from "@/features/admin/user-info/hooks/useUsers";
+import { useCurrentUser } from "@/features/shop/user-info/hooks/useUsers";
 import { useToggleReviewVote } from "../hooks/useReviews";
 import { toast } from "sonner";
 
@@ -10,7 +10,7 @@ interface ProductReviewsListProps {
 
 function ProductReviewsList({ reviews }: ProductReviewsListProps) {
     const { data: user } = useCurrentUser();
-    const { mutateAsync: toggleVote, isPending } = useToggleReviewVote();
+    const useToggleReviewVoteMutaion = useToggleReviewVote();
 
     return (
         <div className="flex flex-col gap-[5px] w-full">
@@ -56,7 +56,9 @@ function ProductReviewsList({ reviews }: ProductReviewsListProps) {
 
                                         <div className="mt-3 flex gap-[10px] text-sm">
                                             <button
-                                                disabled={isPending}
+                                                disabled={
+                                                    useToggleReviewVoteMutaion.isPending
+                                                }
                                                 className={`flex items-center gap-[5px] px-[10px] py-[7px] border rounded-xl cursor-pointer transition hover:bg-black/20 disabled:opacity-50 ${
                                                     isLiked
                                                         ? "bg-white/10 border-white/30"
@@ -70,10 +72,13 @@ function ProductReviewsList({ reviews }: ProductReviewsListProps) {
                                                         return;
                                                     }
                                                     if (review.id) {
-                                                        toggleVote({
-                                                            reviewId: review.id,
-                                                            isHelpful: true,
-                                                        });
+                                                        useToggleReviewVoteMutaion.mutateAsync(
+                                                            {
+                                                                reviewId:
+                                                                    review.id,
+                                                                isHelpful: true,
+                                                            }
+                                                        );
                                                     } else {
                                                         console.error(
                                                             "Review ID is missing"
@@ -85,7 +90,9 @@ function ProductReviewsList({ reviews }: ProductReviewsListProps) {
                                             </button>
 
                                             <button
-                                                disabled={isPending}
+                                                disabled={
+                                                    useToggleReviewVoteMutaion.isPending
+                                                }
                                                 className={`flex items-center gap-[5px] px-[10px] py-[7px] border rounded-xl cursor-pointer transition hover:bg-black/20 disabled:opacity-50 ${
                                                     isDisliked
                                                         ? "bg-white/10 border-white/30"
@@ -99,10 +106,14 @@ function ProductReviewsList({ reviews }: ProductReviewsListProps) {
                                                         return;
                                                     }
                                                     if (review.id) {
-                                                        toggleVote({
-                                                            reviewId: review.id,
-                                                            isHelpful: false,
-                                                        });
+                                                        useToggleReviewVoteMutaion.mutateAsync(
+                                                            {
+                                                                reviewId:
+                                                                    review.id,
+                                                                isHelpful:
+                                                                    false,
+                                                            }
+                                                        );
                                                     } else {
                                                         console.error(
                                                             "Review ID is missing"

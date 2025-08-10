@@ -4,7 +4,9 @@ const API_BASE_URL = "http://localhost:5000/api";
 
 export async function fetchSizes(): Promise<ISize[]> {
     try {
-        const response = await fetch(`${API_BASE_URL}/sizes`);
+        const response = await fetch(`${API_BASE_URL}/admin/sizes`, {
+            credentials: "include",
+        });
 
         if (!response.ok) {
             const errorData = await response.json().catch(() => ({}));
@@ -19,7 +21,7 @@ export async function fetchSizes(): Promise<ISize[]> {
 
 export async function createSize(data: ISizePayload): Promise<ISize> {
     try {
-        const response = await fetch(`${API_BASE_URL}/sizes`, {
+        const response = await fetch(`${API_BASE_URL}/admin/sizes`, {
             method: "POST",
             credentials: "include",
             headers: {
@@ -41,7 +43,7 @@ export async function createSize(data: ISizePayload): Promise<ISize> {
 
 export async function editSize(sizeId: ISize["id"], data: Partial<ISize>): Promise<ISize> {
     try {
-        const response = await fetch(`${API_BASE_URL}/sizes/${sizeId}`, {
+        const response = await fetch(`${API_BASE_URL}/admin/sizes/${sizeId}`, {
             method: "PATCH",
             credentials: "include",
             headers: {
@@ -63,7 +65,7 @@ export async function editSize(sizeId: ISize["id"], data: Partial<ISize>): Promi
 
 export async function deleteSize(sizeId: ISize["id"]): Promise<void> {
     try {
-        const response = await fetch(`${API_BASE_URL}/sizes/${sizeId}`, {
+        const response = await fetch(`${API_BASE_URL}/admin/sizes/${sizeId}`, {
             method: "DELETE",
             credentials: "include",
         });

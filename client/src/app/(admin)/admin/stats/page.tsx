@@ -1,8 +1,10 @@
 "use client";
 
 import Title from "@/features/admin/attributes/components/Title";
-import { useUsers } from "@/features/admin/hooks/useUsers";
+import { useAllUsers } from "@/features/admin/hooks/useUsers";
+
 import { useOrders } from "@/features/orders/hooks/useOrders";
+
 import StatCard from "@/shared/components/cards/StatCard";
 import {
     OrdersAndSalesChart,
@@ -13,7 +15,7 @@ import UsersRegistrationChart from "@/shared/components/charts/UsersRegistration
 
 export default function AnalyticsPage() {
     const { data: orders } = useOrders();
-    const { data: users } = useUsers();
+    const { data: users } = useAllUsers();
 
     if (!orders) return null;
     if (!users) return null;

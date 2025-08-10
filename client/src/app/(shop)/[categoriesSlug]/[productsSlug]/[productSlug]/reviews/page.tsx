@@ -1,6 +1,5 @@
 "use client";
-
-import { useProduct } from "@/features/products/hooks/useProducts";
+import { useGetProductByPath } from "@/features/products/hooks/useProducts";
 import {
     AvgRatingStat,
     ProductReviewsList,
@@ -20,7 +19,7 @@ function Reviews() {
         .split("/")
         .filter(Boolean);
 
-    const { data: product, isPending: isProductLoading } = useProduct(
+    const { data: product, isPending: isProductLoading } = useGetProductByPath(
         collectionPath,
         categoryPath,
         productPath

@@ -3,7 +3,7 @@
 import { FilterSection } from "@/features/admin/attributes/components/FilterSection";
 import Title from "@/features/admin/attributes/components/Title";
 import { useRecentActions } from "@/features/admin/recent-actions/hooks/useRecentActions";
-import { useCurrentUser } from "@/features/admin/user-info/hooks/useUsers";
+import { useCurrentUser } from "@/features/shop/user-info/hooks/useUsers";
 import { AdminRecentActions } from "@/shared/components";
 import { formatDate } from "@/shared/utils/formatDate";
 import { useState, useMemo } from "react";

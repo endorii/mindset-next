@@ -1,6 +1,6 @@
 "use client";
 
-import { useCurrentUser } from "@/features/admin/user-info/hooks/useUsers";
+import { useCurrentUser } from "@/features/shop/user-info/hooks/useUsers";
 import { useUserOrders } from "@/features/orders/hooks/useOrders";
 import { IOrderItem } from "@/features/orders/types/orders.types";
 import { AddReviewModal } from "@/features/reviews/modals";
@@ -11,8 +11,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 const Orders = () => {
-    const { data: user } = useCurrentUser();
-    const { data: userOrders = [] } = useUserOrders(user?.id || "");
+    const { data: userOrders } = useUserOrders();
 
     const [expandedOrderId, setExpandedOrderId] = useState<string | null>(null);
     const [activeModal, setActiveModal] = useState<boolean>(false);
@@ -33,7 +32,7 @@ const Orders = () => {
                 </div>
             </div>
 
-            {userOrders.length > 0 ? (
+            {userOrders && userOrders.length > 0 ? (
                 <div className="rounded-xl bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px] xs:p-[10px]">
                     <div className="border border-white/10 rounded-xl">
                         {userOrders.map((order) => {

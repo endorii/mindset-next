@@ -1,9 +1,9 @@
 "use client";
 
-import { useCollections } from "@/features/collections/hooks/useCollections";
 import { BurgerMenuIcon, CloseIcon } from "@/shared/icons";
 import { useState } from "react";
 import MenuSection from "./MenuSection";
+import { useGetCollections } from "@/features/collections/hooks/useCollections";
 
 const sections = [
     {
@@ -38,7 +38,8 @@ const sections = [
 ];
 
 const HeaderBurger = () => {
-    const { data: collections, isError, error, isPending } = useCollections();
+    const { data: collections, isPending: isCollectionsPending } =
+        useGetCollections();
     const [isOpen, setIsOpen] = useState(false);
 
     const handleClose = () => setIsOpen(false);
@@ -73,8 +74,7 @@ const HeaderBurger = () => {
                 <div className="flex flex-col w-[53%] xl:w-[70%] lg:w-full p-[30px] gap-[70px] overflow-y-auto mt-[50px]">
                     {collections &&
                         collections.length > 0 &&
-                        !isPending &&
-                        !isError && (
+                        !isCollectionsPending && (
                             <MenuSection
                                 title="Наші колекції"
                                 subtitle="Collections"

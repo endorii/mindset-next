@@ -15,11 +15,10 @@ export function useOrders() {
     });
 }
 
-export function useUserOrders(userId: string) {
+export function useUserOrders() {
     return useQuery({
-        queryKey: ["orders", userId],
-        queryFn: () => getOrdersByUserId(userId),
-        enabled: !!userId,
+        queryKey: ["orders", "currentUser"],
+        queryFn: () => getOrdersByUserId(),
     });
 }
 

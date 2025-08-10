@@ -17,14 +17,12 @@ import { formatDate } from "@/shared/utils/formatDate";
 interface CategoryInfoModalProps {
     isOpen: boolean;
     onClose: () => void;
-    collectionPath: ICollection["path"];
     category: ICategory;
 }
 
 export default function CategoryInfoModal({
     isOpen,
     onClose,
-    collectionPath,
     category,
 }: CategoryInfoModalProps) {
     if (!isOpen || !category) return null;
@@ -68,7 +66,7 @@ export default function CategoryInfoModal({
                     />
                     <InfoField
                         label="Входить до колекції"
-                        value={collectionPath}
+                        value={category.collection?.path}
                     />
                 </div>
                 <InfoModalBanner image={banner} />

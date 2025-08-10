@@ -16,10 +16,10 @@ import {
 import { useState, useEffect } from "react";
 import { createPortal } from "react-dom";
 import { useForm, Controller } from "react-hook-form";
-import { Label } from "recharts";
 import { toast } from "sonner";
 import { useUpdateOrder } from "../hooks/useOrders";
 import { IOrder, OrderStatus, INovaPostDataObj } from "../types/orders.types";
+import { Label } from "@/shared/ui/components";
 
 interface EditOrderModalProps {
     isOpen: boolean;
@@ -236,9 +236,7 @@ export default function EditOrderModal({
                             </div>
                         </div>
                         <div className="flex flex-col gap-[15px]">
-                            <div className="text-lg">
-                                Адреса доставки інформація
-                            </div>
+                            <div className="text-lg">Адреса доставки</div>
                             <Controller
                                 name="area"
                                 control={control}

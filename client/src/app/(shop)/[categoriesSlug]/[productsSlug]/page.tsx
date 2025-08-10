@@ -1,47 +1,43 @@
 "use client";
 
-import { useCategory } from "@/features/categories/hooks/useCategories";
-import { IProduct } from "@/features/products/types/products.types";
+import { useGetCategoryByPath } from "@/features/categories/hooks/useCategories";
+import { useProductsByCategoryId } from "@/features/products/hooks/useProducts";
 import { EmptyCategories } from "@/shared/components";
 import ShopTitle from "@/shared/ui/titles/ShopTitle";
 import Image from "next/image";
 import Link from "next/link";
-import { usePathname, notFound } from "next/navigation";
+import { usePathname } from "next/navigation";
 
 export default function CategoryPage() {
     const pathname = usePathname();
 
-    const pathSegments = pathname.split("/").filter(Boolean);
+    const collectionPath = pathname.split("/")[1];
+    const categoryPath = pathname.split("/")[2];
 
-    const collectionPath = pathSegments[0];
-    const categoryPath = pathSegments[1];
+    const { data: category, isPending: isCategoryPending } =
+        useGetCategoryByPath(collectionPath, categoryPath);
 
-    const { data: category, isPending } = useCategory(
-        collectionPath,
-        categoryPath
-    );
+    const {
+        data: products,
+        isPending: isProductsPending,
+        isError: isProductsError,
+    } = useProductsByCategoryId(category?.id);
 
-    const products = category?.products || [];
-
-    if (isPending) {
-        return <p>Завантаження...</p>;
-    }
-
-    if (!category) {
-        return notFound();
-    }
+    if (isCategoryPending || isProductsPending) return <div>Loading...</div>;
+    if (!category || isProductsError)
+        return <div>Помилка або категорію не знайдено</div>;
 
     return (
         <div className="flex flex-col gap-[50px]">
             <ShopTitle
-                title={`Товари ${category.collection?.path} / ${category.path}`}
-                subtitle={`Products ${category.collection?.path} / ${category.path}`}
+                title={`Товари ${category?.collection?.path} / ${category?.path}`}
+                subtitle={`Products ${category?.collection?.path} / ${category?.path}`}
             />
 
             {products && products.length > 0 ? (
                 <ul className="grid gap-[15px] w-full px-[30px] grid-cols-4 2xl:grid-cols-3 md:grid-cols-2 sm:grid-cols-1">
-                    {products.map((product: IProduct, i: number) => (
-                        <li key={i} className="w-full">
+                    {products.map((product) => (
+                        <li key={product.id} className="w-full">
                             <Link
                                 href={`/${collectionPath}/${categoryPath}/${product.path}`}
                                 className="relative flex flex-col gap-[15px] group rounded-xl bg-white/5 shadow-lg backdrop-blur-lg border border-white/5 p-[20px]"
@@ -57,7 +53,7 @@ export default function CategoryPage() {
                                     alt={product.name}
                                 />
                                 <ul className="absolute top-[30px] left-[30px] flex gap-[5px] rounded-[50px] bg-white/5 backdrop-blur-lg border border-white/20 p-[5px]">
-                                    {product.productColors.map((color) => (
+                                    {product.productColors?.map((color) => (
                                         <li
                                             key={color.color.hexCode}
                                             className="rounded-[50px] w-[20px] h-[20px]"
@@ -97,7 +93,7 @@ export default function CategoryPage() {
                                     <hr className="border-top border-white/10 mt-[5px]" />
                                     <div className="flex flex-col gap-[3px] text-white justify-between">
                                         <ul className="flex gap-[5px] flex-wrap">
-                                            {product.productSizes.map(
+                                            {product.productSizes?.map(
                                                 (size) => (
                                                     <li
                                                         key={size.size.name}
@@ -111,7 +107,7 @@ export default function CategoryPage() {
                                             )}
                                         </ul>
                                         <ul className="flex gap-[5px] flex-wrap">
-                                            {product.productTypes.map(
+                                            {product.productTypes?.map(
                                                 (type) => (
                                                     <li
                                                         key={type.type.name}

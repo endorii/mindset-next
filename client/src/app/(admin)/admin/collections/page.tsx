@@ -2,7 +2,8 @@
 
 import { FilterSection } from "@/features/admin/attributes/components/FilterSection";
 import TitleWithAddElementButton from "@/features/admin/attributes/components/TitleWithAddElementButton";
-import { useCollections } from "@/features/collections/hooks/useCollections";
+import { useGetCollections } from "@/features/collections/hooks/useCollections";
+
 import {
     AddCollectionModal,
     CollectionInfoModal,
@@ -36,9 +37,12 @@ function AdminCollections() {
         "кількість товарів",
     ];
 
-    const { data, error, isPending, isError } = useCollections();
-
-    const collections = data || [];
+    const {
+        data: collections,
+        error,
+        isPending,
+        isError,
+    } = useGetCollections();
 
     const [activeModal, setActiveModal] = useState<ModalType>(null);
     const [selectedCollection, setSelectedCollection] =

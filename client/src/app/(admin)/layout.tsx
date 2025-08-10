@@ -2,8 +2,8 @@
 
 import AdminHeader from "@/features/admin/components/layout/AdminHeader";
 import AdminNavigation from "@/features/admin/components/layout/AdminNavigation";
-import { IUser } from "@/features/admin/user-info/types/user.types";
 import { getCurrentUser } from "@/features/auth/api/auth.api";
+import { IUser } from "@/features/shop/user-info/types/user.types";
 import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 

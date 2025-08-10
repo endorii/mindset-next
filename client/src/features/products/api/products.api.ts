@@ -4,14 +4,29 @@ import { IProduct, ICreateProductPayload } from "../types/products.types";
 
 const API_BASE_URL = "http://localhost:5000/api";
 
-export async function fetchProducts(
+export async function fetchProductsByCategoryId(categoryId: string): Promise<IProduct[]> {
+    try {
+        const response = await fetch(`${API_BASE_URL}/shop/products/categories/${categoryId}`);
+
+        if (!response.ok) {
+            const errorData = await response.json().catch(() => ({}));
+            throw new Error(errorData.message);
+        }
+
+        return await response.json();
+    } catch (error: any) {
+        throw new Error(error?.message || "Помилка з'єднання із сервером");
+    }
+}
+
+export async function fetchGetProductByPath(
     collectionPath: string,
-    categoryPath: string
-): Promise<IProduct[]> {
+    categoryPath: string,
+    productPath: string
+): Promise<IProduct> {
     try {
         const response = await fetch(
-            `${API_BASE_URL}/collections/${collectionPath}/categories/${categoryPath}/products`,
-            { credentials: "include" }
+            `${API_BASE_URL}/shop/products/${collectionPath}/${categoryPath}/${productPath}`
         );
 
         if (!response.ok) {
@@ -27,7 +42,7 @@ export async function fetchProducts(
 
 export async function fetchPopularProducts(): Promise<IProduct[]> {
     try {
-        const response = await fetch(`${API_BASE_URL}/products/popular`);
+        const response = await fetch(`${API_BASE_URL}/shop/products/popular`);
 
         if (!response.ok) {
             const errorData = await response.json().catch(() => ({}));
@@ -40,9 +55,9 @@ export async function fetchPopularProducts(): Promise<IProduct[]> {
     }
 }
 
-export async function fetchProductsFromOneCollection(collectionPath: string): Promise<IProduct[]> {
+export async function fetchProductsFromSameCollection(collectionPath: string): Promise<IProduct[]> {
     try {
-        const response = await fetch(`${API_BASE_URL}/products/collections/${collectionPath}`);
+        const response = await fetch(`${API_BASE_URL}/shop/products/collections/${collectionPath}`);
 
         if (!response.ok) {
             const errorData = await response.json().catch(() => ({}));
@@ -55,47 +70,16 @@ export async function fetchProductsFromOneCollection(collectionPath: string): Pr
     }
 }
 
-export async function fetchProduct(
-    collectionPath: string,
-    categoryPath: string,
-    productPath: string
-): Promise<IProduct> {
+export async function addProductToCategory(productData: ICreateProductPayload): Promise<IProduct> {
     try {
-        const response = await fetch(
-            `${API_BASE_URL}/collections/${collectionPath}/categories/${categoryPath}/products/${productPath}`,
-            {
-                credentials: "include",
-            }
-        );
-
-        if (!response.ok) {
-            const errorData = await response.json().catch(() => ({}));
-            throw new Error(errorData.message);
-        }
-
-        return await response.json();
-    } catch (error: any) {
-        throw new Error(error?.message || "Помилка з'єднання із сервером");
-    }
-}
-
-export async function addProductToCategory(
-    collectionPath: string,
-    categoryPath: string,
-    productData: ICreateProductPayload
-): Promise<IProduct> {
-    try {
-        const response = await fetch(
-            `${API_BASE_URL}/collections/${collectionPath}/categories/${categoryPath}/products`,
-            {
-                method: "POST",
-                credentials: "include",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify(productData),
-            }
-        );
+        const response = await fetch(`${API_BASE_URL}/admin/products`, {
+            method: "POST",
+            credentials: "include",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(productData),
+        });
 
         if (!response.ok) {
             const errorData = await response.json().catch(() => ({}));
@@ -109,26 +93,18 @@ export async function addProductToCategory(
 }
 
 export async function editProduct(
-    collectionPath: ICollection["path"],
-    categoryPath: ICategory["path"],
-    productPath: IProduct["path"],
+    productId: string,
     productData: Partial<ICreateProductPayload>
 ): Promise<IProduct> {
     try {
-        const response = await fetch(
-            `${API_BASE_URL}/collections/${collectionPath}/categories/${categoryPath}/products/${productPath}`,
-            {
-                method: "PATCH",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                credentials: "include",
-                body: JSON.stringify({
-                    ...productData,
-                    updatedAt: new Date().toISOString(),
-                }),
-            }
-        );
+        const response = await fetch(`${API_BASE_URL}/admin/products/${productId}`, {
+            method: "PATCH",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            credentials: "include",
+            body: JSON.stringify(productData),
+        });
 
         if (!response.ok) {
             const errorData = await response.json().catch(() => ({}));
@@ -141,19 +117,12 @@ export async function editProduct(
     }
 }
 
-export async function deleteProduct(
-    collectionPath: ICollection["path"],
-    categoryPath: ICategory["path"],
-    productPath: IProduct["path"]
-): Promise<void> {
+export async function deleteProduct(productId: string): Promise<void> {
     try {
-        const response = await fetch(
-            `${API_BASE_URL}/collections/${collectionPath}/categories/${categoryPath}/products/${productPath}`,
-            {
-                method: "DELETE",
-                credentials: "include",
-            }
-        );
+        const response = await fetch(`${API_BASE_URL}/admin/products/${productId}`, {
+            method: "DELETE",
+            credentials: "include",
+        });
 
         if (!response.ok) {
             const errorData = await response.json().catch(() => ({}));

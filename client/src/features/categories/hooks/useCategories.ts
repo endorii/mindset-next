@@ -3,15 +3,24 @@ import {
     addCategoryToCollection,
     deleteCategory,
     editCategory,
-    fetchCategory,
+    fetchCategoryByPath,
+    fetchGetCategoriesByCollectionId,
 } from "../api/categories.api";
 import { ICategory } from "../types/categories.types";
-import { ICollection } from "@/features/collections/types/collections.types";
+import { TStatus } from "@/shared/types/types";
 
-export function useCategory(collectionPath: ICollection["path"], categoryPath: ICategory["path"]) {
+export function useGetCategoryByPath(collectionPath: string, categoryPath: string) {
     return useQuery({
-        queryKey: ["collections", collectionPath, "categories", categoryPath],
-        queryFn: () => fetchCategory(collectionPath, categoryPath),
+        queryKey: ["category", categoryPath],
+        queryFn: () => fetchCategoryByPath(collectionPath, categoryPath),
+    });
+}
+
+export function useGetCategoriesByCollectionId(collectionId: string | undefined) {
+    return useQuery({
+        queryKey: ["categories", collectionId],
+        queryFn: () => fetchGetCategoriesByCollectionId(collectionId!),
+        enabled: !!collectionId,
     });
 }
 
@@ -19,16 +28,10 @@ export function useCreateCategory() {
     const queryClient = useQueryClient();
 
     return useMutation({
-        mutationFn: ({
-            collectionPath,
-            categoryData,
-        }: {
-            collectionPath: ICollection["path"];
-            categoryData: ICategory;
-        }) => addCategoryToCollection(collectionPath, categoryData),
-        onSuccess: (_data, variables) => {
+        mutationFn: (categoryData: ICategory) => addCategoryToCollection(categoryData),
+        onSuccess: () => {
             queryClient.invalidateQueries({
-                queryKey: ["collections", variables.collectionPath],
+                queryKey: ["categories"],
             });
         },
     });
@@ -39,22 +42,20 @@ export function useEditCategory() {
 
     return useMutation({
         mutationFn: ({
-            collectionPath,
-            categoryPath,
+            categoryId,
             data,
         }: {
-            collectionPath: ICollection["path"];
-            categoryPath: ICategory["path"];
+            categoryId: string;
             data: {
-                name: ICategory["name"];
-                path: ICategory["path"];
-                status: ICategory["status"];
-                banner: ICategory["banner"];
+                name: string;
+                path: string;
+                status: TStatus;
+                banner: string;
             };
-        }) => editCategory(collectionPath, categoryPath, data),
-        onSuccess(_data, variables) {
+        }) => editCategory(categoryId, data),
+        onSuccess() {
             queryClient.invalidateQueries({
-                queryKey: ["collections", variables.collectionPath],
+                queryKey: ["categories"],
             });
         },
     });
@@ -64,16 +65,10 @@ export function useDeleteCategory() {
     const queryClient = useQueryClient();
 
     return useMutation({
-        mutationFn: ({
-            collectionPath,
-            categoryPath,
-        }: {
-            collectionPath: ICollection["path"];
-            categoryPath: ICategory["path"];
-        }) => deleteCategory(collectionPath, categoryPath),
-        onSuccess: (_data, variables) => {
+        mutationFn: (categoryId: string) => deleteCategory(categoryId),
+        onSuccess: () => {
             queryClient.invalidateQueries({
-                queryKey: ["collections", variables.collectionPath],
+                queryKey: ["categories"],
             });
         },
     });

@@ -26,11 +26,8 @@ function OrdersByCategoriesChart({ orders }: { orders: IOrder[] }) {
 
         orders.forEach((order) => {
             order.items.forEach((item) => {
-                // Припустимо, категорія з item.product.categoryName
-                // Якщо у тебе інша структура - заміни відповідно
                 const categoryName = item.product?.category?.name || "Інше";
 
-                // Припустимо, є поле price і quantity
                 const total = item.product?.price || 0 * item.quantity;
 
                 if (categoryMap[categoryName]) {
@@ -41,7 +38,6 @@ function OrdersByCategoriesChart({ orders }: { orders: IOrder[] }) {
             });
         });
 
-        // Перетворюємо в масив для PieChart
         return Object.entries(categoryMap).map(([name, value]) => ({
             name,
             value,
@@ -77,7 +73,7 @@ function OrdersByCategoriesChart({ orders }: { orders: IOrder[] }) {
                         ))}
                     </Pie>
                     <Tooltip
-                        formatter={(value) => `${value} грн`} // Форматування ціни
+                        formatter={(value) => `${value} грн`}
                         contentStyle={{
                             backgroundColor: "black",
                             border: "1px solid #ffffff20",

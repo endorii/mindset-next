@@ -24,7 +24,6 @@ interface AddCategoryModalProps {
     isOpen: boolean;
     onClose: () => void;
     collectionId: ICollection["id"];
-    collectionPath: ICollection["path"];
 }
 
 interface CategoryFormData {
@@ -38,7 +37,6 @@ export default function AddCategoryModal({
     isOpen,
     onClose,
     collectionId,
-    collectionPath,
 }: AddCategoryModalProps) {
     const {
         register,
@@ -89,9 +87,8 @@ export default function AddCategoryModal({
             const uploadResult = await uploadImageMutation.mutateAsync(banner);
             const imagePath = uploadResult.path;
 
-            await createCategoryMutation.mutateAsync({
-                collectionPath,
-                categoryData: {
+            if (collectionId) {
+                await createCategoryMutation.mutateAsync({
                     name: data.name.trim(),
                     path: data.path.trim(),
                     banner: imagePath,
@@ -99,8 +96,8 @@ export default function AddCategoryModal({
                     status: data.status,
                     collectionId,
                     description: data.description,
-                },
-            });
+                });
+            }
 
             handleClose();
             toast.success("Категорію упішно додано!");

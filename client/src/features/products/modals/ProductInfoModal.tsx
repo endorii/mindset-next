@@ -24,8 +24,6 @@ import { formatDate } from "@/shared/utils/formatDate";
 export interface ProductInfoModalProps {
     isOpen: boolean;
     onClose: () => void;
-    collectionPath?: ICollection["path"];
-    categoryPath?: ICategory["path"];
     product: IProduct;
 }
 

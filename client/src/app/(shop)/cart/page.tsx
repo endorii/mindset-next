@@ -1,21 +1,18 @@
 "use client";
 
-import { useCurrentUser } from "@/features/admin/user-info/hooks/useUsers";
-import CartItem from "@/features/cart/components/CartItem";
-import CartReceip from "@/features/cart/components/CartReceip";
+import CartItem from "@/features/shop/cart/components/CartItem";
+import CartReceip from "@/features/shop/cart/components/CartReceip";
 import {
     useCartItemsFromUser,
     useDeleteCartItemFromUser,
-} from "@/features/cart/hooks/useCart";
-import { ICartItem } from "@/features/cart/types/cart.types";
+} from "@/features/shop/cart/hooks/useCart";
+import { ICartItem } from "@/features/shop/cart/types/cart.types";
 import {
     useAddFavorite,
     useDeleteFavorite,
-} from "@/features/favorites/hooks/useFavorites";
-import {
-    ILocalFavoriteItem,
-    IFavoriteItem,
-} from "@/features/favorites/types/favorites.types";
+} from "@/features/shop/favorites/hooks/useFavorites";
+import { ILocalFavoriteItem } from "@/features/shop/favorites/types/favorites.types";
+import { useCurrentUser } from "@/features/shop/user-info/hooks/useUsers";
 import { PopularProducts } from "@/shared/components";
 import ShopTitle from "@/shared/ui/titles/ShopTitle";
 import Image from "next/image";
@@ -23,7 +20,7 @@ import { useState, useEffect } from "react";
 
 function Cart() {
     const { data: user, isPending } = useCurrentUser();
-    const { data: userCart } = useCartItemsFromUser(user?.id || "");
+    const { data: userCart } = useCartItemsFromUser();
 
     const [localCart, setLocalCart] = useState<ICartItem[]>([]);
     const [isLocalCartLoaded, setIsLocalCartLoaded] = useState(false);
@@ -33,9 +30,9 @@ function Cart() {
 
     const cartToShow = user ? userCart ?? [] : localCart;
 
-    const deleteCartItem = useDeleteCartItemFromUser();
-    const addToFavorite = useAddFavorite();
-    const deleteFromFavorite = useDeleteFavorite();
+    const deleteCartItemMutation = useDeleteCartItemFromUser();
+    const addToFavoriteMutation = useAddFavorite();
+    const deleteFromFavoriteMutation = useDeleteFavorite();
 
     const totalPrice = cartToShow.reduce((total, item) => {
         if (!item.product) return total;
@@ -68,13 +65,10 @@ function Cart() {
         saveCartItemsToStorage(updatedCart);
     };
 
-    const removeCartItemFromServer = async (
-        userId: string,
-        productId: string
-    ) => {
+    const removeCartItemFromServer = async (cartItemId: string) => {
         try {
-            await deleteCartItem.mutateAsync({ userId, productId });
-            console.log("Видалено з серверного кошика:", productId);
+            await deleteCartItemMutation.mutateAsync(cartItemId);
+            console.log("Видалено з серверного кошика:", cartItemId);
         } catch (error) {
             console.error("Помилка видалення:", error);
         }
@@ -105,10 +99,7 @@ function Cart() {
         }
     };
 
-    const handleFavoriteToggle = async (item: ICartItem) => {
-        if (!item.product) return;
-
-        const productId = item.product.id;
+    const handleFavoriteToggle = async (productId: string) => {
         const currentFavoriteState = favoriteStates[productId] || false;
         const newFavoriteState = !currentFavoriteState;
 
@@ -117,26 +108,12 @@ function Cart() {
             [productId]: newFavoriteState,
         }));
 
-        const dataToSend: IFavoriteItem = {
-            size: item.size,
-            type: item.type,
-            color: item.color,
-            product: item.product,
-            productId: item.product.id,
-        };
-
         if (user) {
             try {
                 if (newFavoriteState) {
-                    await addToFavorite.mutateAsync({
-                        userId: user.id,
-                        favoriteItem: dataToSend,
-                    });
+                    await addToFavoriteMutation.mutateAsync(productId);
                 } else {
-                    await deleteFromFavorite.mutateAsync({
-                        userId: user.id,
-                        productId: item.product.id,
-                    });
+                    await deleteFromFavoriteMutation.mutateAsync(productId);
                 }
             } catch (error) {
                 console.error("Помилка при роботі з вподобаними:", error);
@@ -153,9 +130,9 @@ function Cart() {
                     : [];
 
                 const updated = newFavoriteState
-                    ? [...parsed, dataToSend]
+                    ? [...parsed, productId]
                     : parsed.filter(
-                          (favItem) => favItem.product.id !== item.product.id
+                          (favItem) => favItem.product.id !== productId
                       );
 
                 localStorage.setItem("favorites", JSON.stringify(updated));
@@ -202,31 +179,27 @@ function Cart() {
             <ShopTitle title="Кошик" subtitle="Cart" />
             {cartToShow.length > 0 ? (
                 <div className="flex justify-between gap-[15px] w-full px-[30px]">
-                    <ul className=" flex flex-col gap-[15px] w-2/3 max-h-[80vh] overflow-y-auto">
-                        {cartToShow.map((item, i) => {
+                    <div className="flex flex-col gap-[15px] w-2/3 max-h-[80vh] overflow-y-auto">
+                        {cartToShow.map((item) => {
                             const isServer = !!user;
-                            const { product } = item;
 
-                            if (!product) return null;
+                            if (!item || !item.id) return;
 
                             const handleRemove = () => {
                                 if (isServer) {
-                                    removeCartItemFromServer(
-                                        user.id,
-                                        item.product.id
-                                    );
+                                    removeCartItemFromServer(item.id!);
                                 } else {
                                     removeItemFromLocalCart(item.productId);
                                 }
                             };
 
-                            const isFavorite =
-                                favoriteStates[product.id] || false;
+                            const isFavorite = item.product
+                                ? favoriteStates[item.product.id] || false
+                                : false;
 
                             return (
                                 <CartItem
-                                    key={product.id}
-                                    product={product}
+                                    key={item.id}
                                     item={item}
                                     handleRemove={handleRemove}
                                     handleFavoriteToggle={handleFavoriteToggle}
@@ -234,7 +207,7 @@ function Cart() {
                                 />
                             );
                         })}
-                    </ul>
+                    </div>
                     <CartReceip totalPrice={totalPrice} />
                 </div>
             ) : (

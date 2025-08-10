@@ -9,7 +9,7 @@ interface ToggleReviewVotePayload {
 
 export async function toggleReviewVote(data: ToggleReviewVotePayload): Promise<IReview> {
     try {
-        const response = await fetch(`${API_BASE_URL}/reviews/${data.reviewId}/vote`, {
+        const response = await fetch(`${API_BASE_URL}/shop/reviews/${data.reviewId}/vote`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -31,7 +31,7 @@ export async function toggleReviewVote(data: ToggleReviewVotePayload): Promise<I
 
 export async function fetchAllReviews(): Promise<IReview[]> {
     try {
-        const response = await fetch(`${API_BASE_URL}/reviews`, {
+        const response = await fetch(`${API_BASE_URL}/admin/reviews`, {
             credentials: "include",
         });
 
@@ -48,7 +48,7 @@ export async function fetchAllReviews(): Promise<IReview[]> {
 
 export async function fetchReviewsByProductId(productId: string): Promise<IReview[]> {
     try {
-        const response = await fetch(`${API_BASE_URL}/reviews/product/${productId}`, {
+        const response = await fetch(`${API_BASE_URL}/shop/reviews/product/${productId}`, {
             credentials: "include",
         });
 
@@ -65,7 +65,7 @@ export async function fetchReviewsByProductId(productId: string): Promise<IRevie
 
 export async function fetchReviewsByUserId(): Promise<IReview[]> {
     try {
-        const response = await fetch(`${API_BASE_URL}/reviews/user`, {
+        const response = await fetch(`${API_BASE_URL}/shop/reviews/user`, {
             credentials: "include",
         });
 
@@ -82,7 +82,7 @@ export async function fetchReviewsByUserId(): Promise<IReview[]> {
 
 export async function createReview(data: IReview): Promise<IReview> {
     try {
-        const response = await fetch(`${API_BASE_URL}/reviews`, {
+        const response = await fetch(`${API_BASE_URL}/shop/reviews`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -104,7 +104,7 @@ export async function createReview(data: IReview): Promise<IReview> {
 
 export async function updateReview(reviewId: string, data: Partial<IReview>): Promise<IReview> {
     try {
-        const response = await fetch(`${API_BASE_URL}/reviews/admin/${reviewId}`, {
+        const response = await fetch(`${API_BASE_URL}/admin/reviews/admin-reply/${reviewId}`, {
             method: "PATCH",
             headers: {
                 "Content-Type": "application/json",
@@ -126,7 +126,7 @@ export async function updateReview(reviewId: string, data: Partial<IReview>): Pr
 
 export async function approveReview(reviewId: string): Promise<IReview> {
     try {
-        const response = await fetch(`${API_BASE_URL}/reviews/${reviewId}`, {
+        const response = await fetch(`${API_BASE_URL}/admin/reviews/${reviewId}`, {
             method: "PATCH",
             headers: {
                 "Content-Type": "application/json",
@@ -147,7 +147,7 @@ export async function approveReview(reviewId: string): Promise<IReview> {
 
 export async function deleteReview(reviewId: string): Promise<IReview> {
     try {
-        const response = await fetch(`${API_BASE_URL}/reviews/${reviewId}`, {
+        const response = await fetch(`${API_BASE_URL}/shop/reviews/${reviewId}`, {
             method: "DELETE",
             credentials: "include",
         });

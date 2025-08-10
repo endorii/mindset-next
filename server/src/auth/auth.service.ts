@@ -1,6 +1,6 @@
 import { ConflictException, Inject, Injectable, UnauthorizedException } from "@nestjs/common";
-import { CreateUserDto } from "../user/dto/create-user.dto";
-import { UserService } from "src/user/user.service";
+import { CreateUserDto } from "../shop/user/dto/create-user.dto";
+import { ShopUserService } from "src/shop/user/shop-user.service";
 import type { AuthJwtPayload } from "./types/auth-jwtPayload";
 import { JwtService } from "@nestjs/jwt";
 import refreshConfig from "./config/refresh.config";
@@ -12,22 +12,22 @@ import { Response } from "express";
 @Injectable()
 export class AuthService {
     constructor(
-        private readonly userService: UserService,
+        private readonly shopUserService: ShopUserService,
         private readonly jwtService: JwtService,
         @Inject(refreshConfig.KEY)
         private refreshTokenConfig: ConfigType<typeof refreshConfig>
     ) {}
 
     async registerUser(createUserDto: CreateUserDto) {
-        const user = await this.userService.findByEmail(createUserDto.email);
+        const user = await this.shopUserService.findByEmail(createUserDto.email);
         if (user) throw new ConflictException("Користувач з такою електронною адресою вже існує");
-        return this.userService.create(createUserDto);
+        return this.shopUserService.create(createUserDto);
     }
 
     async login(userId: string, name: string, role: Role, res: Response) {
         const { accessToken, refreshToken } = await this.generateTokens(userId);
         const hashedRT = await bcrypt.hash(refreshToken, 10);
-        await this.userService.updateHashedRefreshToken(userId, hashedRT);
+        await this.shopUserService.updateHashedRefreshToken(userId, hashedRT);
 
         res.cookie("accessToken", accessToken, {
             httpOnly: true,
@@ -51,14 +51,14 @@ export class AuthService {
     }
 
     async signOut(userId: string, res: Response) {
-        await this.userService.updateHashedRefreshToken(userId, null);
+        await this.shopUserService.updateHashedRefreshToken(userId, null);
         res.clearCookie("accessToken", { path: "/" });
         res.clearCookie("refreshToken", { path: "/" });
         return { message: "Ви успішно вийшли з акаунту" };
     }
 
     async validateLocalUser(email: string, password: string) {
-        const user = await this.userService.findByEmail(email);
+        const user = await this.shopUserService.findByEmail(email);
         if (!user) throw new UnauthorizedException("Такого користувача не існує");
         const isPasswordMatched = await bcrypt.compare(password, user.password);
         if (!isPasswordMatched) throw new UnauthorizedException("Невірно введено пароль або логін");
@@ -67,7 +67,7 @@ export class AuthService {
     }
 
     async getCurrentUser(userId: string) {
-        const user = await this.userService.findOne(userId);
+        const user = await this.shopUserService.findOne(userId);
         if (!user) {
             throw new UnauthorizedException("Користувача не знайдено або сесія завершена");
         }
@@ -99,7 +99,7 @@ export class AuthService {
     }
 
     async validateJwtUser(userId: string) {
-        const user = await this.userService.findOne(userId);
+        const user = await this.shopUserService.findOne(userId);
         if (!user) {
             throw new UnauthorizedException("Користувача не знайдено або сесія завершена");
         }
@@ -107,7 +107,7 @@ export class AuthService {
     }
 
     async validateRefreshToken(userId: string, refreshToken: string) {
-        const user = await this.userService.findOne(userId);
+        const user = await this.shopUserService.findOne(userId);
         if (!user) {
             throw new UnauthorizedException("Користувача не знайдено або сесія завершена");
         }
@@ -127,7 +127,7 @@ export class AuthService {
     async refreshToken(userId: string, name: string, res: Response) {
         const { accessToken, refreshToken } = await this.generateTokens(userId);
         const hashedRT = await bcrypt.hash(refreshToken, 10);
-        await this.userService.updateHashedRefreshToken(userId, hashedRT);
+        await this.shopUserService.updateHashedRefreshToken(userId, hashedRT);
 
         res.cookie("accessToken", accessToken, {
             httpOnly: true,

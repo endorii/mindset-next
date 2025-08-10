@@ -13,14 +13,12 @@ import { ICategory } from "../types/categories.types";
 interface DeleteCategoryModalProps {
     isOpen: boolean;
     onClose: () => void;
-    collectionPath: ICollection["path"];
     category: ICategory;
 }
 
 export default function DeleteCategoryModal({
     isOpen,
     onClose,
-    collectionPath,
     category,
 }: DeleteCategoryModalProps) {
     if (!isOpen) return null;
@@ -40,10 +38,9 @@ export default function DeleteCategoryModal({
                 await deleteImage(category.banner);
             }
 
-            await deleteCategoryMutation.mutateAsync({
-                collectionPath,
-                categoryPath: category.path,
-            });
+            if (category.id) {
+                await deleteCategoryMutation.mutateAsync(category.id);
+            }
 
             toast.success("Категорію успішно видалено!");
         } catch (e) {

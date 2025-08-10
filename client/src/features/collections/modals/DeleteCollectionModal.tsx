@@ -22,9 +22,10 @@ export default function DeleteCollectionModal({
 }: DeleteCollectionModalProps) {
     if (!isOpen) return null;
 
-    const deleteCollection = useDeleteCollection();
+    const deleteCollectionMutation = useDeleteCollection();
 
     const handleDelete = async () => {
+        if (!collection || !collection.id) return;
         try {
             if (collection.categories && collection.categories.length > 0) {
                 toast.error(
@@ -34,7 +35,7 @@ export default function DeleteCollectionModal({
             }
 
             await deleteImage(collection.banner);
-            await deleteCollection.mutateAsync(collection.path);
+            await deleteCollectionMutation.mutateAsync(collection.id);
             toast.success("Коллекцію упішно видалено!");
         } catch (e) {
             toast.error("Помилка при видаленні колекції");

@@ -6,7 +6,7 @@ export async function fetchRecentActionsFromUser(
     userId: string | undefined
 ): Promise<IRecentActions[]> {
     try {
-        const response = await fetch(`${API_BASE_URL}/recent-actions/${userId}`, {
+        const response = await fetch(`${API_BASE_URL}/admin/recent-actions`, {
             credentials: "include",
         });
 

@@ -1,7 +1,7 @@
 "use client";
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { useCurrentUser } from "@/features/admin/user-info/hooks/useUsers";
+import { useCurrentUser } from "@/features/shop/user-info/hooks/useUsers";
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
     const router = useRouter();

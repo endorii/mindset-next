@@ -1,7 +1,5 @@
 "use client";
 
-import { ICategory } from "@/features/categories/types/categories.types";
-import { ICollection } from "@/features/collections/types/collections.types";
 import { deleteImage, deleteImages } from "@/shared/api/images.api";
 import { useEscapeKeyClose } from "@/shared/hooks";
 import { MonoButton, DeleteButton } from "@/shared/ui/buttons";
@@ -14,16 +12,12 @@ import { IProduct } from "../types/products.types";
 interface DeleteProductModalProps {
     isOpen: boolean;
     onClose: () => void;
-    collectionPath: ICollection["path"];
-    categoryPath: ICategory["path"];
     product: IProduct;
 }
 
 export default function DeleteProductModal({
     isOpen,
     onClose,
-    collectionPath,
-    categoryPath,
     product,
 }: DeleteProductModalProps) {
     const deleteProduct = useDeleteProduct();
@@ -38,11 +32,7 @@ export default function DeleteProductModal({
             if (product.images.length > 0) {
                 await deleteImages(product.images);
             }
-            await deleteProduct.mutateAsync({
-                collectionPath,
-                categoryPath,
-                productPath: product.path,
-            });
+            await deleteProduct.mutateAsync(product.id);
             onClose();
             toast.success("Товар упішно видалено!");
         } catch (error) {

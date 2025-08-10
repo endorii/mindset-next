@@ -1,7 +1,6 @@
 "use client";
 
-import { useCurrentUser } from "@/features/admin/user-info/hooks/useUsers";
-import { useCartItemsFromUser } from "@/features/cart/hooks/useCart";
+import { useCartItemsFromUser } from "@/features/shop/cart/hooks/useCart";
 import {
     PreOrderInfo,
     CheckoutResultTable,
@@ -9,6 +8,7 @@ import {
 } from "@/features/checkout/components";
 import { useCreateOrder } from "@/features/orders/hooks/useOrders";
 import { INovaPostDataObj, IOrder } from "@/features/orders/types/orders.types";
+import { useCurrentUser } from "@/features/shop/user-info/hooks/useUsers";
 import {
     fetchAreas,
     fetchCities,
@@ -33,7 +33,7 @@ interface FormData {
 function Checkout() {
     const { data: user, isPending } = useCurrentUser();
 
-    const { data } = useCartItemsFromUser(user?.id || "");
+    const { data } = useCartItemsFromUser();
 
     const cart = data || [];
 
@@ -166,7 +166,6 @@ function Checkout() {
 
         try {
             await createOrderMutation.mutateAsync(orderData);
-            console.log(user.id, orderData);
 
             toast.success("Замовлення створено, перенаправлення...");
             // setTimeout(() => {

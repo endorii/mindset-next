@@ -1,19 +1,19 @@
 "use client";
 
-import { useCurrentUser } from "@/features/admin/user-info/hooks/useUsers";
-import { useCartItemsFromUser } from "@/features/cart/hooks/useCart";
-import { useFavoritesFromUser } from "@/features/favorites/hooks/useFavorites";
+import { useCartItemsFromUser } from "@/features/shop/cart/hooks/useCart";
+import { useFavoritesFromUser } from "@/features/shop/favorites/hooks/useFavorites";
 import { CartIcon, HeartIcon, AccountIcon } from "@/shared/icons";
 import { getLocalStorageArray } from "@/shared/utils/helpers";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState, useEffect } from "react";
 import HeaderBurger from "./HeaderBurger";
+import { useCurrentUser } from "@/features/shop/user-info/hooks/useUsers";
 
 const Header = () => {
     const { data: user, isPending: isUserPending } = useCurrentUser();
-    const { data: userFavorites } = useFavoritesFromUser(user?.id ?? "");
-    const { data: userCart } = useCartItemsFromUser(user?.id ?? "");
+    const { data: userFavorites } = useFavoritesFromUser();
+    const { data: userCart } = useCartItemsFromUser();
 
     const [localCart, setLocalCart] = useState<any[]>([]);
     const [localFavorites, setLocalFavorites] = useState<any[]>([]);

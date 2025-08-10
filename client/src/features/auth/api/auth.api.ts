@@ -1,4 +1,4 @@
-import { IUser } from "@/features/admin/user-info/types/user.types";
+import { IUser } from "@/features/shop/user-info/types/user.types";
 import { fetchWithRefresh } from "@/shared/api/fetchWithRefresh";
 import { CreateUserDto, IAuthResponse, ILoginCredentials } from "../types/auth.types";
 

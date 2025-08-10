@@ -1,4 +1,4 @@
-import { ICartItem } from "@/features/cart/types/cart.types";
+import { ICartItem } from "@/features/shop/cart/types/cart.types";
 
 interface CheckoutResultTable {
     cart: ICartItem[];

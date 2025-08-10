@@ -3,24 +3,24 @@ import {
     createCollection,
     deleteCollection,
     editCollection,
-    fetchCollection,
     fetchCollections,
+    fetchGetCollectionByPath,
 } from "../api/collections.api";
 
 import { ICollection } from "../types/collections.types";
 import { TStatus } from "@/shared/types/types";
 
-export function useCollections() {
+export function useGetCollections() {
     return useQuery({
         queryKey: ["collections"],
         queryFn: () => fetchCollections(),
     });
 }
 
-export function useCollection(collectionPath: ICollection["path"]) {
+export function useGetCollectionByPath(collectionPath: ICollection["path"]) {
     return useQuery({
-        queryKey: ["collections", collectionPath],
-        queryFn: () => fetchCollection(collectionPath),
+        queryKey: ["collection", collectionPath],
+        queryFn: () => fetchGetCollectionByPath(collectionPath),
     });
 }
 
@@ -42,17 +42,17 @@ export function useEditCollection() {
 
     return useMutation({
         mutationFn: ({
-            collectionPath,
+            collectionId,
             data,
         }: {
-            collectionPath: ICollection["path"];
+            collectionId: string;
             data: {
                 name: string;
                 path: string;
                 status: TStatus;
                 banner: string;
             };
-        }) => editCollection(collectionPath, data),
+        }) => editCollection(collectionId, data),
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["collections"] });
         },
@@ -63,7 +63,7 @@ export function useDeleteCollection() {
     const queryClient = useQueryClient();
 
     return useMutation({
-        mutationFn: (collectionPath: ICollection["path"]) => deleteCollection(collectionPath),
+        mutationFn: (collectionId: string) => deleteCollection(collectionId),
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["collections"] });
         },

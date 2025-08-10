@@ -37,9 +37,7 @@ import Image from "next/image";
 interface AddProductModalProps {
     isOpen: boolean;
     onClose: () => void;
-    categoryId: ICategory["id"];
-    collectionPath: ICollection["path"];
-    categoryPath: ICategory["path"];
+    categoryId: string | undefined;
 }
 
 interface FormData {
@@ -60,8 +58,6 @@ export default function AddProductModal({
     isOpen,
     onClose,
     categoryId,
-    collectionPath,
-    categoryPath,
 }: AddProductModalProps) {
     const {
         register,
@@ -198,10 +194,8 @@ export default function AddProductModal({
                 ? await uploadImagesMutation.mutateAsync(images)
                 : { paths: [] };
 
-            await createProductMutation.mutateAsync({
-                collectionPath,
-                categoryPath,
-                productData: {
+            if (categoryId) {
+                await createProductMutation.mutateAsync({
                     name: data.name.trim(),
                     path: data.path.trim(),
                     price: Number(data.price),
@@ -217,8 +211,8 @@ export default function AddProductModal({
                     sizeIds: sizesToSend,
                     typeIds: typesToSend,
                     views: 0,
-                },
-            });
+                });
+            }
 
             setBanner(null);
             setPreview(null);

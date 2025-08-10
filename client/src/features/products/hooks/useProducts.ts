@@ -3,11 +3,12 @@ import { ICollection } from "@/features/collections/types/collections.types";
 import { useQuery, useQueryClient, useMutation } from "@tanstack/react-query";
 import {
     fetchPopularProducts,
-    fetchProductsFromOneCollection,
-    fetchProduct,
+    fetchProductsFromSameCollection,
     addProductToCategory,
     editProduct,
     deleteProduct,
+    fetchProductsByCategoryId,
+    fetchGetProductByPath,
 } from "../api/products.api";
 import { IProduct, ICreateProductPayload } from "../types/products.types";
 
@@ -18,28 +19,30 @@ export function usePopularProducts() {
     });
 }
 
-export function useProductsFromOneCollection(collectionPath: string) {
+export function useProductsByCategoryId(categoryId: string | undefined) {
     return useQuery({
-        queryKey: ["productsFromOneCollection"],
-        queryFn: () => fetchProductsFromOneCollection(collectionPath),
+        queryKey: ["products", categoryId],
+        queryFn: () => fetchProductsByCategoryId(categoryId!),
+        enabled: !!categoryId,
     });
 }
 
-export function useProduct(
-    collectionPath: ICollection["path"],
-    categoryPath: ICategory["path"],
-    productPath: IProduct["path"]
+export function useGetProductByPath(
+    collectionPath: string,
+    categoryPath: string,
+    productPath: string
 ) {
     return useQuery({
-        queryKey: [
-            "collections",
-            collectionPath,
-            "categories",
-            categoryPath,
-            "products",
-            productPath,
-        ],
-        queryFn: () => fetchProduct(collectionPath, categoryPath, productPath),
+        queryKey: ["product", productPath],
+        queryFn: () => fetchGetProductByPath(collectionPath, categoryPath, productPath),
+    });
+}
+
+export function useProductsFromSameCollection(collectionId: string) {
+    return useQuery({
+        queryKey: ["products", "collection", collectionId],
+        queryFn: () => fetchProductsFromSameCollection(collectionId),
+        enabled: !!collectionId,
     });
 }
 
@@ -47,23 +50,10 @@ export function useCreateProduct() {
     const queryClient = useQueryClient();
 
     return useMutation({
-        mutationFn: ({
-            collectionPath,
-            categoryPath,
-            productData,
-        }: {
-            collectionPath: ICollection["path"];
-            categoryPath: ICategory["path"];
-            productData: ICreateProductPayload;
-        }) => addProductToCategory(collectionPath, categoryPath, productData),
-        onSuccess: (_data, variables) => {
+        mutationFn: (productData: ICreateProductPayload) => addProductToCategory(productData),
+        onSuccess: () => {
             queryClient.invalidateQueries({
-                queryKey: [
-                    "collections",
-                    variables.collectionPath,
-                    "categories",
-                    variables.categoryPath,
-                ],
+                queryKey: ["products"],
             });
         },
     });
@@ -74,24 +64,15 @@ export function useEditProduct() {
 
     return useMutation({
         mutationFn: ({
-            collectionPath,
-            categoryPath,
-            productPath,
+            productId,
             productData,
         }: {
-            collectionPath: ICollection["path"];
-            categoryPath: ICategory["path"];
-            productPath: IProduct["path"];
+            productId: string;
             productData: Partial<ICreateProductPayload>;
-        }) => editProduct(collectionPath, categoryPath, productPath, productData),
-        onSuccess(_data, variables) {
+        }) => editProduct(productId, productData),
+        onSuccess() {
             queryClient.invalidateQueries({
-                queryKey: [
-                    "collections",
-                    variables.collectionPath,
-                    "categories",
-                    variables.categoryPath,
-                ],
+                queryKey: ["products"],
             });
         },
     });
@@ -101,23 +82,10 @@ export function useDeleteProduct() {
     const queryClient = useQueryClient();
 
     return useMutation({
-        mutationFn: ({
-            collectionPath,
-            categoryPath,
-            productPath,
-        }: {
-            collectionPath: ICollection["path"];
-            categoryPath: ICategory["path"];
-            productPath: IProduct["path"];
-        }) => deleteProduct(collectionPath, categoryPath, productPath),
-        onSuccess: (_data, variables) => {
+        mutationFn: (productId: string) => deleteProduct(productId),
+        onSuccess: () => {
             queryClient.invalidateQueries({
-                queryKey: [
-                    "collections",
-                    variables.collectionPath,
-                    "categories",
-                    variables.categoryPath,
-                ],
+                queryKey: ["products"],
             });
         },
     });

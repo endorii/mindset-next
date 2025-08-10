@@ -6,17 +6,18 @@ import {
     DeliveryAddress,
     DeliveryAndPaymentMethod,
     MainInfo,
-} from "@/features/account/components";
+} from "@/features/shop/account/components";
 import {
-    EditUserInfoModal,
     AddUserAddressModal,
     EditUserAddressModal,
-} from "@/features/admin";
-import { useCurrentUser } from "@/features/admin/user-info/hooks/useUsers";
+} from "@/features/shop/user-address";
+import { EditUserInfoModal } from "@/features/shop/user-info";
+import { useCurrentUser } from "@/features/shop/user-info/hooks/useUsers";
 import {
     ChangePasswordModal,
     DeleteAccountModal,
-} from "@/features/admin/user-info/modals";
+} from "@/features/shop/user-info/modals";
+
 import { AttributeModalType } from "@/shared/types/types";
 import { redirect } from "next/navigation";
 import { useState, useEffect } from "react";

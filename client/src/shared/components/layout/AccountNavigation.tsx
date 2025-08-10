@@ -1,6 +1,6 @@
 "use client";
 
-import { useCurrentUser } from "@/features/admin/user-info/hooks/useUsers";
+import { useCurrentUser } from "@/features/shop/user-info/hooks/useUsers";
 import { useAuth } from "@/features/auth/hooks/useAuth";
 import {
     MainPageIcon,
@@ -10,6 +10,7 @@ import {
     AdminIcon,
     LogoutIcon,
     BackIcon,
+    InfoIcon,
 } from "@/shared/icons";
 import { NavigationLink } from "@/shared/ui/buttons";
 import { useState } from "react";
@@ -23,10 +24,17 @@ function AccountNavigation({ children }: { children: React.ReactNode }) {
 
     const links = [
         {
-            href: "/account",
+            href: "/",
             Icon: MainPageIcon,
-            text: "Інформація",
+            text: "На головну",
             className: "w-[32px] fill-white group-hover:fill-black",
+        },
+        {
+            href: "/account",
+            Icon: InfoIcon,
+            text: "Інформація",
+            className:
+                "w-[32px] fill-none stroke-[1.5] stroke-white group-hover:stroke-black",
         },
 
         {

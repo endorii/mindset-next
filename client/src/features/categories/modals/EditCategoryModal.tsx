@@ -25,7 +25,6 @@ import Image from "next/image";
 interface EditCategoryModalProps {
     isOpen: boolean;
     onClose: () => void;
-    collectionPath: ICollection["path"];
     category: ICategory;
 }
 
@@ -39,7 +38,6 @@ interface CategoryFormData {
 export default function EditCategoryModal({
     isOpen,
     onClose,
-    collectionPath,
     category,
 }: EditCategoryModalProps) {
     const {
@@ -88,14 +86,15 @@ export default function EditCategoryModal({
                 bannerPath = uploadResult.path;
             }
 
-            await editCategoryMutation.mutateAsync({
-                collectionPath,
-                categoryPath: category.path,
-                data: {
-                    ...data,
-                    banner: bannerPath,
-                },
-            });
+            if (category.id) {
+                await editCategoryMutation.mutateAsync({
+                    categoryId: category.id,
+                    data: {
+                        ...data,
+                        banner: bannerPath,
+                    },
+                });
+            }
 
             onClose();
             toast.success("Категорію упішно відредаговано!");

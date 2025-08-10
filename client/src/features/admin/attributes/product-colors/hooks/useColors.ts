@@ -1,6 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { createColor, deleteColor, editColor, fetchColors } from "../api/colors.api";
-import { IColor, IColorPayload } from "../types/product-color.types";
+import { IColorPayload } from "../types/product-color.types";
 
 export function useColors() {
     return useQuery({
@@ -26,16 +26,8 @@ export function useEditColor() {
     const queryClient = useQueryClient();
 
     return useMutation({
-        mutationFn: ({
-            colorId,
-            data,
-        }: {
-            colorId: IColor["id"];
-            data: {
-                name: string;
-                hexCode: string;
-            };
-        }) => editColor(colorId, data),
+        mutationFn: ({ colorId, data }: { colorId: string; data: Partial<IColorPayload> }) =>
+            editColor(colorId, data),
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["colors"] });
         },
@@ -46,7 +38,7 @@ export function useDeleteColor() {
     const queryClient = useQueryClient();
 
     return useMutation({
-        mutationFn: (colorId: IColor["id"]) => deleteColor(colorId),
+        mutationFn: (colorId: string) => deleteColor(colorId),
         onSuccess: () => {
             queryClient.invalidateQueries({
                 queryKey: ["colors"],

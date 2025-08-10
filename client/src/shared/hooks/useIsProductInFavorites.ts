@@ -1,5 +1,5 @@
-import { IUser } from "@/features/admin/user-info/types/user.types";
-import { ILocalFavoriteItem } from "@/features/favorites/types/favorites.types";
+import { IUser } from "@/features/shop/user-info/types/user.types";
+import { ILocalFavoriteItem } from "@/features/shop/favorites/types/favorites.types";
 import { IProduct } from "@/features/products/types/products.types";
 import { useEffect, useState } from "react";
 

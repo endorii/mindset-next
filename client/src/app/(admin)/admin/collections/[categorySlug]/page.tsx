@@ -2,6 +2,7 @@
 
 import { FilterSection } from "@/features/admin/attributes/components/FilterSection";
 import TitleWithAddElementButton from "@/features/admin/attributes/components/TitleWithAddElementButton";
+import { useGetCategoriesByCollectionId } from "@/features/categories/hooks/useCategories";
 import {
     AddCategoryModal,
     CategoryInfoModal,
@@ -9,7 +10,7 @@ import {
     DeleteCategoryModal,
 } from "@/features/categories/modals";
 import { ICategory } from "@/features/categories/types/categories.types";
-import { useCollection } from "@/features/collections/hooks/useCollections";
+import { useGetCollectionByPath } from "@/features/collections/hooks/useCollections";
 import {
     BackIcon,
     ProductsIcon,
@@ -43,10 +44,15 @@ function AdminCategoriesInCollection() {
 
     const {
         data: collection,
-        isError,
-        error,
-        isPending,
-    } = useCollection(collectionPath);
+        isError: isCollectionError,
+        isPending: isCollectionPending,
+    } = useGetCollectionByPath(collectionPath);
+
+    const {
+        data: categories,
+        isError: isCategoriesError,
+        isPending: isCategoriesPending,
+    } = useGetCategoriesByCollectionId(collection?.id);
 
     const [activeModal, setActiveModal] = useState<ModalType>(null);
     const [selectedCategory, setSelectedCategory] = useState<ICategory | null>(
@@ -62,16 +68,6 @@ function AdminCategoriesInCollection() {
         setSelectedCategory(null);
         setActiveModal(null);
     };
-
-    if (isPending) return <div className="text-center">Завантаження...</div>;
-    if (isError)
-        return (
-            <div className="text-center text-red-500">
-                Помилка: {error?.message || "Невідома помилка"}
-            </div>
-        );
-
-    const categories = collection?.categories ?? [];
 
     return (
         <div className="flex flex-col gap-[15px]">
@@ -97,7 +93,7 @@ function AdminCategoriesInCollection() {
                 selectedItem={""}
             />
 
-            {categories.length > 0 ? (
+            {categories && categories.length > 0 ? (
                 <div className="rounded-xl bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px] sm:px-[10px] pt-0">
                     <div
                         className="grid 
@@ -232,7 +228,6 @@ function AdminCategoriesInCollection() {
                     isOpen={activeModal === "add"}
                     onClose={closeModal}
                     collectionId={collection.id}
-                    collectionPath={collectionPath}
                 />
             )}
             {selectedCategory && (
@@ -240,19 +235,16 @@ function AdminCategoriesInCollection() {
                     <CategoryInfoModal
                         isOpen={activeModal === "info"}
                         onClose={closeModal}
-                        collectionPath={collectionPath}
                         category={selectedCategory}
                     />
                     <EditCategoryModal
                         isOpen={activeModal === "edit"}
                         onClose={closeModal}
-                        collectionPath={collectionPath}
                         category={selectedCategory}
                     />
                     <DeleteCategoryModal
                         isOpen={activeModal === "delete"}
                         onClose={closeModal}
-                        collectionPath={collectionPath}
                         category={selectedCategory}
                     />
                 </>

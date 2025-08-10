@@ -20,7 +20,7 @@ function ChooseLink({
         <Link
             href={href}
             onClick={onClick}
-            className={`border border-white/10 shadow-lg rounded-xl hover:bg-white hover:text-black transition-colors duration-300 w-[100px] flex items-center justify-center cursor-pointer px-[20px] py-[8px] ${
+            className={`border border-white/10 shadow-lg rounded-xl hover:bg-white hover:text-black transition-colors duration-300 w-[100px] flex items-center justify-center cursor-pointer px-[20px] py-[10px] ${
                 currentCollection?.path === collection?.path
                     ? "bg-white text-black"
                     : "bg-black/80 text-white"

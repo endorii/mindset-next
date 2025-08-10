@@ -2,7 +2,7 @@
 
 import { SearchIcon, AccountIcon } from "@/shared/icons";
 import Link from "next/link";
-import { useCurrentUser } from "../../user-info/hooks/useUsers";
+import { useCurrentUser } from "@/features/shop/user-info/hooks/useUsers";
 
 function AdminHeader() {
     const { data: user } = useCurrentUser();

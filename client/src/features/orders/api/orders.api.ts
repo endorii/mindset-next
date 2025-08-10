@@ -4,7 +4,7 @@ const API_BASE_URL = "http://localhost:5000/api";
 
 export async function createOrder(data: IOrder) {
     try {
-        const response = await fetch(`${API_BASE_URL}/orders`, {
+        const response = await fetch(`${API_BASE_URL}/shop/orders`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -26,7 +26,7 @@ export async function createOrder(data: IOrder) {
 
 export async function getOrders(): Promise<IOrder[]> {
     try {
-        const response = await fetch(`${API_BASE_URL}/orders/`, {
+        const response = await fetch(`${API_BASE_URL}/admin/orders`, {
             credentials: "include",
         });
 
@@ -41,9 +41,9 @@ export async function getOrders(): Promise<IOrder[]> {
     }
 }
 
-export async function getOrdersByUserId(userId: string): Promise<IOrder[]> {
+export async function getOrdersByUserId(): Promise<IOrder[]> {
     try {
-        const response = await fetch(`${API_BASE_URL}/orders/users/${userId}`, {
+        const response = await fetch(`${API_BASE_URL}/shop/orders/users`, {
             credentials: "include",
         });
 
@@ -63,7 +63,7 @@ export async function updateOrder(
     data: Partial<IOrder>
 ): Promise<IOrder[]> {
     try {
-        const response = await fetch(`${API_BASE_URL}/orders/${orderId}`, {
+        const response = await fetch(`${API_BASE_URL}/admin/orders/${orderId}`, {
             method: "PATCH",
             headers: {
                 "Content-Type": "application/json",
@@ -85,7 +85,7 @@ export async function updateOrder(
 
 export async function deleteOrder(orderId: string) {
     try {
-        const response = await fetch(`${API_BASE_URL}/orders/${orderId}`, {
+        const response = await fetch(`${API_BASE_URL}/admin/orders/${orderId}`, {
             method: "DELETE",
             credentials: "include",
         });

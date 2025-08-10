@@ -2,7 +2,8 @@
 
 import { FilterSection } from "@/features/admin/attributes/components/FilterSection";
 import TitleWithAddElementButton from "@/features/admin/attributes/components/TitleWithAddElementButton";
-import { useCategory } from "@/features/categories/hooks/useCategories";
+import { useGetCategoryByPath } from "@/features/categories/hooks/useCategories";
+import { useProductsByCategoryId } from "@/features/products/hooks/useProducts";
 import {
     AddProductModal,
     ProductInfoModal,
@@ -47,8 +48,17 @@ function AdminProductsInCategory() {
         null
     );
 
-    const { data } = useCategory(collectionPath, categoryPath);
-    const products = data?.products ?? [];
+    const {
+        data: category,
+        isError: isCategoryError,
+        isPending: isCategoryPending,
+    } = useGetCategoryByPath(collectionPath, categoryPath);
+
+    const {
+        data: products,
+        isError: isProductsError,
+        isPending: isProductsPending,
+    } = useProductsByCategoryId(category?.id);
 
     const openModal = (type: ModalType, product: IProduct | null = null) => {
         setSelectedProduct(product);
@@ -88,12 +98,12 @@ function AdminProductsInCategory() {
                 selectedItem={""}
             />
 
-            {products.length > 0 ? (
+            {products && products.length > 0 ? (
                 <div className="rounded-xl bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px] sm:px-[10px] pt-0">
                     <div
                         className="grid 
-                    grid-cols-[120px_0.5fr_0.5fr_0.4fr_1fr_0.5fr] 
-                    xl:grid-cols-[120px_0.5fr_0.5fr_0.4fr_1fr] 
+                    grid-cols-[120px_1fr_1fr_1fr_1fr_1fr] 
+                    xl:grid-cols-[120px_1fr_1fr_1fr_1fr] 
                     lg:grid-cols-4 
                     sm:grid-cols-3 
                     xs:grid-cols-2 
@@ -114,8 +124,8 @@ function AdminProductsInCategory() {
                             >
                                 <div
                                     className="grid 
-                                grid-cols-[120px_0.5fr_0.5fr_0.4fr_1fr_0.5fr] 
-                                xl:grid-cols-[120px_0.5fr_0.5fr_0.4fr_1fr] 
+                                grid-cols-[120px_1fr_1fr_1fr_1fr_1fr] 
+                    xl:grid-cols-[120px_1fr_1fr_1fr_1fr] 
                                 lg:grid-cols-4 
                                 sm:grid-cols-3 
                                 xs:grid-cols-2
@@ -203,36 +213,29 @@ function AdminProductsInCategory() {
                 </div>
             )}
 
-            {data && (
+            {category && (
                 <AddProductModal
                     isOpen={activeModal === "add"}
                     onClose={closeModal}
-                    collectionPath={collectionPath}
-                    categoryId={data.id}
-                    categoryPath={categoryPath}
+                    categoryId={category.id}
                 />
             )}
+
             {selectedProduct && (
                 <>
                     <ProductInfoModal
                         isOpen={activeModal === "info"}
                         onClose={closeModal}
-                        collectionPath={collectionPath}
-                        categoryPath={categoryPath}
                         product={selectedProduct}
                     />
                     <EditProductModal
                         isOpen={activeModal === "edit"}
                         onClose={closeModal}
                         product={selectedProduct}
-                        collectionPath={collectionPath}
-                        categoryPath={categoryPath}
                     />
                     <DeleteProductModal
                         isOpen={activeModal === "delete"}
                         onClose={closeModal}
-                        collectionPath={collectionPath}
-                        categoryPath={categoryPath}
                         product={selectedProduct}
                     />
                 </>

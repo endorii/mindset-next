@@ -1,6 +1,5 @@
 "use client";
 
-import { useCollections } from "@/features/collections/hooks/useCollections";
 import { ICollection } from "@/features/collections/types/collections.types";
 import {
     TiktokIcon,
@@ -15,9 +14,11 @@ import { usePathname } from "next/navigation";
 import { useState, useEffect } from "react";
 import FooterNavList from "../FooterNavList";
 import FooterNavListItem from "../FooterNavListItem";
+import { useGetCollections } from "@/features/collections/hooks/useCollections";
 
 const Footer = () => {
-    const { data: collections, isError, error, isPending } = useCollections();
+    const { data: collections, isPending: isCollectionsPending } =
+        useGetCollections();
 
     const pathname = usePathname();
     const collectionPath = pathname.split("/").filter(Boolean)[0] || null;
@@ -50,7 +51,7 @@ const Footer = () => {
                     </div>
                 </div>
                 <div className="w-full grid grid-cols-4 md:grid-cols-3 sm:grid-cols-2 xxs:grid-cols-1 gap-[150px] 2xl:gap-[100px] xl:gap-[70px] lg:gap-[50px] md:gap-[30px]">
-                    {collections && !isPending && !isError && (
+                    {collections && !isCollectionsPending && (
                         <FooterNavList title="Колекції">
                             {collections.map((collection) => (
                                 <FooterNavListItem

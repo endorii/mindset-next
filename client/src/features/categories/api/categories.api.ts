@@ -3,30 +3,13 @@ import { ICollection } from "@/features/collections/types/collections.types";
 
 const API_BASE_URL = "http://localhost:5000/api";
 
-export async function fetchCategoriesByCollection(
-    collectionPath: ICollection["path"]
-): Promise<ICategory[]> {
-    try {
-        const response = await fetch(`${API_BASE_URL}/collections/${collectionPath}/categories`);
-
-        if (!response.ok) {
-            const errorData = await response.json().catch(() => ({}));
-            throw new Error(errorData.message);
-        }
-
-        return await response.json();
-    } catch (error: any) {
-        throw new Error(error?.message || "Помилка з'єднання із сервером");
-    }
-}
-
-export async function fetchCategory(
+export async function fetchCategoryByPath(
     collectionPath: ICollection["path"],
     categoryPath: ICategory["path"]
 ): Promise<ICategory> {
     try {
         const response = await fetch(
-            `${API_BASE_URL}/collections/${collectionPath}/categories/${categoryPath}`
+            `${API_BASE_URL}/shop/categories/${collectionPath}/${categoryPath}`
         );
 
         if (!response.ok) {
@@ -40,12 +23,24 @@ export async function fetchCategory(
     }
 }
 
-export async function addCategoryToCollection(
-    collectionPath: ICollection["path"],
-    categoryData: ICategory
-): Promise<ICategory> {
+export async function fetchGetCategoriesByCollectionId(collectionId: string): Promise<ICategory[]> {
     try {
-        const response = await fetch(`${API_BASE_URL}/collections/${collectionPath}/categories`, {
+        const response = await fetch(`${API_BASE_URL}/shop/categories/${collectionId}`);
+
+        if (!response.ok) {
+            const errorData = await response.json().catch(() => ({}));
+            throw new Error(errorData.message);
+        }
+
+        return await response.json();
+    } catch (error: any) {
+        throw new Error(error?.message || "Помилка з'єднання із сервером");
+    }
+}
+
+export async function addCategoryToCollection(categoryData: ICategory): Promise<ICategory> {
+    try {
+        const response = await fetch(`${API_BASE_URL}/admin/categories`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -66,22 +61,18 @@ export async function addCategoryToCollection(
 }
 
 export async function editCategory(
-    collectionPath: ICollection["path"],
-    categoryPath: ICategory["path"],
+    categoryId: string,
     data: Partial<ICategory>
 ): Promise<ICategory> {
     try {
-        const response = await fetch(
-            `${API_BASE_URL}/collections/${collectionPath}/categories/${categoryPath}`,
-            {
-                method: "PATCH",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                credentials: "include",
-                body: JSON.stringify(data),
-            }
-        );
+        const response = await fetch(`${API_BASE_URL}/admin/categories/${categoryId}`, {
+            method: "PATCH",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            credentials: "include",
+            body: JSON.stringify(data),
+        });
 
         if (!response.ok) {
             const errorData = await response.json().catch(() => ({}));
@@ -94,18 +85,12 @@ export async function editCategory(
     }
 }
 
-export async function deleteCategory(
-    collectionPath: ICollection["path"],
-    categoryPath: ICategory["path"]
-): Promise<void> {
+export async function deleteCategory(categoryId: string): Promise<void> {
     try {
-        const response = await fetch(
-            `${API_BASE_URL}/collections/${collectionPath}/categories/${categoryPath}`,
-            {
-                method: "DELETE",
-                credentials: "include",
-            }
-        );
+        const response = await fetch(`${API_BASE_URL}/admin/categories/${categoryId}`, {
+            method: "DELETE",
+            credentials: "include",
+        });
 
         if (!response.ok) {
             const errorData = await response.json().catch(() => ({}));

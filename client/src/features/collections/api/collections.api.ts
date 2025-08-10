@@ -4,7 +4,7 @@ const API_BASE_URL = "http://localhost:5000/api";
 
 export async function fetchCollections(): Promise<ICollection[]> {
     try {
-        const response = await fetch(`${API_BASE_URL}/collections`);
+        const response = await fetch(`${API_BASE_URL}/shop/collections`);
 
         if (!response.ok) {
             const errorData = await response.json().catch(() => ({}));
@@ -17,9 +17,9 @@ export async function fetchCollections(): Promise<ICollection[]> {
     }
 }
 
-export async function fetchCollection(collectionPath: string): Promise<ICollection> {
+export async function fetchGetCollectionByPath(collectionPath: string): Promise<ICollection> {
     try {
-        const response = await fetch(`${API_BASE_URL}/collections/${collectionPath}`);
+        const response = await fetch(`${API_BASE_URL}/shop/collections/${collectionPath}`);
 
         if (!response.ok) {
             const errorData = await response.json().catch(() => ({}));
@@ -34,7 +34,7 @@ export async function fetchCollection(collectionPath: string): Promise<ICollecti
 
 export async function createCollection(data: ICollection): Promise<ICollection> {
     try {
-        const response = await fetch(`${API_BASE_URL}/collections`, {
+        const response = await fetch(`${API_BASE_URL}/admin/collections`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -55,11 +55,11 @@ export async function createCollection(data: ICollection): Promise<ICollection> 
 }
 
 export async function editCollection(
-    collectionPath: string,
+    collectionId: string,
     data: Partial<ICollection>
 ): Promise<ICollection> {
     try {
-        const response = await fetch(`${API_BASE_URL}/collections/${collectionPath}`, {
+        const response = await fetch(`${API_BASE_URL}/admin/collections/${collectionId}`, {
             method: "PATCH",
             headers: {
                 "Content-Type": "application/json",
@@ -79,9 +79,9 @@ export async function editCollection(
     }
 }
 
-export async function deleteCollection(collectionPath: string): Promise<ICollection> {
+export async function deleteCollection(collectionId: string): Promise<ICollection> {
     try {
-        const response = await fetch(`${API_BASE_URL}/collections/${collectionPath}`, {
+        const response = await fetch(`${API_BASE_URL}/admin/collections/${collectionId}`, {
             method: "DELETE",
             credentials: "include",
         });

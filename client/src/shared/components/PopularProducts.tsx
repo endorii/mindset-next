@@ -4,6 +4,8 @@ import SliderWrapper from "./layout/SliderWrapper";
 function PopularProducts() {
     const { data: popularProducts } = usePopularProducts();
 
+    console.log(popularProducts);
+
     return popularProducts ? (
         <SliderWrapper
             productsList={popularProducts}

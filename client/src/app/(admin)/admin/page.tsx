@@ -3,7 +3,7 @@
 import Title from "@/features/admin/attributes/components/Title";
 import { HomeFastStat, HomeTodo } from "@/features/admin/components";
 import { useRecentActions } from "@/features/admin/recent-actions/hooks/useRecentActions";
-import { useCurrentUser } from "@/features/admin/user-info/hooks/useUsers";
+import { useCurrentUser } from "@/features/shop/user-info/hooks/useUsers";
 import { useOrders } from "@/features/orders/hooks/useOrders";
 import { AdminRecentActions } from "@/shared/components";
 import { OrdersAndSalesChart } from "@/shared/components/charts";

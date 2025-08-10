@@ -46,7 +46,7 @@ export default function EditCollectionModal({
     const [modalMessage, setModalMessage] = useState("");
 
     const uploadImageMutation = useUploadImage();
-    const editCollection = useEditCollection();
+    const editCollectionMutation = useEditCollection();
 
     const {
         register,
@@ -77,6 +77,7 @@ export default function EditCollectionModal({
     }, [collection, reset]);
 
     const onSubmit = async (data: FormValues) => {
+        if (!collection || !collection.id) return;
         try {
             let bannerPath = typeof banner === "string" ? banner : "";
 
@@ -94,8 +95,8 @@ export default function EditCollectionModal({
                 bannerPath = uploadResult.path;
             }
 
-            await editCollection.mutateAsync({
-                collectionPath: collection.path,
+            await editCollectionMutation.mutateAsync({
+                collectionId: collection.id,
                 data: {
                     ...data,
                     banner: bannerPath,
@@ -241,11 +242,11 @@ export default function EditCollectionModal({
                         type="submit"
                         disabled={
                             uploadImageMutation.isPending ||
-                            editCollection.isPending
+                            editCollectionMutation.isPending
                         }
                     >
                         {uploadImageMutation.isPending ||
-                        editCollection.isPending
+                        editCollectionMutation.isPending
                             ? "Завантаження..."
                             : "Підтвердити"}
                     </MonoButton>
