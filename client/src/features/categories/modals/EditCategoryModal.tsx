@@ -17,7 +17,6 @@ import { useState, useEffect, ChangeEvent } from "react";
 import { createPortal } from "react-dom";
 import { useForm } from "react-hook-form";
 import { Label } from "recharts";
-import { toast } from "sonner";
 import { useEditCategory } from "../hooks/useCategories";
 import { ICategory } from "../types/categories.types";
 import Image from "next/image";
@@ -97,7 +96,6 @@ export default function EditCategoryModal({
             }
 
             onClose();
-            toast.success("Категорію упішно відредаговано!");
         } catch (error: any) {
             setModalMessage(error?.message || "Помилка при редагуванні");
         }

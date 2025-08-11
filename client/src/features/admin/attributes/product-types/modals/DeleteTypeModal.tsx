@@ -4,7 +4,6 @@ import { useEscapeKeyClose } from "@/shared/hooks";
 import { MonoButton, DeleteButton } from "@/shared/ui/buttons";
 import { ModalWrapper, FormButtonsWrapper } from "@/shared/ui/wrappers";
 import { createPortal } from "react-dom";
-import { toast } from "sonner";
 import { useDeleteType } from "../hooks/useTypes";
 import { IType } from "../types/product-type.types";
 
@@ -24,12 +23,7 @@ export default function DeleteTypeModal({
     const deleteTypeMutation = useDeleteType();
 
     const handleDelete = async () => {
-        try {
-            await deleteTypeMutation.mutateAsync(type.id);
-            toast.success("Тип упішно видалено!");
-        } catch (e) {
-            toast.error("Помилка при видаленні типу");
-        }
+        await deleteTypeMutation.mutateAsync(type.id);
     };
 
     useEscapeKeyClose({ isOpen, onClose });

@@ -30,7 +30,6 @@ import { useState, useEffect, ChangeEvent } from "react";
 import { createPortal } from "react-dom";
 import { useForm } from "react-hook-form";
 import { Label } from "recharts";
-import { toast } from "sonner";
 import { useCreateProduct } from "../hooks/useProducts";
 import Image from "next/image";
 
@@ -224,7 +223,6 @@ export default function AddProductModal({
             reset();
             setModalMessage("");
             onClose();
-            toast.success("Товар упішно додано!");
         } catch (err: any) {
             setModalMessage(err?.message || "Не вдалося додати товар");
         }

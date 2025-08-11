@@ -4,7 +4,6 @@ import { useEscapeKeyClose } from "@/shared/hooks";
 import { MonoButton, DeleteButton } from "@/shared/ui/buttons";
 import { ModalWrapper, FormButtonsWrapper } from "@/shared/ui/wrappers";
 import { createPortal } from "react-dom";
-import { toast } from "sonner";
 import { useDeleteColor } from "../hooks/useColors";
 import { IColor } from "../types/product-color.types";
 
@@ -24,12 +23,7 @@ export default function DeleteColorModal({
     const deleteColorMutation = useDeleteColor();
 
     const handleDelete = async () => {
-        try {
-            await deleteColorMutation.mutateAsync(color.id);
-            toast.success("Колір упішно видалено!");
-        } catch (e) {
-            toast.error("Помилка при видаленні кольору");
-        }
+        await deleteColorMutation.mutateAsync(color.id);
     };
 
     useEscapeKeyClose({ isOpen, onClose });

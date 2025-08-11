@@ -17,7 +17,6 @@ import { statuses } from "@/shared/utils/helpers";
 import { useState } from "react";
 import { createPortal } from "react-dom";
 import { useForm } from "react-hook-form";
-import { toast } from "sonner";
 import { useCreateCategory } from "../hooks/useCategories";
 
 interface AddCategoryModalProps {
@@ -98,9 +97,7 @@ export default function AddCategoryModal({
                     description: data.description,
                 });
             }
-
             handleClose();
-            toast.success("Категорію упішно додано!");
         } catch (error: any) {
             setModalMessage(
                 error?.message || "Помилка при створенні категорії"

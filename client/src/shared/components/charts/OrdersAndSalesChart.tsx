@@ -78,7 +78,7 @@ function generateChartData(orders: IOrder[], period: Period): ChartPoint[] {
             }
         });
 
-        return data;
+        return parsedData;
     }
 
     if (period === "week") {
@@ -111,7 +111,7 @@ function generateChartData(orders: IOrder[], period: Period): ChartPoint[] {
             }
         });
 
-        return data;
+        return parsedData;
     }
 
     if (period === "month") {
@@ -142,7 +142,7 @@ function generateChartData(orders: IOrder[], period: Period): ChartPoint[] {
             }
         });
 
-        return data;
+        return parsedData;
     }
 
     if (period === "year") {
@@ -165,7 +165,7 @@ function generateChartData(orders: IOrder[], period: Period): ChartPoint[] {
             }
         });
 
-        return data;
+        return parsedData;
     }
 
     return [];

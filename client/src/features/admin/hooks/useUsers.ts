@@ -5,6 +5,5 @@ export function useAllUsers() {
     return useQuery({
         queryKey: ["allUsers"],
         queryFn: () => fetchAllUsers(),
-        retry: false,
     });
 }

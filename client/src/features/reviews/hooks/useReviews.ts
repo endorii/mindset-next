@@ -11,14 +11,22 @@ import {
 import { IReview } from "../types/reviews.types";
 
 import { toggleReviewVote } from "../api/reviews.api";
+import { toast } from "sonner";
 
 export function useToggleReviewVote() {
     const queryClient = useQueryClient();
 
     return useMutation({
         mutationFn: (data: { reviewId: string; isHelpful: boolean }) => toggleReviewVote(data),
-        onSuccess: () => {
+        onSuccess: (data) => {
             queryClient.invalidateQueries({ queryKey: ["reviews"] });
+        },
+        onError: (error: any) => {
+            if (error?.message) {
+                toast.error(error.message);
+            } else {
+                toast.error("Сталася невідома помилка");
+            }
         },
     });
 }
@@ -54,6 +62,14 @@ export function useCreateReview() {
             queryClient.invalidateQueries({
                 queryKey: ["reviews"],
             });
+            toast.success("Відгук створено і надіслано на модерацію!");
+        },
+        onError: (error: any) => {
+            if (error?.message) {
+                toast.error(error.message);
+            } else {
+                toast.error("Сталася невідома помилка");
+            }
         },
     });
 }
@@ -66,6 +82,14 @@ export function useEditReview() {
             updateReview(reviewId, data),
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["reviews"] });
+            toast.success("Відгук успішно редаговано!");
+        },
+        onError: (error: any) => {
+            if (error?.message) {
+                toast.error(error.message);
+            } else {
+                toast.error("Сталася невідома помилка");
+            }
         },
     });
 }
@@ -77,6 +101,14 @@ export function useApproveReview() {
         mutationFn: (reviewId: string) => approveReview(reviewId),
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["reviews"] });
+            toast.success("Відгук успішно опубліковано!");
+        },
+        onError: (error: any) => {
+            if (error?.message) {
+                toast.error(error.message);
+            } else {
+                toast.error("Сталася невідома помилка");
+            }
         },
     });
 }
@@ -88,6 +120,14 @@ export function useDeleteReview() {
         mutationFn: (reviewId: string) => deleteReview(reviewId),
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["reviews"] });
+            toast.success("Відгук видалено!");
+        },
+        onError: (error: any) => {
+            if (error?.message) {
+                toast.error(error.message);
+            } else {
+                toast.error("Сталася невідома помилка");
+            }
         },
     });
 }

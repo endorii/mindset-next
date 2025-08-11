@@ -30,7 +30,6 @@ import { useState, useEffect, ChangeEvent } from "react";
 import { createPortal } from "react-dom";
 import { useForm } from "react-hook-form";
 import { Label } from "recharts";
-import { toast } from "sonner";
 import { useEditProduct } from "../hooks/useProducts";
 import { IProduct } from "../types/products.types";
 import Image from "next/image";
@@ -284,7 +283,6 @@ export default function EditProductModal({
             reset();
             setModalMessage("");
             onClose();
-            toast.success("Товар успішно відредаговано!");
         } catch (err: any) {
             setModalMessage(err?.message || "Не вдалося відредагувати товар");
         }

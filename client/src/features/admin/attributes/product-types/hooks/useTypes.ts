@@ -1,6 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { ITypePayload } from "../types/product-type.types";
 import { createType, deleteType, editType, fetchTypes } from "../api/types.api";
+import { toast } from "sonner";
 
 export function useTypes() {
     return useQuery({
@@ -18,6 +19,14 @@ export function useCreateType() {
             queryClient.invalidateQueries({
                 queryKey: ["types"],
             });
+            toast.success("Тип успішно додано!");
+        },
+        onError: (error: any) => {
+            if (error?.message) {
+                toast.error(error.message);
+            } else {
+                toast.error("Сталася невідома помилка");
+            }
         },
     });
 }
@@ -30,6 +39,14 @@ export function useEditType() {
             editType(typeId, data),
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["types"] });
+            toast.success("Тип успішно відредаговано!");
+        },
+        onError: (error: any) => {
+            if (error?.message) {
+                toast.error(error.message);
+            } else {
+                toast.error("Сталася невідома помилка");
+            }
         },
     });
 }
@@ -43,6 +60,14 @@ export function useDeleteType() {
             queryClient.invalidateQueries({
                 queryKey: ["types"],
             });
+            toast.success("Тип видалено!");
+        },
+        onError: (error: any) => {
+            if (error?.message) {
+                toast.error(error.message);
+            } else {
+                toast.error("Сталася невідома помилка");
+            }
         },
     });
 }

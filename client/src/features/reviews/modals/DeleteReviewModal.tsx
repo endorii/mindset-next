@@ -4,7 +4,6 @@ import { useEscapeKeyClose } from "@/shared/hooks";
 import { MonoButton, DeleteButton } from "@/shared/ui/buttons";
 import { ModalWrapper, FormButtonsWrapper } from "@/shared/ui/wrappers";
 import { createPortal } from "react-dom";
-import { toast } from "sonner";
 import { useDeleteReview } from "../hooks/useReviews";
 import { IReview } from "../types/reviews.types";
 
@@ -25,13 +24,7 @@ export default function DeleteReviewModal({
 
     const handleDelete = async () => {
         if (!review.id) return;
-
-        try {
-            await deleteReviewMutation.mutateAsync(review.id);
-            toast.success("Відгук упішно видалено!");
-        } catch (e) {
-            toast.error("Помилка при видаленні відгуку");
-        }
+        await deleteReviewMutation.mutateAsync(review.id);
     };
 
     useEscapeKeyClose({ isOpen, onClose });

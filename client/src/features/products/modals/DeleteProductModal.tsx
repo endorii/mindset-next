@@ -5,7 +5,6 @@ import { useEscapeKeyClose } from "@/shared/hooks";
 import { MonoButton, DeleteButton } from "@/shared/ui/buttons";
 import { ModalWrapper, FormButtonsWrapper } from "@/shared/ui/wrappers";
 import { createPortal } from "react-dom";
-import { toast } from "sonner";
 import { useDeleteProduct } from "../hooks/useProducts";
 import { IProduct } from "../types/products.types";
 
@@ -27,18 +26,12 @@ export default function DeleteProductModal({
     if (!isOpen) return null;
 
     const handleDelete = async () => {
-        try {
-            await deleteImage(product.banner);
-            if (product.images.length > 0) {
-                await deleteImages(product.images);
-            }
-            await deleteProduct.mutateAsync(product.id);
-            onClose();
-            toast.success("Товар упішно видалено!");
-        } catch (error) {
-            console.log(error);
-            toast.error("Помилка видалення товару");
+        await deleteImage(product.banner);
+        if (product.images.length > 0) {
+            await deleteImages(product.images);
         }
+        await deleteProduct.mutateAsync(product.id);
+        onClose();
     };
 
     const modalContent = (

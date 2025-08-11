@@ -11,7 +11,6 @@ import {
 import { useState, useEffect } from "react";
 import { createPortal } from "react-dom";
 import { useForm } from "react-hook-form";
-import { toast } from "sonner";
 import { IUserShippingAdress } from "../../user-info/types/user.types";
 import { useEditUserAddress } from "../hooks/useUserAddress";
 
@@ -77,12 +76,8 @@ export default function EditUserAddressModal({
 
     const onSubmit = async (data: FormInputs) => {
         try {
-            await editUserAddress.mutateAsync({
-                userId: address?.userId || "",
-                data,
-            });
+            await editUserAddress.mutateAsync(data);
             onClose();
-            toast.success("Адресу успішно відредаговано!");
         } catch (err: any) {
             setModalMessage(
                 err?.message || "Помилка редагування адреси доставки"

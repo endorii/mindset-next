@@ -19,7 +19,6 @@ import InputField from "@/shared/ui/inputs/InputField";
 import { NovaPoshtaSelect } from "@/shared/ui/selectors/NovaPoshtaSelect";
 import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { toast } from "sonner";
 
 interface FormData {
     fullName: string;
@@ -167,7 +166,6 @@ function Checkout() {
         try {
             await createOrderMutation.mutateAsync(orderData);
 
-            toast.success("Замовлення створено, перенаправлення...");
             // setTimeout(() => {
             //     redirect("/orders");
             // }, 1000);

@@ -3,7 +3,6 @@ import InputField from "@/shared/ui/inputs/InputField";
 import { LoginComponentsWrapper } from "@/shared/ui/wrappers";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { toast } from "sonner";
 import { useAuth } from "../hooks/useAuth";
 import { ILoginCredentials } from "../types/auth.types";
 
@@ -21,7 +20,6 @@ function LoginForm() {
     const onLoginSubmit = async (data: ILoginCredentials) => {
         try {
             await login(data);
-            toast.success("Ви успішно увійшли до Вашого акаунту");
         } catch (err: any) {
             setLoginMessage(err?.message || "Помилка входу");
         }

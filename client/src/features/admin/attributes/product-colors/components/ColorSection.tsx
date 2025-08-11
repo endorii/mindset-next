@@ -100,15 +100,19 @@ export const ColorSection = () => {
             )}
 
             <AddColorModal isOpen={modalType === "add"} onClose={closeModal} />
-            {selected && modalType === "edit" && (
-                <EditColorModal isOpen onClose={closeModal} color={selected} />
-            )}
-            {selected && modalType === "delete" && (
-                <DeleteColorModal
-                    isOpen
-                    onClose={closeModal}
-                    color={selected}
-                />
+            {selected && (
+                <>
+                    <EditColorModal
+                        isOpen
+                        onClose={closeModal}
+                        color={selected}
+                    />
+                    <DeleteColorModal
+                        isOpen
+                        onClose={closeModal}
+                        color={selected}
+                    />
+                </>
             )}
         </>
     );

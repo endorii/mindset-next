@@ -13,8 +13,7 @@ import { priorities } from "@/shared/utils/helpers";
 import { useState, useEffect } from "react";
 import { createPortal } from "react-dom";
 import { useForm } from "react-hook-form";
-import { toast } from "sonner";
-import { ITodoItem, TodoPriority } from "../../admin.types";
+import { ITodoItem, TodoPriority } from "../../types/admin.types";
 import { useUpdateTodoItem } from "../../hooks/useTodo";
 
 interface EditTodoItemModalProps {
@@ -71,9 +70,7 @@ export default function EditTodoItemModal({
                     priority: data.priority,
                 },
             });
-
             onClose();
-            toast.success("Завдання упішно відредаговано!");
         } catch (error: any) {
             setModalMessage(
                 error?.message || "Помилка при редагуванні завдання"

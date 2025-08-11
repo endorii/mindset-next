@@ -8,7 +8,7 @@ import {
     DeleteButtonWithIcon,
 } from "@/shared/ui/buttons";
 import { useState } from "react";
-import { ITodoItem } from "../admin.types";
+import { ITodoItem } from "../types/admin.types";
 import { useTodoList } from "../hooks/useTodo";
 import {
     AddTodoItemModal,

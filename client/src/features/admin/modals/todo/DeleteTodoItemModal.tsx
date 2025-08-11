@@ -4,8 +4,7 @@ import { useEscapeKeyClose } from "@/shared/hooks";
 import { MonoButton, DeleteButton } from "@/shared/ui/buttons";
 import { ModalWrapper, FormButtonsWrapper } from "@/shared/ui/wrappers";
 import { createPortal } from "react-dom";
-import { toast } from "sonner";
-import { ITodoItem } from "../../admin.types";
+import { ITodoItem } from "../../types/admin.types";
 import { useDeleteTodoItem } from "../../hooks/useTodo";
 
 interface DeleteTodoItemModalProps {
@@ -19,19 +18,13 @@ export default function DeleteTodoItemModal({
     onClose,
     todoItem,
 }: DeleteTodoItemModalProps) {
-    if (!isOpen || !todoItem) return null;
+    if (!isOpen) return null;
 
     const deleteTodoItemMutation = useDeleteTodoItem();
 
     const handleDelete = async () => {
-        try {
-            if (!todoItem.id) return;
-
-            await deleteTodoItemMutation.mutateAsync(todoItem.id);
-            toast.success("Завдання упішно видалено!");
-        } catch (e) {
-            toast.error("Помилка при видаленні завдання");
-        }
+        if (!todoItem.id) return;
+        await deleteTodoItemMutation.mutateAsync(todoItem.id);
     };
 
     useEscapeKeyClose({ isOpen, onClose });

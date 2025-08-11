@@ -13,8 +13,7 @@ import { priorities } from "@/shared/utils/helpers";
 import { useState } from "react";
 import { createPortal } from "react-dom";
 import { useForm } from "react-hook-form";
-import { toast } from "sonner";
-import { TodoPriority } from "../../admin.types";
+import { TodoPriority } from "../../types/admin.types";
 import { useCreateTodoItem } from "../../hooks/useTodo";
 
 interface AddTodoItemModalProps {
@@ -59,9 +58,7 @@ export default function AddTodoItemModal({
                 title: data.title,
                 priority: data.priority,
             });
-
             handleClose();
-            toast.success("Завдання упішно створено!");
         } catch (error: any) {
             setModalMessage(error?.message || "Помилка при створенні завдання");
         }

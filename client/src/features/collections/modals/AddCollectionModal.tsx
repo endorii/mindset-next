@@ -16,7 +16,6 @@ import { statuses } from "@/shared/utils/helpers";
 import { useState } from "react";
 import { createPortal } from "react-dom";
 import { useForm } from "react-hook-form";
-import { toast } from "sonner";
 import { useCreateCollection } from "../hooks/useCollections";
 
 interface AddCollectionModalProps {
@@ -92,9 +91,7 @@ export default function AddCollectionModal({
                 views: 0,
                 status: data.status,
             });
-
             handleClose();
-            toast.success("Коллекцію упішно додано!");
         } catch (err: any) {
             setModalMessage(err?.message || "Помилка при створенні колекції");
         }

@@ -16,7 +16,6 @@ import {
 import { useState, useEffect } from "react";
 import { createPortal } from "react-dom";
 import { useForm, Controller } from "react-hook-form";
-import { toast } from "sonner";
 import { useUpdateOrder } from "../hooks/useOrders";
 import { IOrder, OrderStatus, INovaPostDataObj } from "../types/orders.types";
 import { Label } from "@/shared/ui/components";
@@ -170,9 +169,7 @@ export default function EditOrderModal({
                 orderId: order.id,
                 data,
             });
-
             onClose();
-            toast.success("Замовлення успішно відредаговано!");
         } catch (err: any) {
             setModalMessage(
                 err?.message || "Помилка при редагуванні замовлення"

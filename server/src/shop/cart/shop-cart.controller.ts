@@ -12,13 +12,13 @@ import { AuthenticatedRequestUser } from "src/auth/types/auth-request-user.type"
 export class ShopCartController {
     constructor(private readonly shopCartService: ShopCartService) {}
 
-    @Get("")
+    @Get()
     @Roles(Role.ADMIN, Role.USER)
     getAllCartItemsFromUser(@Req() req: Request & { user: AuthenticatedRequestUser }) {
         return this.shopCartService.getAllCartItemsFromUser(req.user.id);
     }
 
-    @Post("")
+    @Post()
     @Roles(Role.ADMIN, Role.USER)
     addCartItemToUser(
         @Req() req: Request & { user: AuthenticatedRequestUser },
@@ -36,7 +36,7 @@ export class ShopCartController {
         return this.shopCartService.removeCartItemFromUser(req.user.id, cartItemId);
     }
 
-    @Delete("")
+    @Delete()
     @Roles(Role.ADMIN, Role.USER)
     removeCartFromUser(@Req() req: Request & { user: AuthenticatedRequestUser }) {
         return this.shopCartService.removeCartFromUser(req.user.id);

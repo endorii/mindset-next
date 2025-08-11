@@ -11,7 +11,6 @@ import {
 import { useState } from "react";
 import { createPortal } from "react-dom";
 import { useForm } from "react-hook-form";
-import { toast } from "sonner";
 import { IUser } from "../../user-info/types/user.types";
 import { useCreateUserAddress } from "../hooks/useUserAddress";
 
@@ -59,8 +58,6 @@ export default function AddUserAddressModal({
                 userId,
                 ...data,
             });
-
-            toast.success("Адресу успішно додано!");
             handleClose();
         } catch (error: any) {
             console.error("Помилка при додаванні адреси доставки:", error);

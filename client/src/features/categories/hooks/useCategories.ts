@@ -8,6 +8,7 @@ import {
 } from "../api/categories.api";
 import { ICategory } from "../types/categories.types";
 import { TStatus } from "@/shared/types/types";
+import { toast } from "sonner";
 
 export function useGetCategoryByPath(collectionPath: string, categoryPath: string) {
     return useQuery({
@@ -33,6 +34,14 @@ export function useCreateCategory() {
             queryClient.invalidateQueries({
                 queryKey: ["categories"],
             });
+            toast.success("Категорію успішно додано!");
+        },
+        onError: (error: any) => {
+            if (error?.message) {
+                toast.error(error.message);
+            } else {
+                toast.error("Сталася невідома помилка");
+            }
         },
     });
 }
@@ -57,6 +66,14 @@ export function useEditCategory() {
             queryClient.invalidateQueries({
                 queryKey: ["categories"],
             });
+            toast.success("Категорію успішно відредаговано!");
+        },
+        onError: (error: any) => {
+            if (error?.message) {
+                toast.error(error.message);
+            } else {
+                toast.error("Сталася невідома помилка");
+            }
         },
     });
 }
@@ -70,6 +87,14 @@ export function useDeleteCategory() {
             queryClient.invalidateQueries({
                 queryKey: ["categories"],
             });
+            toast.success("Категорію видалено!");
+        },
+        onError: (error: any) => {
+            if (error?.message) {
+                toast.error(error.message);
+            } else {
+                toast.error("Сталася невідома помилка");
+            }
         },
     });
 }

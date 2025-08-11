@@ -1,11 +1,9 @@
 "use client";
 
-import { deleteImage } from "@/shared/api/images.api";
 import { useEscapeKeyClose } from "@/shared/hooks";
 import { MonoButton, DeleteButton } from "@/shared/ui/buttons";
 import { ModalWrapper, FormButtonsWrapper } from "@/shared/ui/wrappers";
 import { createPortal } from "react-dom";
-import { toast } from "sonner";
 import { useDeleteUser } from "../hooks/useUsers";
 import InputField from "@/shared/ui/inputs/InputField";
 import { useEffect, useState } from "react";
@@ -49,9 +47,7 @@ export default function DeleteAccountModal({
     const handleDelete = async (data: FormValues) => {
         try {
             await deleteAccountMutation.mutateAsync(data.password);
-
             onClose();
-            toast.success("Акаунт успішно видалено!");
         } catch (err: any) {
             setModalMessage(err?.message || "Помилка при зміні паролю");
         }

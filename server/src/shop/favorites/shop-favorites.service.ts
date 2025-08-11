@@ -1,4 +1,9 @@
-import { Injectable, InternalServerErrorException, NotFoundException } from "@nestjs/common";
+import {
+    ConflictException,
+    Injectable,
+    InternalServerErrorException,
+    NotFoundException,
+} from "@nestjs/common";
 import { PrismaService } from "src/prisma/prisma.service";
 import { CreateFavoriteDto } from "./dto/create-favorite.dto";
 
@@ -53,7 +58,7 @@ export class ShopFavoritesService {
             });
 
             if (existingFavorite) {
-                return existingFavorite;
+                throw new ConflictException("Товар вже додано до вподобних");
             }
 
             return await this.prisma.favorite.create({
@@ -63,6 +68,9 @@ export class ShopFavoritesService {
                 },
             });
         } catch (error) {
+            if (error instanceof ConflictException) {
+                throw error;
+            }
             console.error("Помилка при додаванні у вподобані:", error);
             throw new InternalServerErrorException("Помилка сервера при додаванні у вподобані");
         }

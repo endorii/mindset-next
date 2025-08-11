@@ -1,4 +1,9 @@
-import { BadRequestException, Injectable } from "@nestjs/common";
+import {
+    BadRequestException,
+    Injectable,
+    InternalServerErrorException,
+    NotFoundException,
+} from "@nestjs/common";
 import { PrismaService } from "src/prisma/prisma.service";
 import { CreateCategoryDto } from "./dto/create-category.dto";
 import { UpdateCategoryDto } from "./dto/update-category.dto";
@@ -37,44 +42,64 @@ export class AdminCategoriesService {
             return category;
         } catch (error) {
             console.error("Помилка створення категорії:", error);
-            throw error;
+
+            if (error instanceof BadRequestException) {
+                throw error;
+            }
+
+            throw new InternalServerErrorException(
+                "Не вдалося створити категорію через внутрішню помилку"
+            );
         }
     }
 
     async editCategory(userId: string, categoryId: string, updateCategoryDto: UpdateCategoryDto) {
         try {
-            const category = await this.prisma.category.update({
-                where: {
-                    id: categoryId,
-                },
+            const category = await this.prisma.category.findUnique({
+                where: { id: categoryId },
+            });
+
+            if (!category) {
+                throw new NotFoundException("Категорію не знайдено");
+            }
+
+            const updatedCategory = await this.prisma.category.update({
+                where: { id: categoryId },
                 data: updateCategoryDto,
             });
 
             await this.adminRecentActions.createAction(
                 userId,
-                `Редаговано категорію ${category.name}`
+                `Редаговано категорію ${updatedCategory.name}`
             );
 
             return {
                 message: "Категорію успішно оновлено",
-                category,
+                category: updatedCategory,
             };
         } catch (error) {
             console.error("Помилка редагування категорії:", error);
-            throw error;
+
+            if (error instanceof NotFoundException) {
+                throw error;
+            }
+
+            throw new InternalServerErrorException(
+                "Не вдалося оновити категорію через внутрішню помилку"
+            );
         }
     }
 
     async deleteCategory(userId: string, categoryId: string) {
         try {
-            const category = await this.prisma.category.findFirst({
+            const category = await this.prisma.category.findUnique({
                 where: {
                     id: categoryId,
                 },
             });
 
             if (!category) {
-                throw new Error("Категорію не знайдено");
+                throw new NotFoundException("Категорію не знайдено");
             }
 
             await this.prisma.category.delete({
@@ -93,7 +118,14 @@ export class AdminCategoriesService {
             };
         } catch (error) {
             console.error("Помилка видалення категорії:", error);
-            throw error;
+
+            if (error instanceof NotFoundException) {
+                throw error;
+            }
+
+            throw new InternalServerErrorException(
+                "Не вдалося видалити категорію через внутрішню помилку"
+            );
         }
     }
 }

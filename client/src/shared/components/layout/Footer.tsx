@@ -137,13 +137,8 @@ const Footer = () => {
                     </FooterNavList>
                 </div>
             </div>
-            <div className="relative flex gap-[10px] justify-end p-[10px] border-t border-white/10 text-xs text-white/50 font-semibold">
-                <div className="items-end">Наша політика</div>
-                <div className="items-end">FAQ</div>
-                <div className="items-end">
-                    Працюємо без вихідних з 9:00 до 20:00
-                </div>
-                <div className="absolute w-full flex justify-center items-center">
+            <div className="relative border-t border-white/10 text-xs text-white/50 font-semibold">
+                <div className="absolute w-full flex justify-center items-center p-[10px]">
                     Mindset © 2025
                 </div>
             </div>

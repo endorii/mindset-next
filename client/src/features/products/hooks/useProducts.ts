@@ -1,5 +1,3 @@
-import { ICategory } from "@/features/categories/types/categories.types";
-import { ICollection } from "@/features/collections/types/collections.types";
 import { useQuery, useQueryClient, useMutation } from "@tanstack/react-query";
 import {
     fetchPopularProducts,
@@ -10,7 +8,8 @@ import {
     fetchProductsByCategoryId,
     fetchGetProductByPath,
 } from "../api/products.api";
-import { IProduct, ICreateProductPayload } from "../types/products.types";
+import { ICreateProductPayload } from "../types/products.types";
+import { toast } from "sonner";
 
 export function usePopularProducts() {
     return useQuery({
@@ -55,6 +54,14 @@ export function useCreateProduct() {
             queryClient.invalidateQueries({
                 queryKey: ["products"],
             });
+            toast.success("Товар успішно створено!");
+        },
+        onError: (error: any) => {
+            if (error?.message) {
+                toast.error(error.message);
+            } else {
+                toast.error("Сталася невідома помилка");
+            }
         },
     });
 }
@@ -74,6 +81,14 @@ export function useEditProduct() {
             queryClient.invalidateQueries({
                 queryKey: ["products"],
             });
+            toast.success("Товар успішно відредаговано!");
+        },
+        onError: (error: any) => {
+            if (error?.message) {
+                toast.error(error.message);
+            } else {
+                toast.error("Сталася невідома помилка");
+            }
         },
     });
 }
@@ -87,6 +102,14 @@ export function useDeleteProduct() {
             queryClient.invalidateQueries({
                 queryKey: ["products"],
             });
+            toast.success("Товар успішно видалено!");
+        },
+        onError: (error: any) => {
+            if (error?.message) {
+                toast.error(error.message);
+            } else {
+                toast.error("Сталася невідома помилка");
+            }
         },
     });
 }

@@ -1,4 +1,9 @@
-import { ConflictException, Injectable } from "@nestjs/common";
+import {
+    ConflictException,
+    Injectable,
+    InternalServerErrorException,
+    NotFoundException,
+} from "@nestjs/common";
 import { CreateColorDto } from "./dto/create-color.dto";
 import { PrismaService } from "src/prisma/prisma.service";
 import { UpdateColorDto } from "./dto/update-color.dto";
@@ -16,7 +21,7 @@ export class AdminColorsService {
             return await this.prisma.color.findMany();
         } catch (error) {
             console.error("Помилка отримання кольорів:", error);
-            throw error;
+            throw new InternalServerErrorException("Не вдалося отримати кольори");
         }
     }
 
@@ -38,13 +43,13 @@ export class AdminColorsService {
 
             await this.adminRecentActions.createAction(userId, `Додано колір ${color.name}`);
 
-            return {
-                message: "Колір успішно створено",
-                color,
-            };
+            return color;
         } catch (error) {
             console.error("Помилка створення кольору:", error);
-            throw error;
+            if (error instanceof ConflictException) {
+                throw error;
+            }
+            throw new InternalServerErrorException("Не вдалося створити колір");
         }
     }
 
@@ -67,14 +72,12 @@ export class AdminColorsService {
                 userId,
                 `Редаговано колір ${updatedColor.name}`
             );
-
-            return {
-                message: "Колір успішно оновлено",
-                color: updatedColor,
-            };
         } catch (error) {
             console.error("Помилка редагування кольору:", error);
-            throw error;
+            if (error instanceof ConflictException) {
+                throw error;
+            }
+            throw new InternalServerErrorException("Не вдалося оновити колір");
         }
     }
 
@@ -84,20 +87,19 @@ export class AdminColorsService {
                 where: { id: colorId },
             });
 
-            if (!color) throw new Error("Колір не знайдено");
+            if (!color) throw new NotFoundException("Колір не знайдено");
 
             await this.prisma.color.delete({
                 where: { id: colorId },
             });
 
             await this.adminRecentActions.createAction(userId, `Видалено колір ${color.name}`);
-
-            return {
-                message: "Колір успішно видалено",
-            };
         } catch (error) {
             console.error("Помилка видалення кольору:", error);
-            throw error;
+            if (error instanceof NotFoundException) {
+                throw error;
+            }
+            throw new InternalServerErrorException("Не вдалося видалити колір");
         }
     }
 }

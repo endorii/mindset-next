@@ -11,7 +11,6 @@ import {
 import { useState, useEffect } from "react";
 import { createPortal } from "react-dom";
 import { useForm } from "react-hook-form";
-import { toast } from "sonner";
 import { useEditSize } from "../hooks/useSizes";
 import { ISize } from "../types/product-size.types";
 
@@ -53,7 +52,6 @@ export default function EditSizeModal({
                 sizeId: size.id,
                 data: data,
             });
-            toast.success("Розмір успішно оновлено!");
             onClose();
         } catch (error: any) {
             setModalMessage(

@@ -79,10 +79,6 @@ function ProductReviewsList({ reviews }: ProductReviewsListProps) {
                                                                 isHelpful: true,
                                                             }
                                                         );
-                                                    } else {
-                                                        console.error(
-                                                            "Review ID is missing"
-                                                        );
                                                     }
                                                 }}
                                             >
@@ -113,10 +109,6 @@ function ProductReviewsList({ reviews }: ProductReviewsListProps) {
                                                                 isHelpful:
                                                                     false,
                                                             }
-                                                        );
-                                                    } else {
-                                                        console.error(
-                                                            "Review ID is missing"
                                                         );
                                                     }
                                                 }}

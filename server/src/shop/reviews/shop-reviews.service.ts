@@ -1,4 +1,10 @@
-import { Injectable, BadRequestException, ForbiddenException } from "@nestjs/common";
+import {
+    Injectable,
+    BadRequestException,
+    ForbiddenException,
+    NotFoundException,
+    InternalServerErrorException,
+} from "@nestjs/common";
 import { PrismaService } from "src/prisma/prisma.service";
 import { CreateReviewDto } from "./dto/create-review.dto";
 import { OrderStatus } from "generated/prisma";
@@ -18,36 +24,26 @@ export class ShopReviewsService {
         }
 
         const existingReviewForOrderItem = await this.prisma.review.findUnique({
-            where: {
-                orderItemId,
-            },
+            where: { orderItemId },
         });
 
         if (existingReviewForOrderItem) {
             throw new BadRequestException("Ви вже залишили відгук для цього елемента замовлення.");
         }
 
-        // Чи користувач дійсно купив цей товар (через orderItemId)
-        const orderItem = await this.prisma.orderItem.findUnique({
+        // Перевірка, що користувач дійсно купив цей товар та замовлення в потрібному статусі
+        const orderItem = await this.prisma.orderItem.findFirst({
             where: {
                 id: orderItemId,
                 productId,
                 order: {
                     userId,
-
-                    status: {
-                        in: [OrderStatus.shipped, OrderStatus.delivered],
-                    },
+                    status: { in: [OrderStatus.shipped, OrderStatus.delivered] },
                 },
             },
-
             include: {
                 product: true,
-                order: {
-                    include: {
-                        user: true,
-                    },
-                },
+                order: { include: { user: true } },
             },
         });
 
@@ -76,48 +72,18 @@ export class ShopReviewsService {
                 review,
             };
         } catch (error) {
-            if (error instanceof BadRequestException || error instanceof ForbiddenException) {
-                throw error;
-            }
             console.error("Помилка створення відгуку:", error);
-            throw new BadRequestException("Не вдалося створити відгук через внутрішню помилку.");
+            throw new InternalServerErrorException(
+                "Не вдалося створити відгук через внутрішню помилку."
+            );
         }
     }
 
-    async toggleReviewVote(
-        userId: string,
-        reviewId: string,
-        body: {
-            isHelpful: boolean;
-        }
-    ) {
+    async toggleReviewVote(userId: string, reviewId: string, body: { isHelpful: boolean }) {
         const { isHelpful } = body;
 
-        const existingVote = await this.prisma.reviewVote.findUnique({
-            where: {
-                userId_reviewId: {
-                    userId,
-                    reviewId,
-                },
-            },
-        });
-
-        if (!existingVote) {
-            await this.prisma.reviewVote.create({
-                data: { userId, reviewId, isHelpful },
-            });
-
-            return this.prisma.review.update({
-                where: { id: reviewId },
-                data: {
-                    isHelpful: { increment: isHelpful ? 1 : 0 },
-                    isNotHelpful: { increment: !isHelpful ? 1 : 0 },
-                },
-            });
-        }
-
-        if (existingVote.isHelpful === isHelpful) {
-            await this.prisma.reviewVote.delete({
+        try {
+            const existingVote = await this.prisma.reviewVote.findUnique({
                 where: {
                     userId_reviewId: {
                         userId,
@@ -126,31 +92,47 @@ export class ShopReviewsService {
                 },
             });
 
-            return this.prisma.review.update({
-                where: { id: reviewId },
-                data: {
-                    isHelpful: { decrement: isHelpful ? 1 : 0 },
-                    isNotHelpful: { decrement: !isHelpful ? 1 : 0 },
-                },
-            });
-        } else {
-            await this.prisma.reviewVote.update({
-                where: {
-                    userId_reviewId: {
-                        userId,
-                        reviewId,
-                    },
-                },
-                data: { isHelpful },
-            });
+            if (!existingVote) {
+                await this.prisma.reviewVote.create({ data: { userId, reviewId, isHelpful } });
 
-            return this.prisma.review.update({
-                where: { id: reviewId },
-                data: {
-                    isHelpful: { increment: isHelpful ? 1 : -1 },
-                    isNotHelpful: { increment: !isHelpful ? 1 : -1 },
-                },
-            });
+                return this.prisma.review.update({
+                    where: { id: reviewId },
+                    data: {
+                        isHelpful: { increment: isHelpful ? 1 : 0 },
+                        isNotHelpful: { increment: !isHelpful ? 1 : 0 },
+                    },
+                });
+            }
+
+            if (existingVote.isHelpful === isHelpful) {
+                await this.prisma.reviewVote.delete({
+                    where: { userId_reviewId: { userId, reviewId } },
+                });
+
+                return this.prisma.review.update({
+                    where: { id: reviewId },
+                    data: {
+                        isHelpful: { decrement: isHelpful ? 1 : 0 },
+                        isNotHelpful: { decrement: !isHelpful ? 1 : 0 },
+                    },
+                });
+            } else {
+                await this.prisma.reviewVote.update({
+                    where: { userId_reviewId: { userId, reviewId } },
+                    data: { isHelpful },
+                });
+
+                return this.prisma.review.update({
+                    where: { id: reviewId },
+                    data: {
+                        isHelpful: { increment: isHelpful ? 1 : -1 },
+                        isNotHelpful: { increment: !isHelpful ? 1 : -1 },
+                    },
+                });
+            }
+        } catch (error) {
+            console.error("Помилка голосування за відгук:", error);
+            throw new InternalServerErrorException("Не вдалося оновити голосування за відгук");
         }
     }
 
@@ -164,9 +146,7 @@ export class ShopReviewsService {
                             product: {
                                 include: {
                                     category: {
-                                        include: {
-                                            collection: true,
-                                        },
+                                        include: { collection: true },
                                     },
                                 },
                             },
@@ -175,11 +155,15 @@ export class ShopReviewsService {
                 },
             });
 
-            if (!reviews) throw new Error("Відгуки відсутні");
+            if (!reviews || reviews.length === 0) {
+                throw new NotFoundException("Відгуки відсутні");
+            }
+
             return reviews;
         } catch (error) {
             console.error("Помилка отримання відгуків:", error);
-            throw new Error("Не вдалося отримати відгуки");
+            if (error instanceof NotFoundException) throw error;
+            throw new InternalServerErrorException("Не вдалося отримати відгуки");
         }
     }
 
@@ -193,9 +177,7 @@ export class ShopReviewsService {
                             product: {
                                 include: {
                                     category: {
-                                        include: {
-                                            collection: true,
-                                        },
+                                        include: { collection: true },
                                     },
                                 },
                             },
@@ -204,35 +186,42 @@ export class ShopReviewsService {
                 },
             });
 
-            if (!reviews) throw new Error("Відгуки відсутні");
+            if (!reviews || reviews.length === 0) {
+                throw new NotFoundException("Відгуки відсутні");
+            }
+
             return reviews;
         } catch (error) {
             console.error("Помилка отримання відгуків:", error);
-            throw new Error("Не вдалося отримати відгуки");
+            if (error instanceof NotFoundException) throw error;
+            throw new InternalServerErrorException("Не вдалося отримати відгуки");
         }
     }
 
     async deleteReview(userId: string, reviewId: string) {
         try {
             const review = await this.prisma.review.findUnique({
-                where: { id: reviewId, userId },
+                where: { id: reviewId },
             });
 
-            if (!review) throw new Error("Відгук не знайдено");
+            if (!review) {
+                throw new NotFoundException("Відгук не знайдено");
+            }
+
+            if (review.userId !== userId) {
+                throw new ForbiddenException("Ви не маєте права видаляти цей відгук");
+            }
 
             await this.prisma.review.delete({
-                where: {
-                    id: reviewId,
-                    userId,
-                },
+                where: { id: reviewId },
             });
 
-            return {
-                message: "Відгук успішно видалено",
-            };
+            return { message: "Відгук успішно видалено" };
         } catch (error) {
             console.error("Помилка видалення відгуку:", error);
-            throw new Error("Не вдалося видалити відгук");
+            if (error instanceof NotFoundException || error instanceof ForbiddenException)
+                throw error;
+            throw new InternalServerErrorException("Не вдалося видалити відгук");
         }
     }
 }

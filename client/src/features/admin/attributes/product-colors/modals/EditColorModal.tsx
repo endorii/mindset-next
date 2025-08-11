@@ -11,7 +11,6 @@ import {
 import { useState, useEffect } from "react";
 import { createPortal } from "react-dom";
 import { useForm } from "react-hook-form";
-import { toast } from "sonner";
 import { useEditColor } from "../hooks/useColors";
 import { IColor } from "../types/product-color.types";
 
@@ -58,10 +57,7 @@ export default function EditColorModal({
                 colorId: color.id,
                 data,
             });
-
             onClose();
-
-            toast.success("Колір успішно відредаговано!");
         } catch (err: any) {
             setModalMessage(err?.message || "Помилка при редагуванні кольору");
         }

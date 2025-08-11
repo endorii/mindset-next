@@ -12,7 +12,6 @@ import {
 import { useState, useEffect } from "react";
 import { createPortal } from "react-dom";
 import { useForm } from "react-hook-form";
-import { toast } from "sonner";
 import { useEditReview } from "../hooks/useReviews";
 import { IReview } from "../types/reviews.types";
 
@@ -73,9 +72,7 @@ export default function ReviewReplyModal({
                     adminReplyAt: new Date().toISOString(),
                 },
             });
-
             handleClose();
-            toast.success("Відповідь адміністратора упішно додано!");
         } catch (err: any) {
             setModalMessage(
                 err?.message || "Помилка при створенні відповіді адміністратора"

@@ -34,7 +34,6 @@ function RegisterForm() {
             setRegisterMessage("Реєстрація успішна!");
             setRegisterIsSuccess(true);
             reset();
-            toast.success("Реєстрація успішна!");
         } catch (err: any) {
             setRegisterMessage(err?.message || "Помилка реєстрації");
         }

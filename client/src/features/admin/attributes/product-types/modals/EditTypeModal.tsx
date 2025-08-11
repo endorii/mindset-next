@@ -11,7 +11,6 @@ import {
 import { useState, useEffect } from "react";
 import { createPortal } from "react-dom";
 import { useForm } from "react-hook-form";
-import { toast } from "sonner";
 import { useEditType } from "../hooks/useTypes";
 import { IType } from "../types/product-type.types";
 
@@ -53,8 +52,6 @@ export default function EditTypeModal({
                 typeId: type.id,
                 data: data,
             });
-
-            toast.success("Тип успішно оновлено!");
             onClose();
         } catch (error: any) {
             setModalMessage(error?.message || "Помилка при редагуванні типу");

@@ -11,7 +11,6 @@ import {
 import { useState } from "react";
 import { createPortal } from "react-dom";
 import { useForm } from "react-hook-form";
-import { toast } from "sonner";
 import { useCreateSize } from "../hooks/useSizes";
 
 interface AddSizeModalProps {
@@ -43,7 +42,6 @@ export default function AddSizeModal({ isOpen, onClose }: AddSizeModalProps) {
     const onSubmit = async (data: FormValues) => {
         try {
             await createSizeMutation.mutateAsync({ name: data.name });
-            toast.success("Розмір успішно додано!");
             handleClose();
         } catch (error: any) {
             setModalMessage(error?.message || "Помилка при додаванні розміру");

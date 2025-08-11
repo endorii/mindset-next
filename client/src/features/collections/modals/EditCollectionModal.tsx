@@ -17,7 +17,6 @@ import { useState, useEffect } from "react";
 import { createPortal } from "react-dom";
 import { useForm } from "react-hook-form";
 import { Label } from "recharts";
-import { toast } from "sonner";
 import { useEditCollection } from "../hooks/useCollections";
 import { ICollection } from "../types/collections.types";
 import Image from "next/image";
@@ -102,9 +101,7 @@ export default function EditCollectionModal({
                     banner: bannerPath,
                 },
             });
-
             handleClose();
-            toast.success("Колекцію успішно відредаговано!");
         } catch (err: any) {
             setModalMessage(err?.message || "Помилка при редагуванні колекції");
         }

@@ -4,7 +4,6 @@ import { useEscapeKeyClose } from "@/shared/hooks";
 import { MonoButton } from "@/shared/ui/buttons";
 import { ModalWrapper, FormButtonsWrapper } from "@/shared/ui/wrappers";
 import { createPortal } from "react-dom";
-import { toast } from "sonner";
 import { useApproveReview } from "../hooks/useReviews";
 import { IReview } from "../types/reviews.types";
 
@@ -25,13 +24,7 @@ export default function ApproveReviewModal({
 
     const handleApprove = async () => {
         if (!review.id) return;
-
-        try {
-            await approveReviewMutation.mutateAsync(review.id);
-            toast.success("Відгук успішно опубліковано!");
-        } catch (e) {
-            toast.error("Помилка при публікації відгуку");
-        }
+        await approveReviewMutation.mutateAsync(review.id);
     };
 
     useEscapeKeyClose({ isOpen, onClose });

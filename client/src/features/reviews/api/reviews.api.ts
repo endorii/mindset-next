@@ -23,9 +23,9 @@ export async function toggleReviewVote(data: ToggleReviewVotePayload): Promise<I
             throw new Error(errorData.message || "Не вдалося надіслати голос");
         }
 
-        return await response.json();
+        return parsedData;
     } catch (error: any) {
-        throw new Error(error?.message || "Помилка з'єднання із сервером");
+        throw error;
     }
 }
 
@@ -35,14 +35,20 @@ export async function fetchAllReviews(): Promise<IReview[]> {
             credentials: "include",
         });
 
+        const text = await response.text();
+        const parsedData = text ? JSON.parse(text) : {};
+
         if (!response.ok) {
-            const errorData = await response.json().catch(() => ({}));
-            throw new Error(errorData.message);
+            const error: any = new Error(
+                parsedData.message || `Помилка ${parsedData.statusCode || response.status}`
+            );
+            error.status = parsedData.statusCode || response.status;
+            throw error;
         }
 
-        return await response.json();
+        return parsedData;
     } catch (error: any) {
-        throw new Error(error?.message || "Помилка з'єднання із сервером");
+        throw error;
     }
 }
 
@@ -52,14 +58,20 @@ export async function fetchReviewsByProductId(productId: string): Promise<IRevie
             credentials: "include",
         });
 
+        const text = await response.text();
+        const parsedData = text ? JSON.parse(text) : {};
+
         if (!response.ok) {
-            const errorData = await response.json().catch(() => ({}));
-            throw new Error(errorData.message);
+            const error: any = new Error(
+                parsedData.message || `Помилка ${parsedData.statusCode || response.status}`
+            );
+            error.status = parsedData.statusCode || response.status;
+            throw error;
         }
 
-        return await response.json();
+        return parsedData;
     } catch (error: any) {
-        throw new Error(error?.message || "Помилка з'єднання із сервером");
+        throw error;
     }
 }
 
@@ -69,14 +81,20 @@ export async function fetchReviewsByUserId(): Promise<IReview[]> {
             credentials: "include",
         });
 
+        const text = await response.text();
+        const parsedData = text ? JSON.parse(text) : {};
+
         if (!response.ok) {
-            const errorData = await response.json().catch(() => ({}));
-            throw new Error(errorData.message);
+            const error: any = new Error(
+                parsedData.message || `Помилка ${parsedData.statusCode || response.status}`
+            );
+            error.status = parsedData.statusCode || response.status;
+            throw error;
         }
 
-        return await response.json();
+        return parsedData;
     } catch (error: any) {
-        throw new Error(error?.message || "Помилка з'єднання із сервером");
+        throw error;
     }
 }
 
@@ -91,14 +109,20 @@ export async function createReview(data: IReview): Promise<IReview> {
             body: JSON.stringify(data),
         });
 
+        const text = await response.text();
+        const parsedData = text ? JSON.parse(text) : {};
+
         if (!response.ok) {
-            const errorData = await response.json().catch(() => ({}));
-            throw new Error(errorData.message);
+            const error: any = new Error(
+                parsedData.message || `Помилка ${parsedData.statusCode || response.status}`
+            );
+            error.status = parsedData.statusCode || response.status;
+            throw error;
         }
 
-        return await response.json();
+        return parsedData;
     } catch (error: any) {
-        throw new Error(error?.message || "Помилка з'єднання із сервером");
+        throw error;
     }
 }
 
@@ -113,14 +137,20 @@ export async function updateReview(reviewId: string, data: Partial<IReview>): Pr
             body: JSON.stringify(data),
         });
 
+        const text = await response.text();
+        const parsedData = text ? JSON.parse(text) : {};
+
         if (!response.ok) {
-            const errorData = await response.json().catch(() => ({}));
-            throw new Error(errorData.message);
+            const error: any = new Error(
+                parsedData.message || `Помилка ${parsedData.statusCode || response.status}`
+            );
+            error.status = parsedData.statusCode || response.status;
+            throw error;
         }
 
-        return await response.json();
+        return parsedData;
     } catch (error: any) {
-        throw new Error(error?.message || "Помилка з'єднання із сервером");
+        throw error;
     }
 }
 
@@ -134,14 +164,20 @@ export async function approveReview(reviewId: string): Promise<IReview> {
             credentials: "include",
         });
 
+        const text = await response.text();
+        const parsedData = text ? JSON.parse(text) : {};
+
         if (!response.ok) {
-            const errorData = await response.json().catch(() => ({}));
-            throw new Error(errorData.message);
+            const error: any = new Error(
+                parsedData.message || `Помилка ${parsedData.statusCode || response.status}`
+            );
+            error.status = parsedData.statusCode || response.status;
+            throw error;
         }
 
-        return await response.json();
+        return parsedData;
     } catch (error: any) {
-        throw new Error(error?.message || "Помилка з'єднання із сервером");
+        throw error;
     }
 }
 
@@ -152,13 +188,19 @@ export async function deleteReview(reviewId: string): Promise<IReview> {
             credentials: "include",
         });
 
+        const text = await response.text();
+        const parsedData = text ? JSON.parse(text) : {};
+
         if (!response.ok) {
-            const errorData = await response.json().catch(() => ({}));
-            throw new Error(errorData.message);
+            const error: any = new Error(
+                parsedData.message || `Помилка ${parsedData.statusCode || response.status}`
+            );
+            error.status = parsedData.statusCode || response.status;
+            throw error;
         }
 
-        return await response.json();
+        return parsedData;
     } catch (error: any) {
-        throw new Error(error?.message || "Помилка з'єднання із сервером");
+        throw error;
     }
 }

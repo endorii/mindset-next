@@ -13,7 +13,6 @@ import {
 import { useState } from "react";
 import { createPortal } from "react-dom";
 import { useForm } from "react-hook-form";
-import { toast } from "sonner";
 import { StarRating } from "../components";
 import { useCreateReview } from "../hooks/useReviews";
 
@@ -72,9 +71,7 @@ export default function AddReviewModal({
                 orderItemId: selectedOrderItem.id,
                 productId: selectedOrderItem.product?.id,
             });
-
             handleClose();
-            toast.success("Відгук упішно додано!");
         } catch (err: any) {
             setModalMessage(err?.message || "Помилка при створенні відгуку");
         }

@@ -4,7 +4,6 @@ import { useEscapeKeyClose } from "@/shared/hooks";
 import { MonoButton, DeleteButton } from "@/shared/ui/buttons";
 import { ModalWrapper, FormButtonsWrapper } from "@/shared/ui/wrappers";
 import { createPortal } from "react-dom";
-import { toast } from "sonner";
 import { useDeleteSize } from "../hooks/useSizes";
 import { ISize } from "../types/product-size.types";
 
@@ -24,12 +23,7 @@ export default function DeleteSizeModal({
     const deleteSizeMutation = useDeleteSize();
 
     const handleDelete = async () => {
-        try {
-            await deleteSizeMutation.mutateAsync(size.id);
-            toast.success("Розмір упішно видалено!");
-        } catch (e) {
-            toast.error("Помилка при видаленні розміру");
-        }
+        await deleteSizeMutation.mutateAsync(size.id);
     };
 
     useEscapeKeyClose({ isOpen, onClose });

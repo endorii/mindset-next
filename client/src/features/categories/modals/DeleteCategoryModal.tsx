@@ -26,25 +26,19 @@ export default function DeleteCategoryModal({
     const deleteCategoryMutation = useDeleteCategory();
 
     const handleDelete = async () => {
-        try {
-            if (category.products && category.products.length > 0) {
-                toast.info(
-                    "Категорія містить товари, щоб її видалити, видаліть товари, які у ній знаходяться"
-                );
-                return;
-            }
+        if (category.products && category.products.length > 0) {
+            toast.info(
+                "Категорія містить товари, щоб її видалити, видаліть товари, які у ній знаходяться"
+            );
+            return;
+        }
 
-            if (category.banner) {
-                await deleteImage(category.banner);
-            }
+        if (category.banner) {
+            await deleteImage(category.banner);
+        }
 
-            if (category.id) {
-                await deleteCategoryMutation.mutateAsync(category.id);
-            }
-
-            toast.success("Категорію успішно видалено!");
-        } catch (e) {
-            toast.error("Помилка при видаленні категорії");
+        if (category.id) {
+            await deleteCategoryMutation.mutateAsync(category.id);
         }
     };
 

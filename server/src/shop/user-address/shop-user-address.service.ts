@@ -1,4 +1,9 @@
-import { ConflictException, Injectable, NotFoundException } from "@nestjs/common";
+import {
+    ConflictException,
+    Injectable,
+    InternalServerErrorException,
+    NotFoundException,
+} from "@nestjs/common";
 import { CreateUserAddressDto } from "./dto/create-user-address.dto";
 import { UpdateUserAddressDto } from "./dto/update-user-address.dto";
 import { PrismaService } from "src/prisma/prisma.service";
@@ -6,20 +11,19 @@ import { PrismaService } from "src/prisma/prisma.service";
 @Injectable()
 export class ShopUserAddressService {
     constructor(private readonly prisma: PrismaService) {}
+
     async addUserAddress(createUserAddressDto: CreateUserAddressDto) {
         const { userId, ...addressData } = createUserAddressDto;
 
-        const existingAddress = await this.prisma.shippingAddress.findUnique({
-            where: { userId },
-        });
-
-        if (existingAddress) {
-            throw new ConflictException(
-                `Shipping address already exists for user with ID ${userId}. Use PATCH to update.`
-            );
-        }
-
         try {
+            const existingAddress = await this.prisma.shippingAddress.findUnique({
+                where: { userId },
+            });
+
+            if (existingAddress) {
+                throw new ConflictException(`Адреса доставки вже існує`);
+            }
+
             return await this.prisma.shippingAddress.create({
                 data: {
                     user: {
@@ -29,16 +33,31 @@ export class ShopUserAddressService {
                 },
             });
         } catch (error) {
-            throw new NotFoundException(`User with ID ${userId} not found.`, error);
+            if (error instanceof ConflictException) throw error;
+
+            console.error("Помилка додавання адреси користувача:", error);
+            throw new InternalServerErrorException("Не вдалося додати адресу користувача.");
         }
     }
 
     async updateUserAddress(userId: string, updateUserAddressDto: UpdateUserAddressDto) {
-        return await this.prisma.shippingAddress.update({
-            where: {
-                userId,
-            },
-            data: updateUserAddressDto,
-        });
+        try {
+            const existingAddress = await this.prisma.shippingAddress.findUnique({
+                where: { userId },
+            });
+
+            if (!existingAddress) {
+                throw new NotFoundException(`Адреса для користувача з ID ${userId} не знайдена.`);
+            }
+
+            return await this.prisma.shippingAddress.update({
+                where: { userId },
+                data: updateUserAddressDto,
+            });
+        } catch (error) {
+            if (error instanceof NotFoundException) throw error;
+            console.error("Помилка оновлення адреси користувача:", error);
+            throw new InternalServerErrorException("Не вдалося оновити адресу користувача.");
+        }
     }
 }

@@ -1,6 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { createColor, deleteColor, editColor, fetchColors } from "../api/colors.api";
 import { IColorPayload } from "../types/product-color.types";
+import { toast } from "sonner";
 
 export function useColors() {
     return useQuery({
@@ -18,6 +19,14 @@ export function useCreateColor() {
             queryClient.invalidateQueries({
                 queryKey: ["colors"],
             });
+            toast.success("Колір успішно додано!");
+        },
+        onError: (error: any) => {
+            if (error?.message) {
+                toast.error(error.message);
+            } else {
+                toast.error("Сталася невідома помилка");
+            }
         },
     });
 }
@@ -30,6 +39,14 @@ export function useEditColor() {
             editColor(colorId, data),
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["colors"] });
+            toast.success("Колір успішно відредаговано!");
+        },
+        onError: (error: any) => {
+            if (error?.message) {
+                toast.error(error.message);
+            } else {
+                toast.error("Сталася невідома помилка");
+            }
         },
     });
 }
@@ -43,6 +60,14 @@ export function useDeleteColor() {
             queryClient.invalidateQueries({
                 queryKey: ["colors"],
             });
+            toast.success("Колір видалено!");
+        },
+        onError: (error: any) => {
+            if (error?.message) {
+                toast.error(error.message);
+            } else {
+                toast.error("Сталася невідома помилка");
+            }
         },
     });
 }

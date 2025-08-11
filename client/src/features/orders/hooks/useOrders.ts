@@ -7,6 +7,7 @@ import {
     updateOrder,
 } from "../api/orders.api";
 import { IOrder } from "../types/orders.types";
+import { toast } from "sonner";
 
 export function useOrders() {
     return useQuery({
@@ -30,6 +31,14 @@ export function useCreateOrder() {
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["orders"] });
             queryClient.invalidateQueries({ queryKey: ["cart"] });
+            toast.success("Замовлення успішно створено! Перенаправлення на сторінку оплати...");
+        },
+        onError: (error: any) => {
+            if (error?.message) {
+                toast.error(error.message);
+            } else {
+                toast.error("Сталася невідома помилка");
+            }
         },
     });
 }
@@ -42,6 +51,14 @@ export function useUpdateOrder() {
             updateOrder(orderId, data),
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["orders"] });
+            toast.success("Замовлення успішно відредаговано!");
+        },
+        onError: (error: any) => {
+            if (error?.message) {
+                toast.error(error.message);
+            } else {
+                toast.error("Сталася невідома помилка");
+            }
         },
     });
 }
@@ -53,6 +70,14 @@ export function useDeleteOrder() {
         mutationFn: (orderId: string) => deleteOrder(orderId),
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["orders"] });
+            toast.success("Замовлення видалено!");
+        },
+        onError: (error: any) => {
+            if (error?.message) {
+                toast.error(error.message);
+            } else {
+                toast.error("Сталася невідома помилка");
+            }
         },
     });
 }

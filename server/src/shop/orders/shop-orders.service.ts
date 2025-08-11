@@ -6,6 +6,7 @@ import { Prisma } from "generated/prisma";
 @Injectable()
 export class ShopOrdersService {
     constructor(private readonly prisma: PrismaService) {}
+
     async createOrder(createOrderDto: CreateOrderDto) {
         try {
             const {
@@ -51,9 +52,10 @@ export class ShopOrdersService {
                 },
             });
 
+            // Очищаємо кошик після створення замовлення
             await this.prisma.cartItem.deleteMany({
                 where: {
-                    userId: createOrderDto.userId,
+                    userId,
                 },
             });
 
@@ -63,7 +65,17 @@ export class ShopOrdersService {
             };
         } catch (error) {
             console.error("Помилка створення замовлення:", error);
-            throw error;
+
+            // Якщо це відома помилка Prisma, можна її обробити окремо
+            if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === "P2002") {
+                // Наприклад, дублікат унікального поля
+                throw new InternalServerErrorException(
+                    "Замовлення з таким унікальним полем вже існує"
+                );
+            }
+
+            // Для інших помилок — загальна помилка сервера
+            throw new InternalServerErrorException("Помилка сервера при створенні замовлення");
         }
     }
 
@@ -99,6 +111,8 @@ export class ShopOrdersService {
             if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === "P2025") {
                 throw new NotFoundException("Замовлення не знайдено");
             }
+
+            console.error("Помилка отримання замовлень:", error);
             throw new InternalServerErrorException("Не вдалося отримати замовлення");
         }
     }

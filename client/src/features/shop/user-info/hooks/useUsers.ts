@@ -2,6 +2,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { getCurrentUser } from "@/features/auth/api/auth.api";
 import { IUser } from "../types/user.types";
 import { changePassword, deleteUser, editUser } from "../api/users.api";
+import { toast } from "sonner";
 
 export function useCurrentUser() {
     return useQuery({
@@ -20,6 +21,14 @@ export function useEditUser() {
             queryClient.invalidateQueries({
                 queryKey: ["currentUser"],
             });
+            toast.success("Інформацію успішно відредаговано!");
+        },
+        onError: (error: any) => {
+            if (error?.message) {
+                toast.error(error.message);
+            } else {
+                toast.error("Сталася невідома помилка");
+            }
         },
     });
 }
@@ -33,6 +42,14 @@ export function useChangePassword() {
             queryClient.invalidateQueries({
                 queryKey: ["currentUser"],
             });
+            toast.success("Пароль успішно змінено");
+        },
+        onError: (error: any) => {
+            if (error?.message) {
+                toast.error(error.message);
+            } else {
+                toast.error("Сталася невідома помилка");
+            }
         },
     });
 }
@@ -46,6 +63,14 @@ export function useDeleteUser() {
             queryClient.invalidateQueries({
                 queryKey: ["currentUser"],
             });
+            toast.success("Акаунт успішно видалено!");
+        },
+        onError: (error: any) => {
+            if (error?.message) {
+                toast.error(error.message);
+            } else {
+                toast.error("Сталася невідома помилка");
+            }
         },
     });
 }

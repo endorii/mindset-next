@@ -11,7 +11,6 @@ import {
 import { useState, useEffect } from "react";
 import { createPortal } from "react-dom";
 import { useForm } from "react-hook-form";
-import { toast } from "sonner";
 import { useEditUser } from "../hooks/useUsers";
 import { IUser } from "../types/user.types";
 
@@ -62,7 +61,6 @@ export default function EditUserInfoModal({
                 phone: data.phone,
             });
             onClose();
-            toast.success("Інформацію успішно відредаговано!");
         } catch (err: any) {
             setModalMessage(err?.message || "Помилка редагування інформації");
         }

@@ -1,4 +1,4 @@
-import { ITodoItem } from "../admin.types";
+import { ITodoItem } from "../types/admin.types";
 
 const API_BASE_URL = "http://localhost:5000/api";
 
@@ -13,14 +13,20 @@ export async function addTodoItem(data: ITodoItem): Promise<ITodoItem> {
             body: JSON.stringify(data),
         });
 
+        const text = await response.text();
+        const parsedData = text ? JSON.parse(text) : {};
+
         if (!response.ok) {
-            const errorData = await response.json().catch(() => ({}));
-            throw new Error(errorData.message);
+            const error: any = new Error(
+                parsedData.message || `Помилка ${parsedData.statusCode || response.status}`
+            );
+            error.status = parsedData.statusCode || response.status;
+            throw error;
         }
 
-        return await response.json();
+        return parsedData;
     } catch (error: any) {
-        throw new Error(error?.message || "Помилка з'єднання із сервером");
+        throw error;
     }
 }
 
@@ -33,14 +39,20 @@ export async function getTodoList(): Promise<ITodoItem[]> {
             credentials: "include",
         });
 
+        const text = await response.text();
+        const parsedData = text ? JSON.parse(text) : {};
+
         if (!response.ok) {
-            const errorData = await response.json().catch(() => ({}));
-            throw new Error(errorData.message);
+            const error: any = new Error(
+                parsedData.message || `Помилка ${parsedData.statusCode || response.status}`
+            );
+            error.status = parsedData.statusCode || response.status;
+            throw error;
         }
 
-        return await response.json();
+        return parsedData;
     } catch (error: any) {
-        throw new Error(error?.message || "Помилка з'єднання із сервером");
+        throw error;
     }
 }
 
@@ -55,14 +67,20 @@ export async function updateTodoItem(todoId: string, data: ITodoItem): Promise<I
             body: JSON.stringify(data),
         });
 
+        const text = await response.text();
+        const parsedData = text ? JSON.parse(text) : {};
+
         if (!response.ok) {
-            const errorData = await response.json().catch(() => ({}));
-            throw new Error(errorData.message);
+            const error: any = new Error(
+                parsedData.message || `Помилка ${parsedData.statusCode || response.status}`
+            );
+            error.status = parsedData.statusCode || response.status;
+            throw error;
         }
 
-        return await response.json();
+        return parsedData;
     } catch (error: any) {
-        throw new Error(error?.message || "Помилка з'єднання із сервером");
+        throw error;
     }
 }
 
@@ -73,13 +91,19 @@ export async function deleteTodoItem(todoId: string): Promise<void> {
             credentials: "include",
         });
 
+        const text = await response.text();
+        const parsedData = text ? JSON.parse(text) : {};
+
         if (!response.ok) {
-            const errorData = await response.json().catch(() => ({}));
-            throw new Error(errorData.message);
+            const error: any = new Error(
+                parsedData.message || `Помилка ${parsedData.statusCode || response.status}`
+            );
+            error.status = parsedData.statusCode || response.status;
+            throw error;
         }
 
-        return await response.json();
+        return parsedData;
     } catch (error: any) {
-        throw new Error(error?.message || "Помилка з'єднання із сервером");
+        throw error;
     }
 }

@@ -23,7 +23,7 @@ import { HeartIcon } from "@/shared/icons";
 import { MonoButton } from "@/shared/ui/buttons";
 import { Label } from "@/shared/ui/components";
 import addToRecentlyViewed from "@/shared/utils/addToRecentlyViewed";
-import { notFound, usePathname } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { useState, useEffect } from "react";
 import { toast } from "sonner";
 
@@ -93,10 +93,8 @@ export default function ProductPage() {
         if (user) {
             if (newLiked) {
                 addToFavoriteMutation.mutate(product.id);
-                toast.success("Товар додано у вподобане");
             } else {
                 deleteFromFavoriteMutation.mutate(product.id);
-                toast.success("Товар видалено з вподобаних");
             }
         } else {
             const favorites = localStorage.getItem("favorites");
@@ -125,7 +123,6 @@ export default function ProductPage() {
 
         if (user) {
             addCartItemToUserMutation.mutate(dataToSend);
-            toast.success("Товар додано в корзину");
         } else {
             const cart = localStorage.getItem("cart");
             const parsed = cart ? JSON.parse(cart) : [];

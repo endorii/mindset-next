@@ -4,7 +4,6 @@ import { useEscapeKeyClose } from "@/shared/hooks";
 import { MonoButton, DeleteButton } from "@/shared/ui/buttons";
 import { ModalWrapper, FormButtonsWrapper } from "@/shared/ui/wrappers";
 import { createPortal } from "react-dom";
-import { toast } from "sonner";
 import { useDeleteOrder } from "../hooks/useOrders";
 import { IOrder } from "../types/orders.types";
 
@@ -27,16 +26,8 @@ export default function DeleteOrderModal({
 
     const handleDelete = async () => {
         if (!order.id) return;
-
-        try {
-            await deleteOrderMutation.mutateAsync(order.id);
-            onClose();
-            toast.success("Замовлення упішно видалено!");
-        } catch (error) {
-            console.log(error);
-
-            toast.error("Помилка видалення замовлення");
-        }
+        await deleteOrderMutation.mutateAsync(order.id);
+        onClose();
     };
 
     const modalContent = (

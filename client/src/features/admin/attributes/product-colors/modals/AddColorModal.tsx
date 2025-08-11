@@ -11,7 +11,6 @@ import {
 import { useState } from "react";
 import { createPortal } from "react-dom";
 import { useForm } from "react-hook-form";
-import { toast } from "sonner";
 import { useCreateColor } from "../hooks/useColors";
 
 interface AddColorModalProps {
@@ -49,7 +48,6 @@ export default function AddColorModal({ isOpen, onClose }: AddColorModalProps) {
                 hexCode: data.hexCode,
             });
             handleClose();
-            toast.success("Колір упішно додано!");
         } catch (err: any) {
             setModalMessage(err?.message || "Помилка при додаванні кольору");
         }

@@ -9,6 +9,7 @@ import {
 
 import { ICollection } from "../types/collections.types";
 import { TStatus } from "@/shared/types/types";
+import { toast } from "sonner";
 
 export function useGetCollections() {
     return useQuery({
@@ -33,6 +34,14 @@ export function useCreateCollection() {
             queryClient.invalidateQueries({
                 queryKey: ["collections"],
             });
+            toast.success("Колекцію успішно створено!");
+        },
+        onError: (error: any) => {
+            if (error?.message) {
+                toast.error(error.message);
+            } else {
+                toast.error("Сталася невідома помилка");
+            }
         },
     });
 }
@@ -55,6 +64,14 @@ export function useEditCollection() {
         }) => editCollection(collectionId, data),
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["collections"] });
+            toast.success("Колекцію успішно відредаговано!");
+        },
+        onError: (error: any) => {
+            if (error?.message) {
+                toast.error(error.message);
+            } else {
+                toast.error("Сталася невідома помилка");
+            }
         },
     });
 }
@@ -66,6 +83,14 @@ export function useDeleteCollection() {
         mutationFn: (collectionId: string) => deleteCollection(collectionId),
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["collections"] });
+            toast.success("Колекцію видалено!");
+        },
+        onError: (error: any) => {
+            if (error?.message) {
+                toast.error(error.message);
+            } else {
+                toast.error("Сталася невідома помилка");
+            }
         },
     });
 }

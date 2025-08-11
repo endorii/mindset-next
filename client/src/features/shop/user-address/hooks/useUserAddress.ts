@@ -1,6 +1,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { createUserAddress, editUserAddress } from "../api/user-address.api";
-import { IUser, IUserShippingAdress } from "../../user-info/types/user.types";
+import { IUserShippingAdress } from "../../user-info/types/user.types";
+import { toast } from "sonner";
 
 export function useCreateUserAddress() {
     const queryClient = useQueryClient();
@@ -11,6 +12,14 @@ export function useCreateUserAddress() {
             queryClient.invalidateQueries({
                 queryKey: ["currentUser"],
             });
+            toast.success("Адресу доставки додано!");
+        },
+        onError: (error: any) => {
+            if (error?.message) {
+                toast.error(error.message);
+            } else {
+                toast.error("Сталася невідома помилка");
+            }
         },
     });
 }
@@ -19,15 +28,17 @@ export function useEditUserAddress() {
     const queryClient = useQueryClient();
 
     return useMutation({
-        mutationFn: ({
-            userId,
-            data,
-        }: {
-            userId: IUser["id"];
-            data: Partial<IUserShippingAdress>;
-        }) => editUserAddress(userId, data),
+        mutationFn: (data: Partial<IUserShippingAdress>) => editUserAddress(data),
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["currentUser"] });
+            toast.success("Адресу доставки змінено!");
+        },
+        onError: (error: any) => {
+            if (error?.message) {
+                toast.error(error.message);
+            } else {
+                toast.error("Сталася невідома помилка");
+            }
         },
     });
 }

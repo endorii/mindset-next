@@ -68,8 +68,11 @@ export class ShopCartService {
             if (error instanceof ConflictException) {
                 throw error;
             }
-            console.error("Помилка при додаванні товару у кошик:", error);
-            throw new InternalServerErrorException("Помилка сервера при додаванні товару в кошик");
+            console.log(error);
+
+            throw new InternalServerErrorException(
+                "Помилка сервера про додаванні товару до кошика"
+            );
         }
     }
 
@@ -97,10 +100,19 @@ export class ShopCartService {
 
     async removeCartFromUser(userId: string) {
         try {
-            return await this.prisma.cartItem.deleteMany({
+            const cart = await this.prisma.cartItem.deleteMany({
                 where: { userId },
             });
+
+            if (!cart) {
+                throw new NotFoundException("Товарів у корзині не знайдено");
+            }
+
+            return cart;
         } catch (error) {
+            if (error instanceof NotFoundException) {
+                throw error;
+            }
             console.error("Помилка при очищенні кошика:", error);
             throw new InternalServerErrorException("Помилка сервера при очищенні кошика");
         }

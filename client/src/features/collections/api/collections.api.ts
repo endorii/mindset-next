@@ -6,14 +6,20 @@ export async function fetchCollections(): Promise<ICollection[]> {
     try {
         const response = await fetch(`${API_BASE_URL}/shop/collections`);
 
+        const text = await response.text();
+        const parsedData = text ? JSON.parse(text) : {};
+
         if (!response.ok) {
-            const errorData = await response.json().catch(() => ({}));
-            throw new Error(errorData.message);
+            const error: any = new Error(
+                parsedData.message || `Помилка ${parsedData.statusCode || response.status}`
+            );
+            error.status = parsedData.statusCode || response.status;
+            throw error;
         }
 
-        return await response.json();
+        return parsedData;
     } catch (error: any) {
-        throw new Error(error?.message || "Помилка з'єднання із сервером");
+        throw error;
     }
 }
 
@@ -21,14 +27,20 @@ export async function fetchGetCollectionByPath(collectionPath: string): Promise<
     try {
         const response = await fetch(`${API_BASE_URL}/shop/collections/${collectionPath}`);
 
+        const text = await response.text();
+        const parsedData = text ? JSON.parse(text) : {};
+
         if (!response.ok) {
-            const errorData = await response.json().catch(() => ({}));
-            throw new Error(errorData.message);
+            const error: any = new Error(
+                parsedData.message || `Помилка ${parsedData.statusCode || response.status}`
+            );
+            error.status = parsedData.statusCode || response.status;
+            throw error;
         }
 
-        return await response.json();
+        return parsedData;
     } catch (error: any) {
-        throw new Error(error?.message || "Помилка з'єднання із сервером");
+        throw error;
     }
 }
 
@@ -43,14 +55,20 @@ export async function createCollection(data: ICollection): Promise<ICollection> 
             body: JSON.stringify(data),
         });
 
+        const text = await response.text();
+        const parsedData = text ? JSON.parse(text) : {};
+
         if (!response.ok) {
-            const errorData = await response.json().catch(() => ({}));
-            throw new Error(errorData.message);
+            const error: any = new Error(
+                parsedData.message || `Помилка ${parsedData.statusCode || response.status}`
+            );
+            error.status = parsedData.statusCode || response.status;
+            throw error;
         }
 
-        return await response.json();
+        return parsedData;
     } catch (error: any) {
-        throw new Error(error?.message || "Помилка з'єднання із сервером");
+        throw error;
     }
 }
 
@@ -68,14 +86,20 @@ export async function editCollection(
             body: JSON.stringify(data),
         });
 
+        const text = await response.text();
+        const parsedData = text ? JSON.parse(text) : {};
+
         if (!response.ok) {
-            const errorData = await response.json().catch(() => ({}));
-            throw new Error(errorData.message);
+            const error: any = new Error(
+                parsedData.message || `Помилка ${parsedData.statusCode || response.status}`
+            );
+            error.status = parsedData.statusCode || response.status;
+            throw error;
         }
 
-        return await response.json();
+        return parsedData;
     } catch (error: any) {
-        throw new Error(error?.message || "Помилка з'єднання із сервером");
+        throw error;
     }
 }
 
@@ -86,13 +110,19 @@ export async function deleteCollection(collectionId: string): Promise<ICollectio
             credentials: "include",
         });
 
+        const text = await response.text();
+        const parsedData = text ? JSON.parse(text) : {};
+
         if (!response.ok) {
-            const errorData = await response.json().catch(() => ({}));
-            throw new Error(errorData.message);
+            const error: any = new Error(
+                parsedData.message || `Помилка ${parsedData.statusCode || response.status}`
+            );
+            error.status = parsedData.statusCode || response.status;
+            throw error;
         }
 
-        return await response.json();
+        return parsedData;
     } catch (error: any) {
-        throw new Error(error?.message || "Помилка з'єднання із сервером");
+        throw error;
     }
 }

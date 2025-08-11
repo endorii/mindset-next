@@ -11,7 +11,6 @@ import {
 import { useState } from "react";
 import { createPortal } from "react-dom";
 import { useForm } from "react-hook-form";
-import { toast } from "sonner";
 import { useCreateType } from "../hooks/useTypes";
 
 interface AddTypeModalProps {
@@ -43,7 +42,6 @@ export default function AddTypeModal({ isOpen, onClose }: AddTypeModalProps) {
     const onSubmit = async (data: FormValues) => {
         try {
             await createTypeMutation.mutateAsync({ name: data.name });
-            toast.success("Тип успішно додано!");
             handleClose();
         } catch (error: any) {
             setModalMessage(error?.message || "Помилка при додаванні типу");

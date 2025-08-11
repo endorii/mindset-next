@@ -13,14 +13,20 @@ export async function addCartItemToUser(cartItem: ICartItem): Promise<ICartItem[
             body: JSON.stringify(cartItem),
         });
 
+        const text = await response.text();
+        const parsedData = text ? JSON.parse(text) : {};
+
         if (!response.ok) {
-            const errorData = await response.json().catch(() => ({}));
-            throw new Error(errorData.message);
+            const error: any = new Error(
+                parsedData.message || `Помилка ${parsedData.statusCode || response.status}`
+            );
+            error.status = parsedData.statusCode || response.status;
+            throw error;
         }
 
-        return await response.json();
+        return parsedData;
     } catch (error: any) {
-        throw new Error(error?.message || "Помилка з'єднання із сервером");
+        throw error;
     }
 }
 
@@ -30,14 +36,21 @@ export async function fetchAllCartItemsFromUser(): Promise<ICartItem[]> {
             credentials: "include",
         });
 
+        const text = await response.text();
+        const parsedData = text ? JSON.parse(text) : {};
+
         if (!response.ok) {
-            const errorData = await response.json().catch(() => ({}));
-            throw new Error(errorData.message);
+            const error: any = new Error(
+                parsedData.message || `Помилка ${parsedData.statusCode || response.status}`
+            );
+            error.status = parsedData.statusCode || response.status;
+
+            throw error;
         }
 
-        return await response.json();
+        return parsedData;
     } catch (error: any) {
-        throw new Error(error?.message || "Помилка з'єднання із сервером");
+        throw error;
     }
 }
 
@@ -48,14 +61,20 @@ export async function deleteCartItemFromUser(cartItemId: string): Promise<void> 
             credentials: "include",
         });
 
+        const text = await response.text();
+        const parsedData = text ? JSON.parse(text) : {};
+
         if (!response.ok) {
-            const errorData = await response.json().catch(() => ({}));
-            throw new Error(errorData.message);
+            const error: any = new Error(
+                parsedData.message || `Помилка ${parsedData.statusCode || response.status}`
+            );
+            error.status = parsedData.statusCode || response.status;
+            throw error;
         }
 
-        return await response.json();
+        return parsedData;
     } catch (error: any) {
-        throw new Error(error?.message || "Помилка з'єднання із сервером");
+        throw error;
     }
 }
 
@@ -66,13 +85,19 @@ export async function deleteCartFromUser(): Promise<void> {
             credentials: "include",
         });
 
+        const text = await response.text();
+        const parsedData = text ? JSON.parse(text) : {};
+
         if (!response.ok) {
-            const errorData = await response.json().catch(() => ({}));
-            throw new Error(errorData.message);
+            const error: any = new Error(
+                parsedData.message || `Помилка ${parsedData.statusCode || response.status}`
+            );
+            error.status = parsedData.statusCode || response.status;
+            throw error;
         }
 
-        return await response.json();
+        return parsedData;
     } catch (error: any) {
-        throw new Error(error?.message || "Помилка з'єднання із сервером");
+        throw error;
     }
 }

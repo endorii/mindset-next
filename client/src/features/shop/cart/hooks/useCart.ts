@@ -24,9 +24,14 @@ export function useAddCartItemToUser() {
             queryClient.invalidateQueries({
                 queryKey: ["cart"],
             });
+            toast.success("Товар додано у кошик!");
         },
         onError: (error: any) => {
-            toast.error(error?.message || "Сталася невідома помилка");
+            if (error?.message) {
+                toast.error(error.message);
+            } else {
+                toast.error("Сталася невідома помилка");
+            }
         },
     });
 }
@@ -38,6 +43,14 @@ export function useDeleteCartItemFromUser() {
         mutationFn: (cartItemId: string) => deleteCartItemFromUser(cartItemId),
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["cart"] });
+            toast.success("Товар видалено з кошика!");
+        },
+        onError: (error: any) => {
+            if (error?.message) {
+                toast.error(error.message);
+            } else {
+                toast.error("Сталася невідома помилка");
+            }
         },
     });
 }
@@ -49,6 +62,14 @@ export function useDeleteCartFromUser() {
         mutationFn: () => deleteCartFromUser(),
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["cart"] });
+            toast.success("Корзину очищено!");
+        },
+        onError: (error: any) => {
+            if (error?.message) {
+                toast.error(error.message);
+            } else {
+                toast.error("Сталася невідома помилка");
+            }
         },
     });
 }

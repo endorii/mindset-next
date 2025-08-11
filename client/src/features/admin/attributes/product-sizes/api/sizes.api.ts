@@ -8,14 +8,20 @@ export async function fetchSizes(): Promise<ISize[]> {
             credentials: "include",
         });
 
+        const text = await response.text();
+        const parsedData = text ? JSON.parse(text) : {};
+
         if (!response.ok) {
-            const errorData = await response.json().catch(() => ({}));
-            throw new Error(errorData.message);
+            const error: any = new Error(
+                parsedData.message || `Помилка ${parsedData.statusCode || response.status}`
+            );
+            error.status = parsedData.statusCode || response.status;
+            throw error;
         }
 
-        return await response.json();
+        return parsedData;
     } catch (error: any) {
-        throw new Error(error?.message || "Помилка з'єднання із сервером");
+        throw error;
     }
 }
 
@@ -30,14 +36,20 @@ export async function createSize(data: ISizePayload): Promise<ISize> {
             body: JSON.stringify(data),
         });
 
+        const text = await response.text();
+        const parsedData = text ? JSON.parse(text) : {};
+
         if (!response.ok) {
-            const errorData = await response.json().catch(() => ({}));
-            throw new Error(errorData.message);
+            const error: any = new Error(
+                parsedData.message || `Помилка ${parsedData.statusCode || response.status}`
+            );
+            error.status = parsedData.statusCode || response.status;
+            throw error;
         }
 
-        return await response.json();
+        return parsedData;
     } catch (error: any) {
-        throw new Error(error?.message || "Помилка з'єднання із сервером");
+        throw error;
     }
 }
 
@@ -52,14 +64,20 @@ export async function editSize(sizeId: ISize["id"], data: Partial<ISize>): Promi
             body: JSON.stringify(data),
         });
 
+        const text = await response.text();
+        const parsedData = text ? JSON.parse(text) : {};
+
         if (!response.ok) {
-            const errorData = await response.json().catch(() => ({}));
-            throw new Error(errorData.message);
+            const error: any = new Error(
+                parsedData.message || `Помилка ${parsedData.statusCode || response.status}`
+            );
+            error.status = parsedData.statusCode || response.status;
+            throw error;
         }
 
-        return await response.json();
+        return parsedData;
     } catch (error: any) {
-        throw new Error(error?.message || "Помилка з'єднання із сервером");
+        throw error;
     }
 }
 
@@ -70,13 +88,19 @@ export async function deleteSize(sizeId: ISize["id"]): Promise<void> {
             credentials: "include",
         });
 
+        const text = await response.text();
+        const parsedData = text ? JSON.parse(text) : {};
+
         if (!response.ok) {
-            const errorData = await response.json().catch(() => ({}));
-            throw new Error(errorData.message);
+            const error: any = new Error(
+                parsedData.message || `Помилка ${parsedData.statusCode || response.status}`
+            );
+            error.status = parsedData.statusCode || response.status;
+            throw error;
         }
 
-        return await response.json();
+        return parsedData;
     } catch (error: any) {
-        throw new Error(error?.message || "Помилка з'єднання із сервером");
+        throw error;
     }
 }

@@ -4,7 +4,7 @@ import {
     deleteFavoriteFromUser,
     fetchFavoritesFromUser,
 } from "../api/favorites.api";
-import { IFavoriteItem } from "../types/favorites.types";
+import { toast } from "sonner";
 
 export function useFavoritesFromUser() {
     return useQuery({
@@ -22,6 +22,14 @@ export function useAddFavorite() {
             queryClient.invalidateQueries({
                 queryKey: ["favorites"],
             });
+            toast.success("Товар додано до вподобаних");
+        },
+        onError: (error: any) => {
+            if (error?.message) {
+                toast.error(error.message);
+            } else {
+                toast.error("Сталася невідома помилка");
+            }
         },
     });
 }
@@ -33,6 +41,14 @@ export function useDeleteFavorite() {
         mutationFn: (productId: string) => deleteFavoriteFromUser(productId),
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["favorites"] });
+            toast.success("Товар видалено з вподобаних");
+        },
+        onError: (error: any) => {
+            if (error?.message) {
+                toast.error(error.message);
+            } else {
+                toast.error("Сталася невідома помилка");
+            }
         },
     });
 }

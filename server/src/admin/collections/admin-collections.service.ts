@@ -1,8 +1,14 @@
-import { Injectable, BadRequestException } from "@nestjs/common";
+import {
+    BadRequestException,
+    Injectable,
+    InternalServerErrorException,
+    NotFoundException,
+} from "@nestjs/common";
 import { PrismaService } from "src/prisma/prisma.service";
 import { CreateCollectionDto } from "./dto/create-collection.dto";
 import { UpdateCollectionDto } from "./dto/update-collection.dto";
 import { AdminRecentActionsService } from "../recent-actions/admin-recent-actions.service";
+
 @Injectable()
 export class AdminCollectionsService {
     constructor(
@@ -43,7 +49,10 @@ export class AdminCollectionsService {
             };
         } catch (error) {
             console.error("Помилка створення колекції:", error);
-            throw new Error("Не вдалося створити колекцію");
+            if (error instanceof BadRequestException) {
+                throw error;
+            }
+            throw new InternalServerErrorException("Не вдалося створити колекцію");
         }
     }
 
@@ -57,33 +66,36 @@ export class AdminCollectionsService {
         }
 
         try {
-            const { name, path, description, banner, status } = updateCollectionDto;
+            const collection = await this.prisma.collection.findUnique({
+                where: { id: collectionId },
+            });
 
-            const collection = await this.prisma.collection.update({
+            if (!collection) {
+                throw new NotFoundException("Колекцію не знайдено");
+            }
+
+            const updatedCollection = await this.prisma.collection.update({
                 where: {
                     id: collectionId,
                 },
-                data: {
-                    name,
-                    path,
-                    description,
-                    banner,
-                    status,
-                },
+                data: updateCollectionDto,
             });
 
             await this.adminRecentActions.createAction(
                 userId,
-                `Редаговано колекцію ${collection.name}`
+                `Редаговано колекцію ${updatedCollection.name}`
             );
 
             return {
                 message: "Колекцію успішно оновлено",
-                collection,
+                collection: updatedCollection,
             };
         } catch (error) {
             console.error("Помилка редагування колекції:", error);
-            throw new Error("Не вдалося оновити колекцію");
+            if (error instanceof NotFoundException || error instanceof BadRequestException) {
+                throw error;
+            }
+            throw new InternalServerErrorException("Не вдалося оновити колекцію");
         }
     }
 
@@ -93,7 +105,7 @@ export class AdminCollectionsService {
                 where: { id: collectionId },
             });
 
-            if (!collection) throw new Error("Колекцію не знайдено");
+            if (!collection) throw new NotFoundException("Колекцію не знайдено");
 
             await this.prisma.collection.delete({
                 where: {
@@ -111,7 +123,10 @@ export class AdminCollectionsService {
             };
         } catch (error) {
             console.error("Помилка видалення колекції:", error);
-            throw new Error("Не вдалося видалити колекцію");
+            if (error instanceof NotFoundException) {
+                throw error;
+            }
+            throw new InternalServerErrorException("Не вдалося видалити колекцію");
         }
     }
 }

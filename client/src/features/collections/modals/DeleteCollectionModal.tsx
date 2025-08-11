@@ -26,20 +26,15 @@ export default function DeleteCollectionModal({
 
     const handleDelete = async () => {
         if (!collection || !collection.id) return;
-        try {
-            if (collection.categories && collection.categories.length > 0) {
-                toast.error(
-                    "Колекція містить категорії, щоб її видалити, видаліть категорії, які у ній знаходяться"
-                );
-                return;
-            }
-
-            await deleteImage(collection.banner);
-            await deleteCollectionMutation.mutateAsync(collection.id);
-            toast.success("Коллекцію упішно видалено!");
-        } catch (e) {
-            toast.error("Помилка при видаленні колекції");
+        if (collection.categories && collection.categories.length > 0) {
+            toast.error(
+                "Колекція містить категорії, щоб її видалити, видаліть категорії, які у ній знаходяться"
+            );
+            return;
         }
+
+        await deleteImage(collection.banner);
+        await deleteCollectionMutation.mutateAsync(collection.id);
     };
 
     useEscapeKeyClose({ isOpen, onClose });

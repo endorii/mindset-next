@@ -1,4 +1,4 @@
-import { Injectable } from "@nestjs/common";
+import { Injectable, InternalServerErrorException, NotFoundException } from "@nestjs/common";
 import { PrismaService } from "src/prisma/prisma.service";
 
 @Injectable()
@@ -12,7 +12,6 @@ export class ShopCategoriesService {
                     collection: { id: collectionId },
                 },
                 include: {
-                    // collection: true,
                     products: {
                         include: {
                             productColors: {
@@ -29,12 +28,15 @@ export class ShopCategoriesService {
                 },
             });
 
-            if (!categories) throw new Error("Категорій не знайдено");
+            if (!categories) throw new NotFoundException("Категорій не знайдено");
 
             return categories;
         } catch (error) {
+            if (error instanceof NotFoundException) {
+                throw error;
+            }
             console.error("Помилка отримання категорій:", error);
-            throw error;
+            throw new InternalServerErrorException("Помилка сервера при отриманні категорій");
         }
     }
 
@@ -49,12 +51,15 @@ export class ShopCategoriesService {
                 },
             });
 
-            if (!category) throw new Error("Категорію не знайдено");
+            if (!category) throw new NotFoundException("Категорію не знайдено");
 
             return category;
         } catch (error) {
+            if (error instanceof NotFoundException) {
+                throw error;
+            }
             console.error("Помилка отримання категорії:", error);
-            throw error;
+            throw new InternalServerErrorException("Помилка сервера при отримання категорії");
         }
     }
 }

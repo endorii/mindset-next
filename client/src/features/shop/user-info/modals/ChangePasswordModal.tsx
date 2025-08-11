@@ -11,7 +11,6 @@ import {
 import { useState } from "react";
 import { createPortal } from "react-dom";
 import { useForm } from "react-hook-form";
-import { toast } from "sonner";
 import { useChangePassword } from "../hooks/useUsers";
 
 interface ChangePasswordModalProps {
@@ -56,9 +55,7 @@ export default function ChangePasswordModal({
                 oldPassword: data.oldPassword,
                 newPassword: data.newPassword,
             });
-
             handleClose();
-            toast.success("Пароль упішно оновлено!");
         } catch (err: any) {
             setModalMessage(err?.message || "Помилка при зміні паролю");
         }
