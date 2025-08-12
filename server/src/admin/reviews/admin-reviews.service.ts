@@ -1,4 +1,10 @@
-import { Injectable, BadRequestException } from "@nestjs/common";
+import {
+    Injectable,
+    BadRequestException,
+    InternalServerErrorException,
+    HttpException,
+    NotFoundException,
+} from "@nestjs/common";
 import { PrismaService } from "src/prisma/prisma.service";
 import { AdminUpdateReviewDto } from "./dto/update-admin-review.dto";
 import { AdminRecentActionsService } from "../recent-actions/admin-recent-actions.service";
@@ -29,20 +35,21 @@ export class AdminReviewsService {
                     },
                 },
             });
-
-            if (!reviews) throw new Error("Відгуки відсутні");
             return reviews;
         } catch (error) {
             console.error("Помилка отримання відгуків:", error);
-            throw new Error("Не вдалося отримати відгуки");
+            if (error instanceof HttpException) {
+                throw error;
+            }
+            throw new InternalServerErrorException("Не вдалося отримати відгуки");
         }
     }
 
-    async approveReview(userId: string, id: string) {
+    async approveReview(userId: string, reviewId: string) {
         try {
-            const review = await this.prisma.review.findFirst({
+            const review = await this.prisma.review.findUnique({
                 where: {
-                    id,
+                    id: reviewId,
                 },
                 include: {
                     orderItem: {
@@ -54,12 +61,16 @@ export class AdminReviewsService {
             });
 
             if (!review) {
-                throw new BadRequestException("Відгук не знайдено");
+                throw new NotFoundException("Відгуку з таким ID не знайдено");
             }
 
-            const reviewToApprove = await this.prisma.review.update({
+            if (review.isApproved) {
+                throw new BadRequestException("Відгук вже погоджено");
+            }
+
+            await this.prisma.review.update({
                 where: {
-                    id,
+                    id: reviewId,
                 },
                 data: {
                     isApproved: true,
@@ -72,33 +83,50 @@ export class AdminReviewsService {
             );
 
             return {
-                message: "Відгук успішно оновлено",
-                reviewToApprove,
+                message: "Відгук успішно погоджено",
             };
-        } catch (error) {
-            console.error("Помилка редагування відгуку:", error);
-            throw new Error("Не вдалося оновити відгук");
+        } catch (error: unknown) {
+            console.error("Помилка погодження відгуку:", error);
+            if (error instanceof HttpException) {
+                throw error;
+            }
+            throw new InternalServerErrorException("Не вдалося погодити відгук");
         }
     }
 
-    async updateReview(userId: string, id: string, adminUpdateReviewDto: AdminUpdateReviewDto) {
+    async updateReview(
+        userId: string,
+        reviewId: string,
+        adminUpdateReviewDto: AdminUpdateReviewDto
+    ) {
         try {
-            const review = await this.prisma.review.update({
+            const review = await this.prisma.review.findUnique({
+                where: { id: reviewId },
+            });
+
+            if (!review) {
+                throw new NotFoundException("Відгуку з таким ID не знайдено");
+            }
+
+            const updatedReview = await this.prisma.review.update({
                 where: {
-                    id,
+                    id: reviewId,
                 },
                 data: adminUpdateReviewDto,
             });
 
-            await this.adminRecentActions.createAction(userId, `Редаговано відгук ${review.id}`);
+            await this.adminRecentActions.createAction(userId, `Редаговано відгук ${reviewId}`);
 
             return {
                 message: "Відгук успішно оновлено",
-                review,
+                review: updatedReview,
             };
-        } catch (error) {
+        } catch (error: unknown) {
             console.error("Помилка редагування відгуку:", error);
-            throw new Error("Не вдалося оновити відгук");
+            if (error instanceof HttpException) {
+                throw error;
+            }
+            throw new InternalServerErrorException("Не вдалося оновити відгук");
         }
     }
 }

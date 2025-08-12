@@ -1,6 +1,12 @@
+import { ServerResponseWithMessage } from "@/shared/interfaces/interfaces";
 import { IType, ITypePayload } from "../types/product-type.types";
 
 const API_BASE_URL = "http://localhost:5000/api";
+
+interface TypesResponse {
+    message: string;
+    type?: IType;
+}
 
 export async function fetchTypes(): Promise<IType[]> {
     try {
@@ -25,7 +31,9 @@ export async function fetchTypes(): Promise<IType[]> {
     }
 }
 
-export async function createType(data: ITypePayload): Promise<IType> {
+export async function createType(
+    data: ITypePayload
+): Promise<ServerResponseWithMessage<ITypePayload>> {
     try {
         const response = await fetch(`${API_BASE_URL}/admin/types`, {
             method: "POST",
@@ -53,7 +61,10 @@ export async function createType(data: ITypePayload): Promise<IType> {
     }
 }
 
-export async function editType(typeId: IType["id"], data: Partial<IType>): Promise<IType> {
+export async function editType(
+    typeId: string,
+    data: Partial<IType>
+): Promise<ServerResponseWithMessage<IType>> {
     try {
         const response = await fetch(`${API_BASE_URL}/admin/types/${typeId}`, {
             method: "PATCH",
@@ -81,7 +92,7 @@ export async function editType(typeId: IType["id"], data: Partial<IType>): Promi
     }
 }
 
-export async function deleteType(typeId: IType["id"]): Promise<void> {
+export async function deleteType(typeId: string): Promise<ServerResponseWithMessage> {
     try {
         const response = await fetch(`${API_BASE_URL}/admin/types/${typeId}`, {
             method: "DELETE",

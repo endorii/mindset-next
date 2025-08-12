@@ -6,7 +6,7 @@ import { AdminCategoriesModule } from "./categories/admin-categories.module";
 import { AdminRecentActionsModule } from "./recent-actions/admin-recent-actions.module";
 import { AdminColorsModule } from "./colors/admin-colors.module";
 import { AdminTypesModule } from "./types/admin-types.module";
-import { AdminSizesModule } from "./sizes/sizes.module";
+import { AdminSizesModule } from "./sizes/admin-sizes.module";
 import { AdminProductsModule } from "./products/admin-products.module";
 import { AdminOrdersModule } from "./orders/admin-orders.module";
 import { AdminReviewsModule } from "./reviews/admin-reviews.module";

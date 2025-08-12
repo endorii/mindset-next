@@ -3,7 +3,7 @@ import {
     Injectable,
     InternalServerErrorException,
     NotFoundException,
-    BadRequestException,
+    HttpException,
 } from "@nestjs/common";
 import { CreateCartDto } from "./dto/create-cart.dto";
 import { PrismaService } from "src/prisma/prisma.service";
@@ -32,6 +32,9 @@ export class ShopCartService {
             return cartItems;
         } catch (error) {
             console.error("Помилка при отриманні кошика користувача:", error);
+            if (error instanceof HttpException) {
+                throw error;
+            }
             throw new InternalServerErrorException("Помилка сервера при отриманні кошика");
         }
     }
@@ -54,7 +57,7 @@ export class ShopCartService {
                 throw new ConflictException("Товар з такими параметрами вже доданий у кошик");
             }
 
-            return await this.prisma.cartItem.create({
+            await this.prisma.cartItem.create({
                 data: {
                     userId,
                     productId: createCartDto.productId,
@@ -64,12 +67,15 @@ export class ShopCartService {
                     quantity: createCartDto.quantity,
                 },
             });
+
+            return {
+                message: "Товар додано до кошика",
+            };
         } catch (error) {
-            if (error instanceof ConflictException) {
+            console.error("Помилка при додаванні товару до кошика:", error);
+            if (error instanceof HttpException) {
                 throw error;
             }
-            console.log(error);
-
             throw new InternalServerErrorException(
                 "Помилка сервера про додаванні товару до кошика"
             );
@@ -86,14 +92,16 @@ export class ShopCartService {
                 throw new NotFoundException("Товар у кошику не знайдений");
             }
 
-            return await this.prisma.cartItem.delete({
+            await this.prisma.cartItem.delete({
                 where: { userId, id: cartItemId },
             });
+
+            return { message: "Товар видалено з кошика" };
         } catch (error) {
-            if (error instanceof NotFoundException || error instanceof BadRequestException) {
+            console.error("Помилка при видаленні товару з кошика:", error);
+            if (error instanceof HttpException) {
                 throw error;
             }
-            console.error("Помилка при видаленні товару з кошика:", error);
             throw new InternalServerErrorException("Помилка сервера при видаленні товару з кошика");
         }
     }
@@ -108,12 +116,12 @@ export class ShopCartService {
                 throw new NotFoundException("Товарів у корзині не знайдено");
             }
 
-            return cart;
+            return { message: "Кошик очищено", cart };
         } catch (error) {
-            if (error instanceof NotFoundException) {
+            console.error("Помилка при очищенні кошика:", error);
+            if (error instanceof HttpException) {
                 throw error;
             }
-            console.error("Помилка при очищенні кошика:", error);
             throw new InternalServerErrorException("Помилка сервера при очищенні кошика");
         }
     }

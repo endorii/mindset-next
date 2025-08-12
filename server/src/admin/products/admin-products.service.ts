@@ -1,4 +1,10 @@
-import { ConflictException, Injectable } from "@nestjs/common";
+import {
+    ConflictException,
+    HttpException,
+    Injectable,
+    InternalServerErrorException,
+    NotFoundException,
+} from "@nestjs/common";
 import { CreateProductDto } from "./dto/create-product.dto";
 import { PrismaService } from "src/prisma/prisma.service";
 import { UpdateProductDto } from "./dto/update-product.dto";
@@ -66,21 +72,26 @@ export class AdminProductsService {
             };
         } catch (error) {
             console.error("Помилка створення товару:", error);
-            throw new Error("Не вдалося створити товар.");
+            if (error instanceof HttpException) {
+                throw error;
+            }
+            throw new InternalServerErrorException("Не вдалося створити товар");
         }
     }
 
     async editProduct(userId: string, productId: string, updateProductDto: UpdateProductDto) {
         try {
-            const productToUpdate = await this.prisma.product.findUnique({
+            const { colorIds, sizeIds, typeIds, ...restOfProductData } = updateProductDto;
+
+            const product = await this.prisma.product.findUnique({
                 where: {
                     id: productId,
                 },
             });
 
-            if (!productToUpdate) throw new Error("Товар не знайдено");
-
-            const { colorIds, sizeIds, typeIds, ...restOfProductData } = updateProductDto;
+            if (!product) {
+                throw new NotFoundException("Товару з таким ID не знайдено");
+            }
 
             const dataToUpdate: Prisma.ProductUpdateInput = {
                 ...restOfProductData,
@@ -89,7 +100,7 @@ export class AdminProductsService {
 
             if (colorIds !== undefined) {
                 dataToUpdate.productColors = {
-                    deleteMany: { productId: productToUpdate.id },
+                    deleteMany: { productId: product.id },
                 };
                 if (colorIds.length > 0) {
                     dataToUpdate.productColors = {
@@ -103,7 +114,7 @@ export class AdminProductsService {
 
             if (sizeIds !== undefined) {
                 dataToUpdate.productSizes = {
-                    deleteMany: { productId: productToUpdate.id },
+                    deleteMany: { productId: product.id },
                 };
                 if (sizeIds.length > 0) {
                     dataToUpdate.productSizes = {
@@ -117,7 +128,7 @@ export class AdminProductsService {
 
             if (typeIds !== undefined) {
                 dataToUpdate.productTypes = {
-                    deleteMany: { productId: productToUpdate.id },
+                    deleteMany: { productId: product.id },
                 };
                 if (typeIds.length > 0) {
                     dataToUpdate.productTypes = {
@@ -153,7 +164,10 @@ export class AdminProductsService {
             };
         } catch (error) {
             console.error("Помилка оновлення товару:", error);
-            throw new Error("Не вдалося оновити товар.");
+            if (error instanceof HttpException) {
+                throw error;
+            }
+            throw new InternalServerErrorException("Не вдалося редагувати товар");
         }
     }
 
@@ -165,7 +179,9 @@ export class AdminProductsService {
                 },
             });
 
-            if (!product) throw new Error("Товар не знайдено");
+            if (!product) {
+                throw new NotFoundException("Товару з таким ID не знайдено");
+            }
 
             await this.prisma.product.delete({
                 where: {
@@ -180,7 +196,10 @@ export class AdminProductsService {
             };
         } catch (error) {
             console.error("Помилка видалення товару:", error);
-            throw new Error("Не вдалося видалити товар.");
+            if (error instanceof HttpException) {
+                throw error;
+            }
+            throw new InternalServerErrorException("Не вдалося видалити товар");
         }
     }
 }

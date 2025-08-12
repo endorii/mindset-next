@@ -28,10 +28,10 @@ export function useCreateOrder() {
 
     return useMutation({
         mutationFn: (data: IOrder) => createOrder(data),
-        onSuccess: () => {
+        onSuccess: (data) => {
             queryClient.invalidateQueries({ queryKey: ["orders"] });
             queryClient.invalidateQueries({ queryKey: ["cart"] });
-            toast.success("Замовлення успішно створено! Перенаправлення на сторінку оплати...");
+            toast.success(data.message);
         },
         onError: (error: any) => {
             if (error?.message) {
@@ -49,9 +49,9 @@ export function useUpdateOrder() {
     return useMutation({
         mutationFn: ({ orderId, data }: { orderId: string; data: Partial<IOrder> }) =>
             updateOrder(orderId, data),
-        onSuccess: () => {
+        onSuccess: (data) => {
             queryClient.invalidateQueries({ queryKey: ["orders"] });
-            toast.success("Замовлення успішно відредаговано!");
+            toast.success(data.message);
         },
         onError: (error: any) => {
             if (error?.message) {
@@ -68,9 +68,9 @@ export function useDeleteOrder() {
 
     return useMutation({
         mutationFn: (orderId: string) => deleteOrder(orderId),
-        onSuccess: () => {
+        onSuccess: (data) => {
             queryClient.invalidateQueries({ queryKey: ["orders"] });
-            toast.success("Замовлення видалено!");
+            toast.success(data.message);
         },
         onError: (error: any) => {
             if (error?.message) {

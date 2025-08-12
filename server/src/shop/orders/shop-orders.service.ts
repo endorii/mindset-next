@@ -1,11 +1,14 @@
-import { Injectable, InternalServerErrorException, NotFoundException } from "@nestjs/common";
+import { HttpException, Injectable, InternalServerErrorException } from "@nestjs/common";
 import { CreateOrderDto } from "./dto/create-order.dto";
 import { PrismaService } from "src/prisma/prisma.service";
-import { Prisma } from "generated/prisma";
+import { ShopCartService } from "../cart/shop-cart.service";
 
 @Injectable()
 export class ShopOrdersService {
-    constructor(private readonly prisma: PrismaService) {}
+    constructor(
+        private readonly prisma: PrismaService,
+        private readonly shopCartService: ShopCartService
+    ) {}
 
     async createOrder(createOrderDto: CreateOrderDto) {
         try {
@@ -52,12 +55,7 @@ export class ShopOrdersService {
                 },
             });
 
-            // Очищаємо кошик після створення замовлення
-            await this.prisma.cartItem.deleteMany({
-                where: {
-                    userId,
-                },
-            });
+            await this.shopCartService.removeCartFromUser(userId);
 
             return {
                 message: "Замовлення успішно створено",
@@ -65,16 +63,9 @@ export class ShopOrdersService {
             };
         } catch (error) {
             console.error("Помилка створення замовлення:", error);
-
-            // Якщо це відома помилка Prisma, можна її обробити окремо
-            if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === "P2002") {
-                // Наприклад, дублікат унікального поля
-                throw new InternalServerErrorException(
-                    "Замовлення з таким унікальним полем вже існує"
-                );
+            if (error instanceof HttpException) {
+                throw error;
             }
-
-            // Для інших помилок — загальна помилка сервера
             throw new InternalServerErrorException("Помилка сервера при створенні замовлення");
         }
     }
@@ -102,17 +93,12 @@ export class ShopOrdersService {
                 },
             });
 
-            if (orders.length === 0) {
-                throw new NotFoundException("Замовлень не знайдено");
-            }
-
             return orders;
         } catch (error) {
-            if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === "P2025") {
-                throw new NotFoundException("Замовлення не знайдено");
-            }
-
             console.error("Помилка отримання замовлень:", error);
+            if (error instanceof HttpException) {
+                throw error;
+            }
             throw new InternalServerErrorException("Не вдалося отримати замовлення");
         }
     }

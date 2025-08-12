@@ -1,5 +1,6 @@
 import {
     ConflictException,
+    HttpException,
     Injectable,
     InternalServerErrorException,
     NotFoundException,
@@ -24,7 +25,7 @@ export class ShopUserAddressService {
                 throw new ConflictException(`Адреса доставки вже існує`);
             }
 
-            return await this.prisma.shippingAddress.create({
+            const address = await this.prisma.shippingAddress.create({
                 data: {
                     user: {
                         connect: { id: userId },
@@ -32,10 +33,16 @@ export class ShopUserAddressService {
                     ...addressData,
                 },
             });
-        } catch (error) {
-            if (error instanceof ConflictException) throw error;
 
+            return {
+                message: "Адресу доставки додано",
+                data: address,
+            };
+        } catch (error) {
             console.error("Помилка додавання адреси користувача:", error);
+            if (error instanceof HttpException) {
+                throw error;
+            }
             throw new InternalServerErrorException("Не вдалося додати адресу користувача.");
         }
     }
@@ -50,13 +57,20 @@ export class ShopUserAddressService {
                 throw new NotFoundException(`Адреса для користувача з ID ${userId} не знайдена.`);
             }
 
-            return await this.prisma.shippingAddress.update({
+            const updatedAddress = await this.prisma.shippingAddress.update({
                 where: { userId },
                 data: updateUserAddressDto,
             });
+
+            return {
+                message: "Адресу доставки успішно редаговано",
+                data: updatedAddress,
+            };
         } catch (error) {
-            if (error instanceof NotFoundException) throw error;
             console.error("Помилка оновлення адреси користувача:", error);
+            if (error instanceof HttpException) {
+                throw error;
+            }
             throw new InternalServerErrorException("Не вдалося оновити адресу користувача.");
         }
     }

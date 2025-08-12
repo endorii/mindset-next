@@ -1,8 +1,11 @@
-import { IUser, IUserShippingAdress } from "../../user-info/types/user.types";
+import { ServerResponseWithMessage } from "@/shared/interfaces/interfaces";
+import { IUserShippingAdress } from "../../user-info/types/user.types";
 
 const API_BASE_URL = "http://localhost:5000/api";
 
-export async function createUserAddress(data: IUserShippingAdress): Promise<IUserShippingAdress> {
+export async function createUserAddress(
+    data: IUserShippingAdress
+): Promise<ServerResponseWithMessage<IUserShippingAdress>> {
     try {
         const response = await fetch(`${API_BASE_URL}/shop/user-address`, {
             method: "POST",
@@ -32,7 +35,7 @@ export async function createUserAddress(data: IUserShippingAdress): Promise<IUse
 
 export async function editUserAddress(
     data: Partial<IUserShippingAdress>
-): Promise<IUserShippingAdress> {
+): Promise<ServerResponseWithMessage<IUserShippingAdress>> {
     try {
         const response = await fetch(`${API_BASE_URL}/shop/user-address`, {
             method: "PATCH",

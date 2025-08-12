@@ -4,6 +4,7 @@ import {
     ForbiddenException,
     NotFoundException,
     InternalServerErrorException,
+    HttpException,
 } from "@nestjs/common";
 import { PrismaService } from "src/prisma/prisma.service";
 import { CreateReviewDto } from "./dto/create-review.dto";
@@ -73,6 +74,9 @@ export class ShopReviewsService {
             };
         } catch (error) {
             console.error("Помилка створення відгуку:", error);
+            if (error instanceof HttpException) {
+                throw error;
+            }
             throw new InternalServerErrorException(
                 "Не вдалося створити відгук через внутрішню помилку."
             );
@@ -132,6 +136,9 @@ export class ShopReviewsService {
             }
         } catch (error) {
             console.error("Помилка голосування за відгук:", error);
+            if (error instanceof HttpException) {
+                throw error;
+            }
             throw new InternalServerErrorException("Не вдалося оновити голосування за відгук");
         }
     }
@@ -162,7 +169,9 @@ export class ShopReviewsService {
             return reviews;
         } catch (error) {
             console.error("Помилка отримання відгуків:", error);
-            if (error instanceof NotFoundException) throw error;
+            if (error instanceof HttpException) {
+                throw error;
+            }
             throw new InternalServerErrorException("Не вдалося отримати відгуки");
         }
     }
@@ -193,7 +202,9 @@ export class ShopReviewsService {
             return reviews;
         } catch (error) {
             console.error("Помилка отримання відгуків:", error);
-            if (error instanceof NotFoundException) throw error;
+            if (error instanceof HttpException) {
+                throw error;
+            }
             throw new InternalServerErrorException("Не вдалося отримати відгуки");
         }
     }
@@ -219,8 +230,9 @@ export class ShopReviewsService {
             return { message: "Відгук успішно видалено" };
         } catch (error) {
             console.error("Помилка видалення відгуку:", error);
-            if (error instanceof NotFoundException || error instanceof ForbiddenException)
+            if (error instanceof HttpException) {
                 throw error;
+            }
             throw new InternalServerErrorException("Не вдалося видалити відгук");
         }
     }

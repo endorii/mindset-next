@@ -15,11 +15,11 @@ export function useCreateColor() {
 
     return useMutation({
         mutationFn: (data: IColorPayload) => createColor(data),
-        onSuccess: () => {
+        onSuccess: (data) => {
             queryClient.invalidateQueries({
                 queryKey: ["colors"],
             });
-            toast.success("Колір успішно додано!");
+            toast.success(data.message);
         },
         onError: (error: any) => {
             if (error?.message) {
@@ -37,9 +37,9 @@ export function useEditColor() {
     return useMutation({
         mutationFn: ({ colorId, data }: { colorId: string; data: Partial<IColorPayload> }) =>
             editColor(colorId, data),
-        onSuccess: () => {
+        onSuccess: (data) => {
             queryClient.invalidateQueries({ queryKey: ["colors"] });
-            toast.success("Колір успішно відредаговано!");
+            toast.success(data.message);
         },
         onError: (error: any) => {
             if (error?.message) {
@@ -56,11 +56,11 @@ export function useDeleteColor() {
 
     return useMutation({
         mutationFn: (colorId: string) => deleteColor(colorId),
-        onSuccess: () => {
+        onSuccess: (data) => {
             queryClient.invalidateQueries({
                 queryKey: ["colors"],
             });
-            toast.success("Колір видалено!");
+            toast.success(data.message);
         },
         onError: (error: any) => {
             if (error?.message) {

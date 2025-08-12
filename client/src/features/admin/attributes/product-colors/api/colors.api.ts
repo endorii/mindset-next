@@ -1,3 +1,4 @@
+import { ServerResponseWithMessage } from "@/shared/interfaces/interfaces";
 import { IColor, IColorPayload } from "../types/product-color.types";
 
 const API_BASE_URL = "http://localhost:5000/api";
@@ -25,7 +26,7 @@ export async function fetchColors(): Promise<IColor[]> {
     }
 }
 
-export async function createColor(data: IColorPayload): Promise<IColor> {
+export async function createColor(data: IColorPayload): Promise<ServerResponseWithMessage<IColor>> {
     try {
         const response = await fetch(`${API_BASE_URL}/admin/colors`, {
             method: "POST",
@@ -53,7 +54,10 @@ export async function createColor(data: IColorPayload): Promise<IColor> {
     }
 }
 
-export async function editColor(colorId: IColor["id"], data: Partial<IColor>): Promise<IColor> {
+export async function editColor(
+    colorId: string,
+    data: Partial<IColor>
+): Promise<ServerResponseWithMessage<IColor>> {
     try {
         const response = await fetch(`${API_BASE_URL}/admin/colors/${colorId}`, {
             method: "PATCH",
@@ -81,7 +85,7 @@ export async function editColor(colorId: IColor["id"], data: Partial<IColor>): P
     }
 }
 
-export async function deleteColor(colorId: IColor["id"]): Promise<void> {
+export async function deleteColor(colorId: string): Promise<ServerResponseWithMessage> {
     try {
         const response = await fetch(`${API_BASE_URL}/admin/colors/${colorId}`, {
             method: "DELETE",

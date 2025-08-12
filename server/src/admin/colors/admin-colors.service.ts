@@ -1,5 +1,7 @@
 import {
+    BadRequestException,
     ConflictException,
+    HttpException,
     Injectable,
     InternalServerErrorException,
     NotFoundException,
@@ -18,49 +20,70 @@ export class AdminColorsService {
 
     async getColors() {
         try {
-            return await this.prisma.color.findMany();
+            const colors = await this.prisma.color.findMany();
+            return colors;
         } catch (error) {
             console.error("Помилка отримання кольорів:", error);
+            if (error instanceof HttpException) {
+                throw error;
+            }
             throw new InternalServerErrorException("Не вдалося отримати кольори");
         }
     }
 
     async addColor(userId: string, createColorDto: CreateColorDto) {
         try {
-            const { name, hexCode } = createColorDto;
-
             const existingColor = await this.prisma.color.findUnique({
-                where: { name },
+                where: {
+                    name: createColorDto.name,
+                },
+            });
+
+            const existingHex = await this.prisma.color.findUnique({
+                where: {
+                    hexCode: createColorDto.hexCode,
+                },
             });
 
             if (existingColor) {
                 throw new ConflictException("Колір з такою назвою вже існує");
             }
 
+            if (existingHex) {
+                throw new ConflictException("HEX-код з такою назвою вже існує");
+            }
+
             const color = await this.prisma.color.create({
-                data: { name, hexCode },
+                data: createColorDto,
             });
 
             await this.adminRecentActions.createAction(userId, `Додано колір ${color.name}`);
 
-            return color;
+            return {
+                message: "Колір успішно створено",
+                color,
+            };
         } catch (error) {
             console.error("Помилка створення кольору:", error);
-            if (error instanceof ConflictException) {
+            if (error instanceof HttpException) {
                 throw error;
             }
-            throw new InternalServerErrorException("Не вдалося створити колір");
+            throw new InternalServerErrorException("Сталася внутрішня помилка сервера");
         }
     }
 
     async editColor(userId: string, colorId: string, updateColorDto: UpdateColorDto) {
+        if (!updateColorDto || Object.keys(updateColorDto).length === 0) {
+            throw new BadRequestException("Дані для оновлення не надано");
+        }
+
         try {
-            const existingColor = await this.prisma.color.findUnique({
-                where: { name: updateColorDto.name },
+            const color = await this.prisma.color.findUnique({
+                where: { id: colorId },
             });
 
-            if (existingColor && existingColor.id !== colorId) {
-                throw new ConflictException("Колір з такою назвою вже існує");
+            if (!color) {
+                throw new NotFoundException("Кольору з таким ID не знайдено");
             }
 
             const updatedColor = await this.prisma.color.update({
@@ -72,12 +95,17 @@ export class AdminColorsService {
                 userId,
                 `Редаговано колір ${updatedColor.name}`
             );
+
+            return {
+                message: "Колір успішно оновлено",
+                color: updatedColor,
+            };
         } catch (error) {
             console.error("Помилка редагування кольору:", error);
-            if (error instanceof ConflictException) {
+            if (error instanceof HttpException) {
                 throw error;
             }
-            throw new InternalServerErrorException("Не вдалося оновити колір");
+            throw new InternalServerErrorException("Сталася внутрішня помилка сервера");
         }
     }
 
@@ -87,19 +115,25 @@ export class AdminColorsService {
                 where: { id: colorId },
             });
 
-            if (!color) throw new NotFoundException("Колір не знайдено");
+            if (!color) {
+                throw new NotFoundException("Кольору з таким ID не знайдено");
+            }
 
             await this.prisma.color.delete({
                 where: { id: colorId },
             });
 
             await this.adminRecentActions.createAction(userId, `Видалено колір ${color.name}`);
+
+            return {
+                message: "Колір успішно видалено",
+            };
         } catch (error) {
             console.error("Помилка видалення кольору:", error);
-            if (error instanceof NotFoundException) {
+            if (error instanceof HttpException) {
                 throw error;
             }
-            throw new InternalServerErrorException("Не вдалося видалити колір");
+            throw new InternalServerErrorException("Сталася внутрішня помилка сервера");
         }
     }
 }

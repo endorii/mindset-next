@@ -15,11 +15,11 @@ export function useCreateSize() {
 
     return useMutation({
         mutationFn: (data: ISizePayload) => createSize(data),
-        onSuccess: () => {
+        onSuccess: (data) => {
             queryClient.invalidateQueries({
                 queryKey: ["sizes"],
             });
-            toast.success("Розмір успішно додано!");
+            toast.success(data.message);
         },
         onError: (error: any) => {
             if (error?.message) {
@@ -37,9 +37,9 @@ export function useEditSize() {
     return useMutation({
         mutationFn: ({ sizeId, data }: { sizeId: string; data: ISizePayload }) =>
             editSize(sizeId, data),
-        onSuccess: () => {
+        onSuccess: (data) => {
             queryClient.invalidateQueries({ queryKey: ["sizes"] });
-            toast.success("Розмір успішно відредаговано!");
+            toast.success(data.message);
         },
         onError: (error: any) => {
             if (error?.message) {
@@ -56,11 +56,11 @@ export function useDeleteSize() {
 
     return useMutation({
         mutationFn: (sizeId: string) => deleteSize(sizeId),
-        onSuccess: () => {
+        onSuccess: (data) => {
             queryClient.invalidateQueries({
                 queryKey: ["sizes"],
             });
-            toast.success("Розмір видалено!");
+            toast.success(data.message);
         },
         onError: (error: any) => {
             if (error?.message) {

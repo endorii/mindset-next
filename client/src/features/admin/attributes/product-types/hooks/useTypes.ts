@@ -15,11 +15,11 @@ export function useCreateType() {
 
     return useMutation({
         mutationFn: (data: ITypePayload) => createType(data),
-        onSuccess: () => {
+        onSuccess: (data) => {
             queryClient.invalidateQueries({
                 queryKey: ["types"],
             });
-            toast.success("Тип успішно додано!");
+            toast.success(data.message);
         },
         onError: (error: any) => {
             if (error?.message) {
@@ -37,9 +37,9 @@ export function useEditType() {
     return useMutation({
         mutationFn: ({ typeId, data }: { typeId: string; data: ITypePayload }) =>
             editType(typeId, data),
-        onSuccess: () => {
+        onSuccess: (data) => {
             queryClient.invalidateQueries({ queryKey: ["types"] });
-            toast.success("Тип успішно відредаговано!");
+            toast.success(data.message);
         },
         onError: (error: any) => {
             if (error?.message) {
@@ -56,11 +56,11 @@ export function useDeleteType() {
 
     return useMutation({
         mutationFn: (typeId: string) => deleteType(typeId),
-        onSuccess: () => {
+        onSuccess: (data) => {
             queryClient.invalidateQueries({
                 queryKey: ["types"],
             });
-            toast.success("Тип видалено!");
+            toast.success(data.message);
         },
         onError: (error: any) => {
             if (error?.message) {

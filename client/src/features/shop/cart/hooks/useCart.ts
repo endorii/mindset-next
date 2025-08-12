@@ -20,11 +20,11 @@ export function useAddCartItemToUser() {
 
     return useMutation({
         mutationFn: (cartItem: ICartItem) => addCartItemToUser(cartItem),
-        onSuccess: () => {
+        onSuccess: (data) => {
             queryClient.invalidateQueries({
                 queryKey: ["cart"],
             });
-            toast.success("Товар додано у кошик!");
+            toast.success(data.message);
         },
         onError: (error: any) => {
             if (error?.message) {
@@ -41,9 +41,9 @@ export function useDeleteCartItemFromUser() {
 
     return useMutation({
         mutationFn: (cartItemId: string) => deleteCartItemFromUser(cartItemId),
-        onSuccess: () => {
+        onSuccess: (data) => {
             queryClient.invalidateQueries({ queryKey: ["cart"] });
-            toast.success("Товар видалено з кошика!");
+            toast.success(data.message);
         },
         onError: (error: any) => {
             if (error?.message) {
@@ -60,9 +60,9 @@ export function useDeleteCartFromUser() {
 
     return useMutation({
         mutationFn: () => deleteCartFromUser(),
-        onSuccess: () => {
+        onSuccess: (data) => {
             queryClient.invalidateQueries({ queryKey: ["cart"] });
-            toast.success("Корзину очищено!");
+            toast.success(data.message);
         },
         onError: (error: any) => {
             if (error?.message) {

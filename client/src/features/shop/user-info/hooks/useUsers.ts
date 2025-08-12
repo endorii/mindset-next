@@ -17,11 +17,11 @@ export function useEditUser() {
 
     return useMutation({
         mutationFn: (data: Partial<IUser>) => editUser(data),
-        onSuccess: () => {
+        onSuccess: (data) => {
             queryClient.invalidateQueries({
                 queryKey: ["currentUser"],
             });
-            toast.success("Інформацію успішно відредаговано!");
+            toast.success(data.message);
         },
         onError: (error: any) => {
             if (error?.message) {
@@ -38,11 +38,11 @@ export function useChangePassword() {
 
     return useMutation({
         mutationFn: (data: { oldPassword: string; newPassword: string }) => changePassword(data),
-        onSuccess: () => {
+        onSuccess: (data) => {
             queryClient.invalidateQueries({
                 queryKey: ["currentUser"],
             });
-            toast.success("Пароль успішно змінено");
+            toast.success(data.message);
         },
         onError: (error: any) => {
             if (error?.message) {
@@ -59,11 +59,11 @@ export function useDeleteUser() {
 
     return useMutation({
         mutationFn: (password: string) => deleteUser(password),
-        onSuccess: () => {
+        onSuccess: (data) => {
             queryClient.invalidateQueries({
                 queryKey: ["currentUser"],
             });
-            toast.success("Акаунт успішно видалено!");
+            toast.success(data.message);
         },
         onError: (error: any) => {
             if (error?.message) {

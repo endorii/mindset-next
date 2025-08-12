@@ -1,3 +1,4 @@
+import { ServerResponseWithMessage } from "@/shared/interfaces/interfaces";
 import { IFavoriteItem } from "../types/favorites.types";
 
 const API_BASE_URL = "http://localhost:5000/api";
@@ -25,7 +26,7 @@ export async function fetchFavoritesFromUser(): Promise<IFavoriteItem[]> {
     }
 }
 
-export async function addFavoriteToUser(productId: string): Promise<IFavoriteItem[]> {
+export async function addFavoriteToUser(productId: string): Promise<ServerResponseWithMessage> {
     try {
         const response = await fetch(`${API_BASE_URL}/shop/favorites`, {
             method: "POST",
@@ -53,7 +54,9 @@ export async function addFavoriteToUser(productId: string): Promise<IFavoriteIte
     }
 }
 
-export async function deleteFavoriteFromUser(productId: string): Promise<void> {
+export async function deleteFavoriteFromUser(
+    productId: string
+): Promise<ServerResponseWithMessage> {
     try {
         const response = await fetch(`${API_BASE_URL}/shop/favorites/${productId}`, {
             method: "DELETE",
@@ -70,7 +73,7 @@ export async function deleteFavoriteFromUser(productId: string): Promise<void> {
             error.status = parsedData.statusCode || response.status;
             throw error;
         }
-        return;
+        return parsedData;
     } catch (error: any) {
         throw error;
     }

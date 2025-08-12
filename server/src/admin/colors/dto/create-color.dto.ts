@@ -8,6 +8,7 @@ export class CreateColorDto {
     name: string;
 
     @IsString({ message: "HEX-код повинен бути рядком." })
+    @IsNotEmpty({ message: "HEX-код не може бути порожнім." })
     @IsHexColor({ message: 'Недійсний формат HEX-коду кольору. Приклад: "#FF0000" або "#FFF".' })
-    hexCode?: string;
+    hexCode: string;
 }

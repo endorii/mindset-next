@@ -1,4 +1,9 @@
-import { Injectable, InternalServerErrorException, NotFoundException } from "@nestjs/common";
+import {
+    HttpException,
+    Injectable,
+    InternalServerErrorException,
+    NotFoundException,
+} from "@nestjs/common";
 import { PrismaService } from "src/prisma/prisma.service";
 
 @Injectable()
@@ -32,10 +37,10 @@ export class ShopCategoriesService {
 
             return categories;
         } catch (error) {
-            if (error instanceof NotFoundException) {
+            console.error("Помилка отримання категорій:", error);
+            if (error instanceof HttpException) {
                 throw error;
             }
-            console.error("Помилка отримання категорій:", error);
             throw new InternalServerErrorException("Помилка сервера при отриманні категорій");
         }
     }
@@ -55,10 +60,10 @@ export class ShopCategoriesService {
 
             return category;
         } catch (error) {
-            if (error instanceof NotFoundException) {
+            console.error("Помилка отримання категорії:", error);
+            if (error instanceof HttpException) {
                 throw error;
             }
-            console.error("Помилка отримання категорії:", error);
             throw new InternalServerErrorException("Помилка сервера при отримання категорії");
         }
     }

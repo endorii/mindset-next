@@ -1,4 +1,9 @@
-import { Injectable, InternalServerErrorException, NotFoundException } from "@nestjs/common";
+import {
+    HttpException,
+    Injectable,
+    InternalServerErrorException,
+    NotFoundException,
+} from "@nestjs/common";
 import { PrismaService } from "src/prisma/prisma.service";
 
 @Injectable()
@@ -16,14 +21,12 @@ export class ProductsService {
                 },
             });
 
-            if (!products || products.length === 0) {
-                throw new NotFoundException("Товарів не знайдено");
-            }
-
             return products;
         } catch (error) {
             console.error("Помилка отримання товарів:", error);
-            if (error instanceof NotFoundException) throw error;
+            if (error instanceof HttpException) {
+                throw error;
+            }
             throw new InternalServerErrorException("Не вдалося отримати товари");
         }
     }
@@ -55,7 +58,9 @@ export class ProductsService {
             return product;
         } catch (error) {
             console.error("Помилка отримання товару:", error);
-            if (error instanceof NotFoundException) throw error;
+            if (error instanceof HttpException) {
+                throw error;
+            }
             throw new InternalServerErrorException("Не вдалося отримати товар");
         }
     }
@@ -84,6 +89,9 @@ export class ProductsService {
             return products;
         } catch (error) {
             console.error("Помилка отримання популярних товарів:", error);
+            if (error instanceof HttpException) {
+                throw error;
+            }
             throw new InternalServerErrorException("Не вдалося отримати популярні товари");
         }
     }
@@ -107,14 +115,12 @@ export class ProductsService {
                 take: 20,
             });
 
-            if (!products || products.length === 0) {
-                throw new NotFoundException("Товарів у колекції не знайдено");
-            }
-
             return products;
         } catch (error) {
             console.error("Помилка отримання товарів з колекції:", error);
-            if (error instanceof NotFoundException) throw error;
+            if (error instanceof HttpException) {
+                throw error;
+            }
             throw new InternalServerErrorException("Не вдалося отримати товари з колекції");
         }
     }

@@ -1,8 +1,9 @@
 import {
-    BadRequestException,
     Injectable,
     InternalServerErrorException,
     NotFoundException,
+    ConflictException,
+    HttpException,
 } from "@nestjs/common";
 import { PrismaService } from "src/prisma/prisma.service";
 import { CreateCategoryDto } from "./dto/create-category.dto";
@@ -30,7 +31,7 @@ export class AdminCategoriesService {
             });
 
             if (existingCategory) {
-                throw new BadRequestException("Категорія з таким шляхом уже існує в цій колекції");
+                throw new ConflictException("Категорія з таким шляхом уже існує в цій колекції");
             }
 
             const category = await this.prisma.category.create({
@@ -39,14 +40,12 @@ export class AdminCategoriesService {
 
             await this.adminRecentActions.createAction(userId, `Додано категорію ${category.name}`);
 
-            return category;
+            return { message: "Категорію успішно створено", category };
         } catch (error) {
             console.error("Помилка створення категорії:", error);
-
-            if (error instanceof BadRequestException) {
+            if (error instanceof HttpException) {
                 throw error;
             }
-
             throw new InternalServerErrorException(
                 "Не вдалося створити категорію через внутрішню помилку"
             );
@@ -60,7 +59,24 @@ export class AdminCategoriesService {
             });
 
             if (!category) {
-                throw new NotFoundException("Категорію не знайдено");
+                throw new NotFoundException("Категорію з таким ID не знайдено");
+            }
+
+            if (updateCategoryDto.path && updateCategoryDto.path !== category.path) {
+                const existingCategory = await this.prisma.category.findUnique({
+                    where: {
+                        collectionId_path: {
+                            collectionId: category.collectionId,
+                            path: updateCategoryDto.path,
+                        },
+                    },
+                });
+
+                if (existingCategory) {
+                    throw new ConflictException(
+                        "Категорія з таким шляхом уже існує в цій колекції"
+                    );
+                }
             }
 
             const updatedCategory = await this.prisma.category.update({
@@ -79,11 +95,9 @@ export class AdminCategoriesService {
             };
         } catch (error) {
             console.error("Помилка редагування категорії:", error);
-
-            if (error instanceof NotFoundException) {
+            if (error instanceof HttpException) {
                 throw error;
             }
-
             throw new InternalServerErrorException(
                 "Не вдалося оновити категорію через внутрішню помилку"
             );
@@ -96,10 +110,23 @@ export class AdminCategoriesService {
                 where: {
                     id: categoryId,
                 },
+                include: {
+                    _count: {
+                        select: {
+                            products: true,
+                        },
+                    },
+                },
             });
 
             if (!category) {
-                throw new NotFoundException("Категорію не знайдено");
+                throw new NotFoundException("Категорію з таким ID не знайдено");
+            }
+
+            if (category._count?.products > 0) {
+                throw new ConflictException(
+                    "Неможливо видалити категорію, яка містить продукти. Спочатку видаліть або перенесіть усі продукти."
+                );
             }
 
             await this.prisma.category.delete({
@@ -118,11 +145,9 @@ export class AdminCategoriesService {
             };
         } catch (error) {
             console.error("Помилка видалення категорії:", error);
-
-            if (error instanceof NotFoundException) {
+            if (error instanceof HttpException) {
                 throw error;
             }
-
             throw new InternalServerErrorException(
                 "Не вдалося видалити категорію через внутрішню помилку"
             );

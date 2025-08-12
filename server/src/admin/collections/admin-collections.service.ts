@@ -1,8 +1,9 @@
 import {
-    BadRequestException,
     Injectable,
     InternalServerErrorException,
     NotFoundException,
+    ConflictException,
+    HttpException,
 } from "@nestjs/common";
 import { PrismaService } from "src/prisma/prisma.service";
 import { CreateCollectionDto } from "./dto/create-collection.dto";
@@ -23,8 +24,9 @@ export class AdminCollectionsService {
             const existingCollection = await this.prisma.collection.findUnique({
                 where: { path },
             });
+
             if (existingCollection) {
-                throw new BadRequestException("Колекція з таким шляхом уже існує");
+                throw new ConflictException("Колекція з таким шляхом уже існує");
             }
 
             const collection = await this.prisma.collection.create({
@@ -49,7 +51,7 @@ export class AdminCollectionsService {
             };
         } catch (error) {
             console.error("Помилка створення колекції:", error);
-            if (error instanceof BadRequestException) {
+            if (error instanceof HttpException) {
                 throw error;
             }
             throw new InternalServerErrorException("Не вдалося створити колекцію");
@@ -61,17 +63,23 @@ export class AdminCollectionsService {
         collectionId: string,
         updateCollectionDto: UpdateCollectionDto
     ) {
-        if (!updateCollectionDto) {
-            throw new BadRequestException("Дані для оновлення не надано");
-        }
-
         try {
             const collection = await this.prisma.collection.findUnique({
                 where: { id: collectionId },
             });
 
             if (!collection) {
-                throw new NotFoundException("Колекцію не знайдено");
+                throw new NotFoundException("Колекцію з таким ID не знайдено");
+            }
+
+            if (updateCollectionDto.path && updateCollectionDto.path !== collection.path) {
+                const existingCollection = await this.prisma.collection.findUnique({
+                    where: { path: updateCollectionDto.path },
+                });
+
+                if (existingCollection) {
+                    throw new ConflictException("Колекція з таким шляхом уже існує");
+                }
             }
 
             const updatedCollection = await this.prisma.collection.update({
@@ -92,7 +100,7 @@ export class AdminCollectionsService {
             };
         } catch (error) {
             console.error("Помилка редагування колекції:", error);
-            if (error instanceof NotFoundException || error instanceof BadRequestException) {
+            if (error instanceof HttpException) {
                 throw error;
             }
             throw new InternalServerErrorException("Не вдалося оновити колекцію");
@@ -103,9 +111,24 @@ export class AdminCollectionsService {
         try {
             const collection = await this.prisma.collection.findUnique({
                 where: { id: collectionId },
+                include: {
+                    _count: {
+                        select: {
+                            categories: true,
+                        },
+                    },
+                },
             });
 
-            if (!collection) throw new NotFoundException("Колекцію не знайдено");
+            if (!collection) {
+                throw new NotFoundException("Колекцію з таким ID не знайдено");
+            }
+
+            if (collection._count?.categories > 0) {
+                throw new ConflictException(
+                    "Неможливо видалити колекцію, яка містить категорії. Спочатку видаліть усі категорії."
+                );
+            }
 
             await this.prisma.collection.delete({
                 where: {
@@ -123,7 +146,7 @@ export class AdminCollectionsService {
             };
         } catch (error) {
             console.error("Помилка видалення колекції:", error);
-            if (error instanceof NotFoundException) {
+            if (error instanceof HttpException) {
                 throw error;
             }
             throw new InternalServerErrorException("Не вдалося видалити колекцію");

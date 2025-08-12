@@ -18,11 +18,11 @@ export function useAddFavorite() {
 
     return useMutation({
         mutationFn: (productId: string) => addFavoriteToUser(productId),
-        onSuccess: () => {
+        onSuccess: (data) => {
             queryClient.invalidateQueries({
                 queryKey: ["favorites"],
             });
-            toast.success("Товар додано до вподобаних");
+            toast.success(data.message);
         },
         onError: (error: any) => {
             if (error?.message) {
@@ -39,9 +39,9 @@ export function useDeleteFavorite() {
 
     return useMutation({
         mutationFn: (productId: string) => deleteFavoriteFromUser(productId),
-        onSuccess: () => {
+        onSuccess: (data) => {
             queryClient.invalidateQueries({ queryKey: ["favorites"] });
-            toast.success("Товар видалено з вподобаних");
+            toast.success(data.message);
         },
         onError: (error: any) => {
             if (error?.message) {

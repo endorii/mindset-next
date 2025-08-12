@@ -30,11 +30,11 @@ export function useCreateCategory() {
 
     return useMutation({
         mutationFn: (categoryData: ICategory) => addCategoryToCollection(categoryData),
-        onSuccess: () => {
+        onSuccess: (data) => {
             queryClient.invalidateQueries({
                 queryKey: ["categories"],
             });
-            toast.success("Категорію успішно додано!");
+            toast.success(data.message);
         },
         onError: (error: any) => {
             if (error?.message) {
@@ -62,11 +62,11 @@ export function useEditCategory() {
                 banner: string;
             };
         }) => editCategory(categoryId, data),
-        onSuccess() {
+        onSuccess(data) {
             queryClient.invalidateQueries({
                 queryKey: ["categories"],
             });
-            toast.success("Категорію успішно відредаговано!");
+            toast.success(data.message);
         },
         onError: (error: any) => {
             if (error?.message) {
@@ -83,11 +83,11 @@ export function useDeleteCategory() {
 
     return useMutation({
         mutationFn: (categoryId: string) => deleteCategory(categoryId),
-        onSuccess: () => {
+        onSuccess: (data) => {
             queryClient.invalidateQueries({
                 queryKey: ["categories"],
             });
-            toast.success("Категорію видалено!");
+            toast.success(data.message);
         },
         onError: (error: any) => {
             if (error?.message) {

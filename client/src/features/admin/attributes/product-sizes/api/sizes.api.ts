@@ -1,3 +1,4 @@
+import { ServerResponseWithMessage } from "@/shared/interfaces/interfaces";
 import { ISize, ISizePayload } from "../types/product-size.types";
 
 const API_BASE_URL = "http://localhost:5000/api";
@@ -25,7 +26,9 @@ export async function fetchSizes(): Promise<ISize[]> {
     }
 }
 
-export async function createSize(data: ISizePayload): Promise<ISize> {
+export async function createSize(
+    data: ISizePayload
+): Promise<ServerResponseWithMessage<ISizePayload>> {
     try {
         const response = await fetch(`${API_BASE_URL}/admin/sizes`, {
             method: "POST",
@@ -53,7 +56,10 @@ export async function createSize(data: ISizePayload): Promise<ISize> {
     }
 }
 
-export async function editSize(sizeId: ISize["id"], data: Partial<ISize>): Promise<ISize> {
+export async function editSize(
+    sizeId: string,
+    data: Partial<ISize>
+): Promise<ServerResponseWithMessage<ISize>> {
     try {
         const response = await fetch(`${API_BASE_URL}/admin/sizes/${sizeId}`, {
             method: "PATCH",
@@ -81,7 +87,7 @@ export async function editSize(sizeId: ISize["id"], data: Partial<ISize>): Promi
     }
 }
 
-export async function deleteSize(sizeId: ISize["id"]): Promise<void> {
+export async function deleteSize(sizeId: string): Promise<ServerResponseWithMessage> {
     try {
         const response = await fetch(`${API_BASE_URL}/admin/sizes/${sizeId}`, {
             method: "DELETE",

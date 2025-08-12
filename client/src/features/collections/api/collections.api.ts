@@ -1,3 +1,4 @@
+import { ServerResponseWithMessage } from "@/shared/interfaces/interfaces";
 import { ICollection } from "../types/collections.types";
 
 const API_BASE_URL = "http://localhost:5000/api";
@@ -44,7 +45,9 @@ export async function fetchGetCollectionByPath(collectionPath: string): Promise<
     }
 }
 
-export async function createCollection(data: ICollection): Promise<ICollection> {
+export async function createCollection(
+    data: ICollection
+): Promise<ServerResponseWithMessage<ICollection>> {
     try {
         const response = await fetch(`${API_BASE_URL}/admin/collections`, {
             method: "POST",
@@ -75,7 +78,7 @@ export async function createCollection(data: ICollection): Promise<ICollection> 
 export async function editCollection(
     collectionId: string,
     data: Partial<ICollection>
-): Promise<ICollection> {
+): Promise<ServerResponseWithMessage<ICollection>> {
     try {
         const response = await fetch(`${API_BASE_URL}/admin/collections/${collectionId}`, {
             method: "PATCH",
@@ -103,7 +106,7 @@ export async function editCollection(
     }
 }
 
-export async function deleteCollection(collectionId: string): Promise<ICollection> {
+export async function deleteCollection(collectionId: string): Promise<ServerResponseWithMessage> {
     try {
         const response = await fetch(`${API_BASE_URL}/admin/collections/${collectionId}`, {
             method: "DELETE",

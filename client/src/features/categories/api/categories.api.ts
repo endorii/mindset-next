@@ -1,3 +1,4 @@
+import { ServerResponseWithMessage } from "@/shared/interfaces/interfaces";
 import { ICategory } from "../types/categories.types";
 import { ICollection } from "@/features/collections/types/collections.types";
 
@@ -50,7 +51,9 @@ export async function fetchGetCategoriesByCollectionId(collectionId: string): Pr
     }
 }
 
-export async function addCategoryToCollection(categoryData: ICategory): Promise<ICategory> {
+export async function addCategoryToCollection(
+    categoryData: ICategory
+): Promise<ServerResponseWithMessage<ICategory>> {
     try {
         const response = await fetch(`${API_BASE_URL}/admin/categories`, {
             method: "POST",
@@ -81,7 +84,7 @@ export async function addCategoryToCollection(categoryData: ICategory): Promise<
 export async function editCategory(
     categoryId: string,
     data: Partial<ICategory>
-): Promise<ICategory> {
+): Promise<ServerResponseWithMessage<ICategory>> {
     try {
         const response = await fetch(`${API_BASE_URL}/admin/categories/${categoryId}`, {
             method: "PATCH",
@@ -109,7 +112,7 @@ export async function editCategory(
     }
 }
 
-export async function deleteCategory(categoryId: string): Promise<void> {
+export async function deleteCategory(categoryId: string): Promise<ServerResponseWithMessage> {
     try {
         const response = await fetch(`${API_BASE_URL}/admin/categories/${categoryId}`, {
             method: "DELETE",

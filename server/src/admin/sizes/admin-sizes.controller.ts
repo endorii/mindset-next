@@ -10,7 +10,7 @@ import {
     UseGuards,
     Req,
 } from "@nestjs/common";
-import { AdminSizesService } from "./sizes.service";
+import { AdminSizesService } from "./admin-sizes.service";
 import { CreateSizeDto } from "./dto/create-size.dto";
 import { UpdateSizeDto } from "./dto/update-size.dto";
 import { Roles } from "src/auth/decorators/roles.decorator";

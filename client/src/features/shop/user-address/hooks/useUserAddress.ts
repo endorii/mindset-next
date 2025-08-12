@@ -8,11 +8,11 @@ export function useCreateUserAddress() {
 
     return useMutation({
         mutationFn: (data: IUserShippingAdress) => createUserAddress(data),
-        onSuccess: () => {
+        onSuccess: (data) => {
             queryClient.invalidateQueries({
                 queryKey: ["currentUser"],
             });
-            toast.success("Адресу доставки додано!");
+            toast.success(data.message);
         },
         onError: (error: any) => {
             if (error?.message) {
@@ -29,9 +29,9 @@ export function useEditUserAddress() {
 
     return useMutation({
         mutationFn: (data: Partial<IUserShippingAdress>) => editUserAddress(data),
-        onSuccess: () => {
+        onSuccess: (data) => {
             queryClient.invalidateQueries({ queryKey: ["currentUser"] });
-            toast.success("Адресу доставки змінено!");
+            toast.success(data.message);
         },
         onError: (error: any) => {
             if (error?.message) {

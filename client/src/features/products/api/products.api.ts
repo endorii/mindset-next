@@ -1,6 +1,7 @@
 import { ICategory } from "@/features/categories/types/categories.types";
 import { ICollection } from "@/features/collections/types/collections.types";
 import { IProduct, ICreateProductPayload } from "../types/products.types";
+import { ServerResponseWithMessage } from "@/shared/interfaces/interfaces";
 
 const API_BASE_URL = "http://localhost:5000/api";
 
@@ -94,7 +95,9 @@ export async function fetchProductsFromSameCollection(collectionPath: string): P
     }
 }
 
-export async function addProductToCategory(productData: ICreateProductPayload): Promise<IProduct> {
+export async function addProductToCategory(
+    productData: ICreateProductPayload
+): Promise<ServerResponseWithMessage<ICreateProductPayload>> {
     try {
         const response = await fetch(`${API_BASE_URL}/admin/products`, {
             method: "POST",
@@ -125,7 +128,7 @@ export async function addProductToCategory(productData: ICreateProductPayload): 
 export async function editProduct(
     productId: string,
     productData: Partial<ICreateProductPayload>
-): Promise<IProduct> {
+): Promise<ServerResponseWithMessage<ICreateProductPayload>> {
     try {
         const response = await fetch(`${API_BASE_URL}/admin/products/${productId}`, {
             method: "PATCH",
@@ -153,7 +156,7 @@ export async function editProduct(
     }
 }
 
-export async function deleteProduct(productId: string): Promise<void> {
+export async function deleteProduct(productId: string): Promise<ServerResponseWithMessage> {
     try {
         const response = await fetch(`${API_BASE_URL}/admin/products/${productId}`, {
             method: "DELETE",

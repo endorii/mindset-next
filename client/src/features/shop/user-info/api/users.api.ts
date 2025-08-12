@@ -1,8 +1,9 @@
+import { ServerResponseWithMessage } from "@/shared/interfaces/interfaces";
 import { IUser } from "../types/user.types";
 
 const API_BASE_URL = "http://localhost:5000/api";
 
-export async function editUser(data: Partial<IUser>): Promise<IUser> {
+export async function editUser(data: Partial<IUser>): Promise<ServerResponseWithMessage<IUser>> {
     try {
         const response = await fetch(`${API_BASE_URL}/shop/users`, {
             method: "PATCH",
@@ -30,7 +31,7 @@ export async function editUser(data: Partial<IUser>): Promise<IUser> {
     }
 }
 
-export async function deleteUser(password: string): Promise<IUser> {
+export async function deleteUser(password: string): Promise<ServerResponseWithMessage> {
     try {
         const response = await fetch(`${API_BASE_URL}/shop/users`, {
             method: "DELETE",
@@ -62,7 +63,7 @@ export async function deleteUser(password: string): Promise<IUser> {
 export async function changePassword(data: {
     oldPassword: string;
     newPassword: string;
-}): Promise<IUser> {
+}): Promise<ServerResponseWithMessage> {
     try {
         const response = await fetch(`${API_BASE_URL}/shop/users/change-password`, {
             method: "PATCH",

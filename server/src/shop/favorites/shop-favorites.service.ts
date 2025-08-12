@@ -1,5 +1,6 @@
 import {
     ConflictException,
+    HttpException,
     Injectable,
     InternalServerErrorException,
     NotFoundException,
@@ -43,6 +44,9 @@ export class ShopFavoritesService {
             });
         } catch (error) {
             console.error("Помилка при отриманні вподобаних користувача:", error);
+            if (error instanceof HttpException) {
+                throw error;
+            }
             throw new InternalServerErrorException("Помилка сервера при отриманні вподобаних");
         }
     }
@@ -61,17 +65,22 @@ export class ShopFavoritesService {
                 throw new ConflictException("Товар вже додано до вподобних");
             }
 
-            return await this.prisma.favorite.create({
+            await this.prisma.favorite.create({
                 data: {
                     userId,
                     productId,
                 },
             });
+
+            return { message: "Товар додано до вподобаних" };
         } catch (error) {
             if (error instanceof ConflictException) {
                 throw error;
             }
             console.error("Помилка при додаванні у вподобані:", error);
+            if (error instanceof HttpException) {
+                throw error;
+            }
             throw new InternalServerErrorException("Помилка сервера при додаванні у вподобані");
         }
     }
@@ -91,7 +100,7 @@ export class ShopFavoritesService {
                 throw new NotFoundException("Товар у вподобаних не знайдений");
             }
 
-            return await this.prisma.favorite.delete({
+            await this.prisma.favorite.delete({
                 where: {
                     userId_productId: {
                         userId,
@@ -99,11 +108,16 @@ export class ShopFavoritesService {
                     },
                 },
             });
+
+            return { message: "Товар видалено з вподобаних" };
         } catch (error) {
             if (error instanceof NotFoundException) {
                 throw error;
             }
             console.error("Помилка при видаленні з вподобаних:", error);
+            if (error instanceof HttpException) {
+                throw error;
+            }
             throw new InternalServerErrorException("Помилка сервера при видаленні з вподобаних");
         }
     }

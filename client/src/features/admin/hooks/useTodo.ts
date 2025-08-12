@@ -15,11 +15,11 @@ export function useCreateTodoItem() {
 
     return useMutation({
         mutationFn: (data: ITodoItem) => addTodoItem(data),
-        onSuccess: () => {
+        onSuccess: (data) => {
             queryClient.invalidateQueries({
                 queryKey: ["todo"],
             });
-            toast.success("Завдання успішно додано!");
+            toast.success(data.message);
         },
         onError: (error: any) => {
             if (error?.message) {
@@ -37,9 +37,9 @@ export function useUpdateTodoItem() {
     return useMutation({
         mutationFn: ({ todoId, data }: { todoId: string; data: ITodoItem }) =>
             updateTodoItem(todoId, data),
-        onSuccess: () => {
+        onSuccess: (data) => {
             queryClient.invalidateQueries({ queryKey: ["todo"] });
-            toast.success("Завдання успішно відредаговано!");
+            toast.success(data.message);
         },
         onError: (error: any) => {
             if (error?.message) {
@@ -56,9 +56,9 @@ export function useDeleteTodoItem() {
 
     return useMutation({
         mutationFn: (todoId: string) => deleteTodoItem(todoId),
-        onSuccess: () => {
+        onSuccess: (data) => {
             queryClient.invalidateQueries({ queryKey: ["todo"] });
-            toast.success("Завдання видалено/виконано!");
+            toast.success(data.message);
         },
         onError: (error: any) => {
             if (error?.message) {

@@ -2,7 +2,12 @@ import { ITodoItem } from "../types/admin.types";
 
 const API_BASE_URL = "http://localhost:5000/api";
 
-export async function addTodoItem(data: ITodoItem): Promise<ITodoItem> {
+interface TodosResponse {
+    message: string;
+    todo?: ITodoItem;
+}
+
+export async function addTodoItem(data: ITodoItem): Promise<TodosResponse> {
     try {
         const response = await fetch(`${API_BASE_URL}/admin/todo`, {
             method: "POST",
@@ -56,7 +61,7 @@ export async function getTodoList(): Promise<ITodoItem[]> {
     }
 }
 
-export async function updateTodoItem(todoId: string, data: ITodoItem): Promise<ITodoItem> {
+export async function updateTodoItem(todoId: string, data: ITodoItem): Promise<TodosResponse> {
     try {
         const response = await fetch(`${API_BASE_URL}/admin/todo/${todoId}`, {
             method: "PATCH",
@@ -84,7 +89,7 @@ export async function updateTodoItem(todoId: string, data: ITodoItem): Promise<I
     }
 }
 
-export async function deleteTodoItem(todoId: string): Promise<void> {
+export async function deleteTodoItem(todoId: string): Promise<TodosResponse> {
     try {
         const response = await fetch(`${API_BASE_URL}/admin/todo/${todoId}`, {
             method: "DELETE",

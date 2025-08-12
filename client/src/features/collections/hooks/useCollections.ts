@@ -30,11 +30,11 @@ export function useCreateCollection() {
 
     return useMutation({
         mutationFn: createCollection,
-        onSuccess: () => {
+        onSuccess: (data) => {
             queryClient.invalidateQueries({
                 queryKey: ["collections"],
             });
-            toast.success("Колекцію успішно створено!");
+            toast.success(data.message);
         },
         onError: (error: any) => {
             if (error?.message) {
@@ -62,9 +62,9 @@ export function useEditCollection() {
                 banner: string;
             };
         }) => editCollection(collectionId, data),
-        onSuccess: () => {
+        onSuccess: (data) => {
             queryClient.invalidateQueries({ queryKey: ["collections"] });
-            toast.success("Колекцію успішно відредаговано!");
+            toast.success(data.message);
         },
         onError: (error: any) => {
             if (error?.message) {
@@ -81,9 +81,9 @@ export function useDeleteCollection() {
 
     return useMutation({
         mutationFn: (collectionId: string) => deleteCollection(collectionId),
-        onSuccess: () => {
+        onSuccess: (data) => {
             queryClient.invalidateQueries({ queryKey: ["collections"] });
-            toast.success("Колекцію видалено!");
+            toast.success(data.message);
         },
         onError: (error: any) => {
             if (error?.message) {

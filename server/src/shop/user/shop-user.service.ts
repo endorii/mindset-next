@@ -16,16 +16,23 @@ export class ShopUserService {
 
     async create(createUserDto: CreateUserDto) {
         try {
-            const { password, ...user } = createUserDto;
+            const { password, ...rest } = createUserDto;
             const hashedPassword = await bcrypt.hash(password, 10);
-            return await this.prisma.user.create({
+            const user = await this.prisma.user.create({
                 data: {
                     password: hashedPassword,
-                    ...user,
+                    ...rest,
                 },
             });
+            return {
+                message: "Користувача успішно створено",
+                data: user,
+            };
         } catch (error) {
             console.error("Помилка створення користувача:", error);
+            if (error instanceof HttpException) {
+                throw error;
+            }
             throw new InternalServerErrorException("Не вдалося створити користувача.");
         }
     }
@@ -35,6 +42,9 @@ export class ShopUserService {
             return await this.prisma.user.findMany();
         } catch (error) {
             console.error("Помилка отримання користувачів:", error);
+            if (error instanceof HttpException) {
+                throw error;
+            }
             throw new InternalServerErrorException("Не вдалося отримати користувачів.");
         }
     }
@@ -46,6 +56,9 @@ export class ShopUserService {
             });
         } catch (error) {
             console.error("Помилка пошуку користувача за email:", error);
+            if (error instanceof HttpException) {
+                throw error;
+            }
             throw new InternalServerErrorException("Не вдалося знайти користувача.");
         }
     }
@@ -87,8 +100,10 @@ export class ShopUserService {
 
             return user;
         } catch (error) {
-            if (error instanceof NotFoundException) throw error;
             console.error("Помилка отримання користувача:", error);
+            if (error instanceof HttpException) {
+                throw error;
+            }
             throw new InternalServerErrorException("Не вдалося отримати користувача.");
         }
     }
@@ -99,13 +114,20 @@ export class ShopUserService {
             if (!user) {
                 throw new NotFoundException(`Користувач з id ${userId} не знайдений`);
             }
-            return await this.prisma.user.update({
+            const updatedUser = await this.prisma.user.update({
                 where: { id: userId },
                 data: updateUserDto,
             });
+
+            return {
+                message: "Дані користувача успішно змінено",
+                data: updatedUser,
+            };
         } catch (error) {
-            if (error instanceof NotFoundException) throw error;
             console.error("Помилка оновлення інформації користувача:", error);
+            if (error instanceof HttpException) {
+                throw error;
+            }
             throw new InternalServerErrorException("Не вдалося оновити інформацію користувача.");
         }
     }
@@ -118,6 +140,9 @@ export class ShopUserService {
             });
         } catch (error) {
             console.error("Помилка оновлення refresh token:", error);
+            if (error instanceof HttpException) {
+                throw error;
+            }
             throw new InternalServerErrorException("Не вдалося оновити refresh token.");
         }
     }
@@ -145,9 +170,15 @@ export class ShopUserService {
                 where: { id: userId },
                 data: { password: hashedPassword },
             });
+
+            return {
+                message: "Пароль успішно змінено",
+            };
         } catch (error) {
             console.error("Помилка зміни пароля:", error);
-            if (error instanceof HttpException) throw error;
+            if (error instanceof HttpException) {
+                throw error;
+            }
             throw new InternalServerErrorException("Не вдалося змінити пароль.");
         }
     }
@@ -169,9 +200,14 @@ export class ShopUserService {
             await this.prisma.user.delete({
                 where: { id: userId },
             });
+            return {
+                message: "Акаунт успішно видалено",
+            };
         } catch (error) {
             console.error("Помилка видалення акаунту:", error);
-            if (error instanceof HttpException) throw error;
+            if (error instanceof HttpException) {
+                throw error;
+            }
             throw new InternalServerErrorException("Не вдалося видалити акаунт.");
         }
     }

@@ -50,11 +50,11 @@ export function useCreateProduct() {
 
     return useMutation({
         mutationFn: (productData: ICreateProductPayload) => addProductToCategory(productData),
-        onSuccess: () => {
+        onSuccess: (data) => {
             queryClient.invalidateQueries({
                 queryKey: ["products"],
             });
-            toast.success("Товар успішно створено!");
+            toast.success(data.message);
         },
         onError: (error: any) => {
             if (error?.message) {
@@ -77,11 +77,11 @@ export function useEditProduct() {
             productId: string;
             productData: Partial<ICreateProductPayload>;
         }) => editProduct(productId, productData),
-        onSuccess() {
+        onSuccess(data) {
             queryClient.invalidateQueries({
                 queryKey: ["products"],
             });
-            toast.success("Товар успішно відредаговано!");
+            toast.success(data.message);
         },
         onError: (error: any) => {
             if (error?.message) {
@@ -98,11 +98,11 @@ export function useDeleteProduct() {
 
     return useMutation({
         mutationFn: (productId: string) => deleteProduct(productId),
-        onSuccess: () => {
+        onSuccess: (data) => {
             queryClient.invalidateQueries({
                 queryKey: ["products"],
             });
-            toast.success("Товар успішно видалено!");
+            toast.success(data.message);
         },
         onError: (error: any) => {
             if (error?.message) {

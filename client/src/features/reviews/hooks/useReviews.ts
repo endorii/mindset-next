@@ -18,7 +18,7 @@ export function useToggleReviewVote() {
 
     return useMutation({
         mutationFn: (data: { reviewId: string; isHelpful: boolean }) => toggleReviewVote(data),
-        onSuccess: (data) => {
+        onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ["reviews"] });
         },
         onError: (error: any) => {
@@ -58,11 +58,11 @@ export function useCreateReview() {
 
     return useMutation({
         mutationFn: (data: IReview) => createReview(data),
-        onSuccess: () => {
+        onSuccess: (data) => {
             queryClient.invalidateQueries({
                 queryKey: ["reviews"],
             });
-            toast.success("Відгук створено і надіслано на модерацію!");
+            toast.success(data.message);
         },
         onError: (error: any) => {
             if (error?.message) {
@@ -80,9 +80,9 @@ export function useEditReview() {
     return useMutation({
         mutationFn: ({ reviewId, data }: { reviewId: string; data: Partial<IReview> }) =>
             updateReview(reviewId, data),
-        onSuccess: () => {
+        onSuccess: (data) => {
             queryClient.invalidateQueries({ queryKey: ["reviews"] });
-            toast.success("Відгук успішно редаговано!");
+            toast.success(data.message);
         },
         onError: (error: any) => {
             if (error?.message) {
@@ -99,9 +99,9 @@ export function useApproveReview() {
 
     return useMutation({
         mutationFn: (reviewId: string) => approveReview(reviewId),
-        onSuccess: () => {
+        onSuccess: (data) => {
             queryClient.invalidateQueries({ queryKey: ["reviews"] });
-            toast.success("Відгук успішно опубліковано!");
+            toast.success(data.message);
         },
         onError: (error: any) => {
             if (error?.message) {
@@ -118,9 +118,9 @@ export function useDeleteReview() {
 
     return useMutation({
         mutationFn: (reviewId: string) => deleteReview(reviewId),
-        onSuccess: () => {
+        onSuccess: (data) => {
             queryClient.invalidateQueries({ queryKey: ["reviews"] });
-            toast.success("Відгук видалено!");
+            toast.success(data.message);
         },
         onError: (error: any) => {
             if (error?.message) {

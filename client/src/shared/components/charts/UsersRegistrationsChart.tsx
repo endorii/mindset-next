@@ -60,7 +60,7 @@ function generateUsersChartData(users: IUser[], period: Period): ChartPoint[] {
             }
         });
 
-        return parsedData;
+        return data;
     }
 
     if (period === "week") {
@@ -89,7 +89,7 @@ function generateUsersChartData(users: IUser[], period: Period): ChartPoint[] {
             }
         });
 
-        return parsedData;
+        return data;
     }
 
     if (period === "month") {
@@ -118,7 +118,7 @@ function generateUsersChartData(users: IUser[], period: Period): ChartPoint[] {
             }
         });
 
-        return parsedData;
+        return data;
     }
 
     if (period === "year") {
@@ -154,7 +154,7 @@ function generateUsersChartData(users: IUser[], period: Period): ChartPoint[] {
             }
         });
 
-        return parsedData;
+        return data;
     }
 
     return [];
