@@ -11,6 +11,7 @@ import { ShopModule } from "./shop/shop.module";
 import { AdminModule } from "./admin/admin.module";
 import { ImagesModule } from "./images/images.module";
 import { NovaPostModule } from "./nova-post/nova-post.module";
+import { MonoPayModule } from './mono-pay/mono-pay.module';
 
 @Module({
     imports: [
@@ -31,6 +32,7 @@ import { NovaPostModule } from "./nova-post/nova-post.module";
         ImagesModule,
         ShopModule,
         NovaPostModule,
+        MonoPayModule,
     ],
 })
 export class AppModule {}
