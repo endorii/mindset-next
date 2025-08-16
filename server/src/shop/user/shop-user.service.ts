@@ -211,4 +211,34 @@ export class ShopUserService {
             throw new InternalServerErrorException("Не вдалося видалити акаунт.");
         }
     }
+
+    async findByVerificationToken(token: string) {
+        const user = await this.prisma.user.findFirst({
+            where: { verificationToken: token },
+        });
+
+        if (
+            !user ||
+            !user.verificationTokenExpires ||
+            user.verificationTokenExpires.getTime() < Date.now()
+        ) {
+            return null;
+        }
+
+        return user;
+    }
+
+    async update(userId: string, data: UpdateUserDto) {
+        const updateData = { ...data };
+
+        if (data.isVerified) {
+            updateData.verificationToken = null;
+            updateData.verificationTokenExpires = null;
+        }
+
+        return this.prisma.user.update({
+            where: { id: userId },
+            data: updateData,
+        });
+    }
 }

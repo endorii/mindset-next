@@ -1,4 +1,4 @@
-import { IsEmail, IsString, Matches, MinLength, MaxLength } from "class-validator";
+import { IsEmail, IsString, Matches, MinLength, MaxLength, IsBoolean } from "class-validator";
 
 export class CreateUserDto {
     @IsString({ message: "Ім'я користувача обов'язкове" })
@@ -17,6 +17,13 @@ export class CreateUserDto {
         message: "Некоректний формат телефону",
     })
     phone: string;
+
+    @IsBoolean()
+    isVerified: boolean;
+
+    verificationToken?: string | null;
+
+    verificationTokenExpires?: Date | null;
 
     @IsString({ message: "Пароль обов'язковий" })
     @MinLength(8, { message: "Пароль повинен містити щонайменше 8 символів" })

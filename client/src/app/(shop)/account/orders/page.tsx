@@ -1,6 +1,5 @@
 "use client";
 
-import { useCurrentUser } from "@/features/shop/user-info/hooks/useUsers";
 import { useUserOrders } from "@/features/orders/hooks/useOrders";
 import { IOrderItem } from "@/features/orders/types/orders.types";
 import { AddReviewModal } from "@/features/reviews/modals";

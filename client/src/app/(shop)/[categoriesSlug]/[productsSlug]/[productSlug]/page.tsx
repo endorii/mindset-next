@@ -62,7 +62,7 @@ export default function ProductPage() {
         if (!product) return;
 
         if (user) {
-            const isFavorite = user.favorites?.some(
+            const isFavorite = user?.favorites?.some(
                 (item: IFavoriteItem) => item.productId === product.id
             );
             setLiked(!!isFavorite);

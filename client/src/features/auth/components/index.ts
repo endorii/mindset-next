@@ -1,3 +1,3 @@
 export { default as LoginForm } from "./LoginForm";
-export { default as RegisterForm } from "./RegisterForm";
+export { default as RegistrationForm } from "./RegistrationForm";
 export { default as Security } from "./Security";

@@ -1,71 +1,89 @@
-import { useQueryClient, useMutation } from "@tanstack/react-query";
-import { login, registerUser, logout, refreshToken } from "../api/auth.api";
-import { IAuthResponse } from "../types/auth.types";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import {
+    loginUser,
+    registerUser,
+    logoutUser,
+    refreshToken,
+    verifyUser,
+    resendVerifyUser,
+} from "../api/auth.api";
+import { CreateUserDto, IAuthResponse, ILoginCredentials } from "../types/auth.types";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 
-export function useAuth() {
+export function useLoginUser() {
     const queryClient = useQueryClient();
     const router = useRouter();
 
-    const loginMutation = useMutation({
-        mutationFn: login,
-        onSuccess: (data: IAuthResponse) => {
-            queryClient.setQueryData(["currentUser"], data);
+    return useMutation({
+        mutationFn: (credentials: ILoginCredentials) => loginUser(credentials),
+        onSuccess: (data) => {
             router.push("/");
-            toast.success("Ви успішно увійшли до акаунту!");
-        },
-        onError: (error: any) => {
-            if (error?.message) {
-                toast.error(error.message);
-            } else {
-                toast.error("Сталася невідома помилка");
-            }
-        },
-    });
-
-    const registerMutation = useMutation({
-        mutationFn: registerUser,
-        onSuccess: () => {
-            toast.success("Ви успішно зареєструвалися!");
-        },
-        onError: (error: any) => {
-            if (error?.message) {
-                toast.error(error.message);
-            } else {
-                toast.error("Сталася невідома помилка");
-            }
-        },
-    });
-
-    const logoutMutation = useMutation({
-        mutationFn: logout,
-        onSuccess: () => {
-            queryClient.setQueryData(["currentUser"], null);
             queryClient.invalidateQueries({ queryKey: ["currentUser"] });
-            router.push("/auth");
-            toast.success("Ви успішно вийшли з акаунту!");
+            toast.success(data.message);
         },
         onError: (error: any) => {
-            if (error?.message) {
-                toast.error(error.message);
-            } else {
-                toast.error("Сталася невідома помилка");
-            }
+            toast.error(error?.message || "Сталася невідома помилка");
         },
     });
+}
 
-    const refreshTokenMutation = useMutation({
+export function useRegisterUser() {
+    return useMutation({
+        mutationFn: (data: CreateUserDto) => registerUser(data),
+        onSuccess: (data) => {
+            toast.success(data.message);
+        },
+        onError: (error: any) => {
+            toast.error(error?.message || "Сталася невідома помилка");
+        },
+    });
+}
+
+export function useVerifyUser() {
+    return useMutation({
+        mutationFn: (token: string) => verifyUser(token),
+        onSuccess: (data) => {
+            toast.success(data.message);
+            return data.message;
+        },
+        onError: (error: any) => {
+            toast.error(error?.message || "Сталася невідома помилка");
+        },
+    });
+}
+
+export function useResendVerification() {
+    return useMutation({
+        mutationFn: (email: string) => resendVerifyUser(email),
+        onSuccess: (data) => {
+            toast.success(data.message);
+        },
+        onError: (error: any) => {
+            toast.error(error?.message || "Сталася невідома помилка");
+        },
+    });
+}
+
+export function useLogoutUser() {
+    const queryClient = useQueryClient();
+    const router = useRouter();
+
+    return useMutation({
+        mutationFn: logoutUser,
+        onSuccess: (data) => {
+            // router.push("/auth");
+            queryClient.removeQueries({ queryKey: ["currentUser"] });
+            toast.success(data.message);
+        },
+        onError: (error: any) => {
+            toast.error(error?.message || "Сталася невідома помилка");
+        },
+    });
+}
+
+export function useRefreshToken() {
+    return useMutation({
         mutationFn: refreshToken,
     });
-    return {
-        login: loginMutation.mutateAsync,
-        register: registerMutation.mutateAsync,
-        logout: logoutMutation.mutateAsync,
-        refreshToken: refreshTokenMutation.mutateAsync,
-        isPending:
-            loginMutation.isPending || registerMutation.isPending || logoutMutation.isPending,
-
-        error: loginMutation.error,
-    };
 }

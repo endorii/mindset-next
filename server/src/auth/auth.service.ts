@@ -1,13 +1,22 @@
-import { ConflictException, Inject, Injectable, UnauthorizedException } from "@nestjs/common";
+import {
+    BadRequestException,
+    ConflictException,
+    Inject,
+    Injectable,
+    NotFoundException,
+    UnauthorizedException,
+} from "@nestjs/common";
 import { CreateUserDto } from "../shop/user/dto/create-user.dto";
 import { ShopUserService } from "src/shop/user/shop-user.service";
 import type { AuthJwtPayload } from "./types/auth-jwtPayload";
 import { JwtService } from "@nestjs/jwt";
 import refreshConfig from "./config/refresh.config";
 import { ConfigType } from "@nestjs/config";
-import { Role } from "generated/prisma";
 import * as bcrypt from "bcryptjs";
 import { Response } from "express";
+import * as crypto from "crypto";
+import { EmailService } from "src/email/email.service";
+import { PrismaService } from "src/prisma/prisma.service";
 
 @Injectable()
 export class AuthService {
@@ -15,16 +24,121 @@ export class AuthService {
         private readonly shopUserService: ShopUserService,
         private readonly jwtService: JwtService,
         @Inject(refreshConfig.KEY)
-        private refreshTokenConfig: ConfigType<typeof refreshConfig>
+        private refreshTokenConfig: ConfigType<typeof refreshConfig>,
+        private readonly prisma: PrismaService,
+        private readonly emailService: EmailService
     ) {}
 
     async registerUser(createUserDto: CreateUserDto) {
-        const user = await this.shopUserService.findByEmail(createUserDto.email);
-        if (user) throw new ConflictException("Користувач з такою електронною адресою вже існує");
-        return this.shopUserService.create(createUserDto);
+        const existingUser = await this.prisma.user.findUnique({
+            where: { email: createUserDto.email },
+        });
+        if (existingUser) {
+            throw new ConflictException("Користувач з такою електронною адресою вже існує");
+        }
+
+        try {
+            return await this.prisma.$transaction(async (tx) => {
+                const hashedPassword = await bcrypt.hash(createUserDto.password, 10);
+
+                const newUser = await tx.user.create({
+                    data: {
+                        ...createUserDto,
+                        password: hashedPassword,
+                        isVerified: false,
+                    },
+                });
+
+                const verificationToken = crypto.randomBytes(32).toString("hex");
+                const tokenExpiry = new Date(Date.now() + 10 * 60 * 1000);
+
+                const updatedUser = await tx.user.update({
+                    where: { id: newUser.id },
+                    data: {
+                        verificationToken,
+                        verificationTokenExpires: tokenExpiry,
+                    },
+                });
+
+                await this.emailService.sendVerificationEmail(updatedUser.email, verificationToken);
+
+                return {
+                    message: "Користувача зареєстровано. Будь ласка, підтвердіть вашу пошту.",
+                };
+            });
+        } catch (error) {
+            console.log(error);
+            throw new UnauthorizedException("Не вдалося відправити листа, користувача не створено");
+        }
     }
 
-    async login(userId: string, name: string, role: Role, res: Response) {
+    async validateLocalUser(email: string, password: string) {
+        const user = await this.shopUserService.findByEmail(email);
+        if (!user) throw new UnauthorizedException("Такого користувача не існує");
+
+        // Додаємо перевірку, чи користувач верифікований
+        if (!user.isVerified) {
+            throw new UnauthorizedException(
+                "Будь ласка, підтвердіть вашу електронну адресу, щоб увійти."
+            );
+        }
+
+        const isPasswordMatched = await bcrypt.compare(password, user.password);
+        if (!isPasswordMatched) throw new UnauthorizedException("Невірно введено пароль або логін");
+
+        return { id: user.id, name: user.name, role: user.role };
+    }
+
+    async verifyEmail(token: string) {
+        const user = await this.shopUserService.findByVerificationToken(token);
+
+        if (!user) {
+            throw new BadRequestException("Недійсний або застарілий токен");
+        }
+
+        // Оновлюємо статус користувача і очищаємо токен
+        await this.shopUserService.update(user.id, {
+            isVerified: true,
+            verificationToken: null,
+        });
+
+        return { message: "Пошта успішно підтверджена!" };
+    }
+
+    async resendVerificationEmail(email: string) {
+        const user = await this.prisma.user.findUnique({ where: { email } });
+
+        if (!user) {
+            throw new NotFoundException("Користувача не знайдено");
+        }
+
+        if (user.isVerified) {
+            return { message: "Акаунт вже підтверджено" };
+        }
+
+        // Генеруємо новий токен на 10 хв
+        const verificationToken = crypto.randomBytes(32).toString("hex");
+        const verificationTokenExpires = new Date(Date.now() + 10 * 60 * 1000);
+
+        await this.prisma.user.update({
+            where: { id: user.id },
+            data: { verificationToken, verificationTokenExpires },
+        });
+
+        // Відправляємо лист
+        await this.emailService.sendVerificationEmail(user.email, verificationToken);
+
+        return { message: "Лист з підтвердженням повторно надіслано" };
+    }
+
+    async login(userId: string, res: Response) {
+        const user = await this.shopUserService.findOne(userId);
+        if (!user.isVerified) {
+            throw new UnauthorizedException(
+                "Будь ласка, підтвердіть вашу електронну адресу, щоб увійти."
+            );
+        }
+
         const { accessToken, refreshToken } = await this.generateTokens(userId);
         const hashedRT = await bcrypt.hash(refreshToken, 10);
         await this.shopUserService.updateHashedRefreshToken(userId, hashedRT);
@@ -44,9 +158,7 @@ export class AuthService {
         });
 
         return {
-            id: userId,
-            name,
-            role,
+            message: "Вхід виконано успішно",
         };
     }
 
@@ -55,15 +167,6 @@ export class AuthService {
         res.clearCookie("accessToken", { path: "/" });
         res.clearCookie("refreshToken", { path: "/" });
         return { message: "Ви успішно вийшли з акаунту" };
-    }
-
-    async validateLocalUser(email: string, password: string) {
-        const user = await this.shopUserService.findByEmail(email);
-        if (!user) throw new UnauthorizedException("Такого користувача не існує");
-        const isPasswordMatched = await bcrypt.compare(password, user.password);
-        if (!isPasswordMatched) throw new UnauthorizedException("Невірно введено пароль або логін");
-
-        return { id: user.id, name: user.name, role: user.role };
     }
 
     async getCurrentUser(userId: string) {

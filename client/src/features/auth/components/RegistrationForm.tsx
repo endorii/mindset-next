@@ -3,20 +3,19 @@ import InputField from "@/shared/ui/inputs/InputField";
 import { LoginComponentsWrapper } from "@/shared/ui/wrappers";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { toast } from "sonner";
-import { useAuth } from "../hooks/useAuth";
 import { CreateUserDto } from "../types/auth.types";
+import { useRegisterUser } from "../hooks/useAuth";
 
 type RegisterFormInputs = CreateUserDto & {
     rules: boolean;
     offers: boolean;
 };
 
-function RegisterForm() {
-    const { register: registerUser, isPending } = useAuth();
-
+function RegistrationForm() {
     const [registerMessage, setRegisterMessage] = useState<string | null>(null);
     const [registerIsSuccess, setRegisterIsSuccess] = useState(false);
+
+    const registerUserMutation = useRegisterUser();
 
     const {
         register: registerForm,
@@ -30,8 +29,13 @@ function RegisterForm() {
         setRegisterIsSuccess(false);
 
         try {
-            await registerUser(data);
-            setRegisterMessage("Реєстрація успішна!");
+            await registerUserMutation.mutateAsync({
+                ...data,
+                isVerified: false,
+            });
+            setRegisterMessage(
+                "Реєстрація успішна! Повідомлення з підтвердженням надіслано на вашу пошту"
+            );
             setRegisterIsSuccess(true);
             reset();
         } catch (err: any) {
@@ -167,12 +171,17 @@ function RegisterForm() {
                         {registerMessage}
                     </p>
                 )}
-                <MonoButton type="submit" disabled={isPending}>
-                    {isPending ? "Завантаження..." : "Зареєструватися"}
+                <MonoButton
+                    type="submit"
+                    disabled={registerUserMutation.isPending}
+                >
+                    {registerUserMutation.isPending
+                        ? "Завантаження..."
+                        : "Зареєструватися"}
                 </MonoButton>
             </form>
         </LoginComponentsWrapper>
     );
 }
 
-export default RegisterForm;
+export default RegistrationForm;

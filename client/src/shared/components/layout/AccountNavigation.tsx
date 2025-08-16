@@ -1,7 +1,7 @@
 "use client";
 
+import { useLogoutUser } from "@/features/auth/hooks/useAuth";
 import { useCurrentUser } from "@/features/shop/user-info/hooks/useUsers";
-import { useAuth } from "@/features/auth/hooks/useAuth";
 import {
     MainPageIcon,
     CollectionsIcon,
@@ -17,7 +17,7 @@ import { useState } from "react";
 
 function AccountNavigation({ children }: { children: React.ReactNode }) {
     const { data: user } = useCurrentUser();
-    const { logout } = useAuth();
+    const logoutUserMutation = useLogoutUser();
 
     const [isOpen, setIsOpen] = useState<boolean>(false);
 
@@ -109,7 +109,7 @@ function AccountNavigation({ children }: { children: React.ReactNode }) {
                         <NavigationLink
                             href="/"
                             onClick={async () => {
-                                await logout();
+                                await logoutUserMutation.mutateAsync();
                             }}
                         >
                             <LogoutIcon className="w-[25px] fill-white group-hover:fill-black" />

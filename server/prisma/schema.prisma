@@ -24,6 +24,10 @@ model User {
   orders             Order[]
   todo               Todo[]
 
+  isVerified               Boolean   @default(false) @map("is_verified")
+  verificationToken        String?   @map("verification_token")
+  verificationTokenExpires DateTime?
+
   recentActions RecentAction[]
   reviews       Review[]
   reviewVotes   ReviewVote[]

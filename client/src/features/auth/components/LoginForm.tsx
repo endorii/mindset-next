@@ -3,14 +3,12 @@ import InputField from "@/shared/ui/inputs/InputField";
 import { LoginComponentsWrapper } from "@/shared/ui/wrappers";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { useAuth } from "../hooks/useAuth";
 import { ILoginCredentials } from "../types/auth.types";
+import { useLoginUser } from "../hooks/useAuth";
 
 function LoginForm() {
-    const { login, isPending } = useAuth();
-
     const [loginMessage, setLoginMessage] = useState<string | null>(null);
-
+    const loginUser = useLoginUser();
     const {
         register: loginRegister,
         handleSubmit: handleLoginSubmit,
@@ -19,7 +17,7 @@ function LoginForm() {
 
     const onLoginSubmit = async (data: ILoginCredentials) => {
         try {
-            await login(data);
+            await loginUser.mutateAsync(data);
         } catch (err: any) {
             setLoginMessage(err?.message || "Помилка входу");
         }
@@ -64,8 +62,8 @@ function LoginForm() {
                     <p className="text-red-500 text-sm">{loginMessage}</p>
                 )}
 
-                <MonoButton type="submit" disabled={isPending}>
-                    {isPending ? "Завантаження..." : "Увійти"}
+                <MonoButton type="submit" disabled={loginUser.isPending}>
+                    {loginUser.isPending ? "Завантаження..." : "Увійти"}
                 </MonoButton>
             </form>
         </LoginComponentsWrapper>

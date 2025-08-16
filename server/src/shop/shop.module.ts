@@ -10,6 +10,7 @@ import { ShopUserModule } from "./user/shop-user.module";
 import { ShopUserAddressModule } from "./user-address/shop-user-address.module";
 import { ShopOrdersModule } from "./orders/shop-orders.module";
 import { ShopReviewsModule } from "./reviews/shop-reviews.module";
+import { EmailModule } from "src/email/email.module";
 
 @Module({
     imports: [
@@ -23,6 +24,7 @@ import { ShopReviewsModule } from "./reviews/shop-reviews.module";
         ShopUserAddressModule,
         ShopOrdersModule,
         ShopReviewsModule,
+        EmailModule,
     ],
 })
 export class ShopModule {}

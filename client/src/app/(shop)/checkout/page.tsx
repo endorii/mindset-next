@@ -146,7 +146,7 @@ function Checkout() {
             postDepartment: selectedWarehouse?.Description || "",
             additionalInfo: "",
             status: "pending",
-            userId: user?.id,
+            userId,
             total:
                 cart.reduce(
                     (acc, item) => acc + item.product.price * item.quantity,

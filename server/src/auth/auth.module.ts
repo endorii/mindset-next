@@ -13,16 +13,20 @@ import { RefreshStrategy } from "./strategies/refresh-token.strategy";
 import { APP_GUARD } from "@nestjs/core";
 import { JwtAuthGuard } from "./guards/jwt-auth/jwt-auth.guard";
 import { RolesGuard } from "./guards/roles/roles.guard";
+import { EmailModule } from "src/email/email.module";
+import { CleanupService } from "./clean-up.service";
 
 @Module({
     imports: [
         JwtModule.registerAsync(jwtConfig.asProvider()),
         ConfigModule.forFeature(jwtConfig),
         ConfigModule.forFeature(refreshConfig),
+        EmailModule,
     ],
     controllers: [AuthController],
     providers: [
         AuthService,
+        CleanupService,
         ShopUserService,
         PrismaService,
         LocalStrategy,

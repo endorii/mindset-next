@@ -1,10 +1,11 @@
 import { IUser } from "@/features/shop/user-info/types/user.types";
 import { fetchWithRefresh } from "@/shared/api/fetchWithRefresh";
 import { CreateUserDto, IAuthResponse, ILoginCredentials } from "../types/auth.types";
+import { ServerResponseWithMessage } from "@/shared/interfaces/interfaces";
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api";
 
-export async function registerUser(data: CreateUserDto): Promise<IAuthResponse> {
+export async function registerUser(data: CreateUserDto): Promise<ServerResponseWithMessage> {
     try {
         const response = await fetch(`${API_BASE_URL}/auth/signup`, {
             method: "POST",
@@ -32,7 +33,56 @@ export async function registerUser(data: CreateUserDto): Promise<IAuthResponse> 
     }
 }
 
-export async function login(credentials: ILoginCredentials): Promise<IAuthResponse> {
+export async function verifyUser(token: string): Promise<ServerResponseWithMessage> {
+    try {
+        const response = await fetch(`${API_BASE_URL}/auth/verify?token=${token}`, {
+            method: "GET", // змінено на GET
+            headers: {
+                "Content-Type": "application/json",
+            },
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+            const error: any = new Error(data.message || `Помилка ${response.status}`);
+            error.status = response.status;
+            throw error;
+        }
+
+        return data;
+    } catch (error: any) {
+        throw error;
+    }
+}
+
+export async function resendVerifyUser(email: string): Promise<ServerResponseWithMessage> {
+    try {
+        const response = await fetch(`${API_BASE_URL}/auth/resend-verification`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ email }),
+        });
+
+        const data = await response.json();
+
+        if (!response.ok) {
+            const error: any = new Error(data.message || `Помилка ${response.status}`);
+            error.status = response.status;
+            throw error;
+        }
+
+        return data;
+    } catch (error: any) {
+        throw error;
+    }
+}
+
+export async function loginUser(
+    credentials: ILoginCredentials
+): Promise<ServerResponseWithMessage<ServerResponseWithMessage>> {
     try {
         const response = await fetch(`${API_BASE_URL}/auth/signin`, {
             method: "POST",
@@ -60,7 +110,7 @@ export async function login(credentials: ILoginCredentials): Promise<IAuthRespon
     }
 }
 
-export async function getCurrentUser(): Promise<IUser> {
+export async function currentUser(): Promise<IUser> {
     try {
         const response = await fetchWithRefresh(`${API_BASE_URL}/auth/me`, {
             method: "GET",
@@ -114,7 +164,7 @@ export async function refreshToken(): Promise<IAuthResponse> {
     }
 }
 
-export async function logout(): Promise<void> {
+export async function logoutUser(): Promise<ServerResponseWithMessage> {
     try {
         const response = await fetch(`${API_BASE_URL}/auth/signout`, {
             method: "POST",

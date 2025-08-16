@@ -1,7 +1,11 @@
 "use client";
 
 import { useCurrentUser } from "@/features/shop/user-info/hooks/useUsers";
-import { Security, LoginForm, RegisterForm } from "@/features/auth/components";
+import {
+    Security,
+    LoginForm,
+    RegistrationForm,
+} from "@/features/auth/components";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 
@@ -29,7 +33,7 @@ const Login = () => {
                         md:flex-col"
         >
             <LoginForm />
-            <RegisterForm />
+            <RegistrationForm />
             <Security />
         </div>
     );

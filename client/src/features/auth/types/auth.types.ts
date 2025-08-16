@@ -14,6 +14,8 @@ export interface CreateUserDto {
     email: string;
     phone: string;
     password: string;
+    isVerified: false;
+    verificationToken: null | string;
 }
 
 export interface IAuthResponse {

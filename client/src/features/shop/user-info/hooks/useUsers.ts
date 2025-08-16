@@ -1,13 +1,13 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { getCurrentUser } from "@/features/auth/api/auth.api";
 import { IUser } from "../types/user.types";
 import { changePassword, deleteUser, editUser } from "../api/users.api";
 import { toast } from "sonner";
+import { currentUser } from "@/features/auth/api/auth.api";
 
 export function useCurrentUser() {
     return useQuery({
         queryKey: ["currentUser"],
-        queryFn: () => getCurrentUser(),
+        queryFn: () => currentUser(),
         retry: false,
     });
 }
