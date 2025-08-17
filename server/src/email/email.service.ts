@@ -7,9 +7,7 @@ export class EmailService {
     constructor(
         private readonly configService: ConfigService,
         private readonly mailerService: MailerService
-    ) {
-        console.log("MAIL_HOST:", this.configService.get("MAIL_HOST"));
-    }
+    ) {}
 
     async sendVerificationEmail(email: string, token: string) {
         const verificationUrl = `${this.configService.get<string>("FRONTEND_URL")}/auth/verify?token=${token}`;

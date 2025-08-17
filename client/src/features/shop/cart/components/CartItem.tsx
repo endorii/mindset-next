@@ -3,11 +3,12 @@ import { ButtonWithTextAndIcon } from "@/shared/ui/buttons";
 import Image from "next/image";
 import Link from "next/link";
 import { ICartItem } from "../types/cart.types";
+import { IProduct } from "@/features/products/types/products.types";
 
 interface CartItemProps {
     item: ICartItem;
     handleRemove: () => void;
-    handleFavoriteToggle: (productId: string) => void;
+    handleFavoriteToggle: (product: IProduct) => void;
     isFavorite: boolean;
 }
 
@@ -84,7 +85,7 @@ function CartItem({
                     </ButtonWithTextAndIcon>
                     <ButtonWithTextAndIcon
                         onClick={() => {
-                            handleFavoriteToggle(item.product.id);
+                            handleFavoriteToggle(item.product);
                         }}
                     >
                         <HeartIcon

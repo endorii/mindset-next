@@ -19,7 +19,7 @@ export async function fetchWithRefresh(
 
         return await fetch(input, init);
     } catch (error) {
-        console.error("Unauthorized - redirecting to login");
+        // console.error("Unauthorized - redirecting to login");
         throw error;
     }
 }

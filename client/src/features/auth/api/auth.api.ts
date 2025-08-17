@@ -36,7 +36,7 @@ export async function registerUser(data: CreateUserDto): Promise<ServerResponseW
 export async function verifyUser(token: string): Promise<ServerResponseWithMessage> {
     try {
         const response = await fetch(`${API_BASE_URL}/auth/verify?token=${token}`, {
-            method: "GET", // змінено на GET
+            method: "GET",
             headers: {
                 "Content-Type": "application/json",
             },

@@ -90,7 +90,7 @@ function generateChartData(orders: IOrder[], period: Period): ChartPoint[] {
                 name: formatDate(day, "EEE dd.MM", { locale: uk }),
                 Замовлення: 0,
                 Продажі: 0,
-            }); // Наприклад: Пн 31.07
+            });
         }
 
         orders.forEach((order) => {

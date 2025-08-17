@@ -72,31 +72,15 @@ export class AuthService {
         }
     }
 
-    async validateLocalUser(email: string, password: string) {
-        const user = await this.shopUserService.findByEmail(email);
-        if (!user) throw new UnauthorizedException("Такого користувача не існує");
-
-        // Додаємо перевірку, чи користувач верифікований
-        if (!user.isVerified) {
-            throw new UnauthorizedException(
-                "Будь ласка, підтвердіть вашу електронну адресу, щоб увійти."
-            );
-        }
-
-        const isPasswordMatched = await bcrypt.compare(password, user.password);
-        if (!isPasswordMatched) throw new UnauthorizedException("Невірно введено пароль або логін");
-
-        return { id: user.id, name: user.name, role: user.role };
-    }
-
     async verifyEmail(token: string) {
         const user = await this.shopUserService.findByVerificationToken(token);
 
         if (!user) {
-            throw new BadRequestException("Недійсний або застарілий токен");
+            throw new BadRequestException(
+                "Недійсний / застарілий токен або користувача не знайдено"
+            );
         }
 
-        // Оновлюємо статус користувача і очищаємо токен
         await this.shopUserService.update(user.id, {
             isVerified: true,
             verificationToken: null,
@@ -116,7 +100,6 @@ export class AuthService {
             return { message: "Акаунт вже підтверджено" };
         }
 
-        // Генеруємо новий токен на 10 хв
         const verificationToken = crypto.randomBytes(32).toString("hex");
         const verificationTokenExpires = new Date(Date.now() + 10 * 60 * 1000);
 
@@ -125,7 +108,6 @@ export class AuthService {
             data: { verificationToken, verificationTokenExpires },
         });
 
-        // Відправляємо лист
         await this.emailService.sendVerificationEmail(user.email, verificationToken);
 
         return { message: "Лист з підтвердженням повторно надіслано" };
@@ -207,6 +189,22 @@ export class AuthService {
             throw new UnauthorizedException("Користувача не знайдено або сесія завершена");
         }
         return { id: user.id, role: user.role };
+    }
+
+    async validateLocalUser(email: string, password: string) {
+        const user = await this.shopUserService.findByEmail(email);
+        if (!user) throw new UnauthorizedException("Такого користувача не існує");
+
+        if (!user.isVerified) {
+            throw new UnauthorizedException(
+                "Будь ласка, підтвердіть вашу електронну адресу, щоб увійти."
+            );
+        }
+
+        const isPasswordMatched = await bcrypt.compare(password, user.password);
+        if (!isPasswordMatched) throw new UnauthorizedException("Невірно введено пароль або логін");
+
+        return { id: user.id, name: user.name, role: user.role };
     }
 
     async validateRefreshToken(userId: string, refreshToken: string) {

@@ -8,6 +8,7 @@ import {
 } from "@/features/auth/hooks/useAuth";
 import InputField from "@/shared/ui/inputs/InputField";
 import { MonoButton } from "@/shared/ui/buttons";
+import { toast } from "sonner";
 
 const VerifyPage = () => {
     const router = useRouter();
@@ -21,15 +22,12 @@ const VerifyPage = () => {
 
     useEffect(() => {
         if (!token) {
+            toast.info("Токена для підтвердження не знайдено або він застарів");
             router.push("/auth");
             return;
         }
 
-        verifyMutation.mutate(token, {
-            onSuccess: () => {
-                setTimeout(() => router.push("/auth"), 2500);
-            },
-        });
+        verifyMutation.mutateAsync(token);
     }, [token, router]);
 
     return (

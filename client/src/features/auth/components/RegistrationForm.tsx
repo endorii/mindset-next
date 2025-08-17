@@ -6,10 +6,7 @@ import { useForm } from "react-hook-form";
 import { CreateUserDto } from "../types/auth.types";
 import { useRegisterUser } from "../hooks/useAuth";
 
-type RegisterFormInputs = CreateUserDto & {
-    rules: boolean;
-    offers: boolean;
-};
+type RegisterFormInputs = CreateUserDto;
 
 function RegistrationForm() {
     const [registerMessage, setRegisterMessage] = useState<string | null>(null);
@@ -31,7 +28,6 @@ function RegistrationForm() {
         try {
             await registerUserMutation.mutateAsync({
                 ...data,
-                isVerified: false,
             });
             setRegisterMessage(
                 "Реєстрація успішна! Повідомлення з підтвердженням надіслано на вашу пошту"
@@ -39,6 +35,10 @@ function RegistrationForm() {
             setRegisterIsSuccess(true);
             reset();
         } catch (err: any) {
+            setRegisterMessage(
+                "Виникла помилка під час реєстрації, повторіть спробу пізніше"
+            );
+            setRegisterIsSuccess(false);
             setRegisterMessage(err?.message || "Помилка реєстрації");
         }
     };

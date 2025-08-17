@@ -7,7 +7,7 @@ import {
     verifyUser,
     resendVerifyUser,
 } from "../api/auth.api";
-import { CreateUserDto, IAuthResponse, ILoginCredentials } from "../types/auth.types";
+import { CreateUserDto, ILoginCredentials } from "../types/auth.types";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 
@@ -41,9 +41,12 @@ export function useRegisterUser() {
 }
 
 export function useVerifyUser() {
+    const router = useRouter();
+
     return useMutation({
         mutationFn: (token: string) => verifyUser(token),
         onSuccess: (data) => {
+            setTimeout(() => router.push("/auth"), 2500);
             toast.success(data.message);
             return data.message;
         },
@@ -67,12 +70,10 @@ export function useResendVerification() {
 
 export function useLogoutUser() {
     const queryClient = useQueryClient();
-    const router = useRouter();
 
     return useMutation({
         mutationFn: logoutUser,
         onSuccess: (data) => {
-            // router.push("/auth");
             queryClient.removeQueries({ queryKey: ["currentUser"] });
             toast.success(data.message);
         },

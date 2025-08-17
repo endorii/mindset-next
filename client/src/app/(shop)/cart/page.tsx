@@ -1,5 +1,6 @@
 "use client";
 
+import { IProduct } from "@/features/products/types/products.types";
 import CartItem from "@/features/shop/cart/components/CartItem";
 import CartReceip from "@/features/shop/cart/components/CartReceip";
 import {
@@ -99,7 +100,8 @@ function Cart() {
         }
     };
 
-    const handleFavoriteToggle = async (productId: string) => {
+    const handleFavoriteToggle = async (product: IProduct) => {
+        const productId = product.id;
         const currentFavoriteState = favoriteStates[productId] || false;
         const newFavoriteState = !currentFavoriteState;
 
@@ -130,9 +132,9 @@ function Cart() {
                     : [];
 
                 const updated = newFavoriteState
-                    ? [...parsed, productId]
+                    ? [...parsed, { productId, product }] // ✅ записуємо цілий об’єкт
                     : parsed.filter(
-                          (favItem) => favItem.product.id !== productId
+                          (favItem) => favItem.productId !== productId
                       );
 
                 localStorage.setItem("favorites", JSON.stringify(updated));
@@ -177,13 +179,11 @@ function Cart() {
     return (
         <div className="flex flex-col gap-[50px] mt-[10px] text-white">
             <ShopTitle title="Кошик" subtitle="Cart" />
-            {cartToShow.length > 0 ? (
+            {cartToShow && cartToShow.length > 0 ? (
                 <div className="flex justify-between gap-[15px] w-full px-[30px]">
                     <div className="flex flex-col gap-[15px] w-2/3 max-h-[80vh] overflow-y-auto">
                         {cartToShow.map((item) => {
                             const isServer = !!user;
-
-                            if (!item || !item.id) return;
 
                             const handleRemove = () => {
                                 if (isServer) {
@@ -199,7 +199,7 @@ function Cart() {
 
                             return (
                                 <CartItem
-                                    key={item.id}
+                                    key={item.id ?? item.productId}
                                     item={item}
                                     handleRemove={handleRemove}
                                     handleFavoriteToggle={handleFavoriteToggle}

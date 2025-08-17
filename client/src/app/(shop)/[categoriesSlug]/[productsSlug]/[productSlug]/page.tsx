@@ -67,13 +67,13 @@ export default function ProductPage() {
             );
             setLiked(!!isFavorite);
         } else {
-            const favorites = localStorage.getItem("favorites");
-            const parsedFavorites: ILocalFavoriteItem[] = favorites
-                ? JSON.parse(favorites)
+            const stored = localStorage.getItem("favorites");
+            const parsed: ILocalFavoriteItem[] = stored
+                ? JSON.parse(stored)
                 : [];
-            const isFav = parsedFavorites.some(
-                (item) => item.product.id === product.id
-            );
+
+            const isFav = parsed.some((item) => item.productId === product.id);
+
             setLiked(isFav);
         }
     }, [product]);
@@ -97,13 +97,17 @@ export default function ProductPage() {
                 deleteFromFavoriteMutation.mutate(product.id);
             }
         } else {
-            const favorites = localStorage.getItem("favorites");
-            const parsed: ILocalFavoriteItem[] = favorites
-                ? JSON.parse(favorites)
+            const stored = localStorage.getItem("favorites");
+            const parsed: ILocalFavoriteItem[] = stored
+                ? JSON.parse(stored)
                 : [];
-            const updated = newLiked
-                ? [...parsed, product.id]
-                : parsed.filter((item) => item.product.id !== product.id);
+
+            const isFav = parsed.some((item) => item.productId === product.id);
+
+            const updated = isFav
+                ? parsed.filter((item) => item.productId !== product.id)
+                : [...parsed, { productId: product.id, product }];
+
             localStorage.setItem("favorites", JSON.stringify(updated));
             toast.success("Вподобані оновлено");
         }
