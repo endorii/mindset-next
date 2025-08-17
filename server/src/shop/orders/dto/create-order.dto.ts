@@ -68,8 +68,8 @@ export class CreateOrderDto {
     items: CreateOrderItemDto[];
 
     @IsString()
-    @IsNotEmpty()
-    userId: string;
+    @IsOptional()
+    userId?: string;
 
     @IsEnum(OrderStatus)
     @IsNotEmpty()

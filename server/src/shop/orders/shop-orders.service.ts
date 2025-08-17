@@ -12,50 +12,42 @@ export class ShopOrdersService {
 
     async createOrder(createOrderDto: CreateOrderDto) {
         try {
-            const {
-                fullName,
-                phoneNumber,
-                email,
-                area,
-                city,
-                postDepartment,
-                additionalInfo,
-                total,
-                userId,
-                items,
-            } = createOrderDto;
+            // Формуємо дані для створення замовлення
+            const orderData = {
+                fullName: createOrderDto.fullName,
+                phoneNumber: createOrderDto.phoneNumber,
+                email: createOrderDto.email || "",
+                area: createOrderDto.area,
+                city: createOrderDto.city,
+                postDepartment: createOrderDto.postDepartment,
+                additionalInfo: createOrderDto.additionalInfo,
+                total: createOrderDto.total,
+                status: createOrderDto.status,
+                items: {
+                    create: createOrderDto.items.map((item) => ({
+                        productId: item.productId,
+                        quantity: item.quantity,
+                        color: item.color,
+                        size: item.size,
+                        type: item.type,
+                    })),
+                },
+                // Підключаємо користувача, якщо він авторизований
+                ...(createOrderDto.userId
+                    ? { user: { connect: { id: createOrderDto.userId } } }
+                    : {}),
+            };
 
             const order = await this.prisma.order.create({
-                data: {
-                    fullName,
-                    phoneNumber,
-                    email: email || "",
-                    area,
-                    city,
-                    postDepartment,
-                    additionalInfo,
-                    total,
-                    userId,
-                    items: {
-                        create: items.map((item) => ({
-                            productId: item.productId,
-                            quantity: item.quantity,
-                            color: item.color,
-                            size: item.size,
-                            type: item.type,
-                        })),
-                    },
-                },
+                data: orderData,
                 include: {
-                    items: {
-                        include: {
-                            product: true,
-                        },
-                    },
+                    items: { include: { product: true } },
                 },
             });
 
-            await this.shopCartService.removeCartFromUser(userId);
+            if (createOrderDto.userId) {
+                await this.shopCartService.removeCartFromUser(createOrderDto.userId);
+            }
 
             return {
                 message: "Замовлення успішно створено",
@@ -63,9 +55,7 @@ export class ShopOrdersService {
             };
         } catch (error) {
             console.error("Помилка створення замовлення:", error);
-            if (error instanceof HttpException) {
-                throw error;
-            }
+            if (error instanceof HttpException) throw error;
             throw new InternalServerErrorException("Помилка сервера при створенні замовлення");
         }
     }

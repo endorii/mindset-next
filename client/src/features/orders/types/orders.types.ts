@@ -21,7 +21,7 @@ export interface IOrder {
     updatedAt?: string;
     items: IOrderItem[];
     status: OrderStatus;
-    userId: string;
+    userId?: string;
 }
 export interface IOrderItem {
     id?: string;

@@ -56,7 +56,7 @@ export async function createOrder(data: IOrder): Promise<ServerResponseWithMessa
             headers: {
                 "Content-Type": "application/json",
             },
-            credentials: "include",
+            // credentials: "include",
             body: JSON.stringify(data),
         });
 

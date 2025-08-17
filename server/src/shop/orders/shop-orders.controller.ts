@@ -7,6 +7,7 @@ import { RolesGuard } from "src/auth/guards/roles/roles.guard";
 import { Roles } from "src/auth/decorators/roles.decorator";
 import { Role } from "generated/prisma";
 import { AuthenticatedRequestUser } from "src/auth/types/auth-request-user.type";
+import { Public } from "src/auth/decorators/public.decorator";
 
 @Controller("shop/orders")
 @UseGuards(JwtAuthGuard, RolesGuard)
@@ -14,7 +15,8 @@ export class ShopOrdersController {
     constructor(private readonly shopOrdersService: ShopOrdersService) {}
 
     @Post()
-    @Roles(Role.USER, Role.ADMIN)
+    @Public()
+    // @Roles(Role.USER, Role.ADMIN)
     createOrder(@Body() createOrderDto: CreateOrderDto) {
         return this.shopOrdersService.createOrder(createOrderDto);
     }

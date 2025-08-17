@@ -29,8 +29,12 @@ export function useCreateOrder() {
     return useMutation({
         mutationFn: (data: IOrder) => createOrder(data),
         onSuccess: (data) => {
-            queryClient.invalidateQueries({ queryKey: ["orders"] });
-            queryClient.invalidateQueries({ queryKey: ["cart"] });
+            if (!data.data?.userId) {
+                localStorage.removeItem("cart");
+            } else {
+                queryClient.invalidateQueries({ queryKey: ["orders"] });
+                queryClient.invalidateQueries({ queryKey: ["cart"] });
+            }
             toast.success(data.message);
         },
         onError: (error: any) => {

@@ -19,6 +19,7 @@ import InputField from "@/shared/ui/inputs/InputField";
 import { NovaPoshtaSelect } from "@/shared/ui/selectors/NovaPoshtaSelect";
 import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
+import { ICartItem } from "@/features/shop/cart/types/cart.types";
 
 interface FormData {
     fullName: string;
@@ -31,10 +32,21 @@ interface FormData {
 
 function Checkout() {
     const { data: user, isPending } = useCurrentUser();
+    const { data: userCart } = useCartItemsFromUser();
 
-    const { data } = useCartItemsFromUser();
+    const [localCart, setLocalCart] = useState<ICartItem[]>([]);
+    const cartToShow = user ? userCart ?? [] : localCart;
 
-    const cart = data || [];
+    useEffect(() => {
+        if (!user && !isPending) {
+            // Завантажуємо локальну корзину з localStorage
+            const storedCart = localStorage.getItem("cart");
+            const parsedCart: ICartItem[] = storedCart
+                ? JSON.parse(storedCart)
+                : [];
+            setLocalCart(parsedCart);
+        }
+    }, [user, isPending]);
 
     const [areas, setAreas] = useState<INovaPostDataObj[]>([]);
     const [cities, setCities] = useState<INovaPostDataObj[]>([]);
@@ -135,8 +147,6 @@ function Checkout() {
     const onSubmit = async (data: FormData) => {
         const userId = user?.id;
 
-        if (!userId) return;
-
         const orderData: IOrder = {
             fullName: data.fullName,
             phoneNumber: data.phoneNumber,
@@ -148,12 +158,12 @@ function Checkout() {
             status: "pending",
             userId,
             total:
-                cart.reduce(
+                cartToShow.reduce(
                     (acc, item) => acc + item.product.price * item.quantity,
                     0
                 ) || 0,
             items:
-                cart.map((item) => ({
+                cartToShow.map((item) => ({
                     productId: item.productId,
                     price: Number(item.price),
                     quantity: Number(item.quantity),
@@ -169,13 +179,13 @@ function Checkout() {
             // setTimeout(() => {
             //     redirect("/orders");
             // }, 1000);
+            reset();
         } catch (error) {
             console.error("Помилка створення замовлення:", error);
         }
     };
 
     if (isPending) return <p>Завантаження ...</p>;
-    if (!user) return <p>Не авторизовано</p>;
 
     return (
         <div className="flex flex-col gap-[50px] mt-[30px] text-white">
@@ -325,9 +335,12 @@ function Checkout() {
                     </div>
 
                     <div className="flex flex-col gap-[15px] w-1/2 rounded-xl bg-white/5 backdrop-blur-[100px] border border-white/5 p-[30px] text-white">
-                        <CheckoutResultTable cart={cart} />
+                        <CheckoutResultTable cart={cartToShow} />
                         <PayMethod />
-                        <MonoButton type="submit" disabled={cart.length === 0}>
+                        <MonoButton
+                            type="submit"
+                            disabled={cartToShow.length === 0}
+                        >
                             Підтвердити замовлення
                         </MonoButton>
                     </div>
