@@ -14,7 +14,7 @@ const Login = () => {
     const {
         data: currentUser,
         isPending: isUserLoading,
-        isError: isUserError,
+        // isError: isUserError,
     } = useCurrentUser();
 
     useEffect(() => {
@@ -22,10 +22,6 @@ const Login = () => {
             router.push("/");
         }
     }, [currentUser, isUserLoading, router]);
-
-    if (isUserLoading) {
-        return <div>Loading...</div>;
-    }
 
     return (
         <div

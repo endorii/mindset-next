@@ -11,23 +11,28 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 
 import { IProduct } from "@/features/products/types/products.types";
+import ProductsSliderSkeleton from "@/shared/ui/skeletons/ProductsSliderSkeleton";
 
 interface SliderWrapperProps {
     productsList: IProduct[];
     title: string;
     emptyProductsTitle: string;
+    isProductsListPending: boolean;
+    isProductsListError?: boolean;
 }
 
 function SliderWrapper({
     productsList,
     title,
     emptyProductsTitle,
+    isProductsListPending,
+    isProductsListError,
 }: SliderWrapperProps) {
     return (
         <div className="p-[30px] sm:p-[10px] text-white">
-            {productsList && productsList.length > 0 ? (
-                <div className="flex flex-col gap-[15px]">
-                    <div className="text-2xl font-semibold">{title}</div>
+            <div className="flex flex-col gap-[15px]">
+                <div className="text-2xl font-semibold">{title}</div>
+                {productsList && productsList.length > 0 ? (
                     <Swiper
                         spaceBetween={20}
                         slidesPerView={1}
@@ -186,10 +191,16 @@ function SliderWrapper({
                             </SwiperSlide>
                         ))}
                     </Swiper>
-                </div>
-            ) : (
-                <p>{emptyProductsTitle}</p>
-            )}
+                ) : isProductsListPending ? (
+                    <ProductsSliderSkeleton />
+                ) : isProductsListError ? (
+                    <div>
+                        Виникла помилка під час завантаження списку товарів
+                    </div>
+                ) : (
+                    <p>{emptyProductsTitle}</p>
+                )}
+            </div>
         </div>
     );
 }

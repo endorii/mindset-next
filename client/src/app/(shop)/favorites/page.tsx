@@ -15,13 +15,18 @@ import {
 } from "@/features/shop/favorites/utils/favorites.utils";
 import { useCurrentUser } from "@/features/shop/user-info/hooks/useUsers";
 import { PopularProducts } from "@/shared/components";
+import UserFavoritesSkeleton from "@/shared/ui/skeletons/UserFavoritesSkeleton";
 import ShopTitle from "@/shared/ui/titles/ShopTitle";
 import Image from "next/image";
 import { useState, useEffect } from "react";
 
 export const Favorites = () => {
-    const { data: user, isPending, error } = useCurrentUser();
-    const { data: userFavorites } = useFavoritesFromUser();
+    const { data: user, isPending: isUserPending } = useCurrentUser();
+    const {
+        data: userFavorites,
+        isPending: isUserFavoritesPending,
+        isError: isUserFavoritesError,
+    } = useFavoritesFromUser();
 
     const [localFavorites, setLocalFavorites] = useState<ILocalFavoriteItem[]>(
         []
@@ -47,34 +52,21 @@ export const Favorites = () => {
     };
 
     useEffect(() => {
-        if (!user) {
+        if (!user && !isUserPending) {
             const storedFavorites = getFavoritesFromStorage();
             setLocalFavorites(storedFavorites);
         }
-    }, [user]);
+    }, [user, isUserPending]);
 
     const favoritesToShow: IFavoriteItem[] | ILocalFavoriteItem[] = user
         ? userFavorites ?? []
         : localFavorites;
 
-    if (isPending) {
-        return <p>Завантаження улюбленого...</p>;
-    }
-
-    if (error && user) {
-        return (
-            <p>
-                Помилка завантаження улюбленого:{" "}
-                {error.message || "Невідома помилка"}
-            </p>
-        );
-    }
-
     return (
         <div className="flex flex-col gap-[50px]">
             <ShopTitle title="Вподобані" subtitle="Favorites" />
             {favoritesToShow && favoritesToShow.length > 0 ? (
-                <ul className="grid grid-cols-4 w-full gap-[15px] px-[30px]">
+                <ul className="grid grid-cols-4 2xl:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 w-full gap-[15px] px-[30px]">
                     {favoritesToShow.map((item, i) => {
                         const isServer = !!user;
 
@@ -95,6 +87,13 @@ export const Favorites = () => {
                         );
                     })}
                 </ul>
+            ) : isUserFavoritesPending ? (
+                <UserFavoritesSkeleton />
+            ) : isUserFavoritesError ? (
+                <div>
+                    Виникла помилка під час завантаження... Оновіть сторінку,
+                    або спробуйте пізніше
+                </div>
             ) : (
                 <div className="flex flex-col justify-center text-center items-center p-[30px] sm:p-[10px] sm:pb-[150px]">
                     <Image

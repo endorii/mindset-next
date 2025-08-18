@@ -15,13 +15,23 @@ import {
 import { ILocalFavoriteItem } from "@/features/shop/favorites/types/favorites.types";
 import { useCurrentUser } from "@/features/shop/user-info/hooks/useUsers";
 import { PopularProducts } from "@/shared/components";
+import UserCartSkeleton from "@/shared/ui/skeletons/UserCartSkeleton";
 import ShopTitle from "@/shared/ui/titles/ShopTitle";
+import { div } from "motion/react-client";
 import Image from "next/image";
 import { useState, useEffect } from "react";
 
 function Cart() {
-    const { data: user, isPending } = useCurrentUser();
-    const { data: userCart } = useCartItemsFromUser();
+    const {
+        data: user,
+        isPending: isUserPending,
+        isError: isUserError,
+    } = useCurrentUser();
+    const {
+        data: userCart,
+        isPending: isUserCartPending,
+        isError: isUserCartError,
+    } = useCartItemsFromUser();
 
     const [localCart, setLocalCart] = useState<ICartItem[]>([]);
     const [isLocalCartLoaded, setIsLocalCartLoaded] = useState(false);
@@ -132,7 +142,7 @@ function Cart() {
                     : [];
 
                 const updated = newFavoriteState
-                    ? [...parsed, { productId, product }] // ✅ записуємо цілий об’єкт
+                    ? [...parsed, { productId, product }]
                     : parsed.filter(
                           (favItem) => favItem.productId !== productId
                       );
@@ -149,14 +159,14 @@ function Cart() {
     };
 
     useEffect(() => {
-        if (!user && !isPending) {
+        if (!user && !isUserPending) {
             const localCartData = getLocalCart();
             setLocalCart(localCartData);
             setIsLocalCartLoaded(true);
         } else if (user) {
             setIsLocalCartLoaded(true);
         }
-    }, [user, isPending]);
+    }, [user, isUserPending]);
 
     useEffect(() => {
         if (cartToShow.length > 0) {
@@ -171,10 +181,6 @@ function Cart() {
             setFavoriteStates(initialFavoriteStates);
         }
     }, [cartToShow, user]);
-
-    if (isPending || !isLocalCartLoaded) {
-        return <p>Завантаження кошика...</p>;
-    }
 
     return (
         <div className="flex flex-col gap-[50px] mt-[10px] text-white">
@@ -210,6 +216,10 @@ function Cart() {
                     </div>
                     <CartReceip totalPrice={totalPrice} />
                 </div>
+            ) : isUserCartPending ? (
+                <UserCartSkeleton />
+            ) : isUserCartError ? (
+                <div></div>
             ) : (
                 <div className="flex flex-col justify-center text-center items-center p-[30px] sm:p-[10px] sm:pb-[150px]">
                     <Image

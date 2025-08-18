@@ -5,12 +5,17 @@ import { IOrderItem } from "@/features/orders/types/orders.types";
 import { AddReviewModal } from "@/features/reviews/modals";
 import { BackIcon } from "@/shared/icons";
 import { MonoButton } from "@/shared/ui/buttons";
+import UserOrdersSkeleton from "@/shared/ui/skeletons/UserOrdersSkeleton";
 import { formatDate } from "@/shared/utils/formatDate";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 const Orders = () => {
-    const { data: userOrders } = useUserOrders();
+    const {
+        data: userOrders,
+        isPending: isUserOrdersPending,
+        isError: isUserOrdersError,
+    } = useUserOrders();
 
     const [expandedOrderId, setExpandedOrderId] = useState<string | null>(null);
     const [activeModal, setActiveModal] = useState<boolean>(false);
@@ -97,7 +102,7 @@ const Orders = () => {
                                             </div>
                                         </div>
 
-                                        <div className="flex gap-[15px] items-center lg:hidden">
+                                        <div className="flex gap-[15px] items-center sm:hidden">
                                             {order.items.length > 0 ? (
                                                 <>
                                                     {order.items
@@ -110,16 +115,16 @@ const Orders = () => {
                                                                 alt="banner"
                                                             />
                                                         ))}
-                                                    {order.items.length > 4 && (
+                                                    {order.items.length > 2 && (
                                                         <div className="flex items-center justify-center min-w-[40px] h-[120px] bg-gray-200 rounded text-black text-lg font-semibold">
                                                             +
                                                             {order.items
-                                                                .length - 4}
+                                                                .length - 2}
                                                         </div>
                                                     )}
                                                 </>
                                             ) : (
-                                                <span>Не знайдено</span>
+                                                <span>Товарів не знайдено</span>
                                             )}
                                         </div>
                                     </div>
@@ -324,8 +329,15 @@ const Orders = () => {
                         })}
                     </div>
                 </div>
+            ) : isUserOrdersPending ? (
+                <UserOrdersSkeleton />
+            ) : isUserOrdersError ? (
+                <div className="text-center font-semibold text-white p-[20px] border border-red-500 rounded-xl bg-red-500/20">
+                    Виникла помилка під час завантаження замовлень... Оновіть
+                    сторінку, або спробуйте пізніше
+                </div>
             ) : (
-                <div className="text-center text-white/60 p-10">
+                <div className="text-center text-white/60 p-[20px]">
                     Замовлення відсутні
                 </div>
             )}

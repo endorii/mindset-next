@@ -3,6 +3,7 @@
 import { useGetCategoryByPath } from "@/features/categories/hooks/useCategories";
 import { useProductsByCategoryId } from "@/features/products/hooks/useProducts";
 import { EmptyCategories } from "@/shared/components";
+import ProductsListSkeleton from "@/shared/ui/skeletons/ProductsListSkeleton";
 import ShopTitle from "@/shared/ui/titles/ShopTitle";
 import Image from "next/image";
 import Link from "next/link";
@@ -23,15 +24,11 @@ export default function CategoryPage() {
         isError: isProductsError,
     } = useProductsByCategoryId(category?.id);
 
-    if (isCategoryPending || isProductsPending) return <div>Loading...</div>;
-    if (!category || isProductsError)
-        return <div>Помилка або категорію не знайдено</div>;
-
     return (
         <div className="flex flex-col gap-[50px]">
             <ShopTitle
-                title={`Товари ${category?.collection?.path} / ${category?.path}`}
-                subtitle={`Products ${category?.collection?.path} / ${category?.path}`}
+                title={`Товари ${collectionPath} / ${categoryPath}`}
+                subtitle={`Products ${collectionPath} / ${categoryPath}`}
             />
 
             {products && products.length > 0 ? (
@@ -126,6 +123,10 @@ export default function CategoryPage() {
                         </li>
                     ))}
                 </ul>
+            ) : isProductsPending ? (
+                <ProductsListSkeleton />
+            ) : isProductsError ? (
+                <div></div>
             ) : (
                 <EmptyCategories
                     title={"Наш віртуальний склад щойно отримав оновлення..."}
