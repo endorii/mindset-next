@@ -12,23 +12,17 @@ function ProductsFromSameCollection({
     const {
         data: productsFromSameCollection,
         isPending: isProductsFromSameCollectionPending,
-        isError: isProductsFromSameCollectionError,
     } = useProductsFromSameCollection(collectionId);
 
     return collectionId && productsFromSameCollection ? (
         <SliderWrapper
             productsList={productsFromSameCollection}
-            isProductsListPending={isProductsFromSameCollectionPending}
-            isProductsListError={isProductsFromSameCollectionError}
             title={"Товари з цієї ж колекції"}
-            emptyProductsTitle={"Товари з цієї ж колекції відсутні"}
         />
     ) : isProductsFromSameCollectionPending ? (
         <ProductsSliderSkeleton />
-    ) : isProductsFromSameCollectionError ? (
-        <div>Виникла помилка під час отримання списку товарів</div>
     ) : (
-        <div>Не вдалося отримати список товарів</div>
+        <div>Список товарів порожній</div>
     );
 }
 

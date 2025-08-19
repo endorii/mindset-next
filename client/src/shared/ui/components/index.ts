@@ -4,3 +4,4 @@ export { default as Label } from "./Label";
 export { default as RenderAttributeField } from "./RenderAttributeField";
 export { default as TextareaInfoField } from "./TextareaInfoField";
 export { default as UploadBannerWithPreview } from "./UploadBannerWithPreview";
+export { default as Breadcrumbs } from "./Breadcrumbs";

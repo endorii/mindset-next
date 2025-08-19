@@ -1,10 +1,10 @@
-function SkeletonProductCard() {
+export function SkeletonProductCard() {
     return (
-        <li className="w-full">
+        <div className="w-full">
             <div className="relative flex flex-col gap-[15px] rounded-xl bg-white/5 shadow-lg backdrop-blur-lg border border-white/5 p-[20px] animate-pulse">
                 <div className="relative rounded-xl w-full aspect-square bg-white/10" />
 
-                <ul className="absolute top-[30px] left-[30px] flex gap-[5px] rounded-[50px] backdrop-blur-lg border p-[5px]">
+                <ul className="absolute top-[30px] left-[30px] flex gap-[5px] rounded-[50px] backdrop-blur-lg p-[5px]">
                     {[1, 2, 3].map((i) => (
                         <li
                             key={i}
@@ -26,12 +26,12 @@ function SkeletonProductCard() {
 
                     <hr className="border-t border-white/10 mt-[5px]" />
 
-                    <div className="flex flex-col gap-[3px]">
+                    <div className="flex flex-col gap-[5px]">
                         <ul className="flex gap-[5px] flex-wrap">
                             {[1, 2, 3].map((i) => (
                                 <li
                                     key={i}
-                                    className="h-[24px] w-[50px] bg-white/10 rounded-xl border border-white/5"
+                                    className="h-[24px] w-[50px] bg-white/10 rounded-xl"
                                 />
                             ))}
                         </ul>
@@ -39,14 +39,14 @@ function SkeletonProductCard() {
                             {[1, 2].map((i) => (
                                 <li
                                     key={i}
-                                    className="h-[24px] w-[60px] bg-white/10 rounded-xl border border-white/5"
+                                    className="h-[24px] w-[60px] bg-white/10 rounded-xl"
                                 />
                             ))}
                         </ul>
                     </div>
                 </div>
             </div>
-        </li>
+        </div>
     );
 }
 

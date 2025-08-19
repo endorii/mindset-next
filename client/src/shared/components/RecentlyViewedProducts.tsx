@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import SliderWrapper from "./layout/SliderWrapper";
 import { IProduct } from "@/features/products/types/products.types";
+import ProductsSliderSkeleton from "../ui/skeletons/ProductsSliderSkeleton";
 
 function RecentlyViewedProducts() {
     const [recentlyViewedProductsList, setRecentlyViewedProductsList] =
@@ -21,14 +22,15 @@ function RecentlyViewedProducts() {
         }
     }, []);
 
-    return (
+    return recentlyViewedProductsList ? (
         <SliderWrapper
             productsList={recentlyViewedProductsList}
             title="Останні переглянуті"
-            emptyProductsTitle="Ще немає переглянутих товарів"
-            isProductsListPending={recentlyViewedProductsListPending}
-            isProductsListError={false}
         />
+    ) : recentlyViewedProductsListPending ? (
+        <ProductsSliderSkeleton />
+    ) : (
+        <div>Список товарів порожній</div>
     );
 }
 

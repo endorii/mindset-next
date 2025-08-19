@@ -3,25 +3,31 @@ import { MonoLink } from "@/shared/ui/buttons";
 import { useReviewByProductId } from "../hooks/useReviews";
 import AvgRatingStat from "./AvgRatingStat";
 import ProductReviewsList from "./ProductReviewsList";
+import ReviewsValueSkeleton from "@/shared/ui/skeletons/ReviewsValueSkeleton";
+import ProductReviewsSkeleton from "@/shared/ui/skeletons/ProductReviewsSkeleton";
 
 interface ReviewsOnProductPageProps {
     product: IProduct;
 }
 
 function ReviewsOnProductPage({ product }: ReviewsOnProductPageProps) {
-    const {
-        data: reviews,
-        isPending,
-        isError,
-    } = useReviewByProductId(product.id);
+    const { data: reviews, isPending: isReviewsPending } = useReviewByProductId(
+        product.id
+    );
 
     return (
         <div className="text-white rounded-xl bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px]">
-            <h2 className="text-2xl md:text-xl font-bold mb-4">
-                Відгуки про товар ({reviews?.length || 0})
-            </h2>
+            <div className="flex items-center gap-[7px] text-2xl md:text-xl font-bold">
+                {reviews && reviews.length > 0 ? (
+                    <div>Відгуки про товар ({reviews?.length})</div>
+                ) : isReviewsPending ? (
+                    <ReviewsValueSkeleton />
+                ) : (
+                    <div>відсутні</div>
+                )}
+            </div>
             {reviews && reviews.length > 0 ? (
-                <div className="flex sm:flex-col gap-[15px]">
+                <div className="flex sm:flex-col gap-[15px] mt-[15px]">
                     <AvgRatingStat reviews={reviews} />
 
                     <div
@@ -37,6 +43,8 @@ function ReviewsOnProductPage({ product }: ReviewsOnProductPageProps) {
                         ) : null}
                     </div>
                 </div>
+            ) : isReviewsPending ? (
+                <ProductReviewsSkeleton />
             ) : null}
         </div>
     );

@@ -38,10 +38,13 @@ export function useReviews() {
     });
 }
 
-export function useReviewByProductId(productId: string) {
+export function useReviewByProductId(productId?: string) {
     return useQuery({
-        queryKey: ["reviews"],
-        queryFn: () => fetchReviewsByProductId(productId),
+        queryKey: ["reviews", productId],
+        queryFn: () => {
+            if (!productId) throw new Error("Product ID is required");
+            return fetchReviewsByProductId(productId);
+        },
         enabled: !!productId,
     });
 }
