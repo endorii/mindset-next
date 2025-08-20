@@ -4,18 +4,32 @@ import {
     DeleteButtonWithIcon,
     MonoButton,
 } from "@/shared/ui/buttons";
-import { PlusIcon, EditIcon, TrashIcon, PaletteIcon } from "@/shared/icons";
+import { EditIcon, TrashIcon, PaletteIcon } from "@/shared/icons";
 import { useState } from "react";
 import { useTypes } from "../hooks/useTypes";
 import { IType } from "../types/product-type.types";
 import TitleWithAddElementButton from "../../components/TitleWithAddElementButton";
+import {
+    SizesAndTypesSkeleton,
+    TitleWithButtonSkeleton,
+} from "@/shared/ui/skeletons";
 
 export const TypeSection = () => {
-    const { data: types } = useTypes();
     const [modalType, setModalType] = useState<
         "add" | "edit" | "delete" | null
     >(null);
     const [selected, setSelected] = useState<IType | null>(null);
+
+    const { data: types, isPending: isTypesPending } = useTypes();
+
+    if (isTypesPending) {
+        return (
+            <div className="flex flex-col gap-[15px]">
+                <TitleWithButtonSkeleton />
+                <SizesAndTypesSkeleton />
+            </div>
+        );
+    }
 
     const closeModal = () => {
         setModalType(null);

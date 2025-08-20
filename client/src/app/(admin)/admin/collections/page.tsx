@@ -24,6 +24,11 @@ import {
     ButtonWithIcon,
     DeleteButtonWithIcon,
 } from "@/shared/ui/buttons";
+import {
+    AdminProductsSkeleton,
+    FilterSectionSkeleton,
+    TitleWithButtonSkeleton,
+} from "@/shared/ui/skeletons";
 import { formatDate } from "@/shared/utils/formatDate";
 import Link from "next/link";
 import { useState } from "react";
@@ -37,16 +42,22 @@ function AdminCollections() {
         "кількість товарів",
     ];
 
-    const {
-        data: collections,
-        error,
-        isPending,
-        isError,
-    } = useGetCollections();
-
     const [activeModal, setActiveModal] = useState<ModalType>(null);
     const [selectedCollection, setSelectedCollection] =
         useState<ICollection | null>(null);
+
+    const { data: collections, isPending: isCollectionsPending } =
+        useGetCollections();
+
+    if (isCollectionsPending) {
+        return (
+            <div className="flex flex-col gap-[15px]">
+                <TitleWithButtonSkeleton />
+                <FilterSectionSkeleton />
+                <AdminProductsSkeleton />
+            </div>
+        );
+    }
 
     const openModal = (
         type: ModalType,
@@ -60,14 +71,6 @@ function AdminCollections() {
         setSelectedCollection(null);
         setActiveModal(null);
     };
-
-    if (isPending) return <div className="text-center">Завантаження...</div>;
-    if (isError)
-        return (
-            <div className="text-center text-red-500">
-                Помилка: {error?.message || "Невідома помилка"}
-            </div>
-        );
 
     return (
         <div className="flex flex-col gap-[15px]">

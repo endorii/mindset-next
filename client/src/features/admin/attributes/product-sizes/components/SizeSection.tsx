@@ -9,13 +9,27 @@ import { useState } from "react";
 import { useSizes } from "../hooks/useSizes";
 import { ISize } from "../types/product-size.types";
 import TitleWithAddElementButton from "../../components/TitleWithAddElementButton";
+import {
+    SizesAndTypesSkeleton,
+    TitleWithButtonSkeleton,
+} from "@/shared/ui/skeletons";
 
 export const SizeSection = () => {
-    const { data: sizes } = useSizes();
     const [modalType, setModalType] = useState<
         "add" | "edit" | "delete" | null
     >(null);
     const [selected, setSelected] = useState<ISize | null>(null);
+
+    const { data: sizes, isPending: isSizesPending } = useSizes();
+
+    if (isSizesPending) {
+        return (
+            <div className="flex flex-col gap-[15px]">
+                <TitleWithButtonSkeleton />
+                <SizesAndTypesSkeleton />
+            </div>
+        );
+    }
 
     const closeModal = () => {
         setModalType(null);

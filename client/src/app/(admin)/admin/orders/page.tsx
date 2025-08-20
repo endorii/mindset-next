@@ -12,12 +12,15 @@ import { IOrder } from "@/features/orders/types/orders.types";
 import { InfoIcon, EditIcon, TrashIcon } from "@/shared/icons";
 import { OrderModalType } from "@/shared/types/types";
 import { ButtonWithIcon, DeleteButtonWithIcon } from "@/shared/ui/buttons";
+import {
+    AdminProductsSkeleton,
+    FilterSectionSkeleton,
+    TitleWithButtonSkeleton,
+} from "@/shared/ui/skeletons";
 import { formatDate } from "@/shared/utils/formatDate";
 import { useState } from "react";
 
 function Orders() {
-    const { data: orders } = useOrders();
-
     const sortFilters = ["Спочатку новіші", "Спочатку старіші"];
     const statusFilters = [
         "Обробляється",
@@ -29,6 +32,19 @@ function Orders() {
 
     const [activeModal, setActiveModal] = useState<OrderModalType>(null);
     const [selectedOrder, setSelectedOrder] = useState<IOrder | null>(null);
+
+    const { data: orders, isPending: isOrdersPending } = useOrders();
+
+    if (isOrdersPending) {
+        return (
+            <div className="flex flex-col gap-[15px]">
+                <TitleWithButtonSkeleton />
+                <FilterSectionSkeleton />
+                <FilterSectionSkeleton />
+                <AdminProductsSkeleton />
+            </div>
+        );
+    }
 
     const openModal = (type: OrderModalType, order: IOrder | null) => {
         setSelectedOrder(order);

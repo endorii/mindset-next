@@ -28,3 +28,4 @@ export { default as WearIcon } from "./WearIcon";
 export { default as MailIcon } from "./MailIcon";
 export { default as PhoneIcon } from "./PhoneIcon";
 export { default as LocationIcon } from "./LocationIcon";
+export { default as SpinnerIcon } from "./SpinnerIcon";

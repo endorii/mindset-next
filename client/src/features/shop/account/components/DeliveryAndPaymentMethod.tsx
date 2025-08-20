@@ -36,7 +36,6 @@ function DeliveryAndPaymentMethod() {
 
             <hr className="border-t border-white/10" />
 
-            {/* Оплата */}
             <div className="flex md:flex-wrap items-center gap-[15px]">
                 <div className="flex items-center gap-[10px]">
                     <Image

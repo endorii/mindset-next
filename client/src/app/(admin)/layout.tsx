@@ -3,9 +3,10 @@
 import AdminHeader from "@/features/admin/components/layout/AdminHeader";
 import AdminNavigation from "@/features/admin/components/layout/AdminNavigation";
 import { useCurrentUser } from "@/features/shop/user-info/hooks/useUsers";
-
+import { SpinnerIcon } from "@/shared/icons";
 import { useRouter } from "next/navigation";
-import { useState, useEffect } from "react";
+import { toast } from "sonner";
+import { useEffect } from "react";
 
 export default function AdminLayout({
     children,
@@ -13,45 +14,42 @@ export default function AdminLayout({
     children: React.ReactNode;
 }) {
     const router = useRouter();
-    const [loading, setLoading] = useState(true);
-    const [hasAccess, setHasAccess] = useState(false);
 
-    const { data: user } = useCurrentUser();
+    const {
+        data: user,
+        isPending: isUserPending,
+        isError: isUserError,
+    } = useCurrentUser();
 
     useEffect(() => {
-        const checkAdminAccess = async () => {
-            try {
-                if (user && user.role === "ADMIN") {
-                    setHasAccess(true);
-                } else {
-                    console.warn(
-                        "Access Denied: User is not an admin or not logged in."
-                    );
-                    router.push("/");
-                }
-            } catch (error) {
-                router.push("/auth");
-                console.error("Error checking admin access:", error);
-            } finally {
-                setLoading(false);
-            }
-        };
+        if (isUserError) {
+            toast.error("Помилка завантаження користувача");
+            router.push("/account");
+        } else if (user && user.role !== "ADMIN" && !isUserPending) {
+            toast.info("У вас немає доступу до адмін панелі");
+            router.push("/account");
+        } else if (!user && !isUserPending) {
+            toast.info("Ви не авторизовані, перенаправлення...");
+            router.push("/account");
+        } else if (user && user.role === "ADMIN" && !isUserPending) {
+            toast.success("Ви успішно увійшли в адмін панель");
+        }
+    }, [user, isUserPending, isUserError, router]);
 
-        checkAdminAccess();
-    }, [router]);
-
-    if (loading) {
+    if (isUserPending) {
         return (
-            <div className="flex items-center justify-center min-h-screen bg-gray-100">
-                <p className="text-xl text-gray-700">
-                    Завантаження адмін-панелі...
-                </p>
-                {/* Можна додати красивий спіннер тут */}
+            <div className="text-white flex flex-col gap-[15px] h-screen w-full justify-center items-center pb-[10%]">
+                <div className="text-xl font-bold">
+                    Завантаження адмін панелі...
+                </div>
+                <div>
+                    <SpinnerIcon className="w-[70px] h-[70px] fill-white animate-spin" />
+                </div>
             </div>
         );
     }
 
-    if (!hasAccess) {
+    if (!user || user.role !== "ADMIN" || isUserError) {
         return null;
     }
 

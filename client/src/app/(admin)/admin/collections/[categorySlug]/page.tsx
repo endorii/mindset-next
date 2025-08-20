@@ -25,6 +25,12 @@ import {
     ButtonWithIcon,
     DeleteButtonWithIcon,
 } from "@/shared/ui/buttons";
+import {
+    AdminProductsSkeleton,
+    ButtonSkeleton,
+    FilterSectionSkeleton,
+    TitleWithButtonSkeleton,
+} from "@/shared/ui/skeletons";
 import { formatDate } from "@/shared/utils/formatDate";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
@@ -42,22 +48,27 @@ function AdminCategoriesInCollection() {
     const pathname = usePathname();
     const collectionPath = pathname.split("/")[3] || "";
 
-    const {
-        data: collection,
-        isError: isCollectionError,
-        isPending: isCollectionPending,
-    } = useGetCollectionByPath(collectionPath);
-
-    const {
-        data: categories,
-        isError: isCategoriesError,
-        isPending: isCategoriesPending,
-    } = useGetCategoriesByCollectionId(collection?.id);
-
     const [activeModal, setActiveModal] = useState<ModalType>(null);
     const [selectedCategory, setSelectedCategory] = useState<ICategory | null>(
         null
     );
+
+    const { data: collection, isPending: isCollectionPending } =
+        useGetCollectionByPath(collectionPath);
+
+    const { data: categories, isPending: isCategoriesPending } =
+        useGetCategoriesByCollectionId(collection?.id);
+
+    if (isCollectionPending || isCategoriesPending) {
+        return (
+            <div className="flex flex-col gap-[15px]">
+                <ButtonSkeleton />
+                <TitleWithButtonSkeleton />
+                <FilterSectionSkeleton />
+                <AdminProductsSkeleton />
+            </div>
+        );
+    }
 
     const openModal = (type: ModalType, category: ICategory | null = null) => {
         setSelectedCategory(category);

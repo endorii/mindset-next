@@ -13,13 +13,28 @@ import { EditIcon, TrashIcon, PaletteIcon } from "@/shared/icons";
 import { useColors } from "@/features/admin/attributes/product-colors/hooks/useColors";
 import { useState } from "react";
 import TitleWithAddElementButton from "../../components/TitleWithAddElementButton";
+import {
+    FilterSectionSkeleton,
+    TitleWithButtonSkeleton,
+} from "@/shared/ui/skeletons";
+import ColorsSkeleton from "@/shared/ui/skeletons/ColorsSkeleton";
 
 export const ColorSection = () => {
-    const { data: colors } = useColors();
     const [modalType, setModalType] = useState<
         "add" | "edit" | "delete" | null
     >(null);
     const [selected, setSelected] = useState<IColor | null>(null);
+
+    const { data: colors, isPending: isColorsPending } = useColors();
+
+    if (isColorsPending) {
+        return (
+            <div className="flex flex-col gap-[15px]">
+                <TitleWithButtonSkeleton />
+                <ColorsSkeleton />
+            </div>
+        );
+    }
 
     const closeModal = () => {
         setModalType(null);

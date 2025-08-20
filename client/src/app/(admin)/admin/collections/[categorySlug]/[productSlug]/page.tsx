@@ -24,6 +24,12 @@ import {
     ButtonWithIcon,
     DeleteButtonWithIcon,
 } from "@/shared/ui/buttons";
+import {
+    AdminProductsSkeleton,
+    ButtonSkeleton,
+    FilterSectionSkeleton,
+    TitleWithButtonSkeleton,
+} from "@/shared/ui/skeletons";
 import { formatDate } from "@/shared/utils/formatDate";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
@@ -48,17 +54,22 @@ function AdminProductsInCategory() {
         null
     );
 
-    const {
-        data: category,
-        isError: isCategoryError,
-        isPending: isCategoryPending,
-    } = useGetCategoryByPath(collectionPath, categoryPath);
+    const { data: category, isPending: isCategoryPending } =
+        useGetCategoryByPath(collectionPath, categoryPath);
 
-    const {
-        data: products,
-        isError: isProductsError,
-        isPending: isProductsPending,
-    } = useProductsByCategoryId(category?.id);
+    const { data: products, isPending: isProductsPending } =
+        useProductsByCategoryId(category?.id);
+
+    if (isCategoryPending || isProductsPending) {
+        return (
+            <div className="flex flex-col gap-[15px]">
+                <ButtonSkeleton />
+                <TitleWithButtonSkeleton />
+                <FilterSectionSkeleton />
+                <AdminProductsSkeleton />
+            </div>
+        );
+    }
 
     const openModal = (type: ModalType, product: IProduct | null = null) => {
         setSelectedProduct(product);

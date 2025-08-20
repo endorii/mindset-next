@@ -3,9 +3,14 @@
 import { SearchIcon, AccountIcon } from "@/shared/icons";
 import Link from "next/link";
 import { useCurrentUser } from "@/features/shop/user-info/hooks/useUsers";
+import { div } from "motion/react-client";
 
 function AdminHeader() {
-    const { data: user } = useCurrentUser();
+    const {
+        data: user,
+        isPending: isUserPending,
+        isError: isUserError,
+    } = useCurrentUser();
 
     return (
         <header className="fixed top-0 py-[10px] px-[30px] sm:px-[10px] h-[80px] flex gap-[5%] items-center w-full shadow-custom bg-transparent border-b border-white/10 z-[10]">
@@ -28,7 +33,13 @@ function AdminHeader() {
                     <div className="flex items-center gap-[10px]">
                         <AccountIcon className="w-[25px] fill-white" />
                         <div className="mt-[3px]">
-                            {user ? user.name : "Не авторизовано"}
+                            {user ? (
+                                user.name
+                            ) : isUserPending ? (
+                                <div></div>
+                            ) : isUserError ? (
+                                <div></div>
+                            ) : null}
                         </div>
                     </div>
                 </Link>

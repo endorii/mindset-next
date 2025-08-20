@@ -5,6 +5,11 @@ import Title from "@/features/admin/attributes/components/Title";
 import { useRecentActions } from "@/features/admin/recent-actions/hooks/useRecentActions";
 import { useCurrentUser } from "@/features/shop/user-info/hooks/useUsers";
 import { AdminRecentActions } from "@/shared/components";
+import {
+    FilterSectionSkeleton,
+    RecentActionsSkeleton,
+    TitleWithButtonSkeleton,
+} from "@/shared/ui/skeletons";
 import { useState, useMemo } from "react";
 
 const actionTypeFilters = ["Всі", "Додано", "Редаговано", "Видалено"];
@@ -20,12 +25,14 @@ const entityFilters = [
 const sortFilters = ["Спочатку новіші", "Спочатку старіші"];
 
 function AdminAccount() {
-    const { data: user } = useCurrentUser();
-    const { data: actions } = useRecentActions(user?.id);
-
     const [selectedType, setSelectedType] = useState("Всі");
     const [selectedEntity, setSelectedEntity] = useState("Всі");
     const [selectedSort, setSelectedSort] = useState("Спочатку новіші");
+
+    const { data: user, isPending: isUserPending } = useCurrentUser();
+    const { data: actions, isPending: isActionsPending } = useRecentActions(
+        user?.id
+    );
 
     const filteredActions = useMemo(() => {
         if (!actions) return [];
@@ -50,6 +57,18 @@ function AdminAccount() {
 
         return result;
     }, [actions, selectedType, selectedEntity, selectedSort]);
+
+    if (isUserPending || isActionsPending) {
+        return (
+            <div className="flex flex-col gap-[15px]">
+                <TitleWithButtonSkeleton />
+                <FilterSectionSkeleton />
+                <FilterSectionSkeleton />
+                <FilterSectionSkeleton />
+                <RecentActionsSkeleton />
+            </div>
+        );
+    }
 
     return (
         <div className="flex flex-col gap-[15px]">

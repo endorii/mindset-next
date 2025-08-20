@@ -7,11 +7,41 @@ import { useCurrentUser } from "@/features/shop/user-info/hooks/useUsers";
 import { useOrders } from "@/features/orders/hooks/useOrders";
 import { AdminRecentActions } from "@/shared/components";
 import { OrdersAndSalesChart } from "@/shared/components/charts";
+import { LineChartSkeleton } from "@/shared/ui/skeletons";
+import FastStatSkeleton from "@/shared/ui/skeletons/FastStatSkeleton";
+import RecentActionsSkeleton from "@/shared/ui/skeletons/RecentActionsSkeleton";
+import TodoSkeleton from "@/shared/ui/skeletons/TodoSkeleton";
 
 function Admin() {
-    const { data: user } = useCurrentUser();
-    const { data: actions } = useRecentActions(user?.id);
-    const { data: orders } = useOrders();
+    const {
+        data: user,
+        isPending: isUserPending,
+        isError: isUserError,
+    } = useCurrentUser();
+    const {
+        data: actions,
+        isPending: isActionsPending,
+        isError: isActionsError,
+    } = useRecentActions(user?.id);
+    const {
+        data: orders,
+        isPending: isOrdersPending,
+        isError: isOrdersError,
+    } = useOrders();
+
+    if (isUserPending || isActionsPending || isOrdersPending) {
+        return (
+            <div className="flex flex-col gap-[15px]">
+                <Title title="Головна сторінка" />
+                <LineChartSkeleton />
+                <FastStatSkeleton />
+                <div className="flex lg:flex-col gap-[15px]">
+                    <RecentActionsSkeleton />
+                    <TodoSkeleton />
+                </div>
+            </div>
+        );
+    }
 
     if (!orders || !user || !actions) return;
 
@@ -22,9 +52,9 @@ function Admin() {
     return (
         <div className="flex flex-col gap-[15px]">
             <Title title="Головна сторінка" />
-
-            {orders && <OrdersAndSalesChart orders={orders} />}
+            <OrdersAndSalesChart orders={orders} />
             <HomeFastStat orders={orders} />
+
             <div className="flex lg:flex-col gap-[15px]">
                 <AdminRecentActions actions={actions} />
                 <HomeTodo />

@@ -16,16 +16,31 @@ import {
     ApproveButtonWithIcon,
     DeleteButtonWithIcon,
 } from "@/shared/ui/buttons";
+import {
+    AdminProductsSkeleton,
+    FilterSectionSkeleton,
+    TitleWithButtonSkeleton,
+} from "@/shared/ui/skeletons";
 import { formatDate } from "@/shared/utils/formatDate";
 import { useState } from "react";
 
 function Reviews() {
-    const { data: reviews, isPending, isError } = useReviews();
-
     const sortFilters = ["Спочатку новіші", "Спочатку старіші"];
 
     const [activeModal, setActiveModal] = useState<ReviewModalType>(null);
     const [selectedReview, setSelectedReview] = useState<IReview | null>(null);
+
+    const { data: reviews, isPending: isReviewsPending } = useReviews();
+
+    if (isReviewsPending) {
+        return (
+            <div className="flex flex-col gap-[15px]">
+                <TitleWithButtonSkeleton />
+                <FilterSectionSkeleton />
+                <AdminProductsSkeleton />
+            </div>
+        );
+    }
 
     const openModal = (type: ReviewModalType, review: IReview | null) => {
         setSelectedReview(review);
