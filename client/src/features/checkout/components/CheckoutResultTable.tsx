@@ -11,7 +11,7 @@ function CheckoutResultTable({ cart }: CheckoutResultTable) {
             {cart.length > 0 ? (
                 <div className="flex flex-col gap-[10px]">
                     <div className="flex flex-col gap-[15px] mt-[5px] border border-white/10 rounded-xl bg-white/5 p-[20px]">
-                        <div className="grid grid-cols-[1fr_0.5fr_0.5fr_0.5fr_0.5fr_0.5fr_0.5fr] border-b border-white/10 pb-2 text-sm text-gray-400">
+                        <div className="grid grid-cols-[1fr_0.5fr_0.5fr_0.5fr_0.5fr_0.5fr_0.5fr] border-b border-white/10 pb-2 text-sm text-white/60">
                             <div>Назва</div>
                             <div className="text-right">Колір</div>
                             <div className="text-right">Розмір</div>
@@ -57,7 +57,7 @@ function CheckoutResultTable({ cart }: CheckoutResultTable) {
                             </div>
                             <div className="flex justify-between">
                                 <span>Доставка:</span>
-                                <span className="text-gray-400 text-sm">
+                                <span className="text-white/60 text-sm">
                                     За тарифами перевізника
                                 </span>
                             </div>
@@ -76,7 +76,7 @@ function CheckoutResultTable({ cart }: CheckoutResultTable) {
                     </div>
                 </div>
             ) : (
-                <div className="text-sm text-gray-300">Кошик порожній</div>
+                <div className="text-sm text-white/60">Кошик порожній</div>
             )}
         </>
     );

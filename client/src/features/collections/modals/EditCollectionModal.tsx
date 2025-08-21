@@ -214,7 +214,7 @@ export default function EditCollectionModal({
                                     className="object-cover"
                                 />
                             ) : (
-                                <span className="text-4xl text-gray-400">
+                                <span className="text-4xl text-white/60">
                                     +
                                 </span>
                             )}

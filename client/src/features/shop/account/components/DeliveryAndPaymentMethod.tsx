@@ -20,13 +20,13 @@ function DeliveryAndPaymentMethod() {
                         <div className="font-semibold text-lg">
                             Доставка у відділення "Нова Пошта"
                         </div>
-                        <div className="text-sm text-gray-300  max-w-md">
+                        <div className="text-sm text-white/60  max-w-md">
                             Отримуйте свої замовлення у найближчому відділенні
                             "Нова Пошта". Зручне самовивезення, швидка обробка
                             та відстеження посилки.
                         </div>
                     </div>
-                    <ul className="list-disc list-inside mt-2 text-sm text-gray-400">
+                    <ul className="list-disc list-inside mt-2 text-sm text-white/60">
                         <li>Термін доставки: 1-3 робочі дні</li>
                         <li>Відстеження посилки у реальному часі</li>
                         <li>Можливість оплатити при отриманні</li>
@@ -56,13 +56,13 @@ function DeliveryAndPaymentMethod() {
                         <div className="font-semibold text-lg">
                             Оплата карткою онлайн
                         </div>
-                        <div className="text-sm text-gray-300 max-w-md">
+                        <div className="text-sm text-white/60 max-w-md">
                             Швидка і безпечна оплата банківськими картками Visa,
                             MasterCard та іншими популярними платіжними
                             системами. Підтвердження платежу відразу.
                         </div>
                     </div>
-                    <ul className="list-disc list-inside mt-2 text-sm text-gray-400">
+                    <ul className="list-disc list-inside mt-2 text-sm text-white/60">
                         <li>Підтримка 3D Secure для безпеки платежів</li>
                         <li>Оплата з мобільних пристроїв та комп’ютерів</li>
                         <li>Можливість збереження даних для швидших покупок</li>

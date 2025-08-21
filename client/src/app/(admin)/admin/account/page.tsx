@@ -3,7 +3,6 @@
 import { FilterSection } from "@/features/admin/attributes/components/FilterSection";
 import Title from "@/features/admin/attributes/components/Title";
 import { useRecentActions } from "@/features/admin/recent-actions/hooks/useRecentActions";
-import { useCurrentUser } from "@/features/shop/user-info/hooks/useUsers";
 import { AdminRecentActions } from "@/shared/components";
 import {
     FilterSectionSkeleton,
@@ -29,10 +28,11 @@ function AdminAccount() {
     const [selectedEntity, setSelectedEntity] = useState("Всі");
     const [selectedSort, setSelectedSort] = useState("Спочатку новіші");
 
-    const { data: user, isPending: isUserPending } = useCurrentUser();
-    const { data: actions, isPending: isActionsPending } = useRecentActions(
-        user?.id
-    );
+    const {
+        data: actions,
+        isPending: isActionsPending,
+        isError: isActionsError,
+    } = useRecentActions();
 
     const filteredActions = useMemo(() => {
         if (!actions) return [];
@@ -58,7 +58,7 @@ function AdminAccount() {
         return result;
     }, [actions, selectedType, selectedEntity, selectedSort]);
 
-    if (isUserPending || isActionsPending) {
+    if (isActionsPending) {
         return (
             <div className="flex flex-col gap-[15px]">
                 <TitleWithButtonSkeleton />
@@ -95,7 +95,10 @@ function AdminAccount() {
                 selectedItem={selectedSort}
             />
 
-            <AdminRecentActions actions={filteredActions} />
+            <AdminRecentActions
+                isActionsError={isActionsError}
+                actions={filteredActions}
+            />
         </div>
     );
 }

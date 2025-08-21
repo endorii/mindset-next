@@ -17,13 +17,24 @@ import {
 } from "../modals/todo";
 import { formatDate } from "@/shared/utils/formatDate";
 
-function HomeTodo() {
-    const { data: todos } = useTodoList();
-
+function HomeTodo({
+    todos,
+    isTodosError,
+}: {
+    todos: ITodoItem[] | undefined;
+    isTodosError: boolean;
+}) {
     const [activeModal, setActiveModal] = useState<TodoModalType>(null);
     const [selectedTodoItem, setSelectedTodoItem] = useState<ITodoItem | null>(
         null
     );
+    if (isTodosError) {
+        return (
+            <div className="rounded-xl bg-red-500/10 shadow-lg backdrop-blur-[100px] border border-red-500/30 p-[20px] w-1/2 lg:w-full min-h-[470px] flex items-center justify-center text-center text-red-400">
+                Виникла помилка під час завантаження завдань
+            </div>
+        );
+    }
 
     const openModal = (
         type: TodoModalType,
@@ -93,7 +104,9 @@ function HomeTodo() {
                     ))}
                 </div>
             ) : (
-                <div className="text-white/70">Завдання відсутні</div>
+                <div className=" p-[20px]  flex items-center justify-center text-center text-white/60">
+                    Завдання відсутні
+                </div>
             )}
 
             <AddTodoItemModal

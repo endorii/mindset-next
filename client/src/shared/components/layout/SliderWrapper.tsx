@@ -102,7 +102,7 @@ function SliderWrapper({ productsList, title }: SliderWrapperProps) {
                                                 {product.price} грн.
                                             </div>
                                             {product.oldPrice && (
-                                                <div className="font-semibold line-through text-sm text-gray-500">
+                                                <div className="font-semibold line-through text-sm text-white/60">
                                                     {product.oldPrice} грн.
                                                 </div>
                                             )}

@@ -184,7 +184,7 @@ export default function ProductPage() {
                                     {product.price} грн.
                                 </div>
                                 {product.oldPrice && (
-                                    <div className="text-lg line-through text-gray-400 font-light">
+                                    <div className="text-lg line-through text-white/60 font-light">
                                         {product.oldPrice} грн.
                                     </div>
                                 )}

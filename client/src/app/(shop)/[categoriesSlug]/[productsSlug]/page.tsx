@@ -70,7 +70,7 @@ export default function CategoryPage() {
                                             <div className="text-xl text-white font-semibold">
                                                 {product.price} грн.
                                             </div>
-                                            <div className="font-semibold line-through text-lg text-gray-500">
+                                            <div className="font-semibold line-through text-lg text-white/60">
                                                 {product.oldPrice} грн.
                                             </div>
                                         </div>

@@ -1,10 +1,9 @@
 import { useQuery } from "@tanstack/react-query";
 import { fetchRecentActionsFromUser } from "../api/recent-actions.api";
 
-export function useRecentActions(userId: string | undefined) {
+export function useRecentActions() {
     return useQuery({
         queryKey: ["recent-actions"],
-        queryFn: () => fetchRecentActionsFromUser(userId),
-        enabled: !!userId,
+        queryFn: () => fetchRecentActionsFromUser(),
     });
 }

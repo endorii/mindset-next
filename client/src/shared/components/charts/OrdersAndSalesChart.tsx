@@ -171,13 +171,14 @@ function generateChartData(orders: IOrder[], period: Period): ChartPoint[] {
     return [];
 }
 
-function OrdersAndSalesChart({ orders }: { orders: IOrder[] }) {
+function OrdersAndSalesChart({
+    orders,
+    isOrdersError,
+}: {
+    orders: IOrder[] | undefined;
+    isOrdersError: boolean;
+}) {
     const [period, setPeriod] = useState<Period>("day");
-
-    const chartData = useMemo(
-        () => generateChartData(orders, period),
-        [orders, period]
-    );
 
     const periodLabels: Record<Period, string> = {
         day: "За день (по годинах)",
@@ -186,11 +187,33 @@ function OrdersAndSalesChart({ orders }: { orders: IOrder[] }) {
         year: "За рік (по місяцях)",
     };
 
+    if (isOrdersError) {
+        return (
+            <div className="rounded-xl bg-red-500/10 border border-red-500/30 p-[20px] text-red-400">
+                Виникла помилка при завантаженні замовлень для діаграми
+            </div>
+        );
+    }
+
+    if (!orders || (orders.length === 0 && !isOrdersError)) {
+        return (
+            <div className="rounded-xl bg-white/5 p-[20px] text-white/60 border border-white/5">
+                Замовлення для діаграми відсутні
+            </div>
+        );
+    }
+
+    const chartData = useMemo(
+        () => generateChartData(orders, period),
+        [orders, period]
+    );
+
     return (
         <div className="rounded-xl bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px] flex flex-col gap-[15px] w-full">
             <h2 className="text-lg font-semibold">
                 Кількість замовлень та продажі {periodLabels[period]}
             </h2>
+
             <div className="flex flex-wrap gap-[10px] mb-[20px]">
                 {(["day", "week", "month", "year"] as Period[]).map((p) => (
                     <ChooseButton
@@ -202,6 +225,7 @@ function OrdersAndSalesChart({ orders }: { orders: IOrder[] }) {
                     </ChooseButton>
                 ))}
             </div>
+
             <ResponsiveContainer width="100%" height={450}>
                 <LineChart data={chartData}>
                     <CartesianGrid strokeDasharray="3 3" strokeOpacity={0.2} />
