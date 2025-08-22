@@ -20,6 +20,9 @@ import { NovaPoshtaSelect } from "@/shared/ui/selectors/NovaPoshtaSelect";
 import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { ICartItem } from "@/features/shop/cart/types/cart.types";
+import { CheckoutSkeleton, UserCartSkeleton } from "@/shared/ui/skeletons";
+import ShopTitle from "@/shared/ui/titles/ShopTitle";
+import { ErrorWithMessage } from "@/shared/ui/components";
 
 interface FormData {
     fullName: string;
@@ -31,14 +34,18 @@ interface FormData {
 }
 
 function Checkout() {
-    const { data: user, isPending } = useCurrentUser();
-    const { data: userCart } = useCartItemsFromUser();
+    const { data: user, isPending: isUserPending } = useCurrentUser();
+    const {
+        data: userCart,
+        isPending: isUserCartPending,
+        isError: isUserCartError,
+    } = useCartItemsFromUser();
 
     const [localCart, setLocalCart] = useState<ICartItem[]>([]);
     const cartToShow = user ? userCart ?? [] : localCart;
 
     useEffect(() => {
-        if (!user && !isPending) {
+        if (!user && !isUserPending) {
             // Завантажуємо локальну корзину з localStorage
             const storedCart = localStorage.getItem("cart");
             const parsedCart: ICartItem[] = storedCart
@@ -46,7 +53,7 @@ function Checkout() {
                 : [];
             setLocalCart(parsedCart);
         }
-    }, [user, isPending]);
+    }, [user, isUserPending]);
 
     const [areas, setAreas] = useState<INovaPostDataObj[]>([]);
     const [cities, setCities] = useState<INovaPostDataObj[]>([]);
@@ -185,18 +192,19 @@ function Checkout() {
         }
     };
 
-    if (isPending) return <p>Завантаження ...</p>;
+    if (isUserPending || isUserCartPending) return <CheckoutSkeleton />;
+
+    if (isUserCartError)
+        return (
+            <ErrorWithMessage message="Помилка під час завантаження кошика, спробуйте пізніше" />
+        );
 
     return (
-        <div className="flex flex-col gap-[50px] mt-[30px] text-white">
-            <div className="text-white relative px-[70px]">
-                <div className="text-8xl font-extrabold">
-                    Оформлення замовлення
-                </div>
-                <div className="absolute top-[40px] left-[70px] text-8xl font-qwitcher-grypen text-white/40">
-                    Placing an order
-                </div>
-            </div>
+        <div className="flex flex-col gap-[50px] text-white">
+            <ShopTitle
+                title={"Оформлення замовлення"}
+                subtitle={"Placing an order"}
+            />
             <form onSubmit={handleSubmit(onSubmit)}>
                 <div className="flex justify-between px-[30px] gap-[15px]">
                     <div className="flex flex-col gap-[15px] w-1/2 rounded-xl bg-white/5 backdrop-blur-[100px] border border-white/5 p-[30px] h-fit">

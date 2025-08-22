@@ -59,7 +59,10 @@ function AdminNavigation({ children }: { children: React.ReactNode }) {
                             )
                         }
                     >
-                        <AdminNavigationLink href={"/"} navOpen={navOpen}>
+                        <AdminNavigationLink
+                            href={"/account"}
+                            navOpen={navOpen}
+                        >
                             <LogoutIcon className="w-[25px] h-[25px] min-w-[25px] min-h-[25px] fill-white group-hover:fill-black" />
                             <NavigationHideTextWrapper navOpen={navOpen}>
                                 Вийти з панелі

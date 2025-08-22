@@ -5,6 +5,7 @@ import { IOrderItem } from "@/features/orders/types/orders.types";
 import { AddReviewModal } from "@/features/reviews/modals";
 import { BackIcon } from "@/shared/icons";
 import { MonoButton } from "@/shared/ui/buttons";
+import { ErrorWithMessage } from "@/shared/ui/components";
 import UserOrdersSkeleton from "@/shared/ui/skeletons/UserOrdersSkeleton";
 import { formatDate } from "@/shared/utils/formatDate";
 import { useRouter } from "next/navigation";
@@ -332,10 +333,10 @@ const Orders = () => {
             ) : isUserOrdersPending ? (
                 <UserOrdersSkeleton />
             ) : isUserOrdersError ? (
-                <div className="text-center font-semibold text-white p-[20px] border border-red-500 rounded-xl bg-red-500/20">
-                    Виникла помилка під час завантаження замовлень... Оновіть
-                    сторінку, або спробуйте пізніше
-                </div>
+                <ErrorWithMessage
+                    message="Виникла помилка під час завантаження замовлень... Оновіть
+                    сторінку, або спробуйте пізніше"
+                />
             ) : (
                 <div className="text-center text-white/60 p-[20px]">
                     Замовлення відсутні

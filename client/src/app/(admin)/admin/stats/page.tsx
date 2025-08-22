@@ -26,13 +26,11 @@ export default function AnalyticsPage() {
         data: orders,
         isPending: isOrdersPending,
         isError: isOrdersError,
-        error: ordersError,
     } = useOrders();
     const {
         data: users,
         isPending: isUsersPending,
         isError: isUsersError,
-        error: usersError,
     } = useAllUsers();
 
     if (isOrdersPending || isUsersPending) {
@@ -61,23 +59,13 @@ export default function AnalyticsPage() {
 
     if (isOrdersError) {
         return (
-            <ErrorWithMessage
-                message={
-                    (ordersError as any)?.message ||
-                    "Не вдалося отримати список замовлень"
-                }
-            />
+            <ErrorWithMessage message="Не вдалося отримати список замовлень" />
         );
     }
 
     if (isUsersError) {
         return (
-            <ErrorWithMessage
-                message={
-                    (usersError as any)?.message ||
-                    "Не вдалося отримати список користувачів"
-                }
-            />
+            <ErrorWithMessage message="Не вдалося отримати список користувачів" />
         );
     }
 

@@ -11,11 +11,7 @@ import { useEffect } from "react";
 
 const Login = () => {
     const router = useRouter();
-    const {
-        data: currentUser,
-        isPending: isUserLoading,
-        // isError: isUserError,
-    } = useCurrentUser();
+    const { data: currentUser, isPending: isUserLoading } = useCurrentUser();
 
     useEffect(() => {
         if (!isUserLoading && currentUser) {

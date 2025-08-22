@@ -25,3 +25,5 @@ export { default as ButtonSkeleton } from "./ButtonSkeleton";
 export { default as AdminProductsSkeleton } from "./AdminProductsSkeleton";
 export { default as ColorsSkeleton } from "./ColorsSkeleton";
 export { default as SizesAndTypesSkeleton } from "./SizesAndTypesSkeleton";
+export { default as CheckoutSkeleton } from "./CheckoutSkeleton";
+export { default as FooterNavListSkeleton } from "./FooterNavListSkeleton";

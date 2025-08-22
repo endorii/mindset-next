@@ -15,6 +15,7 @@ import {
 } from "@/features/shop/favorites/utils/favorites.utils";
 import { useCurrentUser } from "@/features/shop/user-info/hooks/useUsers";
 import { PopularProducts } from "@/shared/components";
+import { ErrorWithMessage } from "@/shared/ui/components";
 import UserFavoritesSkeleton from "@/shared/ui/skeletons/UserFavoritesSkeleton";
 import ShopTitle from "@/shared/ui/titles/ShopTitle";
 import Image from "next/image";
@@ -90,10 +91,10 @@ export const Favorites = () => {
             ) : isUserFavoritesPending ? (
                 <UserFavoritesSkeleton />
             ) : isUserFavoritesError ? (
-                <div>
-                    Виникла помилка під час завантаження... Оновіть сторінку,
-                    або спробуйте пізніше
-                </div>
+                <ErrorWithMessage
+                    message="Виникла помилка під час завантаження... Оновіть сторінку,
+                    або спробуйте пізніше"
+                />
             ) : (
                 <div className="flex flex-col justify-center text-center items-center p-[30px] sm:p-[10px] sm:pb-[150px]">
                     <Image

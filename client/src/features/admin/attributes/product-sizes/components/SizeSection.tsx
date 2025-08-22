@@ -13,6 +13,7 @@ import {
     SizesAndTypesSkeleton,
     TitleWithButtonSkeleton,
 } from "@/shared/ui/skeletons";
+import { ErrorWithMessage } from "@/shared/ui/components";
 
 export const SizeSection = () => {
     const [modalType, setModalType] = useState<
@@ -20,7 +21,11 @@ export const SizeSection = () => {
     >(null);
     const [selected, setSelected] = useState<ISize | null>(null);
 
-    const { data: sizes, isPending: isSizesPending } = useSizes();
+    const {
+        data: sizes,
+        isPending: isSizesPending,
+        isError: isSizesError,
+    } = useSizes();
 
     if (isSizesPending) {
         return (
@@ -28,6 +33,12 @@ export const SizeSection = () => {
                 <TitleWithButtonSkeleton />
                 <SizesAndTypesSkeleton />
             </div>
+        );
+    }
+
+    if (isSizesError) {
+        return (
+            <ErrorWithMessage message="Виникла помилка під час завантаження розмірів, спробуйте пізніше" />
         );
     }
 

@@ -38,7 +38,6 @@ function Orders() {
         data: orders,
         isPending: isOrdersPending,
         isError: isOrdersError,
-        error: ordersError,
     } = useOrders();
 
     if (isOrdersPending) {

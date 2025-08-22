@@ -15,18 +15,14 @@ import {
 import { ILocalFavoriteItem } from "@/features/shop/favorites/types/favorites.types";
 import { useCurrentUser } from "@/features/shop/user-info/hooks/useUsers";
 import { PopularProducts } from "@/shared/components";
+import { ErrorWithMessage } from "@/shared/ui/components";
 import UserCartSkeleton from "@/shared/ui/skeletons/UserCartSkeleton";
 import ShopTitle from "@/shared/ui/titles/ShopTitle";
-import { div } from "motion/react-client";
 import Image from "next/image";
 import { useState, useEffect } from "react";
 
 function Cart() {
-    const {
-        data: user,
-        isPending: isUserPending,
-        isError: isUserError,
-    } = useCurrentUser();
+    const { data: user, isPending: isUserPending } = useCurrentUser();
     const {
         data: userCart,
         isPending: isUserCartPending,
@@ -216,10 +212,10 @@ function Cart() {
                     </div>
                     <CartReceip totalPrice={totalPrice} />
                 </div>
-            ) : isUserCartPending ? (
+            ) : isUserCartPending || isLocalCartLoaded ? (
                 <UserCartSkeleton />
             ) : isUserCartError ? (
-                <div></div>
+                <ErrorWithMessage message="Виникла помилка під час завантаження кошику" />
             ) : (
                 <div className="flex flex-col justify-center text-center items-center p-[30px] sm:p-[10px] sm:pb-[150px]">
                     <Image
