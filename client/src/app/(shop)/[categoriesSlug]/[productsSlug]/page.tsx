@@ -3,6 +3,7 @@
 import { useGetCategoryByPath } from "@/features/categories/hooks/useCategories";
 import { useProductsByCategoryId } from "@/features/products/hooks/useProducts";
 import { EmptyCategories } from "@/shared/components";
+import { ErrorWithMessage } from "@/shared/ui/components";
 import ProductsListSkeleton from "@/shared/ui/skeletons/ProductsListSkeleton";
 import ShopTitle from "@/shared/ui/titles/ShopTitle";
 import Image from "next/image";
@@ -15,14 +16,49 @@ export default function CategoryPage() {
     const collectionPath = pathname.split("/")[1];
     const categoryPath = pathname.split("/")[2];
 
-    const { data: category, isPending: isCategoryPending } =
-        useGetCategoryByPath(collectionPath, categoryPath);
+    const {
+        data: category,
+        isPending: isCategoryPending,
+        isError: isCategoryError,
+    } = useGetCategoryByPath(collectionPath, categoryPath);
 
     const {
         data: products,
         isPending: isProductsPending,
         isError: isProductsError,
     } = useProductsByCategoryId(category?.id);
+
+    if (isCategoryPending) {
+        return <ProductsListSkeleton />;
+    }
+
+    if (isCategoryError) {
+        return (
+            <div className="flex flex-col gap-[50px]">
+                <ShopTitle
+                    title={`Товари ${collectionPath} / ${categoryPath}`}
+                    subtitle={`Products ${collectionPath} / ${categoryPath}`}
+                />
+                <ErrorWithMessage message="Категорія не існує або її не вдалося отримати" />
+            </div>
+        );
+    }
+
+    if (isProductsPending) {
+        return <ProductsListSkeleton />;
+    }
+
+    if (isProductsError) {
+        return (
+            <div className="flex flex-col gap-[50px]">
+                <ShopTitle
+                    title={`Товари ${collectionPath} / ${categoryPath}`}
+                    subtitle={`Products ${collectionPath} / ${categoryPath}`}
+                />
+                <ErrorWithMessage message="Не вдалося отримати список товарів" />
+            </div>
+        );
+    }
 
     return (
         <div className="flex flex-col gap-[50px]">
@@ -123,10 +159,6 @@ export default function CategoryPage() {
                         </li>
                     ))}
                 </ul>
-            ) : isProductsPending ? (
-                <ProductsListSkeleton />
-            ) : isProductsError ? (
-                <div></div>
             ) : (
                 <EmptyCategories
                     title={"Наш віртуальний склад щойно отримав оновлення..."}

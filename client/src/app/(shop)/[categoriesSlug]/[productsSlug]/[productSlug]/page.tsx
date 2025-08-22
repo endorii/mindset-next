@@ -21,9 +21,9 @@ import {
 } from "@/shared/components";
 import { HeartIcon } from "@/shared/icons";
 import { MonoButton } from "@/shared/ui/buttons";
-import { Breadcrumbs, Label } from "@/shared/ui/components";
+import { Breadcrumbs, ErrorWithMessage, Label } from "@/shared/ui/components";
 import addToRecentlyViewed from "@/shared/utils/addToRecentlyViewed";
-import { notFound, usePathname } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { useState, useEffect } from "react";
 import { toast } from "sonner";
 import ProductPageSkeleton from "@/shared/ui/skeletons/ProductPageSkeleton";
@@ -43,6 +43,7 @@ export default function ProductPage() {
         data: product,
         isPending: isProductPending,
         isError: isProductError,
+        error: productError,
     } = useGetProductByPath(collectionPath, categoryPath, productPath);
 
     const [chosenSize, setChosenSize] = useState("");
@@ -129,9 +130,15 @@ export default function ProductPage() {
         }
     };
 
-    if (isProductPending) return <ProductPageSkeleton />;
-    if (isProductError) return <div>Виникла помилка при завантаженні</div>;
-    if (!product) return notFound();
+    if (isProductPending || isUserPending) {
+        return <ProductPageSkeleton />;
+    }
+
+    if (!user) return;
+
+    if (isProductError) {
+        return <ErrorWithMessage message={productError.message} />;
+    }
 
     return (
         <div className="flex flex-col px-[30px] sm:p-[10px] py-[10px] gap-x-[30px] gap-y-[20px]">
@@ -172,7 +179,11 @@ export default function ProductPage() {
 
                 <div className="flex flex-col gap-[15px] w-[45%] lg:w-full">
                     <div className="flex flex-col gap-[15px] rounded-xl bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 px-[40px] xl:p-[15px] py-[20px]">
-                        <Breadcrumbs product={product} />
+                        <Breadcrumbs
+                            collectionPath={collectionPath}
+                            categoryPath={categoryPath}
+                            productPath={productPath}
+                        />
 
                         <h3 className="text-5xl 2xl:text-4xl font-bold">
                             {product.name}

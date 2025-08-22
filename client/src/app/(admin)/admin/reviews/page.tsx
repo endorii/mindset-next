@@ -16,6 +16,7 @@ import {
     ApproveButtonWithIcon,
     DeleteButtonWithIcon,
 } from "@/shared/ui/buttons";
+import { ErrorWithMessage } from "@/shared/ui/components";
 import {
     AdminProductsSkeleton,
     FilterSectionSkeleton,
@@ -30,7 +31,12 @@ function Reviews() {
     const [activeModal, setActiveModal] = useState<ReviewModalType>(null);
     const [selectedReview, setSelectedReview] = useState<IReview | null>(null);
 
-    const { data: reviews, isPending: isReviewsPending } = useReviews();
+    const {
+        data: reviews,
+        isPending: isReviewsPending,
+        isError: isReviewsError,
+        error: reviewsError,
+    } = useReviews();
 
     if (isReviewsPending) {
         return (
@@ -39,6 +45,15 @@ function Reviews() {
                 <FilterSectionSkeleton />
                 <AdminProductsSkeleton />
             </div>
+        );
+    }
+
+    if (isReviewsError) {
+        return (
+            <>
+                <Title title="Список відгуків до товарів" />
+                <ErrorWithMessage message="Невідома помилка отримання відгуків до товарів" />
+            </>
         );
     }
 

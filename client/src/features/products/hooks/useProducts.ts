@@ -21,7 +21,7 @@ export function usePopularProducts() {
 export function useProductsByCategoryId(categoryId: string | undefined) {
     return useQuery({
         queryKey: ["products", categoryId],
-        queryFn: () => fetchProductsByCategoryId(categoryId!),
+        queryFn: () => fetchProductsByCategoryId(categoryId || ""),
         enabled: !!categoryId,
     });
 }
@@ -34,6 +34,7 @@ export function useGetProductByPath(
     return useQuery({
         queryKey: ["product", productPath],
         queryFn: () => fetchGetProductByPath(collectionPath, categoryPath, productPath),
+        enabled: !!collectionPath || !!categoryPath || !!productPath,
     });
 }
 

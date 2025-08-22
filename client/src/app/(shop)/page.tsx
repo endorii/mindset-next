@@ -6,13 +6,29 @@ import {
     EmptyCategories,
     Welcome,
 } from "@/shared/components";
+import { ErrorWithMessage } from "@/shared/ui/components";
 import CollectionsAndCategoriesListSkeleton from "@/shared/ui/skeletons/CollectionsAndCategoriesListSkeleton";
 
 import ShopTitle from "@/shared/ui/titles/ShopTitle";
 
 export default function HomePage() {
-    const { data: collections, isPending: isCollectionsPending } =
-        useGetCollections();
+    const {
+        data: collections,
+        isPending: isCollectionsPending,
+        isError: isCollectionsError,
+    } = useGetCollections();
+
+    if (isCollectionsError) {
+        return (
+            <div>
+                <Welcome />
+                <div className="flex flex-col gap-[50px]">
+                    <ShopTitle title="Колекції" subtitle="Collections" />
+                    <ErrorWithMessage message="Невідома помилка отримання колекцій" />
+                </div>
+            </div>
+        );
+    }
 
     return (
         <div>

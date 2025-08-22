@@ -1,29 +1,50 @@
-import { IProduct } from "@/features/products/types/products.types";
 import Link from "next/link";
 
-export default function Breadcrumbs({ product }: { product: IProduct }) {
+export default function Breadcrumbs({
+    collectionPath,
+    categoryPath,
+    productPath,
+    className,
+}: {
+    collectionPath: string;
+    categoryPath?: string;
+    productPath?: string;
+    className?: string;
+}) {
     return (
-        <div className="flex gap-[7px] text-white/50 font-light text-sm">
+        <div
+            className={`flex gap-[7px] text-white/50 font-light text-sm ${className}`}
+        >
             <Link
-                href={`/${product.category?.collection?.path}`}
+                href={`/${collectionPath}`}
                 className="hover:underline hover:text-white"
             >
-                {product.category?.collection?.path}
+                {collectionPath}
             </Link>
-            /
-            <Link
-                href={`/${product.category?.collection?.path}/${product.category?.path}`}
-                className="hover:underline hover:text-white"
-            >
-                {product.category?.path}
-            </Link>
-            /
-            <Link
-                href={`/${product.category?.collection?.path}/${product.category?.path}/${product.path}`}
-                className="hover:underline hover:text-white"
-            >
-                {product.path}
-            </Link>
+
+            {categoryPath && (
+                <>
+                    <span>/</span>
+                    <Link
+                        href={`/${collectionPath}/${categoryPath}`}
+                        className="hover:underline hover:text-white"
+                    >
+                        {categoryPath}
+                    </Link>
+                </>
+            )}
+
+            {productPath && categoryPath && (
+                <>
+                    <span>/</span>
+                    <Link
+                        href={`/${collectionPath}/${categoryPath}/${productPath}`}
+                        className="hover:underline hover:text-white"
+                    >
+                        {productPath}
+                    </Link>
+                </>
+            )}
         </div>
     );
 }

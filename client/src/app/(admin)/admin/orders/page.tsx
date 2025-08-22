@@ -12,6 +12,7 @@ import { IOrder } from "@/features/orders/types/orders.types";
 import { InfoIcon, EditIcon, TrashIcon } from "@/shared/icons";
 import { OrderModalType } from "@/shared/types/types";
 import { ButtonWithIcon, DeleteButtonWithIcon } from "@/shared/ui/buttons";
+import { ErrorWithMessage } from "@/shared/ui/components";
 import {
     AdminProductsSkeleton,
     FilterSectionSkeleton,
@@ -33,7 +34,12 @@ function Orders() {
     const [activeModal, setActiveModal] = useState<OrderModalType>(null);
     const [selectedOrder, setSelectedOrder] = useState<IOrder | null>(null);
 
-    const { data: orders, isPending: isOrdersPending } = useOrders();
+    const {
+        data: orders,
+        isPending: isOrdersPending,
+        isError: isOrdersError,
+        error: ordersError,
+    } = useOrders();
 
     if (isOrdersPending) {
         return (
@@ -43,6 +49,15 @@ function Orders() {
                 <FilterSectionSkeleton />
                 <AdminProductsSkeleton />
             </div>
+        );
+    }
+
+    if (isOrdersError) {
+        return (
+            <>
+                <Title title="Список замовлень" />
+                <ErrorWithMessage message="Невідома помилка отримання замовлень" />
+            </>
         );
     }
 

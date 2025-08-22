@@ -35,7 +35,7 @@ export class ShopCollectionsService {
             });
 
             if (!collection) {
-                throw new NotFoundException("Колекція не знайдена");
+                throw new NotFoundException("Колекція з таким шляхом не знайдена");
             }
             return collection;
         } catch (error) {

@@ -18,8 +18,28 @@ const PIE_COLORS = [
     "#4B7850",
 ];
 
-function OrdersByCategoriesChart({ orders }: { orders: IOrder[] }) {
-    if (!orders) return;
+function OrdersByCategoriesChart({
+    orders,
+    isOrdersError,
+}: {
+    orders: IOrder[] | undefined;
+    isOrdersError: boolean;
+}) {
+    if (isOrdersError) {
+        return (
+            <div className="rounded-xl bg-red-500/10 border border-red-500/30 p-[20px] text-red-400">
+                Виникла помилка при завантаженні замовлень для діаграми
+            </div>
+        );
+    }
+
+    if (!orders || (orders.length === 0 && !isOrdersError)) {
+        return (
+            <div className="rounded-xl bg-white/5 p-[20px] w-full text-white/60 border border-white/5">
+                Замовлення для діаграми відсутні
+            </div>
+        );
+    }
 
     const categorySalesData = useMemo(() => {
         const categoryMap: Record<string, number> = {};

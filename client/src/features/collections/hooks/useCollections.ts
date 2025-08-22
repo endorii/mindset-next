@@ -6,8 +6,6 @@ import {
     fetchCollections,
     fetchGetCollectionByPath,
 } from "../api/collections.api";
-
-import { ICollection } from "../types/collections.types";
 import { TStatus } from "@/shared/types/types";
 import { toast } from "sonner";
 
@@ -18,10 +16,11 @@ export function useGetCollections() {
     });
 }
 
-export function useGetCollectionByPath(collectionPath: ICollection["path"]) {
+export function useGetCollectionByPath(collectionPath: string) {
     return useQuery({
         queryKey: ["collection", collectionPath],
         queryFn: () => fetchGetCollectionByPath(collectionPath),
+        enabled: !!collectionPath,
     });
 }
 

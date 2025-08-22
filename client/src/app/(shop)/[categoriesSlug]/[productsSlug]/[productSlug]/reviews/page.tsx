@@ -8,7 +8,7 @@ import {
 import { useReviewByProductId } from "@/features/reviews/hooks/useReviews";
 import { BackIcon } from "@/shared/icons";
 import { MonoButton } from "@/shared/ui/buttons";
-import { Breadcrumbs } from "@/shared/ui/components";
+import { Breadcrumbs, ErrorWithMessage } from "@/shared/ui/components";
 import ReviewPageSkeleton from "@/shared/ui/skeletons/ReviewPageSkeleton";
 import Link from "next/link";
 import { notFound, usePathname, useRouter } from "next/navigation";
@@ -30,17 +30,30 @@ function Reviews() {
         data: reviews,
         isPending: isReviewsPending,
         isError: isReviewsError,
+        error,
     } = useReviewByProductId(product?.id);
 
-    if (isProductPending || isReviewsPending) return <ReviewPageSkeleton />;
-    if (isProductError || isReviewsError)
-        return <div>Виникла помилка при завантаженні відгуків</div>;
+    if (isProductPending || isReviewsPending) {
+        return <ReviewPageSkeleton />;
+    }
 
-    if (!product && !isProductPending) return notFound();
+    if (!product || isProductError) {
+        return (
+            <ErrorWithMessage message="Виникла помилка або товар не знайдено" />
+        );
+    }
+
+    if (!reviews || isReviewsError) {
+        return <ErrorWithMessage message={error.message} />;
+    }
 
     return (
         <div className="flex flex-col gap-[15px] px-[30px] py-[10px] sm:p-[10px] text-white/70 text-sm">
-            <Breadcrumbs product={product} />
+            <Breadcrumbs
+                collectionPath={collectionPath}
+                categoryPath={categoryPath}
+                productPath={productPath}
+            />
 
             <div>
                 <MonoButton onClick={() => router.back()}>

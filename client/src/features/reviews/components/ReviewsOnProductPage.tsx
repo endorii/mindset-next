@@ -5,49 +5,63 @@ import AvgRatingStat from "./AvgRatingStat";
 import ProductReviewsList from "./ProductReviewsList";
 import ReviewsValueSkeleton from "@/shared/ui/skeletons/ReviewsValueSkeleton";
 import ProductReviewsSkeleton from "@/shared/ui/skeletons/ProductReviewsSkeleton";
+import { ErrorWithMessage } from "@/shared/ui/components";
 
 interface ReviewsOnProductPageProps {
     product: IProduct;
 }
 
-function ReviewsOnProductPage({ product }: ReviewsOnProductPageProps) {
-    const { data: reviews, isPending: isReviewsPending } = useReviewByProductId(
-        product.id
-    );
+export default function ReviewsOnProductPage({
+    product,
+}: ReviewsOnProductPageProps) {
+    const {
+        data: reviews,
+        isPending: isReviewsPending,
+        isError: isReviewsError,
+        error: reviewsError,
+    } = useReviewByProductId(product.id);
+
+    if (isReviewsPending) {
+        return (
+            <div className="text-white rounded-xl bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px]">
+                <ReviewsValueSkeleton />
+                <ProductReviewsSkeleton />
+            </div>
+        );
+    }
+
+    if (isReviewsError) {
+        if ((reviewsError as any)?.statusCode === 404) {
+            return <div className="text-white">Відгуки відсутні</div>;
+        } else {
+            return <ErrorWithMessage message={reviewsError.message} />;
+        }
+    }
+
+    const hasReviews = reviews && reviews.length > 0;
 
     return (
         <div className="text-white rounded-xl bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px]">
             <div className="flex items-center gap-[7px] text-2xl md:text-xl font-bold">
-                {reviews && reviews.length > 0 ? (
-                    <div>Відгуки про товар ({reviews?.length})</div>
-                ) : isReviewsPending ? (
-                    <ReviewsValueSkeleton />
+                {hasReviews ? (
+                    <div>Відгуки про товар ({reviews.length})</div>
                 ) : (
-                    <div>відсутні</div>
+                    <div>Відгуки відсутні</div>
                 )}
             </div>
-            {reviews && reviews.length > 0 ? (
+
+            {hasReviews && (
                 <div className="flex sm:flex-col gap-[15px] mt-[15px]">
                     <AvgRatingStat reviews={reviews} />
 
-                    <div
-                        className={`flex flex-col gap-[10px] ${
-                            reviews.length > 0 ? "w-2/3 sm:w-full" : "w-full"
-                        } `}
-                    >
+                    <div className="flex flex-col gap-[10px] w-2/3 sm:w-full">
                         <ProductReviewsList reviews={reviews} />
-                        {reviews.length > 0 ? (
-                            <MonoLink href={`${product.path}/reviews`}>
-                                Читати всі відгуки
-                            </MonoLink>
-                        ) : null}
+                        <MonoLink href={`${product.path}/reviews`}>
+                            Читати всі відгуки
+                        </MonoLink>
                     </div>
                 </div>
-            ) : isReviewsPending ? (
-                <ProductReviewsSkeleton />
-            ) : null}
+            )}
         </div>
     );
 }
-
-export default ReviewsOnProductPage;

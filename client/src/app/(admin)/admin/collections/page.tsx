@@ -24,6 +24,7 @@ import {
     ButtonWithIcon,
     DeleteButtonWithIcon,
 } from "@/shared/ui/buttons";
+import { ErrorWithMessage } from "@/shared/ui/components";
 import {
     AdminProductsSkeleton,
     FilterSectionSkeleton,
@@ -46,8 +47,12 @@ function AdminCollections() {
     const [selectedCollection, setSelectedCollection] =
         useState<ICollection | null>(null);
 
-    const { data: collections, isPending: isCollectionsPending } =
-        useGetCollections();
+    const {
+        data: collections,
+        isPending: isCollectionsPending,
+        isError: isCollectionsError,
+        error: collectionError,
+    } = useGetCollections();
 
     if (isCollectionsPending) {
         return (
@@ -57,6 +62,10 @@ function AdminCollections() {
                 <AdminProductsSkeleton />
             </div>
         );
+    }
+
+    if (isCollectionsError) {
+        return <ErrorWithMessage message={collectionError.message} />;
     }
 
     const openModal = (
@@ -108,42 +117,92 @@ function AdminCollections() {
                     </div>
 
                     <div className="border border-white/10 rounded-xl">
-                        {collections?.map((collection) => (
-                            <div
-                                key={collection.id}
-                                className="flex flex-col gap-[25px] p-[20px] border-b border-white/10 last:border-b-0 text-sm"
-                            >
+                        {collections &&
+                            collections.map((collection) => (
                                 <div
-                                    className="grid 
+                                    key={collection.id}
+                                    className="flex flex-col gap-[25px] p-[20px] border-b border-white/10 last:border-b-0 text-sm"
+                                >
+                                    <div
+                                        className="grid 
                                 grid-cols-[120px_0.5fr_0.5fr_0.5fr_0.5fr_1fr] 
                                 xl:grid-cols-[120px_0.5fr_0.5fr_0.5fr_1fr] 
                                 lg:grid-cols-4 
                                 sm:grid-cols-3
                                 xs:grid-cols-2
                                 gap-[15px] items-center"
-                                >
-                                    <img
-                                        src={`http://localhost:5000/${collection.banner}`}
-                                        className="max-h-[120px] w-full object-cover rounded"
-                                        alt="banner"
-                                    />
-                                    <div>{collection.name}</div>
-                                    <div className="sm:hidden">
-                                        {collection.status}
-                                    </div>
-                                    <div className="xl:hidden">
-                                        {formatDate(collection.createdAt || "")}{" "}
-                                        /{" "}
-                                        {formatDate(collection.updatedAt || "")}
-                                    </div>
-                                    <Link
-                                        href={`/${collection.path}`}
-                                        className="text-blue-500 hover:text-white hover:underline xs:hidden text-center"
                                     >
-                                        Колекція
-                                    </Link>
-                                    <div className="flex gap-[10px] justify-end lg:hidden">
+                                        <img
+                                            src={`http://localhost:5000/${collection.banner}`}
+                                            className="max-h-[120px] w-full object-cover rounded"
+                                            alt="banner"
+                                        />
+                                        <div>{collection.name}</div>
+                                        <div className="sm:hidden">
+                                            {collection.status}
+                                        </div>
+                                        <div className="xl:hidden">
+                                            {formatDate(
+                                                collection.createdAt || ""
+                                            )}{" "}
+                                            /{" "}
+                                            {formatDate(
+                                                collection.updatedAt || ""
+                                            )}
+                                        </div>
+                                        <Link
+                                            href={`/${collection.path}`}
+                                            className="text-blue-500 hover:text-white hover:underline xs:hidden text-center"
+                                        >
+                                            Колекція
+                                        </Link>
+                                        <div className="flex gap-[10px] justify-end lg:hidden">
+                                            <LinkWithIcon
+                                                href={`collections/${collection.path}`}
+                                                counter={
+                                                    collection.categories
+                                                        ?.length || 0
+                                                }
+                                            >
+                                                <CategoriesIcon className="w-[30px] lg:w-[25px] md:w-[20px] xs:w-[18px] fill-white group-hover:fill-black" />
+                                            </LinkWithIcon>
+                                            <ButtonWithIcon
+                                                onClick={() =>
+                                                    openModal(
+                                                        "info",
+                                                        collection
+                                                    )
+                                                }
+                                            >
+                                                <InfoIcon className="w-[30px] lg:w-[25px] md:w-[20px] xs:w-[18px] fill-none stroke-white stroke-2  group-hover:stroke-black" />
+                                            </ButtonWithIcon>
+                                            <ButtonWithIcon
+                                                onClick={() =>
+                                                    openModal(
+                                                        "edit",
+                                                        collection
+                                                    )
+                                                }
+                                            >
+                                                <EditIcon className="w-[26px] lg:w-[25px] md:w-[20px] xs:w-[18px] stroke-white stroke-2 group-hover:stroke-black fill-none" />
+                                            </ButtonWithIcon>
+                                            <DeleteButtonWithIcon
+                                                onClick={() =>
+                                                    openModal(
+                                                        "delete",
+                                                        collection
+                                                    )
+                                                }
+                                            >
+                                                <TrashIcon className="w-[30px] lg:w-[25px] md:w-[20px] xs:w-[18px] stroke-white stroke-[1.7]  fill-none" />
+                                            </DeleteButtonWithIcon>
+                                        </div>
+                                    </div>
+                                    <div className="gap-[10px] hidden lg:flex w-full">
                                         <LinkWithIcon
+                                            className={
+                                                "w-full flex justify-center"
+                                            }
                                             href={`collections/${collection.path}`}
                                             counter={
                                                 collection.categories?.length ||
@@ -153,6 +212,7 @@ function AdminCollections() {
                                             <CategoriesIcon className="w-[30px] lg:w-[25px] md:w-[20px] xs:w-[18px] fill-white group-hover:fill-black" />
                                         </LinkWithIcon>
                                         <ButtonWithIcon
+                                            className={"w-full"}
                                             onClick={() =>
                                                 openModal("info", collection)
                                             }
@@ -160,6 +220,7 @@ function AdminCollections() {
                                             <InfoIcon className="w-[30px] lg:w-[25px] md:w-[20px] xs:w-[18px] fill-none stroke-white stroke-2  group-hover:stroke-black" />
                                         </ButtonWithIcon>
                                         <ButtonWithIcon
+                                            className={"w-full"}
                                             onClick={() =>
                                                 openModal("edit", collection)
                                             }
@@ -167,6 +228,9 @@ function AdminCollections() {
                                             <EditIcon className="w-[26px] lg:w-[25px] md:w-[20px] xs:w-[18px] stroke-white stroke-2 group-hover:stroke-black fill-none" />
                                         </ButtonWithIcon>
                                         <DeleteButtonWithIcon
+                                            className={
+                                                "w-full flex justify-center"
+                                            }
                                             onClick={() =>
                                                 openModal("delete", collection)
                                             }
@@ -175,43 +239,7 @@ function AdminCollections() {
                                         </DeleteButtonWithIcon>
                                     </div>
                                 </div>
-                                <div className="gap-[10px] hidden lg:flex w-full">
-                                    <LinkWithIcon
-                                        className={"w-full flex justify-center"}
-                                        href={`collections/${collection.path}`}
-                                        counter={
-                                            collection.categories?.length || 0
-                                        }
-                                    >
-                                        <CategoriesIcon className="w-[30px] lg:w-[25px] md:w-[20px] xs:w-[18px] fill-white group-hover:fill-black" />
-                                    </LinkWithIcon>
-                                    <ButtonWithIcon
-                                        className={"w-full"}
-                                        onClick={() =>
-                                            openModal("info", collection)
-                                        }
-                                    >
-                                        <InfoIcon className="w-[30px] lg:w-[25px] md:w-[20px] xs:w-[18px] fill-none stroke-white stroke-2  group-hover:stroke-black" />
-                                    </ButtonWithIcon>
-                                    <ButtonWithIcon
-                                        className={"w-full"}
-                                        onClick={() =>
-                                            openModal("edit", collection)
-                                        }
-                                    >
-                                        <EditIcon className="w-[26px] lg:w-[25px] md:w-[20px] xs:w-[18px] stroke-white stroke-2 group-hover:stroke-black fill-none" />
-                                    </ButtonWithIcon>
-                                    <DeleteButtonWithIcon
-                                        className={"w-full flex justify-center"}
-                                        onClick={() =>
-                                            openModal("delete", collection)
-                                        }
-                                    >
-                                        <TrashIcon className="w-[30px] lg:w-[25px] md:w-[20px] xs:w-[18px] stroke-white stroke-[1.7]  fill-none" />
-                                    </DeleteButtonWithIcon>
-                                </div>
-                            </div>
-                        ))}
+                            ))}
                     </div>
                 </div>
             ) : (

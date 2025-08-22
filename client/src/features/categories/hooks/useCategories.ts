@@ -12,15 +12,16 @@ import { toast } from "sonner";
 
 export function useGetCategoryByPath(collectionPath: string, categoryPath: string) {
     return useQuery({
-        queryKey: ["category", categoryPath],
+        queryKey: ["category", collectionPath, categoryPath],
         queryFn: () => fetchCategoryByPath(collectionPath, categoryPath),
+        enabled: !!collectionPath || !!categoryPath,
     });
 }
 
 export function useGetCategoriesByCollectionId(collectionId: string | undefined) {
     return useQuery({
         queryKey: ["categories", collectionId],
-        queryFn: () => fetchGetCategoriesByCollectionId(collectionId!),
+        queryFn: () => fetchGetCategoriesByCollectionId(collectionId || ""),
         enabled: !!collectionId,
     });
 }

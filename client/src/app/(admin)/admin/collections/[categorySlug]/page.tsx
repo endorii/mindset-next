@@ -25,6 +25,7 @@ import {
     ButtonWithIcon,
     DeleteButtonWithIcon,
 } from "@/shared/ui/buttons";
+import { ErrorWithMessage } from "@/shared/ui/components";
 import {
     AdminProductsSkeleton,
     ButtonSkeleton,
@@ -53,19 +54,77 @@ function AdminCategoriesInCollection() {
         null
     );
 
-    const { data: collection, isPending: isCollectionPending } =
-        useGetCollectionByPath(collectionPath);
+    const {
+        data: collection,
+        isPending: isCollectionPending,
+        isError: isCollectionError,
+        error: collectionError,
+    } = useGetCollectionByPath(collectionPath);
 
-    const { data: categories, isPending: isCategoriesPending } =
-        useGetCategoriesByCollectionId(collection?.id);
+    const {
+        data: categories,
+        isPending: isCategoriesPending,
+        isError: isCategoriesError,
+        error: categoriesError,
+    } = useGetCategoriesByCollectionId(collection?.id);
 
-    if (isCollectionPending || isCategoriesPending) {
+    if (isCollectionPending) {
         return (
             <div className="flex flex-col gap-[15px]">
                 <ButtonSkeleton />
                 <TitleWithButtonSkeleton />
                 <FilterSectionSkeleton />
                 <AdminProductsSkeleton />
+            </div>
+        );
+    }
+
+    if (isCollectionError) {
+        return (
+            <div className="flex flex-col gap-[15px]">
+                <div>
+                    <MonoButton
+                        onClick={() => router.push("/admin/collections")}
+                    >
+                        <BackIcon className="w-[23px] stroke-white stroke-[50] group-hover:stroke-black" />
+                        <div>Назад до колекцій</div>
+                    </MonoButton>
+                </div>
+                <ErrorWithMessage message={collectionError.message} />
+            </div>
+        );
+    }
+
+    if (isCategoriesPending) {
+        return (
+            <div className="flex flex-col gap-[15px]">
+                <div>
+                    <MonoButton
+                        onClick={() => router.push("/admin/collections")}
+                    >
+                        <BackIcon className="w-[23px] stroke-white stroke-[50] group-hover:stroke-black" />
+                        <div>Назад до колекцій</div>
+                    </MonoButton>
+                </div>
+                <TitleWithButtonSkeleton />
+                <FilterSectionSkeleton />
+                <AdminProductsSkeleton />
+            </div>
+        );
+    }
+
+    if (isCategoriesError) {
+        return (
+            <div className="flex flex-col gap-[15px]">
+                <div>
+                    <MonoButton
+                        onClick={() => router.push("/admin/collections")}
+                    >
+                        <BackIcon className="w-[23px] stroke-white stroke-[50] group-hover:stroke-black" />
+                        <div>Назад до колекцій</div>
+                    </MonoButton>
+                </div>
+                <ErrorWithMessage message={categoriesError.message} />
             </div>
         );
     }
