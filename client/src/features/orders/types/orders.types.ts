@@ -1,3 +1,4 @@
+import { PaymentMethodType, PaymentStatus } from "@/features/checkout/types/checkout.types";
 import { IProduct } from "@/features/products/types/products.types";
 
 export interface INovaPostDataObj {
@@ -21,6 +22,8 @@ export interface IOrder {
     updatedAt?: string;
     items: IOrderItem[];
     status: OrderStatus;
+    paymentMethod: PaymentMethodType;
+    paymentStatus?: PaymentStatus;
     userId?: string;
 }
 export interface IOrderItem {
