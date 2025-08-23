@@ -63,6 +63,9 @@ model Order {
   status         OrderStatus @default(pending)
   total          Int
 
+  paymentStatus PaymentStatus @default(pending)
+  paymentMethod PaymentMethod
+
   additionalInfo String? @map("additional_info")
 
   createdAt DateTime @default(now()) @map("created_at")
@@ -72,6 +75,19 @@ model Order {
   user   User?   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   items OrderItem[]
+}
+
+enum PaymentMethod {
+  mono
+  liqpay
+}
+
+enum PaymentStatus {
+  pending
+  processing
+  success
+  failure
+  expired
 }
 
 model OrderItem {

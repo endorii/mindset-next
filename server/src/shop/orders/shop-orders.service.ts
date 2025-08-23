@@ -22,6 +22,7 @@ export class ShopOrdersService {
                 postDepartment: createOrderDto.postDepartment,
                 additionalInfo: createOrderDto.additionalInfo,
                 total: createOrderDto.total,
+                paymentMethod: createOrderDto.paymentMethod,
                 status: createOrderDto.status,
                 items: {
                     create: createOrderDto.items.map((item) => ({

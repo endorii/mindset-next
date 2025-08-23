@@ -31,11 +31,7 @@ export default function ReviewsOnProductPage({
     }
 
     if (isReviewsError) {
-        if ((reviewsError as any)?.statusCode === 404) {
-            return <div className="text-white">Відгуки відсутні</div>;
-        } else {
-            return <ErrorWithMessage message={reviewsError.message} />;
-        }
+        return <ErrorWithMessage message={reviewsError.message} />;
     }
 
     const hasReviews = reviews && reviews.length > 0;

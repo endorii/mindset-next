@@ -195,10 +195,6 @@ export class ShopReviewsService {
                 },
             });
 
-            if (!reviews || reviews.length === 0) {
-                throw new NotFoundException("Відгуки відсутні");
-            }
-
             return reviews;
         } catch (error) {
             console.error("Помилка отримання відгуків:", error);

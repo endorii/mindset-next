@@ -13,6 +13,7 @@ import {
     SizesAndTypesSkeleton,
     TitleWithButtonSkeleton,
 } from "@/shared/ui/skeletons";
+import { ErrorWithMessage } from "@/shared/ui/components";
 
 export const TypeSection = () => {
     const [modalType, setModalType] = useState<
@@ -20,7 +21,11 @@ export const TypeSection = () => {
     >(null);
     const [selected, setSelected] = useState<IType | null>(null);
 
-    const { data: types, isPending: isTypesPending } = useTypes();
+    const {
+        data: types,
+        isPending: isTypesPending,
+        isError: isTypesError,
+    } = useTypes();
 
     if (isTypesPending) {
         return (
@@ -28,6 +33,12 @@ export const TypeSection = () => {
                 <TitleWithButtonSkeleton />
                 <SizesAndTypesSkeleton />
             </div>
+        );
+    }
+
+    if (isTypesError) {
+        return (
+            <ErrorWithMessage message="Виникла помилка під час завантаження типів, спробуйте пізніше" />
         );
     }
 

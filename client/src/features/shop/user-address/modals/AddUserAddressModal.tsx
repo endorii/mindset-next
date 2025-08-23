@@ -36,7 +36,7 @@ export default function AddUserAddressModal({
     onClose,
     userId,
 }: AddUserAddressModalProps) {
-    const createUserAddress = useCreateUserAddress();
+    const createUserAddressMutation = useCreateUserAddress();
     const [modalMessage, setModalMessage] = useState("");
 
     const {
@@ -54,7 +54,7 @@ export default function AddUserAddressModal({
 
     const onSubmit = async (data: FormValues) => {
         try {
-            await createUserAddress.mutateAsync({
+            await createUserAddressMutation.mutateAsync({
                 userId,
                 ...data,
             });
@@ -168,7 +168,7 @@ export default function AddUserAddressModal({
                         Скасувати
                     </MonoButton>
                     <MonoButton type="submit">
-                        {createUserAddress.isPending
+                        {createUserAddressMutation.isPending
                             ? "Завантаження..."
                             : "Підтвердити"}
                     </MonoButton>

@@ -1,6 +1,7 @@
 import { useProductsFromSameCollection } from "@/features/products/hooks/useProducts";
 import SliderWrapper from "./layout/SliderWrapper";
 import ProductsSliderSkeleton from "../ui/skeletons/ProductsSliderSkeleton";
+import { ErrorWithMessage } from "../ui/components";
 
 interface ProductsFromSameCategoryProps {
     collectionId: string;
@@ -12,6 +13,7 @@ function ProductsFromSameCollection({
     const {
         data: productsFromSameCollection,
         isPending: isProductsFromSameCollectionPending,
+        isError: isProductsFromSameCollectionError,
     } = useProductsFromSameCollection(collectionId);
 
     return collectionId && productsFromSameCollection ? (
@@ -21,6 +23,8 @@ function ProductsFromSameCollection({
         />
     ) : isProductsFromSameCollectionPending ? (
         <ProductsSliderSkeleton />
+    ) : isProductsFromSameCollectionError ? (
+        <ErrorWithMessage message="Виникла помилка під час завантаження товарів з цієї колекції" />
     ) : (
         <div>Список товарів порожній</div>
     );

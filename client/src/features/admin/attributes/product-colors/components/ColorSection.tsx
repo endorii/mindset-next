@@ -18,6 +18,7 @@ import {
     TitleWithButtonSkeleton,
 } from "@/shared/ui/skeletons";
 import ColorsSkeleton from "@/shared/ui/skeletons/ColorsSkeleton";
+import { ErrorWithMessage } from "@/shared/ui/components";
 
 export const ColorSection = () => {
     const [modalType, setModalType] = useState<
@@ -25,7 +26,11 @@ export const ColorSection = () => {
     >(null);
     const [selected, setSelected] = useState<IColor | null>(null);
 
-    const { data: colors, isPending: isColorsPending } = useColors();
+    const {
+        data: colors,
+        isPending: isColorsPending,
+        isError: isColorError,
+    } = useColors();
 
     if (isColorsPending) {
         return (
@@ -33,6 +38,12 @@ export const ColorSection = () => {
                 <TitleWithButtonSkeleton />
                 <ColorsSkeleton />
             </div>
+        );
+    }
+
+    if (isColorError) {
+        return (
+            <ErrorWithMessage message="Виникла помилка під час завантаження кольорів, спробуйте пізніше" />
         );
     }
 

@@ -8,7 +8,7 @@ import { useLoginUser } from "../hooks/useAuth";
 
 function LoginForm() {
     const [loginMessage, setLoginMessage] = useState<string | null>(null);
-    const loginUser = useLoginUser();
+    const loginUserMutation = useLoginUser();
     const {
         register: loginRegister,
         handleSubmit: handleLoginSubmit,
@@ -17,7 +17,7 @@ function LoginForm() {
 
     const onLoginSubmit = async (data: ILoginCredentials) => {
         try {
-            await loginUser.mutateAsync(data);
+            await loginUserMutation.mutateAsync(data);
         } catch (err: any) {
             setLoginMessage(err?.message || "Помилка входу");
         }
@@ -62,8 +62,11 @@ function LoginForm() {
                     <p className="text-red-500 text-sm">{loginMessage}</p>
                 )}
 
-                <MonoButton type="submit" disabled={loginUser.isPending}>
-                    {loginUser.isPending ? "Завантаження..." : "Увійти"}
+                <MonoButton
+                    type="submit"
+                    disabled={loginUserMutation.isPending}
+                >
+                    {loginUserMutation.isPending ? "Завантаження..." : "Увійти"}
                 </MonoButton>
             </form>
         </LoginComponentsWrapper>

@@ -4,7 +4,6 @@ import { useCartItemsFromUser } from "@/features/shop/cart/hooks/useCart";
 import {
     PreOrderInfo,
     CheckoutResultTable,
-    PayMethod,
 } from "@/features/checkout/components";
 import { useCreateOrder } from "@/features/orders/hooks/useOrders";
 import { INovaPostDataObj, IOrder } from "@/features/orders/types/orders.types";
@@ -18,8 +17,12 @@ import { MonoButton } from "@/shared/ui/buttons";
 import InputField from "@/shared/ui/inputs/InputField";
 import { NovaPoshtaSelect } from "@/shared/ui/selectors/NovaPoshtaSelect";
 import { useState, useEffect } from "react";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import { ICartItem } from "@/features/shop/cart/types/cart.types";
+import { CheckoutSkeleton } from "@/shared/ui/skeletons";
+import ShopTitle from "@/shared/ui/titles/ShopTitle";
+import { ErrorWithMessage } from "@/shared/ui/components";
+import { PaymentMethodType } from "@/features/checkout/types/checkout.types";
 
 interface FormData {
     fullName: string;
@@ -28,17 +31,22 @@ interface FormData {
     area: string;
     city: string;
     postDepartment: string;
+    PaymentMethod: PaymentMethodType;
 }
 
 function Checkout() {
-    const { data: user, isPending } = useCurrentUser();
-    const { data: userCart } = useCartItemsFromUser();
+    const { data: user, isPending: isUserPending } = useCurrentUser();
+    const {
+        data: userCart,
+        isPending: isUserCartPending,
+        isError: isUserCartError,
+    } = useCartItemsFromUser();
 
     const [localCart, setLocalCart] = useState<ICartItem[]>([]);
     const cartToShow = user ? userCart ?? [] : localCart;
 
     useEffect(() => {
-        if (!user && !isPending) {
+        if (!user && !isUserPending) {
             // Завантажуємо локальну корзину з localStorage
             const storedCart = localStorage.getItem("cart");
             const parsedCart: ICartItem[] = storedCart
@@ -46,7 +54,7 @@ function Checkout() {
                 : [];
             setLocalCart(parsedCart);
         }
-    }, [user, isPending]);
+    }, [user, isUserPending]);
 
     const [areas, setAreas] = useState<INovaPostDataObj[]>([]);
     const [cities, setCities] = useState<INovaPostDataObj[]>([]);
@@ -67,6 +75,7 @@ function Checkout() {
         register,
         handleSubmit,
         reset,
+        control,
         formState: { errors },
     } = useForm<FormData>({
         defaultValues: {
@@ -76,6 +85,7 @@ function Checkout() {
             area: "",
             city: "",
             postDepartment: "",
+            PaymentMethod: null,
         },
     });
 
@@ -156,6 +166,7 @@ function Checkout() {
             postDepartment: selectedWarehouse?.Description || "",
             additionalInfo: "",
             status: "pending",
+            paymentMethod: data.PaymentMethod,
             userId,
             total:
                 cartToShow.reduce(
@@ -176,7 +187,7 @@ function Checkout() {
         try {
             await createOrderMutation.mutateAsync(orderData);
 
-            // setTimeout(() => {
+            await // setTimeout(() => {
             //     redirect("/orders");
             // }, 1000);
             reset();
@@ -185,18 +196,19 @@ function Checkout() {
         }
     };
 
-    if (isPending) return <p>Завантаження ...</p>;
+    if (isUserPending || isUserCartPending) return <CheckoutSkeleton />;
+
+    if (isUserCartError)
+        return (
+            <ErrorWithMessage message="Помилка під час завантаження кошика, спробуйте пізніше" />
+        );
 
     return (
-        <div className="flex flex-col gap-[50px] mt-[30px] text-white">
-            <div className="text-white relative px-[70px]">
-                <div className="text-8xl font-extrabold">
-                    Оформлення замовлення
-                </div>
-                <div className="absolute top-[40px] left-[70px] text-8xl font-qwitcher-grypen text-white/40">
-                    Placing an order
-                </div>
-            </div>
+        <div className="flex flex-col gap-[50px] text-white">
+            <ShopTitle
+                title={"Оформлення замовлення"}
+                subtitle={"Placing an order"}
+            />
             <form onSubmit={handleSubmit(onSubmit)}>
                 <div className="flex justify-between px-[30px] gap-[15px]">
                     <div className="flex flex-col gap-[15px] w-1/2 rounded-xl bg-white/5 backdrop-blur-[100px] border border-white/5 p-[30px] h-fit">
@@ -336,7 +348,52 @@ function Checkout() {
 
                     <div className="flex flex-col gap-[15px] w-1/2 rounded-xl bg-white/5 backdrop-blur-[100px] border border-white/5 p-[30px] text-white">
                         <CheckoutResultTable cart={cartToShow} />
-                        <PayMethod />
+                        <div>
+                            <div className="text-sm font-semibold mb-2">
+                                Вибір оплати:
+                            </div>
+                            <Controller
+                                name="PaymentMethod"
+                                control={control}
+                                rules={{ required: "Оберіть метод оплати" }}
+                                render={({ field }) => (
+                                    <div className="flex gap-3">
+                                        <button
+                                            type="button"
+                                            className={`px-6 py-3 rounded-xl transition ${
+                                                field.value === "mono"
+                                                    ? "bg-green-600 text-white"
+                                                    : "bg-green-500/30 text-white hover:bg-green-600"
+                                            }`}
+                                            onClick={() =>
+                                                field.onChange("mono")
+                                            }
+                                        >
+                                            MonoPay
+                                        </button>
+
+                                        <button
+                                            type="button"
+                                            className={`px-6 py-3 rounded-xl transition ${
+                                                field.value === "liqpay"
+                                                    ? "bg-blue-600 text-white"
+                                                    : "bg-blue-500/30 text-white hover:bg-blue-600"
+                                            }`}
+                                            onClick={() =>
+                                                field.onChange("liqpay")
+                                            }
+                                        >
+                                            LiqPay
+                                        </button>
+                                    </div>
+                                )}
+                            />
+                            {errors.PaymentMethod && (
+                                <span className="text-red-500 text-sm mt-1">
+                                    {errors.PaymentMethod.message}
+                                </span>
+                            )}
+                        </div>
                         <MonoButton
                             type="submit"
                             disabled={cartToShow.length === 0}

@@ -19,8 +19,9 @@ import {
 } from "@/features/shop/user-info/modals";
 
 import { AttributeModalType } from "@/shared/types/types";
-import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
+import { toast } from "sonner";
 
 function Account() {
     const {
@@ -29,6 +30,8 @@ function Account() {
         isError: isUserError,
     } = useCurrentUser();
     const [activeModal, setActiveModal] = useState<AttributeModalType>(null);
+
+    const router = useRouter();
 
     const openModal = (type: AttributeModalType) => {
         setActiveModal(type);
@@ -39,14 +42,11 @@ function Account() {
     };
 
     useEffect(() => {
-        if (!isUserPending && !user) {
-            redirect("/auth");
+        if (isUserError) {
+            toast.info("Щоб перейти на сторінку, спочатку авторизуйтеся");
+            router.push("/auth");
         }
-    }, [user, isUserPending]);
-
-    if (isUserError) {
-        redirect("/auth");
-    }
+    }, [isUserError]);
 
     return (
         <div className="flex flex-col gap-[15px]">

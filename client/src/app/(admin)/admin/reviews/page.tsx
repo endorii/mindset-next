@@ -35,7 +35,6 @@ function Reviews() {
         data: reviews,
         isPending: isReviewsPending,
         isError: isReviewsError,
-        error: reviewsError,
     } = useReviews();
 
     if (isReviewsPending) {

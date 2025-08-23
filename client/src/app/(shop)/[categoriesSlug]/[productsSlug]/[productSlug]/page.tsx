@@ -134,8 +134,6 @@ export default function ProductPage() {
         return <ProductPageSkeleton />;
     }
 
-    if (!user) return;
-
     if (isProductError) {
         return <ErrorWithMessage message={productError.message} />;
     }

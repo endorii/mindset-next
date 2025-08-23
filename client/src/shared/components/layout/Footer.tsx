@@ -15,10 +15,16 @@ import { useState, useEffect } from "react";
 import FooterNavList from "../FooterNavList";
 import FooterNavListItem from "../FooterNavListItem";
 import { useGetCollections } from "@/features/collections/hooks/useCollections";
+import { div } from "motion/react-client";
+import { FooterNavListSkeleton } from "@/shared/ui/skeletons";
+import { ErrorWithMessage } from "@/shared/ui/components";
 
 const Footer = () => {
-    const { data: collections, isPending: isCollectionsPending } =
-        useGetCollections();
+    const {
+        data: collections,
+        isPending: isCollectionsPending,
+        isError: isCollectionsError,
+    } = useGetCollections();
 
     const pathname = usePathname();
     const collectionPath = pathname.split("/").filter(Boolean)[0] || null;
@@ -51,7 +57,7 @@ const Footer = () => {
                     </div>
                 </div>
                 <div className="w-full grid grid-cols-4 md:grid-cols-3 sm:grid-cols-2 xxs:grid-cols-1 gap-[150px] 2xl:gap-[100px] xl:gap-[70px] lg:gap-[50px] md:gap-[30px]">
-                    {collections && !isCollectionsPending && (
+                    {collections && collections.length > 0 ? (
                         <FooterNavList title="Колекції">
                             {collections.map((collection) => (
                                 <FooterNavListItem
@@ -62,7 +68,11 @@ const Footer = () => {
                                 </FooterNavListItem>
                             ))}
                         </FooterNavList>
-                    )}
+                    ) : isCollectionsPending ? (
+                        <ErrorWithMessage message="Виникла помилка під час завантаження колекцій" />
+                    ) : isCollectionsError ? (
+                        <ErrorWithMessage message="Виникла помилка під час завантаження колекцій" />
+                    ) : null}
                     <FooterNavList title="Навігація">
                         <FooterNavListItem href="/">Головна</FooterNavListItem>
                         <FooterNavListItem href="/cart">

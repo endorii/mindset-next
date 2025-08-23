@@ -9,6 +9,7 @@ import {
 } from "class-validator";
 import { Type } from "class-transformer";
 import { OrderStatus } from "generated/prisma";
+import { PaymentMethodType } from "../shop-orders.types";
 
 export class CreateOrderItemDto {
     @IsString()
@@ -53,6 +54,10 @@ export class CreateOrderDto {
     @IsString()
     @IsNotEmpty()
     postDepartment: string;
+
+    @IsString()
+    @IsNotEmpty()
+    paymentMethod: PaymentMethodType;
 
     @IsOptional()
     @IsString()

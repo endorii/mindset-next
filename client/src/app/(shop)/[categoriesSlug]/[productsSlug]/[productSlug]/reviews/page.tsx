@@ -10,8 +10,7 @@ import { BackIcon } from "@/shared/icons";
 import { MonoButton } from "@/shared/ui/buttons";
 import { Breadcrumbs, ErrorWithMessage } from "@/shared/ui/components";
 import ReviewPageSkeleton from "@/shared/ui/skeletons/ReviewPageSkeleton";
-import Link from "next/link";
-import { notFound, usePathname, useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 
 function Reviews() {
     const pathname = usePathname();
@@ -30,21 +29,21 @@ function Reviews() {
         data: reviews,
         isPending: isReviewsPending,
         isError: isReviewsError,
-        error,
+        error: reviewsError,
     } = useReviewByProductId(product?.id);
 
     if (isProductPending || isReviewsPending) {
         return <ReviewPageSkeleton />;
     }
 
-    if (!product || isProductError) {
+    if (isProductError) {
         return (
             <ErrorWithMessage message="Виникла помилка або товар не знайдено" />
         );
     }
 
-    if (!reviews || isReviewsError) {
-        return <ErrorWithMessage message={error.message} />;
+    if (isReviewsError) {
+        return <ErrorWithMessage message={reviewsError.message} />;
     }
 
     return (
