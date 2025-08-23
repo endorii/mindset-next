@@ -1,4 +1,4 @@
-import { useQuery, useQueryClient, useMutation } from "@tanstack/react-query";
+import { useQuery, useQueryClient, useMutation, useSuspenseQuery } from "@tanstack/react-query";
 import {
     fetchPopularProducts,
     fetchProductsFromSameCollection,
@@ -19,10 +19,9 @@ export function usePopularProducts() {
 }
 
 export function useProductsByCategoryId(categoryId: string | undefined) {
-    return useQuery({
+    return useSuspenseQuery({
         queryKey: ["products", categoryId],
         queryFn: () => fetchProductsByCategoryId(categoryId || ""),
-        enabled: !!categoryId,
     });
 }
 

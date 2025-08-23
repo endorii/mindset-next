@@ -7,3 +7,4 @@ export { default as RecentlyViewedProducts } from "./RecentlyViewedProducts";
 export { default as Welcome } from "./Welcome";
 export { default as CollectionsAndCategoriesList } from "./CollectionsAndCategoriesList";
 export { default as EmptyCategories } from "./EmptyCategories";
+export { default as ErrorFallback } from "./ErrorFallback";

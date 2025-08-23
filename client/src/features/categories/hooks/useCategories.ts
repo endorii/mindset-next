@@ -1,4 +1,4 @@
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useQuery, useMutation, useQueryClient, useSuspenseQuery } from "@tanstack/react-query";
 import {
     addCategoryToCollection,
     deleteCategory,
@@ -11,18 +11,16 @@ import { TStatus } from "@/shared/types/types";
 import { toast } from "sonner";
 
 export function useGetCategoryByPath(collectionPath: string, categoryPath: string) {
-    return useQuery({
+    return useSuspenseQuery({
         queryKey: ["category", collectionPath, categoryPath],
         queryFn: () => fetchCategoryByPath(collectionPath, categoryPath),
-        enabled: !!collectionPath || !!categoryPath,
     });
 }
 
 export function useGetCategoriesByCollectionId(collectionId: string | undefined) {
-    return useQuery({
+    return useSuspenseQuery({
         queryKey: ["categories", collectionId],
         queryFn: () => fetchGetCategoriesByCollectionId(collectionId || ""),
-        enabled: !!collectionId,
     });
 }
 
