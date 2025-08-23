@@ -1,5 +1,3 @@
-"use client";
-
 import { useEffect, useState } from "react";
 
 export default function useTypewriter(text: string = "", speed: number = 100) {

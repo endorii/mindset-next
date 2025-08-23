@@ -1,5 +1,3 @@
-"use client";
-
 import { useTypewriter } from "../hooks";
 
 function Welcome() {

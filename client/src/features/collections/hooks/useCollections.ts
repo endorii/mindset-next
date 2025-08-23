@@ -1,4 +1,4 @@
-import { useQuery, useMutation, useQueryClient, useSuspenseQuery } from "@tanstack/react-query";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import {
     createCollection,
     deleteCollection,
@@ -10,16 +10,17 @@ import { TStatus } from "@/shared/types/types";
 import { toast } from "sonner";
 
 export function useGetCollections() {
-    return useSuspenseQuery({
+    return useQuery({
         queryKey: ["collections"],
         queryFn: () => fetchCollections(),
     });
 }
 
 export function useGetCollectionByPath(collectionPath: string) {
-    return useSuspenseQuery({
+    return useQuery({
         queryKey: ["collection", collectionPath],
         queryFn: () => fetchGetCollectionByPath(collectionPath),
+        enabled: !!collectionPath,
     });
 }
 

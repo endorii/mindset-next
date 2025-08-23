@@ -1,5 +1,3 @@
-"use client";
-
 import { IUser } from "@/features/shop/user-info/types/user.types";
 import { ILocalFavoriteItem } from "@/features/shop/favorites/types/favorites.types";
 import { IProduct } from "@/features/products/types/products.types";
