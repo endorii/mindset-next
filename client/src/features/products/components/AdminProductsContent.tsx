@@ -1,16 +1,6 @@
-"use client";
-
 import { FilterSection } from "@/features/admin/attributes/components/FilterSection";
 import TitleWithAddElementButton from "@/features/admin/attributes/components/TitleWithAddElementButton";
 import { useGetCategoryByPath } from "@/features/categories/hooks/useCategories";
-import { useProductsByCategoryId } from "@/features/products/hooks/useProducts";
-import {
-    AddProductModal,
-    ProductInfoModal,
-    EditProductModal,
-    DeleteProductModal,
-} from "@/features/products/modals";
-import { IProduct } from "@/features/products/types/products.types";
 import {
     BackIcon,
     InfoIcon,
@@ -24,19 +14,27 @@ import {
     ButtonWithIcon,
     DeleteButtonWithIcon,
 } from "@/shared/ui/buttons";
-import { ErrorWithMessage } from "@/shared/ui/components";
-import {
-    AdminProductsSkeleton,
-    ButtonSkeleton,
-    FilterSectionSkeleton,
-    TitleWithButtonSkeleton,
-} from "@/shared/ui/skeletons";
-import { formatDate } from "@/shared/utils/formatDate";
 import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
-import { useState } from "react";
+import { usePathname } from "next/navigation";
+import { useRouter } from "next/navigation";
+import React, { useState } from "react";
+import { useProductsByCategoryId } from "../hooks/useProducts";
+import {
+    AddProductModal,
+    ProductInfoModal,
+    EditProductModal,
+    DeleteProductModal,
+} from "../modals";
+import { IProduct } from "../types/products.types";
+import { formatDate } from "@/shared/utils/formatDate";
 
-function AdminProductsInCategory() {
+function AdminProductsContent({
+    collectionPath,
+    categoryPath,
+}: {
+    collectionPath: string;
+    categoryPath: string;
+}) {
     const filters = [
         "спочатку нові",
         "останнi оновленi",
@@ -45,90 +43,18 @@ function AdminProductsInCategory() {
     ];
 
     const router = useRouter();
-    const pathname = usePathname();
-
-    const collectionPath = pathname.split("/")[3] || "";
-    const categoryPath = pathname.split("/")[4] || "";
 
     const [activeModal, setActiveModal] = useState<ModalType>(null);
     const [selectedProduct, setSelectedProduct] = useState<IProduct | null>(
         null
     );
 
-    const {
-        data: category,
-        isPending: isCategoryPending,
-        isError: isCategoryError,
-        error: categoryError,
-    } = useGetCategoryByPath(collectionPath, categoryPath);
+    const { data: category } = useGetCategoryByPath(
+        collectionPath,
+        categoryPath
+    );
 
-    const {
-        data: products,
-        isPending: isProductsPending,
-        isError: isProductsError,
-        error: productsError,
-    } = useProductsByCategoryId(category?.id);
-
-    if (isCategoryPending) {
-        return (
-            <div className="flex flex-col gap-[15px]">
-                <ButtonSkeleton />
-                <TitleWithButtonSkeleton />
-                <FilterSectionSkeleton />
-                <AdminProductsSkeleton />
-            </div>
-        );
-    }
-
-    if (isCategoryError) {
-        return (
-            <div className="flex flex-col gap-[15px]">
-                <div>
-                    <MonoButton
-                        onClick={() => router.push("/admin/collections")}
-                    >
-                        <BackIcon className="w-[23px] stroke-white stroke-[50] group-hover:stroke-black" />
-                        <div>Назад до категорій</div>
-                    </MonoButton>
-                </div>
-                <ErrorWithMessage message={categoryError.message} />
-            </div>
-        );
-    }
-
-    if (isProductsPending) {
-        return (
-            <div className="flex flex-col gap-[15px]">
-                <div>
-                    <MonoButton
-                        onClick={() => router.push("/admin/collections")}
-                    >
-                        <BackIcon className="w-[23px] stroke-white stroke-[50] group-hover:stroke-black" />
-                        <div>Назад до категорій</div>
-                    </MonoButton>
-                </div>
-                <TitleWithButtonSkeleton />
-                <FilterSectionSkeleton />
-                <AdminProductsSkeleton />
-            </div>
-        );
-    }
-
-    if (isProductsError) {
-        return (
-            <div className="flex flex-col gap-[15px]">
-                <div>
-                    <MonoButton
-                        onClick={() => router.push("/admin/collections")}
-                    >
-                        <BackIcon className="w-[23px] stroke-white stroke-[50] group-hover:stroke-black" />
-                        <div>Назад до колекцій</div>
-                    </MonoButton>
-                </div>
-                <ErrorWithMessage message={productsError.message} />
-            </div>
-        );
-    }
+    const { data: products } = useProductsByCategoryId(category?.id);
 
     const openModal = (type: ModalType, product: IProduct | null = null) => {
         setSelectedProduct(product);
@@ -139,7 +65,6 @@ function AdminProductsInCategory() {
         setSelectedProduct(null);
         setActiveModal(null);
     };
-
     return (
         <div className="flex flex-col gap-[15px]">
             <div>
@@ -314,4 +239,4 @@ function AdminProductsInCategory() {
     );
 }
 
-export default AdminProductsInCategory;
+export default AdminProductsContent;

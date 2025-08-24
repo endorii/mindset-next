@@ -24,15 +24,24 @@ export default function AdminLayout({
     useEffect(() => {
         if (isUserError) {
             toast.error("Помилка завантаження користувача");
-            router.push("/account");
-        } else if (user && user.role !== "ADMIN" && !isUserPending) {
-            toast.info("У вас немає доступу до адмін панелі");
-            router.push("/account");
-        } else if (!user && !isUserPending) {
+            router.replace("/account");
+            return;
+        }
+
+        if (!isUserPending && !user) {
             toast.info("Ви не авторизовані, перенаправлення...");
-            router.push("/account");
-        } else if (user && user.role === "ADMIN" && !isUserPending) {
-            toast.success("Ви успішно увійшли в адмін панель");
+            router.replace("/auth");
+            return;
+        }
+
+        if (!isUserPending && user && user.role !== "ADMIN") {
+            toast.info("У вас немає доступу до адмін панелі");
+            router.replace("/account");
+            return;
+        }
+
+        if (!isUserPending && user && user.role === "ADMIN") {
+            toast.success(`Вітаємо в адмін панелі, ${user.name}!`);
         }
     }, [user, isUserPending, isUserError, router]);
 
@@ -49,14 +58,21 @@ export default function AdminLayout({
         );
     }
 
-    if (!user || user.role !== "ADMIN" || isUserError) {
-        return null;
+    if (isUserError || !user || user.role !== "ADMIN") {
+        return (
+            <div className="text-white flex flex-col gap-[15px] h-screen w-full justify-center items-center pb-[10%]">
+                <div className="text-xl font-bold">Перенаправлення...</div>
+                <div>
+                    <SpinnerIcon className="w-[50px] h-[50px] fill-white animate-spin" />
+                </div>
+            </div>
+        );
     }
 
     return (
-        <>
+        <div>
             <AdminHeader />
             <AdminNavigation>{children}</AdminNavigation>
-        </>
+        </div>
     );
 }

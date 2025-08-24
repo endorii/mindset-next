@@ -2,14 +2,6 @@
 
 import { FilterSection } from "@/features/admin/attributes/components/FilterSection";
 import TitleWithAddElementButton from "@/features/admin/attributes/components/TitleWithAddElementButton";
-import { useGetCategoriesByCollectionId } from "@/features/categories/hooks/useCategories";
-import {
-    AddCategoryModal,
-    CategoryInfoModal,
-    EditCategoryModal,
-    DeleteCategoryModal,
-} from "@/features/categories/modals";
-import { ICategory } from "@/features/categories/types/categories.types";
 import { useGetCollectionByPath } from "@/features/collections/hooks/useCollections";
 import {
     BackIcon,
@@ -25,109 +17,41 @@ import {
     ButtonWithIcon,
     DeleteButtonWithIcon,
 } from "@/shared/ui/buttons";
-import { ErrorWithMessage } from "@/shared/ui/components";
-import {
-    AdminProductsSkeleton,
-    ButtonSkeleton,
-    FilterSectionSkeleton,
-    TitleWithButtonSkeleton,
-} from "@/shared/ui/skeletons";
+
 import { formatDate } from "@/shared/utils/formatDate";
 import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { useGetCategoriesByCollectionId } from "../hooks/useCategories";
+import {
+    AddCategoryModal,
+    CategoryInfoModal,
+    EditCategoryModal,
+    DeleteCategoryModal,
+} from "../modals";
+import { ICategory } from "../types/categories.types";
 
-const filters = [
-    "спочатку нові",
-    "останні оновлені",
-    "по алфавіту",
-    "кількість товарів",
-];
-
-function AdminCategoriesInCollection() {
+function AdminCategoriesContent({
+    collectionPath,
+}: {
+    collectionPath: string;
+}) {
+    const filters = [
+        "спочатку нові",
+        "останні оновлені",
+        "по алфавіту",
+        "кількість товарів",
+    ];
     const router = useRouter();
-    const pathname = usePathname();
-    const collectionPath = pathname.split("/")[3] || "";
 
     const [activeModal, setActiveModal] = useState<ModalType>(null);
     const [selectedCategory, setSelectedCategory] = useState<ICategory | null>(
         null
     );
 
-    const {
-        data: collection,
-        isPending: isCollectionPending,
-        isError: isCollectionError,
-        error: collectionError,
-    } = useGetCollectionByPath(collectionPath);
-
-    const {
-        data: categories,
-        isPending: isCategoriesPending,
-        isError: isCategoriesError,
-        error: categoriesError,
-    } = useGetCategoriesByCollectionId(collection?.id);
-
-    if (isCollectionPending) {
-        return (
-            <div className="flex flex-col gap-[15px]">
-                <ButtonSkeleton />
-                <TitleWithButtonSkeleton />
-                <FilterSectionSkeleton />
-                <AdminProductsSkeleton />
-            </div>
-        );
-    }
-
-    if (isCollectionError) {
-        return (
-            <div className="flex flex-col gap-[15px]">
-                <div>
-                    <MonoButton
-                        onClick={() => router.push("/admin/collections")}
-                    >
-                        <BackIcon className="w-[23px] stroke-white stroke-[50] group-hover:stroke-black" />
-                        <div>Назад до колекцій</div>
-                    </MonoButton>
-                </div>
-                <ErrorWithMessage message={collectionError.message} />
-            </div>
-        );
-    }
-
-    if (isCategoriesPending) {
-        return (
-            <div className="flex flex-col gap-[15px]">
-                <div>
-                    <MonoButton
-                        onClick={() => router.push("/admin/collections")}
-                    >
-                        <BackIcon className="w-[23px] stroke-white stroke-[50] group-hover:stroke-black" />
-                        <div>Назад до колекцій</div>
-                    </MonoButton>
-                </div>
-                <TitleWithButtonSkeleton />
-                <FilterSectionSkeleton />
-                <AdminProductsSkeleton />
-            </div>
-        );
-    }
-
-    if (isCategoriesError) {
-        return (
-            <div className="flex flex-col gap-[15px]">
-                <div>
-                    <MonoButton
-                        onClick={() => router.push("/admin/collections")}
-                    >
-                        <BackIcon className="w-[23px] stroke-white stroke-[50] group-hover:stroke-black" />
-                        <div>Назад до колекцій</div>
-                    </MonoButton>
-                </div>
-                <ErrorWithMessage message={categoriesError.message} />
-            </div>
-        );
-    }
+    const { data: collection } = useGetCollectionByPath(collectionPath);
+    const { data: categories } = useGetCategoriesByCollectionId(collection?.id);
 
     const openModal = (type: ModalType, category: ICategory | null = null) => {
         setSelectedCategory(category);
@@ -147,13 +71,11 @@ function AdminCategoriesInCollection() {
                     <div>Назад до колекцій</div>
                 </MonoButton>
             </div>
-
             <TitleWithAddElementButton
                 title={`Список категорій [${collectionPath}]`}
                 onClick={() => setActiveModal("add")}
                 buttonText={"Додати категорію"}
             />
-
             <FilterSection
                 title={"Фільтрувати"}
                 filters={filters}
@@ -162,7 +84,6 @@ function AdminCategoriesInCollection() {
                 }}
                 selectedItem={""}
             />
-
             {categories && categories.length > 0 ? (
                 <div className="rounded-xl bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px] sm:px-[10px] pt-0">
                     <div
@@ -292,7 +213,6 @@ function AdminCategoriesInCollection() {
                     <ProductsIcon className="absolute top-[-150] right-40 w-[600px] opacity-20 rotate-[340deg] pointer-events-none" />
                 </div>
             )}
-
             {collection && (
                 <AddCategoryModal
                     isOpen={activeModal === "add"}
@@ -323,4 +243,4 @@ function AdminCategoriesInCollection() {
     );
 }
 
-export default AdminCategoriesInCollection;
+export default AdminCategoriesContent;
