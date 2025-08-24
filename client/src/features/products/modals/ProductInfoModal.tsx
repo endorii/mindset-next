@@ -101,7 +101,7 @@ export default function ProductInfoModal({
                                     src={`http://localhost:5000${image}`}
                                     alt={`Зображення ${i + 1}`}
                                     width={100}
-                                    height={0}
+                                    height={100}
                                     className="border border-white/20 rounded w-[200px]"
                                 />
                             ))

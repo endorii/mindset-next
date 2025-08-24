@@ -34,7 +34,7 @@ function ProductsContent({
                                 <Image
                                     className="relative rounded-xl w-full"
                                     width={500}
-                                    height={0}
+                                    height={300}
                                     src={`http://localhost:5000/${product.banner}`}
                                     alt={product.name}
                                 />

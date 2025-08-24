@@ -2,27 +2,20 @@
 
 import { CollectionsAndCategoriesListSkeleton } from "@/shared/ui/skeletons";
 import { ErrorBoundary } from "react-error-boundary";
-import { Suspense, useEffect, useState } from "react";
-import { ErrorFallback } from "@/shared/components";
+import { Suspense } from "react";
 import CategoriesContent from "./CategoriesContent";
+import { ErrorWithMessage } from "@/shared/ui/components";
 
-function CategoriesWrapper() {
-    const [showSkeleton, setShowSkeleton] = useState(true);
-
-    // Затримка для показу скелетона
-    useEffect(() => {
-        const timeout = setTimeout(() => setShowSkeleton(false), 200);
-        return () => clearTimeout(timeout);
-    }, []);
-
-    if (showSkeleton) return <CollectionsAndCategoriesListSkeleton />;
+export default function CategoriesWrapper() {
     return (
-        <ErrorBoundary FallbackComponent={ErrorFallback}>
+        <ErrorBoundary
+            fallbackRender={() => (
+                <ErrorWithMessage message={"Помилка отримання категорій"} />
+            )}
+        >
             <Suspense fallback={<CollectionsAndCategoriesListSkeleton />}>
                 <CategoriesContent />
             </Suspense>
         </ErrorBoundary>
     );
 }
-
-export default CategoriesWrapper;

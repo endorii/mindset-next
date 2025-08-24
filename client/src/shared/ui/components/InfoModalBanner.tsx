@@ -6,7 +6,7 @@ interface InfoModalBannerProps {
     w?: number;
 }
 
-function InfoModalBanner({ image, w = 400 }: InfoModalBannerProps) {
+function InfoModalBanner({ image, w = 450 }: InfoModalBannerProps) {
     return (
         <div className="flex flex-col gap-[7px] w-full">
             <Label>Банер</Label>
@@ -20,7 +20,7 @@ function InfoModalBanner({ image, w = 400 }: InfoModalBannerProps) {
                     }
                     alt={image ? "Банер" : "Зображення відсутнє"}
                     width={w}
-                    height={0}
+                    height={300}
                 />
             </div>
         </div>

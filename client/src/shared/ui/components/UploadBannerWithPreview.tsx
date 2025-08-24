@@ -26,7 +26,7 @@ function UploadBannerWithPreview({
                         src={image}
                         alt="banner"
                         width={450}
-                        height={0}
+                        height={300}
                         className="w-200"
                     />
                 ) : (

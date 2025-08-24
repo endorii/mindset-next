@@ -12,7 +12,7 @@ import { ICreateProductPayload } from "../types/products.types";
 import { toast } from "sonner";
 
 export function usePopularProducts() {
-    return useQuery({
+    return useSuspenseQuery({
         queryKey: ["popularProducts"],
         queryFn: () => fetchPopularProducts(),
     });
