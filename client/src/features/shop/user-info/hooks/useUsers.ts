@@ -8,7 +8,6 @@ export function useCurrentUser() {
     return useQuery({
         queryKey: ["currentUser"],
         queryFn: () => currentUser(),
-        retry: false,
     });
 }
 

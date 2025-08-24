@@ -3,8 +3,6 @@
 import { SearchIcon, AccountIcon } from "@/shared/icons";
 import Link from "next/link";
 import { useCurrentUser } from "@/features/shop/user-info/hooks/useUsers";
-import { useRouter } from "next/navigation";
-import { toast } from "sonner";
 
 function AdminHeader() {
     const { data: user, isPending: isUserPending } = useCurrentUser();

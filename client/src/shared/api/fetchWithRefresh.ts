@@ -10,16 +10,15 @@ export async function fetchWithRefresh(
 
     if (response.status !== 401) return response;
 
-    try {
-        const refreshed = await refreshToken();
+    const refreshed = await refreshToken();
 
-        if (!refreshed || typeof refreshed.id === "undefined") {
-            throw new Error("Refresh token failed");
-        }
-
-        return await fetch(input, init);
-    } catch (error) {
-        // console.error("Unauthorized - redirecting to login");
-        throw error;
+    if (!refreshed) {
+        // повертаємо фейковий response зі статусом 401
+        return new Response(JSON.stringify({ message: "Unauthorized" }), {
+            status: 401,
+            headers: { "Content-Type": "application/json" },
+        });
     }
+
+    return await fetch(input, init);
 }

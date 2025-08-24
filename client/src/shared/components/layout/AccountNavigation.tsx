@@ -2,61 +2,17 @@
 
 import { useLogoutUser } from "@/features/auth/hooks/useAuth";
 import { useCurrentUser } from "@/features/shop/user-info/hooks/useUsers";
-import {
-    MainPageIcon,
-    CollectionsIcon,
-    CartIcon,
-    HeartIcon,
-    AdminIcon,
-    LogoutIcon,
-    BackIcon,
-    InfoIcon,
-} from "@/shared/icons";
+import { AdminIcon, LogoutIcon, BackIcon } from "@/shared/icons";
 import { NavigationLink } from "@/shared/ui/buttons";
+import { ButtonSkeleton } from "@/shared/ui/skeletons";
+import { accountNavigationLinks } from "@/shared/utils/accountNavigationLinks";
 import { useState } from "react";
 
 function AccountNavigation({ children }: { children: React.ReactNode }) {
-    const { data: user } = useCurrentUser();
+    const { data: user, isPending: isUserPending } = useCurrentUser();
     const logoutUserMutation = useLogoutUser();
 
     const [isOpen, setIsOpen] = useState<boolean>(false);
-
-    const links = [
-        {
-            href: "/",
-            Icon: MainPageIcon,
-            text: "На головну",
-            className: "w-[32px] fill-white group-hover:fill-black",
-        },
-        {
-            href: "/account",
-            Icon: InfoIcon,
-            text: "Інформація",
-            className:
-                "w-[32px] fill-none stroke-[1.5] stroke-white group-hover:stroke-black",
-        },
-
-        {
-            href: "/account/orders",
-            Icon: CollectionsIcon,
-            text: "Замовлення",
-            className: "w-[32px] fill-white group-hover:fill-black",
-        },
-        {
-            href: "/cart",
-            Icon: CartIcon,
-            text: "Кошик",
-            className:
-                "w-[32px] stroke-white fill-none group-hover:stroke-black",
-        },
-        {
-            href: "/favorites",
-            Icon: HeartIcon,
-            text: "Улюблене",
-            className:
-                "w-[32px] stroke-white fill-none group-hover:stroke-black",
-        },
-    ];
 
     return (
         <div className="relative flex gap-[15px] p-[30px] pt-[10px] sm:p-[10px] text-white">
@@ -77,21 +33,23 @@ function AccountNavigation({ children }: { children: React.ReactNode }) {
             >
                 <div className="flex gap-[30px] flex-col">
                     <div className={`flex flex-col gap-[13px]`}>
-                        {links.map(({ href, Icon, text, className }) => (
-                            <NavigationLink
-                                key={href}
-                                href={href}
-                                onClick={() => setIsOpen(false)}
-                            >
-                                <Icon className={className} />
-
-                                <span
-                                    className={`transition-opacity duration-200 group-hover:text-black`}
+                        {accountNavigationLinks.map(
+                            ({ href, Icon, text, className }) => (
+                                <NavigationLink
+                                    key={href}
+                                    href={href}
+                                    onClick={() => setIsOpen(false)}
                                 >
-                                    {text}
-                                </span>
-                            </NavigationLink>
-                        ))}
+                                    <Icon className={className} />
+
+                                    <span
+                                        className={`transition-opacity duration-200 group-hover:text-black`}
+                                    >
+                                        {text}
+                                    </span>
+                                </NavigationLink>
+                            )
+                        )}
                     </div>
                 </div>
                 <div className="flex flex-col gap-[15px]">
@@ -104,6 +62,8 @@ function AccountNavigation({ children }: { children: React.ReactNode }) {
                                 </span>
                             </NavigationLink>
                         </div>
+                    ) : isUserPending ? (
+                        <ButtonSkeleton />
                     ) : null}
                     <div>
                         <NavigationLink

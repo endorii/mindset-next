@@ -137,7 +137,7 @@ export async function currentUser(): Promise<IUser> {
     }
 }
 
-export async function refreshToken(): Promise<IAuthResponse> {
+export async function refreshToken(): Promise<IAuthResponse | null> {
     try {
         const response = await fetch(`${API_BASE_URL}/auth/refresh`, {
             method: "POST",
@@ -147,20 +147,20 @@ export async function refreshToken(): Promise<IAuthResponse> {
             credentials: "include",
         });
 
+        if (response.status === 401) {
+            return null; // refresh токен невалідний
+        }
+
         const text = await response.text();
         const parsedData = text ? JSON.parse(text) : {};
 
         if (!response.ok) {
-            const error: any = new Error(
-                parsedData.message || `Помилка ${parsedData.statusCode || response.status}`
-            );
-            error.status = parsedData.statusCode || response.status;
-            throw error;
+            throw new Error(parsedData.message || `Помилка ${response.status}`);
         }
 
         return parsedData;
-    } catch (error: any) {
-        throw error;
+    } catch {
+        return null;
     }
 }
 

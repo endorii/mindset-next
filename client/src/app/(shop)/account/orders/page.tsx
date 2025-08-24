@@ -107,7 +107,7 @@ const Orders = () => {
                                             {order.items.length > 0 ? (
                                                 <>
                                                     {order.items
-                                                        .slice(0, 4)
+                                                        .slice(0, 3)
                                                         .map((item) => (
                                                             <img
                                                                 key={item.id}
@@ -116,11 +116,11 @@ const Orders = () => {
                                                                 alt="banner"
                                                             />
                                                         ))}
-                                                    {order.items.length > 2 && (
+                                                    {order.items.length > 3 && (
                                                         <div className="flex items-center justify-center min-w-[40px] h-[120px] bg-gray-200 rounded text-black text-lg font-semibold">
                                                             +
                                                             {order.items
-                                                                .length - 2}
+                                                                .length - 3}
                                                         </div>
                                                     )}
                                                 </>

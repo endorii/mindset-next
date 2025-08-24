@@ -1,3 +1,5 @@
+"use client";
+
 import { formatDate } from "@/shared/utils/formatDate";
 import { IReview } from "../types/reviews.types";
 import { useCurrentUser } from "@/features/shop/user-info/hooks/useUsers";
@@ -9,7 +11,7 @@ interface ProductReviewsListProps {
 }
 
 function ProductReviewsList({ reviews }: ProductReviewsListProps) {
-    const { data: user } = useCurrentUser();
+    const { data: user, isPending: isUserPending } = useCurrentUser();
     const useToggleReviewVoteMutaion = useToggleReviewVote();
 
     return (
