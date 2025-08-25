@@ -1,19 +1,12 @@
+"use client";
+
 import { AddSizeModal, EditSizeModal, DeleteSizeModal } from "@/features/admin";
-import {
-    ButtonWithIcon,
-    DeleteButtonWithIcon,
-    MonoButton,
-} from "@/shared/ui/buttons";
-import { PlusIcon, EditIcon, TrashIcon, PaletteIcon } from "@/shared/icons";
+import { ButtonWithIcon, DeleteButtonWithIcon } from "@/shared/ui/buttons";
+import { EditIcon, TrashIcon, PaletteIcon } from "@/shared/icons";
 import { useState } from "react";
 import { useSizes } from "../hooks/useSizes";
 import { ISize } from "../types/product-size.types";
 import TitleWithAddElementButton from "../../components/TitleWithAddElementButton";
-import {
-    SizesAndTypesSkeleton,
-    TitleWithButtonSkeleton,
-} from "@/shared/ui/skeletons";
-import { ErrorWithMessage } from "@/shared/ui/components";
 
 export const SizeSection = () => {
     const [modalType, setModalType] = useState<
@@ -21,26 +14,7 @@ export const SizeSection = () => {
     >(null);
     const [selected, setSelected] = useState<ISize | null>(null);
 
-    const {
-        data: sizes,
-        isPending: isSizesPending,
-        isError: isSizesError,
-    } = useSizes();
-
-    if (isSizesPending) {
-        return (
-            <div className="flex flex-col gap-[15px]">
-                <TitleWithButtonSkeleton />
-                <SizesAndTypesSkeleton />
-            </div>
-        );
-    }
-
-    if (isSizesError) {
-        return (
-            <ErrorWithMessage message="Виникла помилка під час завантаження розмірів, спробуйте пізніше" />
-        );
-    }
+    const { data: sizes } = useSizes();
 
     const closeModal = () => {
         setModalType(null);

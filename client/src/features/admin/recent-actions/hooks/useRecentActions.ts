@@ -1,8 +1,8 @@
-import { useQuery } from "@tanstack/react-query";
+import { useSuspenseQuery } from "@tanstack/react-query";
 import { fetchRecentActionsFromUser } from "../api/recent-actions.api";
 
 export function useRecentActions() {
-    return useQuery({
+    return useSuspenseQuery({
         queryKey: ["recent-actions"],
         queryFn: () => fetchRecentActionsFromUser(),
     });

@@ -1,10 +1,10 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQueryClient, useSuspenseQuery } from "@tanstack/react-query";
 import { ITypePayload } from "../types/product-type.types";
 import { createType, deleteType, editType, fetchTypes } from "../api/types.api";
 import { toast } from "sonner";
 
 export function useTypes() {
-    return useQuery({
+    return useSuspenseQuery({
         queryKey: ["types"],
         queryFn: () => fetchTypes(),
     });

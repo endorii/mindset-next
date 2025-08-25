@@ -160,24 +160,10 @@ function generateUsersChartData(users: IUser[], period: Period): ChartPoint[] {
     return [];
 }
 
-function UsersRegistrationChart({
-    users,
-    isUsersError,
-}: {
-    users: IUser[] | undefined;
-    isUsersError: boolean;
-}) {
+function UsersRegistrationChart({ users }: { users: IUser[] | undefined }) {
     const [period, setPeriod] = useState<Period>("day");
 
-    if (isUsersError) {
-        return (
-            <div className="rounded-xl bg-red-500/10 border border-red-500/30 p-[20px] text-red-400">
-                Виникла помилка при завантаженні користувачів для діаграми
-            </div>
-        );
-    }
-
-    if (!users || (users.length === 0 && !isUsersError)) {
+    if (!users || users.length === 0) {
         return (
             <div className="rounded-xl bg-white/5 p-[20px] w-full text-white/60 border border-white/5">
                 Користувачі для діаграми відсутні

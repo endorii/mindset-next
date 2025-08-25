@@ -17,24 +17,11 @@ import {
 } from "../modals/todo";
 import { formatDate } from "@/shared/utils/formatDate";
 
-function HomeTodo({
-    todos,
-    isTodosError,
-}: {
-    todos: ITodoItem[] | undefined;
-    isTodosError: boolean;
-}) {
+function HomeTodo({ todos }: { todos: ITodoItem[] | undefined }) {
     const [activeModal, setActiveModal] = useState<TodoModalType>(null);
     const [selectedTodoItem, setSelectedTodoItem] = useState<ITodoItem | null>(
         null
     );
-    if (isTodosError) {
-        return (
-            <div className="rounded-xl bg-red-500/10 shadow-lg backdrop-blur-[100px] border border-red-500/30 p-[20px] w-1/2 lg:w-full min-h-[470px] flex items-center justify-center text-center text-red-400">
-                Виникла помилка під час завантаження завдань
-            </div>
-        );
-    }
 
     const openModal = (
         type: TodoModalType,

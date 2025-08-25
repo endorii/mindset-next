@@ -1,8 +1,8 @@
-import { useQuery } from "@tanstack/react-query";
+import { useSuspenseQuery } from "@tanstack/react-query";
 import { fetchAllUsers } from "../api/users.api";
 
 export function useAllUsers() {
-    return useQuery({
+    return useSuspenseQuery({
         queryKey: ["allUsers"],
         queryFn: () => fetchAllUsers(),
     });

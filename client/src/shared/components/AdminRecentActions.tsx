@@ -3,19 +3,9 @@ import { formatDate } from "../utils/formatDate";
 
 function AdminRecentActions({
     actions,
-    isActionsError,
 }: {
     actions: IRecentActions[] | undefined;
-    isActionsError: boolean;
 }) {
-    if (isActionsError) {
-        return (
-            <div className="rounded-xl bg-red-500/10 shadow-lg backdrop-blur-[100px] border border-red-500/30 p-[20px] w-full min-h-[470px] flex items-center justify-center text-center text-red-400">
-                Виникла помилка при завантаженні останніх дій
-            </div>
-        );
-    }
-
     if (!actions || actions.length === 0) {
         return (
             <div className="rounded-xl bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px] w-full min-h-[470px] flex items-center justify-center text-center text-white/60">

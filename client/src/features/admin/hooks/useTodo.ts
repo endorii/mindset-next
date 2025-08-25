@@ -1,10 +1,10 @@
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useQuery, useMutation, useQueryClient, useSuspenseQuery } from "@tanstack/react-query";
 import { addTodoItem, deleteTodoItem, getTodoList, updateTodoItem } from "../api/todo.api";
 import { ITodoItem } from "../types/admin.types";
 import { toast } from "sonner";
 
 export function useTodoList() {
-    return useQuery({
+    return useSuspenseQuery({
         queryKey: ["todo"],
         queryFn: () => getTodoList(),
     });

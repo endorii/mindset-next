@@ -1,19 +1,12 @@
+"use client";
+
 import { AddTypeModal, EditTypeModal, DeleteTypeModal } from "@/features/admin";
-import {
-    ButtonWithIcon,
-    DeleteButtonWithIcon,
-    MonoButton,
-} from "@/shared/ui/buttons";
+import { ButtonWithIcon, DeleteButtonWithIcon } from "@/shared/ui/buttons";
 import { EditIcon, TrashIcon, PaletteIcon } from "@/shared/icons";
 import { useState } from "react";
 import { useTypes } from "../hooks/useTypes";
 import { IType } from "../types/product-type.types";
 import TitleWithAddElementButton from "../../components/TitleWithAddElementButton";
-import {
-    SizesAndTypesSkeleton,
-    TitleWithButtonSkeleton,
-} from "@/shared/ui/skeletons";
-import { ErrorWithMessage } from "@/shared/ui/components";
 
 export const TypeSection = () => {
     const [modalType, setModalType] = useState<
@@ -21,26 +14,7 @@ export const TypeSection = () => {
     >(null);
     const [selected, setSelected] = useState<IType | null>(null);
 
-    const {
-        data: types,
-        isPending: isTypesPending,
-        isError: isTypesError,
-    } = useTypes();
-
-    if (isTypesPending) {
-        return (
-            <div className="flex flex-col gap-[15px]">
-                <TitleWithButtonSkeleton />
-                <SizesAndTypesSkeleton />
-            </div>
-        );
-    }
-
-    if (isTypesError) {
-        return (
-            <ErrorWithMessage message="Виникла помилка під час завантаження типів, спробуйте пізніше" />
-        );
-    }
+    const { data: types } = useTypes();
 
     const closeModal = () => {
         setModalType(null);

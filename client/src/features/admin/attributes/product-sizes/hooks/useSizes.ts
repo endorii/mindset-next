@@ -1,10 +1,10 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQueryClient, useSuspenseQuery } from "@tanstack/react-query";
 import { createSize, deleteSize, editSize, fetchSizes } from "../api/sizes.api";
 import { ISizePayload } from "../types/product-size.types";
 import { toast } from "sonner";
 
 export function useSizes() {
-    return useQuery({
+    return useSuspenseQuery({
         queryKey: ["sizes"],
         queryFn: () => fetchSizes(),
     });

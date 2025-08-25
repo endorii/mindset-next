@@ -1,10 +1,10 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQueryClient, useSuspenseQuery } from "@tanstack/react-query";
 import { createColor, deleteColor, editColor, fetchColors } from "../api/colors.api";
 import { IColorPayload } from "../types/product-color.types";
 import { toast } from "sonner";
 
 export function useColors() {
-    return useQuery({
+    return useSuspenseQuery({
         queryKey: ["colors"],
         queryFn: () => fetchColors(),
     });

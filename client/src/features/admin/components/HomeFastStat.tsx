@@ -1,23 +1,8 @@
 import { IOrder } from "@/features/orders/types/orders.types";
 import StatCard from "@/shared/components/cards/StatCard";
 
-function HomeFastStat({
-    orders,
-    isOrdersError,
-}: {
-    orders: IOrder[] | undefined;
-    isOrdersError: boolean;
-}) {
-    if (isOrdersError) {
-        return (
-            <div className="rounded-xl bg-red-500/10 border border-red-500/30 p-[20px] text-red-400">
-                Виникла помилка при завантаженні замовлень для швидкої
-                статистики
-            </div>
-        );
-    }
-
-    if (!orders || (orders.length === 0 && !isOrdersError)) {
+function HomeFastStat({ orders }: { orders: IOrder[] | undefined }) {
+    if (!orders || orders.length === 0) {
         return (
             <div className="rounded-xl bg-white/5 p-[20px] text-white/60 border border-white/5">
                 Замовлення для швидкої статистики відсутні

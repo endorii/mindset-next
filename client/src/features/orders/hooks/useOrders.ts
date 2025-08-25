@@ -1,4 +1,4 @@
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useQuery, useMutation, useQueryClient, useSuspenseQuery } from "@tanstack/react-query";
 import {
     createOrder,
     deleteOrder,
@@ -10,7 +10,7 @@ import { IOrder } from "../types/orders.types";
 import { toast } from "sonner";
 
 export function useOrders() {
-    return useQuery({
+    return useSuspenseQuery({
         queryKey: ["orders"],
         queryFn: () => getOrders(),
     });

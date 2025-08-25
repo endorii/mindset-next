@@ -1,24 +1,16 @@
+"use client";
+
 import { IColor } from "@/features/admin/attributes/product-colors/types/product-color.types";
 import {
     EditColorModal,
     DeleteColorModal,
     AddColorModal,
 } from "@/features/admin";
-import {
-    ButtonWithIcon,
-    DeleteButtonWithIcon,
-    MonoButton,
-} from "@/shared/ui/buttons";
+import { ButtonWithIcon, DeleteButtonWithIcon } from "@/shared/ui/buttons";
 import { EditIcon, TrashIcon, PaletteIcon } from "@/shared/icons";
 import { useColors } from "@/features/admin/attributes/product-colors/hooks/useColors";
 import { useState } from "react";
 import TitleWithAddElementButton from "../../components/TitleWithAddElementButton";
-import {
-    FilterSectionSkeleton,
-    TitleWithButtonSkeleton,
-} from "@/shared/ui/skeletons";
-import ColorsSkeleton from "@/shared/ui/skeletons/ColorsSkeleton";
-import { ErrorWithMessage } from "@/shared/ui/components";
 
 export const ColorSection = () => {
     const [modalType, setModalType] = useState<
@@ -26,26 +18,7 @@ export const ColorSection = () => {
     >(null);
     const [selected, setSelected] = useState<IColor | null>(null);
 
-    const {
-        data: colors,
-        isPending: isColorsPending,
-        isError: isColorError,
-    } = useColors();
-
-    if (isColorsPending) {
-        return (
-            <div className="flex flex-col gap-[15px]">
-                <TitleWithButtonSkeleton />
-                <ColorsSkeleton />
-            </div>
-        );
-    }
-
-    if (isColorError) {
-        return (
-            <ErrorWithMessage message="Виникла помилка під час завантаження кольорів, спробуйте пізніше" />
-        );
-    }
+    const { data: colors } = useColors();
 
     const closeModal = () => {
         setModalType(null);

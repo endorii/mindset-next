@@ -1,4 +1,4 @@
-import { useQuery, useQueryClient, useMutation } from "@tanstack/react-query";
+import { useQuery, useQueryClient, useMutation, useSuspenseQuery } from "@tanstack/react-query";
 import {
     fetchAllReviews,
     fetchReviewsByProductId,
@@ -32,7 +32,7 @@ export function useToggleReviewVote() {
 }
 
 export function useReviews() {
-    return useQuery({
+    return useSuspenseQuery({
         queryKey: ["reviews"],
         queryFn: () => fetchAllReviews(),
     });
