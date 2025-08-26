@@ -1,3 +1,5 @@
+"use client";
+
 import { Controller, Control } from "react-hook-form";
 
 interface StarRatingProps {

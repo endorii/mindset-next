@@ -1,3 +1,5 @@
+"use client";
+
 import { useProductsFromSameCollection } from "@/features/products/hooks/useProducts";
 import SliderWrapper from "./layout/SliderWrapper";
 import ProductsSliderSkeleton from "../ui/skeletons/ProductsSliderSkeleton";

@@ -1,3 +1,5 @@
+"use client";
+
 import { IProduct } from "@/features/products/types/products.types";
 import { MonoLink } from "@/shared/ui/buttons";
 import { useReviewByProductId } from "../hooks/useReviews";
@@ -8,7 +10,7 @@ import ProductReviewsSkeleton from "@/shared/ui/skeletons/ProductReviewsSkeleton
 import { ErrorWithMessage } from "@/shared/ui/components";
 
 interface ReviewsOnProductPageProps {
-    product: IProduct;
+    product: IProduct | null;
 }
 
 export default function ReviewsOnProductPage({
@@ -19,7 +21,7 @@ export default function ReviewsOnProductPage({
         isPending: isReviewsPending,
         isError: isReviewsError,
         error: reviewsError,
-    } = useReviewByProductId(product.id);
+    } = useReviewByProductId(product?.id);
 
     if (isReviewsPending) {
         return (
@@ -52,7 +54,7 @@ export default function ReviewsOnProductPage({
 
                     <div className="flex flex-col gap-[10px] w-2/3 sm:w-full">
                         <ProductReviewsList reviews={reviews} />
-                        <MonoLink href={`${product.path}/reviews`}>
+                        <MonoLink href={`${product?.path}/reviews`}>
                             Читати всі відгуки
                         </MonoLink>
                     </div>
