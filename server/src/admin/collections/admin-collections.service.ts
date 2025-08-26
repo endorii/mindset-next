@@ -9,12 +9,14 @@ import { PrismaService } from "src/prisma/prisma.service";
 import { CreateCollectionDto } from "./dto/create-collection.dto";
 import { UpdateCollectionDto } from "./dto/update-collection.dto";
 import { AdminRecentActionsService } from "../recent-actions/admin-recent-actions.service";
+import { ConfigService } from "@nestjs/config";
 
 @Injectable()
 export class AdminCollectionsService {
     constructor(
         private readonly prisma: PrismaService,
-        private readonly adminRecentActions: AdminRecentActionsService
+        private readonly adminRecentActions: AdminRecentActionsService,
+        private readonly configService: ConfigService
     ) {}
 
     async postCollection(userId: string, createCollectionDto: CreateCollectionDto) {
@@ -44,6 +46,13 @@ export class AdminCollectionsService {
                 userId,
                 `Додано колекцію ${collection.name}`
             );
+
+            const nextUrl = this.configService.get<string>("FRONTEND_URL");
+            const secret = this.configService.get<string>("REVALIDATE_SECRET");
+
+            await fetch(`${nextUrl}/api/revalidate?secret=${secret}&path=/collections`, {
+                method: "GET",
+            });
 
             return {
                 message: "Колекцію успішно створено",
@@ -93,6 +102,12 @@ export class AdminCollectionsService {
                 userId,
                 `Редаговано колекцію ${updatedCollection.name}`
             );
+            const nextUrl = this.configService.get<string>("FRONTEND_URL");
+            const secret = this.configService.get<string>("REVALIDATE_SECRET");
+
+            await fetch(`${nextUrl}/api/revalidate?secret=${secret}&path=/collections`, {
+                method: "GET",
+            });
 
             return {
                 message: "Колекцію успішно оновлено",
@@ -140,6 +155,12 @@ export class AdminCollectionsService {
                 userId,
                 `Видалено колекцію ${collection.name}`
             );
+            const nextUrl = this.configService.get<string>("FRONTEND_URL");
+            const secret = this.configService.get<string>("REVALIDATE_SECRET");
+
+            await fetch(`${nextUrl}/api/revalidate?secret=${secret}&path=/collections`, {
+                method: "GET",
+            });
 
             return {
                 message: "Колекцію успішно видалено",

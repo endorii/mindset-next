@@ -54,6 +54,21 @@ export class ShopCategoriesService {
                         path: collectionPath,
                     },
                 },
+                include: {
+                    products: {
+                        include: {
+                            productColors: {
+                                include: { color: true },
+                            },
+                            productTypes: {
+                                include: { type: true },
+                            },
+                            productSizes: {
+                                include: { size: true },
+                            },
+                        },
+                    },
+                },
             });
 
             if (!category) throw new NotFoundException("Категорію не знайдено");

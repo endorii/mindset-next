@@ -1,11 +1,9 @@
 import { ServerResponseWithMessage } from "@/shared/interfaces/interfaces";
 import { ICollection } from "../types/collections.types";
 
-const API_BASE_URL = "http://localhost:5000/api";
-
 export async function fetchCollections(): Promise<ICollection[]> {
     try {
-        const response = await fetch(`${API_BASE_URL}/shop/collections`);
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/shop/collections`);
 
         const text = await response.text();
         const parsedData = text ? JSON.parse(text) : {};
@@ -26,7 +24,9 @@ export async function fetchCollections(): Promise<ICollection[]> {
 
 export async function fetchGetCollectionByPath(collectionPath: string): Promise<ICollection> {
     try {
-        const response = await fetch(`${API_BASE_URL}/shop/collections/${collectionPath}`);
+        const response = await fetch(
+            `${process.env.NEXT_PUBLIC_API_URL}/shop/collections/${collectionPath}`
+        );
 
         const text = await response.text();
         const parsedData = text ? JSON.parse(text) : {};
@@ -49,7 +49,7 @@ export async function createCollection(
     data: ICollection
 ): Promise<ServerResponseWithMessage<ICollection>> {
     try {
-        const response = await fetch(`${API_BASE_URL}/admin/collections`, {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/admin/collections`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -80,14 +80,17 @@ export async function editCollection(
     data: Partial<ICollection>
 ): Promise<ServerResponseWithMessage<ICollection>> {
     try {
-        const response = await fetch(`${API_BASE_URL}/admin/collections/${collectionId}`, {
-            method: "PATCH",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            credentials: "include",
-            body: JSON.stringify(data),
-        });
+        const response = await fetch(
+            `${process.env.NEXT_PUBLIC_API_URL}/admin/collections/${collectionId}`,
+            {
+                method: "PATCH",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                credentials: "include",
+                body: JSON.stringify(data),
+            }
+        );
 
         const text = await response.text();
         const parsedData = text ? JSON.parse(text) : {};
@@ -108,10 +111,13 @@ export async function editCollection(
 
 export async function deleteCollection(collectionId: string): Promise<ServerResponseWithMessage> {
     try {
-        const response = await fetch(`${API_BASE_URL}/admin/collections/${collectionId}`, {
-            method: "DELETE",
-            credentials: "include",
-        });
+        const response = await fetch(
+            `${process.env.NEXT_PUBLIC_API_URL}/admin/collections/${collectionId}`,
+            {
+                method: "DELETE",
+                credentials: "include",
+            }
+        );
 
         const text = await response.text();
         const parsedData = text ? JSON.parse(text) : {};

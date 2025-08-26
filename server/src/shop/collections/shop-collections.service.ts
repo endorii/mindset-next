@@ -32,6 +32,7 @@ export class ShopCollectionsService {
         try {
             const collection = await this.prisma.collection.findUnique({
                 where: { path: collectionPath },
+                include: { categories: true },
             });
 
             if (!collection) {

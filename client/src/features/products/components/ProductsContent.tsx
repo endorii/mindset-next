@@ -1,23 +1,18 @@
-import { useGetCategoryByPath } from "@/features/categories/hooks/useCategories";
 import { EmptyCategories } from "@/shared/components";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
-import { useProductsByCategoryId } from "../hooks/useProducts";
+import { IProduct } from "../types/products.types";
 
 function ProductsContent({
     collectionPath,
     categoryPath,
+    products,
 }: {
     collectionPath: string;
     categoryPath: string;
+    products: IProduct[];
 }) {
-    const { data: category } = useGetCategoryByPath(
-        collectionPath,
-        categoryPath
-    );
-
-    const { data: products } = useProductsByCategoryId(category?.id);
     return (
         <>
             {products && products.length > 0 ? (
