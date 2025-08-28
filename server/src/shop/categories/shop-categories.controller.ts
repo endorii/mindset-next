@@ -8,6 +8,12 @@ import { ShopCategoriesService } from "./shop-categories.service";
 export class ShopCategoriesController {
     constructor(private readonly categoriesService: ShopCategoriesService) {}
 
+    @Get("")
+    @Public()
+    getAllCategories() {
+        return this.categoriesService.getAllCategories();
+    }
+
     @Get(":collectionId")
     @Public()
     getCategoriesByCollectionId(@Param("collectionId") collectionId: string) {

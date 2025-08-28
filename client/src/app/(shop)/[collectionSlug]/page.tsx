@@ -1,9 +1,45 @@
+import type { Metadata } from "next";
 import CategoriesSection from "@/features/categories/components/CategoriesSection";
 import { ICollection } from "@/features/collections/types/collections.types";
 import { ErrorWithMessage } from "@/shared/ui/components";
 import ShopTitle from "@/shared/ui/titles/ShopTitle";
 
-export default async function collectionSlug({
+export async function generateMetadata({
+    params,
+}: {
+    params: Promise<{ collectionSlug: string }>;
+}): Promise<Metadata> {
+    const { collectionSlug } = await params;
+    const res = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/shop/collections/${collectionSlug}`,
+        { next: { revalidate: 60 } }
+    );
+
+    if (!res.ok) {
+        return {
+            title: `Колекція ${collectionSlug} – Помилка`,
+            description: "Не вдалося завантажити колекцію",
+        };
+    }
+
+    const collection: ICollection = await res.json();
+
+    return {
+        title: `Колекція "${collection.name}" – Mindset`,
+        description:
+            collection.description ||
+            `Дивіться категорії та товари з колекції ${collectionSlug} від Mindset.`,
+        openGraph: {
+            title: `Колекція "${collection.name}" – Mindset`,
+            description: collection.description,
+            images: collection.banner ? [collection.banner] : [],
+            type: "website",
+            locale: "uk_UA",
+        },
+    };
+}
+
+export default async function CollectionPage({
     params,
 }: {
     params: Promise<{ collectionSlug: string }>;
@@ -16,7 +52,7 @@ export default async function collectionSlug({
     try {
         const res = await fetch(
             `${process.env.NEXT_PUBLIC_API_URL}/shop/collections/${collectionSlug}`,
-            { next: { revalidate: 10 } }
+            { next: { revalidate: 60 } }
         );
 
         if (!res.ok) {
@@ -44,8 +80,8 @@ export default async function collectionSlug({
     return (
         <div className="flex flex-col gap-[50px] mt-[30px]">
             <ShopTitle
-                title={`Категорії ${collectionSlug}`}
-                subtitle={`Categories ${collectionSlug}`}
+                title={`Категорії ${collection?.name || collectionSlug}`}
+                subtitle={`Categories ${collection?.name || collectionSlug}`}
             />
             <CategoriesSection
                 collectionPath={collectionSlug}

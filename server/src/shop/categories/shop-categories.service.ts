@@ -10,6 +10,26 @@ import { PrismaService } from "src/prisma/prisma.service";
 export class ShopCategoriesService {
     constructor(private readonly prisma: PrismaService) {}
 
+    async getAllCategories() {
+        try {
+            const categories = await this.prisma.category.findMany({
+                include: {
+                    collection: true,
+                },
+            });
+
+            if (!categories) throw new NotFoundException("Категорій не знайдено");
+
+            return categories;
+        } catch (error) {
+            console.error("Помилка отримання категорій:", error);
+            if (error instanceof HttpException) {
+                throw error;
+            }
+            throw new InternalServerErrorException("Помилка сервера при отриманні категорій");
+        }
+    }
+
     async getCategoriesByCollectionId(collectionId: string) {
         try {
             const categories = await this.prisma.category.findMany({

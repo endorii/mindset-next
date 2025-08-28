@@ -3,6 +3,42 @@ import ProductsSection from "@/features/products/components/ProductsSection";
 import { ErrorWithMessage } from "@/shared/ui/components";
 import ShopTitle from "@/shared/ui/titles/ShopTitle";
 
+export async function generateMetadata({
+    params,
+}: {
+    params: Promise<{ collectionSlug: string; categorySlug: string }>;
+}) {
+    const { collectionSlug, categorySlug } = await params;
+
+    const res = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/shop/categories/${collectionSlug}/${categorySlug}`,
+        { next: { revalidate: 60 } }
+    );
+
+    if (!res.ok) {
+        return {
+            title: `Категорія ${categorySlug} – Помилка`,
+            description: "Не вдалося завантажити категорію",
+        };
+    }
+
+    const category: ICategory = await res.json();
+
+    return {
+        title: `Категорія "${category.name}" | ${collectionSlug} – Mindset`,
+        description:
+            category.description ||
+            `Дивіться товари з категорії ${categorySlug} від Mindset.`,
+        openGraph: {
+            title: `Категорія "${category.name}" | ${collectionSlug} – Mindset`,
+            description: category.description,
+            images: category.banner ? [category.banner] : [],
+            type: "website",
+            locale: "uk_UA",
+        },
+    };
+}
+
 export default async function CategoryPage({
     params,
 }: {

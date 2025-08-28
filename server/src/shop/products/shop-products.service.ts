@@ -10,6 +10,28 @@ import { PrismaService } from "src/prisma/prisma.service";
 export class ProductsService {
     constructor(private readonly prisma: PrismaService) {}
 
+    async getAllProducts() {
+        try {
+            const products = await this.prisma.product.findMany({
+                include: {
+                    category: {
+                        include: {
+                            collection: true,
+                        },
+                    },
+                },
+            });
+
+            return products;
+        } catch (error) {
+            console.error("Помилка отримання товарів:", error);
+            if (error instanceof HttpException) {
+                throw error;
+            }
+            throw new InternalServerErrorException("Не вдалося отримати товари");
+        }
+    }
+
     async getProductsByCategoryId(categoryId: string) {
         try {
             const products = await this.prisma.product.findMany({

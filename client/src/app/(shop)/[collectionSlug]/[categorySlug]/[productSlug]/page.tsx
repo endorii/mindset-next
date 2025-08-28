@@ -9,6 +9,46 @@ import { ErrorWithMessage } from "@/shared/ui/components";
 import { IProduct } from "@/features/products/types/products.types";
 import ProductSection from "@/features/products/components/ProductSection";
 
+export async function generateMetadata({
+    params,
+}: {
+    params: Promise<{
+        collectionSlug: string;
+        categorySlug: string;
+        productSlug: string;
+    }>;
+}) {
+    const { collectionSlug, categorySlug, productSlug } = await params;
+
+    const res = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/shop/products/${collectionSlug}/${categorySlug}/${productSlug}`,
+        { next: { revalidate: 60 } }
+    );
+
+    if (!res.ok) {
+        return {
+            title: `Товар ${productSlug} – Помилка`,
+            description: "Не вдалося завантажити товар",
+        };
+    }
+
+    const product: IProduct = await res.json();
+
+    return {
+        title: `"${product.name}" | ${categorySlug} | ${collectionSlug} – Mindset`,
+        description:
+            product.description ||
+            `Дивіться товар з колекції ${categorySlug} від Mindset.`,
+        openGraph: {
+            title: `"${product.name}" | ${categorySlug} | ${collectionSlug} – Mindset`,
+            description: product.description,
+            images: product.banner ? [product.banner] : [],
+            type: "website",
+            locale: "uk_UA",
+        },
+    };
+}
+
 export default async function ProductPage({
     params,
 }: {

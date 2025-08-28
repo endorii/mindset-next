@@ -6,6 +6,12 @@ import { Public } from "src/auth/decorators/public.decorator";
 export class ShopProductsController {
     constructor(private readonly productsService: ProductsService) {}
 
+    @Get()
+    @Public()
+    getAllProducts() {
+        return this.productsService.getAllProducts();
+    }
+
     @Get("popular")
     @Public()
     getPopularProducts() {
