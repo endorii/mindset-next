@@ -1,26 +1,26 @@
 import {
-    Controller,
-    Post,
     Body,
-    ValidationPipe,
+    Controller,
+    Delete,
     Get,
     Param,
-    Delete,
     Patch,
-    UseGuards,
+    Post,
     Req,
+    UseGuards,
+    ValidationPipe,
 } from "@nestjs/common";
-import { CreateColorDto } from "./dto/create-color.dto";
-import { AdminColorsService } from "./admin-colors.service";
-import { UpdateColorDto } from "./dto/update-color.dto";
-import { Roles } from "src/auth/decorators/roles.decorator";
 import { Role } from "generated/prisma";
-import { JwtAuthGuard } from "src/auth/guards/jwt-auth/jwt-auth.guard";
+import { Roles } from "src/auth/decorators/roles.decorator";
+import { JwtAccessGuard } from "src/auth/guards/jwt/jwt-access.guard";
 import { RolesGuard } from "src/auth/guards/roles/roles.guard";
-import { AuthenticatedRequestUser } from "src/auth/types/auth-request-user.type";
+import { AuthenticatedRequestUser } from "src/auth/interfaces/auth-request-user";
+import { AdminColorsService } from "./admin-colors.service";
+import { CreateColorDto } from "./dto/create-color.dto";
+import { UpdateColorDto } from "./dto/update-color.dto";
 
 @Controller("admin/colors")
-@UseGuards(JwtAuthGuard, RolesGuard)
+@UseGuards(JwtAccessGuard, RolesGuard)
 export class AdminColorsController {
     constructor(private readonly adminColorsService: AdminColorsService) {}
 

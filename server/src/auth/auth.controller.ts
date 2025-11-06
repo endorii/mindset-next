@@ -1,11 +1,11 @@
-import { Body, Controller, Get, Post, Req, UseGuards, Res, Query } from "@nestjs/common";
-import { AuthService } from "./auth.service";
+import { Body, Controller, Get, Post, Query, Req, Res, UseGuards } from "@nestjs/common";
+import { Request, Response } from "express";
 import { CreateUserDto } from "../shop/user/dto/create-user.dto";
+import { AuthService } from "./auth.service";
+import { Public } from "./decorators/public.decorator";
 import { LocalAuthGuard } from "./guards/local-auth/local-auth.guard";
 import { RefreshAuthGuard } from "./guards/refresh-auth/refresh-auth.guard";
-import { Public } from "./decorators/public.decorator";
-import { Request, Response } from "express";
-import { AuthenticatedRequestUser } from "./types/auth-request-user.type";
+import { AuthenticatedRequestUser } from "./interfaces/auth-request-user";
 
 @Controller("auth")
 export class AuthController {
@@ -47,7 +47,7 @@ export class AuthController {
         @Req() req: Request & { user: AuthenticatedRequestUser },
         @Res({ passthrough: true }) res: Response
     ) {
-        return this.authService.refreshToken(req.user.id, req.user.name, res);
+        return this.authService.refreshToken(req.user.id, res);
     }
 
     @Public()

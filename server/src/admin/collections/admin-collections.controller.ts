@@ -1,17 +1,17 @@
-import { Controller, Post, Body, Param, Patch, Delete, UseGuards, Req } from "@nestjs/common";
+import { Body, Controller, Delete, Param, Patch, Post, Req, UseGuards } from "@nestjs/common";
 
 import { CreateCollectionDto } from "./dto/create-collection.dto";
 import { UpdateCollectionDto } from "./dto/update-collection.dto";
 
-import { Roles } from "src/auth/decorators/roles.decorator";
-import { RolesGuard } from "src/auth/guards/roles/roles.guard";
-import { JwtAuthGuard } from "src/auth/guards/jwt-auth/jwt-auth.guard";
 import { Role } from "generated/prisma";
-import { AuthenticatedRequestUser } from "src/auth/types/auth-request-user.type";
+import { Roles } from "src/auth/decorators/roles.decorator";
+import { JwtAccessGuard } from "src/auth/guards/jwt/jwt-access.guard";
+import { RolesGuard } from "src/auth/guards/roles/roles.guard";
+import { AuthenticatedRequestUser } from "src/auth/interfaces/auth-request-user";
 import { AdminCollectionsService } from "./admin-collections.service";
 
 @Controller("admin/collections")
-@UseGuards(JwtAuthGuard, RolesGuard)
+@UseGuards(JwtAccessGuard, RolesGuard)
 export class AdminCollectionsController {
     constructor(private readonly collectionsService: AdminCollectionsService) {}
 

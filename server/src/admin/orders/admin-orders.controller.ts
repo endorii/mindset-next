@@ -1,14 +1,14 @@
-import { Controller, Get, Body, Param, Delete, UseGuards, Patch, Req } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Param, Patch, Req, UseGuards } from "@nestjs/common";
+import { Role } from "generated/prisma";
+import { Roles } from "src/auth/decorators/roles.decorator";
+import { JwtAccessGuard } from "src/auth/guards/jwt/jwt-access.guard";
+import { RolesGuard } from "src/auth/guards/roles/roles.guard";
+import { AuthenticatedRequestUser } from "src/auth/interfaces/auth-request-user";
 import { AdminOrdersService } from "./admin-orders.service";
 import { UpdateOrderDto } from "./dto/update-order.dto";
-import { JwtAuthGuard } from "src/auth/guards/jwt-auth/jwt-auth.guard";
-import { RolesGuard } from "src/auth/guards/roles/roles.guard";
-import { Roles } from "src/auth/decorators/roles.decorator";
-import { Role } from "generated/prisma";
-import { AuthenticatedRequestUser } from "src/auth/types/auth-request-user.type";
 
 @Controller("admin/orders")
-@UseGuards(JwtAuthGuard, RolesGuard)
+@UseGuards(JwtAccessGuard, RolesGuard)
 export class AdminOrdersController {
     constructor(private readonly adminOrdersService: AdminOrdersService) {}
 

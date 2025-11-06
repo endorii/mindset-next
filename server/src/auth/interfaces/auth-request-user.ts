@@ -1,7 +1,7 @@
 import { Role } from "generated/prisma";
 
-export type AuthenticatedRequestUser = {
+export interface AuthenticatedRequestUser {
     id: string;
-    name: string;
+    email: string;
     role: Role;
-};
+}

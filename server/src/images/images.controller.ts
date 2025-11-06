@@ -1,27 +1,27 @@
 import {
+    BadRequestException,
+    Body,
     Controller,
+    Delete,
+    NotFoundException,
     Post,
+    Query,
     UploadedFile,
     UploadedFiles,
-    UseInterceptors,
-    BadRequestException,
-    Delete,
-    Query,
-    NotFoundException,
-    Body,
     UseGuards,
+    UseInterceptors,
 } from "@nestjs/common";
 import { FileInterceptor, FilesInterceptor } from "@nestjs/platform-express";
 import * as fs from "fs";
 import { Role } from "generated/prisma";
 import * as path from "path";
 import { Roles } from "src/auth/decorators/roles.decorator";
-import { JwtAuthGuard } from "src/auth/guards/jwt-auth/jwt-auth.guard";
+import { JwtAccessGuard } from "src/auth/guards/jwt/jwt-access.guard";
 import { RolesGuard } from "src/auth/guards/roles/roles.guard";
 import { imageFileFilter, imageStorage } from "src/multer.config";
 
 @Controller("upload")
-@UseGuards(JwtAuthGuard, RolesGuard)
+@UseGuards(JwtAccessGuard, RolesGuard)
 export class ImagesController {
     @Post("image")
     @Roles(Role.ADMIN)

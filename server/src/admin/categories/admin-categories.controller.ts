@@ -1,15 +1,15 @@
-import { Controller, Param, Post, Body, Delete, Patch, UseGuards, Req } from "@nestjs/common";
+import { Body, Controller, Delete, Param, Patch, Post, Req, UseGuards } from "@nestjs/common";
+import { Role } from "generated/prisma";
+import { Roles } from "src/auth/decorators/roles.decorator";
+import { JwtAccessGuard } from "src/auth/guards/jwt/jwt-access.guard";
+import { RolesGuard } from "src/auth/guards/roles/roles.guard";
+import { AuthenticatedRequestUser } from "src/auth/interfaces/auth-request-user";
 import { AdminCategoriesService } from "./admin-categories.service";
 import { CreateCategoryDto } from "./dto/create-category.dto";
 import { UpdateCategoryDto } from "./dto/update-category.dto";
-import { JwtAuthGuard } from "src/auth/guards/jwt-auth/jwt-auth.guard";
-import { RolesGuard } from "src/auth/guards/roles/roles.guard";
-import { Roles } from "src/auth/decorators/roles.decorator";
-import { Role } from "generated/prisma";
-import { AuthenticatedRequestUser } from "src/auth/types/auth-request-user.type";
 
 @Controller("admin/categories")
-@UseGuards(JwtAuthGuard, RolesGuard)
+@UseGuards(JwtAccessGuard, RolesGuard)
 export class AdminCategoriesController {
     constructor(private readonly categoriesService: AdminCategoriesService) {}
 

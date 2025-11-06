@@ -1,14 +1,14 @@
 import { Body, Controller, Delete, Patch, Req, UseGuards } from "@nestjs/common";
-import { ShopUserService } from "./shop-user.service";
-import { Roles } from "src/auth/decorators/roles.decorator";
-import { UpdateUserDto } from "./dto/update-user.dto";
 import { Role } from "generated/prisma";
-import { JwtAuthGuard } from "src/auth/guards/jwt-auth/jwt-auth.guard";
+import { Roles } from "src/auth/decorators/roles.decorator";
+import { JwtAccessGuard } from "src/auth/guards/jwt/jwt-access.guard";
 import { RolesGuard } from "src/auth/guards/roles/roles.guard";
-import { AuthenticatedRequestUser } from "src/auth/types/auth-request-user.type";
+import { AuthenticatedRequestUser } from "src/auth/interfaces/auth-request-user";
+import { UpdateUserDto } from "./dto/update-user.dto";
+import { ShopUserService } from "./shop-user.service";
 
 @Controller("shop/users")
-@UseGuards(JwtAuthGuard, RolesGuard)
+@UseGuards(JwtAccessGuard, RolesGuard)
 export class ShopUserController {
     constructor(private readonly shopUserService: ShopUserService) {}
 

@@ -1,26 +1,26 @@
 import {
-    Controller,
-    Get,
-    Post,
     Body,
-    ValidationPipe,
+    Controller,
     Delete,
+    Get,
     Param,
     Patch,
-    UseGuards,
+    Post,
     Req,
+    UseGuards,
+    ValidationPipe,
 } from "@nestjs/common";
+import { Role } from "generated/prisma";
+import { Roles } from "src/auth/decorators/roles.decorator";
+import { JwtAccessGuard } from "src/auth/guards/jwt/jwt-access.guard";
+import { RolesGuard } from "src/auth/guards/roles/roles.guard";
+import { AuthenticatedRequestUser } from "src/auth/interfaces/auth-request-user";
 import { AdminSizesService } from "./admin-sizes.service";
 import { CreateSizeDto } from "./dto/create-size.dto";
 import { UpdateSizeDto } from "./dto/update-size.dto";
-import { Roles } from "src/auth/decorators/roles.decorator";
-import { Role } from "generated/prisma";
-import { JwtAuthGuard } from "src/auth/guards/jwt-auth/jwt-auth.guard";
-import { RolesGuard } from "src/auth/guards/roles/roles.guard";
-import { AuthenticatedRequestUser } from "src/auth/types/auth-request-user.type";
 
 @Controller("admin/sizes")
-@UseGuards(JwtAuthGuard, RolesGuard)
+@UseGuards(JwtAccessGuard, RolesGuard)
 export class AdminSizesController {
     constructor(private readonly adminSizesService: AdminSizesService) {}
 

@@ -1,28 +1,22 @@
 import { Module } from "@nestjs/common";
-import { AuthService } from "./auth.service";
-import { AuthController } from "./auth.controller";
-import { ShopUserService } from "src/shop/user/shop-user.service";
-import { PrismaService } from "src/prisma/prisma.service";
-import { LocalStrategy } from "./strategies/local.strategy";
-import { JwtModule } from "@nestjs/jwt";
-import jwtConfig from "./config/jwt.config";
-import { ConfigModule } from "@nestjs/config";
-import { JwtStrategy } from "./strategies/jwt.strategy";
-import refreshConfig from "./config/refresh.config";
-import { RefreshStrategy } from "./strategies/refresh-token.strategy";
+import { ConfigModule, ConfigService } from "@nestjs/config";
 import { APP_GUARD } from "@nestjs/core";
-import { JwtAuthGuard } from "./guards/jwt-auth/jwt-auth.guard";
-import { RolesGuard } from "./guards/roles/roles.guard";
+import { JwtService } from "@nestjs/jwt";
+import { PassportModule } from "@nestjs/passport";
 import { EmailModule } from "src/email/email.module";
+import { PrismaService } from "src/prisma/prisma.service";
+import { ShopUserService } from "src/shop/user/shop-user.service";
+import { AuthController } from "./auth.controller";
+import { AuthService } from "./auth.service";
 import { CleanupService } from "./clean-up.service";
+import { JwtAccessGuard } from "./guards/jwt/jwt-access.guard";
+import { RolesGuard } from "./guards/roles/roles.guard";
+import { JwtAccessStrategy } from "./strategies/jwt-access.strategy";
+import { JwtRefreshStrategy } from "./strategies/jwt-refresh.strategy";
+import { LocalStrategy } from "./strategies/local.strategy";
 
 @Module({
-    imports: [
-        JwtModule.registerAsync(jwtConfig.asProvider()),
-        ConfigModule.forFeature(jwtConfig),
-        ConfigModule.forFeature(refreshConfig),
-        EmailModule,
-    ],
+    imports: [ConfigModule, PassportModule, EmailModule],
     controllers: [AuthController],
     providers: [
         AuthService,
@@ -30,16 +24,38 @@ import { CleanupService } from "./clean-up.service";
         ShopUserService,
         PrismaService,
         LocalStrategy,
-        JwtStrategy,
-        RefreshStrategy,
+        JwtAccessStrategy,
+        JwtRefreshStrategy,
         {
             provide: APP_GUARD,
-            useClass: JwtAuthGuard,
+            useClass: JwtAccessGuard,
         },
         {
             provide: APP_GUARD,
             useClass: RolesGuard,
         },
+        {
+            provide: "JWT_ACCESS_SERVICE",
+            useFactory: (config: ConfigService) => {
+                return new JwtService({
+                    secret: config.get<string>("ACCESS_TOKEN_SECRET"),
+                    signOptions: { expiresIn: config.get<string>("ACCESS_TOKEN_EXPIRES") || "15m" },
+                });
+            },
+            inject: [ConfigService],
+        },
+
+        {
+            provide: "JWT_REFRESH_SERVICE",
+            useFactory: (config: ConfigService) => {
+                return new JwtService({
+                    secret: config.get<string>("REFRESH_TOKEN_SECRET"),
+                    signOptions: { expiresIn: config.get<string>("REFRESH_TOKEN_EXPIRES") || "7d" },
+                });
+            },
+            inject: [ConfigService],
+        },
     ],
+    exports: ["JWT_ACCESS_SERVICE", "JWT_REFRESH_SERVICE"],
 })
 export class AuthModule {}

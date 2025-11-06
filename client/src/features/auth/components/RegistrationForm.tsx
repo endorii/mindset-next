@@ -28,6 +28,7 @@ function RegistrationForm() {
         try {
             await registerUserMutation.mutateAsync({
                 ...data,
+                isVerified: false,
             });
             setRegisterMessage(
                 "Реєстрація успішна! Повідомлення з підтвердженням надіслано на вашу пошту"

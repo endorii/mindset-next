@@ -1,15 +1,15 @@
-import { Controller, Get, Post, Body, Param, Delete, Req, UseGuards } from "@nestjs/common";
-import { ShopReviewsService } from "./shop-reviews.service";
-import { CreateReviewDto } from "./dto/create-review.dto";
-import { AuthenticatedRequestUser } from "src/auth/types/auth-request-user.type";
-import { JwtAuthGuard } from "src/auth/guards/jwt-auth/jwt-auth.guard";
-import { RolesGuard } from "src/auth/guards/roles/roles.guard";
+import { Body, Controller, Delete, Get, Param, Post, Req, UseGuards } from "@nestjs/common";
+import { Role } from "generated/prisma";
 import { Public } from "src/auth/decorators/public.decorator";
 import { Roles } from "src/auth/decorators/roles.decorator";
-import { Role } from "generated/prisma";
+import { JwtAccessGuard } from "src/auth/guards/jwt/jwt-access.guard";
+import { RolesGuard } from "src/auth/guards/roles/roles.guard";
+import { AuthenticatedRequestUser } from "src/auth/interfaces/auth-request-user";
+import { CreateReviewDto } from "./dto/create-review.dto";
+import { ShopReviewsService } from "./shop-reviews.service";
 
 @Controller("shop/reviews")
-@UseGuards(JwtAuthGuard, RolesGuard)
+@UseGuards(JwtAccessGuard, RolesGuard)
 export class ShopReviewsController {
     constructor(private readonly shopReviewsService: ShopReviewsService) {}
 

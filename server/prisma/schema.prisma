@@ -77,19 +77,6 @@ model Order {
   items OrderItem[]
 }
 
-enum PaymentMethod {
-  mono
-  liqpay
-}
-
-enum PaymentStatus {
-  pending
-  processing
-  success
-  failure
-  expired
-}
-
 model OrderItem {
   id       String @id @default(uuid())
   quantity Int
@@ -310,4 +297,17 @@ enum TodoPriority {
   low
   medium
   high
+}
+
+enum PaymentMethod {
+  mono
+  liqpay
+}
+
+enum PaymentStatus {
+  pending
+  processing
+  success
+  failure
+  expired
 }

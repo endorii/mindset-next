@@ -1,16 +1,16 @@
-import { Controller, Get, Post, Body, UseGuards, Req } from "@nestjs/common";
-import { ShopOrdersService } from "./shop-orders.service";
+import { Body, Controller, Get, Post, Req, UseGuards } from "@nestjs/common";
+import { Role } from "generated/prisma";
+import { Public } from "src/auth/decorators/public.decorator";
+import { Roles } from "src/auth/decorators/roles.decorator";
+import { JwtAccessGuard } from "src/auth/guards/jwt/jwt-access.guard";
+import { RolesGuard } from "src/auth/guards/roles/roles.guard";
+import { AuthenticatedRequestUser } from "src/auth/interfaces/auth-request-user";
 import { CreateOrderDto } from "./dto/create-order.dto";
 import {} from "./dto/update-order.dto";
-import { JwtAuthGuard } from "src/auth/guards/jwt-auth/jwt-auth.guard";
-import { RolesGuard } from "src/auth/guards/roles/roles.guard";
-import { Roles } from "src/auth/decorators/roles.decorator";
-import { Role } from "generated/prisma";
-import { AuthenticatedRequestUser } from "src/auth/types/auth-request-user.type";
-import { Public } from "src/auth/decorators/public.decorator";
+import { ShopOrdersService } from "./shop-orders.service";
 
 @Controller("shop/orders")
-@UseGuards(JwtAuthGuard, RolesGuard)
+@UseGuards(JwtAccessGuard, RolesGuard)
 export class ShopOrdersController {
     constructor(private readonly shopOrdersService: ShopOrdersService) {}
 

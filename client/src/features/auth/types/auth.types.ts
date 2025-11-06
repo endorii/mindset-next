@@ -16,6 +16,7 @@ export interface CreateUserDto {
     password: string;
     rules: boolean;
     offers: boolean;
+    isVerified: boolean;
 }
 
 export interface IAuthResponse {

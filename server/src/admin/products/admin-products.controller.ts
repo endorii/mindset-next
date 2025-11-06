@@ -1,15 +1,15 @@
-import { Controller, Body, Param, Post, Delete, Patch, UseGuards, Req } from "@nestjs/common";
+import { Body, Controller, Delete, Param, Patch, Post, Req, UseGuards } from "@nestjs/common";
+import { Role } from "generated/prisma";
+import { Roles } from "src/auth/decorators/roles.decorator";
+import { JwtAccessGuard } from "src/auth/guards/jwt/jwt-access.guard";
+import { RolesGuard } from "src/auth/guards/roles/roles.guard";
+import { AuthenticatedRequestUser } from "src/auth/interfaces/auth-request-user";
 import { AdminProductsService } from "./admin-products.service";
 import { CreateProductDto } from "./dto/create-product.dto";
 import { UpdateProductDto } from "./dto/update-product.dto";
-import { JwtAuthGuard } from "src/auth/guards/jwt-auth/jwt-auth.guard";
-import { RolesGuard } from "src/auth/guards/roles/roles.guard";
-import { Roles } from "src/auth/decorators/roles.decorator";
-import { Role } from "generated/prisma";
-import { AuthenticatedRequestUser } from "src/auth/types/auth-request-user.type";
 
 @Controller("admin/products")
-@UseGuards(JwtAuthGuard, RolesGuard)
+@UseGuards(JwtAccessGuard, RolesGuard)
 export class AdminProductsController {
     constructor(private readonly adminProductsService: AdminProductsService) {}
 
