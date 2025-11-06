@@ -1,53 +1,29 @@
-import { ServerResponseWithMessage } from "@/shared/interfaces/interfaces";
-import { ICategory } from "../types/categories.types";
+import { http, httpAuth } from "@/features/auth/api/axiosInstances";
 import { ICollection } from "@/features/collections/types/collections.types";
-
-const API_BASE_URL = "http://localhost:5000/api";
+import { ServerResponseWithMessage } from "@/shared/interfaces/interfaces";
+import { AxiosError } from "axios";
+import { ICategory } from "../types/categories.types";
 
 export async function fetchCategoryByPath(
     collectionPath: ICollection["path"],
     categoryPath: ICategory["path"]
 ): Promise<ICategory> {
     try {
-        const response = await fetch(
-            `${API_BASE_URL}/shop/categories/${collectionPath}/${categoryPath}`
+        const { data } = await http.get<ICategory>(
+            `/shop/categories/${collectionPath}/${categoryPath}`
         );
-
-        const text = await response.text();
-        const parsedData = text ? JSON.parse(text) : {};
-
-        if (!response.ok) {
-            const error: any = new Error(
-                parsedData.message || `Помилка ${parsedData.statusCode || response.status}`
-            );
-            error.status = parsedData.statusCode || response.status;
-            throw error;
-        }
-
-        return parsedData;
-    } catch (error: any) {
-        throw error;
+        return data;
+    } catch (error: unknown) {
+        handleAxiosError(error);
     }
 }
 
 export async function fetchGetCategoriesByCollectionId(collectionId: string): Promise<ICategory[]> {
     try {
-        const response = await fetch(`${API_BASE_URL}/shop/categories/${collectionId}`);
-
-        const text = await response.text();
-        const parsedData = text ? JSON.parse(text) : {};
-
-        if (!response.ok) {
-            const error: any = new Error(
-                parsedData.message || `Помилка ${parsedData.statusCode || response.status}`
-            );
-            error.status = parsedData.statusCode || response.status;
-            throw error;
-        }
-
-        return parsedData;
-    } catch (error: any) {
-        throw error;
+        const { data } = await http.get<ICategory[]>(`/shop/categories/${collectionId}`);
+        return data;
+    } catch (error: unknown) {
+        handleAxiosError(error);
     }
 }
 
@@ -55,29 +31,13 @@ export async function addCategoryToCollection(
     categoryData: ICategory
 ): Promise<ServerResponseWithMessage<ICategory>> {
     try {
-        const response = await fetch(`${API_BASE_URL}/admin/categories`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            credentials: "include",
-            body: JSON.stringify(categoryData),
-        });
-
-        const text = await response.text();
-        const parsedData = text ? JSON.parse(text) : {};
-
-        if (!response.ok) {
-            const error: any = new Error(
-                parsedData.message || `Помилка ${parsedData.statusCode || response.status}`
-            );
-            error.status = parsedData.statusCode || response.status;
-            throw error;
-        }
-
-        return parsedData;
-    } catch (error: any) {
-        throw error;
+        const { data } = await httpAuth.post<ServerResponseWithMessage<ICategory>>(
+            `/admin/categories`,
+            categoryData
+        );
+        return data;
+    } catch (error: unknown) {
+        handleAxiosError(error);
     }
 }
 
@@ -86,52 +46,34 @@ export async function editCategory(
     data: Partial<ICategory>
 ): Promise<ServerResponseWithMessage<ICategory>> {
     try {
-        const response = await fetch(`${API_BASE_URL}/admin/categories/${categoryId}`, {
-            method: "PATCH",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            credentials: "include",
-            body: JSON.stringify(data),
-        });
-
-        const text = await response.text();
-        const parsedData = text ? JSON.parse(text) : {};
-
-        if (!response.ok) {
-            const error: any = new Error(
-                parsedData.message || `Помилка ${parsedData.statusCode || response.status}`
-            );
-            error.status = parsedData.statusCode || response.status;
-            throw error;
-        }
-
-        return parsedData;
-    } catch (error: any) {
-        throw error;
+        const { data: responseData } = await httpAuth.patch<ServerResponseWithMessage<ICategory>>(
+            `/admin/categories/${categoryId}`,
+            data
+        );
+        return responseData;
+    } catch (error: unknown) {
+        handleAxiosError(error);
     }
 }
 
 export async function deleteCategory(categoryId: string): Promise<ServerResponseWithMessage> {
     try {
-        const response = await fetch(`${API_BASE_URL}/admin/categories/${categoryId}`, {
-            method: "DELETE",
-            credentials: "include",
-        });
-
-        const text = await response.text();
-        const parsedData = text ? JSON.parse(text) : {};
-
-        if (!response.ok) {
-            const error: any = new Error(
-                parsedData.message || `Помилка ${parsedData.statusCode || response.status}`
-            );
-            error.status = parsedData.statusCode || response.status;
-            throw error;
-        }
-
-        return parsedData;
-    } catch (error: any) {
-        throw error;
+        const { data } = await httpAuth.delete<ServerResponseWithMessage>(
+            `/admin/categories/${categoryId}`
+        );
+        return data;
+    } catch (error: unknown) {
+        handleAxiosError(error);
     }
+}
+
+function handleAxiosError(error: unknown): never {
+    if (error instanceof AxiosError) {
+        const message = error.response?.data?.message || error.message;
+        const status = error.response?.status;
+        const err: any = new Error(message);
+        if (status) err.status = status;
+        throw err;
+    }
+    throw error;
 }

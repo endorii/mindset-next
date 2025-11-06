@@ -1,137 +1,65 @@
+import { http, httpAuth } from "@/features/auth/api/axiosInstances";
 import { ServerResponseWithMessage } from "@/shared/interfaces/interfaces";
+import { AxiosError } from "axios";
 import { ICollection } from "../types/collections.types";
 
 export async function fetchCollections(): Promise<ICollection[]> {
     try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/shop/collections`);
-
-        const text = await response.text();
-        const parsedData = text ? JSON.parse(text) : {};
-
-        if (!response.ok) {
-            const error: any = new Error(
-                parsedData.message || `Помилка ${parsedData.statusCode || response.status}`
-            );
-            error.status = parsedData.statusCode || response.status;
-            throw error;
-        }
-
-        return parsedData;
-    } catch (error: any) {
-        throw error;
+        const { data } = await http.get("/shop/collections");
+        return data;
+    } catch (error: unknown) {
+        handleAxiosError(error);
     }
 }
 
 export async function fetchGetCollectionByPath(collectionPath: string): Promise<ICollection> {
     try {
-        const response = await fetch(
-            `${process.env.NEXT_PUBLIC_API_URL}/shop/collections/${collectionPath}`
-        );
-
-        const text = await response.text();
-        const parsedData = text ? JSON.parse(text) : {};
-
-        if (!response.ok) {
-            const error: any = new Error(
-                parsedData.message || `Помилка ${parsedData.statusCode || response.status}`
-            );
-            error.status = parsedData.statusCode || response.status;
-            throw error;
-        }
-
-        return parsedData;
-    } catch (error: any) {
-        throw error;
+        const { data } = await http.get(`/shop/collections/${collectionPath}`);
+        return data;
+    } catch (error: unknown) {
+        handleAxiosError(error);
     }
 }
 
 export async function createCollection(
-    data: ICollection
+    collectionData: ICollection
 ): Promise<ServerResponseWithMessage<ICollection>> {
     try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/admin/collections`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            credentials: "include",
-            body: JSON.stringify(data),
-        });
-
-        const text = await response.text();
-        const parsedData = text ? JSON.parse(text) : {};
-
-        if (!response.ok) {
-            const error: any = new Error(
-                parsedData.message || `Помилка ${parsedData.statusCode || response.status}`
-            );
-            error.status = parsedData.statusCode || response.status;
-            throw error;
-        }
-
-        return parsedData;
-    } catch (error: any) {
-        throw error;
+        const { data } = await httpAuth.post("/admin/collections", collectionData);
+        return data;
+    } catch (error: unknown) {
+        handleAxiosError(error);
     }
 }
 
 export async function editCollection(
     collectionId: string,
-    data: Partial<ICollection>
+    collectionData: Partial<ICollection>
 ): Promise<ServerResponseWithMessage<ICollection>> {
     try {
-        const response = await fetch(
-            `${process.env.NEXT_PUBLIC_API_URL}/admin/collections/${collectionId}`,
-            {
-                method: "PATCH",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                credentials: "include",
-                body: JSON.stringify(data),
-            }
-        );
-
-        const text = await response.text();
-        const parsedData = text ? JSON.parse(text) : {};
-
-        if (!response.ok) {
-            const error: any = new Error(
-                parsedData.message || `Помилка ${parsedData.statusCode || response.status}`
-            );
-            error.status = parsedData.statusCode || response.status;
-            throw error;
-        }
-
-        return parsedData;
-    } catch (error: any) {
-        throw error;
+        const { data } = await httpAuth.patch(`admin/collections/${collectionId}`, collectionData);
+        return data;
+    } catch (error: unknown) {
+        handleAxiosError(error);
     }
 }
 
 export async function deleteCollection(collectionId: string): Promise<ServerResponseWithMessage> {
     try {
-        const response = await fetch(
-            `${process.env.NEXT_PUBLIC_API_URL}/admin/collections/${collectionId}`,
-            {
-                method: "DELETE",
-                credentials: "include",
-            }
-        );
-
-        const text = await response.text();
-        const parsedData = text ? JSON.parse(text) : {};
-
-        if (!response.ok) {
-            const error: any = new Error(
-                parsedData.message || `Помилка ${parsedData.statusCode || response.status}`
-            );
-            error.status = parsedData.statusCode || response.status;
-            throw error;
-        }
-
-        return parsedData;
-    } catch (error: any) {
-        throw error;
+        const { data } = await httpAuth.delete(`admin/collections/${collectionId}`);
+        return data;
+    } catch (error: unknown) {
+        handleAxiosError(error);
     }
+}
+
+function handleAxiosError(error: unknown): never {
+    if (error instanceof AxiosError) {
+        const message = error.response?.data?.message || error.message;
+        const status = error.response?.status;
+        const err: any = new Error(message);
+        if (status) err.status = status;
+        throw err;
+    }
+    throw error;
 }

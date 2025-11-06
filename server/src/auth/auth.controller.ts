@@ -3,8 +3,8 @@ import { Request, Response } from "express";
 import { CreateUserDto } from "../shop/user/dto/create-user.dto";
 import { AuthService } from "./auth.service";
 import { Public } from "./decorators/public.decorator";
+import { JwtRefreshGuard } from "./guards/jwt/jwt-refresh.guard";
 import { LocalAuthGuard } from "./guards/local-auth/local-auth.guard";
-import { RefreshAuthGuard } from "./guards/refresh-auth/refresh-auth.guard";
 import { AuthenticatedRequestUser } from "./interfaces/auth-request-user";
 
 @Controller("auth")
@@ -41,7 +41,7 @@ export class AuthController {
     }
 
     @Public()
-    @UseGuards(RefreshAuthGuard)
+    @UseGuards(JwtRefreshGuard)
     @Post("refresh")
     refreshToken(
         @Req() req: Request & { user: AuthenticatedRequestUser },

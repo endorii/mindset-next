@@ -1,192 +1,84 @@
 import { IUser } from "@/features/shop/user-info/types/user.types";
-import { fetchWithRefresh } from "@/shared/api/fetchWithRefresh";
-import { CreateUserDto, IAuthResponse, ILoginCredentials } from "../types/auth.types";
 import { ServerResponseWithMessage } from "@/shared/interfaces/interfaces";
-
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api";
+import { AxiosError } from "axios";
+import { CreateUserDto, ILoginCredentials } from "../types/auth.types";
+import { httpAuth } from "./axiosInstances";
 
 export async function registerUser(data: CreateUserDto): Promise<ServerResponseWithMessage> {
     try {
-        const response = await fetch(`${API_BASE_URL}/auth/signup`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify(data),
-            credentials: "include",
-        });
-
-        const text = await response.text();
-        const parsedData = text ? JSON.parse(text) : {};
-
-        if (!response.ok) {
-            const error: any = new Error(
-                parsedData.message || `Помилка ${parsedData.statusCode || response.status}`
-            );
-            error.status = parsedData.statusCode || response.status;
-            throw error;
-        }
-
-        return parsedData;
-    } catch (error: any) {
-        throw error;
+        const { data: response } = await httpAuth.post("/auth/signup", data);
+        return response;
+    } catch (error: unknown) {
+        handleAxiosError(error);
     }
 }
 
 export async function verifyUser(token: string): Promise<ServerResponseWithMessage> {
     try {
-        const response = await fetch(`${API_BASE_URL}/auth/verify?token=${token}`, {
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json",
-            },
-        });
-
-        const data = await response.json();
-
-        if (!response.ok) {
-            const error: any = new Error(data.message || `Помилка ${response.status}`);
-            error.status = response.status;
-            throw error;
-        }
-
+        const { data } = await httpAuth.get(`/auth/verify?token=${token}`);
         return data;
-    } catch (error: any) {
-        throw error;
+    } catch (error: unknown) {
+        handleAxiosError(error);
     }
 }
 
 export async function resendVerifyUser(email: string): Promise<ServerResponseWithMessage> {
     try {
-        const response = await fetch(`${API_BASE_URL}/auth/resend-verification`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ email }),
-        });
-
-        const data = await response.json();
-
-        if (!response.ok) {
-            const error: any = new Error(data.message || `Помилка ${response.status}`);
-            error.status = response.status;
-            throw error;
-        }
-
+        const { data } = await httpAuth.post("/auth/resend-verification", { email });
         return data;
-    } catch (error: any) {
-        throw error;
+    } catch (error: unknown) {
+        handleAxiosError(error);
     }
 }
 
 export async function loginUser(
     credentials: ILoginCredentials
-): Promise<ServerResponseWithMessage<ServerResponseWithMessage>> {
+): Promise<ServerResponseWithMessage> {
     try {
-        const response = await fetch(`${API_BASE_URL}/auth/signin`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify(credentials),
-            credentials: "include",
-        });
-
-        const text = await response.text();
-        const parsedData = text ? JSON.parse(text) : {};
-
-        if (!response.ok) {
-            const error: any = new Error(
-                parsedData.message || `Помилка ${parsedData.statusCode || response.status}`
-            );
-            error.status = parsedData.statusCode || response.status;
-            throw error;
-        }
-
-        return parsedData;
-    } catch (error: any) {
-        throw error;
+        const { data } = await httpAuth.post("/auth/signin", credentials);
+        return data;
+    } catch (error: unknown) {
+        handleAxiosError(error);
     }
 }
 
 export async function currentUser(): Promise<IUser> {
     try {
-        const response = await fetchWithRefresh(`${API_BASE_URL}/auth/me`, {
-            method: "GET",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            credentials: "include",
-        });
-
-        const text = await response.text();
-        const parsedData = text ? JSON.parse(text) : {};
-
-        if (!response.ok) {
-            const error: any = new Error(
-                parsedData.message || `Помилка ${parsedData.statusCode || response.status}`
-            );
-            error.status = parsedData.statusCode || response.status;
-            throw error;
-        }
-
-        return parsedData;
-    } catch (error: any) {
-        throw error;
+        const { data } = await httpAuth.get("/auth/me");
+        return data;
+    } catch (error: unknown) {
+        handleAxiosError(error);
     }
 }
 
-export async function refreshToken(): Promise<IAuthResponse | null> {
+export async function refreshToken(): Promise<{ accessToken: string }> {
     try {
-        const response = await fetch(`${API_BASE_URL}/auth/refresh`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            credentials: "include",
-        });
-
-        if (response.status === 401) {
-            return null; // refresh токен невалідний
-        }
-
-        const text = await response.text();
-        const parsedData = text ? JSON.parse(text) : {};
-
-        if (!response.ok) {
-            throw new Error(parsedData.message || `Помилка ${response.status}`);
-        }
-
-        return parsedData;
-    } catch {
-        return null;
+        const { data } = await httpAuth.post("/auth/refresh");
+        if (!data.accessToken) throw new Error("No access token returned from server");
+        localStorage.setItem("accessToken", data.accessToken);
+        return data;
+    } catch (error: unknown) {
+        handleAxiosError(error);
     }
 }
 
 export async function logoutUser(): Promise<ServerResponseWithMessage> {
     try {
-        const response = await fetch(`${API_BASE_URL}/auth/signout`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            credentials: "include",
-        });
-
-        const text = await response.text();
-        const parsedData = text ? JSON.parse(text) : {};
-
-        if (!response.ok) {
-            const error: any = new Error(
-                parsedData.message || `Помилка ${parsedData.statusCode || response.status}`
-            );
-            error.status = parsedData.statusCode || response.status;
-            throw error;
-        }
-
-        return parsedData;
-    } catch (error: any) {
-        throw error;
+        const { data } = await httpAuth.post("/auth/signout");
+        return data;
+    } catch (error: unknown) {
+        handleAxiosError(error);
     }
+}
+
+// === Внутрішня допоміжна функція для обробки помилок Axios ===
+function handleAxiosError(error: unknown): never {
+    if (error instanceof AxiosError) {
+        const message = error.response?.data?.message || error.message;
+        const status = error.response?.status;
+        const err: any = new Error(message);
+        if (status) err.status = status;
+        throw err;
+    }
+    throw error;
 }

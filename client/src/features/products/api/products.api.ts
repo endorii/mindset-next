@@ -1,28 +1,14 @@
-import { ICategory } from "@/features/categories/types/categories.types";
-import { ICollection } from "@/features/collections/types/collections.types";
-import { IProduct, ICreateProductPayload } from "../types/products.types";
+import { http, httpAuth } from "@/features/auth/api/axiosInstances";
 import { ServerResponseWithMessage } from "@/shared/interfaces/interfaces";
-
-const API_BASE_URL = "http://localhost:5000/api";
+import { AxiosError } from "axios";
+import { ICreateProductPayload, IProduct } from "../types/products.types";
 
 export async function fetchProductsByCategoryId(categoryId: string): Promise<IProduct[]> {
     try {
-        const response = await fetch(`${API_BASE_URL}/shop/products/categories/${categoryId}`);
-
-        const text = await response.text();
-        const parsedData = text ? JSON.parse(text) : {};
-
-        if (!response.ok) {
-            const error: any = new Error(
-                parsedData.message || `Помилка ${parsedData.statusCode || response.status}`
-            );
-            error.status = parsedData.statusCode || response.status;
-            throw error;
-        }
-
-        return parsedData;
-    } catch (error: any) {
-        throw error;
+        const { data } = await http.get<IProduct[]>(`/shop/products/categories/${categoryId}`);
+        return data;
+    } catch (error: unknown) {
+        handleAxiosError(error);
     }
 }
 
@@ -32,66 +18,30 @@ export async function fetchGetProductByPath(
     productPath: string
 ): Promise<IProduct> {
     try {
-        const response = await fetch(
-            `${API_BASE_URL}/shop/products/${collectionPath}/${categoryPath}/${productPath}`
+        const { data } = await http.get<IProduct>(
+            `/shop/products/${collectionPath}/${categoryPath}/${productPath}`
         );
-
-        const text = await response.text();
-        const parsedData = text ? JSON.parse(text) : {};
-
-        if (!response.ok) {
-            const error: any = new Error(
-                parsedData.message || `Помилка ${parsedData.statusCode || response.status}`
-            );
-            error.status = parsedData.statusCode || response.status;
-            throw error;
-        }
-
-        return parsedData;
-    } catch (error: any) {
-        throw error;
+        return data;
+    } catch (error: unknown) {
+        handleAxiosError(error);
     }
 }
 
 export async function fetchPopularProducts(): Promise<IProduct[]> {
     try {
-        const response = await fetch(`${API_BASE_URL}/shop/products/popular`);
-
-        const text = await response.text();
-        const parsedData = text ? JSON.parse(text) : {};
-
-        if (!response.ok) {
-            const error: any = new Error(
-                parsedData.message || `Помилка ${parsedData.statusCode || response.status}`
-            );
-            error.status = parsedData.statusCode || response.status;
-            throw error;
-        }
-
-        return parsedData;
-    } catch (error: any) {
-        throw error;
+        const { data } = await http.get<IProduct[]>(`/shop/products/popular`);
+        return data;
+    } catch (error: unknown) {
+        handleAxiosError(error);
     }
 }
 
 export async function fetchProductsFromSameCollection(collectionPath: string): Promise<IProduct[]> {
     try {
-        const response = await fetch(`${API_BASE_URL}/shop/products/collections/${collectionPath}`);
-
-        const text = await response.text();
-        const parsedData = text ? JSON.parse(text) : {};
-
-        if (!response.ok) {
-            const error: any = new Error(
-                parsedData.message || `Помилка ${parsedData.statusCode || response.status}`
-            );
-            error.status = parsedData.statusCode || response.status;
-            throw error;
-        }
-
-        return parsedData;
-    } catch (error: any) {
-        throw error;
+        const { data } = await http.get<IProduct[]>(`/shop/products/collections/${collectionPath}`);
+        return data;
+    } catch (error: unknown) {
+        handleAxiosError(error);
     }
 }
 
@@ -99,29 +49,13 @@ export async function addProductToCategory(
     productData: ICreateProductPayload
 ): Promise<ServerResponseWithMessage<ICreateProductPayload>> {
     try {
-        const response = await fetch(`${API_BASE_URL}/admin/products`, {
-            method: "POST",
-            credentials: "include",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify(productData),
-        });
-
-        const text = await response.text();
-        const parsedData = text ? JSON.parse(text) : {};
-
-        if (!response.ok) {
-            const error: any = new Error(
-                parsedData.message || `Помилка ${parsedData.statusCode || response.status}`
-            );
-            error.status = parsedData.statusCode || response.status;
-            throw error;
-        }
-
-        return parsedData;
-    } catch (error: any) {
-        throw error;
+        const { data } = await httpAuth.post<ServerResponseWithMessage<ICreateProductPayload>>(
+            `/admin/products`,
+            productData
+        );
+        return data;
+    } catch (error: unknown) {
+        handleAxiosError(error);
     }
 }
 
@@ -130,52 +64,34 @@ export async function editProduct(
     productData: Partial<ICreateProductPayload>
 ): Promise<ServerResponseWithMessage<ICreateProductPayload>> {
     try {
-        const response = await fetch(`${API_BASE_URL}/admin/products/${productId}`, {
-            method: "PATCH",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            credentials: "include",
-            body: JSON.stringify(productData),
-        });
-
-        const text = await response.text();
-        const parsedData = text ? JSON.parse(text) : {};
-
-        if (!response.ok) {
-            const error: any = new Error(
-                parsedData.message || `Помилка ${parsedData.statusCode || response.status}`
-            );
-            error.status = parsedData.statusCode || response.status;
-            throw error;
-        }
-
-        return parsedData;
-    } catch (error: any) {
-        throw error;
+        const { data } = await httpAuth.patch<ServerResponseWithMessage<ICreateProductPayload>>(
+            `/admin/products/${productId}`,
+            productData
+        );
+        return data;
+    } catch (error: unknown) {
+        handleAxiosError(error);
     }
 }
 
 export async function deleteProduct(productId: string): Promise<ServerResponseWithMessage> {
     try {
-        const response = await fetch(`${API_BASE_URL}/admin/products/${productId}`, {
-            method: "DELETE",
-            credentials: "include",
-        });
-
-        const text = await response.text();
-        const parsedData = text ? JSON.parse(text) : {};
-
-        if (!response.ok) {
-            const error: any = new Error(
-                parsedData.message || `Помилка ${parsedData.statusCode || response.status}`
-            );
-            error.status = parsedData.statusCode || response.status;
-            throw error;
-        }
-
-        return parsedData;
-    } catch (error: any) {
-        throw error;
+        const { data } = await httpAuth.delete<ServerResponseWithMessage>(
+            `/admin/products/${productId}`
+        );
+        return data;
+    } catch (error: unknown) {
+        handleAxiosError(error);
     }
+}
+
+function handleAxiosError(error: unknown): never {
+    if (error instanceof AxiosError) {
+        const message = error.response?.data?.message || error.message;
+        const status = error.response?.status;
+        const err: any = new Error(message);
+        if (status) err.status = status;
+        throw err;
+    }
+    throw error;
 }

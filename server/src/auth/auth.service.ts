@@ -15,7 +15,6 @@ import { EmailService } from "src/email/email.service";
 import { PrismaService } from "src/prisma/prisma.service";
 import { ShopUserService } from "src/shop/user/shop-user.service";
 import { CreateUserDto } from "../shop/user/dto/create-user.dto";
-import type { AuthJwtPayload } from "./types/auth-jwtPayload";
 
 @Injectable()
 export class AuthService {
@@ -88,21 +87,24 @@ export class AuthService {
 
     private generateVerificationToken() {
         const token = crypto.randomBytes(32).toString("hex");
-        const expiry = new Date(Date.now() + 10 * 60 * 1000); // 10 хв
+        const expiry = new Date(Date.now() + 10 * 60 * 1000); // 10 m
         return { token, expiry };
     }
 
-    // =======================
     // Login / SignOut
-    // =======================
     async login(userId: string, res: Response) {
         const user = await this.shopUserService.findOne(userId);
+
         if (!user.isVerified)
             throw new UnauthorizedException(
                 "Будь ласка, підтвердіть вашу електронну адресу, щоб увійти."
             );
 
-        const { accessToken, refreshToken } = await this.generateTokens(userId);
+        const { accessToken, refreshToken } = await this.generateTokens(
+            userId,
+            user.email,
+            user.role
+        );
         const hashedRT = await bcrypt.hash(refreshToken, 10);
         await this.shopUserService.updateHashedRefreshToken(userId, hashedRT);
 
@@ -122,27 +124,20 @@ export class AuthService {
         res.cookie("accessToken", accessToken, {
             httpOnly: true,
             sameSite: "lax",
-            secure: this.configService.get("NODE_ENV") === "production",
-            expires: new Date(
-                Date.now() + parseInt(this.configService.get("ACCESS_TOKEN_EXPIRES_MS") || "900000")
-            ), // 15 хв
+            secure: this.configService.get<string>("NODE_ENV") === "production",
+            maxAge: parseInt(this.configService.get("ACCESS_TOKEN_EXPIRES_MS") || "900000"), // 15m
         });
         res.cookie("refreshToken", refreshToken, {
             httpOnly: true,
             sameSite: "lax",
-            secure: this.configService.get("NODE_ENV") === "production",
-            expires: new Date(
-                Date.now() +
-                    parseInt(this.configService.get("REFRESH_TOKEN_EXPIRES_MS") || "604800000")
-            ), // 7 днів
+            secure: this.configService.get<string>("NODE_ENV") === "production",
+            maxAge: parseInt(this.configService.get("REFRESH_TOKEN_EXPIRES_MS") || "604800000"), // 7d
         });
     }
 
-    // =======================
     // Tokens
-    // =======================
-    async generateTokens(userId: string) {
-        const payload: AuthJwtPayload = { sub: userId };
+    async generateTokens(userId: string, email: string, role: string) {
+        const payload = { sub: userId, email, role };
         const accessToken = await this.jwtAccessService.signAsync(payload);
         const refreshToken = await this.jwtRefreshService.signAsync(payload);
         return { accessToken, refreshToken };
@@ -153,7 +148,11 @@ export class AuthService {
         if (!user || !user.hashedRefreshToken)
             throw new UnauthorizedException("Токен оновлення недійсний");
 
-        const { accessToken, refreshToken } = await this.generateTokens(userId);
+        const { accessToken, refreshToken } = await this.generateTokens(
+            userId,
+            user.email,
+            user.role
+        );
         const hashedRT = await bcrypt.hash(refreshToken, 10);
         await this.shopUserService.updateHashedRefreshToken(userId, hashedRT);
 
@@ -187,7 +186,7 @@ export class AuthService {
         const isPasswordMatched = await bcrypt.compare(password, user.password);
         if (!isPasswordMatched) throw new UnauthorizedException("Невірно введено пароль або логін");
 
-        return { id: user.id, name: user.name, role: user.role };
+        return { id: user.id, email: user.email, role: user.role };
     }
 
     async validateJwtUser(userId: string) {

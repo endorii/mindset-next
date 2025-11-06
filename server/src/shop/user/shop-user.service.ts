@@ -5,9 +5,9 @@ import {
     InternalServerErrorException,
     NotFoundException,
 } from "@nestjs/common";
-import { CreateUserDto } from "./dto/create-user.dto";
-import { PrismaService } from "src/prisma/prisma.service";
 import * as bcrypt from "bcryptjs";
+import { PrismaService } from "src/prisma/prisma.service";
+import { CreateUserDto } from "./dto/create-user.dto";
 import { UpdateUserDto } from "./dto/update-user.dto";
 
 @Injectable()
@@ -133,18 +133,10 @@ export class ShopUserService {
     }
 
     async updateHashedRefreshToken(userId: string, hashedRT: string | null) {
-        try {
-            return await this.prisma.user.update({
-                where: { id: userId },
-                data: { hashedRefreshToken: hashedRT },
-            });
-        } catch (error) {
-            console.error("Помилка оновлення refresh token:", error);
-            if (error instanceof HttpException) {
-                throw error;
-            }
-            throw new InternalServerErrorException("Не вдалося оновити refresh token.");
-        }
+        return await this.prisma.user.update({
+            where: { id: userId },
+            data: { hashedRefreshToken: hashedRT },
+        });
     }
 
     async changePassword(userId: string, data: { oldPassword: string; newPassword: string }) {
