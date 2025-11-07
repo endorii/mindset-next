@@ -1,11 +1,11 @@
-import { http, httpAuth } from "@/features/auth/api/axiosInstances";
+import { httpService, httpServiceAuth } from "@/shared/api/httpService";
 import { ServerResponseWithMessage } from "@/shared/interfaces/interfaces";
 import { AxiosError } from "axios";
 import { ICollection } from "../types/collections.types";
 
 export async function fetchCollections(): Promise<ICollection[]> {
     try {
-        const { data } = await http.get("/shop/collections");
+        const { data } = await httpService.get("/shop/collections");
         return data;
     } catch (error: unknown) {
         handleAxiosError(error);
@@ -14,7 +14,7 @@ export async function fetchCollections(): Promise<ICollection[]> {
 
 export async function fetchGetCollectionByPath(collectionPath: string): Promise<ICollection> {
     try {
-        const { data } = await http.get(`/shop/collections/${collectionPath}`);
+        const { data } = await httpService.get(`/shop/collections/${collectionPath}`);
         return data;
     } catch (error: unknown) {
         handleAxiosError(error);
@@ -25,7 +25,7 @@ export async function createCollection(
     collectionData: ICollection
 ): Promise<ServerResponseWithMessage<ICollection>> {
     try {
-        const { data } = await httpAuth.post("/admin/collections", collectionData);
+        const { data } = await httpServiceAuth.post("/admin/collections", collectionData);
         return data;
     } catch (error: unknown) {
         handleAxiosError(error);
@@ -37,7 +37,10 @@ export async function editCollection(
     collectionData: Partial<ICollection>
 ): Promise<ServerResponseWithMessage<ICollection>> {
     try {
-        const { data } = await httpAuth.patch(`admin/collections/${collectionId}`, collectionData);
+        const { data } = await httpServiceAuth.patch(
+            `admin/collections/${collectionId}`,
+            collectionData
+        );
         return data;
     } catch (error: unknown) {
         handleAxiosError(error);
@@ -46,7 +49,7 @@ export async function editCollection(
 
 export async function deleteCollection(collectionId: string): Promise<ServerResponseWithMessage> {
     try {
-        const { data } = await httpAuth.delete(`admin/collections/${collectionId}`);
+        const { data } = await httpServiceAuth.delete(`admin/collections/${collectionId}`);
         return data;
     } catch (error: unknown) {
         handleAxiosError(error);

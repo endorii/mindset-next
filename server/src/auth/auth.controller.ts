@@ -3,6 +3,7 @@ import { Request, Response } from "express";
 import { CreateUserDto } from "../shop/user/dto/create-user.dto";
 import { AuthService } from "./auth.service";
 import { Public } from "./decorators/public.decorator";
+import { JwtAccessGuard } from "./guards/jwt/jwt-access.guard";
 import { JwtRefreshGuard } from "./guards/jwt/jwt-refresh.guard";
 import { LocalAuthGuard } from "./guards/local-auth/local-auth.guard";
 import { AuthenticatedRequestUser } from "./interfaces/auth-request-user";
@@ -27,6 +28,7 @@ export class AuthController {
         return this.authService.login(req.user.id, res);
     }
 
+    @UseGuards(JwtAccessGuard)
     @Get("me")
     getCurrentUser(@Req() req: Request & { user: AuthenticatedRequestUser }) {
         return this.authService.getCurrentUser(req.user.id);

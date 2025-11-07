@@ -1,25 +1,32 @@
+import { useUserStore } from "@/store/userStore";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import {
-    loginUser,
-    registerUser,
-    logoutUser,
-    refreshToken,
-    verifyUser,
-    resendVerifyUser,
-} from "../api/auth.api";
-import { CreateUserDto, ILoginCredentials } from "../types/auth.types";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
+import {
+    loginUser,
+    logoutUser,
+    refreshToken,
+    registerUser,
+    resendVerifyUser,
+    verifyUser,
+} from "../api/auth.api";
+import { CreateUserDto, ILoginCredentials } from "../types/auth.types";
 
 export function useLoginUser() {
     const queryClient = useQueryClient();
     const router = useRouter();
+    const { setUser } = useUserStore();
 
     return useMutation({
         mutationFn: (credentials: ILoginCredentials) => loginUser(credentials),
         onSuccess: (data) => {
+            // 1️⃣ Зберігаємо user та accessToken в Zustand
+            setUser(data.data?.user ?? null, data.data?.accessToken ?? null);
+
+            // 2️⃣ Навігація та оновлення query
             router.push("/");
             queryClient.invalidateQueries({ queryKey: ["currentUser"] });
+
             toast.success(data.message);
         },
         onError: (error: any) => {

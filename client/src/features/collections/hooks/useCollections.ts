@@ -1,4 +1,6 @@
-import { useQuery, useMutation, useQueryClient, useSuspenseQuery } from "@tanstack/react-query";
+import { TStatus } from "@/shared/types/types";
+import { useMutation, useQueryClient, useSuspenseQuery } from "@tanstack/react-query";
+import { toast } from "sonner";
 import {
     createCollection,
     deleteCollection,
@@ -6,8 +8,6 @@ import {
     fetchCollections,
     fetchGetCollectionByPath,
 } from "../api/collections.api";
-import { TStatus } from "@/shared/types/types";
-import { toast } from "sonner";
 
 export function useGetCollections() {
     return useSuspenseQuery({

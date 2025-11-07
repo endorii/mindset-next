@@ -1,15 +1,23 @@
-import CustomCursor from "@/shared/components/effects/CustomCursor";
-import { Header, Footer } from "@/shared/components/layout";
+import { getCurrentUserSSR } from "@/shared/api/authFetch.api";
+import { Footer, Header } from "@/shared/components/layout";
 import Container from "@/shared/ui/layout/Container";
+import { useUserStore } from "@/store/userStore";
+import { ReactNode } from "react";
 
-function SiteLayout({ children }: Readonly<{ children: React.ReactNode }>) {
+async function SiteLayout({ children }: { children: ReactNode }) {
+    const { user, accessToken } = await getCurrentUserSSR();
+
+    console.log({ user, accessToken });
+
+    // Гідруємо Zustand store (серверний код не викликає хук)
+    useUserStore.getState().setUser(user, accessToken || "");
+
     return (
-        <div>
-            <CustomCursor />
-            <Header />
+        <>
+            <Header user={user} />
             <Container>{children}</Container>
             <Footer />
-        </div>
+        </>
     );
 }
 

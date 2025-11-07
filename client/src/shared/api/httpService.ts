@@ -1,0 +1,63 @@
+import { refreshToken } from "@/features/auth/api/auth.api";
+import { useUserStore } from "@/store/userStore";
+import axios from "axios";
+
+export const httpService = axios.create({
+    baseURL: process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api",
+});
+
+export const httpServiceAuth = axios.create({
+    baseURL: process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api",
+    withCredentials: true,
+});
+
+// Зберігаємо Promise для refresh, щоб уникнути множинних викликів
+let isRefreshing = false;
+let refreshPromise: Promise<{ accessToken: string }> | null = null;
+
+// Interceptor (CSR, in-memory)
+httpService.interceptors.request.use((config) => {
+    const accessToken = useUserStore.getState().accessToken; // з Zustand, in-memory
+    if (accessToken) {
+        config.headers.Authorization = `Bearer ${accessToken}`;
+    }
+    return config;
+});
+
+httpService.interceptors.response.use(
+    (res) => res,
+    async (error) => {
+        const originalRequest = error.config;
+
+        if (error.response?.status === 401 && !originalRequest._retry) {
+            originalRequest._retry = true;
+
+            if (isRefreshing && refreshPromise) {
+                const { accessToken } = await refreshPromise;
+                originalRequest.headers.Authorization = `Bearer ${accessToken}`;
+                return httpService.request(originalRequest);
+            }
+
+            isRefreshing = true;
+            refreshPromise = refreshToken(); // робить POST /auth/refresh з cookie
+
+            try {
+                const { accessToken: newAccessToken } = await refreshPromise;
+                useUserStore.getState().setUser(useUserStore.getState().user!, newAccessToken);
+
+                isRefreshing = false;
+                refreshPromise = null;
+
+                originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
+                return httpService.request(originalRequest);
+            } catch (err) {
+                isRefreshing = false;
+                refreshPromise = null;
+                useUserStore.getState().clearUser(); // чистимо in-memory
+                return Promise.reject(err);
+            }
+        }
+
+        return Promise.reject(error);
+    }
+);

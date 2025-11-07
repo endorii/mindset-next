@@ -1,5 +1,5 @@
-import { http, httpAuth } from "@/features/auth/api/axiosInstances";
 import { ICollection } from "@/features/collections/types/collections.types";
+import { httpService, httpServiceAuth } from "@/shared/api/httpService";
 import { ServerResponseWithMessage } from "@/shared/interfaces/interfaces";
 import { AxiosError } from "axios";
 import { ICategory } from "../types/categories.types";
@@ -9,7 +9,7 @@ export async function fetchCategoryByPath(
     categoryPath: ICategory["path"]
 ): Promise<ICategory> {
     try {
-        const { data } = await http.get<ICategory>(
+        const { data } = await httpService.get<ICategory>(
             `/shop/categories/${collectionPath}/${categoryPath}`
         );
         return data;
@@ -20,7 +20,7 @@ export async function fetchCategoryByPath(
 
 export async function fetchGetCategoriesByCollectionId(collectionId: string): Promise<ICategory[]> {
     try {
-        const { data } = await http.get<ICategory[]>(`/shop/categories/${collectionId}`);
+        const { data } = await httpService.get<ICategory[]>(`/shop/categories/${collectionId}`);
         return data;
     } catch (error: unknown) {
         handleAxiosError(error);
@@ -31,7 +31,7 @@ export async function addCategoryToCollection(
     categoryData: ICategory
 ): Promise<ServerResponseWithMessage<ICategory>> {
     try {
-        const { data } = await httpAuth.post<ServerResponseWithMessage<ICategory>>(
+        const { data } = await httpServiceAuth.post<ServerResponseWithMessage<ICategory>>(
             `/admin/categories`,
             categoryData
         );
@@ -46,10 +46,9 @@ export async function editCategory(
     data: Partial<ICategory>
 ): Promise<ServerResponseWithMessage<ICategory>> {
     try {
-        const { data: responseData } = await httpAuth.patch<ServerResponseWithMessage<ICategory>>(
-            `/admin/categories/${categoryId}`,
-            data
-        );
+        const { data: responseData } = await httpServiceAuth.patch<
+            ServerResponseWithMessage<ICategory>
+        >(`/admin/categories/${categoryId}`, data);
         return responseData;
     } catch (error: unknown) {
         handleAxiosError(error);
@@ -58,7 +57,7 @@ export async function editCategory(
 
 export async function deleteCategory(categoryId: string): Promise<ServerResponseWithMessage> {
     try {
-        const { data } = await httpAuth.delete<ServerResponseWithMessage>(
+        const { data } = await httpServiceAuth.delete<ServerResponseWithMessage>(
             `/admin/categories/${categoryId}`
         );
         return data;

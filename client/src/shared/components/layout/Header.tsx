@@ -2,16 +2,16 @@
 
 import { useCartItemsFromUser } from "@/features/shop/cart/hooks/useCart";
 import { useFavoritesFromUser } from "@/features/shop/favorites/hooks/useFavorites";
-import { CartIcon, HeartIcon, AccountIcon } from "@/shared/icons";
+import { IUser } from "@/features/shop/user-info/types/user.types";
+import { AccountIcon, CartIcon, HeartIcon } from "@/shared/icons";
 import { getLocalStorageArray } from "@/shared/utils/helpers";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import HeaderBurger from "./HeaderBurger";
-import { useCurrentUser } from "@/features/shop/user-info/hooks/useUsers";
 
-const Header = () => {
-    const { data: user, isPending: isUserPending } = useCurrentUser();
+const Header = ({ user }: { user: IUser | null }) => {
+    // const { data: user, isPending: isUserPending } = useCurrentUser();
     const { data: userFavorites } = useFavoritesFromUser();
     const { data: userCart } = useCartItemsFromUser();
 
@@ -99,13 +99,6 @@ const Header = () => {
                                 <AccountIcon className="w-[25px] fill-white" />
                                 <div>{user?.name}</div>
                             </Link>
-                        ) : isUserPending ? (
-                            <div className="flex items-center gap-[10px] rounded-xl bg-white/5 shadow-lg px-[20px] py-[13px] backdrop-blur-xl border border-white/5 hover:bg-white/15 transition-all duration-300">
-                                <AccountIcon className="w-[25px] fill-white" />
-                                <div className="w-[80px] animate-pulse">
-                                    <div className="h-[15px] w-full bg-white/10 rounded" />
-                                </div>
-                            </div>
                         ) : (
                             <Link
                                 href="/auth"

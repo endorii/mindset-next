@@ -108,30 +108,24 @@ export class AuthService {
         const hashedRT = await bcrypt.hash(refreshToken, 10);
         await this.shopUserService.updateHashedRefreshToken(userId, hashedRT);
 
-        this.setTokensCookies(res, accessToken, refreshToken);
+        this.setTokenInCookies(res, refreshToken);
 
-        return { message: "Вхід виконано успішно" };
+        return { data: { accessToken, user }, message: "Вхід виконано успішно" };
     }
 
     async signOut(userId: string, res: Response) {
         await this.shopUserService.updateHashedRefreshToken(userId, null);
-        res.clearCookie("accessToken", { path: "/" });
         res.clearCookie("refreshToken", { path: "/" });
         return { message: "Ви успішно вийшли з акаунту" };
     }
 
-    private setTokensCookies(res: Response, accessToken: string, refreshToken: string) {
-        res.cookie("accessToken", accessToken, {
-            httpOnly: true,
-            sameSite: "lax",
-            secure: this.configService.get<string>("NODE_ENV") === "production",
-            maxAge: parseInt(this.configService.get("ACCESS_TOKEN_EXPIRES_MS") || "900000"), // 15m
-        });
+    private setTokenInCookies(res: Response, refreshToken: string) {
         res.cookie("refreshToken", refreshToken, {
             httpOnly: true,
             sameSite: "lax",
             secure: this.configService.get<string>("NODE_ENV") === "production",
             maxAge: parseInt(this.configService.get("REFRESH_TOKEN_EXPIRES_MS") || "604800000"), // 7d
+            path: "/",
         });
     }
 
@@ -156,9 +150,9 @@ export class AuthService {
         const hashedRT = await bcrypt.hash(refreshToken, 10);
         await this.shopUserService.updateHashedRefreshToken(userId, hashedRT);
 
-        this.setTokensCookies(res, accessToken, refreshToken);
+        this.setTokenInCookies(res, refreshToken);
 
-        return { message: "Токени успішно оновлено" };
+        return { data: accessToken, message: "Токени успішно оновлено" };
     }
 
     async validateRefreshToken(userId: string, refreshToken: string) {

@@ -1,4 +1,3 @@
-import { AuthProvider } from "@/shared/components/providers/AuthProvider";
 import { QueryProvider } from "@/shared/components/providers/QueryProvider";
 import type { Metadata } from "next";
 import { Qwitcher_Grypen, Roboto } from "next/font/google";
@@ -27,7 +26,7 @@ export default function RootLayout({
             <body className="relative bg-black">
                 <QueryProvider>
                     <Toaster theme="dark" />
-                    <AuthProvider>{children}</AuthProvider>
+                    {children}
                 </QueryProvider>
             </body>
         </html>
