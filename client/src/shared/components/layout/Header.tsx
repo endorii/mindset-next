@@ -2,6 +2,7 @@
 
 import { useCartItemsFromUser } from "@/features/shop/cart/hooks/useCart";
 import { useFavoritesFromUser } from "@/features/shop/favorites/hooks/useFavorites";
+import { useCurrentUser } from "@/features/shop/user-info/hooks/useUsers";
 import { IUser } from "@/features/shop/user-info/types/user.types";
 import { AccountIcon, CartIcon, HeartIcon } from "@/shared/icons";
 import { getLocalStorageArray } from "@/shared/utils/helpers";
@@ -10,8 +11,8 @@ import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import HeaderBurger from "./HeaderBurger";
 
-const Header = ({ user }: { user: IUser | null }) => {
-    // const { data: user, isPending: isUserPending } = useCurrentUser();
+const Header = ({ serverUser }: { serverUser: IUser | null }) => {
+    const { data: user, isPending: isUserPending } = useCurrentUser();
     const { data: userFavorites } = useFavoritesFromUser();
     const { data: userCart } = useCartItemsFromUser();
 
@@ -91,13 +92,13 @@ const Header = ({ user }: { user: IUser | null }) => {
                         </Link>
                     </li>
                     <li className="sm:hidden">
-                        {user ? (
+                        {serverUser || user ? (
                             <Link
                                 href="/account"
                                 className="flex items-center gap-[10px] rounded-xl bg-white/5 shadow-lg px-[20px] py-[13px] backdrop-blur-2xl border border-white/5 hover:bg-white/15 transition-all duration-300"
                             >
                                 <AccountIcon className="w-[25px] fill-white" />
-                                <div>{user?.name}</div>
+                                <div>{serverUser?.name || user?.name}</div>
                             </Link>
                         ) : (
                             <Link

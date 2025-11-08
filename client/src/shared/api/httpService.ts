@@ -16,7 +16,7 @@ let isRefreshing = false;
 let refreshPromise: Promise<{ accessToken: string }> | null = null;
 
 // Interceptor (CSR, in-memory)
-httpService.interceptors.request.use((config) => {
+httpServiceAuth.interceptors.request.use((config) => {
     const accessToken = useUserStore.getState().accessToken; // з Zustand, in-memory
     if (accessToken) {
         config.headers.Authorization = `Bearer ${accessToken}`;
@@ -24,7 +24,7 @@ httpService.interceptors.request.use((config) => {
     return config;
 });
 
-httpService.interceptors.response.use(
+httpServiceAuth.interceptors.response.use(
     (res) => res,
     async (error) => {
         const originalRequest = error.config;

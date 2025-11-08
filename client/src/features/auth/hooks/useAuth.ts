@@ -20,12 +20,14 @@ export function useLoginUser() {
     return useMutation({
         mutationFn: (credentials: ILoginCredentials) => loginUser(credentials),
         onSuccess: (data) => {
-            // 1️⃣ Зберігаємо user та accessToken в Zustand
             setUser(data.data?.user ?? null, data.data?.accessToken ?? null);
 
-            // 2️⃣ Навігація та оновлення query
+            if (data.data?.user && data.data?.accessToken) {
+                queryClient.setQueryData(["currentUser"], data.data?.user);
+                queryClient.setQueryData(["accessToken"], data.data?.accessToken);
+            }
+
             router.push("/");
-            queryClient.invalidateQueries({ queryKey: ["currentUser"] });
 
             toast.success(data.message);
         },
@@ -77,11 +79,15 @@ export function useResendVerification() {
 
 export function useLogoutUser() {
     const queryClient = useQueryClient();
+    const { clearUser } = useUserStore();
 
     return useMutation({
-        mutationFn: logoutUser,
+        mutationFn: () => logoutUser(),
         onSuccess: (data) => {
+            clearUser();
+
             queryClient.removeQueries({ queryKey: ["currentUser"] });
+            queryClient.removeQueries({ queryKey: ["accessToken"] });
             toast.success(data.message);
         },
         onError: (error: any) => {
