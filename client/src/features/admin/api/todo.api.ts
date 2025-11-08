@@ -1,6 +1,5 @@
+import { httpServiceAuth } from "@/shared/api/httpService";
 import { ITodoItem } from "../types/admin.types";
-
-const API_BASE_URL = "http://localhost:5000/api";
 
 interface TodosResponse {
     message: string;
@@ -9,106 +8,50 @@ interface TodosResponse {
 
 export async function addTodoItem(data: ITodoItem): Promise<TodosResponse> {
     try {
-        const response = await fetch(`${API_BASE_URL}/admin/todo`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            credentials: "include",
-            body: JSON.stringify(data),
-        });
-
-        const text = await response.text();
-        const parsedData = text ? JSON.parse(text) : {};
-
-        if (!response.ok) {
-            const error: any = new Error(
-                parsedData.message || `Помилка ${parsedData.statusCode || response.status}`
-            );
-            error.status = parsedData.statusCode || response.status;
-            throw error;
-        }
-
-        return parsedData;
-    } catch (error: any) {
-        throw error;
+        const { data: response } = await httpServiceAuth.post("/admin/todo", data);
+        return response;
+    } catch (error: unknown) {
+        handleHttpError(error);
     }
 }
 
 export async function getTodoList(): Promise<ITodoItem[]> {
     try {
-        const response = await fetch(`${API_BASE_URL}/admin/todo`, {
-            headers: {
-                "Content-Type": "application/json",
-            },
-            credentials: "include",
-        });
-
-        const text = await response.text();
-        const parsedData = text ? JSON.parse(text) : {};
-
-        if (!response.ok) {
-            const error: any = new Error(
-                parsedData.message || `Помилка ${parsedData.statusCode || response.status}`
-            );
-            error.status = parsedData.statusCode || response.status;
-            throw error;
-        }
-
-        return parsedData;
-    } catch (error: any) {
-        throw error;
+        const { data } = await httpServiceAuth.get("/admin/todo");
+        return data;
+    } catch (error: unknown) {
+        handleHttpError(error);
     }
 }
 
-export async function updateTodoItem(todoId: string, data: ITodoItem): Promise<TodosResponse> {
+export async function updateTodoItem(
+    todoId: string,
+    data: Partial<ITodoItem>
+): Promise<TodosResponse> {
     try {
-        const response = await fetch(`${API_BASE_URL}/admin/todo/${todoId}`, {
-            method: "PATCH",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            credentials: "include",
-            body: JSON.stringify(data),
-        });
-
-        const text = await response.text();
-        const parsedData = text ? JSON.parse(text) : {};
-
-        if (!response.ok) {
-            const error: any = new Error(
-                parsedData.message || `Помилка ${parsedData.statusCode || response.status}`
-            );
-            error.status = parsedData.statusCode || response.status;
-            throw error;
-        }
-
-        return parsedData;
-    } catch (error: any) {
-        throw error;
+        const { data: response } = await httpServiceAuth.patch(`/admin/todo/${todoId}`, data);
+        return response;
+    } catch (error: unknown) {
+        handleHttpError(error);
     }
 }
 
 export async function deleteTodoItem(todoId: string): Promise<TodosResponse> {
     try {
-        const response = await fetch(`${API_BASE_URL}/admin/todo/${todoId}`, {
-            method: "DELETE",
-            credentials: "include",
-        });
-
-        const text = await response.text();
-        const parsedData = text ? JSON.parse(text) : {};
-
-        if (!response.ok) {
-            const error: any = new Error(
-                parsedData.message || `Помилка ${parsedData.statusCode || response.status}`
-            );
-            error.status = parsedData.statusCode || response.status;
-            throw error;
-        }
-
-        return parsedData;
-    } catch (error: any) {
-        throw error;
+        const { data } = await httpServiceAuth.delete(`/admin/todo/${todoId}`);
+        return data;
+    } catch (error: unknown) {
+        handleHttpError(error);
     }
+}
+
+function handleHttpError(error: any): never {
+    const message = error?.response?.data?.message || error.message || "Unknown server error";
+
+    const status = error?.response?.status;
+
+    const err: any = new Error(message);
+    if (status) err.status = status;
+
+    throw err;
 }

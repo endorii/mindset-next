@@ -1,212 +1,99 @@
+import { httpServiceAuth } from "@/shared/api/httpService";
 import { ServerResponseWithMessage } from "@/shared/interfaces/interfaces";
 import { IReview } from "../types/reviews.types";
-
-const API_BASE_URL = "http://localhost:5000/api";
 
 interface ToggleReviewVotePayload {
     reviewId: string;
     isHelpful: boolean;
 }
 
-export async function toggleReviewVote(data: ToggleReviewVotePayload): Promise<IReview> {
+export async function toggleReviewVote(payload: ToggleReviewVotePayload): Promise<IReview> {
     try {
-        const response = await fetch(`${API_BASE_URL}/shop/reviews/${data.reviewId}/vote`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            credentials: "include",
-            body: JSON.stringify({ isHelpful: data.isHelpful }),
+        const { data } = await httpServiceAuth.post(`/shop/reviews/${payload.reviewId}/vote`, {
+            isHelpful: payload.isHelpful,
         });
-        const text = await response.text();
-        const parsedData = text ? JSON.parse(text) : {};
-
-        if (!response.ok) {
-            const errorData = await response.json().catch(() => ({}));
-            throw new Error(errorData.message || "Не вдалося надіслати голос");
-        }
-
-        return parsedData;
-    } catch (error: any) {
-        throw error;
+        return data;
+    } catch (error: unknown) {
+        handleHttpError(error);
     }
 }
 
 export async function fetchAllReviews(): Promise<IReview[]> {
     try {
-        const response = await fetch(`${API_BASE_URL}/admin/reviews`, {
-            credentials: "include",
-        });
-
-        const text = await response.text();
-        const parsedData = text ? JSON.parse(text) : {};
-
-        if (!response.ok) {
-            const error: any = new Error(
-                parsedData.message || `Помилка ${parsedData.statusCode || response.status}`
-            );
-            error.status = parsedData.statusCode || response.status;
-            throw error;
-        }
-
-        return parsedData;
-    } catch (error: any) {
-        throw error;
+        const { data } = await httpServiceAuth.get("/admin/reviews");
+        return data;
+    } catch (error: unknown) {
+        handleHttpError(error);
     }
 }
 
 export async function fetchReviewsByProductId(productId: string): Promise<IReview[]> {
     try {
-        const response = await fetch(`${API_BASE_URL}/shop/reviews/product/${productId}`, {
-            credentials: "include",
-        });
-
-        const text = await response.text();
-        const parsedData = text ? JSON.parse(text) : {};
-
-        if (!response.ok) {
-            const error: any = new Error(
-                parsedData.message || `Помилка ${parsedData.statusCode || response.status}`
-            );
-            error.status = parsedData.statusCode || response.status;
-            throw error;
-        }
-
-        return parsedData;
-    } catch (error: any) {
-        throw error;
+        const { data } = await httpServiceAuth.get(`/shop/reviews/product/${productId}`);
+        return data;
+    } catch (error: unknown) {
+        handleHttpError(error);
     }
 }
 
 export async function fetchReviewsByUserId(): Promise<IReview[]> {
     try {
-        const response = await fetch(`${API_BASE_URL}/shop/reviews/user`, {
-            credentials: "include",
-        });
-
-        const text = await response.text();
-        const parsedData = text ? JSON.parse(text) : {};
-
-        if (!response.ok) {
-            const error: any = new Error(
-                parsedData.message || `Помилка ${parsedData.statusCode || response.status}`
-            );
-            error.status = parsedData.statusCode || response.status;
-            throw error;
-        }
-
-        return parsedData;
-    } catch (error: any) {
-        throw error;
+        const { data } = await httpServiceAuth.get("/shop/reviews/user");
+        return data;
+    } catch (error: unknown) {
+        handleHttpError(error);
     }
 }
 
-export async function createReview(data: IReview): Promise<ServerResponseWithMessage<IReview>> {
+export async function createReview(payload: IReview): Promise<ServerResponseWithMessage<IReview>> {
     try {
-        const response = await fetch(`${API_BASE_URL}/shop/reviews`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            credentials: "include",
-            body: JSON.stringify(data),
-        });
-
-        const text = await response.text();
-        const parsedData = text ? JSON.parse(text) : {};
-
-        if (!response.ok) {
-            const error: any = new Error(
-                parsedData.message || `Помилка ${parsedData.statusCode || response.status}`
-            );
-            error.status = parsedData.statusCode || response.status;
-            throw error;
-        }
-
-        return parsedData;
-    } catch (error: any) {
-        throw error;
+        const { data } = await httpServiceAuth.post("/shop/reviews", payload);
+        return data;
+    } catch (error: unknown) {
+        handleHttpError(error);
     }
 }
 
 export async function updateReview(
     reviewId: string,
-    data: Partial<IReview>
+    payload: Partial<IReview>
 ): Promise<ServerResponseWithMessage<IReview>> {
     try {
-        const response = await fetch(`${API_BASE_URL}/admin/reviews/admin-reply/${reviewId}`, {
-            method: "PATCH",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            credentials: "include",
-            body: JSON.stringify(data),
-        });
-
-        const text = await response.text();
-        const parsedData = text ? JSON.parse(text) : {};
-
-        if (!response.ok) {
-            const error: any = new Error(
-                parsedData.message || `Помилка ${parsedData.statusCode || response.status}`
-            );
-            error.status = parsedData.statusCode || response.status;
-            throw error;
-        }
-
-        return parsedData;
-    } catch (error: any) {
-        throw error;
+        const { data } = await httpServiceAuth.patch(
+            `/admin/reviews/admin-reply/${reviewId}`,
+            payload
+        );
+        return data;
+    } catch (error: unknown) {
+        handleHttpError(error);
     }
 }
 
 export async function approveReview(reviewId: string): Promise<ServerResponseWithMessage> {
     try {
-        const response = await fetch(`${API_BASE_URL}/admin/reviews/${reviewId}`, {
-            method: "PATCH",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            credentials: "include",
-        });
-
-        const text = await response.text();
-        const parsedData = text ? JSON.parse(text) : {};
-
-        if (!response.ok) {
-            const error: any = new Error(
-                parsedData.message || `Помилка ${parsedData.statusCode || response.status}`
-            );
-            error.status = parsedData.statusCode || response.status;
-            throw error;
-        }
-
-        return parsedData;
-    } catch (error: any) {
-        throw error;
+        const { data } = await httpServiceAuth.patch(`/admin/reviews/${reviewId}`);
+        return data;
+    } catch (error: unknown) {
+        handleHttpError(error);
     }
 }
 
 export async function deleteReview(reviewId: string): Promise<ServerResponseWithMessage> {
     try {
-        const response = await fetch(`${API_BASE_URL}/shop/reviews/${reviewId}`, {
-            method: "DELETE",
-            credentials: "include",
-        });
-
-        const text = await response.text();
-        const parsedData = text ? JSON.parse(text) : {};
-
-        if (!response.ok) {
-            const error: any = new Error(
-                parsedData.message || `Помилка ${parsedData.statusCode || response.status}`
-            );
-            error.status = parsedData.statusCode || response.status;
-            throw error;
-        }
-
-        return parsedData;
-    } catch (error: any) {
-        throw error;
+        const { data } = await httpServiceAuth.delete(`/shop/reviews/${reviewId}`);
+        return data;
+    } catch (error: unknown) {
+        handleHttpError(error);
     }
+}
+
+function handleHttpError(error: any): never {
+    const message = error?.response?.data?.message || error.message || "Unknown server error";
+
+    const status = error?.response?.status;
+
+    const err: any = new Error(message);
+    if (status) err.status = status;
+
+    throw err;
 }

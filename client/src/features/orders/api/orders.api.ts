@@ -1,132 +1,62 @@
+import { httpService, httpServiceAuth } from "@/shared/api/httpService";
 import { ServerResponseWithMessage } from "@/shared/interfaces/interfaces";
 import { IOrder } from "../types/orders.types";
 
-const API_BASE_URL = "http://localhost:5000/api";
-
 export async function getOrders(): Promise<IOrder[]> {
     try {
-        const response = await fetch(`${API_BASE_URL}/admin/orders`, {
-            credentials: "include",
-        });
-
-        const text = await response.text();
-        const parsedData = text ? JSON.parse(text) : {};
-
-        if (!response.ok) {
-            const error: any = new Error(
-                parsedData.message || `Помилка ${parsedData.statusCode || response.status}`
-            );
-            error.status = parsedData.statusCode || response.status;
-            throw error;
-        }
-
-        return parsedData;
-    } catch (error: any) {
-        throw error;
+        const { data } = await httpServiceAuth.get("/admin/orders");
+        return data;
+    } catch (error: unknown) {
+        handleHttpError(error);
     }
 }
 
 export async function getOrdersByUserId(): Promise<IOrder[]> {
     try {
-        const response = await fetch(`${API_BASE_URL}/shop/orders/users`, {
-            credentials: "include",
-        });
-
-        const text = await response.text();
-        const parsedData = text ? JSON.parse(text) : {};
-
-        if (!response.ok) {
-            const error: any = new Error(
-                parsedData.message || `Помилка ${parsedData.statusCode || response.status}`
-            );
-            error.status = parsedData.statusCode || response.status;
-            throw error;
-        }
-
-        return parsedData;
-    } catch (error: any) {
-        throw error;
+        const { data } = await httpServiceAuth.get("/shop/orders/users");
+        return data;
+    } catch (error: unknown) {
+        handleHttpError(error);
     }
 }
 
-export async function createOrder(data: IOrder): Promise<ServerResponseWithMessage<IOrder>> {
+export async function createOrder(payload: IOrder): Promise<ServerResponseWithMessage<IOrder>> {
     try {
-        const response = await fetch(`${API_BASE_URL}/shop/orders`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify(data),
-        });
-
-        const text = await response.text();
-        const parsedData = text ? JSON.parse(text) : {};
-
-        if (!response.ok) {
-            const error: any = new Error(
-                parsedData.message || `Помилка ${parsedData.statusCode || response.status}`
-            );
-            error.status = parsedData.statusCode || response.status;
-            throw error;
-        }
-
-        return parsedData;
-    } catch (error: any) {
-        throw error;
+        const { data } = await httpService.post("/shop/orders", payload);
+        return data;
+    } catch (error: unknown) {
+        handleHttpError(error);
     }
 }
 
 export async function updateOrder(
     orderId: string | undefined,
-    data: Partial<IOrder>
+    payload: Partial<IOrder>
 ): Promise<ServerResponseWithMessage<IOrder>> {
     try {
-        const response = await fetch(`${API_BASE_URL}/admin/orders/${orderId}`, {
-            method: "PATCH",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            credentials: "include",
-            body: JSON.stringify(data),
-        });
-
-        const text = await response.text();
-        const parsedData = text ? JSON.parse(text) : {};
-
-        if (!response.ok) {
-            const error: any = new Error(
-                parsedData.message || `Помилка ${parsedData.statusCode || response.status}`
-            );
-            error.status = parsedData.statusCode || response.status;
-            throw error;
-        }
-
-        return parsedData;
-    } catch (error: any) {
-        throw error;
+        const { data } = await httpServiceAuth.patch(`/admin/orders/${orderId}`, payload);
+        return data;
+    } catch (error: unknown) {
+        handleHttpError(error);
     }
 }
 
 export async function deleteOrder(orderId: string): Promise<ServerResponseWithMessage> {
     try {
-        const response = await fetch(`${API_BASE_URL}/admin/orders/${orderId}`, {
-            method: "DELETE",
-            credentials: "include",
-        });
-
-        const text = await response.text();
-        const parsedData = text ? JSON.parse(text) : {};
-
-        if (!response.ok) {
-            const error: any = new Error(
-                parsedData.message || `Помилка ${parsedData.statusCode || response.status}`
-            );
-            error.status = parsedData.statusCode || response.status;
-            throw error;
-        }
-
-        return parsedData;
-    } catch (error: any) {
-        throw error;
+        const { data } = await httpServiceAuth.delete(`/admin/orders/${orderId}`);
+        return data;
+    } catch (error: unknown) {
+        handleHttpError(error);
     }
+}
+
+function handleHttpError(error: any): never {
+    const message = error?.response?.data?.message || error.message || "Unknown server error";
+
+    const status = error?.response?.status;
+
+    const err: any = new Error(message);
+    if (status) err.status = status;
+
+    throw err;
 }

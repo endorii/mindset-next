@@ -1,116 +1,64 @@
 import { IProduct } from "@/features/products/types/products.types";
-
-const API_BASE_URL = "http://localhost:5000/api";
+import { httpServiceAuth } from "@/shared/api/httpService";
 
 export async function uploadImage(file: File): Promise<{ path: string }> {
     try {
         const formData = new FormData();
         formData.append("file", file);
 
-        const response = await fetch(`${API_BASE_URL}/upload/image`, {
-            method: "POST",
-            credentials: "include",
-            body: formData,
+        const { data } = await httpServiceAuth.post("/upload/image", formData, {
+            headers: { "Content-Type": "multipart/form-data" },
         });
 
-        const text = await response.text();
-        const parsedData = text ? JSON.parse(text) : {};
-
-        if (!response.ok) {
-            const error: any = new Error(
-                parsedData.message || `Помилка ${parsedData.statusCode || response.status}`
-            );
-            error.status = parsedData.statusCode || response.status;
-            throw error;
-        }
-
-        return parsedData;
-    } catch (error: any) {
-        throw error;
+        return data;
+    } catch (error: unknown) {
+        handleHttpError(error);
     }
 }
 
 export async function uploadImages(files: File[]): Promise<{ paths: string[] }> {
     try {
         const formData = new FormData();
-        files.forEach((file) => {
-            formData.append("files", file);
+        files.forEach((file) => formData.append("files", file));
+
+        const { data } = await httpServiceAuth.post("/upload/images", formData, {
+            headers: { "Content-Type": "multipart/form-data" },
         });
 
-        const response = await fetch(`${API_BASE_URL}/upload/images`, {
-            method: "POST",
-            body: formData,
-            credentials: "include",
-        });
-
-        const text = await response.text();
-        const parsedData = text ? JSON.parse(text) : {};
-
-        if (!response.ok) {
-            const error: any = new Error(
-                parsedData.message || `Помилка ${parsedData.statusCode || response.status}`
-            );
-            error.status = parsedData.statusCode || response.status;
-            throw error;
-        }
-
-        return parsedData;
-    } catch (error: any) {
-        throw error;
+        return data;
+    } catch (error: unknown) {
+        handleHttpError(error);
     }
 }
 
 export async function deleteImage(path: string): Promise<void> {
     try {
-        const url = new URL(`${API_BASE_URL}/upload/image`);
-        url.searchParams.append("path", path);
-
-        const response = await fetch(url.toString(), {
-            method: "DELETE",
-            credentials: "include",
+        const { data } = await httpServiceAuth.delete("/upload/image", {
+            params: { path },
         });
 
-        const text = await response.text();
-        const parsedData = text ? JSON.parse(text) : {};
-
-        if (!response.ok) {
-            const error: any = new Error(
-                parsedData.message || `Помилка ${parsedData.statusCode || response.status}`
-            );
-            error.status = parsedData.statusCode || response.status;
-            throw error;
-        }
-
-        return parsedData;
-    } catch (error: any) {
-        throw error;
+        return data;
+    } catch (error: unknown) {
+        handleHttpError(error);
     }
 }
 
 export async function deleteImages(imagePaths: IProduct["images"]): Promise<void> {
     try {
-        const response = await fetch(`${API_BASE_URL}/upload/images`, {
-            method: "DELETE",
-            credentials: "include",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ paths: imagePaths }),
+        const { data } = await httpServiceAuth.delete("/upload/images", {
+            data: { paths: imagePaths },
         });
 
-        const text = await response.text();
-        const parsedData = text ? JSON.parse(text) : {};
-
-        if (!response.ok) {
-            const error: any = new Error(
-                parsedData.message || `Помилка ${parsedData.statusCode || response.status}`
-            );
-            error.status = parsedData.statusCode || response.status;
-            throw error;
-        }
-
-        return parsedData;
-    } catch (error: any) {
-        throw error;
+        return data;
+    } catch (error: unknown) {
+        handleHttpError(error);
     }
+}
+
+function handleHttpError(error: any): never {
+    const message = error?.response?.data?.message || error.message || "Unknown server error";
+    const status = error?.response?.status;
+    const err: any = new Error(message);
+    if (status) err.status = status;
+    throw err;
 }

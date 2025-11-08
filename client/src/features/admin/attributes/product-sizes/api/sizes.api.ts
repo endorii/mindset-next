@@ -1,112 +1,55 @@
+import { httpServiceAuth } from "@/shared/api/httpService";
 import { ServerResponseWithMessage } from "@/shared/interfaces/interfaces";
 import { ISize, ISizePayload } from "../types/product-size.types";
 
-const API_BASE_URL = "http://localhost:5000/api";
-
 export async function fetchSizes(): Promise<ISize[]> {
     try {
-        const response = await fetch(`${API_BASE_URL}/admin/sizes`, {
-            credentials: "include",
-        });
-
-        const text = await response.text();
-        const parsedData = text ? JSON.parse(text) : {};
-
-        if (!response.ok) {
-            const error: any = new Error(
-                parsedData.message || `Помилка ${parsedData.statusCode || response.status}`
-            );
-            error.status = parsedData.statusCode || response.status;
-            throw error;
-        }
-
-        return parsedData;
-    } catch (error: any) {
-        throw error;
+        const { data } = await httpServiceAuth.get("/admin/sizes");
+        return data;
+    } catch (error: unknown) {
+        handleHttpError(error);
     }
 }
 
 export async function createSize(
-    data: ISizePayload
+    payload: ISizePayload
 ): Promise<ServerResponseWithMessage<ISizePayload>> {
     try {
-        const response = await fetch(`${API_BASE_URL}/admin/sizes`, {
-            method: "POST",
-            credentials: "include",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify(data),
-        });
-
-        const text = await response.text();
-        const parsedData = text ? JSON.parse(text) : {};
-
-        if (!response.ok) {
-            const error: any = new Error(
-                parsedData.message || `Помилка ${parsedData.statusCode || response.status}`
-            );
-            error.status = parsedData.statusCode || response.status;
-            throw error;
-        }
-
-        return parsedData;
-    } catch (error: any) {
-        throw error;
+        const { data } = await httpServiceAuth.post("/admin/sizes", payload);
+        return data;
+    } catch (error: unknown) {
+        handleHttpError(error);
     }
 }
 
 export async function editSize(
     sizeId: string,
-    data: Partial<ISize>
+    payload: Partial<ISize>
 ): Promise<ServerResponseWithMessage<ISize>> {
     try {
-        const response = await fetch(`${API_BASE_URL}/admin/sizes/${sizeId}`, {
-            method: "PATCH",
-            credentials: "include",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify(data),
-        });
-
-        const text = await response.text();
-        const parsedData = text ? JSON.parse(text) : {};
-
-        if (!response.ok) {
-            const error: any = new Error(
-                parsedData.message || `Помилка ${parsedData.statusCode || response.status}`
-            );
-            error.status = parsedData.statusCode || response.status;
-            throw error;
-        }
-
-        return parsedData;
-    } catch (error: any) {
-        throw error;
+        const { data } = await httpServiceAuth.patch(`/admin/sizes/${sizeId}`, payload);
+        return data;
+    } catch (error: unknown) {
+        handleHttpError(error);
     }
 }
 
 export async function deleteSize(sizeId: string): Promise<ServerResponseWithMessage> {
     try {
-        const response = await fetch(`${API_BASE_URL}/admin/sizes/${sizeId}`, {
-            method: "DELETE",
-            credentials: "include",
-        });
-
-        const text = await response.text();
-        const parsedData = text ? JSON.parse(text) : {};
-
-        if (!response.ok) {
-            const error: any = new Error(
-                parsedData.message || `Помилка ${parsedData.statusCode || response.status}`
-            );
-            error.status = parsedData.statusCode || response.status;
-            throw error;
-        }
-
-        return parsedData;
-    } catch (error: any) {
-        throw error;
+        const { data } = await httpServiceAuth.delete(`/admin/sizes/${sizeId}`);
+        return data;
+    } catch (error: unknown) {
+        handleHttpError(error);
     }
+}
+
+function handleHttpError(error: any): never {
+    const message = error?.response?.data?.message || error.message || "Unknown server error";
+
+    const status = error?.response?.status;
+
+    const err: any = new Error(message);
+    if (status) err.status = status;
+
+    throw err;
 }

@@ -2,12 +2,14 @@ import { refreshToken } from "@/features/auth/api/auth.api";
 import { useUserStore } from "@/store/userStore";
 import axios from "axios";
 
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api";
+
 export const httpService = axios.create({
-    baseURL: process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api",
+    baseURL: API_BASE_URL,
 });
 
 export const httpServiceAuth = axios.create({
-    baseURL: process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api",
+    baseURL: API_BASE_URL,
     withCredentials: true,
 });
 
@@ -39,7 +41,7 @@ httpServiceAuth.interceptors.response.use(
             }
 
             isRefreshing = true;
-            refreshPromise = refreshToken(); // робить POST /auth/refresh з cookie
+            refreshPromise = refreshToken(); // POST /auth/refresh з cookie
 
             try {
                 const { accessToken: newAccessToken } = await refreshPromise;
@@ -49,7 +51,7 @@ httpServiceAuth.interceptors.response.use(
                 refreshPromise = null;
 
                 originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
-                return httpService.request(originalRequest);
+                return httpServiceAuth.request(originalRequest);
             } catch (err) {
                 isRefreshing = false;
                 refreshPromise = null;

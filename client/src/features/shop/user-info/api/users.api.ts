@@ -1,45 +1,24 @@
 import { httpServiceAuth } from "@/shared/api/httpService";
 import { ServerResponseWithMessage } from "@/shared/interfaces/interfaces";
-import { AxiosError } from "axios";
 import { IUser } from "../types/user.types";
-
-const API_BASE_URL = "http://localhost:5000/api";
 
 export async function editUser(payload: Partial<IUser>): Promise<ServerResponseWithMessage<IUser>> {
     try {
-        const { data } = await httpServiceAuth.patch(`${API_BASE_URL}/shop/users`, payload);
+        const { data } = await httpServiceAuth.patch("/shop/users", payload);
         return data;
     } catch (error: unknown) {
-        handleAxiosError(error);
+        handleHttpError(error);
     }
 }
 
 export async function deleteUser(password: string): Promise<ServerResponseWithMessage> {
     try {
-        const response = await fetch(`${API_BASE_URL}/shop/users`, {
-            method: "DELETE",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ password }),
-
-            credentials: "include",
+        const { data } = await httpServiceAuth.delete("/shop/users", {
+            data: { password },
         });
-
-        const text = await response.text();
-        const parsedData = text ? JSON.parse(text) : {};
-
-        if (!response.ok) {
-            const error: any = new Error(
-                parsedData.message || `Помилка ${parsedData.statusCode || response.status}`
-            );
-            error.status = parsedData.statusCode || response.status;
-            throw error;
-        }
-
-        return parsedData;
-    } catch (error: any) {
-        throw error;
+        return data;
+    } catch (error: unknown) {
+        handleHttpError(error);
     }
 }
 
@@ -48,39 +27,17 @@ export async function changePassword(data: {
     newPassword: string;
 }): Promise<ServerResponseWithMessage> {
     try {
-        const response = await fetch(`${API_BASE_URL}/shop/users/change-password`, {
-            method: "PATCH",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify(data),
-            credentials: "include",
-        });
-
-        const text = await response.text();
-        const parsedData = text ? JSON.parse(text) : {};
-
-        if (!response.ok) {
-            const error: any = new Error(
-                parsedData.message || `Помилка ${parsedData.statusCode || response.status}`
-            );
-            error.status = parsedData.statusCode || response.status;
-            throw error;
-        }
-
-        return parsedData;
-    } catch (error: any) {
-        throw error;
+        const { data: response } = await httpServiceAuth.patch("/shop/users/change-password", data);
+        return response;
+    } catch (error: unknown) {
+        handleHttpError(error);
     }
 }
 
-function handleAxiosError(error: unknown): never {
-    if (error instanceof AxiosError) {
-        const message = error.response?.data?.message || error.message;
-        const status = error.response?.status;
-        const err: any = new Error(message);
-        if (status) err.status = status;
-        throw err;
-    }
-    throw error;
+function handleHttpError(error: any): never {
+    const message = error?.response?.data?.message || error.message || "Unknown server error";
+    const status = error?.response?.status;
+    const err: any = new Error(message);
+    if (status) err.status = status;
+    throw err;
 }

@@ -1,8 +1,8 @@
 "use client";
 
-import { SearchIcon, AccountIcon } from "@/shared/icons";
-import Link from "next/link";
 import { useCurrentUser } from "@/features/shop/user-info/hooks/useUsers";
+import { AccountIcon, SearchIcon } from "@/shared/icons";
+import Link from "next/link";
 
 function AdminHeader() {
     const { data: user, isPending: isUserPending } = useCurrentUser();

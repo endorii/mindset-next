@@ -1,26 +1,22 @@
+import { httpServiceAuth } from "@/shared/api/httpService";
 import { IRecentActions } from "../types/recent-actions.types";
-
-const API_BASE_URL = "http://localhost:5000/api";
 
 export async function fetchRecentActionsFromUser(): Promise<IRecentActions[]> {
     try {
-        const response = await fetch(`${API_BASE_URL}/admin/recent-actions`, {
-            credentials: "include",
-        });
-
-        const text = await response.text();
-        const parsedData = text ? JSON.parse(text) : {};
-
-        if (!response.ok) {
-            const error: any = new Error(
-                parsedData.message || `Помилка ${parsedData.statusCode || response.status}`
-            );
-            error.status = parsedData.statusCode || response.status;
-            throw error;
-        }
-
-        return parsedData;
-    } catch (error: any) {
-        throw error;
+        const { data } = await httpServiceAuth.get("/admin/recent-actions");
+        return data;
+    } catch (error: unknown) {
+        handleHttpError(error);
     }
+}
+
+function handleHttpError(error: any): never {
+    const message = error?.response?.data?.message || error.message || "Unknown server error";
+
+    const status = error?.response?.status;
+
+    const err: any = new Error(message);
+    if (status) err.status = status;
+
+    throw err;
 }
