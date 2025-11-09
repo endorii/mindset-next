@@ -6,7 +6,7 @@ interface MainInfoProps {
     openModal: () => void;
     isUserPending: boolean;
     isUserError: boolean;
-    currentUser: IUser | undefined;
+    currentUser: IUser | null | undefined;
 }
 
 function MainInfo({
@@ -35,11 +35,11 @@ function MainInfo({
                     <div className="flex flex-col py-[10px] gap-[15px] w-full">
                         <InfoField
                             label={"Відображуване ім'я"}
-                            value={currentUser?.name}
+                            value={currentUser?.userName}
                         />
                         <InfoField
                             label={"Номер телефону"}
-                            value={currentUser?.phone}
+                            value={currentUser?.phone || "-"}
                         />
                         <InfoField
                             label={"Електронна пошта"}

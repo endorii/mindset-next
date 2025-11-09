@@ -12,6 +12,7 @@ import { CleanupService } from "./clean-up.service";
 import { JwtAccessGuard } from "./guards/jwt/jwt-access.guard";
 // import { RolesGuard } from "./guards/roles/roles.guard";
 import { RolesGuard } from "./guards/roles/roles.guard";
+import { GoogleStrategy } from "./strategies/google.strategy";
 import { JwtAccessStrategy } from "./strategies/jwt-access.strategy";
 import { JwtRefreshStrategy } from "./strategies/jwt-refresh.strategy";
 import { LocalStrategy } from "./strategies/local.strategy";
@@ -27,6 +28,7 @@ import { LocalStrategy } from "./strategies/local.strategy";
         LocalStrategy,
         JwtAccessStrategy,
         JwtRefreshStrategy,
+        GoogleStrategy,
         {
             provide: APP_GUARD,
             useClass: JwtAccessGuard,

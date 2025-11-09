@@ -15,6 +15,7 @@ import { EmailService } from "src/email/email.service";
 import { PrismaService } from "src/prisma/prisma.service";
 import { ShopUserService } from "src/shop/user/shop-user.service";
 import { CreateUserDto } from "../shop/user/dto/create-user.dto";
+import { GoogleUser } from "./interfaces/google-user.interface";
 
 @Injectable()
 export class AuthService {
@@ -38,7 +39,12 @@ export class AuthService {
             return await this.prisma.$transaction(async (tx) => {
                 const hashedPassword = await bcrypt.hash(createUserDto.password, 10);
                 const newUser = await tx.user.create({
-                    data: { ...createUserDto, password: hashedPassword, isVerified: false },
+                    data: {
+                        ...createUserDto,
+                        password: hashedPassword,
+                        isVerified: false,
+                        phone: createUserDto.phone,
+                    },
                 });
 
                 const { token, expiry } = this.generateVerificationToken();
@@ -111,6 +117,65 @@ export class AuthService {
         this.setTokenInCookies(res, refreshToken);
 
         return { data: { accessToken, user }, message: "Вхід виконано успішно" };
+    }
+    async googleLogin(googleUser: GoogleUser) {
+        try {
+            return await this.prisma.$transaction(async (tx) => {
+                let user = await tx.user.findUnique({
+                    where: { email: googleUser.email },
+                });
+
+                if (!user) {
+                    user = await tx.user.create({
+                        data: {
+                            email: googleUser.email,
+                            userName: `${googleUser.firstName} ${googleUser.lastName}`,
+                            password: "",
+                            phone: "",
+                            googleId: googleUser.googleId,
+                            isVerified: true,
+                        },
+                    });
+                } else if (!user.googleId) {
+                    user = await tx.user.update({
+                        where: { id: user.id },
+                        data: {
+                            googleId: googleUser.googleId,
+                            isVerified: true,
+                        },
+                    });
+                }
+
+                const accessToken = this.jwtAccessService.sign({
+                    sub: user.id,
+                    userName: user.userName,
+                    email: user.email,
+                });
+
+                const refreshToken = this.jwtRefreshService.sign({
+                    sub: user.id,
+                    userName: user.userName,
+                    email: user.email,
+                });
+
+                const hashedRefreshToken = await bcrypt.hash(refreshToken, 10);
+
+                await tx.user.update({
+                    where: { id: user.id },
+                    data: {
+                        hashedRefreshToken,
+                    },
+                });
+
+                return {
+                    accessToken,
+                    refreshToken,
+                };
+            });
+        } catch (error) {
+            console.error("Google login error:", error);
+            throw new BadRequestException("Failed to authenticate with Google");
+        }
     }
 
     async signOut(userId: string, res: Response) {
@@ -199,7 +264,7 @@ export class AuthService {
             phone: user.phone,
             role: user.role,
             createdAt: user.createdAt,
-            name: user.name,
+            userName: user.userName,
             favorites: user.favorites,
             cart: user.cart,
             shippingAddress: user.shippingAddress,

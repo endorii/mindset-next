@@ -18,7 +18,7 @@ export async function getCurrentUserSSR(): Promise<{
 
     if (!res.ok) return { user: null, accessToken: null };
 
-    const user = (await res.json()) as IUser;
+    const user: IUser = await res.json();
 
     return { user, accessToken };
 }

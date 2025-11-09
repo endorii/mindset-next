@@ -37,7 +37,7 @@ httpServiceAuth.interceptors.response.use(
             if (isRefreshing && refreshPromise) {
                 const { accessToken } = await refreshPromise;
                 originalRequest.headers.Authorization = `Bearer ${accessToken}`;
-                return httpService.request(originalRequest);
+                return httpServiceAuth.request(originalRequest);
             }
 
             isRefreshing = true;

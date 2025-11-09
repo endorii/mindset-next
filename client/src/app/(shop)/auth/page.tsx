@@ -1,11 +1,11 @@
 "use client";
 
-import { useCurrentUser } from "@/features/shop/user-info/hooks/useUsers";
 import {
-    Security,
     LoginForm,
     RegistrationForm,
+    Security,
 } from "@/features/auth/components";
+import { useCurrentUser } from "@/features/shop/user-info/hooks/useUsers";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 
@@ -20,10 +20,7 @@ const Login = () => {
     }, [currentUser, isUserLoading, router]);
 
     return (
-        <div
-            className="flex flex-row justify-between gap-[15px] p-[30px] pt-[10px] md:p-[10px] text-white
-                        md:flex-col"
-        >
+        <div className="flex flex-row justify-between gap-4 p-8 md:flex-col md:p-4 text-white">
             <LoginForm />
             <RegistrationForm />
             <Security />

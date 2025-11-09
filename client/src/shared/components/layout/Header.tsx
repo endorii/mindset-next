@@ -98,7 +98,9 @@ const Header = ({ serverUser }: { serverUser: IUser | null }) => {
                                 className="flex items-center gap-[10px] rounded-xl bg-white/5 shadow-lg px-[20px] py-[13px] backdrop-blur-2xl border border-white/5 hover:bg-white/15 transition-all duration-300"
                             >
                                 <AccountIcon className="w-[25px] fill-white" />
-                                <div>{serverUser?.name || user?.name}</div>
+                                <div>
+                                    {serverUser?.userName || user?.userName}
+                                </div>
                             </Link>
                         ) : (
                             <Link

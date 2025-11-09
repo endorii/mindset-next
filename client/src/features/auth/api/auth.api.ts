@@ -42,12 +42,13 @@ export async function loginUser(
     }
 }
 
-export async function currentUser(): Promise<IUser> {
+export async function fetchCurrentUser(): Promise<IUser | null> {
     try {
         const { data } = await httpServiceAuth.get("/auth/me");
         return data;
-    } catch (error: unknown) {
-        handleAxiosError(error);
+    } catch (error: any) {
+        console.error("Failed to fetch current user:", error);
+        return null;
     }
 }
 

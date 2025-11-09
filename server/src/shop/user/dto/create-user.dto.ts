@@ -1,4 +1,13 @@
-import { IsEmail, IsString, Matches, MinLength, MaxLength, IsBoolean } from "class-validator";
+import {
+    IsBoolean,
+    IsEmail,
+    IsOptional,
+    IsPhoneNumber,
+    IsString,
+    Matches,
+    MaxLength,
+    MinLength,
+} from "class-validator";
 
 export class CreateUserDto {
     @IsString({ message: "Ім'я користувача обов'язкове" })
@@ -7,16 +16,17 @@ export class CreateUserDto {
     @Matches(/^[A-Za-z0-9]+$/, {
         message: "Нікнейм має містити англійські літери або цифри",
     })
-    name: string;
+    userName: string;
 
     @IsEmail({}, { message: "Некоректна електронна адреса" })
     email: string;
 
-    @IsString({ message: "Номер телефону обов'язковий" })
+    @IsOptional()
+    @IsPhoneNumber()
     @Matches(/^\+?[\d\s-]{10,15}$/, {
         message: "Некоректний формат телефону",
     })
-    phone: string;
+    phone?: string;
 
     @IsBoolean()
     isVerified: boolean;

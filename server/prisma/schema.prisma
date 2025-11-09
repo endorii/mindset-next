@@ -12,11 +12,12 @@ model User {
   id                 String           @id @default(cuid())
   email              String           @unique
   password           String
-  phone              String
+  phone              String?
   createdAt          DateTime         @default(now()) @map("created_at")
   updatedAt          DateTime         @updatedAt @map("updated_at")
   hashedRefreshToken String?
-  name               String
+  userName           String           @map("user_name")
+  googleId           String?          @unique @map("google_id")
   role               Role             @default(USER)
   cart               CartItem[]
   favorites          Favorite[]

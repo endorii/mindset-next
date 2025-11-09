@@ -4,11 +4,11 @@ import { useEscapeKeyClose } from "@/shared/hooks";
 import { MonoButton } from "@/shared/ui/buttons";
 import InputField from "@/shared/ui/inputs/InputField";
 import {
-    ModalWrapper,
-    FormFillingWrapper,
     FormButtonsWrapper,
+    FormFillingWrapper,
+    ModalWrapper,
 } from "@/shared/ui/wrappers";
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { useForm } from "react-hook-form";
 import { useEditUser } from "../hooks/useUsers";
@@ -17,11 +17,11 @@ import { IUser } from "../types/user.types";
 interface EditUserInfoModalProps {
     isOpen: boolean;
     onClose: () => void;
-    user: IUser | undefined;
+    user: IUser | null | undefined;
 }
 
 type EditUserFormData = {
-    name: string;
+    userName: string;
     email: string;
     phone: string;
 };
@@ -45,7 +45,7 @@ export default function EditUserInfoModal({
     useEffect(() => {
         if (user) {
             reset({
-                name: user.name || "",
+                userName: user.userName || "",
                 email: user.email || "",
                 phone: user.phone || "",
             });
@@ -56,7 +56,7 @@ export default function EditUserInfoModal({
     const onSubmit = async (data: EditUserFormData) => {
         try {
             await editUserMutation.mutateAsync({
-                name: data.name,
+                userName: data.userName,
                 email: data.email,
                 phone: data.phone,
             });
@@ -84,7 +84,7 @@ export default function EditUserInfoModal({
                         <InputField
                             label="Нікнейм*"
                             type="text"
-                            {...register("name", {
+                            {...register("userName", {
                                 required: "Введіть нікнейм",
                                 minLength: {
                                     value: 3,
@@ -100,7 +100,7 @@ export default function EditUserInfoModal({
                                         "Дозволено лише англійські літери та цифри",
                                 },
                             })}
-                            errorMessage={modalErrors.name?.message}
+                            errorMessage={modalErrors.userName?.message}
                         />
                         <InputField
                             label="Електронна пошта*"

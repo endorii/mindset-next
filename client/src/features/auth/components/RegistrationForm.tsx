@@ -3,8 +3,8 @@ import InputField from "@/shared/ui/inputs/InputField";
 import { LoginComponentsWrapper } from "@/shared/ui/wrappers";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { CreateUserDto } from "../types/auth.types";
 import { useRegisterUser } from "../hooks/useAuth";
+import { CreateUserDto } from "../types/auth.types";
 
 type RegisterFormInputs = CreateUserDto;
 
@@ -87,10 +87,9 @@ function RegistrationForm() {
                 />
 
                 <InputField
-                    label="телефон*"
+                    label="телефон (не обов'язково)"
                     type="tel"
                     {...registerForm("phone", {
-                        required: "Введіть номер телефону",
                         pattern: {
                             value: /^\+?[\d\s\-]{10,15}$/,
                             message: "Некоректний формат телефону",

@@ -1,10 +1,10 @@
-import { MonoButton } from "@/shared/ui/buttons";
+import { ButtonWithIcon, MonoButton } from "@/shared/ui/buttons";
 import InputField from "@/shared/ui/inputs/InputField";
 import { LoginComponentsWrapper } from "@/shared/ui/wrappers";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { ILoginCredentials } from "../types/auth.types";
 import { useLoginUser } from "../hooks/useAuth";
+import { ILoginCredentials } from "../types/auth.types";
 
 function LoginForm() {
     const [loginMessage, setLoginMessage] = useState<string | null>(null);
@@ -14,6 +14,10 @@ function LoginForm() {
         handleSubmit: handleLoginSubmit,
         formState: { errors: loginErrors },
     } = useForm<ILoginCredentials>();
+
+    const handleGoogleLogin = () => {
+        window.location.href = `${process.env.NEXT_PUBLIC_API_URL}/auth/google`;
+    };
 
     const onLoginSubmit = async (data: ILoginCredentials) => {
         try {
@@ -69,6 +73,15 @@ function LoginForm() {
                     {loginUserMutation.isPending ? "Завантаження..." : "Увійти"}
                 </MonoButton>
             </form>
+            <div className="font-semibold text-neutral-400 text-center">
+                Або
+            </div>
+            <div className="w-full">
+                <ButtonWithIcon onClick={handleGoogleLogin} className="w-full">
+                    <img src="./google.svg" alt="" />
+                    <div>Продовжити з Google</div>
+                </ButtonWithIcon>
+            </div>
         </LoginComponentsWrapper>
     );
 }

@@ -8,7 +8,7 @@ interface DeliveryAddressProps {
     openModal: (type: AttributeModalType) => void;
     isUserPending: boolean;
     isUserError: boolean;
-    currentUser: IUser | undefined;
+    currentUser: IUser | null | undefined;
 }
 
 function DeliveryAddress({

@@ -88,6 +88,9 @@ export function useLogoutUser() {
 
             queryClient.removeQueries({ queryKey: ["currentUser"] });
             queryClient.removeQueries({ queryKey: ["accessToken"] });
+
+            window.location.href = "/";
+
             toast.success(data.message);
         },
         onError: (error: any) => {

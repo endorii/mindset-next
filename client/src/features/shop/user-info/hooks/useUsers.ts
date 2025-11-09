@@ -1,3 +1,4 @@
+import { fetchCurrentUser } from "@/features/auth/api/auth.api";
 import { useUserStore } from "@/store/userStore";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
@@ -5,14 +6,19 @@ import { changePassword, deleteUser, editUser } from "../api/users.api";
 import { IUser } from "../types/user.types";
 
 export function useCurrentUser() {
-    const user = useUserStore((state) => state.user);
+    const { accessToken } = useUserStore();
 
     return useQuery<IUser | null>({
         queryKey: ["currentUser"],
-        queryFn: () => user,
-        initialData: user,
-        enabled: false,
-        staleTime: Infinity,
+        queryFn: async () => {
+            if (!accessToken) {
+                return null;
+            }
+            return await fetchCurrentUser();
+        },
+        enabled: !!accessToken,
+        staleTime: 5 * 60 * 1000,
+        retry: false,
     });
 }
 

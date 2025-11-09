@@ -5,7 +5,7 @@ import { MonoButton } from "@/shared/ui/buttons";
 interface ChangePasswordProps {
     isUserError: boolean;
     isUserPending: boolean;
-    currentUser: IUser | undefined;
+    currentUser: IUser | null | undefined;
     openModal: (type: AttributeModalType) => void;
 }
 

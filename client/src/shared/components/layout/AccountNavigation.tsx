@@ -2,7 +2,7 @@
 
 import { useLogoutUser } from "@/features/auth/hooks/useAuth";
 import { useCurrentUser } from "@/features/shop/user-info/hooks/useUsers";
-import { AdminIcon, LogoutIcon, BackIcon } from "@/shared/icons";
+import { AdminIcon, BackIcon, LogoutIcon } from "@/shared/icons";
 import { NavigationLink } from "@/shared/ui/buttons";
 import { ButtonSkeleton } from "@/shared/ui/skeletons";
 import { accountNavigationLinks } from "@/shared/utils/accountNavigationLinks";
@@ -65,19 +65,21 @@ function AccountNavigation({ children }: { children: React.ReactNode }) {
                     ) : isUserPending ? (
                         <ButtonSkeleton />
                     ) : null}
-                    <div>
-                        <NavigationLink
-                            href="/"
-                            onClick={async () => {
-                                await logoutUserMutation.mutateAsync();
-                            }}
-                        >
-                            <LogoutIcon className="w-[25px] fill-white group-hover:fill-black" />
-                            <span className="transition-opacity duration-200 group-hover:text-black">
-                                Вийти з акаунту
-                            </span>
-                        </NavigationLink>
-                    </div>
+
+                    <button
+                        onClick={async () => {
+                            await logoutUserMutation.mutateAsync();
+                        }}
+                        disabled={logoutUserMutation.isPending}
+                        className="flex gap-[15px] py-[13px] items-center cursor-pointer bg-black/40 px-[20px] border border-white/10 rounded-xl hover:bg-white group transition-all duration-300 "
+                    >
+                        <LogoutIcon className="w-[25px] fill-white group-hover:fill-black" />
+                        <span className="transition-opacity duration-200 group-hover:text-black">
+                            {logoutUserMutation.isPending
+                                ? "Виходимо..."
+                                : "Вийти з акаунту"}
+                        </span>
+                    </button>
                 </div>
             </div>
             <div className="w-full md:mt-[30px] lg:mt-0">{children}</div>

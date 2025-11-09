@@ -1,12 +1,11 @@
 import { IUser } from "@/features/shop/user-info/types/user.types";
 import { AttributeModalType } from "@/shared/types/types";
 import { MonoButton } from "@/shared/ui/buttons";
-import React from "react";
 
 interface DeleteAccountProps {
     isUserError: boolean;
     isUserPending: boolean;
-    currentUser: IUser | undefined;
+    currentUser: IUser | null | undefined;
     openModal: (type: AttributeModalType) => void;
 }
 

@@ -29,7 +29,7 @@ function AdminHeader() {
                         <AccountIcon className="w-[25px] fill-white" />
                         <div className="mt-[3px]">
                             {user ? (
-                                user.name
+                                user.userName
                             ) : isUserPending ? (
                                 <div className="h-[24px] w-[100px] animate-pulse"></div>
                             ) : (
