@@ -89,34 +89,15 @@ function ProductContent({
                 type: chosenType,
                 color: chosenColor,
                 quantity,
-                product,
                 productId: product.id,
             });
         } else {
             addToLocalCart(
-                {
-                    id: product.id,
-                    name: product.name,
-                    price: product.price,
-                    banner: product.banner,
-                    images: [],
-                    oldPrice: 0,
-                    path: "",
-                    views: 0,
-                    status: "Активно",
-                    available: "Доступно",
-                    description: "",
-                    composition: "",
-                    categoryId: "",
-                    createdAt: "",
-                    updatedAt: "",
-                    productColors: [],
-                    productTypes: [],
-                    productSizes: [],
-                },
+                product.id,
                 chosenSize,
                 chosenColor,
-                setChosenType
+                chosenType,
+                quantity
             );
             toast.success("Додано в корзину");
         }

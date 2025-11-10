@@ -1,42 +1,23 @@
 import {
     ConflictException,
+    HttpException,
     Injectable,
     InternalServerErrorException,
     NotFoundException,
-    HttpException,
 } from "@nestjs/common";
-import { CreateCartDto } from "./dto/create-cart.dto";
 import { PrismaService } from "src/prisma/prisma.service";
+import { CreateCartDto } from "./dto/create-cart.dto";
 
 @Injectable()
 export class ShopCartService {
     constructor(private readonly prisma: PrismaService) {}
 
     async getAllCartItemsFromUser(userId: string) {
-        try {
-            const cartItems = await this.prisma.cartItem.findMany({
-                where: { userId },
-                include: {
-                    product: {
-                        include: {
-                            category: {
-                                include: {
-                                    collection: true,
-                                },
-                            },
-                        },
-                    },
-                },
-            });
+        const cartItems = await this.prisma.cartItem.findMany({
+            where: { userId },
+        });
 
-            return cartItems;
-        } catch (error) {
-            console.error("Помилка при отриманні кошика користувача:", error);
-            if (error instanceof HttpException) {
-                throw error;
-            }
-            throw new InternalServerErrorException("Помилка сервера при отриманні кошика");
-        }
+        return cartItems;
     }
 
     async addCartItemToUser(userId: string, createCartDto: CreateCartDto) {

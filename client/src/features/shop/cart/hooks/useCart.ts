@@ -16,6 +16,7 @@ export function useCartItemsFromUser() {
         queryFn: () => fetchAllCartItemsFromUser(),
         enabled: !!accessToken,
         retry: false,
+        placeholderData: [],
     });
 }
 

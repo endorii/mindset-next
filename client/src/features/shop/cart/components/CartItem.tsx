@@ -1,35 +1,27 @@
-import { CloseIcon, HeartIcon } from "@/shared/icons";
+import { CloseIcon } from "@/shared/icons";
 import { ButtonWithTextAndIcon } from "@/shared/ui/buttons";
 import Image from "next/image";
 import Link from "next/link";
 import { ICartItem } from "../types/cart.types";
-import { IProduct } from "@/features/products/types/products.types";
 
 interface CartItemProps {
     item: ICartItem;
     handleRemove: () => void;
-    handleFavoriteToggle: (product: IProduct) => void;
-    isFavorite: boolean;
 }
 
-function CartItem({
-    item,
-    handleRemove,
-    handleFavoriteToggle,
-    isFavorite,
-}: CartItemProps) {
+function CartItem({ item, handleRemove }: CartItemProps) {
     return (
         <div className="flex border-b pb-[30px] rounded-xl bg-white/5 backdrop-blur-[100px] border border-white/5 p-[20px] ">
             <Link
-                href={`${item.product.category?.collection?.path}/${item.product.category?.path}/${item.product.path}`}
+                href={`${item.product?.category?.collection?.path}/${item.product?.category?.path}/${item.product?.path}`}
                 className="relative min-w-[300px] "
             >
                 <div className="absolute flex top-0 left-0 opacity-0 hover:opacity-100 bg-black/85 w-full h-full text-3xl uppercase font-thin items-center justify-center transition-all duration-400 rounded-lg border border-white/5">
                     Переглянути
                 </div>
                 <Image
-                    src={`http://localhost:5000/${item.product.banner}`}
-                    alt={item.product.name}
+                    src={`http://localhost:5000/${item.product?.banner}`}
+                    alt={item.product?.name || ""}
                     width={300}
                     height={300}
                     className="rounded-xl"
@@ -39,10 +31,10 @@ function CartItem({
                 <div className="flex flex-col justify-between">
                     <div className="flex items-center justify-between">
                         <div className="text-[30px] font-thin">
-                            {item.product.name}
+                            {item.product?.name}
                         </div>
                         <div className="text-lg font-bold">
-                            {item.product.price} грн.
+                            {item.product?.price} грн.
                         </div>
                     </div>
                     <hr className="border-t border-white/10 my-[8px]" />
@@ -82,20 +74,6 @@ function CartItem({
                     >
                         <CloseIcon className="w-[20px] stroke-white group-hover:stroke-black transition-all duration-300" />
                         <div>Видалити</div>
-                    </ButtonWithTextAndIcon>
-                    <ButtonWithTextAndIcon
-                        onClick={() => {
-                            handleFavoriteToggle(item.product);
-                        }}
-                    >
-                        <HeartIcon
-                            className={`w-[22px] transition-all group-hover:stroke-black duration-300 stroke-white fill-none`}
-                        />
-                        <div>
-                            {isFavorite
-                                ? "Видалити з Вподобаного"
-                                : "Додати до Вподобаного"}
-                        </div>
                     </ButtonWithTextAndIcon>
                 </div>
             </div>

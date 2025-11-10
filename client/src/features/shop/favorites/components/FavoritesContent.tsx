@@ -14,11 +14,7 @@ function FavoritesContent() {
 
     const deleteFavoriteFromUserMutation = useDeleteFavorite();
 
-    const {
-        data: user,
-        isPending: isUserPending,
-        isError: isUserError,
-    } = useCurrentUser();
+    const { data: user } = useCurrentUser();
 
     const {
         data: userFavorites,
@@ -27,9 +23,6 @@ function FavoritesContent() {
     } = useFavoritesFromUser();
 
     const favProducts = user ? userFavorites || [] : favoriteItems;
-
-    const enableProductsQuery =
-        !isUserFavoritesPending && favProducts.length > 0;
 
     const { data: products, isPending: isProductsPending } =
         useProductsByIds(favProducts);
@@ -43,7 +36,6 @@ function FavoritesContent() {
         }
     };
 
-    // Показуємо скелетон тільки якщо завантажуємо
     if ((user && isUserFavoritesPending) || isProductsPending) {
         return <UserFavoritesSkeleton />;
     }

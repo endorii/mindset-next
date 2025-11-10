@@ -1,17 +1,10 @@
 "use client";
 
-import { IProduct } from "@/features/products/types/products.types";
+import { useProductsByIds } from "@/features/products/hooks/useProducts";
 import { ErrorWithMessage } from "@/shared/ui/components";
 import { UserCartSkeleton } from "@/shared/ui/skeletons";
 import { useCartStore } from "@/store/useCartStore";
-import { useFavoritesStore } from "@/store/useFavoritesStore";
 import Image from "next/image";
-import { useState } from "react";
-import {
-    useAddFavorite,
-    useDeleteFavorite,
-} from "../../favorites/hooks/useFavorites";
-import { IFavoriteItem } from "../../favorites/types/favorites.types";
 import { useCurrentUser } from "../../user-info/hooks/useUsers";
 import {
     useCartItemsFromUser,
@@ -21,162 +14,102 @@ import CartItem from "./CartItem";
 import CartReceip from "./CartReceip";
 
 function CartContent() {
-    const { data: user, isPending: isUserPending } = useCurrentUser();
+    const { cartItems, removeFromCart } = useCartStore();
+
+    const deleteCartItemMutation = useDeleteCartItemFromUser();
+
+    const { data: user } = useCurrentUser();
+
     const {
-        data: userCart,
+        data: userCartItems,
         isPending: isUserCartPending,
         isError: isUserCartError,
     } = useCartItemsFromUser();
 
-    const { cartItems } = useCartStore();
-    const { favoriteItems } = useFavoritesStore();
+    const cartToShow = user ? userCartItems ?? [] : cartItems;
 
-    const [favoriteStates, setFavoriteStates] = useState<
-        Record<string, boolean>
-    >({});
+    const { data: products, isPending: isProductsPending } = useProductsByIds(
+        cartToShow.map((item) => item.productId)
+    );
 
-    const cartToShow = user ? userCart ?? [] : cartItems;
+    const mergedCart = cartToShow.map((item) => {
+        const product = products?.find((p) => p.id === item.productId);
+        return { ...item, product };
+    });
 
-    const deleteCartItemMutation = useDeleteCartItemFromUser();
-    const addToFavoriteMutation = useAddFavorite();
-    const deleteFromFavoriteMutation = useDeleteFavorite();
-
-    const totalPrice = cartToShow.reduce((total, item) => {
-        if (!item.product) return total;
+    const totalPrice = mergedCart.reduce((total, item) => {
+        if (!item?.product) return total;
         return total + item.product.price * item.quantity;
     }, 0);
 
-    const removeCartItemFromServer = async (cartItemId: string) => {
+    const removeCartItemFromServer = async (cartItemId: string | undefined) => {
+        if (!cartItemId) return;
         try {
             await deleteCartItemMutation.mutateAsync(cartItemId);
-            console.log("Видалено з серверного кошика:", cartItemId);
         } catch (error) {
             console.error("Помилка видалення:", error);
         }
     };
 
-    const checkIfFavorite = (productId: string): boolean => {
-        if (user) {
-            return (
-                user.favorites?.some((item) => item.productId === productId) ||
-                false
-            );
-        } else {
-            try {
-                return favoriteItems.some((item) => item === productId);
-            } catch (error) {
-                console.error(
-                    "Помилка при читанні favorites з localStorage:",
-                    error
-                );
-                return false;
-            }
-        }
-    };
+    // ===== Loading state =====
+    if (isUserCartPending || isProductsPending) {
+        return <UserCartSkeleton />;
+    }
 
-    const handleFavoriteToggle = async (product: IProduct) => {
-        const productId = product.id;
-        const currentFavoriteState = favoriteStates[productId] || false;
-        const newFavoriteState = !currentFavoriteState;
+    // ===== Error state =====
+    if (user && isUserCartError) {
+        return (
+            <ErrorWithMessage message="Виникла помилка під час завантаження кошику" />
+        );
+    }
 
-        setFavoriteStates((prev) => ({
-            ...prev,
-            [productId]: newFavoriteState,
-        }));
-
-        if (user) {
-            try {
-                if (newFavoriteState) {
-                    await addToFavoriteMutation.mutateAsync(productId);
-                } else {
-                    await deleteFromFavoriteMutation.mutateAsync(productId);
-                }
-            } catch (error) {
-                console.error("Помилка при роботі з вподобаними:", error);
-                setFavoriteStates((prev) => ({
-                    ...prev,
-                    [productId]: currentFavoriteState,
-                }));
-            }
-        } else {
-            try {
-                const favorites = localStorage.getItem("favorites");
-                const parsed: IFavoriteItem[] = favorites
-                    ? JSON.parse(favorites)
-                    : [];
-
-                const updated = newFavoriteState
-                    ? [...parsed, { productId, product }]
-                    : parsed.filter(
-                          (favItem) => favItem.productId !== productId
-                      );
-
-                localStorage.setItem("favorites", JSON.stringify(updated));
-            } catch (error) {
-                console.error("Помилка при збереженні у localStorage:", error);
-                setFavoriteStates((prev) => ({
-                    ...prev,
-                    [productId]: currentFavoriteState,
-                }));
-            }
-        }
-    };
+    // ===== Empty state =====
+    if (!mergedCart.length) {
+        return (
+            <div className="flex flex-col justify-center text-center items-center p-[30px] sm:p-[10px] sm:pb-[150px]">
+                <Image
+                    src="/images/emptycart.png"
+                    alt="empty cart"
+                    width={300}
+                    height={300}
+                    className="opacity-30 w-[300px] sm:w-[200px]"
+                />
+                <div className="font-semibold text-4xl md:text-3xl text-white/50">
+                    Ваш кошик порожній
+                </div>
+                <div className="font mt-[7px] text-white/30">
+                    Наповніть його товарами!
+                </div>
+            </div>
+        );
+    }
 
     return (
-        <>
-            {cartToShow && cartToShow.length > 0 ? (
-                <div className="flex justify-between gap-[15px] w-full px-[30px]">
-                    <div className="flex flex-col gap-[15px] w-2/3 max-h-[80vh] overflow-y-auto">
-                        {cartToShow.map((item) => {
-                            const isServer = !!user;
+        <div className="flex justify-between gap-[15px] w-full px-[30px]">
+            <div className="flex flex-col gap-[15px] w-2/3 max-h-[80vh] overflow-y-auto">
+                {mergedCart.map((item) => {
+                    const isServer = !!user;
 
-                            const handleRemove = () => {
-                                if (isServer) {
-                                    removeCartItemFromServer(item.id!);
-                                } else {
-                                    // removeItemFromLocalCart(item.productId);
-                                }
-                            };
+                    const handleRemove = () => {
+                        if (isServer) {
+                            removeCartItemFromServer(item?.id);
+                        } else {
+                            removeFromCart(item.productId);
+                        }
+                    };
 
-                            const isFavorite = item.product
-                                ? favoriteStates[item.product.id] || false
-                                : false;
+                    return (
+                        <CartItem
+                            key={item.id ?? item.productId}
+                            item={item}
+                            handleRemove={handleRemove}
+                        />
+                    );
+                })}
+            </div>
 
-                            return (
-                                <CartItem
-                                    key={item.id ?? item.productId}
-                                    item={item}
-                                    handleRemove={handleRemove}
-                                    handleFavoriteToggle={handleFavoriteToggle}
-                                    isFavorite={isFavorite}
-                                />
-                            );
-                        })}
-                    </div>
-                    <CartReceip totalPrice={totalPrice} />
-                </div>
-            ) : isUserCartPending || !isLocalCartLoaded ? (
-                <UserCartSkeleton />
-            ) : user && isUserCartError ? (
-                <ErrorWithMessage message="Виникла помилка під час завантаження кошику" />
-            ) : (
-                <div className="flex flex-col justify-center text-center items-center p-[30px] sm:p-[10px] sm:pb-[150px]">
-                    <Image
-                        src="/images/emptycart.png"
-                        alt={"1"}
-                        width={300}
-                        height={300}
-                        className="opacity-30 w-[300px] sm:w-[200px]"
-                    />
-                    <div className="font-semibold text-4xl md:text-3xl text-white/50">
-                        Ваш кошик порожній
-                    </div>
-                    <div className="font mt-[7px] text-white/30">
-                        Наповніть його товарами!
-                    </div>
-                </div>
-            )}
-        </>
+            <CartReceip totalPrice={totalPrice} />
+        </div>
     );
 }
 
