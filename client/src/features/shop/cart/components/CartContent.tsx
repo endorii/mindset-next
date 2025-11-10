@@ -6,12 +6,12 @@ import { UserCartSkeleton } from "@/shared/ui/skeletons";
 import { useCartStore } from "@/store/useCartStore";
 import { useFavoritesStore } from "@/store/useFavoritesStore";
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import {
     useAddFavorite,
     useDeleteFavorite,
 } from "../../favorites/hooks/useFavorites";
-import { ILocalFavoriteItem } from "../../favorites/types/favorites.types";
+import { IFavoriteItem } from "../../favorites/types/favorites.types";
 import { useCurrentUser } from "../../user-info/hooks/useUsers";
 import {
     useCartItemsFromUser,
@@ -29,7 +29,7 @@ function CartContent() {
     } = useCartItemsFromUser();
 
     const { cartItems } = useCartStore();
-    const { favoretesItems } = useFavoritesStore();
+    const { favoriteItems } = useFavoritesStore();
 
     const [favoriteStates, setFavoriteStates] = useState<
         Record<string, boolean>
@@ -63,7 +63,7 @@ function CartContent() {
             );
         } else {
             try {
-                return favoretesItems.some((item) => item.id === productId);
+                return favoriteItems.some((item) => item === productId);
             } catch (error) {
                 console.error(
                     "Помилка при читанні favorites з localStorage:",
@@ -101,7 +101,7 @@ function CartContent() {
         } else {
             try {
                 const favorites = localStorage.getItem("favorites");
-                const parsed: ILocalFavoriteItem[] = favorites
+                const parsed: IFavoriteItem[] = favorites
                     ? JSON.parse(favorites)
                     : [];
 
@@ -122,29 +122,6 @@ function CartContent() {
         }
     };
 
-    useEffect(() => {
-        if (!user && !isUserPending) {
-            const localCartData = getLocalCart();
-            setLocalCart(localCartData);
-            setIsLocalCartLoaded(true);
-        } else if (user) {
-            setIsLocalCartLoaded(true);
-        }
-    }, [user, isUserPending]);
-
-    useEffect(() => {
-        if (cartToShow.length > 0) {
-            const initialFavoriteStates: Record<string, boolean> = {};
-            cartToShow.forEach((item) => {
-                if (item.product) {
-                    initialFavoriteStates[item.product.id] = checkIfFavorite(
-                        item.product.id
-                    );
-                }
-            });
-            setFavoriteStates(initialFavoriteStates);
-        }
-    }, [cartToShow, user]);
     return (
         <>
             {cartToShow && cartToShow.length > 0 ? (
@@ -157,7 +134,7 @@ function CartContent() {
                                 if (isServer) {
                                     removeCartItemFromServer(item.id!);
                                 } else {
-                                    removeItemFromLocalCart(item.productId);
+                                    // removeItemFromLocalCart(item.productId);
                                 }
                             };
 

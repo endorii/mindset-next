@@ -1,5 +1,4 @@
 import { useMutation, useQuery, useQueryClient, useSuspenseQuery } from "@tanstack/react-query";
-import { useMemo } from "react";
 import { toast } from "sonner";
 import {
     addProductToCategory,
@@ -11,7 +10,7 @@ import {
     fetchProductsByIds,
     fetchProductsFromSameCollection,
 } from "../api/products.api";
-import { ICreateProductPayload, IProduct } from "../types/products.types";
+import { ICreateProductPayload } from "../types/products.types";
 
 export function usePopularProducts() {
     return useSuspenseQuery({
@@ -39,14 +38,11 @@ export function useGetProductByPath(
     });
 }
 
-export function useProductsByIds(ids?: string[]) {
-    const sortedIds = useMemo(() => (ids ? [...ids].sort() : []), [ids]);
-
-    return useQuery<IProduct[]>({
-        queryKey: ["productsByIds", sortedIds],
-        queryFn: () => fetchProductsByIds(sortedIds),
-        enabled: sortedIds.length > 0, // ❌ важливо
-        staleTime: 1000 * 60 * 5,
+export function useProductsByIds(ids: string[]) {
+    const nonEmptyIds = ids.filter(Boolean);
+    return useQuery({
+        queryKey: ["productsByIds", nonEmptyIds],
+        queryFn: () => fetchProductsByIds(nonEmptyIds),
     });
 }
 

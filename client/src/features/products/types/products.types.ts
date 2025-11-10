@@ -4,7 +4,7 @@ import { IType } from "@/features/admin/attributes/product-types/types/product-t
 import { ICategory } from "@/features/categories/types/categories.types";
 import { ICollection } from "@/features/collections/types/collections.types";
 import { IReview } from "@/features/reviews/types/reviews.types";
-import { TStatus, TAvailble } from "@/shared/types/types";
+import { TAvailble, TStatus } from "@/shared/types/types";
 
 export interface IProduct {
     id: string;

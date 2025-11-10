@@ -1,28 +1,26 @@
+"use client";
+
+import { IProduct } from "@/features/products/types/products.types";
+import { ICartItem } from "@/features/shop/cart/types/cart.types";
 import { create } from "zustand";
 import { devtools, persist } from "zustand/middleware";
 
-interface Product {
-    id: string;
-    name: string;
-    price: number;
-    image: string;
-}
-
-interface CartItem extends Product {
-    size: string;
-    color: string;
-    quantity: number;
-}
-
 interface CartStore {
-    cartItems: CartItem[];
+    cartItems: ICartItem[];
 
-    addToCart: (product: Product, size: string, color: string) => void;
-    removeFromCart: (productId: string, size: string, color: string) => void;
-    updateQuantity: (productId: string, size: string, color: string, quantity: number) => void;
+    addToCart: (product: Partial<IProduct>, size: string, color: string, type: string) => void;
+    removeFromCart: (productId: string, size: string, color: string, type: string) => void;
+    updateQuantity: (
+        productId: string,
+        size: string,
+        color: string,
+        type: string,
+        quantity: number
+    ) => void;
+
     clearCart: () => void;
     getCartTotal: () => number;
-    getCartcartItemsCount: () => number;
+    getCartItemsCount: () => number;
 }
 
 export const useCartStore = create<CartStore>()(
@@ -31,74 +29,94 @@ export const useCartStore = create<CartStore>()(
             (set, get) => ({
                 cartItems: [],
 
-                addToCart: (product, size, color) => {
+                // ✅ ADD TO CART
+                addToCart: (product, size, color, type) => {
                     set((state) => {
                         const existingItem = state.cartItems.find(
                             (item) =>
-                                item.id === product.id && item.size === size && item.color === color
+                                item.productId === product.id &&
+                                item.size === size &&
+                                item.color === color &&
+                                item.type === type
                         );
 
                         if (existingItem) {
                             return {
                                 cartItems: state.cartItems.map((item) =>
-                                    item.id === product.id &&
+                                    item.productId === product.id &&
                                     item.size === size &&
-                                    item.color === color
+                                    item.color === color &&
+                                    item.type === type
                                         ? { ...item, quantity: item.quantity + 1 }
                                         : item
                                 ),
                             };
                         }
 
+                        const newItem: ICartItem = {
+                            product,
+                            productId: product.id,
+                            size,
+                            color,
+                            type,
+                            quantity: 1,
+                        };
+
                         return {
-                            cartItems: [
-                                ...state.cartItems,
-                                { ...product, size, color, quantity: 1 },
-                            ],
+                            cartItems: [...state.cartItems, newItem],
                         };
                     });
                 },
 
-                removeFromCart: (productId, size, color) => {
+                // ✅ REMOVE
+                removeFromCart: (productId, size, color, type) => {
                     set((state) => ({
                         cartItems: state.cartItems.filter(
                             (item) =>
                                 !(
-                                    item.id === productId &&
+                                    item.productId === productId &&
                                     item.size === size &&
-                                    item.color === color
+                                    item.color === color &&
+                                    item.type === type
                                 )
                         ),
                     }));
                 },
 
-                updateQuantity: (productId, size, color, quantity) => {
+                // ✅ UPDATE QUANTITY
+                updateQuantity: (productId, size, color, type, quantity) => {
                     if (quantity <= 0) {
-                        get().removeFromCart(productId, size, color);
+                        get().removeFromCart(productId, size, color, type);
                         return;
                     }
 
                     set((state) => ({
                         cartItems: state.cartItems.map((item) =>
-                            item.id === productId && item.size === size && item.color === color
+                            item.productId === productId &&
+                            item.size === size &&
+                            item.color === color &&
+                            item.type === type
                                 ? { ...item, quantity }
                                 : item
                         ),
                     }));
                 },
 
+                // ✅ CLEAR
                 clearCart: () => {
                     set({ cartItems: [] });
                 },
 
+                // ✅ GET TOTAL
                 getCartTotal: () => {
                     return get().cartItems.reduce(
-                        (total, item) => total + item.price * item.quantity,
+                        (total, item) => total + item.product.price * item.quantity,
                         0
                     );
                 },
 
-                getCartcartItemsCount: () => {
+                // ✅ GET COUNT
+                getCartItemsCount: () => {
                     return get().cartItems.reduce((count, item) => count + item.quantity, 0);
                 },
             }),

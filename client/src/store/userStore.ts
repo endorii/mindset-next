@@ -3,7 +3,7 @@ import { create } from "zustand";
 import { devtools } from "zustand/middleware";
 
 interface UserState {
-    user: IUser | null | undefined;
+    user: IUser | null;
     accessToken: string | null;
     setUser: (user: IUser | null, accessToken: string | null) => void;
     setAccessToken: (token: string | null) => void;

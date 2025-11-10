@@ -1,12 +1,14 @@
 "use client";
 
-import { useCartItemsFromUser } from "@/features/shop/cart/hooks/useCart";
 import {
-    PreOrderInfo,
     CheckoutResultTable,
+    PreOrderInfo,
 } from "@/features/checkout/components";
+import { PaymentMethodType } from "@/features/checkout/types/checkout.types";
 import { useCreateOrder } from "@/features/orders/hooks/useOrders";
 import { INovaPostDataObj, IOrder } from "@/features/orders/types/orders.types";
+import { useCartItemsFromUser } from "@/features/shop/cart/hooks/useCart";
+import { ICartItem } from "@/features/shop/cart/types/cart.types";
 import { useCurrentUser } from "@/features/shop/user-info/hooks/useUsers";
 import {
     fetchAreas,
@@ -14,15 +16,13 @@ import {
     fetchWarehouses,
 } from "@/shared/api/nova-post.api";
 import { MonoButton } from "@/shared/ui/buttons";
+import { ErrorWithMessage } from "@/shared/ui/components";
 import InputField from "@/shared/ui/inputs/InputField";
 import { NovaPoshtaSelect } from "@/shared/ui/selectors/NovaPoshtaSelect";
-import { useState, useEffect } from "react";
-import { Controller, useForm } from "react-hook-form";
-import { ICartItem } from "@/features/shop/cart/types/cart.types";
 import { CheckoutSkeleton } from "@/shared/ui/skeletons";
 import ShopTitle from "@/shared/ui/titles/ShopTitle";
-import { ErrorWithMessage } from "@/shared/ui/components";
-import { PaymentMethodType } from "@/features/checkout/types/checkout.types";
+import { useEffect, useState } from "react";
+import { Controller, useForm } from "react-hook-form";
 
 interface FormData {
     fullName: string;
@@ -155,6 +155,7 @@ function Checkout() {
     }, [selectedCity]);
 
     const onSubmit = async (data: FormData) => {
+        if (!cartToShow) return;
         const userId = user?.id;
 
         const orderData: IOrder = {
@@ -170,7 +171,7 @@ function Checkout() {
             userId,
             total:
                 cartToShow.reduce(
-                    (acc, item) => acc + item.product.price * item.quantity,
+                    (acc, item) => acc + item.product?.price * item.quantity,
                     0
                 ) || 0,
             items:

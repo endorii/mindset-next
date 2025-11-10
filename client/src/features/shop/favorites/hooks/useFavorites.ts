@@ -15,6 +15,7 @@ export function useFavoritesFromUser() {
         queryFn: () => fetchFavoritesFromUser(),
         enabled: !!accessToken,
         retry: false,
+        placeholderData: [],
     });
 }
 

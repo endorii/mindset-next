@@ -4,6 +4,7 @@ import { useAddCartItemToUser } from "@/features/shop/cart/hooks/useCart";
 import {
     useAddFavorite,
     useDeleteFavorite,
+    useFavoritesFromUser,
 } from "@/features/shop/favorites/hooks/useFavorites";
 import { useCurrentUser } from "@/features/shop/user-info/hooks/useUsers";
 import { HeartIcon } from "@/shared/icons";
@@ -31,24 +32,21 @@ function ProductContent({
     product,
 }: ProductContentProps) {
     const { data: user, isPending: isUserPending } = useCurrentUser();
+    const { data: userFavorites } = useFavoritesFromUser();
 
-    // Zustand stores
     const { addToCart: addToLocalCart } = useCartStore();
     const { isInFavorites, toggleFavorite: toggleLocalFavorite } =
         useFavoritesStore();
 
-    // Backend mutations
     const addToFavoriteMutation = useAddFavorite();
     const deleteFromFavoriteMutation = useDeleteFavorite();
     const addCartItemToUserMutation = useAddCartItemToUser();
 
-    // Local state
     const [chosenSize, setChosenSize] = useState("");
     const [chosenType, setChosenType] = useState("");
     const [chosenColor, setChosenColor] = useState("");
     const [quantity, setQuantity] = useState<number>(1);
 
-    // Ініціалізація атрибутів і recently viewed
     useEffect(() => {
         if (!product) return;
 
@@ -59,57 +57,66 @@ function ProductContent({
         addToRecentlyViewed(product);
     }, [product]);
 
-    // Перевірка чи товар в favorites (локально або на сервері)
-    const isLiked =
-        user && !isUserPending
-            ? user.favorites?.some((item) => item.productId === product.id)
-            : isInFavorites(product.id);
+    const isLiked = user
+        ? userFavorites?.some((item) => item === product.id) || false
+        : isInFavorites(product.id);
 
-    // Toggle favorites
     const handleLikeToggle = async () => {
         if (!product) return;
 
         if (user && !isUserPending) {
-            // Backend логіка
             if (isLiked) {
                 deleteFromFavoriteMutation.mutate(product.id);
             } else {
                 addToFavoriteMutation.mutate(product.id);
             }
         } else {
-            // LocalStorage через Zustand
             toggleLocalFavorite(product.id);
-            toast.success(
-                isLiked ? "Видалено з вподобаних" : "Додано до вподобаних"
-            );
+            if (typeof window !== "undefined") {
+                toast.success(
+                    isLiked ? "Видалено з вподобаних" : "Додано до вподобаних"
+                );
+            }
         }
     };
 
-    // Додати в корзину
     const handleAddToCart = async () => {
         if (!product) return;
 
         if (user && !isUserPending) {
-            // Backend логіка
             addCartItemToUserMutation.mutate({
                 size: chosenSize,
                 type: chosenType,
                 color: chosenColor,
                 quantity,
-                // product,
+                product,
                 productId: product.id,
             });
         } else {
-            // LocalStorage через Zustand
             addToLocalCart(
                 {
                     id: product.id,
                     name: product.name,
                     price: product.price,
-                    image: product.banner,
+                    banner: product.banner,
+                    images: [],
+                    oldPrice: 0,
+                    path: "",
+                    views: 0,
+                    status: "Активно",
+                    available: "Доступно",
+                    description: "",
+                    composition: "",
+                    categoryId: "",
+                    createdAt: "",
+                    updatedAt: "",
+                    productColors: [],
+                    productTypes: [],
+                    productSizes: [],
                 },
                 chosenSize,
-                chosenColor
+                chosenColor,
+                setChosenType
             );
             toast.success("Додано в корзину");
         }

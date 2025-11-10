@@ -1,4 +1,5 @@
 import { refreshToken } from "@/features/auth/api/auth.api";
+// 🛑 ЗМІНА: Імпортуємо тільки useUserStore (якщо це функція create)
 import { useUserStore } from "@/store/userStore";
 import axios from "axios";
 
@@ -17,15 +18,18 @@ export const httpServiceAuth = axios.create({
 let isRefreshing = false;
 let refreshPromise: Promise<{ accessToken: string }> | null = null;
 
-// Interceptor (CSR, in-memory)
+// --- ПРАВИЛЬНИЙ INTERCEPTOR ЗАПИТУ ---
 httpServiceAuth.interceptors.request.use((config) => {
-    const accessToken = useUserStore.getState().accessToken; // з Zustand, in-memory
+    // ✅ ВИКОРИСТАННЯ: useUserStore.getState()
+    const { accessToken } = useUserStore.getState();
+
     if (accessToken) {
         config.headers.Authorization = `Bearer ${accessToken}`;
     }
     return config;
 });
 
+// --- ПРАВИЛЬНИЙ INTERCEPTOR ВІДПОВІДІ ---
 httpServiceAuth.interceptors.response.use(
     (res) => res,
     async (error) => {
@@ -34,10 +38,14 @@ httpServiceAuth.interceptors.response.use(
         if (error.response?.status === 401 && !originalRequest._retry) {
             originalRequest._retry = true;
 
+            // ✅ ВИКОРИСТАННЯ: useUserStore.getState()
+            // Отримуємо всі необхідні значення та функції
+            const { accessToken, setUser, clearUser, user } = useUserStore.getState();
+
             // Перевірка: чи є токен взагалі
-            const currentToken = useUserStore.getState().accessToken;
-            if (!currentToken) {
+            if (!accessToken) {
                 // Немає токена - не намагаємося refresh
+                // Оскільки ми поза компонентом, то тут не можемо викликати useRouter
                 return Promise.reject(error);
             }
 
@@ -45,18 +53,21 @@ httpServiceAuth.interceptors.response.use(
                 try {
                     const { accessToken } = await refreshPromise;
                     originalRequest.headers.Authorization = `Bearer ${accessToken}`;
+                    // Повторюємо оригінальний запит
                     return httpServiceAuth.request(originalRequest);
                 } catch {
+                    // Якщо паралельний refresh не вдався
                     return Promise.reject(error);
                 }
             }
 
             isRefreshing = true;
-            refreshPromise = refreshToken();
+            refreshPromise = refreshToken(); // Початок нового запиту на refresh
 
             try {
                 const { accessToken: newAccessToken } = await refreshPromise;
-                useUserStore.getState().setUser(useUserStore.getState().user!, newAccessToken);
+                // Оновлюємо стан через setUser (який ми отримали через getState)
+                setUser(user, newAccessToken);
 
                 isRefreshing = false;
                 refreshPromise = null;
@@ -66,10 +77,13 @@ httpServiceAuth.interceptors.response.use(
             } catch (err) {
                 isRefreshing = false;
                 refreshPromise = null;
-                useUserStore.getState().clearUser();
+                clearUser(); // Очищуємо стан
 
-                // Опціонально: редірект на логін
-                // window.location.href = '/login';
+                // Опціонально: тут може знадобитися редірект.
+                // Оскільки window недоступний на сервері,
+                // а також ми поза React-компонентом, ви можете додати логіку
+                // редіректу на логін через окремий клієнтський компонент
+                // або бібліотеку для сповіщень.
 
                 return Promise.reject(err);
             }

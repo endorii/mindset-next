@@ -6,8 +6,10 @@ import SliderWrapper from "./layout/SliderWrapper";
 function PopularProducts() {
     const { data: popularProducts } = usePopularProducts();
 
+    console.log(popularProducts);
+
     if (!popularProducts || popularProducts.length === 0) {
-        null;
+        return null;
     }
 
     return (

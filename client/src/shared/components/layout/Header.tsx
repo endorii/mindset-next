@@ -13,7 +13,7 @@ import { useEffect, useState } from "react";
 import HeaderBurger from "./HeaderBurger";
 
 const Header = ({ serverUser }: { serverUser: IUser | null }) => {
-    const { data: user, isPending: isUserPending } = useCurrentUser();
+    const { data: user } = useCurrentUser();
     const { data: userFavorites } = useFavoritesFromUser();
     const { data: userCart } = useCartItemsFromUser();
 
@@ -27,23 +27,32 @@ const Header = ({ serverUser }: { serverUser: IUser | null }) => {
         const handleScroll = () => {
             if (pathname !== "/") {
                 setShowTitle(true);
-            } else if (window.scrollY > 390 && pathname === "/") {
+            } else if (
+                // typeof window !== "undefined" &&
+                window.scrollY > 390 &&
+                pathname === "/"
+            ) {
                 setShowTitle(true);
             } else {
                 setShowTitle(false);
             }
         };
 
+        // if (typeof window !== "undefined") {
         window.addEventListener("scroll", handleScroll);
         handleScroll();
+        // }
 
         return () => {
+            // if (typeof window !== "undefined") {
             window.removeEventListener("scroll", handleScroll);
+            // }
         };
     }, [pathname]);
 
-    const cart = !!cartItems ? cartItems : cartItems;
-    const favorites = !!userFavorites ? userFavorites : favoriteItems;
+    // Визначення, який список використовувати (серверний чи локальний)
+    const cart = user ? userCart || [] : cartItems;
+    const favorites = user ? userFavorites || [] : favoriteItems;
 
     return (
         <header className="fixed py-[10px] px-[30px] sm:px-[10px] sm:p-[10px] flex justify-between items-center w-full bg-black/70 backdrop-blur-xl text-white z-[100] shadow-custom">

@@ -4,74 +4,57 @@ import { useProductsByIds } from "@/features/products/hooks/useProducts";
 import { ErrorWithMessage } from "@/shared/ui/components";
 import { UserFavoritesSkeleton } from "@/shared/ui/skeletons";
 import { useFavoritesStore } from "@/store/useFavoritesStore";
-import { useUserStore } from "@/store/userStore";
 import Image from "next/image";
-import { useMemo } from "react";
 import { useCurrentUser } from "../../user-info/hooks/useUsers";
 import { useDeleteFavorite, useFavoritesFromUser } from "../hooks/useFavorites";
 import FavoriteCard from "./FavoriteCard";
 
 function FavoritesContent() {
-    const { accessToken } = useUserStore();
+    const { favoriteItems, removeFromFavorites } = useFavoritesStore();
+
+    const deleteFavoriteFromUserMutation = useDeleteFavorite();
+
     const {
         data: user,
         isPending: isUserPending,
         isError: isUserError,
     } = useCurrentUser();
+
     const {
         data: userFavorites,
         isPending: isUserFavoritesPending,
         isError: isUserFavoritesError,
     } = useFavoritesFromUser();
 
-    const { favoriteItems, removeFromFavorites } = useFavoritesStore();
-    const deleteFavoriteMutation = useDeleteFavorite();
+    const favProducts = user ? userFavorites || [] : favoriteItems;
 
-    const favoriteIds = useMemo(() => {
-        // Авторизований користувач - дані з бекенду
-        if (userFavorites) {
-            return userFavorites;
+    const enableProductsQuery =
+        !isUserFavoritesPending && favProducts.length > 0;
+
+    const { data: products, isPending: isProductsPending } =
+        useProductsByIds(favProducts);
+
+    const removeFavorite = (productId: string) => {
+        if (user) {
+            deleteFavoriteFromUserMutation.mutateAsync(productId);
         }
-        // Неавторизований - дані з локального store
-        if (!accessToken) {
-            return favoriteItems;
-        }
-        // Завантаження
-        return [];
-    }, [accessToken, userFavorites, favoriteItems]);
-
-    const {
-        data: products,
-        isPending: isProductsPending,
-        isError,
-    } = useProductsByIds(favoriteIds.length > 0 ? favoriteIds : undefined);
-
-    const removeFavorite = async (productId: string) => {
-        if (user && !isUserFavoritesError) {
-            await deleteFavoriteMutation.mutateAsync(productId);
-        } else {
+        {
             removeFromFavorites(productId);
         }
     };
 
-    console.log("=== DEBUG ===");
-    console.log("accessToken:", accessToken);
-    console.log("user:", user);
-    console.log("isUserPending:", isUserPending);
-    console.log("isUserError:", isUserError);
-
     // Показуємо скелетон тільки якщо завантажуємо
-    if (isUserFavoritesPending || isProductsPending) {
+    if ((user && isUserFavoritesPending) || isProductsPending) {
         return <UserFavoritesSkeleton />;
     }
 
-    if (isError || isUserFavoritesError) {
+    if (isUserFavoritesError) {
         return (
             <ErrorWithMessage message="Виникла помилка під час завантаження вподобаних товарів" />
         );
     }
 
-    if (!favoriteIds.length || !products?.length) {
+    if (!products?.length) {
         return (
             <div className="flex flex-col justify-center text-center items-center p-[30px] sm:p-[10px] sm:pb-[150px]">
                 <Image
