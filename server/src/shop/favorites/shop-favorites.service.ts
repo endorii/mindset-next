@@ -13,42 +13,14 @@ export class ShopFavoritesService {
     constructor(private readonly prisma: PrismaService) {}
 
     async getAllFavoritesFromUser(userId: string) {
-        try {
-            return await this.prisma.favorite.findMany({
-                where: { userId },
-                select: {
-                    id: true,
-                    productId: true,
-                    product: {
-                        select: {
-                            id: true,
-                            name: true,
-                            price: true,
-                            oldPrice: true,
-                            path: true,
-                            banner: true,
+        const favorites = await this.prisma.favorite.findMany({
+            where: { userId },
+            select: {
+                productId: true,
+            },
+        });
 
-                            category: {
-                                select: {
-                                    path: true,
-                                    collection: {
-                                        select: {
-                                            path: true,
-                                        },
-                                    },
-                                },
-                            },
-                        },
-                    },
-                },
-            });
-        } catch (error) {
-            console.error("Помилка при отриманні вподобаних користувача:", error);
-            if (error instanceof HttpException) {
-                throw error;
-            }
-            throw new InternalServerErrorException("Помилка сервера при отриманні вподобаних");
-        }
+        return favorites.map((fav) => fav.productId);
     }
 
     async addFavoriteToUser(userId: string, createFavoriteDto: CreateFavoriteDto) {

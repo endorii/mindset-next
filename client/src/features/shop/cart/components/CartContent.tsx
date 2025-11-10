@@ -3,7 +3,10 @@
 import { IProduct } from "@/features/products/types/products.types";
 import { ErrorWithMessage } from "@/shared/ui/components";
 import { UserCartSkeleton } from "@/shared/ui/skeletons";
-import React, { useEffect, useState } from "react";
+import { useCartStore } from "@/store/useCartStore";
+import { useFavoritesStore } from "@/store/useFavoritesStore";
+import Image from "next/image";
+import { useEffect, useState } from "react";
 import {
     useAddFavorite,
     useDeleteFavorite,
@@ -14,10 +17,8 @@ import {
     useCartItemsFromUser,
     useDeleteCartItemFromUser,
 } from "../hooks/useCart";
-import { ICartItem } from "../types/cart.types";
 import CartItem from "./CartItem";
 import CartReceip from "./CartReceip";
-import Image from "next/image";
 
 function CartContent() {
     const { data: user, isPending: isUserPending } = useCurrentUser();
@@ -27,13 +28,14 @@ function CartContent() {
         isError: isUserCartError,
     } = useCartItemsFromUser();
 
-    const [localCart, setLocalCart] = useState<ICartItem[]>([]);
-    const [isLocalCartLoaded, setIsLocalCartLoaded] = useState(false);
+    const { cartItems } = useCartStore();
+    const { favoretesItems } = useFavoritesStore();
+
     const [favoriteStates, setFavoriteStates] = useState<
         Record<string, boolean>
     >({});
 
-    const cartToShow = user ? userCart ?? [] : localCart;
+    const cartToShow = user ? userCart ?? [] : cartItems;
 
     const deleteCartItemMutation = useDeleteCartItemFromUser();
     const addToFavoriteMutation = useAddFavorite();
@@ -43,32 +45,6 @@ function CartContent() {
         if (!item.product) return total;
         return total + item.product.price * item.quantity;
     }, 0);
-
-    const getLocalCart = (): ICartItem[] => {
-        try {
-            const localCart = localStorage.getItem("cart");
-            return localCart ? JSON.parse(localCart) : [];
-        } catch (error) {
-            console.error("Помилка при читанні localStorage:", error);
-            return [];
-        }
-    };
-
-    const saveCartItemsToStorage = (localCart: ICartItem[]) => {
-        try {
-            localStorage.setItem("cart", JSON.stringify(localCart));
-        } catch (error) {
-            console.error("Помилка при збереженні в localStorage:", error);
-        }
-    };
-
-    const removeItemFromLocalCart = (productId: string) => {
-        const updatedCart: ICartItem[] = localCart.filter(
-            (item: ICartItem) => item.productId !== productId
-        );
-        setLocalCart(updatedCart);
-        saveCartItemsToStorage(updatedCart);
-    };
 
     const removeCartItemFromServer = async (cartItemId: string) => {
         try {
@@ -87,13 +63,7 @@ function CartContent() {
             );
         } else {
             try {
-                const favorites = localStorage.getItem("favorites");
-                const parsedFavorites: ILocalFavoriteItem[] = favorites
-                    ? JSON.parse(favorites)
-                    : [];
-                return parsedFavorites.some(
-                    (item) => item.product.id === productId
-                );
+                return favoretesItems.some((item) => item.id === productId);
             } catch (error) {
                 console.error(
                     "Помилка при читанні favorites з localStorage:",

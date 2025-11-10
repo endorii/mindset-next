@@ -1,15 +1,17 @@
-import { useQuery, useQueryClient, useMutation, useSuspenseQuery } from "@tanstack/react-query";
-import {
-    fetchPopularProducts,
-    fetchProductsFromSameCollection,
-    addProductToCategory,
-    editProduct,
-    deleteProduct,
-    fetchProductsByCategoryId,
-    fetchGetProductByPath,
-} from "../api/products.api";
-import { ICreateProductPayload } from "../types/products.types";
+import { useMutation, useQuery, useQueryClient, useSuspenseQuery } from "@tanstack/react-query";
+import { useMemo } from "react";
 import { toast } from "sonner";
+import {
+    addProductToCategory,
+    deleteProduct,
+    editProduct,
+    fetchGetProductByPath,
+    fetchPopularProducts,
+    fetchProductsByCategoryId,
+    fetchProductsByIds,
+    fetchProductsFromSameCollection,
+} from "../api/products.api";
+import { ICreateProductPayload, IProduct } from "../types/products.types";
 
 export function usePopularProducts() {
     return useSuspenseQuery({
@@ -34,6 +36,17 @@ export function useGetProductByPath(
         queryKey: ["product", productPath],
         queryFn: () => fetchGetProductByPath(collectionPath, categoryPath, productPath),
         enabled: !!collectionPath || !!categoryPath || !!productPath,
+    });
+}
+
+export function useProductsByIds(ids?: string[]) {
+    const sortedIds = useMemo(() => (ids ? [...ids].sort() : []), [ids]);
+
+    return useQuery<IProduct[]>({
+        queryKey: ["productsByIds", sortedIds],
+        queryFn: () => fetchProductsByIds(sortedIds),
+        enabled: sortedIds.length > 0, // ❌ важливо
+        staleTime: 1000 * 60 * 5,
     });
 }
 

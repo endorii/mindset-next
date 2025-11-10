@@ -1,8 +1,8 @@
+import { Transform } from "class-transformer";
 import {
     IsBoolean,
     IsEmail,
     IsOptional,
-    IsPhoneNumber,
     IsString,
     Matches,
     MaxLength,
@@ -22,7 +22,7 @@ export class CreateUserDto {
     email: string;
 
     @IsOptional()
-    @IsPhoneNumber()
+    @Transform(({ value }: { value: string }) => (value === "" ? undefined : value))
     @Matches(/^\+?[\d\s-]{10,15}$/, {
         message: "Некоректний формат телефону",
     })

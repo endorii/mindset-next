@@ -8,5 +8,5 @@ export interface ICartItem {
     size: string;
     color: string;
     type: string;
-    product: IProduct;
+    product?: IProduct;
 }

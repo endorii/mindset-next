@@ -50,17 +50,15 @@ export class ShopUserService {
     }
 
     async findByEmail(email: string) {
-        try {
-            return await this.prisma.user.findUnique({
-                where: { email },
-            });
-        } catch (error) {
-            console.error("Помилка пошуку користувача за email:", error);
-            if (error instanceof HttpException) {
-                throw error;
-            }
-            throw new InternalServerErrorException("Не вдалося знайти користувача.");
+        const user = await this.prisma.user.findUnique({
+            where: { email },
+        });
+
+        if (!user) {
+            throw new NotFoundException(`User with email ${email} not found`);
         }
+
+        return user;
     }
 
     async findOne(userId: string) {

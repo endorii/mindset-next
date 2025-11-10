@@ -1,6 +1,6 @@
 export interface IAuthenticatedUser {
     id: string;
-    name: string;
+    userName: string;
     role: string;
 }
 
@@ -10,7 +10,7 @@ export interface ILoginCredentials {
 }
 
 export interface CreateUserDto {
-    name: string;
+    userName: string;
     email: string;
     phone?: string;
     password: string;
@@ -21,7 +21,7 @@ export interface CreateUserDto {
 
 export interface IAuthResponse {
     id: string;
-    name: string;
+    userName: string;
     phone: string;
     email: string;
     role: string;

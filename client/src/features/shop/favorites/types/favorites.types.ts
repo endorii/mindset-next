@@ -4,8 +4,3 @@ export interface IFavoriteItem {
     productId: string;
     product: IProduct;
 }
-
-export interface ILocalFavoriteItem {
-    productId: string;
-    product: IProduct;
-}

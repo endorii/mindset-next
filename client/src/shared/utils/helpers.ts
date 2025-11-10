@@ -2,17 +2,6 @@ export const statuses = ["Активно", "Не активно"];
 export const availables = ["Доступно", "Не доступно"];
 export const priorities = ["low", "medium", "high"];
 
-export const getLocalStorageArray = (key: string): any[] => {
-    try {
-        const item = localStorage.getItem(key);
-        if (!item) return [];
-        const parsed = JSON.parse(item);
-        return Array.isArray(parsed) ? parsed : [];
-    } catch {
-        return [];
-    }
-};
-
 export function declOfNum(number: number, words: [string, string, string]) {
     const mod10 = number % 10;
     const mod100 = number % 100;

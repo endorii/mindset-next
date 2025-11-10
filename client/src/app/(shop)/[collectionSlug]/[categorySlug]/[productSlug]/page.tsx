@@ -1,13 +1,13 @@
 import { ReviewsOnProductPage } from "@/features/reviews/components";
 import {
-    RecentlyViewedProducts,
-    ProductsFromSameCollection,
     PopularProducts,
+    ProductsFromSameCollection,
+    RecentlyViewedProducts,
 } from "@/shared/components";
 import { ErrorWithMessage } from "@/shared/ui/components";
 
-import { IProduct } from "@/features/products/types/products.types";
 import ProductSection from "@/features/products/components/ProductSection";
+import { IProduct } from "@/features/products/types/products.types";
 
 export async function generateMetadata({
     params,

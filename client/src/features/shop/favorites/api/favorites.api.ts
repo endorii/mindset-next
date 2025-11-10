@@ -1,10 +1,11 @@
 import { httpServiceAuth } from "@/shared/api/httpService";
 import { ServerResponseWithMessage } from "@/shared/interfaces/interfaces";
-import { IFavoriteItem } from "../types/favorites.types";
 
-export async function fetchFavoritesFromUser(): Promise<IFavoriteItem[]> {
+export async function fetchFavoritesFromUser(): Promise<string[]> {
     try {
         const { data } = await httpServiceAuth.get("/shop/favorites");
+        console.log(data);
+
         return data;
     } catch (error: unknown) {
         handleHttpError(error);

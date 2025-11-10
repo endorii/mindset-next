@@ -5,7 +5,8 @@ import { useFavoritesFromUser } from "@/features/shop/favorites/hooks/useFavorit
 import { useCurrentUser } from "@/features/shop/user-info/hooks/useUsers";
 import { IUser } from "@/features/shop/user-info/types/user.types";
 import { AccountIcon, CartIcon, HeartIcon } from "@/shared/icons";
-import { getLocalStorageArray } from "@/shared/utils/helpers";
+import { useCartStore } from "@/store/useCartStore";
+import { useFavoritesStore } from "@/store/useFavoritesStore";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -16,17 +17,11 @@ const Header = ({ serverUser }: { serverUser: IUser | null }) => {
     const { data: userFavorites } = useFavoritesFromUser();
     const { data: userCart } = useCartItemsFromUser();
 
-    const [localCart, setLocalCart] = useState<any[]>([]);
-    const [localFavorites, setLocalFavorites] = useState<any[]>([]);
-
     const [showTitle, setShowTitle] = useState(false);
 
     const pathname = usePathname();
-
-    useEffect(() => {
-        setLocalCart(getLocalStorageArray("cart"));
-        setLocalFavorites(getLocalStorageArray("favorites"));
-    }, []);
+    const { cartItems } = useCartStore();
+    const { favoriteItems } = useFavoritesStore();
 
     useEffect(() => {
         const handleScroll = () => {
@@ -47,8 +42,8 @@ const Header = ({ serverUser }: { serverUser: IUser | null }) => {
         };
     }, [pathname]);
 
-    const cart = !!userCart ? userCart : localCart;
-    const favorites = !!userFavorites ? userFavorites : localFavorites;
+    const cart = !!cartItems ? cartItems : cartItems;
+    const favorites = !!userFavorites ? userFavorites : favoriteItems;
 
     return (
         <header className="fixed py-[10px] px-[30px] sm:px-[10px] sm:p-[10px] flex justify-between items-center w-full bg-black/70 backdrop-blur-xl text-white z-[100] shadow-custom">

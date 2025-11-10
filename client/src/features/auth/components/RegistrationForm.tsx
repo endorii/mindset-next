@@ -53,7 +53,7 @@ function RegistrationForm() {
                 <InputField
                     label="ім'я користувача*"
                     type="text"
-                    {...registerForm("name", {
+                    {...registerForm("userName", {
                         required: "Введіть ім'я користувача",
                         minLength: {
                             value: 3,
@@ -69,7 +69,7 @@ function RegistrationForm() {
                                 "Нікнейм має містити лише англійські літери та цифри",
                         },
                     })}
-                    errorMessage={registerErrors.name?.message}
+                    errorMessage={registerErrors.userName?.message}
                 />
 
                 <InputField
@@ -90,6 +90,7 @@ function RegistrationForm() {
                     label="телефон (не обов'язково)"
                     type="tel"
                     {...registerForm("phone", {
+                        setValueAs: (value) => value?.trim() || undefined,
                         pattern: {
                             value: /^\+?[\d\s\-]{10,15}$/,
                             message: "Некоректний формат телефону",

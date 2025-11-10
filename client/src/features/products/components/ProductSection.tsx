@@ -15,7 +15,7 @@ export default function ProductSection({
 }) {
     if (!product) {
         return (
-            <ErrorWithMessage message="Товар не знайдено, або він відстуній" />
+            <ErrorWithMessage message="Товар не знайдено, або він відсутній" />
         );
     }
 

@@ -1,15 +1,20 @@
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useUserStore } from "@/store/userStore";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { toast } from "sonner";
 import {
     addFavoriteToUser,
     deleteFavoriteFromUser,
     fetchFavoritesFromUser,
 } from "../api/favorites.api";
-import { toast } from "sonner";
 
 export function useFavoritesFromUser() {
+    const { accessToken } = useUserStore();
+
     return useQuery({
         queryKey: ["favorites"],
         queryFn: () => fetchFavoritesFromUser(),
+        enabled: !!accessToken,
+        retry: false,
     });
 }
 

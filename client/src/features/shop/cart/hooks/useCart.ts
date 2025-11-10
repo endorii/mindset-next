@@ -1,4 +1,6 @@
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useUserStore } from "@/store/userStore";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { toast } from "sonner";
 import {
     addCartItemToUser,
     deleteCartFromUser,
@@ -6,12 +8,14 @@ import {
     fetchAllCartItemsFromUser,
 } from "../api/cart.api";
 import { ICartItem } from "../types/cart.types";
-import { toast } from "sonner";
 
 export function useCartItemsFromUser() {
+    const { accessToken } = useUserStore();
     return useQuery({
         queryKey: ["cart"],
         queryFn: () => fetchAllCartItemsFromUser(),
+        enabled: !!accessToken,
+        retry: false,
     });
 }
 

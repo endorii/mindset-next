@@ -40,8 +40,6 @@ function RenderAttributeField({
                         key={item.id}
                         type="button"
                         onClick={() => {
-                            console.log(item);
-
                             toggleSelect(item.id, selected, setSelected);
                         }}
                         className={`px-3 py-1 rounded-full text-sm ${

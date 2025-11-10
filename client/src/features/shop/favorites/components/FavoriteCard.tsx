@@ -1,17 +1,15 @@
 "use client";
 
-import Link from "next/link";
+import { IProduct } from "@/features/products/types/products.types";
 import Image from "next/image";
-import { IFavoriteItem } from "../types/favorites.types";
+import Link from "next/link";
 
 interface FavoriteCardProps {
-    item: IFavoriteItem;
+    product: IProduct;
     onRemove: () => void;
 }
 
-export default function FavoriteCard({ onRemove, item }: FavoriteCardProps) {
-    const { product } = item;
-
+export default function FavoriteCard({ onRemove, product }: FavoriteCardProps) {
     return (
         <li className="relative group rounded-xl bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px]">
             <div className="flex items-center justify-between flex-col absolute top-0 right-0 z-10 w-full h-full bg-black/80 opacity-0 group-hover:opacity-100 transition-all duration-400 rounded-xl">

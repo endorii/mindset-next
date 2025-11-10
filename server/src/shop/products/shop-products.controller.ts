@@ -1,6 +1,6 @@
-import { Controller, Get, Param } from "@nestjs/common";
-import { ProductsService } from "./shop-products.service";
+import { Controller, Get, Param, Query } from "@nestjs/common";
 import { Public } from "src/auth/decorators/public.decorator";
+import { ProductsService } from "./shop-products.service";
 
 @Controller("shop/products")
 export class ShopProductsController {
@@ -10,6 +10,15 @@ export class ShopProductsController {
     @Public()
     getAllProducts() {
         return this.productsService.getAllProducts();
+    }
+
+    @Get()
+    @Public()
+    getProductsByIds(@Query("ids") ids: string) {
+        if (!ids) return [];
+
+        const idArray = ids.split(","); // ["p1", "p2", "p3"]
+        return this.productsService.findByIds(idArray);
     }
 
     @Get("popular")

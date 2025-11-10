@@ -17,8 +17,9 @@ export function useCurrentUser() {
             return await fetchCurrentUser();
         },
         enabled: !!accessToken,
-        staleTime: 5 * 60 * 1000,
         retry: false,
+        initialData: null, // ← одразу повертає null замість undefined
+        staleTime: 5 * 60 * 1000,
     });
 }
 

@@ -118,6 +118,7 @@ export class AuthService {
 
         return { data: { accessToken, user }, message: "Вхід виконано успішно" };
     }
+
     async googleLogin(googleUser: GoogleUser) {
         try {
             return await this.prisma.$transaction(async (tx) => {
@@ -236,14 +237,13 @@ export class AuthService {
     // =======================
     async validateLocalUser(email: string, password: string) {
         const user = await this.shopUserService.findByEmail(email);
-        if (!user) throw new UnauthorizedException("Такого користувача не існує");
         if (!user.isVerified)
             throw new UnauthorizedException(
                 "Будь ласка, підтвердіть вашу електронну адресу, щоб увійти."
             );
 
         const isPasswordMatched = await bcrypt.compare(password, user.password);
-        if (!isPasswordMatched) throw new UnauthorizedException("Невірно введено пароль або логін");
+        if (!isPasswordMatched) throw new BadRequestException("Невірно введено пароль або логін");
 
         return { id: user.id, email: user.email, role: user.role };
     }

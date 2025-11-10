@@ -1,12 +1,12 @@
 import { IUser } from "@/features/shop/user-info/types/user.types";
-import { httpServiceAuth } from "@/shared/api/httpService";
+import { httpService, httpServiceAuth } from "@/shared/api/httpService";
 import { ServerResponseWithMessage } from "@/shared/interfaces/interfaces";
 import { AxiosError } from "axios";
 import { CreateUserDto, ILoginCredentials } from "../types/auth.types";
 
 export async function registerUser(data: CreateUserDto): Promise<ServerResponseWithMessage> {
     try {
-        const { data: response } = await httpServiceAuth.post("/auth/signup", data);
+        const { data: response } = await httpService.post("/auth/signup", data);
         return response;
     } catch (error: unknown) {
         handleAxiosError(error);
@@ -15,7 +15,7 @@ export async function registerUser(data: CreateUserDto): Promise<ServerResponseW
 
 export async function verifyUser(token: string): Promise<ServerResponseWithMessage> {
     try {
-        const { data } = await httpServiceAuth.get(`/auth/verify?token=${token}`);
+        const { data } = await httpService.get(`/auth/verify?token=${token}`);
         return data;
     } catch (error: unknown) {
         handleAxiosError(error);
@@ -24,7 +24,7 @@ export async function verifyUser(token: string): Promise<ServerResponseWithMessa
 
 export async function resendVerifyUser(email: string): Promise<ServerResponseWithMessage> {
     try {
-        const { data } = await httpServiceAuth.post("/auth/resend-verification", { email });
+        const { data } = await httpService.post("/auth/resend-verification", { email });
         return data;
     } catch (error: unknown) {
         handleAxiosError(error);

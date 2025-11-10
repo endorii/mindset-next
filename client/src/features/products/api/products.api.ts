@@ -29,6 +29,18 @@ export async function fetchGetProductByPath(
     }
 }
 
+export async function fetchProductsByIds(ids: string[]): Promise<IProduct[]> {
+    if (!ids || ids.length === 0) return [];
+
+    try {
+        const { data } = await httpService.get<IProduct[]>(`/shop/products?ids=${ids.join(",")}`);
+        return data;
+    } catch (error: unknown) {
+        handleAxiosError(error);
+        // return [];
+    }
+}
+
 export async function fetchPopularProducts(): Promise<IProduct[]> {
     try {
         const { data } = await httpService.get<IProduct[]>(`/shop/products/popular`);

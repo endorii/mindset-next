@@ -1,25 +1,21 @@
 "use client";
 
 import { useAddCartItemToUser } from "@/features/shop/cart/hooks/useCart";
-import { ICartItem } from "@/features/shop/cart/types/cart.types";
 import {
     useAddFavorite,
     useDeleteFavorite,
 } from "@/features/shop/favorites/hooks/useFavorites";
-import {
-    IFavoriteItem,
-    ILocalFavoriteItem,
-} from "@/features/shop/favorites/types/favorites.types";
 import { useCurrentUser } from "@/features/shop/user-info/hooks/useUsers";
 import { HeartIcon } from "@/shared/icons";
 import { MonoButton } from "@/shared/ui/buttons";
 import { Breadcrumbs } from "@/shared/ui/components";
 import addToRecentlyViewed from "@/shared/utils/addToRecentlyViewed";
-import React, { useEffect, useState } from "react";
-import { Label } from "recharts";
+import { useCartStore } from "@/store/useCartStore";
+import { useFavoritesStore } from "@/store/useFavoritesStore";
+import { useEffect, useState } from "react";
 import { toast } from "sonner";
-import AttributeSelector from "./AttributeSelector";
 import { IProduct } from "../types/products.types";
+import AttributeSelector from "./AttributeSelector";
 
 interface ProductContentProps {
     collectionPath: string;
@@ -34,22 +30,25 @@ function ProductContent({
     productPath,
     product,
 }: ProductContentProps) {
-    const {
-        data: user,
-        isPending: isUserPending,
-        isError: isUserError,
-    } = useCurrentUser();
+    const { data: user, isPending: isUserPending } = useCurrentUser();
 
-    const [chosenSize, setChosenSize] = useState("");
-    const [chosenType, setChosenType] = useState("");
-    const [chosenColor, setChosenColor] = useState("");
-    const [quantity, setQuantity] = useState<number>(1);
-    const [liked, setLiked] = useState(false);
+    // Zustand stores
+    const { addToCart: addToLocalCart } = useCartStore();
+    const { isInFavorites, toggleFavorite: toggleLocalFavorite } =
+        useFavoritesStore();
 
+    // Backend mutations
     const addToFavoriteMutation = useAddFavorite();
     const deleteFromFavoriteMutation = useDeleteFavorite();
     const addCartItemToUserMutation = useAddCartItemToUser();
 
+    // Local state
+    const [chosenSize, setChosenSize] = useState("");
+    const [chosenType, setChosenType] = useState("");
+    const [chosenColor, setChosenColor] = useState("");
+    const [quantity, setQuantity] = useState<number>(1);
+
+    // Ініціалізація атрибутів і recently viewed
     useEffect(() => {
         if (!product) return;
 
@@ -58,69 +57,61 @@ function ProductContent({
         setChosenColor(product?.productColors[0]?.color.name || "");
 
         addToRecentlyViewed(product);
+    }, [product]);
 
-        if (user && !isUserPending) {
-            const isFavorite = user?.favorites?.some(
-                (item: IFavoriteItem) => item.productId === product.id
-            );
-            setLiked(!!isFavorite);
-        } else {
-            const stored = localStorage.getItem("favorites");
-            const parsed: ILocalFavoriteItem[] = stored
-                ? JSON.parse(stored)
-                : [];
-            const isFav = parsed.some((item) => item.productId === product.id);
-            setLiked(isFav);
-        }
-    }, [product, user, isUserPending]);
+    // Перевірка чи товар в favorites (локально або на сервері)
+    const isLiked =
+        user && !isUserPending
+            ? user.favorites?.some((item) => item.productId === product.id)
+            : isInFavorites(product.id);
 
+    // Toggle favorites
     const handleLikeToggle = async () => {
         if (!product) return;
-        const newLiked = !liked;
-        setLiked(newLiked);
 
         if (user && !isUserPending) {
-            if (newLiked) {
-                addToFavoriteMutation.mutate(product?.id);
-            } else {
+            // Backend логіка
+            if (isLiked) {
                 deleteFromFavoriteMutation.mutate(product.id);
+            } else {
+                addToFavoriteMutation.mutate(product.id);
             }
         } else {
-            const stored = localStorage.getItem("favorites");
-            const parsed: ILocalFavoriteItem[] = stored
-                ? JSON.parse(stored)
-                : [];
-            const isFav = parsed.some((item) => item.productId === product.id);
-
-            const updated = isFav
-                ? parsed.filter((item) => item.productId !== product.id)
-                : [...parsed, { productId: product.id, product }];
-
-            localStorage.setItem("favorites", JSON.stringify(updated));
-            toast.success("Вподобані оновлено");
+            // LocalStorage через Zustand
+            toggleLocalFavorite(product.id);
+            toast.success(
+                isLiked ? "Видалено з вподобаних" : "Додано до вподобаних"
+            );
         }
     };
 
+    // Додати в корзину
     const handleAddToCart = async () => {
         if (!product) return;
 
-        const dataToSend: ICartItem = {
-            size: chosenSize,
-            type: chosenType,
-            color: chosenColor,
-            quantity,
-            product,
-            productId: product.id,
-        };
-
-        if (user && !isUserError) {
-            addCartItemToUserMutation.mutate(dataToSend);
+        if (user && !isUserPending) {
+            // Backend логіка
+            addCartItemToUserMutation.mutate({
+                size: chosenSize,
+                type: chosenType,
+                color: chosenColor,
+                quantity,
+                // product,
+                productId: product.id,
+            });
         } else {
-            const cart = localStorage.getItem("cart");
-            const parsed = cart ? JSON.parse(cart) : [];
-            const updated = [...parsed, dataToSend];
-            localStorage.setItem("cart", JSON.stringify(updated));
-            toast.success("Корзину оновлено");
+            // LocalStorage через Zustand
+            addToLocalCart(
+                {
+                    id: product.id,
+                    name: product.name,
+                    price: product.price,
+                    image: product.banner,
+                },
+                chosenSize,
+                chosenColor
+            );
+            toast.success("Додано в корзину");
         }
     };
 
@@ -134,7 +125,7 @@ function ProductContent({
                     >
                         <HeartIcon
                             className={`group-hover:fill-white transition-all duration-300 ${
-                                liked
+                                isLiked
                                     ? "w-[42px] stroke-white fill-white"
                                     : "w-[35px] stroke-white stroke-[1.5] fill-none"
                             }`}
@@ -200,8 +191,8 @@ function ProductContent({
                     <div className="mt-[20px] xl:mt-[10px] text-sm text-white/80 break-words">
                         {product.description}
                     </div>
-                    <hr className="w-full border-white/10 border-t " />
-                    <div className=" text-sm text-white/80 break-words">
+                    <hr className="w-full border-white/10 border-t" />
+                    <div className="text-sm text-white/80 break-words">
                         {product.composition}
                     </div>
 
@@ -225,7 +216,7 @@ function ProductContent({
                                                         className={`w-[25px] h-[25px] rounded-full border border-transparent hover:border-white/20 cursor-pointer ${
                                                             chosenColor ===
                                                             item.color.name
-                                                                ? " border-white/100"
+                                                                ? "border-white/100"
                                                                 : "border-black"
                                                         }`}
                                                         style={{
@@ -265,7 +256,7 @@ function ProductContent({
                         />
 
                         <div className="relative flex gap-[30px] items-center">
-                            <Label>Кількість</Label>
+                            <div>Кількість</div>
                             <div className="flex gap-[15px] items-center">
                                 <button
                                     className="p-[7px] text-center border border-white/10 rounded-xl w-[40px] h-[40px] cursor-pointer bg-white/5 hover:bg-white/10 active:bg-white active:text-black transition-all duration-200"
@@ -308,15 +299,8 @@ function ProductContent({
                     <MonoButton
                         onClick={handleLikeToggle}
                         className="w-full h-[50px]"
-                        disabled={
-                            !product.available ||
-                            !chosenColor ||
-                            !chosenSize ||
-                            !chosenType ||
-                            quantity < 1
-                        }
                     >
-                        {liked ? "Видалити з вподобаного" : "В вподобане"}
+                        {isLiked ? "Видалити з вподобаного" : "В вподобане"}
                     </MonoButton>
                 </div>
             </div>

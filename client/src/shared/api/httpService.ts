@@ -34,14 +34,25 @@ httpServiceAuth.interceptors.response.use(
         if (error.response?.status === 401 && !originalRequest._retry) {
             originalRequest._retry = true;
 
+            // Перевірка: чи є токен взагалі
+            const currentToken = useUserStore.getState().accessToken;
+            if (!currentToken) {
+                // Немає токена - не намагаємося refresh
+                return Promise.reject(error);
+            }
+
             if (isRefreshing && refreshPromise) {
-                const { accessToken } = await refreshPromise;
-                originalRequest.headers.Authorization = `Bearer ${accessToken}`;
-                return httpServiceAuth.request(originalRequest);
+                try {
+                    const { accessToken } = await refreshPromise;
+                    originalRequest.headers.Authorization = `Bearer ${accessToken}`;
+                    return httpServiceAuth.request(originalRequest);
+                } catch {
+                    return Promise.reject(error);
+                }
             }
 
             isRefreshing = true;
-            refreshPromise = refreshToken(); // POST /auth/refresh з cookie
+            refreshPromise = refreshToken();
 
             try {
                 const { accessToken: newAccessToken } = await refreshPromise;
@@ -55,7 +66,11 @@ httpServiceAuth.interceptors.response.use(
             } catch (err) {
                 isRefreshing = false;
                 refreshPromise = null;
-                useUserStore.getState().clearUser(); // чистимо in-memory
+                useUserStore.getState().clearUser();
+
+                // Опціонально: редірект на логін
+                // window.location.href = '/login';
+
                 return Promise.reject(err);
             }
         }
