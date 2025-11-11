@@ -1,4 +1,4 @@
-import AdminCollectionsWrapper from "@/features/collections/components/AdminCollectionsWrapper";
+import { AdminCollectionsWrapper } from "@/features/collections/components/AdminCollectionsWrapper";
 
 function AdminCollections() {
     return <AdminCollectionsWrapper />;

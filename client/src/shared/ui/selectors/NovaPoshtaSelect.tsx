@@ -1,6 +1,6 @@
 import { ChangeEvent } from "react";
 import { UseFormRegisterReturn } from "react-hook-form";
-import Label from "../components/Label";
+import { Label } from "../components";
 
 interface INovaPoshtaOption {
     Ref: string;
@@ -17,7 +17,7 @@ interface NovaPoshtaSelectProps {
     errorMessage?: string;
 }
 
-export const NovaPoshtaSelect = ({
+export function NovaPoshtaSelect({
     label,
     options,
     value,
@@ -25,7 +25,7 @@ export const NovaPoshtaSelect = ({
     register,
     disabled = false,
     errorMessage,
-}: NovaPoshtaSelectProps) => {
+}: NovaPoshtaSelectProps) {
     return (
         <div className="flex flex-col gap-[7px] w-full">
             <Label>{label}</Label>
@@ -57,4 +57,4 @@ export const NovaPoshtaSelect = ({
             )}
         </div>
     );
-};
+}

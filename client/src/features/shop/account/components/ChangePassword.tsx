@@ -9,7 +9,7 @@ interface ChangePasswordProps {
     openModal: (type: AttributeModalType) => void;
 }
 
-function ChangePassword({
+export function ChangePassword({
     isUserError,
     isUserPending,
     currentUser,
@@ -27,5 +27,3 @@ function ChangePassword({
         </div>
     );
 }
-
-export default ChangePassword;

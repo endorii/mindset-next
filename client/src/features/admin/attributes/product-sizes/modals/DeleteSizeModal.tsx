@@ -1,8 +1,8 @@
 "use client";
 
 import { useEscapeKeyClose } from "@/shared/hooks";
-import { MonoButton, DeleteButton } from "@/shared/ui/buttons";
-import { ModalWrapper, FormButtonsWrapper } from "@/shared/ui/wrappers";
+import { DeleteButton, MonoButton } from "@/shared/ui/buttons";
+import { FormButtonsWrapper, ModalWrapper } from "@/shared/ui/wrappers";
 import { createPortal } from "react-dom";
 import { useDeleteSize } from "../hooks/useSizes";
 import { ISize } from "../types/product-size.types";
@@ -13,7 +13,7 @@ interface DeleteSizeModalProps {
     size: ISize;
 }
 
-export default function DeleteSizeModal({
+export function DeleteSizeModal({
     isOpen,
     onClose,
     size,

@@ -4,7 +4,7 @@ interface IButtonWithIconProps {
     className?: string;
 }
 
-function ButtonWithIcon({
+export function ButtonWithIcon({
     onClick,
     children,
     className,
@@ -18,5 +18,3 @@ function ButtonWithIcon({
         </button>
     );
 }
-
-export default ButtonWithIcon;

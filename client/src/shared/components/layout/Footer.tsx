@@ -1,25 +1,23 @@
 "use client";
 
+import { useGetCollections } from "@/features/collections/hooks/useCollections";
 import { ICollection } from "@/features/collections/types/collections.types";
 import {
-    TiktokIcon,
     InstagramIcon,
-    TelegramIcon,
     LocationIcon,
     MailIcon,
     PhoneIcon,
+    TelegramIcon,
+    TiktokIcon,
 } from "@/shared/icons";
+import { ErrorWithMessage } from "@/shared/ui/components";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useState, useEffect } from "react";
-import FooterNavList from "../FooterNavList";
-import FooterNavListItem from "../FooterNavListItem";
-import { useGetCollections } from "@/features/collections/hooks/useCollections";
-import { div } from "motion/react-client";
-import { FooterNavListSkeleton } from "@/shared/ui/skeletons";
-import { ErrorWithMessage } from "@/shared/ui/components";
+import { useEffect, useState } from "react";
+import { FooterNavList } from "../FooterNavList";
+import { FooterNavListItem } from "../FooterNavListItem";
 
-const Footer = () => {
+export function Footer() {
     const {
         data: collections,
         isPending: isCollectionsPending,
@@ -154,6 +152,4 @@ const Footer = () => {
             </div>
         </footer>
     );
-};
-
-export default Footer;
+}

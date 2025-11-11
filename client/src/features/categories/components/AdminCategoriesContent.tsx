@@ -1,38 +1,37 @@
 "use client";
 
 import { FilterSection } from "@/features/admin/attributes/components/FilterSection";
-import TitleWithAddElementButton from "@/features/admin/attributes/components/TitleWithAddElementButton";
+import { TitleWithAddElementButton } from "@/features/admin/attributes/components/TitleWithAddElementButton";
 import { useGetCollectionByPath } from "@/features/collections/hooks/useCollections";
 import {
     BackIcon,
-    ProductsIcon,
-    InfoIcon,
     EditIcon,
+    InfoIcon,
+    ProductsIcon,
     TrashIcon,
 } from "@/shared/icons";
 import { ModalType } from "@/shared/types/types";
 import {
-    MonoButton,
-    LinkWithIcon,
     ButtonWithIcon,
     DeleteButtonWithIcon,
+    LinkWithIcon,
+    MonoButton,
 } from "@/shared/ui/buttons";
 
 import { formatDate } from "@/shared/utils/formatDate";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useGetCategoriesByCollectionId } from "../hooks/useCategories";
 import {
     AddCategoryModal,
     CategoryInfoModal,
-    EditCategoryModal,
     DeleteCategoryModal,
+    EditCategoryModal,
 } from "../modals";
 import { ICategory } from "../types/categories.types";
 
-function AdminCategoriesContent({
+export function AdminCategoriesContent({
     collectionPath,
 }: {
     collectionPath: string;
@@ -242,5 +241,3 @@ function AdminCategoriesContent({
         </div>
     );
 }
-
-export default AdminCategoriesContent;

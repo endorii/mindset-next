@@ -4,7 +4,7 @@ interface ILoginComponentsWrapperProps {
     clasName?: string;
 }
 
-function LoginComponentsWrapper({
+export function LoginComponentsWrapper({
     title,
     children,
     clasName,
@@ -20,5 +20,3 @@ function LoginComponentsWrapper({
         </div>
     );
 }
-
-export default LoginComponentsWrapper;

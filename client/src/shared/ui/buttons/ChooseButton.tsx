@@ -5,7 +5,7 @@ interface IChooseButtonProps {
     className?: string;
 }
 
-function ChooseButton({
+export function ChooseButton({
     onClick,
     children,
     isActive = false,
@@ -26,5 +26,3 @@ function ChooseButton({
         </button>
     );
 }
-
-export default ChooseButton;

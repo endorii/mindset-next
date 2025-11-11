@@ -1,23 +1,22 @@
 "use client";
 
-import { PlusIcon, EditIcon, TrashIcon } from "@/shared/icons";
+import { EditIcon, PlusIcon, TrashIcon } from "@/shared/icons";
 import { TodoModalType } from "@/shared/types/types";
 import {
-    MonoButton,
     ButtonWithIcon,
     DeleteButtonWithIcon,
+    MonoButton,
 } from "@/shared/ui/buttons";
+import { formatDate } from "@/shared/utils/formatDate";
 import { useState } from "react";
-import { ITodoItem } from "../types/admin.types";
-import { useTodoList } from "../hooks/useTodo";
 import {
     AddTodoItemModal,
-    EditTodoItemModal,
     DeleteTodoItemModal,
+    EditTodoItemModal,
 } from "../modals/todo";
-import { formatDate } from "@/shared/utils/formatDate";
+import { ITodoItem } from "../types/admin.types";
 
-function HomeTodo({ todos }: { todos: ITodoItem[] | undefined }) {
+export function HomeTodo({ todos }: { todos: ITodoItem[] | undefined }) {
     const [activeModal, setActiveModal] = useState<TodoModalType>(null);
     const [selectedTodoItem, setSelectedTodoItem] = useState<ITodoItem | null>(
         null
@@ -117,5 +116,3 @@ function HomeTodo({ todos }: { todos: ITodoItem[] | undefined }) {
         </div>
     );
 }
-
-export default HomeTodo;

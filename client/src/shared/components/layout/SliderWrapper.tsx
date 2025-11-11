@@ -3,8 +3,8 @@
 import Image from "next/image";
 import Link from "next/link";
 
+import { Autoplay, Navigation, Pagination } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Navigation, Pagination, Autoplay } from "swiper/modules";
 
 import "swiper/css";
 import "swiper/css/navigation";
@@ -17,7 +17,7 @@ interface SliderWrapperProps {
     title: string;
 }
 
-function SliderWrapper({ productsList, title }: SliderWrapperProps) {
+export function SliderWrapper({ productsList, title }: SliderWrapperProps) {
     return (
         <div className="p-[30px] sm:p-[10px] text-white">
             <div className="flex flex-col gap-[15px]">
@@ -164,5 +164,3 @@ function SliderWrapper({ productsList, title }: SliderWrapperProps) {
         </div>
     );
 }
-
-export default SliderWrapper;

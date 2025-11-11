@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-export default function Breadcrumbs({
+export function Breadcrumbs({
     collectionPath,
     categoryPath,
     productPath,

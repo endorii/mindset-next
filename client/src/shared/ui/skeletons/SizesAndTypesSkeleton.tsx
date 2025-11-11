@@ -1,4 +1,8 @@
-function SizesAndTypesSkeleton({ rowsCount = 5 }: { rowsCount?: number }) {
+export function SizesAndTypesSkeleton({
+    rowsCount = 5,
+}: {
+    rowsCount?: number;
+}) {
     return (
         <div className="rounded-xl bg-white/5 shadow-lg border border-white/5 p-[20px] sm:px-[10px] pt-0 animate-pulse">
             <div
@@ -30,5 +34,3 @@ function SizesAndTypesSkeleton({ rowsCount = 5 }: { rowsCount?: number }) {
         </div>
     );
 }
-
-export default SizesAndTypesSkeleton;

@@ -1,9 +1,6 @@
-"use client";
-
-import "swiper/css";
 import { SkeletonProductCard } from "./ProductsListSkeleton";
 
-function ProductsSliderSkeleton({ slides = 5 }) {
+export function ProductsSliderSkeleton({ slides = 5 }) {
     return (
         <div className="flex flex-col gap-[15px] p-[30px] sm:p-[10px] text-white">
             <div className="h-[25px] w-[250px] bg-white/10 animate-pulse"></div>
@@ -15,5 +12,3 @@ function ProductsSliderSkeleton({ slides = 5 }) {
         </div>
     );
 }
-
-export default ProductsSliderSkeleton;

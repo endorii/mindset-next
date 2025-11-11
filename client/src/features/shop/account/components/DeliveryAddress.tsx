@@ -1,8 +1,8 @@
 import { IUser } from "@/features/shop/user-info/types/user.types";
 import { AttributeModalType } from "@/shared/types/types";
 import { MonoButton } from "@/shared/ui/buttons";
-import InfoField from "@/shared/ui/inputs/InfoField";
-import DeliveryAddressSkeleton from "@/shared/ui/skeletons/DeliveryAddressSkeleton";
+import { InfoField } from "@/shared/ui/inputs/InfoField";
+import { DeliveryAddressSkeleton } from "@/shared/ui/skeletons";
 
 interface DeliveryAddressProps {
     openModal: (type: AttributeModalType) => void;
@@ -11,7 +11,7 @@ interface DeliveryAddressProps {
     currentUser: IUser | null | undefined;
 }
 
-function DeliveryAddress({
+export function DeliveryAddress({
     openModal,
     isUserPending,
     isUserError,
@@ -61,5 +61,3 @@ function DeliveryAddress({
         </div>
     );
 }
-
-export default DeliveryAddress;

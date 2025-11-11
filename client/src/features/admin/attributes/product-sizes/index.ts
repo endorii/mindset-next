@@ -1,3 +1,3 @@
-export { default as AddSizeModal } from "./modals/AddSizeModal";
-export { default as DeleteSizeModal } from "./modals/DeleteSizeModal";
-export { default as EditSizeModal } from "./modals/EditSizeModal";
+export { AddSizeModal } from "./modals/AddSizeModal";
+export { DeleteSizeModal } from "./modals/DeleteSizeModal";
+export { EditSizeModal } from "./modals/EditSizeModal";

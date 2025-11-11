@@ -1,15 +1,15 @@
 "use client";
 
 import { useProductsFromSameCollection } from "@/features/products/hooks/useProducts";
-import SliderWrapper from "./layout/SliderWrapper";
-import ProductsSliderSkeleton from "../ui/skeletons/ProductsSliderSkeleton";
 import { ErrorWithMessage } from "../ui/components";
+import { ProductsSliderSkeleton } from "../ui/skeletons";
+import { SliderWrapper } from "./layout";
 
 interface ProductsFromSameCategoryProps {
     collectionId: string;
 }
 
-function ProductsFromSameCollection({
+export function ProductsFromSameCollection({
     collectionId,
 }: ProductsFromSameCategoryProps) {
     const {
@@ -31,5 +31,3 @@ function ProductsFromSameCollection({
         <div>Список товарів порожній</div>
     );
 }
-
-export default ProductsFromSameCollection;

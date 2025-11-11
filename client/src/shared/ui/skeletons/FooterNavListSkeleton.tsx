@@ -1,4 +1,4 @@
-function FooterNavListSkeleton() {
+export function FooterNavListSkeleton() {
     return (
         <div className="flex flex-col gap-[15px] w-full animate-pulse">
             <div className="h-6 w-32 bg-white/10 rounded"></div>
@@ -11,5 +11,3 @@ function FooterNavListSkeleton() {
         </div>
     );
 }
-
-export default FooterNavListSkeleton;

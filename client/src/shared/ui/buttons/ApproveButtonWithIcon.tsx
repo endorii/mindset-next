@@ -4,7 +4,7 @@ interface IApproveButtonWithIconProps {
     className?: string;
 }
 
-function ApproveButtonWithIcon({
+export function ApproveButtonWithIcon({
     onClick,
     children,
     className,
@@ -18,5 +18,3 @@ function ApproveButtonWithIcon({
         </button>
     );
 }
-
-export default ApproveButtonWithIcon;

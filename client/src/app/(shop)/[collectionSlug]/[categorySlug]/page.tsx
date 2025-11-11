@@ -1,7 +1,7 @@
 import { ICategory } from "@/features/categories/types/categories.types";
-import ProductsSection from "@/features/products/components/ProductsSection";
+import { ProductsSection } from "@/features/products/components/ProductsSection";
 import { ErrorWithMessage } from "@/shared/ui/components";
-import ShopTitle from "@/shared/ui/titles/ShopTitle";
+import { ShopTitle } from "@/shared/ui/titles/ShopTitle";
 
 export async function generateMetadata({
     params,

@@ -1,6 +1,6 @@
 import { getCurrentUserSSR } from "@/shared/api/authFetch.api";
 import { Footer, Header } from "@/shared/components/layout";
-import Container from "@/shared/ui/layout/Container";
+import { Container } from "@/shared/ui/layout/Container";
 import { ReactNode } from "react";
 
 async function SiteLayout({ children }: { children: ReactNode }) {

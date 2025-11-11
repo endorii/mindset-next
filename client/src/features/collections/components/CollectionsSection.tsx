@@ -6,7 +6,7 @@ import {
 } from "@/shared/components";
 import { ICollection } from "../types/collections.types";
 
-export default function CollectionsSection({
+export function CollectionsSection({
     collections,
 }: {
     collections: ICollection[];

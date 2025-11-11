@@ -2,20 +2,20 @@
 
 import { IProduct } from "@/features/products/types/products.types";
 import { MonoLink } from "@/shared/ui/buttons";
-import { useReviewByProductId } from "../hooks/useReviews";
-import AvgRatingStat from "./AvgRatingStat";
-import ProductReviewsList from "./ProductReviewsList";
-import ReviewsValueSkeleton from "@/shared/ui/skeletons/ReviewsValueSkeleton";
-import ProductReviewsSkeleton from "@/shared/ui/skeletons/ProductReviewsSkeleton";
 import { ErrorWithMessage } from "@/shared/ui/components";
+import {
+    ProductReviewsSkeleton,
+    ReviewsValueSkeleton,
+} from "@/shared/ui/skeletons";
+import { useReviewByProductId } from "../hooks/useReviews";
+import { AvgRatingStat } from "./AvgRatingStat";
+import { ProductReviewsList } from "./ProductReviewsList";
 
 interface ReviewsOnProductPageProps {
     product: IProduct | null;
 }
 
-export default function ReviewsOnProductPage({
-    product,
-}: ReviewsOnProductPageProps) {
+export function ReviewsOnProductPage({ product }: ReviewsOnProductPageProps) {
     const {
         data: reviews,
         isPending: isReviewsPending,

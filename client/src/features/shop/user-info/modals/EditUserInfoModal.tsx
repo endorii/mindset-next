@@ -2,7 +2,7 @@
 
 import { useEscapeKeyClose } from "@/shared/hooks";
 import { MonoButton } from "@/shared/ui/buttons";
-import InputField from "@/shared/ui/inputs/InputField";
+import { InputField } from "@/shared/ui/inputs/InputField";
 import {
     FormButtonsWrapper,
     FormFillingWrapper,
@@ -26,7 +26,7 @@ type EditUserFormData = {
     phone: string;
 };
 
-export default function EditUserInfoModal({
+export function EditUserInfoModal({
     isOpen,
     onClose,
     user,

@@ -1,16 +1,16 @@
 "use client";
 
-import { formatDate } from "@/shared/utils/formatDate";
-import { IReview } from "../types/reviews.types";
 import { useCurrentUser } from "@/features/shop/user-info/hooks/useUsers";
-import { useToggleReviewVote } from "../hooks/useReviews";
+import { formatDate } from "@/shared/utils/formatDate";
 import { toast } from "sonner";
+import { useToggleReviewVote } from "../hooks/useReviews";
+import { IReview } from "../types/reviews.types";
 
 interface ProductReviewsListProps {
     reviews: IReview[];
 }
 
-function ProductReviewsList({ reviews }: ProductReviewsListProps) {
+export function ProductReviewsList({ reviews }: ProductReviewsListProps) {
     const { data: user, isPending: isUserPending } = useCurrentUser();
     const useToggleReviewVoteMutaion = useToggleReviewVote();
 
@@ -149,5 +149,3 @@ function ProductReviewsList({ reviews }: ProductReviewsListProps) {
         </div>
     );
 }
-
-export default ProductReviewsList;

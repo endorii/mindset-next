@@ -6,7 +6,7 @@ import { AddReviewModal } from "@/features/reviews/modals";
 import { BackIcon } from "@/shared/icons";
 import { MonoButton } from "@/shared/ui/buttons";
 import { ErrorWithMessage } from "@/shared/ui/components";
-import UserOrdersSkeleton from "@/shared/ui/skeletons/UserOrdersSkeleton";
+import { UserOrdersSkeleton } from "@/shared/ui/skeletons";
 import { formatDate } from "@/shared/utils/formatDate";
 import { useRouter } from "next/navigation";
 import { useState } from "react";

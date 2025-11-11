@@ -10,9 +10,8 @@ import { useFavoritesStore } from "@/store/useFavoritesStore";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
-import HeaderBurger from "./HeaderBurger";
-
-const Header = ({ serverUser }: { serverUser: IUser | null }) => {
+import { HeaderBurger } from "./HeaderBurger";
+export function Header({ serverUser }: { serverUser: IUser | null }) {
     const { data: user } = useCurrentUser();
     const { data: userFavorites } = useFavoritesFromUser();
     const { data: userCart } = useCartItemsFromUser();
@@ -120,6 +119,4 @@ const Header = ({ serverUser }: { serverUser: IUser | null }) => {
             </div>
         </header>
     );
-};
-
-export default Header;
+}

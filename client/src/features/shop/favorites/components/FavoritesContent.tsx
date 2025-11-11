@@ -7,9 +7,9 @@ import { useFavoritesStore } from "@/store/useFavoritesStore";
 import Image from "next/image";
 import { useCurrentUser } from "../../user-info/hooks/useUsers";
 import { useDeleteFavorite, useFavoritesFromUser } from "../hooks/useFavorites";
-import FavoriteCard from "./FavoriteCard";
+import { FavoriteCard } from "./FavoriteCard";
 
-function FavoritesContent() {
+export function FavoritesContent() {
     const { favoriteItems, removeFromFavorites } = useFavoritesStore();
 
     const deleteFavoriteFromUserMutation = useDeleteFavorite();
@@ -78,5 +78,3 @@ function FavoritesContent() {
         </ul>
     );
 }
-
-export default FavoritesContent;

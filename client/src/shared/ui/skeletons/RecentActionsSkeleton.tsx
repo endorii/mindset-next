@@ -1,4 +1,4 @@
-export default function RecentActionsSkeleton() {
+export function RecentActionsSkeleton() {
     const rows = Array.from({ length: 5 });
 
     return (

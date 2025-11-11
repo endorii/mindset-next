@@ -1,29 +1,29 @@
 import { IOrder } from "@/features/orders/types/orders.types";
 import { ChooseButton } from "@/shared/ui/buttons";
 import {
-    parseISO,
-    isWithinInterval,
-    startOfDay,
     endOfDay,
-    subDays,
-    startOfMonth,
     endOfMonth,
-    startOfYear,
     endOfYear,
-    getMonth,
     formatDate,
+    getMonth,
+    isWithinInterval,
+    parseISO,
+    startOfDay,
+    startOfMonth,
+    startOfYear,
+    subDays,
 } from "date-fns";
 import { uk } from "date-fns/locale";
-import { useState, useMemo } from "react";
+import { useMemo, useState } from "react";
 import {
-    ResponsiveContainer,
-    LineChart,
     CartesianGrid,
-    XAxis,
-    YAxis,
-    Tooltip,
     Legend,
     Line,
+    LineChart,
+    ResponsiveContainer,
+    Tooltip,
+    XAxis,
+    YAxis,
 } from "recharts";
 
 const monthNames = [
@@ -171,7 +171,11 @@ function generateChartData(orders: IOrder[], period: Period): ChartPoint[] {
     return [];
 }
 
-function OrdersAndSalesChart({ orders }: { orders: IOrder[] | undefined }) {
+export function OrdersAndSalesChart({
+    orders,
+}: {
+    orders: IOrder[] | undefined;
+}) {
     const [period, setPeriod] = useState<Period>("day");
 
     const periodLabels: Record<Period, string> = {
@@ -266,5 +270,3 @@ function OrdersAndSalesChart({ orders }: { orders: IOrder[] | undefined }) {
         </div>
     );
 }
-
-export default OrdersAndSalesChart;

@@ -2,13 +2,13 @@
 
 import { useEscapeKeyClose } from "@/shared/hooks";
 import { MonoButton } from "@/shared/ui/buttons";
-import InputField from "@/shared/ui/inputs/InputField";
+import { InputField } from "@/shared/ui/inputs/InputField";
 import {
-    ModalWrapper,
-    FormFillingWrapper,
     FormButtonsWrapper,
+    FormFillingWrapper,
+    ModalWrapper,
 } from "@/shared/ui/wrappers";
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { useForm } from "react-hook-form";
 import { useEditColor } from "../hooks/useColors";
@@ -25,11 +25,7 @@ type FormValues = {
     hexCode: string;
 };
 
-export default function EditColorModal({
-    isOpen,
-    onClose,
-    color,
-}: EditColorProps) {
+export function EditColorModal({ isOpen, onClose, color }: EditColorProps) {
     const [modalMessage, setModalMessage] = useState("");
 
     const editColorMutation = useEditColor();

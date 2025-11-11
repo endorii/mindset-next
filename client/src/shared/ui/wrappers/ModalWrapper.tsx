@@ -1,12 +1,14 @@
-import React from "react";
-
 interface IModalWrapperProps {
     onClose: () => void;
     children: React.ReactNode;
     modalTitle: string;
 }
 
-function ModalWrapper({ onClose, children, modalTitle }: IModalWrapperProps) {
+export function ModalWrapper({
+    onClose,
+    children,
+    modalTitle,
+}: IModalWrapperProps) {
     return (
         <div
             className="fixed inset-0 bg-black/85 flex items-center products-center justify-center z-100 cursor-pointer"
@@ -23,5 +25,3 @@ function ModalWrapper({ onClose, children, modalTitle }: IModalWrapperProps) {
         </div>
     );
 }
-
-export default ModalWrapper;

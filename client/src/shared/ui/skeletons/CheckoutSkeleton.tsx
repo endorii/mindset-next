@@ -1,8 +1,4 @@
-// shared/ui/skeletons/CheckoutSkeleton.tsx
-
-"use client";
-
-function CheckoutSkeleton() {
+export function CheckoutSkeleton() {
     return (
         <div className="flex flex-col gap-[20px] text-white animate-pulse">
             <div className="px-[30px]">
@@ -66,5 +62,3 @@ function CheckoutSkeleton() {
         </div>
     );
 }
-
-export default CheckoutSkeleton;

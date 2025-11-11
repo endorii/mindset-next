@@ -1,5 +1,5 @@
 import { IOrder } from "@/features/orders/types/orders.types";
-import StatCard from "@/shared/components/cards/StatCard";
+import { StatCard } from "@/shared/components/cards/StatCard";
 
 interface OrdersStatsCardsProps {
     totalOrders: number;
@@ -12,7 +12,7 @@ interface OrdersStatsCardsProps {
     conversionRate: string;
 }
 
-export default function OrdersStatsCards({
+export function OrdersStatsCards({
     totalOrders,
     paidOrders,
     unpaidOrders,

@@ -1,4 +1,4 @@
-export { default as AvgRatingStat } from "./AvgRatingStat";
-export { default as ProductReviewsList } from "./ProductReviewsList";
-export { default as ReviewsOnProductPage } from "./ReviewsOnProductPage";
-export { default as StarRating } from "./StarRating";
+export { AvgRatingStat } from "./AvgRatingStat";
+export { ProductReviewsList } from "./ProductReviewsList";
+export { ReviewsOnProductPage } from "./ReviewsOnProductPage";
+export { StarRating } from "./StarRating";

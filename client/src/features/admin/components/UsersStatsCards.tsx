@@ -1,4 +1,4 @@
-import StatCard from "@/shared/components/cards/StatCard";
+import { StatCard } from "@/shared/components/cards/StatCard";
 
 interface UsersStatsCardsProps {
     totalUsers: number;
@@ -8,7 +8,7 @@ interface UsersStatsCardsProps {
     avgOrdersPerUser: string | number;
 }
 
-export default function UsersStatsCards({
+export function UsersStatsCards({
     totalUsers,
     activeUsersLastMonth,
     roleCounts,

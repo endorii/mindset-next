@@ -1,4 +1,4 @@
-import InputField from "@/shared/ui/inputs/InputField";
+import { InputField } from "@/shared/ui/inputs/InputField";
 
 interface CheckoutInputDetailsProps {
     userInitials: string;
@@ -9,7 +9,7 @@ interface CheckoutInputDetailsProps {
     setUserEmail: (value: string) => void;
 }
 
-function CheckoutInputDetails({
+export function CheckoutInputDetails({
     userInitials,
     setUserInitials,
     userPhone,
@@ -46,5 +46,3 @@ function CheckoutInputDetails({
         </div>
     );
 }
-
-export default CheckoutInputDetails;

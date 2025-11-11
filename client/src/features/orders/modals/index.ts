@@ -1,3 +1,3 @@
-export { default as DeleteOrderModal } from "./DeleteOrderModal";
-export { default as EditOrderModal } from "./EditOrderModal";
-export { default as OrderInfoModal } from "./OrderInfoModal";
+export { DeleteOrderModal } from "./DeleteOrderModal";
+export { EditOrderModal } from "./EditOrderModal";
+export { OrderInfoModal } from "./OrderInfoModal";

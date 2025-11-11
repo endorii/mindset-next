@@ -10,10 +10,10 @@ import {
     useCartItemsFromUser,
     useDeleteCartItemFromUser,
 } from "../hooks/useCart";
-import CartItem from "./CartItem";
-import CartReceip from "./CartReceip";
+import { CartItem } from "./CartItem";
+import { CartReceip } from "./CartReceip";
 
-function CartContent() {
+export function CartContent() {
     const { cartItems, removeFromCart } = useCartStore();
 
     const deleteCartItemMutation = useDeleteCartItemFromUser();
@@ -112,5 +112,3 @@ function CartContent() {
         </div>
     );
 }
-
-export default CartContent;

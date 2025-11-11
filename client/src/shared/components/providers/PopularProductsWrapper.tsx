@@ -1,15 +1,14 @@
 "use client";
 
+import { ErrorWithMessage } from "@/shared/ui/components";
+import { ProductsSliderSkeleton } from "@/shared/ui/skeletons";
 import { Suspense, useEffect, useState } from "react";
 import { ErrorBoundary } from "react-error-boundary";
-import PopularProducts from "../PopularProducts";
-import { ProductsSliderSkeleton } from "@/shared/ui/skeletons";
-import { ErrorWithMessage } from "@/shared/ui/components";
+import { PopularProducts } from "../PopularProducts";
 
-function PopularProductsWrapper() {
+export function PopularProductsWrapper() {
     const [showSkeleton, setShowSkeleton] = useState(true);
 
-    // Затримка для показу скелетона
     useEffect(() => {
         const timeout = setTimeout(() => setShowSkeleton(false), 200);
         return () => clearTimeout(timeout);
@@ -30,5 +29,3 @@ function PopularProductsWrapper() {
         </ErrorBoundary>
     );
 }
-
-export default PopularProductsWrapper;

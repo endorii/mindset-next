@@ -3,7 +3,7 @@ interface IButtonWithTextAndIconProps {
     children: React.ReactNode;
 }
 
-function ButtonWithTextAndIcon({
+export function ButtonWithTextAndIcon({
     onClick,
     children,
 }: IButtonWithTextAndIconProps) {
@@ -16,5 +16,3 @@ function ButtonWithTextAndIcon({
         </button>
     );
 }
-
-export default ButtonWithTextAndIcon;

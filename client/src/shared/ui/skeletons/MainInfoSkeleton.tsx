@@ -1,4 +1,4 @@
-function MainInfoSkeleton() {
+export function MainInfoSkeleton() {
     return (
         <div className="flex flex-col py-[10px] gap-[25px] w-full animate-pulse">
             <div className="flex flex-col gap-[10px]">
@@ -16,5 +16,3 @@ function MainInfoSkeleton() {
         </div>
     );
 }
-
-export default MainInfoSkeleton;

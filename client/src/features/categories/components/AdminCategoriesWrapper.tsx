@@ -2,17 +2,17 @@
 
 import { ErrorWithMessage } from "@/shared/ui/components";
 import {
-    TitleWithButtonSkeleton,
-    FilterSectionSkeleton,
     AdminProductsSkeleton,
     ButtonSkeleton,
+    FilterSectionSkeleton,
+    TitleWithButtonSkeleton,
 } from "@/shared/ui/skeletons";
 import { Suspense } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 
-import AdminCategoriesContent from "./AdminCategoriesContent";
+import { AdminCategoriesContent } from "./AdminCategoriesContent";
 
-function AdminCategoriesWrapper({
+export function AdminCategoriesWrapper({
     collectionPath,
 }: {
     collectionPath: string;
@@ -38,5 +38,3 @@ function AdminCategoriesWrapper({
         </ErrorBoundary>
     );
 }
-
-export default AdminCategoriesWrapper;

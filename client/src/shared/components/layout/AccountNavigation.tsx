@@ -8,7 +8,7 @@ import { ButtonSkeleton } from "@/shared/ui/skeletons";
 import { accountNavigationLinks } from "@/shared/utils/accountNavigationLinks";
 import { useState } from "react";
 
-function AccountNavigation({ children }: { children: React.ReactNode }) {
+export function AccountNavigation({ children }: { children: React.ReactNode }) {
     const { data: user, isPending: isUserPending } = useCurrentUser();
     const logoutUserMutation = useLogoutUser();
 
@@ -86,5 +86,3 @@ function AccountNavigation({ children }: { children: React.ReactNode }) {
         </div>
     );
 }
-
-export default AccountNavigation;

@@ -2,15 +2,15 @@
 
 import { useEscapeKeyClose } from "@/shared/hooks";
 import { MonoButton } from "@/shared/ui/buttons";
-import InfoField from "@/shared/ui/inputs/InfoField";
+import { InfoField } from "@/shared/ui/inputs/InfoField";
 import {
-    ModalWrapper,
-    FormFillingWrapper,
     FormButtonsWrapper,
+    FormFillingWrapper,
+    ModalWrapper,
 } from "@/shared/ui/wrappers";
+import { formatDate } from "@/shared/utils/formatDate";
 import { createPortal } from "react-dom";
 import { IOrder } from "../types/orders.types";
-import { formatDate } from "@/shared/utils/formatDate";
 
 export interface OrderInfoModalProps {
     isOpen: boolean;
@@ -18,7 +18,7 @@ export interface OrderInfoModalProps {
     order: IOrder;
 }
 
-export default function OrderInfoModal({
+export function OrderInfoModal({
     isOpen,
     onClose,
     order,

@@ -5,10 +5,7 @@ import { IFavoriteItem } from "@/features/shop/favorites/types/favorites.types";
 import { IUser } from "@/features/shop/user-info/types/user.types";
 import { useEffect, useState } from "react";
 
-export default function useIsProductInFavorites(
-    product: IProduct | undefined,
-    user: IUser | undefined
-) {
+export function useIsProductInFavorites(product: IProduct | undefined, user: IUser | undefined) {
     const [isFavorite, setIsFavorite] = useState(false);
 
     useEffect(() => {

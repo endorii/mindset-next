@@ -1,4 +1,4 @@
-export { default as AddCollectionModal } from "./AddCollectionModal";
-export { default as CollectionInfoModal } from "./CollectionInfoModal";
-export { default as DeleteCollectionModal } from "./DeleteCollectionModal";
-export { default as EditCollectionModal } from "./EditCollectionModal";
+export { AddCollectionModal } from "./AddCollectionModal";
+export { CollectionInfoModal } from "./CollectionInfoModal";
+export { DeleteCollectionModal } from "./DeleteCollectionModal";
+export { EditCollectionModal } from "./EditCollectionModal";

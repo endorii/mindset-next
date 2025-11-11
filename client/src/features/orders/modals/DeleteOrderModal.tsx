@@ -1,8 +1,8 @@
 "use client";
 
 import { useEscapeKeyClose } from "@/shared/hooks";
-import { MonoButton, DeleteButton } from "@/shared/ui/buttons";
-import { ModalWrapper, FormButtonsWrapper } from "@/shared/ui/wrappers";
+import { DeleteButton, MonoButton } from "@/shared/ui/buttons";
+import { FormButtonsWrapper, ModalWrapper } from "@/shared/ui/wrappers";
 import { createPortal } from "react-dom";
 import { useDeleteOrder } from "../hooks/useOrders";
 import { IOrder } from "../types/orders.types";
@@ -13,7 +13,7 @@ interface DeleteOrderModalProps {
     order: IOrder;
 }
 
-export default function DeleteOrderModal({
+export function DeleteOrderModal({
     isOpen,
     onClose,
     order,

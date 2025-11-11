@@ -1,6 +1,6 @@
 import { IProduct } from "@/features/products/types/products.types";
 
-export default function addToRecentlyViewed(product: IProduct) {
+export function addToRecentlyViewed(product: IProduct) {
     const key = "recentlyViewed";
     const existing = JSON.parse(localStorage.getItem(key) || "[]");
 

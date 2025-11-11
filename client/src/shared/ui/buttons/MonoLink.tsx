@@ -6,7 +6,7 @@ interface IMonoLinkProps {
     children?: React.ReactNode;
 }
 
-function MonoLink({ href, disabled, children }: IMonoLinkProps) {
+export function MonoLink({ href, disabled, children }: IMonoLinkProps) {
     const baseClasses =
         "group text-white px-[20px] py-[15px] text-center border rounded-xl transition-all duration-300";
 
@@ -30,5 +30,3 @@ function MonoLink({ href, disabled, children }: IMonoLinkProps) {
         </Link>
     );
 }
-
-export default MonoLink;

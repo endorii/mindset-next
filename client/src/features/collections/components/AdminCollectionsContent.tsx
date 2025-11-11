@@ -1,34 +1,34 @@
 "use client";
 
 import { FilterSection } from "@/features/admin/attributes/components/FilterSection";
-import TitleWithAddElementButton from "@/features/admin/attributes/components/TitleWithAddElementButton";
+import { TitleWithAddElementButton } from "@/features/admin/attributes/components/TitleWithAddElementButton";
 import {
     CategoriesIcon,
-    InfoIcon,
     EditIcon,
-    TrashIcon,
+    InfoIcon,
     ProductsIcon,
+    TrashIcon,
 } from "@/shared/icons";
 import {
-    LinkWithIcon,
     ButtonWithIcon,
     DeleteButtonWithIcon,
+    LinkWithIcon,
 } from "@/shared/ui/buttons";
 
+import { ModalType } from "@/shared/types/types";
+import { formatDate } from "@/shared/utils/formatDate";
 import Link from "next/link";
-import React, { useState } from "react";
+import { useState } from "react";
+import { useGetCollections } from "../hooks/useCollections";
 import {
     AddCollectionModal,
     CollectionInfoModal,
-    EditCollectionModal,
     DeleteCollectionModal,
+    EditCollectionModal,
 } from "../modals";
-import { ModalType } from "@/shared/types/types";
-import { useGetCollections } from "../hooks/useCollections";
 import { ICollection } from "../types/collections.types";
-import { formatDate } from "@/shared/utils/formatDate";
 
-function AdminCollectionsContent() {
+export function AdminCollectionsContent() {
     const filters = [
         "спочатку нові",
         "oстанні оновлені",
@@ -253,5 +253,3 @@ function AdminCollectionsContent() {
         </div>
     );
 }
-
-export default AdminCollectionsContent;

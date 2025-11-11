@@ -7,7 +7,7 @@ interface ILinkWithIconProps {
     className?: string;
 }
 
-function LinkWithIcon({
+export function LinkWithIcon({
     href,
     counter,
     children,
@@ -27,5 +27,3 @@ function LinkWithIcon({
         </Link>
     );
 }
-
-export default LinkWithIcon;

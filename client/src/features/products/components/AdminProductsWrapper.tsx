@@ -1,17 +1,16 @@
 "use client";
 
-import AdminCollectionsContent from "@/features/collections/components/AdminCollectionsContent";
 import { ErrorWithMessage } from "@/shared/ui/components";
 import {
-    TitleWithButtonSkeleton,
-    FilterSectionSkeleton,
     AdminProductsSkeleton,
+    FilterSectionSkeleton,
+    TitleWithButtonSkeleton,
 } from "@/shared/ui/skeletons";
-import React, { Suspense } from "react";
+import { Suspense } from "react";
 import { ErrorBoundary } from "react-error-boundary";
-import AdminProductsContent from "./AdminProductsContent";
+import { AdminProductsContent } from "./AdminProductsContent";
 
-function AdminProductsWrapper({
+export function AdminProductsWrapper({
     collectionPath,
     categoryPath,
 }: {
@@ -41,5 +40,3 @@ function AdminProductsWrapper({
         </ErrorBoundary>
     );
 }
-
-export default AdminProductsWrapper;

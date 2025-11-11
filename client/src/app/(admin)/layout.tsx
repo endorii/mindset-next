@@ -1,8 +1,8 @@
 // app/(admin)/layout.tsx
 "use client";
 
-import AdminHeader from "@/features/admin/components/layout/AdminHeader";
-import AdminNavigation from "@/features/admin/components/layout/AdminNavigation";
+import { AdminHeader } from "@/features/admin/components/layout/AdminHeader";
+import { AdminNavigation } from "@/features/admin/components/layout/AdminNavigation";
 import { SpinnerIcon } from "@/shared/icons";
 import { useUserStore } from "@/store/userStore";
 import { useRouter } from "next/navigation";

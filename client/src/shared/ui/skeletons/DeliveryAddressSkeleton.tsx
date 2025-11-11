@@ -1,4 +1,4 @@
-function DeliveryAddressSkeleton() {
+export function DeliveryAddressSkeleton() {
     return (
         <div className="flex w-full">
             <div className="grid grid-cols-2 xl:grid-cols-1 py-[10px] gap-[25px] w-full animate-pulse">
@@ -22,5 +22,3 @@ function DeliveryAddressSkeleton() {
         </div>
     );
 }
-
-export default DeliveryAddressSkeleton;

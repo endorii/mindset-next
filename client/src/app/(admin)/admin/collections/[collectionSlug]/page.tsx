@@ -1,4 +1,4 @@
-import AdminCategoriesWrapper from "@/features/categories/components/AdminCategoriesWrapper";
+import { AdminCategoriesWrapper } from "@/features/categories/components/AdminCategoriesWrapper";
 
 async function AdminCategories({
     params,

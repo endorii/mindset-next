@@ -3,7 +3,7 @@
 import { motion, useMotionValue, useSpring } from "motion/react";
 import { useEffect } from "react";
 
-export default function CustomCursor() {
+export function CustomCursor() {
     const mouse = {
         x: useMotionValue(-30),
         y: useMotionValue(-30),

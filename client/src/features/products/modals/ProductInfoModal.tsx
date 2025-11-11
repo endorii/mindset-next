@@ -1,25 +1,23 @@
 "use client";
 
-import { ICategory } from "@/features/categories/types/categories.types";
-import { ICollection } from "@/features/collections/types/collections.types";
 import { useEscapeKeyClose } from "@/shared/hooks";
 import { MonoButton } from "@/shared/ui/buttons";
 import {
-    TextareaInfoField,
     AtributesInfoField,
     InfoModalBanner,
+    TextareaInfoField,
 } from "@/shared/ui/components";
-import InfoField from "@/shared/ui/inputs/InfoField";
+import { InfoField } from "@/shared/ui/inputs/InfoField";
 import {
-    ModalWrapper,
-    FormFillingWrapper,
     FormButtonsWrapper,
+    FormFillingWrapper,
+    ModalWrapper,
 } from "@/shared/ui/wrappers";
+import { formatDate } from "@/shared/utils/formatDate";
+import Image from "next/image";
 import { createPortal } from "react-dom";
 import { Label } from "recharts";
 import { IProduct } from "../types/products.types";
-import Image from "next/image";
-import { formatDate } from "@/shared/utils/formatDate";
 
 export interface ProductInfoModalProps {
     isOpen: boolean;
@@ -27,7 +25,7 @@ export interface ProductInfoModalProps {
     product: IProduct;
 }
 
-export default function ProductInfoModal({
+export function ProductInfoModal({
     isOpen,
     onClose,
     product,

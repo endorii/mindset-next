@@ -7,7 +7,7 @@ interface TitleWithAddElementButtonProps {
     buttonText: string;
 }
 
-function TitleWithAddElementButton({
+export function TitleWithAddElementButton({
     title,
     onClick,
     buttonText,
@@ -22,5 +22,3 @@ function TitleWithAddElementButton({
         </div>
     );
 }
-
-export default TitleWithAddElementButton;

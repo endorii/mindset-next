@@ -1,14 +1,14 @@
 "use client";
 
-import { AddSizeModal, EditSizeModal, DeleteSizeModal } from "@/features/admin";
+import { AddSizeModal, DeleteSizeModal, EditSizeModal } from "@/features/admin";
+import { EditIcon, PaletteIcon, TrashIcon } from "@/shared/icons";
 import { ButtonWithIcon, DeleteButtonWithIcon } from "@/shared/ui/buttons";
-import { EditIcon, TrashIcon, PaletteIcon } from "@/shared/icons";
 import { useState } from "react";
+import { TitleWithAddElementButton } from "../../components/TitleWithAddElementButton";
 import { useSizes } from "../hooks/useSizes";
 import { ISize } from "../types/product-size.types";
-import TitleWithAddElementButton from "../../components/TitleWithAddElementButton";
 
-export const SizeSection = () => {
+export function SizeSection() {
     const [modalType, setModalType] = useState<
         "add" | "edit" | "delete" | null
     >(null);
@@ -89,4 +89,4 @@ export const SizeSection = () => {
             )}
         </>
     );
-};
+}

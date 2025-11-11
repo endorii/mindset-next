@@ -67,7 +67,7 @@ export function SkeletonCartReceip() {
     );
 }
 
-export default function UserCartSkeleton() {
+export function UserCartSkeleton() {
     return (
         <div className="flex justify-between gap-[15px] w-full px-[30px]">
             <div className="flex flex-col gap-[15px] w-2/3 max-h-[80vh] overflow-y-auto">

@@ -1,8 +1,8 @@
-export { default as AtributesInfoField } from "./AtributesInfoField";
-export { default as InfoModalBanner } from "./InfoModalBanner";
-export { default as Label } from "./Label";
-export { default as RenderAttributeField } from "./RenderAttributeField";
-export { default as TextareaInfoField } from "./TextareaInfoField";
-export { default as UploadBannerWithPreview } from "./UploadBannerWithPreview";
-export { default as Breadcrumbs } from "./Breadcrumbs";
-export { default as ErrorWithMessage } from "./ErrorWithMessage";
+export { AtributesInfoField } from "./AtributesInfoField";
+export { Breadcrumbs } from "./Breadcrumbs";
+export { ErrorWithMessage } from "./ErrorWithMessage";
+export { InfoModalBanner } from "./InfoModalBanner";
+export { Label } from "./Label";
+export { RenderAttributeField } from "./RenderAttributeField";
+export { TextareaInfoField } from "./TextareaInfoField";
+export { UploadBannerWithPreview } from "./UploadBannerWithPreview";

@@ -1,6 +1,6 @@
 import { IIconsProps } from "../types/types";
 
-const InstagramIcon = ({ className }: IIconsProps) => {
+export function InstagramIcon({ className }: IIconsProps) {
     return (
         <svg viewBox="0 0 24 24" className={className}>
             <path
@@ -16,6 +16,4 @@ const InstagramIcon = ({ className }: IIconsProps) => {
             />
         </svg>
     );
-};
-
-export default InstagramIcon;
+}

@@ -1,12 +1,12 @@
 import { ButtonWithIcon, MonoButton } from "@/shared/ui/buttons";
-import InputField from "@/shared/ui/inputs/InputField";
+import { InputField } from "@/shared/ui/inputs/InputField";
 import { LoginComponentsWrapper } from "@/shared/ui/wrappers";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useLoginUser } from "../hooks/useAuth";
 import { ILoginCredentials } from "../types/auth.types";
 
-function LoginForm() {
+export function LoginForm() {
     const [loginMessage, setLoginMessage] = useState<string | null>(null);
     const loginUserMutation = useLoginUser();
     const {
@@ -85,5 +85,3 @@ function LoginForm() {
         </LoginComponentsWrapper>
     );
 }
-
-export default LoginForm;

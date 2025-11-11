@@ -1,5 +1,5 @@
 import { UseFormRegisterReturn } from "react-hook-form";
-import Label from "../components/Label";
+import { Label } from "../components";
 
 interface BasicSelectorProps<T> {
     label: string;
@@ -13,7 +13,7 @@ interface BasicSelectorProps<T> {
     disabled?: boolean;
 }
 
-function BasicSelector<T>({
+export function BasicSelector<T>({
     label,
     register,
     itemsList,
@@ -52,5 +52,3 @@ function BasicSelector<T>({
         </div>
     );
 }
-
-export default BasicSelector;

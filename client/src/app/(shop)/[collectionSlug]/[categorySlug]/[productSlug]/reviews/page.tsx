@@ -9,7 +9,7 @@ import { useReviewByProductId } from "@/features/reviews/hooks/useReviews";
 import { BackIcon } from "@/shared/icons";
 import { MonoButton } from "@/shared/ui/buttons";
 import { Breadcrumbs, ErrorWithMessage } from "@/shared/ui/components";
-import ReviewPageSkeleton from "@/shared/ui/skeletons/ReviewPageSkeleton";
+import { ReviewPageSkeleton } from "@/shared/ui/skeletons";
 import { usePathname, useRouter } from "next/navigation";
 
 function Reviews() {

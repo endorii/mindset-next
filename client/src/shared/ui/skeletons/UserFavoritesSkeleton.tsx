@@ -16,7 +16,7 @@ function SkeletonFavoriteCard() {
     );
 }
 
-export default function UserFavoritesSkeleton() {
+export function UserFavoritesSkeleton() {
     return (
         <ul className="grid grid-cols-4 2xl:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 w-full gap-[15px] px-[30px]">
             {[1, 2, 3].map((i) => (

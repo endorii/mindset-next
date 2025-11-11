@@ -1,4 +1,4 @@
-export default function TodoSkeleton() {
+export function TodoSkeleton() {
     const rows = Array.from({ length: 5 });
 
     return (

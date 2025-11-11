@@ -1,15 +1,15 @@
 "use client";
 
-import { Suspense } from "react";
-import { ErrorBoundary } from "react-error-boundary";
-import AdminReviewsContent from "./AdminReviewsContent";
 import { ErrorWithMessage } from "@/shared/ui/components";
 import {
-    FilterSectionSkeleton,
     AdminProductsSkeleton,
+    FilterSectionSkeleton,
 } from "@/shared/ui/skeletons";
+import { Suspense } from "react";
+import { ErrorBoundary } from "react-error-boundary";
+import { AdminReviewsContent } from "./AdminReviewsContent";
 
-function AdminReviewsWrapper() {
+export function AdminReviewsWrapper() {
     return (
         <ErrorBoundary
             fallbackRender={({ error }) => (
@@ -29,5 +29,3 @@ function AdminReviewsWrapper() {
         </ErrorBoundary>
     );
 }
-
-export default AdminReviewsWrapper;

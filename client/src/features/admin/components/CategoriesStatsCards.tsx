@@ -1,5 +1,4 @@
-import { ICategory } from "@/features/categories/types/categories.types";
-import StatCard from "@/shared/components/cards/StatCard";
+import { StatCard } from "@/shared/components/cards/StatCard";
 
 interface CategoriesStatsCardsProps {
     totalCategories: number;
@@ -7,7 +6,7 @@ interface CategoriesStatsCardsProps {
     highestSalesCategory: { name: string; salesSum: number } | null;
 }
 
-export default function CategoriesStatsCards({
+export function CategoriesStatsCards({
     totalCategories,
     mostPopularCategory,
     highestSalesCategory,

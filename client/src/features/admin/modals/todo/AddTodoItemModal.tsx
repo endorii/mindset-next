@@ -2,19 +2,19 @@
 
 import { useEscapeKeyClose } from "@/shared/hooks";
 import { MonoButton } from "@/shared/ui/buttons";
-import InputField from "@/shared/ui/inputs/InputField";
-import BasicSelector from "@/shared/ui/selectors/BasicSelector";
+import { InputField } from "@/shared/ui/inputs/InputField";
+import { BasicSelector } from "@/shared/ui/selectors/BasicSelector";
 import {
-    ModalWrapper,
-    FormFillingWrapper,
     FormButtonsWrapper,
+    FormFillingWrapper,
+    ModalWrapper,
 } from "@/shared/ui/wrappers";
 import { priorities } from "@/shared/utils/helpers";
 import { useState } from "react";
 import { createPortal } from "react-dom";
 import { useForm } from "react-hook-form";
-import { TodoPriority } from "../../types/admin.types";
 import { useCreateTodoItem } from "../../hooks/useTodo";
+import { TodoPriority } from "../../types/admin.types";
 
 interface AddTodoItemModalProps {
     isOpen: boolean;
@@ -26,10 +26,7 @@ interface TodoFormData {
     priority: TodoPriority;
 }
 
-export default function AddTodoItemModal({
-    isOpen,
-    onClose,
-}: AddTodoItemModalProps) {
+export function AddTodoItemModal({ isOpen, onClose }: AddTodoItemModalProps) {
     const {
         register,
         handleSubmit,

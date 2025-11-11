@@ -1,7 +1,7 @@
-import CategoriesSection from "@/features/categories/components/CategoriesSection";
+import { CategoriesSection } from "@/features/categories/components/CategoriesSection";
 import { ICollection } from "@/features/collections/types/collections.types";
 import { ErrorWithMessage } from "@/shared/ui/components";
-import ShopTitle from "@/shared/ui/titles/ShopTitle";
+import { ShopTitle } from "@/shared/ui/titles/ShopTitle";
 import type { Metadata } from "next";
 
 export async function generateMetadata({

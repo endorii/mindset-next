@@ -6,7 +6,7 @@ import {
 } from "@/shared/components";
 import { ErrorWithMessage } from "@/shared/ui/components";
 
-import ProductSection from "@/features/products/components/ProductSection";
+import { ProductSection } from "@/features/products/components/ProductSection";
 import { IProduct } from "@/features/products/types/products.types";
 
 export async function generateMetadata({

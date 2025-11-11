@@ -2,7 +2,7 @@ interface WearIconProps {
     className: string;
 }
 
-function WearIcon({ className }: WearIconProps) {
+export function WearIcon({ className }: WearIconProps) {
     return (
         <svg viewBox="0 0 32 32" className={className}>
             <path
@@ -13,5 +13,3 @@ function WearIcon({ className }: WearIconProps) {
         </svg>
     );
 }
-
-export default WearIcon;

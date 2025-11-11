@@ -1,4 +1,4 @@
-const ProductPageSkeleton = () => {
+export function ProductPageSkeleton() {
     return (
         <div className="flex lg:flex-col gap-[15px] items-start text-white animate-pulse">
             <div className="flex xl:flex-col gap-[10px] relative rounded-xl bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 max-h-[80vh] xl:max-h-[90vh] xl:w-full w-[55%]">
@@ -48,6 +48,4 @@ const ProductPageSkeleton = () => {
             </div>
         </div>
     );
-};
-
-export default ProductPageSkeleton;
+}

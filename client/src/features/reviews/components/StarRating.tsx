@@ -1,13 +1,13 @@
 "use client";
 
-import { Controller, Control } from "react-hook-form";
+import { Control, Controller } from "react-hook-form";
 
 interface StarRatingProps {
     control: Control<any>;
     errorMessage: string;
 }
 
-const StarRating = ({ control, errorMessage }: StarRatingProps) => {
+export function StarRating({ control, errorMessage }: StarRatingProps) {
     return (
         <div className="flex flex-col gap-[5px]">
             <label className="font-semibold text-sm">Оцініть товар*</label>
@@ -46,6 +46,4 @@ const StarRating = ({ control, errorMessage }: StarRatingProps) => {
             )}
         </div>
     );
-};
-
-export default StarRating;
+}

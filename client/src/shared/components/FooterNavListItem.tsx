@@ -5,7 +5,7 @@ interface FooterNavListItemProps {
     children: React.ReactNode;
 }
 
-function FooterNavListItem({ href, children }: FooterNavListItemProps) {
+export function FooterNavListItem({ href, children }: FooterNavListItemProps) {
     return (
         <Link
             href={href}
@@ -15,5 +15,3 @@ function FooterNavListItem({ href, children }: FooterNavListItemProps) {
         </Link>
     );
 }
-
-export default FooterNavListItem;

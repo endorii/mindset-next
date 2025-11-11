@@ -5,7 +5,7 @@ interface EmptyCategoriesProps {
     subtitle: string;
 }
 
-function EmptyCategories({ title, subtitle }: EmptyCategoriesProps) {
+export function EmptyCategories({ title, subtitle }: EmptyCategoriesProps) {
     return (
         <div className="relative">
             <div className="absolute opacity-0 hover:opacity-100 bg-black/80 backdrop-blur-xl w-full h-full font-thin text-3xl text-white z-[1] transition-all duration-400 flex items-center justify-center">
@@ -40,5 +40,3 @@ function EmptyCategories({ title, subtitle }: EmptyCategoriesProps) {
         </div>
     );
 }
-
-export default EmptyCategories;

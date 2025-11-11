@@ -1,26 +1,26 @@
 "use client";
 
 import { FilterSection } from "@/features/admin/attributes/components/FilterSection";
-import { InfoIcon, ArrowIcon, TrashIcon } from "@/shared/icons";
-import ApproveIcon from "@/shared/icons/ApproveIcon";
+import { ArrowIcon, InfoIcon, TrashIcon } from "@/shared/icons";
+import { ApproveIcon } from "@/shared/icons/ApproveIcon";
 import { ReviewModalType } from "@/shared/types/types";
 import {
-    ButtonWithIcon,
     ApproveButtonWithIcon,
+    ButtonWithIcon,
     DeleteButtonWithIcon,
 } from "@/shared/ui/buttons";
+import { formatDate } from "@/shared/utils/formatDate";
 import { useState } from "react";
 import { useReviews } from "../hooks/useReviews";
 import {
-    ReviewInfoModal,
-    ReviewReplyModal,
     ApproveReviewModal,
     DeleteReviewModal,
+    ReviewInfoModal,
+    ReviewReplyModal,
 } from "../modals";
 import { IReview } from "../types/reviews.types";
-import { formatDate } from "@/shared/utils/formatDate";
 
-function AdminReviewsContent() {
+export function AdminReviewsContent() {
     const sortFilters = ["Спочатку новіші", "Спочатку старіші"];
 
     const [activeModal, setActiveModal] = useState<ReviewModalType>(null);
@@ -223,5 +223,3 @@ function AdminReviewsContent() {
         </>
     );
 }
-
-export default AdminReviewsContent;

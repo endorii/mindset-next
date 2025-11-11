@@ -1,3 +1,3 @@
-export { default as AddColorModal } from "./AddColorModal";
-export { default as DeleteColorModal } from "./DeleteColorModal";
-export { default as EditColorModal } from "./EditColorModal";
+export { AddColorModal } from "./AddColorModal";
+export { DeleteColorModal } from "./DeleteColorModal";
+export { EditColorModal } from "./EditColorModal";

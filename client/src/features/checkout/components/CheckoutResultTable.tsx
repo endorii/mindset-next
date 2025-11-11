@@ -4,7 +4,7 @@ interface CheckoutResultTable {
     cart: ICartItem[];
 }
 
-function CheckoutResultTable({ cart }: CheckoutResultTable) {
+export function CheckoutResultTable({ cart }: CheckoutResultTable) {
     return (
         <>
             <div className="text-3xl font-thin">Інформація про замволення</div>
@@ -26,18 +26,21 @@ function CheckoutResultTable({ cart }: CheckoutResultTable) {
                                 key={item.id}
                                 className="grid grid-cols-[1fr_0.5fr_0.5fr_0.5fr_0.5fr_0.5fr_0.5fr] py-2"
                             >
-                                <div>{item.product.name}</div>
+                                <div>{item.product?.name}</div>
                                 <div className="text-right">{item.color}</div>
                                 <div className="text-right">{item.size}</div>
                                 <div className="text-right">{item.type}</div>
                                 <div className="text-right">
-                                    {item.product.price} ₴
+                                    {item.product?.price} ₴
                                 </div>
                                 <div className="text-right">
                                     {item.quantity}
                                 </div>
                                 <div className="text-right ">
-                                    {item.product.price * item.quantity} ₴
+                                    {item.product?.price
+                                        ? item.product?.price * item.quantity
+                                        : 0}{" "}
+                                    ₴
                                 </div>
                             </div>
                         ))}
@@ -49,7 +52,10 @@ function CheckoutResultTable({ cart }: CheckoutResultTable) {
                                     {cart.reduce(
                                         (acc, item) =>
                                             acc +
-                                            item.product.price * item.quantity,
+                                            (item.product?.price
+                                                ? item.product?.price *
+                                                  item.quantity
+                                                : 0),
                                         0
                                     )}{" "}
                                     ₴
@@ -68,7 +74,10 @@ function CheckoutResultTable({ cart }: CheckoutResultTable) {
                         <span className="text-xl">
                             {cart.reduce(
                                 (acc, item) =>
-                                    acc + item.product.price * item.quantity,
+                                    acc +
+                                    (item.product?.price
+                                        ? item.product?.price * item.quantity
+                                        : 0),
                                 0
                             )}{" "}
                             ₴
@@ -81,5 +90,3 @@ function CheckoutResultTable({ cart }: CheckoutResultTable) {
         </>
     );
 }
-
-export default CheckoutResultTable;

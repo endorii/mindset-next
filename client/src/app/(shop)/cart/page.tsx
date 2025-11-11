@@ -1,6 +1,6 @@
-import CartContent from "@/features/shop/cart/components/CartContent";
-import PopularProductsWrapper from "@/shared/components/providers/PopularProductsWrapper";
-import ShopTitle from "@/shared/ui/titles/ShopTitle";
+import { CartContent } from "@/features/shop/cart/components/CartContent";
+import { PopularProductsWrapper } from "@/shared/components/providers/PopularProductsWrapper";
+import { ShopTitle } from "@/shared/ui/titles/ShopTitle";
 
 function Cart() {
     return (

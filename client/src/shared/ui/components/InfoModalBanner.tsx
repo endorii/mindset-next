@@ -1,12 +1,12 @@
 import Image from "next/image";
-import Label from "./Label";
+import { Label } from "./Label";
 
 interface InfoModalBannerProps {
     image: string;
     w?: number;
 }
 
-function InfoModalBanner({ image, w = 450 }: InfoModalBannerProps) {
+export function InfoModalBanner({ image, w = 450 }: InfoModalBannerProps) {
     return (
         <div className="flex flex-col gap-[7px] w-full">
             <Label>Банер</Label>
@@ -26,5 +26,3 @@ function InfoModalBanner({ image, w = 450 }: InfoModalBannerProps) {
         </div>
     );
 }
-
-export default InfoModalBanner;

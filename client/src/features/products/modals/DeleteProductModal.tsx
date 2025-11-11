@@ -2,8 +2,8 @@
 
 import { deleteImage, deleteImages } from "@/shared/api/images.api";
 import { useEscapeKeyClose } from "@/shared/hooks";
-import { MonoButton, DeleteButton } from "@/shared/ui/buttons";
-import { ModalWrapper, FormButtonsWrapper } from "@/shared/ui/wrappers";
+import { DeleteButton, MonoButton } from "@/shared/ui/buttons";
+import { FormButtonsWrapper, ModalWrapper } from "@/shared/ui/wrappers";
 import { createPortal } from "react-dom";
 import { useDeleteProduct } from "../hooks/useProducts";
 import { IProduct } from "../types/products.types";
@@ -14,7 +14,7 @@ interface DeleteProductModalProps {
     product: IProduct;
 }
 
-export default function DeleteProductModal({
+export function DeleteProductModal({
     isOpen,
     onClose,
     product,

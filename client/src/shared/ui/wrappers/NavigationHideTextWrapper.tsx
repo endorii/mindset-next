@@ -3,7 +3,7 @@ interface INavigationHideTextWrapperProps {
     children: React.ReactNode;
 }
 
-function NavigationHideTextWrapper({
+export function NavigationHideTextWrapper({
     navOpen,
     children,
 }: INavigationHideTextWrapperProps) {
@@ -17,5 +17,3 @@ function NavigationHideTextWrapper({
         </span>
     );
 }
-
-export default NavigationHideTextWrapper;

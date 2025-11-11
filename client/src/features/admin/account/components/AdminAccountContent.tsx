@@ -1,11 +1,11 @@
 "use client";
 
 import { AdminRecentActions } from "@/shared/components";
+import { useMemo, useState } from "react";
 import { FilterSection } from "../../attributes/components/FilterSection";
-import { useState, useMemo } from "react";
 import { useRecentActions } from "../../recent-actions/hooks/useRecentActions";
 
-function AdminAccountContent() {
+export function AdminAccountContent() {
     const actionTypeFilters = ["Всі", "Додано", "Редаговано", "Видалено"];
     const entityFilters = [
         "Всі",
@@ -74,5 +74,3 @@ function AdminAccountContent() {
         </>
     );
 }
-
-export default AdminAccountContent;

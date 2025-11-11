@@ -2,7 +2,7 @@ interface HomeWelcomeMessageProps {
     userName: string | undefined;
 }
 
-function HomeWelcomeMessage({ userName }: HomeWelcomeMessageProps) {
+export function HomeWelcomeMessage({ userName }: HomeWelcomeMessageProps) {
     return (
         <div className="rounded-xl bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 px-[30px] py-[20px] flex flex-col gap-[4px] min-w-[300px]">
             {userName ? (
@@ -18,5 +18,3 @@ function HomeWelcomeMessage({ userName }: HomeWelcomeMessageProps) {
         </div>
     );
 }
-
-export default HomeWelcomeMessage;

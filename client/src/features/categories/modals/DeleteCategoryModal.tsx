@@ -1,10 +1,9 @@
 "use client";
 
-import { ICollection } from "@/features/collections/types/collections.types";
 import { deleteImage } from "@/shared/api/images.api";
 import { useEscapeKeyClose } from "@/shared/hooks";
-import { MonoButton, DeleteButton } from "@/shared/ui/buttons";
-import { ModalWrapper, FormButtonsWrapper } from "@/shared/ui/wrappers";
+import { DeleteButton, MonoButton } from "@/shared/ui/buttons";
+import { FormButtonsWrapper, ModalWrapper } from "@/shared/ui/wrappers";
 import { createPortal } from "react-dom";
 import { toast } from "sonner";
 import { useDeleteCategory } from "../hooks/useCategories";
@@ -16,7 +15,7 @@ interface DeleteCategoryModalProps {
     category: ICategory;
 }
 
-export default function DeleteCategoryModal({
+export function DeleteCategoryModal({
     isOpen,
     onClose,
     category,

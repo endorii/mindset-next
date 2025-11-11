@@ -1,24 +1,17 @@
 "use client";
 
 import { FilterSection } from "@/features/admin/attributes/components/FilterSection";
-import Title from "@/features/admin/attributes/components/Title";
-import { InfoIcon, EditIcon, TrashIcon } from "@/shared/icons";
+import { EditIcon, InfoIcon, TrashIcon } from "@/shared/icons";
 import { OrderModalType } from "@/shared/types/types";
 import { ButtonWithIcon, DeleteButtonWithIcon } from "@/shared/ui/buttons";
-import { ErrorWithMessage } from "@/shared/ui/components";
-import {
-    TitleWithButtonSkeleton,
-    FilterSectionSkeleton,
-    AdminProductsSkeleton,
-} from "@/shared/ui/skeletons";
 
+import { formatDate } from "@/shared/utils/formatDate";
 import { useState } from "react";
 import { useOrders } from "../hooks/useOrders";
-import { OrderInfoModal, EditOrderModal, DeleteOrderModal } from "../modals";
+import { DeleteOrderModal, EditOrderModal, OrderInfoModal } from "../modals";
 import { IOrder } from "../types/orders.types";
-import { formatDate } from "@/shared/utils/formatDate";
 
-function AdminOrdersContent() {
+export function AdminOrdersContent() {
     const sortFilters = ["Спочатку новіші", "Спочатку старіші"];
     const statusFilters = [
         "Обробляється",
@@ -202,5 +195,3 @@ function AdminOrdersContent() {
         </>
     );
 }
-
-export default AdminOrdersContent;

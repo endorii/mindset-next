@@ -1,8 +1,8 @@
 "use client";
 
 import { useEscapeKeyClose } from "@/shared/hooks";
-import { MonoButton, DeleteButton } from "@/shared/ui/buttons";
-import { ModalWrapper, FormButtonsWrapper } from "@/shared/ui/wrappers";
+import { DeleteButton, MonoButton } from "@/shared/ui/buttons";
+import { FormButtonsWrapper, ModalWrapper } from "@/shared/ui/wrappers";
 import { createPortal } from "react-dom";
 import { useDeleteType } from "../hooks/useTypes";
 import { IType } from "../types/product-type.types";
@@ -13,7 +13,7 @@ interface DeleteTypeModalProps {
     type: IType;
 }
 
-export default function DeleteTypeModal({
+export function DeleteTypeModal({
     isOpen,
     onClose,
     type,

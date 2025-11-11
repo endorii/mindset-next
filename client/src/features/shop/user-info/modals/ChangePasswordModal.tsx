@@ -2,11 +2,11 @@
 
 import { useEscapeKeyClose } from "@/shared/hooks";
 import { MonoButton } from "@/shared/ui/buttons";
-import InputField from "@/shared/ui/inputs/InputField";
+import { InputField } from "@/shared/ui/inputs/InputField";
 import {
-    ModalWrapper,
-    FormFillingWrapper,
     FormButtonsWrapper,
+    FormFillingWrapper,
+    ModalWrapper,
 } from "@/shared/ui/wrappers";
 import { useState } from "react";
 import { createPortal } from "react-dom";
@@ -23,7 +23,7 @@ type FormValues = {
     newPassword: string;
 };
 
-export default function ChangePasswordModal({
+export function ChangePasswordModal({
     isOpen,
     onClose,
 }: ChangePasswordModalProps) {

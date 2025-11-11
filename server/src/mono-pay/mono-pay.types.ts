@@ -1,4 +1,4 @@
-export default interface MonoPayInvoiceResponse {
+export interface MonoPayInvoiceResponse {
     invoiceId: string;
     pageUrl: string;
 }

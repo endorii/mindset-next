@@ -1,11 +1,11 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import SliderWrapper from "./layout/SliderWrapper";
 import { IProduct } from "@/features/products/types/products.types";
-import ProductsSliderSkeleton from "../ui/skeletons/ProductsSliderSkeleton";
+import { useEffect, useState } from "react";
+import { ProductsSliderSkeleton } from "../ui/skeletons";
+import { SliderWrapper } from "./layout";
 
-function RecentlyViewedProducts() {
+export function RecentlyViewedProducts() {
     const [recentlyViewedProductsList, setRecentlyViewedProductsList] =
         useState<IProduct[]>([]);
     const [
@@ -33,5 +33,3 @@ function RecentlyViewedProducts() {
         <div>Список товарів порожній</div>
     );
 }
-
-export default RecentlyViewedProducts;

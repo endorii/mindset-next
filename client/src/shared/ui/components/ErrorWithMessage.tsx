@@ -1,6 +1,6 @@
 import { DeleteButton } from "../buttons";
 
-function ErrorWithMessage({
+export function ErrorWithMessage({
     message,
     onRetry,
 }: {
@@ -16,5 +16,3 @@ function ErrorWithMessage({
         </div>
     );
 }
-
-export default ErrorWithMessage;

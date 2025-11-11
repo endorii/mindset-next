@@ -1,6 +1,6 @@
 import { LoginComponentsWrapper } from "@/shared/ui/wrappers";
 
-function Security() {
+export function Security() {
     return (
         <LoginComponentsWrapper title="Захист Вашої інформації">
             <div className="flex flex-col gap-[15px]">
@@ -61,5 +61,3 @@ function Security() {
         </LoginComponentsWrapper>
     );
 }
-
-export default Security;

@@ -1,18 +1,17 @@
 "use client";
 
-import { ICollection } from "@/features/collections/types/collections.types";
 import { useEscapeKeyClose } from "@/shared/hooks";
 import { MonoButton } from "@/shared/ui/buttons";
-import { TextareaInfoField, InfoModalBanner } from "@/shared/ui/components";
-import InfoField from "@/shared/ui/inputs/InfoField";
+import { InfoModalBanner, TextareaInfoField } from "@/shared/ui/components";
+import { InfoField } from "@/shared/ui/inputs/InfoField";
 import {
-    ModalWrapper,
-    FormFillingWrapper,
     FormButtonsWrapper,
+    FormFillingWrapper,
+    ModalWrapper,
 } from "@/shared/ui/wrappers";
+import { formatDate } from "@/shared/utils/formatDate";
 import { createPortal } from "react-dom";
 import { ICategory } from "../types/categories.types";
-import { formatDate } from "@/shared/utils/formatDate";
 
 interface CategoryInfoModalProps {
     isOpen: boolean;
@@ -20,7 +19,7 @@ interface CategoryInfoModalProps {
     category: ICategory;
 }
 
-export default function CategoryInfoModal({
+export function CategoryInfoModal({
     isOpen,
     onClose,
     category,

@@ -1,13 +1,13 @@
+import { IOrder } from "@/features/orders/types/orders.types";
 import { useMemo } from "react";
 import {
-    ResponsiveContainer,
-    PieChart,
-    Pie,
     Cell,
-    Tooltip,
     Legend,
+    Pie,
+    PieChart,
+    ResponsiveContainer,
+    Tooltip,
 } from "recharts";
-import { IOrder } from "@/features/orders/types/orders.types";
 
 const PIE_COLORS = [
     "#F0F0E0",
@@ -18,7 +18,7 @@ const PIE_COLORS = [
     "#4B7850",
 ];
 
-function OrdersByCollectionsChart({
+export function OrdersByCollectionsChart({
     orders,
 }: {
     orders: IOrder[] | undefined;
@@ -101,5 +101,3 @@ function OrdersByCollectionsChart({
         </div>
     );
 }
-
-export default OrdersByCollectionsChart;

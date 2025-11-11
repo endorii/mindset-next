@@ -1,1 +1,1 @@
-export { default as EditUserInfoModal } from "./modals/EditUserInfoModal";
+export { EditUserInfoModal } from "./modals/EditUserInfoModal";

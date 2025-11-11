@@ -1,7 +1,7 @@
 import { AdminNavigationLink } from "@/shared/ui/buttons";
 import { adminPanelNavigationLinks } from "../utils/navigationLinks";
 
-function HomeFastNav() {
+export function HomeFastNav() {
     return (
         <div
             className={`flex flex-col gap-[10px] rounded-xl bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px]`}
@@ -17,5 +17,3 @@ function HomeFastNav() {
         </div>
     );
 }
-
-export default HomeFastNav;

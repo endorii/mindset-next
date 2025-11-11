@@ -7,9 +7,9 @@ import {
 } from "@/shared/ui/skeletons";
 import { Suspense } from "react";
 import { ErrorBoundary } from "react-error-boundary";
-import AdminAccountContent from "./AdminAccountContent";
+import { AdminAccountContent } from "./AdminAccountContent";
 
-function AdminAccountWrapper() {
+export function AdminAccountWrapper() {
     return (
         <ErrorBoundary
             fallbackRender={({ error }) => (
@@ -31,5 +31,3 @@ function AdminAccountWrapper() {
         </ErrorBoundary>
     );
 }
-
-export default AdminAccountWrapper;

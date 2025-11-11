@@ -1,6 +1,6 @@
 import { IIconsProps } from "../types/types";
 
-const AccountIcon = ({ className }: IIconsProps) => {
+export function AccountIcon({ className }: IIconsProps) {
     return (
         <svg viewBox="0 0 48 48" className={className}>
             <path d="M0 0h48v48H0z" fill="none" />
@@ -9,6 +9,4 @@ const AccountIcon = ({ className }: IIconsProps) => {
             </g>
         </svg>
     );
-};
-
-export default AccountIcon;
+}

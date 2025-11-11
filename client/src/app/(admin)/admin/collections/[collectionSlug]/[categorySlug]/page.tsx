@@ -1,4 +1,4 @@
-import AdminProductsWrapper from "@/features/products/components/AdminProductsWrapper";
+import { AdminProductsWrapper } from "@/features/products/components/AdminProductsWrapper";
 
 async function AdminProducts({
     params,

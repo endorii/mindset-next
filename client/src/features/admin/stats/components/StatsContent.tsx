@@ -3,18 +3,18 @@
 import { useOrders } from "@/features/orders/hooks/useOrders";
 import {
     OrdersAndSalesChart,
-    OrdersByCollectionsChart,
     OrdersByCategoriesChart,
+    OrdersByCollectionsChart,
 } from "@/shared/components/charts";
-import UsersRegistrationChart from "@/shared/components/charts/UsersRegistrationsChart";
+import { UsersRegistrationsChart } from "@/shared/components/charts/UsersRegistrationsChart";
 import { ErrorWithMessage } from "@/shared/ui/components";
-import CategoriesStatsCards from "../../components/CategoriesStatsCards";
-import CollectionsStatsCards from "../../components/CollectionsStatsCards";
-import OrdersStatsCards from "../../components/OrdersStatsCards";
-import UsersStatsCards from "../../components/UsersStatsCards";
+import { CategoriesStatsCards } from "../../components/CategoriesStatsCards";
+import { CollectionsStatsCards } from "../../components/CollectionsStatsCards";
+import { OrdersStatsCards } from "../../components/OrdersStatsCards";
+import { UsersStatsCards } from "../../components/UsersStatsCards";
 import { useAllUsers } from "../../hooks/useUsers";
 
-function StatsContent() {
+export function StatsContent() {
     const { data: orders } = useOrders();
     const { data: users } = useAllUsers();
 
@@ -164,7 +164,7 @@ function StatsContent() {
             </div>
 
             <div className="flex flex-col gap-[15px]">
-                <UsersRegistrationChart users={users} />
+                <UsersRegistrationsChart users={users} />
                 <UsersStatsCards
                     totalUsers={totalUsers}
                     activeUsersLastMonth={activeUsersLastMonth}
@@ -176,5 +176,3 @@ function StatsContent() {
         </>
     );
 }
-
-export default StatsContent;

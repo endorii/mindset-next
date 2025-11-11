@@ -17,10 +17,10 @@ import {
 } from "@/shared/api/nova-post.api";
 import { MonoButton } from "@/shared/ui/buttons";
 import { ErrorWithMessage } from "@/shared/ui/components";
-import InputField from "@/shared/ui/inputs/InputField";
+import { InputField } from "@/shared/ui/inputs/InputField";
 import { NovaPoshtaSelect } from "@/shared/ui/selectors/NovaPoshtaSelect";
 import { CheckoutSkeleton } from "@/shared/ui/skeletons";
-import ShopTitle from "@/shared/ui/titles/ShopTitle";
+import { ShopTitle } from "@/shared/ui/titles/ShopTitle";
 import { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 
@@ -171,13 +171,17 @@ function Checkout() {
             userId,
             total:
                 cartToShow.reduce(
-                    (acc, item) => acc + item.product?.price * item.quantity,
+                    (acc, item) =>
+                        acc +
+                        (item.product?.price
+                            ? item.product?.price * item.quantity
+                            : 0),
                     0
                 ) || 0,
             items:
                 cartToShow.map((item) => ({
                     productId: item.productId,
-                    price: Number(item.price),
+                    price: Number(item.product?.price),
                     quantity: Number(item.quantity),
                     color: item.color,
                     size: item.size,

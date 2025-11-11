@@ -1,16 +1,16 @@
 "use client";
 
-import Link from "next/link";
-import Image from "next/image";
-import { ICollection } from "@/features/collections/types/collections.types";
 import { ICategory } from "@/features/categories/types/categories.types";
+import { ICollection } from "@/features/collections/types/collections.types";
+import Image from "next/image";
+import Link from "next/link";
 
 interface CollectionsAndCategoriesListProps {
     items: ICollection[] | ICategory[];
     basePath?: string;
 }
 
-export default function CollectionsAndCategoriesList({
+export function CollectionsAndCategoriesList({
     items,
     basePath = "",
 }: CollectionsAndCategoriesListProps) {

@@ -2,7 +2,7 @@ interface PaletteIconProps {
     className: string;
 }
 
-function PaletteIcon({ className }: PaletteIconProps) {
+export function PaletteIcon({ className }: PaletteIconProps) {
     return (
         <svg
             viewBox="0 0 24 24"
@@ -19,5 +19,3 @@ function PaletteIcon({ className }: PaletteIconProps) {
         </svg>
     );
 }
-
-export default PaletteIcon;

@@ -2,12 +2,11 @@ import {
     AccountIcon,
     CollectionsIcon,
     MainPageIcon,
-    SettingsIcon,
+    OrderIcon,
+    ReviewIcon,
     StatsIcon,
     TagIcon,
 } from "@/shared/icons";
-import OrderIcon from "@/shared/icons/OrderIcon";
-import ReviewIcon from "@/shared/icons/ReviewIcon";
 
 export const adminPanelNavigationLinks = [
     { href: "/admin", Icon: MainPageIcon, text: "Головна" },

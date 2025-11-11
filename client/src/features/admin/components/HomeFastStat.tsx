@@ -1,7 +1,7 @@
 import { IOrder } from "@/features/orders/types/orders.types";
-import StatCard from "@/shared/components/cards/StatCard";
+import { StatCard } from "@/shared/components/cards/StatCard";
 
-function HomeFastStat({ orders }: { orders: IOrder[] | undefined }) {
+export function HomeFastStat({ orders }: { orders: IOrder[] | undefined }) {
     if (!orders || orders.length === 0) {
         return (
             <div className="rounded-xl bg-white/5 p-[20px] text-white/60 border border-white/5">
@@ -63,5 +63,3 @@ function HomeFastStat({ orders }: { orders: IOrder[] | undefined }) {
         </div>
     );
 }
-
-export default HomeFastStat;

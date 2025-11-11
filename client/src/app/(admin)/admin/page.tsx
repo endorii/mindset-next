@@ -1,5 +1,5 @@
-import Title from "@/features/admin/attributes/components/Title";
-import AdminHomeWrapper from "@/features/admin/components/AdminHomeWrapper";
+import { Title } from "@/features/admin/attributes/components/Title";
+import { AdminHomeWrapper } from "@/features/admin/components/AdminHomeWrapper";
 
 function Admin() {
     return (

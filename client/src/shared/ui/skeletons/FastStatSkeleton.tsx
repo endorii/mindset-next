@@ -1,6 +1,6 @@
-import StatCardSkeleton from "./StatCardSkeleton";
+import { StatCardSkeleton } from "./StatCardSkeleton";
 
-export default function FastStatSkeleton() {
+export function FastStatSkeleton() {
     const cards = Array.from({ length: 8 });
 
     return (

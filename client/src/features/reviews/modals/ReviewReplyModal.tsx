@@ -2,14 +2,14 @@
 
 import { useEscapeKeyClose } from "@/shared/hooks";
 import { MonoButton } from "@/shared/ui/buttons";
-import InfoField from "@/shared/ui/inputs/InfoField";
-import BasicTextarea from "@/shared/ui/textareas/BasicTextarea";
+import { InfoField } from "@/shared/ui/inputs/InfoField";
+import { BasicTextarea } from "@/shared/ui/textareas/BasicTextarea";
 import {
-    ModalWrapper,
-    FormFillingWrapper,
     FormButtonsWrapper,
+    FormFillingWrapper,
+    ModalWrapper,
 } from "@/shared/ui/wrappers";
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { useForm } from "react-hook-form";
 import { useEditReview } from "../hooks/useReviews";
@@ -25,7 +25,7 @@ type FormValues = {
     adminReply: string;
 };
 
-export default function ReviewReplyModal({
+export function ReviewReplyModal({
     isOpen,
     onClose,
     review,

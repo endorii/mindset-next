@@ -9,7 +9,7 @@ interface IChooseLinkProps {
     collection?: ICollection;
 }
 
-function ChooseLink({
+export function ChooseLink({
     href,
     onClick,
     currentCollection,
@@ -30,5 +30,3 @@ function ChooseLink({
         </Link>
     );
 }
-
-export default ChooseLink;

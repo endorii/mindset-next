@@ -13,7 +13,7 @@ interface ChooseCheckoutDeliveryAddressProps {
     setSelectedWarehouse: (wh: INovaPostDataObj | null) => void;
 }
 
-function ChooseCheckoutDeliveryAddress({
+export function ChooseCheckoutDeliveryAddress({
     areas,
     selectedArea,
     setSelectedArea,
@@ -108,5 +108,3 @@ function ChooseCheckoutDeliveryAddress({
         </div>
     );
 }
-
-export default ChooseCheckoutDeliveryAddress;

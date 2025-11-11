@@ -5,7 +5,7 @@ interface ErrorFallbackProps {
     message?: string;
 }
 
-export default function ErrorFallback({ error, message }: ErrorFallbackProps) {
+export function ErrorFallback({ error, message }: ErrorFallbackProps) {
     return (
         <ErrorWithMessage
             message={message ?? error?.message ?? "Невідома помилка"}

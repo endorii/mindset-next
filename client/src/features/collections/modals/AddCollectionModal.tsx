@@ -1,16 +1,16 @@
 "use client";
 
-import { useUploadImage, useEscapeKeyClose } from "@/shared/hooks";
+import { useEscapeKeyClose, useUploadImage } from "@/shared/hooks";
 import { TStatus } from "@/shared/types/types";
 import { MonoButton } from "@/shared/ui/buttons";
 import { UploadBannerWithPreview } from "@/shared/ui/components";
-import InputField from "@/shared/ui/inputs/InputField";
-import BasicSelector from "@/shared/ui/selectors/BasicSelector";
-import BasicTextarea from "@/shared/ui/textareas/BasicTextarea";
+import { InputField } from "@/shared/ui/inputs/InputField";
+import { BasicSelector } from "@/shared/ui/selectors/BasicSelector";
+import { BasicTextarea } from "@/shared/ui/textareas/BasicTextarea";
 import {
-    ModalWrapper,
-    FormFillingWrapper,
     FormButtonsWrapper,
+    FormFillingWrapper,
+    ModalWrapper,
 } from "@/shared/ui/wrappers";
 import { statuses } from "@/shared/utils/helpers";
 import { useState } from "react";
@@ -30,7 +30,7 @@ type FormValues = {
     status: TStatus;
 };
 
-export default function AddCollectionModal({
+export function AddCollectionModal({
     isOpen,
     onClose,
 }: AddCollectionModalProps) {

@@ -1,6 +1,6 @@
 import { IUser } from "@/features/shop/user-info/types/user.types";
-import InfoField from "@/shared/ui/inputs/InfoField";
-import MainInfoSkeleton from "@/shared/ui/skeletons/MainInfoSkeleton";
+import { InfoField } from "@/shared/ui/inputs/InfoField";
+import { MainInfoSkeleton } from "@/shared/ui/skeletons";
 
 interface MainInfoProps {
     openModal: () => void;
@@ -9,7 +9,7 @@ interface MainInfoProps {
     currentUser: IUser | null | undefined;
 }
 
-function MainInfo({
+export function MainInfo({
     openModal,
     isUserPending,
     isUserError,
@@ -51,5 +51,3 @@ function MainInfo({
         </div>
     );
 }
-
-export default MainInfo;

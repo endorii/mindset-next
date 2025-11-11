@@ -1,9 +1,9 @@
-import MastercardImage from "../../../../../public/images/mastercard.png";
-import VisaImage from "../../../../../public/images/visa.png";
-import NovaPoshtaImage from "../../../../../public/images/nova-poshta.png";
 import Image from "next/image";
+import MastercardImage from "../../../../../public/images/mastercard.png";
+import NovaPoshtaImage from "../../../../../public/images/nova-poshta.png";
+import VisaImage from "../../../../../public/images/visa.png";
 
-function DeliveryAndPaymentMethod() {
+export function DeliveryAndPaymentMethod() {
     return (
         <div className="flex flex-col gap-[10px] w-full rounded-xl bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px]">
             <div className="font-bold text-xl mb-4">Доставка та оплата</div>
@@ -72,5 +72,3 @@ function DeliveryAndPaymentMethod() {
         </div>
     );
 }
-
-export default DeliveryAndPaymentMethod;

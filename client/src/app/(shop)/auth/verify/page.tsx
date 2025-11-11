@@ -1,13 +1,13 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
 import {
-    useVerifyUser,
     useResendVerification,
+    useVerifyUser,
 } from "@/features/auth/hooks/useAuth";
-import InputField from "@/shared/ui/inputs/InputField";
 import { MonoButton } from "@/shared/ui/buttons";
+import { InputField } from "@/shared/ui/inputs/InputField";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useEffect, useState } from "react";
 import { toast } from "sonner";
 
 const VerifyPage = () => {

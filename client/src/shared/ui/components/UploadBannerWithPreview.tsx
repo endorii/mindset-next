@@ -1,5 +1,5 @@
 import Image from "next/image";
-import Label from "./Label";
+import { Label } from "./Label";
 
 interface UploadBannerWithPreviewProps {
     image: string | null;
@@ -7,7 +7,7 @@ interface UploadBannerWithPreviewProps {
     bannerError: string | null;
 }
 
-function UploadBannerWithPreview({
+export function UploadBannerWithPreview({
     image,
     handleBannerChange,
     bannerError,
@@ -48,5 +48,3 @@ function UploadBannerWithPreview({
         </div>
     );
 }
-
-export default UploadBannerWithPreview;

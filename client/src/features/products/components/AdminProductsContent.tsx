@@ -1,34 +1,33 @@
 import { FilterSection } from "@/features/admin/attributes/components/FilterSection";
-import TitleWithAddElementButton from "@/features/admin/attributes/components/TitleWithAddElementButton";
+import { TitleWithAddElementButton } from "@/features/admin/attributes/components/TitleWithAddElementButton";
 import { useGetCategoryByPath } from "@/features/categories/hooks/useCategories";
 import {
     BackIcon,
-    InfoIcon,
     EditIcon,
-    TrashIcon,
+    InfoIcon,
     ProductsIcon,
+    TrashIcon,
 } from "@/shared/icons";
 import { ModalType } from "@/shared/types/types";
 import {
-    MonoButton,
     ButtonWithIcon,
     DeleteButtonWithIcon,
+    MonoButton,
 } from "@/shared/ui/buttons";
+import { formatDate } from "@/shared/utils/formatDate";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
 import { useRouter } from "next/navigation";
-import React, { useState } from "react";
+import { useState } from "react";
 import { useProductsByCategoryId } from "../hooks/useProducts";
 import {
     AddProductModal,
-    ProductInfoModal,
-    EditProductModal,
     DeleteProductModal,
+    EditProductModal,
+    ProductInfoModal,
 } from "../modals";
 import { IProduct } from "../types/products.types";
-import { formatDate } from "@/shared/utils/formatDate";
 
-function AdminProductsContent({
+export function AdminProductsContent({
     collectionPath,
     categoryPath,
 }: {
@@ -238,5 +237,3 @@ function AdminProductsContent({
         </div>
     );
 }
-
-export default AdminProductsContent;

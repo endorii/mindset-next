@@ -1,4 +1,4 @@
-import StatCard from "@/shared/components/cards/StatCard";
+import { StatCard } from "@/shared/components/cards/StatCard";
 
 interface CollectionsStatsCardsProps {
     totalCollections: number;
@@ -6,7 +6,7 @@ interface CollectionsStatsCardsProps {
     highestSalesCollection: { name: string; salesSum: number } | null;
 }
 
-export default function CollectionsStatsCards({
+export function CollectionsStatsCards({
     totalCollections,
     mostPopularCollection,
     highestSalesCollection,

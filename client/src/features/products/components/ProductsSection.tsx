@@ -2,8 +2,9 @@
 
 import { EmptyCategories } from "@/shared/components";
 import { IProduct } from "../types/products.types";
-import ProductsContent from "./ProductsContent";
-export default function ProductsSection({
+import { ProductsContent } from "./ProductsContent";
+
+export function ProductsSection({
     collectionPath,
     categoryPath,
     products,

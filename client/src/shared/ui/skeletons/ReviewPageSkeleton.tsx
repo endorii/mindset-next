@@ -1,8 +1,8 @@
-import BreadcrumbsSkeleton from "./BreadcrumbsSkeleton";
-import ProductReviewsSkeleton from "./ProductReviewsSkeleton";
-import ReviewsValueSkeleton from "./ReviewsValueSkeleton";
+import { BreadcrumbsSkeleton } from "./BreadcrumbsSkeleton";
+import { ProductReviewsSkeleton } from "./ProductReviewsSkeleton";
+import { ReviewsValueSkeleton } from "./ReviewsValueSkeleton";
 
-function ReviewPageSkeleton() {
+export function ReviewPageSkeleton() {
     return (
         <div className="flex flex-col gap-[15px] px-[30px] py-[10px] sm:p-[10px]">
             <BreadcrumbsSkeleton />
@@ -14,5 +14,3 @@ function ReviewPageSkeleton() {
         </div>
     );
 }
-
-export default ReviewPageSkeleton;

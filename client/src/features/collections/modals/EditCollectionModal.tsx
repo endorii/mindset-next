@@ -1,25 +1,25 @@
 "use client";
 
 import { deleteImage } from "@/shared/api/images.api";
-import { useUploadImage, useEscapeKeyClose } from "@/shared/hooks";
+import { useEscapeKeyClose, useUploadImage } from "@/shared/hooks";
 import { TStatus } from "@/shared/types/types";
 import { MonoButton } from "@/shared/ui/buttons";
-import InputField from "@/shared/ui/inputs/InputField";
-import BasicSelector from "@/shared/ui/selectors/BasicSelector";
-import BasicTextarea from "@/shared/ui/textareas/BasicTextarea";
+import { InputField } from "@/shared/ui/inputs/InputField";
+import { BasicSelector } from "@/shared/ui/selectors/BasicSelector";
+import { BasicTextarea } from "@/shared/ui/textareas/BasicTextarea";
 import {
-    ModalWrapper,
-    FormFillingWrapper,
     FormButtonsWrapper,
+    FormFillingWrapper,
+    ModalWrapper,
 } from "@/shared/ui/wrappers";
 import { statuses } from "@/shared/utils/helpers";
-import { useState, useEffect } from "react";
+import Image from "next/image";
+import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { useForm } from "react-hook-form";
 import { Label } from "recharts";
 import { useEditCollection } from "../hooks/useCollections";
 import { ICollection } from "../types/collections.types";
-import Image from "next/image";
 
 interface EditCollectionModalProps {
     isOpen: boolean;
@@ -34,7 +34,7 @@ type FormValues = {
     status: TStatus;
 };
 
-export default function EditCollectionModal({
+export function EditCollectionModal({
     isOpen,
     onClose,
     collection,

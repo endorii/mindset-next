@@ -1,9 +1,8 @@
 import Image from "next/image";
 import Link from "next/link";
-import React from "react";
 import { IProduct } from "../types/products.types";
 
-function ProductsContent({
+export function ProductsContent({
     collectionPath,
     categoryPath,
     products,
@@ -100,5 +99,3 @@ function ProductsContent({
         </>
     );
 }
-
-export default ProductsContent;

@@ -3,12 +3,10 @@
 import { useColors } from "@/features/admin/attributes/product-colors/hooks/useColors";
 import { useSizes } from "@/features/admin/attributes/product-sizes/hooks/useSizes";
 import { useTypes } from "@/features/admin/attributes/product-types/hooks/useTypes";
-import { ICategory } from "@/features/categories/types/categories.types";
-import { ICollection } from "@/features/collections/types/collections.types";
 import {
+    useEscapeKeyClose,
     useUploadImage,
     useUploadImages,
-    useEscapeKeyClose,
 } from "@/shared/hooks";
 import { TrashIcon } from "@/shared/icons";
 import { TAvailble, TStatus } from "@/shared/types/types";
@@ -17,22 +15,22 @@ import {
     RenderAttributeField,
     UploadBannerWithPreview,
 } from "@/shared/ui/components";
-import InputField from "@/shared/ui/inputs/InputField";
-import BasicSelector from "@/shared/ui/selectors/BasicSelector";
-import BasicTextarea from "@/shared/ui/textareas/BasicTextarea";
+import { InputField } from "@/shared/ui/inputs/InputField";
+import { BasicSelector } from "@/shared/ui/selectors/BasicSelector";
+import { BasicTextarea } from "@/shared/ui/textareas/BasicTextarea";
 import {
-    ModalWrapper,
-    FormFillingWrapper,
     FormButtonsWrapper,
+    FormFillingWrapper,
+    ModalWrapper,
 } from "@/shared/ui/wrappers";
 import { availables, statuses } from "@/shared/utils/helpers";
-import { useState, useEffect, ChangeEvent } from "react";
+import Image from "next/image";
+import { ChangeEvent, useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { useForm } from "react-hook-form";
 import { Label } from "recharts";
 import { useEditProduct } from "../hooks/useProducts";
 import { IProduct } from "../types/products.types";
-import Image from "next/image";
 
 interface EditProductModalProps {
     isOpen: boolean;
@@ -54,7 +52,7 @@ interface FormData {
     typeIds?: string[];
 }
 
-export default function EditProductModal({
+export function EditProductModal({
     isOpen,
     onClose,
     product,

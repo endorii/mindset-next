@@ -1,25 +1,24 @@
 "use client";
 
-import { ICollection } from "@/features/collections/types/collections.types";
-import { useUploadImage, useEscapeKeyClose } from "@/shared/hooks";
+import { useEscapeKeyClose, useUploadImage } from "@/shared/hooks";
 import { TStatus } from "@/shared/types/types";
 import { MonoButton } from "@/shared/ui/buttons";
-import InputField from "@/shared/ui/inputs/InputField";
-import BasicSelector from "@/shared/ui/selectors/BasicSelector";
-import BasicTextarea from "@/shared/ui/textareas/BasicTextarea";
+import { InputField } from "@/shared/ui/inputs/InputField";
+import { BasicSelector } from "@/shared/ui/selectors/BasicSelector";
+import { BasicTextarea } from "@/shared/ui/textareas/BasicTextarea";
 import {
-    ModalWrapper,
-    FormFillingWrapper,
     FormButtonsWrapper,
+    FormFillingWrapper,
+    ModalWrapper,
 } from "@/shared/ui/wrappers";
 import { statuses } from "@/shared/utils/helpers";
-import { useState, useEffect, ChangeEvent } from "react";
+import Image from "next/image";
+import { ChangeEvent, useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { useForm } from "react-hook-form";
 import { Label } from "recharts";
 import { useEditCategory } from "../hooks/useCategories";
 import { ICategory } from "../types/categories.types";
-import Image from "next/image";
 
 interface EditCategoryModalProps {
     isOpen: boolean;
@@ -34,7 +33,7 @@ interface CategoryFormData {
     status: TStatus;
 }
 
-export default function EditCategoryModal({
+export function EditCategoryModal({
     isOpen,
     onClose,
     category,

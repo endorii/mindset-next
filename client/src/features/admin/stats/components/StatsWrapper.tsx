@@ -2,16 +2,16 @@
 
 import { ErrorWithMessage } from "@/shared/ui/components";
 import {
-    LineChartSkeleton,
-    FastStatSkeleton,
-    PieChartSkeleton,
     FastStatMiniSkeleton,
+    FastStatSkeleton,
+    LineChartSkeleton,
+    PieChartSkeleton,
 } from "@/shared/ui/skeletons";
 import { Suspense } from "react";
 import { ErrorBoundary } from "react-error-boundary";
-import StatsContent from "./StatsContent";
+import { StatsContent } from "./StatsContent";
 
-function StatsWrapper() {
+export function StatsWrapper() {
     return (
         <ErrorBoundary
             fallbackRender={({ error }) => (
@@ -45,5 +45,3 @@ function StatsWrapper() {
         </ErrorBoundary>
     );
 }
-
-export default StatsWrapper;

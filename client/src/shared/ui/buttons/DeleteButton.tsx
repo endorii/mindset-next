@@ -5,7 +5,7 @@ interface IDeleteButton {
     children: React.ReactNode;
 }
 
-function DeleteButton({
+export function DeleteButton({
     onClick,
     type = "button",
     disabled,
@@ -22,5 +22,3 @@ function DeleteButton({
         </button>
     );
 }
-
-export default DeleteButton;

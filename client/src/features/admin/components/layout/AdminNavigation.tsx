@@ -7,7 +7,7 @@ import { useState } from "react";
 import { toast } from "sonner";
 import { adminPanelNavigationLinks } from "../../utils/navigationLinks";
 
-function AdminNavigation({ children }: { children: React.ReactNode }) {
+export function AdminNavigation({ children }: { children: React.ReactNode }) {
     const [navOpen, setNavOpen] = useState(false);
 
     return (
@@ -80,5 +80,3 @@ function AdminNavigation({ children }: { children: React.ReactNode }) {
         </div>
     );
 }
-
-export default AdminNavigation;

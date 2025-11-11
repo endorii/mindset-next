@@ -1,13 +1,13 @@
 "use client";
 
 import { useEscapeKeyClose } from "@/shared/hooks";
-import { MonoButton, DeleteButton } from "@/shared/ui/buttons";
-import { ModalWrapper, FormButtonsWrapper } from "@/shared/ui/wrappers";
-import { createPortal } from "react-dom";
-import { useDeleteUser } from "../hooks/useUsers";
-import InputField from "@/shared/ui/inputs/InputField";
+import { DeleteButton, MonoButton } from "@/shared/ui/buttons";
+import { InputField } from "@/shared/ui/inputs/InputField";
+import { FormButtonsWrapper, ModalWrapper } from "@/shared/ui/wrappers";
 import { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
 import { useForm } from "react-hook-form";
+import { useDeleteUser } from "../hooks/useUsers";
 
 interface DeleteAccountModalProps {
     isOpen: boolean;
@@ -18,7 +18,7 @@ type FormValues = {
     password: string;
 };
 
-export default function DeleteAccountModal({
+export function DeleteAccountModal({
     isOpen,
     onClose,
 }: DeleteAccountModalProps) {

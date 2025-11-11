@@ -1,3 +1,3 @@
-export { default as AddTypeModal } from "./modals/AddTypeModal";
-export { default as DeleteTypeModal } from "./modals/DeleteTypeModal";
-export { default as EditTypeModal } from "./modals/EditTypeModal";
+export { AddTypeModal } from "./modals/AddTypeModal";
+export { DeleteTypeModal } from "./modals/DeleteTypeModal";
+export { EditTypeModal } from "./modals/EditTypeModal";

@@ -1,9 +1,9 @@
 "use client";
 
 import { usePopularProducts } from "@/features/products/hooks/useProducts";
-import SliderWrapper from "./layout/SliderWrapper";
+import { SliderWrapper } from "./layout";
 
-function PopularProducts() {
+export function PopularProducts() {
     const { data: popularProducts } = usePopularProducts();
 
     console.log(popularProducts);
@@ -19,5 +19,3 @@ function PopularProducts() {
         />
     );
 }
-
-export default PopularProducts;

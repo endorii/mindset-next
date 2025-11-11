@@ -6,7 +6,7 @@ interface AttributeSelectorProps<T> {
     setFunction: (value: string) => void;
 }
 
-function AttributeSelector<T>({
+export function AttributeSelector<T>({
     attributeItems,
     label,
     getName,
@@ -42,5 +42,3 @@ function AttributeSelector<T>({
         </div>
     );
 }
-
-export default AttributeSelector;

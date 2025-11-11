@@ -10,13 +10,13 @@ import { useCurrentUser } from "@/features/shop/user-info/hooks/useUsers";
 import { HeartIcon } from "@/shared/icons";
 import { MonoButton } from "@/shared/ui/buttons";
 import { Breadcrumbs } from "@/shared/ui/components";
-import addToRecentlyViewed from "@/shared/utils/addToRecentlyViewed";
+import { addToRecentlyViewed } from "@/shared/utils/addToRecentlyViewed";
 import { useCartStore } from "@/store/useCartStore";
 import { useFavoritesStore } from "@/store/useFavoritesStore";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { IProduct } from "../types/products.types";
-import AttributeSelector from "./AttributeSelector";
+import { AttributeSelector } from "./AttributeSelector";
 
 interface ProductContentProps {
     collectionPath: string;
@@ -25,7 +25,7 @@ interface ProductContentProps {
     product: IProduct;
 }
 
-function ProductContent({
+export function ProductContent({
     collectionPath,
     categoryPath,
     productPath,
@@ -295,5 +295,3 @@ function ProductContent({
         </div>
     );
 }
-
-export default ProductContent;

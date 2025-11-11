@@ -2,11 +2,11 @@
 
 import { useEscapeKeyClose } from "@/shared/hooks";
 import { MonoButton } from "@/shared/ui/buttons";
-import InputField from "@/shared/ui/inputs/InputField";
+import { InputField } from "@/shared/ui/inputs/InputField";
 import {
-    ModalWrapper,
-    FormFillingWrapper,
     FormButtonsWrapper,
+    FormFillingWrapper,
+    ModalWrapper,
 } from "@/shared/ui/wrappers";
 import { useState } from "react";
 import { createPortal } from "react-dom";
@@ -22,7 +22,7 @@ type FormValues = {
     name: string;
 };
 
-export default function AddSizeModal({ isOpen, onClose }: AddSizeModalProps) {
+export function AddSizeModal({ isOpen, onClose }: AddSizeModalProps) {
     const createSizeMutation = useCreateSize();
     const [modalMessage, setModalMessage] = useState("");
 

@@ -1,7 +1,7 @@
-import CollectionsSection from "@/features/collections/components/CollectionsSection";
+import { CollectionsSection } from "@/features/collections/components/CollectionsSection";
 import { ICollection } from "@/features/collections/types/collections.types";
 import { Welcome } from "@/shared/components";
-import ShopTitle from "@/shared/ui/titles/ShopTitle";
+import { ShopTitle } from "@/shared/ui/titles/ShopTitle";
 
 import type { Metadata } from "next";
 

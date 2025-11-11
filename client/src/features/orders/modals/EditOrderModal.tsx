@@ -7,18 +7,18 @@ import {
 } from "@/shared/api/nova-post.api";
 import { useEscapeKeyClose } from "@/shared/hooks";
 import { MonoButton } from "@/shared/ui/buttons";
-import InputField from "@/shared/ui/inputs/InputField";
-import {
-    ModalWrapper,
-    FormFillingWrapper,
-    FormButtonsWrapper,
-} from "@/shared/ui/wrappers";
-import { useState, useEffect } from "react";
-import { createPortal } from "react-dom";
-import { useForm, Controller } from "react-hook-form";
-import { useUpdateOrder } from "../hooks/useOrders";
-import { IOrder, OrderStatus, INovaPostDataObj } from "../types/orders.types";
 import { Label } from "@/shared/ui/components";
+import { InputField } from "@/shared/ui/inputs/InputField";
+import {
+    FormButtonsWrapper,
+    FormFillingWrapper,
+    ModalWrapper,
+} from "@/shared/ui/wrappers";
+import { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
+import { Controller, useForm } from "react-hook-form";
+import { useUpdateOrder } from "../hooks/useOrders";
+import { INovaPostDataObj, IOrder, OrderStatus } from "../types/orders.types";
 
 interface EditOrderModalProps {
     isOpen: boolean;
@@ -37,7 +37,7 @@ interface FormData {
     status: OrderStatus;
 }
 
-export default function EditOrderModal({
+export function EditOrderModal({
     isOpen,
     onClose,
     order,

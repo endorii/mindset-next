@@ -1,6 +1,6 @@
 import { ChangeEvent, InputHTMLAttributes } from "react";
 import { UseFormRegisterReturn } from "react-hook-form";
-import Label from "../components/Label";
+import { Label } from "../components";
 
 export interface InputFieldProps extends InputHTMLAttributes<HTMLInputElement> {
     label?: string;
@@ -11,7 +11,7 @@ export interface InputFieldProps extends InputHTMLAttributes<HTMLInputElement> {
     errorMessage?: string;
 }
 
-const InputField: React.FC<InputFieldProps> = ({
+export function InputField({
     label,
     value,
     onChangeValue,
@@ -25,7 +25,7 @@ const InputField: React.FC<InputFieldProps> = ({
     errorMessage,
     className,
     ...rest
-}) => {
+}: InputFieldProps) {
     const inputId = id || name;
     const inputClassName = `border ${
         errorMessage ? "border-red-500" : "border-white/10"
@@ -55,6 +55,4 @@ const InputField: React.FC<InputFieldProps> = ({
             )}
         </div>
     );
-};
-
-export default InputField;
+}

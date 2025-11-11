@@ -1,4 +1,4 @@
-export { default as AddProductModal } from "./AddProductModal";
-export { default as DeleteProductModal } from "./DeleteProductModal";
-export { default as EditProductModal } from "./EditProductModal";
-export { default as ProductInfoModal } from "./ProductInfoModal";
+export { AddProductModal } from "./AddProductModal";
+export { DeleteProductModal } from "./DeleteProductModal";
+export { EditProductModal } from "./EditProductModal";
+export { ProductInfoModal } from "./ProductInfoModal";

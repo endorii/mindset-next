@@ -8,7 +8,7 @@ interface IMonoButtonProps {
     className?: string;
 }
 
-function MonoButton({
+export function MonoButton({
     type = "button",
     onClick,
     disabled = false,
@@ -26,5 +26,3 @@ function MonoButton({
         </button>
     );
 }
-
-export default MonoButton;

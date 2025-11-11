@@ -1,2 +1,2 @@
-export { default as AddUserAddressModal } from "./modals/AddUserAddressModal";
-export { default as EditUserAddressModal } from "./modals/EditUserAddressModal";
+export { AddUserAddressModal } from "./modals/AddUserAddressModal";
+export { EditUserAddressModal } from "./modals/EditUserAddressModal";

@@ -1,8 +1,8 @@
 "use client";
 
 import { useEscapeKeyClose } from "@/shared/hooks";
-import { MonoButton, DeleteButton } from "@/shared/ui/buttons";
-import { ModalWrapper, FormButtonsWrapper } from "@/shared/ui/wrappers";
+import { DeleteButton, MonoButton } from "@/shared/ui/buttons";
+import { FormButtonsWrapper, ModalWrapper } from "@/shared/ui/wrappers";
 import { createPortal } from "react-dom";
 import { useDeleteColor } from "../hooks/useColors";
 import { IColor } from "../types/product-color.types";
@@ -13,7 +13,7 @@ interface DeleteColorModalProps {
     color: IColor;
 }
 
-export default function DeleteColorModal({
+export function DeleteColorModal({
     isOpen,
     onClose,
     color,

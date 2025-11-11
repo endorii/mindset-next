@@ -4,7 +4,7 @@ interface IDeleteButtonWithIconProps {
     className?: string;
 }
 
-function DeleteButtonWithIcon({
+export function DeleteButtonWithIcon({
     onClick,
     children,
     className,
@@ -18,5 +18,3 @@ function DeleteButtonWithIcon({
         </button>
     );
 }
-
-export default DeleteButtonWithIcon;

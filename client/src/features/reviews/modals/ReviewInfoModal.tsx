@@ -3,16 +3,16 @@
 import { useEscapeKeyClose } from "@/shared/hooks";
 import { MonoButton } from "@/shared/ui/buttons";
 import { InfoModalBanner } from "@/shared/ui/components";
-import InfoField from "@/shared/ui/inputs/InfoField";
+import { InfoField } from "@/shared/ui/inputs/InfoField";
 import {
-    ModalWrapper,
-    FormFillingWrapper,
     FormButtonsWrapper,
+    FormFillingWrapper,
+    ModalWrapper,
 } from "@/shared/ui/wrappers";
+import { formatDate } from "@/shared/utils/formatDate";
 import Link from "next/link";
 import { createPortal } from "react-dom";
 import { IReview } from "../types/reviews.types";
-import { formatDate } from "@/shared/utils/formatDate";
 
 export interface ReviewInfoModalProps {
     isOpen: boolean;
@@ -20,7 +20,7 @@ export interface ReviewInfoModalProps {
     review: IReview;
 }
 
-export default function ReviewInfoModal({
+export function ReviewInfoModal({
     isOpen,
     onClose,
     review,

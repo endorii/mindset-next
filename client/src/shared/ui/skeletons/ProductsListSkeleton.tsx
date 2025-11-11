@@ -50,7 +50,7 @@ export function SkeletonProductCard() {
     );
 }
 
-export default function ProductsListSkeleton() {
+export function ProductsListSkeleton() {
     return (
         <ul className="grid gap-[15px] w-full px-[30px] grid-cols-4 2xl:grid-cols-3 md:grid-cols-2 sm:grid-cols-1">
             {Array.from({ length: 8 }).map((_, i) => (

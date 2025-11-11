@@ -3,7 +3,7 @@ import {
     IProductToSize,
     IProductToType,
 } from "@/features/products/types/products.types";
-import Label from "./Label";
+import { Label } from "./Label";
 
 interface AtributesInfoFieldProps {
     label: string;
@@ -19,7 +19,10 @@ function getAtributeName(
     return "Невідомо";
 }
 
-function AtributesInfoField({ label, atributeList }: AtributesInfoFieldProps) {
+export function AtributesInfoField({
+    label,
+    atributeList,
+}: AtributesInfoFieldProps) {
     return (
         <div className="flex flex-col gap-[7px]">
             <Label>{label}</Label>
@@ -38,5 +41,3 @@ function AtributesInfoField({ label, atributeList }: AtributesInfoFieldProps) {
         </div>
     );
 }
-
-export default AtributesInfoField;

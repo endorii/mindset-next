@@ -2,7 +2,7 @@ interface BurgerMenuIconProps {
     className: string;
 }
 
-function BurgerMenuIcon({ className }: BurgerMenuIconProps) {
+export function BurgerMenuIcon({ className }: BurgerMenuIconProps) {
     return (
         <svg className={className} viewBox="0 0 24 24">
             <path d="M4 18L20 18" />
@@ -11,5 +11,3 @@ function BurgerMenuIcon({ className }: BurgerMenuIconProps) {
         </svg>
     );
 }
-
-export default BurgerMenuIcon;

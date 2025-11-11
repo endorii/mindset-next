@@ -1,17 +1,17 @@
 "use client";
 
 import { ErrorWithMessage } from "@/shared/ui/components";
-import React, { Suspense } from "react";
-import { ErrorBoundary } from "react-error-boundary";
-import AdminHomeContent from "./AdminHomeContent";
 import {
-    LineChartSkeleton,
     FastStatSkeleton,
+    LineChartSkeleton,
     RecentActionsSkeleton,
     TodoSkeleton,
 } from "@/shared/ui/skeletons";
+import { Suspense } from "react";
+import { ErrorBoundary } from "react-error-boundary";
+import { AdminHomeContent } from "./AdminHomeContent";
 
-function AdminHomeWrapper() {
+export function AdminHomeWrapper() {
     return (
         <ErrorBoundary
             fallbackRender={({ error }) => (
@@ -35,5 +35,3 @@ function AdminHomeWrapper() {
         </ErrorBoundary>
     );
 }
-
-export default AdminHomeWrapper;

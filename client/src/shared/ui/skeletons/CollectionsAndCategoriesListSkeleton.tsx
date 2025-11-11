@@ -1,4 +1,4 @@
-function CollectionsAndCategoriesListSkeleton() {
+export function CollectionsAndCategoriesListSkeleton() {
     return (
         <div className="flex w-full">
             <div className="flex flex-col gap-[25px] w-full animate-pulse">
@@ -15,5 +15,3 @@ function CollectionsAndCategoriesListSkeleton() {
         </div>
     );
 }
-
-export default CollectionsAndCategoriesListSkeleton;

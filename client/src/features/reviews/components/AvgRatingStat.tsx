@@ -5,7 +5,7 @@ interface AvgRatingStatProps {
     reviews: IReview[];
 }
 
-function AvgRatingStat({ reviews }: AvgRatingStatProps) {
+export function AvgRatingStat({ reviews }: AvgRatingStatProps) {
     const ratingCounts = useMemo(() => {
         const counts: { [key: number]: number } = {
             5: 0,
@@ -75,5 +75,3 @@ function AvgRatingStat({ reviews }: AvgRatingStatProps) {
         </div>
     );
 }
-
-export default AvgRatingStat;

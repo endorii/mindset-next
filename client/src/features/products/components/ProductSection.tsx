@@ -1,8 +1,8 @@
 import { ErrorWithMessage } from "@/shared/ui/components";
 import { IProduct } from "../types/products.types";
-import ProductContent from "./ProductContent";
+import { ProductContent } from "./ProductContent";
 
-export default function ProductSection({
+export function ProductSection({
     collectionPath,
     categoryPath,
     productPath,

@@ -1,7 +1,7 @@
 import { IRecentActions } from "@/features/admin/recent-actions/types/recent-actions.types";
 import { formatDate } from "../utils/formatDate";
 
-function AdminRecentActions({
+export function AdminRecentActions({
     actions,
 }: {
     actions: IRecentActions[] | undefined;
@@ -52,5 +52,3 @@ function AdminRecentActions({
         </div>
     );
 }
-
-export default AdminRecentActions;

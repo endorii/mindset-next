@@ -1,30 +1,30 @@
-import { useState, useMemo } from "react";
+import { IUser } from "@/features/shop/user-info/types/user.types";
+import { ChooseButton } from "@/shared/ui/buttons";
 import {
-    ResponsiveContainer,
-    LineChart,
-    CartesianGrid,
-    XAxis,
-    YAxis,
-    Tooltip,
-    Legend,
-    Line,
-} from "recharts";
-import {
+    endOfDay,
+    endOfMonth,
+    endOfYear,
+    format,
+    getMonth,
+    isWithinInterval,
     parseISO,
     startOfDay,
-    endOfDay,
-    isWithinInterval,
-    subDays,
-    format,
     startOfMonth,
-    endOfMonth,
     startOfYear,
-    endOfYear,
-    getMonth,
+    subDays,
 } from "date-fns";
 import { uk } from "date-fns/locale";
-import ChooseButton from "@/shared/ui/buttons/ChooseButton";
-import { IUser } from "@/features/shop/user-info/types/user.types";
+import { useMemo, useState } from "react";
+import {
+    CartesianGrid,
+    Legend,
+    Line,
+    LineChart,
+    ResponsiveContainer,
+    Tooltip,
+    XAxis,
+    YAxis,
+} from "recharts";
 
 type Period = "day" | "week" | "month" | "year";
 
@@ -160,7 +160,11 @@ function generateUsersChartData(users: IUser[], period: Period): ChartPoint[] {
     return [];
 }
 
-function UsersRegistrationChart({ users }: { users: IUser[] | undefined }) {
+export function UsersRegistrationsChart({
+    users,
+}: {
+    users: IUser[] | undefined;
+}) {
     const [period, setPeriod] = useState<Period>("day");
 
     if (!users || users.length === 0) {
@@ -232,5 +236,3 @@ function UsersRegistrationChart({ users }: { users: IUser[] | undefined }) {
         </div>
     );
 }
-
-export default UsersRegistrationChart;

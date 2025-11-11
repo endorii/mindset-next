@@ -1,4 +1,4 @@
-function Welcome() {
+export function Welcome() {
     const text = "mindset.";
 
     return (
@@ -17,5 +17,3 @@ function Welcome() {
         </div>
     );
 }
-
-export default Welcome;

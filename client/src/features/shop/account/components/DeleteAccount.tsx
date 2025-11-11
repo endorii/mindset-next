@@ -9,7 +9,7 @@ interface DeleteAccountProps {
     openModal: (type: AttributeModalType) => void;
 }
 
-function DeleteAccount({
+export function DeleteAccount({
     isUserError,
     isUserPending,
     currentUser,
@@ -28,5 +28,3 @@ function DeleteAccount({
         </div>
     );
 }
-
-export default DeleteAccount;

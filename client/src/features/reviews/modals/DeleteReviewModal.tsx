@@ -1,8 +1,8 @@
 "use client";
 
 import { useEscapeKeyClose } from "@/shared/hooks";
-import { MonoButton, DeleteButton } from "@/shared/ui/buttons";
-import { ModalWrapper, FormButtonsWrapper } from "@/shared/ui/wrappers";
+import { DeleteButton, MonoButton } from "@/shared/ui/buttons";
+import { FormButtonsWrapper, ModalWrapper } from "@/shared/ui/wrappers";
 import { createPortal } from "react-dom";
 import { useDeleteReview } from "../hooks/useReviews";
 import { IReview } from "../types/reviews.types";
@@ -13,7 +13,7 @@ interface DeleteReviewModalProps {
     review: IReview;
 }
 
-export default function DeleteReviewModal({
+export function DeleteReviewModal({
     isOpen,
     onClose,
     review,

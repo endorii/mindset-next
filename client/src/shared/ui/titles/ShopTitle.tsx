@@ -3,7 +3,7 @@ interface ShopTitleProps {
     subtitle: string;
 }
 
-function ShopTitle({ title, subtitle }: ShopTitleProps) {
+export function ShopTitle({ title, subtitle }: ShopTitleProps) {
     return (
         <div className="text-white relative px-[30px] sm:px-[10px]">
             <div className="text-8xl lg:text-7xl md:text-6xl sm:text-5xl font-extrabold">
@@ -15,5 +15,3 @@ function ShopTitle({ title, subtitle }: ShopTitleProps) {
         </div>
     );
 }
-
-export default ShopTitle;

@@ -2,16 +2,16 @@
 
 import { ErrorWithMessage } from "@/shared/ui/components";
 import {
-    TitleWithButtonSkeleton,
-    FilterSectionSkeleton,
     AdminProductsSkeleton,
     ButtonSkeleton,
+    FilterSectionSkeleton,
+    TitleWithButtonSkeleton,
 } from "@/shared/ui/skeletons";
 import { Suspense } from "react";
 import { ErrorBoundary } from "react-error-boundary";
-import AdminCollectionsContent from "./AdminCollectionsContent";
+import { AdminCollectionsContent } from "./AdminCollectionsContent";
 
-function AdminCollectionsWrapper() {
+export function AdminCollectionsWrapper() {
     return (
         <ErrorBoundary
             fallbackRender={() => (
@@ -33,5 +33,3 @@ function AdminCollectionsWrapper() {
         </ErrorBoundary>
     );
 }
-
-export default AdminCollectionsWrapper;

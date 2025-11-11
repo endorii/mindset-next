@@ -2,16 +2,16 @@
 
 import { useEscapeKeyClose } from "@/shared/hooks";
 import { MonoButton } from "@/shared/ui/buttons";
-import { TextareaInfoField, InfoModalBanner } from "@/shared/ui/components";
-import InfoField from "@/shared/ui/inputs/InfoField";
+import { InfoModalBanner, TextareaInfoField } from "@/shared/ui/components";
+import { InfoField } from "@/shared/ui/inputs/InfoField";
 import {
-    ModalWrapper,
-    FormFillingWrapper,
     FormButtonsWrapper,
+    FormFillingWrapper,
+    ModalWrapper,
 } from "@/shared/ui/wrappers";
+import { formatDate } from "@/shared/utils/formatDate";
 import { createPortal } from "react-dom";
 import { ICollection } from "../types/collections.types";
-import { formatDate } from "@/shared/utils/formatDate";
 
 export interface CollectionInfoModalProps {
     isOpen: boolean;
@@ -19,7 +19,7 @@ export interface CollectionInfoModalProps {
     collection: ICollection;
 }
 
-export default function CollectionInfoModal({
+export function CollectionInfoModal({
     isOpen,
     onClose,
     collection,

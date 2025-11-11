@@ -1,4 +1,4 @@
-function ColorsSkeleton() {
+export function ColorsSkeleton() {
     return (
         <div className="rounded-xl bg-white/5 shadow-lg border border-white/5 p-[20px] sm:px-[10px] pt-0 animate-pulse">
             <div
@@ -37,5 +37,3 @@ function ColorsSkeleton() {
         </div>
     );
 }
-
-export default ColorsSkeleton;

@@ -1,4 +1,4 @@
-import Label from "./Label";
+import { Label } from "./Label";
 
 interface RenderAttributeFieldProps {
     label: string;
@@ -8,7 +8,7 @@ interface RenderAttributeFieldProps {
     errorMessage?: string;
 }
 
-function RenderAttributeField({
+export function RenderAttributeField({
     label,
     allItems,
     selected,
@@ -58,5 +58,3 @@ function RenderAttributeField({
         </div>
     );
 }
-
-export default RenderAttributeField;

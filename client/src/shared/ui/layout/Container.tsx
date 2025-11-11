@@ -1,13 +1,12 @@
 "use client";
 
-import { ReactNode } from "react";
 import { usePathname } from "next/navigation";
 
 interface ContainerProps {
-    children: ReactNode;
+    children: React.ReactNode;
 }
 
-const Container = ({ children }: ContainerProps) => {
+export function Container({ children }: ContainerProps) {
     const pathname = usePathname();
 
     return (
@@ -15,6 +14,4 @@ const Container = ({ children }: ContainerProps) => {
             {children}
         </div>
     );
-};
-
-export default Container;
+}

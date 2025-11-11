@@ -1,11 +1,11 @@
-import Label from "./Label";
+import { Label } from "./Label";
 
 interface TextareaInfoFieldProps {
     label: string;
     value: string;
 }
 
-function TextareaInfoField({ label, value }: TextareaInfoFieldProps) {
+export function TextareaInfoField({ label, value }: TextareaInfoFieldProps) {
     return (
         <div className="flex flex-col gap-[7px]">
             <Label>{label}</Label>
@@ -15,5 +15,3 @@ function TextareaInfoField({ label, value }: TextareaInfoFieldProps) {
         </div>
     );
 }
-
-export default TextareaInfoField;

@@ -1,5 +1,5 @@
 import { MonoButton } from "@/shared/ui/buttons";
-import InputField from "@/shared/ui/inputs/InputField";
+import { InputField } from "@/shared/ui/inputs/InputField";
 import { LoginComponentsWrapper } from "@/shared/ui/wrappers";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -8,7 +8,7 @@ import { CreateUserDto } from "../types/auth.types";
 
 type RegisterFormInputs = CreateUserDto;
 
-function RegistrationForm() {
+export function RegistrationForm() {
     const [registerMessage, setRegisterMessage] = useState<string | null>(null);
     const [registerIsSuccess, setRegisterIsSuccess] = useState(false);
 
@@ -184,5 +184,3 @@ function RegistrationForm() {
         </LoginComponentsWrapper>
     );
 }
-
-export default RegistrationForm;

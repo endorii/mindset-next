@@ -4,7 +4,7 @@ import { useCurrentUser } from "@/features/shop/user-info/hooks/useUsers";
 import { AccountIcon, SearchIcon } from "@/shared/icons";
 import Link from "next/link";
 
-function AdminHeader() {
+export function AdminHeader() {
     const { data: user, isPending: isUserPending } = useCurrentUser();
 
     return (
@@ -42,5 +42,3 @@ function AdminHeader() {
         </header>
     );
 }
-
-export default AdminHeader;

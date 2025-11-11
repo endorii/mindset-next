@@ -1,19 +1,19 @@
 "use client";
 
 import { ChooseButton } from "@/shared/ui/buttons";
+import { ErrorWithMessage } from "@/shared/ui/components";
+import {
+    ColorsSkeleton,
+    SizesAndTypesSkeleton,
+    TitleWithButtonSkeleton,
+} from "@/shared/ui/skeletons";
 import { Suspense, useState } from "react";
+import { ErrorBoundary } from "react-error-boundary";
 import { ColorSection } from "../product-colors/components/ColorSection";
 import { SizeSection } from "../product-sizes/components/SizeSection";
 import { TypeSection } from "../product-types/components/TypeSection";
-import {
-    TitleWithButtonSkeleton,
-    ColorsSkeleton,
-    SizesAndTypesSkeleton,
-} from "@/shared/ui/skeletons";
-import { ErrorWithMessage } from "@/shared/ui/components";
-import { ErrorBoundary } from "react-error-boundary";
 
-export default function AttributesContent() {
+export function AttributesContent() {
     const ATTRIBUTES = ["кольори", "типи", "розміри"];
     const [selectedAttribute, setSelectedAttribute] =
         useState<string>("кольори");

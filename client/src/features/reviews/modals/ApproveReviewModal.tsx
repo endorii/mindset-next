@@ -2,7 +2,7 @@
 
 import { useEscapeKeyClose } from "@/shared/hooks";
 import { MonoButton } from "@/shared/ui/buttons";
-import { ModalWrapper, FormButtonsWrapper } from "@/shared/ui/wrappers";
+import { FormButtonsWrapper, ModalWrapper } from "@/shared/ui/wrappers";
 import { createPortal } from "react-dom";
 import { useApproveReview } from "../hooks/useReviews";
 import { IReview } from "../types/reviews.types";
@@ -13,7 +13,7 @@ interface ApproveReviewModalProps {
     review: IReview;
 }
 
-export default function ApproveReviewModal({
+export function ApproveReviewModal({
     isOpen,
     onClose,
     review,

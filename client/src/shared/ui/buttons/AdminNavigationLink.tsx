@@ -7,7 +7,7 @@ interface IAdminNavigationLinkProps {
     onClick?: () => void;
 }
 
-function AdminNavigationLink({
+export function AdminNavigationLink({
     href,
     navOpen,
     children,
@@ -32,5 +32,3 @@ function AdminNavigationLink({
         </Link>
     );
 }
-
-export default AdminNavigationLink;

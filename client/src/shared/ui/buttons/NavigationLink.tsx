@@ -6,7 +6,11 @@ interface INavigationLinkProps {
     children: React.ReactNode;
 }
 
-function NavigationLink({ href, onClick, children }: INavigationLinkProps) {
+export function NavigationLink({
+    href,
+    onClick,
+    children,
+}: INavigationLinkProps) {
     return (
         <Link
             key={href}
@@ -20,5 +24,3 @@ function NavigationLink({ href, onClick, children }: INavigationLinkProps) {
         </Link>
     );
 }
-
-export default NavigationLink;

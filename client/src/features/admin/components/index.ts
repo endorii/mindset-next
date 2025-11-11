@@ -1,4 +1,4 @@
-export { default as HomeFastStat } from "./HomeFastStat";
-export { default as HomeFastNav } from "./HomeFastNav";
-export { default as HomeTodo } from "./HomeTodo";
-export { default as HomeWelcomeMessage } from "./HomeWelcomeMessage";
+export { HomeFastNav } from "./HomeFastNav";
+export { HomeFastStat } from "./HomeFastStat";
+export { HomeTodo } from "./HomeTodo";
+export { HomeWelcomeMessage } from "./HomeWelcomeMessage";

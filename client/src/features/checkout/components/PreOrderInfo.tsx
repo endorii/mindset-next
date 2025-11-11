@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-function PreOrderInfo() {
+export function PreOrderInfo() {
     return (
         <div className="mt-2 rounded-lg bg-white/5 border p-[15px] border-white/10 shadow-inner">
             <div className="text-white font-medium">
@@ -20,5 +20,3 @@ function PreOrderInfo() {
         </div>
     );
 }
-
-export default PreOrderInfo;

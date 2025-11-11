@@ -9,7 +9,7 @@ interface CartItemProps {
     handleRemove: () => void;
 }
 
-function CartItem({ item, handleRemove }: CartItemProps) {
+export function CartItem({ item, handleRemove }: CartItemProps) {
     return (
         <div className="flex border-b pb-[30px] rounded-xl bg-white/5 backdrop-blur-[100px] border border-white/5 p-[20px] ">
             <Link
@@ -80,5 +80,3 @@ function CartItem({ item, handleRemove }: CartItemProps) {
         </div>
     );
 }
-
-export default CartItem;

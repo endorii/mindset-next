@@ -1,11 +1,11 @@
 "use client";
 
 import { useEscapeKeyClose } from "@/shared/hooks";
-import { MonoButton, DeleteButton } from "@/shared/ui/buttons";
-import { ModalWrapper, FormButtonsWrapper } from "@/shared/ui/wrappers";
+import { DeleteButton, MonoButton } from "@/shared/ui/buttons";
+import { FormButtonsWrapper, ModalWrapper } from "@/shared/ui/wrappers";
 import { createPortal } from "react-dom";
-import { ITodoItem } from "../../types/admin.types";
 import { useDeleteTodoItem } from "../../hooks/useTodo";
+import { ITodoItem } from "../../types/admin.types";
 
 interface DeleteTodoItemModalProps {
     isOpen: boolean;
@@ -13,7 +13,7 @@ interface DeleteTodoItemModalProps {
     todoItem: ITodoItem;
 }
 
-export default function DeleteTodoItemModal({
+export function DeleteTodoItemModal({
     isOpen,
     onClose,
     todoItem,

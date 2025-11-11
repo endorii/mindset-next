@@ -1,4 +1,4 @@
-export { default as AddCategoryModal } from "./AddCategoryModal";
-export { default as EditCategoryModal } from "./EditCategoryModal";
-export { default as CategoryInfoModal } from "./CategoryInfoModal";
-export { default as DeleteCategoryModal } from "./DeleteCategoryModal";
+export { AddCategoryModal } from "./AddCategoryModal";
+export { CategoryInfoModal } from "./CategoryInfoModal";
+export { DeleteCategoryModal } from "./DeleteCategoryModal";
+export { EditCategoryModal } from "./EditCategoryModal";

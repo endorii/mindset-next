@@ -6,7 +6,7 @@ import {
 } from "@/shared/components";
 import { ICategory } from "../types/categories.types";
 
-export default function CategoriesSection({
+export function CategoriesSection({
     collectionPath,
     categories,
 }: {

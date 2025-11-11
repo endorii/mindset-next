@@ -2,13 +2,13 @@
 
 import { useEscapeKeyClose } from "@/shared/hooks";
 import { MonoButton } from "@/shared/ui/buttons";
-import InputField from "@/shared/ui/inputs/InputField";
+import { InputField } from "@/shared/ui/inputs/InputField";
 import {
-    ModalWrapper,
-    FormFillingWrapper,
     FormButtonsWrapper,
+    FormFillingWrapper,
+    ModalWrapper,
 } from "@/shared/ui/wrappers";
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { useForm } from "react-hook-form";
 import { useEditSize } from "../hooks/useSizes";
@@ -24,11 +24,7 @@ type FormValues = {
     name: string;
 };
 
-export default function EditSizeModal({
-    isOpen,
-    onClose,
-    size,
-}: EditSizeProps) {
+export function EditSizeModal({ isOpen, onClose, size }: EditSizeProps) {
     const editSizeMutation = useEditSize();
     const [modalMessage, setModalMessage] = useState("");
 
