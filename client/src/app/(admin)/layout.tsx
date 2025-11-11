@@ -43,7 +43,6 @@ export default function AdminLayout({
         }
     }, [user, accessToken, isChecking, router]);
 
-    // Показуємо loader під час перевірки
     if (isChecking || !user || user.role !== "ADMIN") {
         return (
             <div className="text-white flex flex-col gap-[15px] h-screen w-full justify-center items-center pb-[10%]">

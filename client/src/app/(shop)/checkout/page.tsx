@@ -7,8 +7,11 @@ import {
 import { PaymentMethodType } from "@/features/checkout/types/checkout.types";
 import { useCreateOrder } from "@/features/orders/hooks/useOrders";
 import { INovaPostDataObj, IOrder } from "@/features/orders/types/orders.types";
-import { useCartItemsFromUser } from "@/features/shop/cart/hooks/useCart";
-import { ICartItem } from "@/features/shop/cart/types/cart.types";
+import { useProductsByIds } from "@/features/products/hooks/useProducts";
+import {
+    useCartItemsFromUser,
+    useDeleteCartItemFromUser,
+} from "@/features/shop/cart/hooks/useCart";
 import { useCurrentUser } from "@/features/shop/user-info/hooks/useUsers";
 import {
     fetchAreas,
@@ -21,6 +24,7 @@ import { InputField } from "@/shared/ui/inputs/InputField";
 import { NovaPoshtaSelect } from "@/shared/ui/selectors/NovaPoshtaSelect";
 import { CheckoutSkeleton } from "@/shared/ui/skeletons";
 import { ShopTitle } from "@/shared/ui/titles/ShopTitle";
+import { useCartStore } from "@/store/useCartStore";
 import { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 
@@ -31,30 +35,32 @@ interface FormData {
     area: string;
     city: string;
     postDepartment: string;
-    PaymentMethod: PaymentMethodType;
+    paymentMethod: PaymentMethodType;
 }
 
 function Checkout() {
-    const { data: user, isPending: isUserPending } = useCurrentUser();
+    const { cartItems, removeFromCart } = useCartStore();
+
+    const deleteCartItemMutation = useDeleteCartItemFromUser();
+
+    const { data: user } = useCurrentUser();
+
     const {
-        data: userCart,
+        data: userCartItems,
         isPending: isUserCartPending,
         isError: isUserCartError,
     } = useCartItemsFromUser();
 
-    const [localCart, setLocalCart] = useState<ICartItem[]>([]);
-    const cartToShow = user ? userCart ?? [] : localCart;
+    const cartToShow = user ? userCartItems ?? [] : cartItems;
 
-    useEffect(() => {
-        if (!user && !isUserPending) {
-            // Завантажуємо локальну корзину з localStorage
-            const storedCart = localStorage.getItem("cart");
-            const parsedCart: ICartItem[] = storedCart
-                ? JSON.parse(storedCart)
-                : [];
-            setLocalCart(parsedCart);
-        }
-    }, [user, isUserPending]);
+    const { data: products, isPending: isProductsPending } = useProductsByIds(
+        cartToShow.map((item) => item.productId)
+    );
+
+    const mergedCart = cartToShow.map((item) => {
+        const product = products?.find((p) => p.id === item.productId);
+        return { ...item, product };
+    });
 
     const [areas, setAreas] = useState<INovaPostDataObj[]>([]);
     const [cities, setCities] = useState<INovaPostDataObj[]>([]);
@@ -68,8 +74,6 @@ function Checkout() {
     );
     const [selectedWarehouse, setSelectedWarehouse] =
         useState<INovaPostDataObj | null>(null);
-
-    const [modalMessage, setModalMessage] = useState("");
 
     const {
         register,
@@ -85,7 +89,7 @@ function Checkout() {
             area: "",
             city: "",
             postDepartment: "",
-            PaymentMethod: null,
+            paymentMethod: null,
         },
     });
 
@@ -98,8 +102,6 @@ function Checkout() {
                 phoneNumber: user.phone,
                 email: user.email,
             });
-
-            setModalMessage("");
         }
     }, [user]);
 
@@ -155,7 +157,7 @@ function Checkout() {
     }, [selectedCity]);
 
     const onSubmit = async (data: FormData) => {
-        if (!cartToShow) return;
+        if (!mergedCart) return;
         const userId = user?.id;
 
         const orderData: IOrder = {
@@ -167,10 +169,10 @@ function Checkout() {
             postDepartment: selectedWarehouse?.Description || "",
             additionalInfo: "",
             status: "pending",
-            paymentMethod: data.PaymentMethod,
+            paymentMethod: data.paymentMethod,
             userId,
             total:
-                cartToShow.reduce(
+                mergedCart.reduce(
                     (acc, item) =>
                         acc +
                         (item.product?.price
@@ -179,7 +181,7 @@ function Checkout() {
                     0
                 ) || 0,
             items:
-                cartToShow.map((item) => ({
+                mergedCart.map((item) => ({
                     productId: item.productId,
                     price: Number(item.product?.price),
                     quantity: Number(item.quantity),
@@ -201,7 +203,7 @@ function Checkout() {
         }
     };
 
-    if (isUserPending || isUserCartPending) return <CheckoutSkeleton />;
+    if (isUserCartPending || isProductsPending) return <CheckoutSkeleton />;
 
     if (isUserCartError)
         return (
@@ -352,13 +354,13 @@ function Checkout() {
                     </div>
 
                     <div className="flex flex-col gap-[15px] w-1/2 rounded-xl bg-white/5 backdrop-blur-[100px] border border-white/5 p-[30px] text-white">
-                        <CheckoutResultTable cart={cartToShow} />
+                        <CheckoutResultTable cart={mergedCart} />
                         <div>
                             <div className="text-sm font-semibold mb-2">
                                 Вибір оплати:
                             </div>
                             <Controller
-                                name="PaymentMethod"
+                                name="paymentMethod"
                                 control={control}
                                 rules={{ required: "Оберіть метод оплати" }}
                                 render={({ field }) => (
@@ -393,9 +395,9 @@ function Checkout() {
                                     </div>
                                 )}
                             />
-                            {errors.PaymentMethod && (
+                            {errors.paymentMethod && (
                                 <span className="text-red-500 text-sm mt-1">
-                                    {errors.PaymentMethod.message}
+                                    {errors.paymentMethod.message}
                                 </span>
                             )}
                         </div>

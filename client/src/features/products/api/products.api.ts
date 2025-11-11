@@ -37,7 +37,6 @@ export async function fetchProductsByIds(ids: string[]): Promise<IProduct[]> {
         return data;
     } catch (error: unknown) {
         handleAxiosError(error);
-        // return [];
     }
 }
 

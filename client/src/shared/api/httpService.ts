@@ -1,5 +1,4 @@
 import { refreshToken } from "@/features/auth/api/auth.api";
-// 🛑 ЗМІНА: Імпортуємо тільки useUserStore (якщо це функція create)
 import { useUserStore } from "@/store/userStore";
 import axios from "axios";
 
@@ -77,14 +76,7 @@ httpServiceAuth.interceptors.response.use(
             } catch (err) {
                 isRefreshing = false;
                 refreshPromise = null;
-                clearUser(); // Очищуємо стан
-
-                // Опціонально: тут може знадобитися редірект.
-                // Оскільки window недоступний на сервері,
-                // а також ми поза React-компонентом, ви можете додати логіку
-                // редіректу на логін через окремий клієнтський компонент
-                // або бібліотеку для сповіщень.
-
+                clearUser();
                 return Promise.reject(err);
             }
         }

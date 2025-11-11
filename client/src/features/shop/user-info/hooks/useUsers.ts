@@ -18,7 +18,7 @@ export function useCurrentUser() {
         },
         enabled: !!accessToken,
         retry: false,
-        initialData: null, // ← одразу повертає null замість undefined
+        initialData: null,
         staleTime: 5 * 60 * 1000,
     });
 }

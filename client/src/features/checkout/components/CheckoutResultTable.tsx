@@ -1,10 +1,6 @@
 import { ICartItem } from "@/features/shop/cart/types/cart.types";
 
-interface CheckoutResultTable {
-    cart: ICartItem[];
-}
-
-export function CheckoutResultTable({ cart }: CheckoutResultTable) {
+export function CheckoutResultTable({ cart }: { cart: ICartItem[] }) {
     return (
         <>
             <div className="text-3xl font-thin">Інформація про замволення</div>

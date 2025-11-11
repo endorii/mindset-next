@@ -35,7 +35,6 @@ export const useCartStore = create<CartStore>()(
             (set, get) => ({
                 cartItems: [],
 
-                // ✅ ADD TO CART
                 addToCart: (productId, size, color, type, quantity = 1) => {
                     set((state) => {
                         const existingItem = state.cartItems.find(
@@ -74,7 +73,6 @@ export const useCartStore = create<CartStore>()(
                     });
                 },
 
-                // ✅ REMOVE
                 removeFromCart: (productId) => {
                     set((state) => ({
                         cartItems: state.cartItems.filter(
@@ -83,7 +81,6 @@ export const useCartStore = create<CartStore>()(
                     }));
                 },
 
-                // ✅ UPDATE QUANTITY
                 updateQuantity: (productId, size, color, type, quantity) => {
                     if (quantity <= 0) {
                         get().removeFromCart(productId);
@@ -102,12 +99,10 @@ export const useCartStore = create<CartStore>()(
                     }));
                 },
 
-                // ✅ CLEAR
                 clearCart: () => {
                     set({ cartItems: [] });
                 },
 
-                // ✅ GET COUNT
                 getCartItemsCount: () => {
                     return get().cartItems.reduce((count, item) => count + item.quantity, 0);
                 },

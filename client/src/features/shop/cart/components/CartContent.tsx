@@ -51,19 +51,16 @@ export function CartContent() {
         }
     };
 
-    // ===== Loading state =====
     if (isUserCartPending || isProductsPending) {
         return <UserCartSkeleton />;
     }
 
-    // ===== Error state =====
     if (user && isUserCartError) {
         return (
             <ErrorWithMessage message="Виникла помилка під час завантаження кошику" />
         );
     }
 
-    // ===== Empty state =====
     if (!mergedCart.length) {
         return (
             <div className="flex flex-col justify-center text-center items-center p-[30px] sm:p-[10px] sm:pb-[150px]">

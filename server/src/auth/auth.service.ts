@@ -232,9 +232,7 @@ export class AuthService {
         return { id: user.id };
     }
 
-    // =======================
     // Local / Jwt validation
-    // =======================
     async validateLocalUser(email: string, password: string) {
         const user = await this.shopUserService.findByEmail(email);
         if (!user.isVerified)

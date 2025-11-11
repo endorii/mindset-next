@@ -17,7 +17,7 @@ export class ShopProductsController {
     getProductsByIds(@Query("ids") ids: string) {
         if (!ids) return [];
 
-        const idArray = ids.split(","); // ["p1", "p2", "p3"]
+        const idArray = ids.split(",");
         return this.productsService.findByIds(idArray);
     }
 

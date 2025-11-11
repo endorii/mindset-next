@@ -1,7 +1,7 @@
 import { HttpException, Injectable, InternalServerErrorException } from "@nestjs/common";
-import { CreateOrderDto } from "./dto/create-order.dto";
 import { PrismaService } from "src/prisma/prisma.service";
 import { ShopCartService } from "../cart/shop-cart.service";
+import { CreateOrderDto } from "./dto/create-order.dto";
 
 @Injectable()
 export class ShopOrdersService {
@@ -12,7 +12,6 @@ export class ShopOrdersService {
 
     async createOrder(createOrderDto: CreateOrderDto) {
         try {
-            // Формуємо дані для створення замовлення
             const orderData = {
                 fullName: createOrderDto.fullName,
                 phoneNumber: createOrderDto.phoneNumber,
