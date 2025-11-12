@@ -1,7 +1,6 @@
 "use client";
 
-import { deleteImage } from "@/shared/api/images.api";
-import { useEscapeKeyClose, useUploadImage } from "@/shared/hooks";
+import { useEscapeKeyClose, useUploadBanner } from "@/shared/hooks";
 import { TStatus } from "@/shared/types/types";
 import { MonoButton } from "@/shared/ui/buttons";
 import { InputField } from "@/shared/ui/inputs/InputField";
@@ -14,45 +13,37 @@ import {
 } from "@/shared/ui/wrappers";
 import { statuses } from "@/shared/utils/helpers";
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { useForm } from "react-hook-form";
 import { Label } from "recharts";
 import { useEditCollection } from "../hooks/useCollections";
 import { ICollection } from "../types/collections.types";
 
-interface EditCollectionModalProps {
+interface EditCategoryModalProps {
     isOpen: boolean;
     onClose: () => void;
     collection: ICollection;
 }
 
-type FormValues = {
+interface CategoryFormData {
     name: string;
     path: string;
     description: string;
     status: TStatus;
-};
+}
 
 export function EditCollectionModal({
     isOpen,
     onClose,
     collection,
-}: EditCollectionModalProps) {
-    const [banner, setBanner] = useState<string | File>("");
-    const [preview, setPreview] = useState<string>("");
-
-    const [modalMessage, setModalMessage] = useState("");
-
-    const uploadImageMutation = useUploadImage();
-    const editCollectionMutation = useEditCollection();
-
+}: EditCategoryModalProps) {
     const {
         register,
         handleSubmit,
         reset,
         formState: { errors },
-    } = useForm<FormValues>({
+    } = useForm<CategoryFormData>({
         defaultValues: {
             name: "",
             path: "",
@@ -61,53 +52,56 @@ export function EditCollectionModal({
         },
     });
 
+    const [banner, setBanner] = useState<string | File>("");
+    const [preview, setPreview] = useState<string>("");
+    const [modalMessage, setModalMessage] = useState("");
+
+    const uploadBannerMutation = useUploadBanner();
+    const editCollectionMutation = useEditCollection();
+
     useEffect(() => {
         if (collection) {
             reset({
-                name: collection.name || "",
-                path: collection.path || "",
-                description: collection.description || "",
-                status: collection.status || "Не активно",
+                name: collection.name,
+                path: collection.path,
+                description: collection.description,
+                status: collection.status,
             });
-            setModalMessage("");
             setBanner(collection.banner || "");
+            setModalMessage("");
             setPreview("");
         }
     }, [collection, reset]);
 
-    const onSubmit = async (data: FormValues) => {
-        if (!collection || !collection.id) return;
+    const onSubmit = async (data: CategoryFormData) => {
         try {
-            let bannerPath = typeof banner === "string" ? banner : "";
+            if (collection.id) {
+                await editCollectionMutation.mutateAsync({
+                    collectionId: collection.id,
+                    data: {
+                        name: data.name,
+                        path: data.path,
+                        status: data.status,
+                    },
+                });
 
-            if (banner instanceof File) {
-                if (
-                    typeof collection.banner === "string" &&
-                    collection.banner.startsWith("/images/")
-                ) {
-                    await deleteImage(collection.banner);
+                if (banner instanceof File) {
+                    await uploadBannerMutation.mutateAsync({
+                        type: "collection",
+                        entityId: collection.id,
+                        banner,
+                        includedIn: null,
+                    });
                 }
-
-                const uploadResult = await uploadImageMutation.mutateAsync(
-                    banner
-                );
-                bannerPath = uploadResult.path;
             }
 
-            await editCollectionMutation.mutateAsync({
-                collectionId: collection.id,
-                data: {
-                    ...data,
-                    banner: bannerPath,
-                },
-            });
-            handleClose();
-        } catch (err: any) {
-            setModalMessage(err?.message || "Помилка при редагуванні колекції");
+            onClose();
+        } catch (error: any) {
+            setModalMessage(error?.message || "Помилка при редагуванні");
         }
     };
 
-    const handleBannerChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleBannerChange = (e: ChangeEvent<HTMLInputElement>) => {
         const selectedFile = e.target.files?.[0];
         if (selectedFile) {
             setBanner(selectedFile);
@@ -115,26 +109,16 @@ export function EditCollectionModal({
         }
     };
 
-    const handleClose = () => {
-        if (preview) URL.revokeObjectURL(preview);
-        reset();
-        setModalMessage("");
-        setBanner("");
-        setPreview("");
-        onClose();
-    };
-
     useEscapeKeyClose({ isOpen, onClose });
 
     if (!isOpen || !collection) return null;
 
-    const bannerSrc =
-        typeof banner === "string" && banner.startsWith("/images/")
-            ? `http://localhost:5000${banner}`
-            : "";
+    const bannerSrc = !preview && typeof banner === "string" ? banner : "";
+
+    const displaySrc = preview || bannerSrc;
 
     const modalContent = (
-        <ModalWrapper onClose={onClose} modalTitle={`Редагування колекції`}>
+        <ModalWrapper onClose={onClose} modalTitle={"Редагування колекції"}>
             <form
                 className="flex flex-col gap-[15px]"
                 onSubmit={handleSubmit(onSubmit)}
@@ -164,10 +148,14 @@ export function EditCollectionModal({
                                     value: 3,
                                     message: "Мінімум 3 символи",
                                 },
+                                pattern: {
+                                    value: /^[a-z0-9-]+$/,
+                                    message:
+                                        "Допустимі лише малі латинські літери, цифри та дефіс",
+                                },
                             })}
                             errorMessage={errors.path?.message}
                         />
-
                         <BasicSelector<string>
                             label={"Статус*"}
                             register={{
@@ -182,6 +170,7 @@ export function EditCollectionModal({
                             errorMessage={errors.status?.message}
                         />
                     </div>
+
                     <BasicTextarea
                         label="Опис*"
                         register={{
@@ -191,24 +180,17 @@ export function EditCollectionModal({
                         }}
                         errorMessage={errors.description?.message}
                     />
+
                     <div className="flex flex-col gap-[7px] w-full">
                         <Label>Банер</Label>
                         <label
                             htmlFor="banner"
-                            className="min-h-[100px] max-w-[300px] border border-dashed border-white/10 mt-2 flex items-center justify-center cursor-pointer hover:bg-white/3 rounded-md overflow-hidden"
+                            className="min-h-[100px] max-w-[300px] border border-dashed border-white/10 mt-2 flex items-center justify-center cursor-pointer bg-black/20 hover:bg-white/10 rounded-md overflow-hidden"
                         >
-                            {preview ? (
+                            {displaySrc ? (
                                 <Image
-                                    src={preview}
+                                    src={displaySrc}
                                     alt="preview"
-                                    width={250}
-                                    height={250}
-                                    className="object-cover"
-                                />
-                            ) : bannerSrc ? (
-                                <Image
-                                    src={bannerSrc}
-                                    alt="banner"
                                     width={250}
                                     height={250}
                                     className="object-cover"
@@ -228,21 +210,23 @@ export function EditCollectionModal({
                         />
                     </div>
                 </FormFillingWrapper>
+
                 {modalMessage && (
                     <p className="text-red-500 text-sm">{modalMessage}</p>
                 )}
+
                 <FormButtonsWrapper>
-                    <MonoButton type="button" onClick={handleClose}>
+                    <MonoButton onClick={onClose} type="button">
                         Скасувати
                     </MonoButton>
                     <MonoButton
                         type="submit"
                         disabled={
-                            uploadImageMutation.isPending ||
+                            uploadBannerMutation.isPending ||
                             editCollectionMutation.isPending
                         }
                     >
-                        {uploadImageMutation.isPending ||
+                        {uploadBannerMutation.isPending ||
                         editCollectionMutation.isPending
                             ? "Завантаження..."
                             : "Підтвердити"}

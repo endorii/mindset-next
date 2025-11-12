@@ -34,7 +34,7 @@ export function FavoriteCard({ onRemove, product }: FavoriteCardProps) {
 
             <div className="flex flex-col gap-[15px]  ">
                 <Image
-                    src={`http://localhost:5000/${product.banner}`}
+                    src={product.banner}
                     alt={product.name}
                     width={450}
                     height={450}

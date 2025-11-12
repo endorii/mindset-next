@@ -1,4 +1,6 @@
-import { useQuery, useMutation, useQueryClient, useSuspenseQuery } from "@tanstack/react-query";
+import { TStatus } from "@/shared/types/types";
+import { useMutation, useQueryClient, useSuspenseQuery } from "@tanstack/react-query";
+import { toast } from "sonner";
 import {
     addCategoryToCollection,
     deleteCategory,
@@ -7,8 +9,6 @@ import {
     fetchGetCategoriesByCollectionId,
 } from "../api/categories.api";
 import { ICategory } from "../types/categories.types";
-import { TStatus } from "@/shared/types/types";
-import { toast } from "sonner";
 
 export function useGetCategoryByPath(collectionPath: string, categoryPath: string) {
     return useSuspenseQuery({
@@ -28,7 +28,8 @@ export function useCreateCategory() {
     const queryClient = useQueryClient();
 
     return useMutation({
-        mutationFn: (categoryData: ICategory) => addCategoryToCollection(categoryData),
+        mutationFn: (categoryData: Omit<ICategory, "banner">) =>
+            addCategoryToCollection(categoryData),
         onSuccess: (data) => {
             queryClient.invalidateQueries({
                 queryKey: ["categories"],
@@ -58,7 +59,6 @@ export function useEditCategory() {
                 name: string;
                 path: string;
                 status: TStatus;
-                banner: string;
             };
         }) => editCategory(categoryId, data),
         onSuccess(data) {

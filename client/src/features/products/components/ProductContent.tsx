@@ -120,7 +120,7 @@ export function ProductContent({
                         />
                     </button>
                     <img
-                        src={`http://localhost:5000/${product.banner}`}
+                        src={product.banner}
                         alt={product.name}
                         className="rounded-xl w-full h-[80vh] xl:max-h-[70vh] object-cover"
                     />
@@ -130,7 +130,7 @@ export function ProductContent({
                         {product.images.map((image, i) => (
                             <img
                                 key={i}
-                                src={`http://localhost:5000/${image}`}
+                                src={image}
                                 alt={product.name}
                                 className="rounded-xl"
                             />

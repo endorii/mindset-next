@@ -1,5 +1,3 @@
-"use client";
-
 import { ICategory } from "@/features/categories/types/categories.types";
 import { ICollection } from "@/features/collections/types/collections.types";
 import Image from "next/image";
@@ -66,7 +64,7 @@ export function CollectionsAndCategoriesList({
                             {item.name}
                         </div>
                         <Image
-                            src={`http://localhost:5000/${item.banner}`}
+                            src={item.banner}
                             alt={item.name}
                             width={2000}
                             height={700}

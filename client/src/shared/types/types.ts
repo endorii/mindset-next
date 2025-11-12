@@ -47,3 +47,6 @@ export type TAvailble = "Доступно" | "Не доступно";
 export interface IIconsProps {
     className?: string;
 }
+
+export type BannerEntity = "collection" | "category" | "product";
+export type ImagesEntity = "products" | "reviews";

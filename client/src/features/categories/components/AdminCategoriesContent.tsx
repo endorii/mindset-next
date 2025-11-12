@@ -117,7 +117,7 @@ export function AdminCategoriesContent({
                                 gap-[15px] items-center"
                                 >
                                     <img
-                                        src={`http://localhost:5000/${category.banner}`}
+                                        src={category.banner}
                                         className="max-h-[120px] w-full object-cover rounded"
                                         alt={`Банер категорії ${category.name}`}
                                     />

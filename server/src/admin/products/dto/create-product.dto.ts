@@ -1,11 +1,11 @@
 import {
-    IsString,
-    IsNotEmpty,
-    IsInt,
-    IsEnum,
     IsArray,
-    IsOptional,
     IsDefined,
+    IsEnum,
+    IsInt,
+    IsNotEmpty,
+    IsOptional,
+    IsString,
 } from "class-validator";
 
 export enum EStatus {
@@ -27,9 +27,9 @@ export class CreateProductDto {
     @IsNotEmpty({ message: "Шлях не може бути порожнім." })
     path: string;
 
-    @IsString({ message: "Банер повинен бути рядком." })
-    @IsNotEmpty({ message: "Банер не може бути порожнім." })
-    banner: string;
+    // @IsString({ message: "Банер повинен бути рядком." })
+    // @IsNotEmpty({ message: "Банер не може бути порожнім." })
+    // banner: string;
 
     @IsInt({ message: "Ціна повинна бути цілим числом." })
     @IsDefined({ message: "Ціна повинна бути визначена." })
@@ -63,9 +63,9 @@ export class CreateProductDto {
     @IsNotEmpty({ message: "ID категорії не може бути порожнім." })
     categoryId: string;
 
-    @IsArray({ message: "Зображення повинні бути масивом." })
-    @IsString({ each: true, message: "Кожен елемент у масиві зображень повинен бути рядком." })
-    images: string[];
+    // @IsArray({ message: "Зображення повинні бути масивом." })
+    // @IsString({ each: true, message: "Кожен елемент у масиві зображень повинен бути рядком." })
+    // images: string[];
 
     @IsOptional()
     @IsArray({ message: "Кольори повинні бути масивом ID." })

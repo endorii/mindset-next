@@ -1,6 +1,6 @@
 "use client";
 
-import { useEscapeKeyClose, useUploadImage } from "@/shared/hooks";
+import { useEscapeKeyClose, useUploadBanner } from "@/shared/hooks";
 import { TStatus } from "@/shared/types/types";
 import { MonoButton } from "@/shared/ui/buttons";
 import { UploadBannerWithPreview } from "@/shared/ui/components";
@@ -51,7 +51,7 @@ export function AddCollectionModal({
         },
     });
 
-    const uploadImageMutation = useUploadImage();
+    const uploadBannerMutation = useUploadBanner();
     const createCollectionMutation = useCreateCollection();
 
     const handleBannerChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -80,17 +80,25 @@ export function AddCollectionModal({
                 setBannerError(null);
             }
 
-            const uploadResult = await uploadImageMutation.mutateAsync(banner);
-            const imagePath = uploadResult.path;
-
-            await createCollectionMutation.mutateAsync({
+            const collection = await createCollectionMutation.mutateAsync({
                 name: data.name,
                 path: data.path,
                 description: data.description,
-                banner: imagePath,
                 views: 0,
                 status: data.status,
             });
+
+            if (!collection.data?.id) {
+                throw new Error("Не вдалося отримати ID колекції");
+            }
+
+            await uploadBannerMutation.mutateAsync({
+                type: "collection",
+                entityId: collection.data?.id,
+                banner,
+                includedIn: null,
+            });
+
             handleClose();
         } catch (err: any) {
             setModalMessage(err?.message || "Помилка при створенні колекції");
@@ -173,7 +181,7 @@ export function AddCollectionModal({
                         type="button"
                         onClick={handleClose}
                         disabled={
-                            uploadImageMutation.isPending ||
+                            uploadBannerMutation.isPending ||
                             createCollectionMutation.isPending
                         }
                     >
@@ -182,11 +190,11 @@ export function AddCollectionModal({
                     <MonoButton
                         type="submit"
                         disabled={
-                            uploadImageMutation.isPending ||
+                            uploadBannerMutation.isPending ||
                             createCollectionMutation.isPending
                         }
                     >
-                        {uploadImageMutation.isPending ||
+                        {uploadBannerMutation.isPending ||
                         createCollectionMutation.isPending
                             ? "Завантаження..."
                             : "Додати"}

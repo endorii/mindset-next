@@ -102,12 +102,12 @@ export function ColorSection() {
             {selected && (
                 <>
                     <EditColorModal
-                        isOpen
+                        isOpen={modalType === "edit"}
                         onClose={closeModal}
                         color={selected}
                     />
                     <DeleteColorModal
-                        isOpen
+                        isOpen={modalType === "delete"}
                         onClose={closeModal}
                         color={selected}
                     />

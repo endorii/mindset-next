@@ -22,8 +22,8 @@ export async function fetchGetCollectionByPath(collectionPath: string): Promise<
 }
 
 export async function createCollection(
-    collectionData: ICollection
-): Promise<ServerResponseWithMessage<ICollection>> {
+    collectionData: Omit<ICollection, "banner">
+): Promise<ServerResponseWithMessage<Omit<ICollection, "banner">>> {
     try {
         const { data } = await httpServiceAuth.post("/admin/collections", collectionData);
         return data;

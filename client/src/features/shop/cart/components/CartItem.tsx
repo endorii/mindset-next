@@ -20,7 +20,7 @@ export function CartItem({ item, handleRemove }: CartItemProps) {
                     Переглянути
                 </div>
                 <Image
-                    src={`http://localhost:5000/${item.product?.banner}`}
+                    src={item.product?.banner || ""}
                     alt={item.product?.name || ""}
                     width={300}
                     height={300}

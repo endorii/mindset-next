@@ -1,6 +1,6 @@
 "use client";
 
-import { deleteImage } from "@/shared/api/images.api";
+// import { deleteImage } from "@/shared/api/files.api";
 import { useEscapeKeyClose } from "@/shared/hooks";
 import { DeleteButton, MonoButton } from "@/shared/ui/buttons";
 import { FormButtonsWrapper, ModalWrapper } from "@/shared/ui/wrappers";
@@ -33,7 +33,7 @@ export function DeleteCategoryModal({
         }
 
         if (category.banner) {
-            await deleteImage(category.banner);
+            // await deleteImage(category.banner);
         }
 
         if (category.id) {

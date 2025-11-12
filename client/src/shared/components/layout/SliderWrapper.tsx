@@ -74,7 +74,7 @@ export function SliderWrapper({ productsList, title }: SliderWrapperProps) {
                                         className="relative rounded-xl w-full"
                                         width={400}
                                         height={300}
-                                        src={`http://localhost:5000/${product.banner}`}
+                                        src={product.banner}
                                         alt={product.name}
                                         style={{ objectFit: "cover" }}
                                     />

@@ -5,7 +5,7 @@ import { useSizes } from "@/features/admin/attributes/product-sizes/hooks/useSiz
 import { useTypes } from "@/features/admin/attributes/product-types/hooks/useTypes";
 import {
     useEscapeKeyClose,
-    useUploadImage,
+    useUploadBanner,
     useUploadImages,
 } from "@/shared/hooks";
 import { TrashIcon } from "@/shared/icons";
@@ -92,7 +92,7 @@ export function AddProductModal({
     const [bannerError, setBannerError] = useState<string | null>(null);
     const [modalMessage, setModalMessage] = useState("");
 
-    const uploadImageMutation = useUploadImage();
+    const uploadBannerMutation = useUploadBanner();
     const uploadImagesMutation = useUploadImages();
     const createProductMutation = useCreateProduct();
 
@@ -182,17 +182,9 @@ export function AddProductModal({
             }
 
             if (hasError) return;
-            const uploadBannerResult = await uploadImageMutation.mutateAsync(
-                banner
-            );
-            const bannerPath = uploadBannerResult.path;
-
-            const uploadImagesResult = images.length
-                ? await uploadImagesMutation.mutateAsync(images)
-                : { paths: [] };
 
             if (categoryId) {
-                await createProductMutation.mutateAsync({
+                const product = await createProductMutation.mutateAsync({
                     name: data.name.trim(),
                     path: data.path.trim(),
                     price: Number(data.price),
@@ -202,13 +194,30 @@ export function AddProductModal({
                     composition: data.composition.trim(),
                     status: data.status,
                     categoryId,
-                    banner: bannerPath,
-                    images: uploadImagesResult.paths,
                     colorIds: colorsToSend,
                     sizeIds: sizesToSend,
                     typeIds: typesToSend,
                     views: 0,
                 });
+
+                if (!product.data?.id) {
+                    throw new Error("Не вдалося отримати ID категорії");
+                }
+
+                await uploadBannerMutation.mutateAsync({
+                    type: "product",
+                    entityId: product.data?.id,
+                    banner,
+                    includedIn: categoryId,
+                });
+
+                images.length
+                    ? await uploadImagesMutation.mutateAsync({
+                          type: "products",
+                          entityId: product.data.id,
+                          images,
+                      })
+                    : { paths: [] };
             }
 
             setBanner(null);
@@ -425,7 +434,7 @@ export function AddProductModal({
                             onClose();
                         }}
                         disabled={
-                            uploadImageMutation.isPending ||
+                            uploadBannerMutation.isPending ||
                             createProductMutation.isPending
                         }
                     >
@@ -434,11 +443,11 @@ export function AddProductModal({
                     <MonoButton
                         type="submit"
                         disabled={
-                            uploadImageMutation.isPending ||
+                            uploadBannerMutation.isPending ||
                             createProductMutation.isPending
                         }
                     >
-                        {uploadImageMutation.isPending ||
+                        {uploadBannerMutation.isPending ||
                         createProductMutation.isPending
                             ? "Завантаження..."
                             : "Додати"}

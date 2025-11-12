@@ -136,7 +136,7 @@ model Collection {
   name        String
   path        String     @unique
   description String
-  banner      String
+  banner      String?
   createdAt   DateTime   @default(now()) @map("created_at")
   updatedAt   DateTime   @updatedAt @map("updated_at")
   status      String
@@ -149,7 +149,7 @@ model Category {
   name         String
   path         String
   description  String
-  banner       String
+  banner       String?
   collectionId String     @map("collection_id")
   createdAt    DateTime   @default(now()) @map("created_at")
   updatedAt    DateTime   @updatedAt @map("updated_at")
@@ -175,8 +175,8 @@ model Product {
   updatedAt     DateTime         @updatedAt @map("updated_at")
   status        String
   views         Int
-  banner        String
-  images        String[]
+  banner        String?
+  images        String[]         @default([])
   cartItems     CartItem[]
   favorites     Favorite[]
   category      Category         @relation(fields: [categoryId], references: [id])

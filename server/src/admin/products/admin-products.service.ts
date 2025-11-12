@@ -5,11 +5,11 @@ import {
     InternalServerErrorException,
     NotFoundException,
 } from "@nestjs/common";
-import { CreateProductDto } from "./dto/create-product.dto";
-import { PrismaService } from "src/prisma/prisma.service";
-import { UpdateProductDto } from "./dto/update-product.dto";
 import { Prisma } from "generated/prisma";
+import { PrismaService } from "src/prisma/prisma.service";
 import { AdminRecentActionsService } from "../recent-actions/admin-recent-actions.service";
+import { CreateProductDto } from "./dto/create-product.dto";
+import { UpdateProductDto } from "./dto/update-product.dto";
 
 @Injectable()
 export class AdminProductsService {
@@ -68,7 +68,7 @@ export class AdminProductsService {
 
             return {
                 message: "Товар успішно створено",
-                product,
+                data: product,
             };
         } catch (error) {
             console.error("Помилка створення товару:", error);

@@ -1,4 +1,4 @@
-import { IsString, IsNotEmpty, IsInt, IsEnum, Min } from "class-validator";
+import { IsEnum, IsInt, IsNotEmpty, IsString, Min } from "class-validator";
 
 export enum EStatus {
     ACTIVE = "Активно",
@@ -14,9 +14,9 @@ export class CreateCategoryDto {
     @IsNotEmpty({ message: "Шлях є обов'язковим" })
     path: string;
 
-    @IsString()
-    @IsNotEmpty({ message: "Банер повинен бути вказаний" })
-    banner: string;
+    // @IsString()
+    // @IsNotEmpty({ message: "Банер повинен бути вказаний" })
+    // banner: string;
 
     @IsString()
     @IsNotEmpty({ message: "Опис повинен бути вказаний" })

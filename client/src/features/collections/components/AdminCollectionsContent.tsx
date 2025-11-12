@@ -108,7 +108,7 @@ export function AdminCollectionsContent() {
                                 gap-[15px] items-center"
                                     >
                                         <img
-                                            src={`http://localhost:5000/${collection.banner}`}
+                                            src={collection.banner}
                                             className="max-h-[120px] w-full object-cover rounded"
                                             alt="banner"
                                         />

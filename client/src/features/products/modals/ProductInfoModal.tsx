@@ -96,7 +96,7 @@ export function ProductInfoModal({
                             images.map((image, i) => (
                                 <Image
                                     key={i}
-                                    src={`http://localhost:5000${image}`}
+                                    src={image}
                                     alt={`Зображення ${i + 1}`}
                                     width={100}
                                     height={100}

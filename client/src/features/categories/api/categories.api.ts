@@ -28,8 +28,8 @@ export async function fetchGetCategoriesByCollectionId(collectionId: string): Pr
 }
 
 export async function addCategoryToCollection(
-    categoryData: ICategory
-): Promise<ServerResponseWithMessage<ICategory>> {
+    categoryData: Omit<ICategory, "banner">
+): Promise<ServerResponseWithMessage<Omit<ICategory, "banner">>> {
     try {
         const { data } = await httpServiceAuth.post<ServerResponseWithMessage<ICategory>>(
             `/admin/categories`,

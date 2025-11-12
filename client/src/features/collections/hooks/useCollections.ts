@@ -8,6 +8,7 @@ import {
     fetchCollections,
     fetchGetCollectionByPath,
 } from "../api/collections.api";
+import { ICollection } from "../types/collections.types";
 
 export function useGetCollections() {
     return useSuspenseQuery({
@@ -27,7 +28,7 @@ export function useCreateCollection() {
     const queryClient = useQueryClient();
 
     return useMutation({
-        mutationFn: createCollection,
+        mutationFn: (data: Omit<ICollection, "banner">) => createCollection(data),
         onSuccess: (data) => {
             queryClient.invalidateQueries({
                 queryKey: ["collections"],
@@ -57,7 +58,6 @@ export function useEditCollection() {
                 name: string;
                 path: string;
                 status: TStatus;
-                banner: string;
             };
         }) => editCollection(collectionId, data),
         onSuccess: (data) => {

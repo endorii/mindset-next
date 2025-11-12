@@ -13,11 +13,7 @@ export function InfoModalBanner({ image, w = 450 }: InfoModalBannerProps) {
             <div className="border border-dashed border-white/10 flex items-center justify-center rounded-md overflow-hidden">
                 <Image
                     className="w-full"
-                    src={
-                        image
-                            ? `http://localhost:5000/${image}`
-                            : "/placeholder.png"
-                    }
+                    src={image ? image : "/placeholder.png"}
                     alt={image ? "Банер" : "Зображення відсутнє"}
                     width={w}
                     height={300}

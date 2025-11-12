@@ -12,7 +12,7 @@ export interface ICategory {
     status: TStatus;
     products?: IProduct[];
     collection?: ICollection;
-    collectionId?: string;
+    collectionId: string;
     createdAt?: string;
     updatedAt?: string;
 }

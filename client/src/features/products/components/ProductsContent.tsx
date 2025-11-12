@@ -27,7 +27,7 @@ export function ProductsContent({
                                 className="relative rounded-xl w-full"
                                 width={500}
                                 height={300}
-                                src={`http://localhost:5000/${product.banner}`}
+                                src={product.banner}
                                 alt={product.name}
                             />
                             <ul className="absolute top-[30px] left-[30px] flex gap-[5px] rounded-[50px] bg-white/5 backdrop-blur-lg border border-white/20 p-[5px]">

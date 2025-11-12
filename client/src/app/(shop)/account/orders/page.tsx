@@ -111,7 +111,10 @@ const Orders = () => {
                                                         .map((item) => (
                                                             <img
                                                                 key={item.id}
-                                                                src={`http://localhost:5000/${item.product?.banner}`}
+                                                                src={
+                                                                    item.product
+                                                                        ?.banner
+                                                                }
                                                                 className="max-h-[120px] w-full object-cover rounded"
                                                                 alt="banner"
                                                             />
@@ -211,7 +214,9 @@ const Orders = () => {
                                                                         item
                                                                             .product
                                                                             ?.banner
-                                                                            ? `http://localhost:5000/${item.product.banner}`
+                                                                            ? item
+                                                                                  .product
+                                                                                  .banner
                                                                             : "/no-image.jpg"
                                                                     }
                                                                     alt={

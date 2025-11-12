@@ -1,14 +1,14 @@
 import {
+    ConflictException,
+    HttpException,
     Injectable,
     InternalServerErrorException,
     NotFoundException,
-    ConflictException,
-    HttpException,
 } from "@nestjs/common";
 import { PrismaService } from "src/prisma/prisma.service";
+import { AdminRecentActionsService } from "../recent-actions/admin-recent-actions.service";
 import { CreateCategoryDto } from "./dto/create-category.dto";
 import { UpdateCategoryDto } from "./dto/update-category.dto";
-import { AdminRecentActionsService } from "../recent-actions/admin-recent-actions.service";
 
 @Injectable()
 export class AdminCategoriesService {
@@ -40,7 +40,7 @@ export class AdminCategoriesService {
 
             await this.adminRecentActions.createAction(userId, `Додано категорію ${category.name}`);
 
-            return { message: "Категорію успішно створено", category };
+            return { message: "Категорію успішно створено", data: category };
         } catch (error) {
             console.error("Помилка створення категорії:", error);
             if (error instanceof HttpException) {

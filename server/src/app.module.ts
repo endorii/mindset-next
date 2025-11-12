@@ -1,18 +1,18 @@
 import { Module } from "@nestjs/common";
-import { ServeStaticModule } from "@nestjs/serve-static";
 import { ConfigModule } from "@nestjs/config";
+import { ServeStaticModule } from "@nestjs/serve-static";
 // import { ThrottlerModule } from "@nestjs/throttler";
 
 import { join } from "path";
 
-import { PrismaModule } from "./prisma/prisma.module";
-import { AuthModule } from "./auth/auth.module";
-import { ShopModule } from "./shop/shop.module";
 import { AdminModule } from "./admin/admin.module";
-import { ImagesModule } from "./images/images.module";
+import { AuthModule } from "./auth/auth.module";
+import { EmailModule } from "./email/email.module";
+import { FilesModule } from "./files/files.module";
+import { MonoPayModule } from "./mono-pay/mono-pay.module";
 import { NovaPostModule } from "./nova-post/nova-post.module";
-import { MonoPayModule } from './mono-pay/mono-pay.module';
-import { EmailModule } from './email/email.module';
+import { PrismaModule } from "./prisma/prisma.module";
+import { ShopModule } from "./shop/shop.module";
 
 @Module({
     imports: [
@@ -30,7 +30,7 @@ import { EmailModule } from './email/email.module';
         AdminModule,
         PrismaModule,
         AuthModule,
-        ImagesModule,
+        FilesModule,
         ShopModule,
         NovaPostModule,
         MonoPayModule,

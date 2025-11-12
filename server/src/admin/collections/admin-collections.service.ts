@@ -1,15 +1,15 @@
 import {
+    ConflictException,
+    HttpException,
     Injectable,
     InternalServerErrorException,
     NotFoundException,
-    ConflictException,
-    HttpException,
 } from "@nestjs/common";
+import { ConfigService } from "@nestjs/config";
 import { PrismaService } from "src/prisma/prisma.service";
+import { AdminRecentActionsService } from "../recent-actions/admin-recent-actions.service";
 import { CreateCollectionDto } from "./dto/create-collection.dto";
 import { UpdateCollectionDto } from "./dto/update-collection.dto";
-import { AdminRecentActionsService } from "../recent-actions/admin-recent-actions.service";
-import { ConfigService } from "@nestjs/config";
 
 @Injectable()
 export class AdminCollectionsService {
@@ -20,7 +20,7 @@ export class AdminCollectionsService {
     ) {}
 
     async postCollection(userId: string, createCollectionDto: CreateCollectionDto) {
-        const { name, path, description, banner, views, status } = createCollectionDto;
+        const { name, path, description, views, status } = createCollectionDto;
 
         try {
             const existingCollection = await this.prisma.collection.findUnique({
@@ -36,7 +36,6 @@ export class AdminCollectionsService {
                     name,
                     path,
                     description,
-                    banner,
                     views,
                     status,
                 },
@@ -56,7 +55,7 @@ export class AdminCollectionsService {
 
             return {
                 message: "Колекцію успішно створено",
-                collection,
+                data: collection,
             };
         } catch (error) {
             console.error("Помилка створення колекції:", error);

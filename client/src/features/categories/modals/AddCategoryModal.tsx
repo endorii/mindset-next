@@ -1,7 +1,7 @@
 "use client";
 
 import { ICollection } from "@/features/collections/types/collections.types";
-import { useEscapeKeyClose, useUploadImage } from "@/shared/hooks";
+import { useEscapeKeyClose, useUploadBanner } from "@/shared/hooks";
 import { TStatus } from "@/shared/types/types";
 import { MonoButton } from "@/shared/ui/buttons";
 import { UploadBannerWithPreview } from "@/shared/ui/components";
@@ -55,7 +55,7 @@ export function AddCategoryModal({
     const [bannerError, setBannerError] = useState<string | null>(null);
     const [modalMessage, setModalMessage] = useState("");
 
-    const uploadImageMutation = useUploadImage();
+    const uploadBannerMutation = useUploadBanner();
     const createCategoryMutation = useCreateCategory();
 
     const handleBannerChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -84,18 +84,25 @@ export function AddCategoryModal({
         }
 
         try {
-            const uploadResult = await uploadImageMutation.mutateAsync(banner);
-            const imagePath = uploadResult.path;
-
             if (collectionId) {
-                await createCategoryMutation.mutateAsync({
+                const category = await createCategoryMutation.mutateAsync({
                     name: data.name.trim(),
                     path: data.path.trim(),
-                    banner: imagePath,
                     views: 0,
                     status: data.status,
                     collectionId,
                     description: data.description,
+                });
+
+                if (!category.data?.id) {
+                    throw new Error("Не вдалося отримати ID категорії");
+                }
+
+                await uploadBannerMutation.mutateAsync({
+                    type: "category",
+                    entityId: category.data?.id,
+                    banner,
+                    includedIn: collectionId,
                 });
             }
             handleClose();
@@ -183,7 +190,7 @@ export function AddCategoryModal({
                         type="button"
                         onClick={handleClose}
                         disabled={
-                            uploadImageMutation.isPending ||
+                            uploadBannerMutation.isPending ||
                             createCategoryMutation.isPending
                         }
                     >
@@ -192,11 +199,11 @@ export function AddCategoryModal({
                     <MonoButton
                         type="submit"
                         disabled={
-                            uploadImageMutation.isPending ||
+                            uploadBannerMutation.isPending ||
                             createCategoryMutation.isPending
                         }
                     >
-                        {uploadImageMutation.isPending ||
+                        {uploadBannerMutation.isPending ||
                         createCategoryMutation.isPending
                             ? "Завантаження..."
                             : "Додати"}

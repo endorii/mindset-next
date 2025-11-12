@@ -61,12 +61,10 @@ export async function fetchProductsFromSameCollection(collectionPath: string): P
 }
 
 export async function addProductToCategory(
-    productData: ICreateProductPayload
-): Promise<ServerResponseWithMessage<ICreateProductPayload>> {
+    productData: Omit<ICreateProductPayload, "images" | "banner">
+): Promise<ServerResponseWithMessage<Omit<ICreateProductPayload, "images" | "banner">>> {
     try {
-        const { data } = await httpServiceAuth.post<
-            ServerResponseWithMessage<ICreateProductPayload>
-        >(`/admin/products`, productData);
+        const { data } = await httpServiceAuth.post(`/admin/products`, productData);
         return data;
     } catch (error: unknown) {
         handleAxiosError(error);
@@ -78,9 +76,7 @@ export async function editProduct(
     productData: Partial<ICreateProductPayload>
 ): Promise<ServerResponseWithMessage<ICreateProductPayload>> {
     try {
-        const { data } = await httpServiceAuth.patch<
-            ServerResponseWithMessage<ICreateProductPayload>
-        >(`/admin/products/${productId}`, productData);
+        const { data } = await httpServiceAuth.patch(`/admin/products/${productId}`, productData);
         return data;
     } catch (error: unknown) {
         handleAxiosError(error);

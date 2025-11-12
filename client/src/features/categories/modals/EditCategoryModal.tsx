@@ -1,6 +1,6 @@
 "use client";
 
-import { useEscapeKeyClose, useUploadImage } from "@/shared/hooks";
+import { useEscapeKeyClose, useUploadBanner } from "@/shared/hooks";
 import { TStatus } from "@/shared/types/types";
 import { MonoButton } from "@/shared/ui/buttons";
 import { InputField } from "@/shared/ui/inputs/InputField";
@@ -56,7 +56,7 @@ export function EditCategoryModal({
     const [preview, setPreview] = useState<string>("");
     const [modalMessage, setModalMessage] = useState("");
 
-    const uploadImageMutation = useUploadImage();
+    const uploadBannerMutation = useUploadBanner();
     const editCategoryMutation = useEditCategory();
 
     useEffect(() => {
@@ -75,23 +75,22 @@ export function EditCategoryModal({
 
     const onSubmit = async (data: CategoryFormData) => {
         try {
-            let bannerPath = typeof banner === "string" ? banner : "";
-
-            if (banner instanceof File) {
-                const uploadResult = await uploadImageMutation.mutateAsync(
-                    banner
-                );
-                bannerPath = uploadResult.path;
-            }
-
             if (category.id) {
                 await editCategoryMutation.mutateAsync({
                     categoryId: category.id,
                     data: {
                         ...data,
-                        banner: bannerPath,
                     },
                 });
+
+                if (banner instanceof File) {
+                    await uploadBannerMutation.mutateAsync({
+                        type: "category",
+                        entityId: category.id,
+                        banner,
+                        includedIn: category.collectionId,
+                    });
+                }
             }
 
             onClose();
@@ -112,10 +111,7 @@ export function EditCategoryModal({
 
     if (!isOpen || !category) return null;
 
-    const bannerSrc =
-        !preview && typeof banner === "string" && banner.startsWith("/images/")
-            ? `http://localhost:5000${banner}`
-            : "";
+    const bannerSrc = !preview && typeof banner === "string" ? banner : "";
 
     const displaySrc = preview || bannerSrc;
 
@@ -223,11 +219,11 @@ export function EditCategoryModal({
                     <MonoButton
                         type="submit"
                         disabled={
-                            uploadImageMutation.isPending ||
+                            uploadBannerMutation.isPending ||
                             editCategoryMutation.isPending
                         }
                     >
-                        {uploadImageMutation.isPending ||
+                        {uploadBannerMutation.isPending ||
                         editCategoryMutation.isPending
                             ? "Завантаження..."
                             : "Підтвердити"}

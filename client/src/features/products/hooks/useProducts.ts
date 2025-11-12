@@ -58,7 +58,8 @@ export function useCreateProduct() {
     const queryClient = useQueryClient();
 
     return useMutation({
-        mutationFn: (productData: ICreateProductPayload) => addProductToCategory(productData),
+        mutationFn: (productData: Omit<ICreateProductPayload, "images" | "banner">) =>
+            addProductToCategory(productData),
         onSuccess: (data) => {
             queryClient.invalidateQueries({
                 queryKey: ["products"],

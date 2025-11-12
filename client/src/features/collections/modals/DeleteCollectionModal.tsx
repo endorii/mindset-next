@@ -1,6 +1,6 @@
 "use client";
 
-import { deleteImage } from "@/shared/api/images.api";
+// import { deleteImage } from "@/shared/api/files.api";
 import { useEscapeKeyClose } from "@/shared/hooks";
 import { DeleteButton, MonoButton } from "@/shared/ui/buttons";
 import { FormButtonsWrapper, ModalWrapper } from "@/shared/ui/wrappers";
@@ -33,7 +33,7 @@ export function DeleteCollectionModal({
             return;
         }
 
-        await deleteImage(collection.banner);
+        // await deleteImage(collection.banner);
         await deleteCollectionMutation.mutateAsync(collection.id);
     };
 

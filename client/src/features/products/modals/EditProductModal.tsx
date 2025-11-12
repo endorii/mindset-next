@@ -5,7 +5,7 @@ import { useSizes } from "@/features/admin/attributes/product-sizes/hooks/useSiz
 import { useTypes } from "@/features/admin/attributes/product-types/hooks/useTypes";
 import {
     useEscapeKeyClose,
-    useUploadImage,
+    useUploadBanner,
     useUploadImages,
 } from "@/shared/hooks";
 import { TrashIcon } from "@/shared/icons";
@@ -93,7 +93,7 @@ export function EditProductModal({
     const [bannerError, setBannerError] = useState<string | null>(null);
     const [modalMessage, setModalMessage] = useState("");
 
-    const uploadImageMutation = useUploadImage();
+    const uploadBannerMutation = useUploadBanner();
     const uploadImagesMutation = useUploadImages();
     const editProductMutation = useEditProduct();
 
@@ -154,9 +154,6 @@ export function EditProductModal({
 
     function getFullImageUrl(src: string | null | undefined) {
         if (!src) return "";
-        if (src.startsWith("/images/")) {
-            return `http://localhost:5000${src}`;
-        }
         if (src.startsWith("blob:") || src.startsWith("data:")) {
             return src;
         }
@@ -223,13 +220,13 @@ export function EditProductModal({
 
             if (hasError) return;
 
-            let bannerPath = "";
-            if (typeof banner === "string") {
-                bannerPath = banner;
-            } else if (banner instanceof File) {
-                const uploadBannerResult =
-                    await uploadImageMutation.mutateAsync(banner);
-                bannerPath = uploadBannerResult.path;
+            if (banner instanceof File) {
+                await uploadBannerMutation.mutateAsync({
+                    type: "product",
+                    entityId: product.id,
+                    banner,
+                    includedIn: product.categoryId,
+                });
             }
 
             const imagesToUpload: File[] = [];
@@ -244,7 +241,11 @@ export function EditProductModal({
             });
 
             const uploadImagesResult = imagesToUpload.length
-                ? await uploadImagesMutation.mutateAsync(imagesToUpload)
+                ? await uploadImagesMutation.mutateAsync({
+                      type: "products",
+                      entityId: product.id,
+                      images: imagesToUpload,
+                  })
                 : { paths: [] };
 
             const allImagePaths = [
@@ -263,7 +264,6 @@ export function EditProductModal({
                     description: data.description.trim(),
                     composition: data.composition.trim(),
                     status: data.status,
-                    banner: bannerPath,
                     images: allImagePaths,
                     colorIds: colorsToSend,
                     sizeIds: sizesToSend,
@@ -485,7 +485,7 @@ export function EditProductModal({
                             onClose();
                         }}
                         disabled={
-                            uploadImageMutation.isPending ||
+                            uploadBannerMutation.isPending ||
                             uploadImagesMutation.isPending ||
                             editProductMutation.isPending
                         }
@@ -495,12 +495,12 @@ export function EditProductModal({
                     <MonoButton
                         type="submit"
                         disabled={
-                            uploadImageMutation.isPending ||
+                            uploadBannerMutation.isPending ||
                             uploadImagesMutation.isPending ||
                             editProductMutation.isPending
                         }
                     >
-                        {uploadImageMutation.isPending ||
+                        {uploadBannerMutation.isPending ||
                         uploadImagesMutation.isPending ||
                         editProductMutation.isPending
                             ? "Завантаження..."
