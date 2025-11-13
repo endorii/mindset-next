@@ -12,7 +12,7 @@ export class ShopProductsController {
         return this.productsService.getAllProducts();
     }
 
-    @Get()
+    @Get("by-ids")
     @Public()
     getProductsByIds(@Query("ids") ids: string) {
         if (!ids) return [];

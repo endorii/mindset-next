@@ -1,4 +1,6 @@
-import { useQuery, useMutation, useQueryClient, useSuspenseQuery } from "@tanstack/react-query";
+import { useCartStore } from "@/store/useCartStore";
+import { useMutation, useQuery, useQueryClient, useSuspenseQuery } from "@tanstack/react-query";
+import { toast } from "sonner";
 import {
     createOrder,
     deleteOrder,
@@ -6,8 +8,7 @@ import {
     getOrdersByUserId,
     updateOrder,
 } from "../api/orders.api";
-import { IOrder } from "../types/orders.types";
-import { toast } from "sonner";
+import { IOrder, IOrderPayload } from "../types/orders.types";
 
 export function useOrders() {
     return useSuspenseQuery({
@@ -25,12 +26,13 @@ export function useUserOrders() {
 
 export function useCreateOrder() {
     const queryClient = useQueryClient();
+    const { clearCart } = useCartStore();
 
     return useMutation({
-        mutationFn: (data: IOrder) => createOrder(data),
+        mutationFn: (data: IOrderPayload) => createOrder(data),
         onSuccess: (data) => {
             if (!data.data?.userId) {
-                localStorage.removeItem("cart");
+                // clearCart();
             } else {
                 queryClient.invalidateQueries({ queryKey: ["orders"] });
                 queryClient.invalidateQueries({ queryKey: ["cart"] });

@@ -1,4 +1,4 @@
-export type PaymentMethodType = "mono" | "liqpay" | null;
+export type PaymentMethodType = "stripe" | "cod" | null;
 
 export enum PaymentStatus {
     pending = "pending",

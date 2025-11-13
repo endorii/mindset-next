@@ -4,8 +4,8 @@ import { Roles } from "src/auth/decorators/roles.decorator";
 import { JwtAccessGuard } from "src/auth/guards/jwt/jwt-access.guard";
 import { RolesGuard } from "src/auth/guards/roles/roles.guard";
 import { AuthenticatedRequestUser } from "src/auth/interfaces/auth-request-user";
+import { UpdateOrderDto } from "src/shop/orders/dto/update-order.dto";
 import { AdminOrdersService } from "./admin-orders.service";
-import { UpdateOrderDto } from "./dto/update-order.dto";
 
 @Controller("admin/orders")
 @UseGuards(JwtAccessGuard, RolesGuard)

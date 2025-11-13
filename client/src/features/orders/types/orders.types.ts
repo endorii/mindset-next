@@ -9,7 +9,7 @@ export interface INovaPostDataObj {
 export type OrderStatus = "pending" | "paid" | "shipped" | "delivered" | "cancelled";
 
 export interface IOrder {
-    id?: string;
+    id: string;
     fullName: string;
     phoneNumber: string;
     email?: string;
@@ -26,6 +26,23 @@ export interface IOrder {
     paymentStatus?: PaymentStatus;
     userId?: string;
 }
+
+export interface IOrderPayload {
+    fullName: string;
+    phoneNumber: string;
+    email?: string;
+    area: string;
+    city: string;
+    postDepartment: string;
+    additionalInfo?: string;
+    total?: number;
+    items: IOrderItem[];
+    status?: OrderStatus;
+    paymentMethod: PaymentMethodType;
+    paymentStatus?: PaymentStatus;
+    userId?: string;
+}
+
 export interface IOrderItem {
     id?: string;
     orderId?: string;

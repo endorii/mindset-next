@@ -24,7 +24,7 @@ export function useAddCartItemToUser() {
     const queryClient = useQueryClient();
 
     return useMutation({
-        mutationFn: (cartItem: ICartItem) => addCartItemToUser(cartItem),
+        mutationFn: (cartItem: Omit<ICartItem, "id">) => addCartItemToUser(cartItem),
         onSuccess: (data) => {
             queryClient.invalidateQueries({
                 queryKey: ["cart"],

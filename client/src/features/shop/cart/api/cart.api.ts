@@ -12,7 +12,7 @@ export async function fetchAllCartItemsFromUser(): Promise<ICartItem[]> {
 }
 
 export async function addCartItemToUser(
-    cartItem: ICartItem
+    cartItem: Omit<ICartItem, "id">
 ): Promise<ServerResponseWithMessage<ICartItem>> {
     try {
         const { data } = await httpServiceAuth.post("/shop/cart", cartItem);

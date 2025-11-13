@@ -1,4 +1,5 @@
 import { HttpException, Injectable, InternalServerErrorException } from "@nestjs/common";
+import { OrderStatus } from "generated/prisma";
 import { PrismaService } from "src/prisma/prisma.service";
 import { ShopCartService } from "../cart/shop-cart.service";
 import { CreateOrderDto } from "./dto/create-order.dto";
@@ -12,17 +13,34 @@ export class ShopOrdersService {
 
     async createOrder(createOrderDto: CreateOrderDto) {
         try {
+            // 1️⃣ Отримуємо усі продукти по productId
+            const productIds = createOrderDto.items.map((item) => item.productId);
+            const products = await this.prisma.product.findMany({
+                where: { id: { in: productIds } },
+            });
+
+            // 2️⃣ Створюємо мапу для швидкого доступу до ціни
+            const productMap = new Map(products.map((p) => [p.id, p]));
+
+            // 3️⃣ Обчислюємо total
+            const total =
+                createOrderDto.items.reduce((acc, item) => {
+                    const product = productMap.get(item.productId);
+                    if (!product) return acc; // якщо товар не знайдено
+                    return acc + product.price * item.quantity;
+                }, 0) || 0;
+
+            // 4️⃣ Готуємо дані замовлення
             const orderData = {
                 fullName: createOrderDto.fullName,
                 phoneNumber: createOrderDto.phoneNumber,
-                email: createOrderDto.email || "",
+                email: createOrderDto.email,
                 area: createOrderDto.area,
                 city: createOrderDto.city,
                 postDepartment: createOrderDto.postDepartment,
-                additionalInfo: createOrderDto.additionalInfo,
-                total: createOrderDto.total,
+                total,
+                status: OrderStatus.pending,
                 paymentMethod: createOrderDto.paymentMethod,
-                status: createOrderDto.status,
                 items: {
                     create: createOrderDto.items.map((item) => ({
                         productId: item.productId,
@@ -32,12 +50,12 @@ export class ShopOrdersService {
                         type: item.type,
                     })),
                 },
-                // Підключаємо користувача, якщо він авторизований
                 ...(createOrderDto.userId
                     ? { user: { connect: { id: createOrderDto.userId } } }
                     : {}),
             };
 
+            // 5️⃣ Створюємо замовлення
             const order = await this.prisma.order.create({
                 data: orderData,
                 include: {
@@ -45,13 +63,14 @@ export class ShopOrdersService {
                 },
             });
 
+            // 6️⃣ Якщо користувач авторизований — очищаємо його кошик
             if (createOrderDto.userId) {
                 await this.shopCartService.removeCartFromUser(createOrderDto.userId);
             }
 
             return {
                 message: "Замовлення успішно створено",
-                order,
+                data: order,
             };
         } catch (error) {
             console.error("Помилка створення замовлення:", error);

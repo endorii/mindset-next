@@ -1,6 +1,6 @@
 import { httpService, httpServiceAuth } from "@/shared/api/httpService";
 import { ServerResponseWithMessage } from "@/shared/interfaces/interfaces";
-import { IOrder } from "../types/orders.types";
+import { IOrder, IOrderPayload } from "../types/orders.types";
 
 export async function getOrders(): Promise<IOrder[]> {
     try {
@@ -20,7 +20,9 @@ export async function getOrdersByUserId(): Promise<IOrder[]> {
     }
 }
 
-export async function createOrder(payload: IOrder): Promise<ServerResponseWithMessage<IOrder>> {
+export async function createOrder(
+    payload: IOrderPayload
+): Promise<ServerResponseWithMessage<IOrder>> {
     try {
         const { data } = await httpService.post("/shop/orders", payload);
         return data;

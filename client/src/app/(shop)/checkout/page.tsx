@@ -6,7 +6,7 @@ import {
 } from "@/features/checkout/components";
 import { PaymentMethodType } from "@/features/checkout/types/checkout.types";
 import { useCreateOrder } from "@/features/orders/hooks/useOrders";
-import { INovaPostDataObj, IOrder } from "@/features/orders/types/orders.types";
+import { INovaPostDataObj } from "@/features/orders/types/orders.types";
 import { useProductsByIds } from "@/features/products/hooks/useProducts";
 import {
     useCartItemsFromUser,
@@ -25,8 +25,10 @@ import { NovaPoshtaSelect } from "@/shared/ui/selectors/NovaPoshtaSelect";
 import { CheckoutSkeleton } from "@/shared/ui/skeletons";
 import { ShopTitle } from "@/shared/ui/titles/ShopTitle";
 import { useCartStore } from "@/store/useCartStore";
-import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import { useCallback, useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
+import { toast } from "sonner";
 
 interface FormData {
     fullName: string;
@@ -38,8 +40,15 @@ interface FormData {
     paymentMethod: PaymentMethodType;
 }
 
+interface NovaPoshtaLoadingState {
+    areas: boolean;
+    cities: boolean;
+    warehouses: boolean;
+}
+
 function Checkout() {
-    const { cartItems, removeFromCart } = useCartStore();
+    const router = useRouter();
+    const { cartItems, removeFromCart, clearCart } = useCartStore();
 
     const deleteCartItemMutation = useDeleteCartItemFromUser();
 
@@ -62,6 +71,7 @@ function Checkout() {
         return { ...item, product };
     });
 
+    // Стани для Нової Пошти
     const [areas, setAreas] = useState<INovaPostDataObj[]>([]);
     const [cities, setCities] = useState<INovaPostDataObj[]>([]);
     const [warehouses, setWarehouses] = useState<INovaPostDataObj[]>([]);
@@ -75,11 +85,22 @@ function Checkout() {
     const [selectedWarehouse, setSelectedWarehouse] =
         useState<INovaPostDataObj | null>(null);
 
+    // Стани завантаження
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const [novaPoshtaLoading, setNovaPoshtaLoading] =
+        useState<NovaPoshtaLoadingState>({
+            areas: false,
+            cities: false,
+            warehouses: false,
+        });
+    const [novaPoshtaError, setNovaPoshtaError] = useState<string | null>(null);
+
     const {
         register,
         handleSubmit,
         reset,
         control,
+        setValue,
         formState: { errors },
     } = useForm<FormData>({
         defaultValues: {
@@ -89,126 +110,269 @@ function Checkout() {
             area: "",
             city: "",
             postDepartment: "",
-            paymentMethod: null,
+            paymentMethod: "stripe",
         },
     });
 
     const createOrderMutation = useCreateOrder();
 
+    // Завантаження даних користувача
     useEffect(() => {
         if (user) {
             reset({
-                fullName: user.shippingAddress?.recipient,
-                phoneNumber: user.phone,
-                email: user.email,
+                fullName: user.shippingAddress?.recipient || "",
+                phoneNumber: user.phone || "",
+                email: user.email || "",
             });
         }
-    }, [user]);
+    }, [user, reset]);
 
+    // Завантаження областей при монтуванні
     useEffect(() => {
         const loadAreas = async () => {
+            setNovaPoshtaLoading((prev) => ({ ...prev, areas: true }));
+            setNovaPoshtaError(null);
             try {
                 const data = await fetchAreas();
-                // clearErrors("area");
                 setAreas(data);
             } catch (error) {
                 console.error("Помилка завантаження областей:", error);
+                setNovaPoshtaError("Не вдалося завантажити області");
+                toast.error("Не вдалося завантажити області");
+            } finally {
+                setNovaPoshtaLoading((prev) => ({ ...prev, areas: false }));
             }
         };
         loadAreas();
     }, []);
 
+    // Завантаження міст при виборі області
     useEffect(() => {
-        if (selectedArea) {
-            const loadCities = async () => {
-                try {
-                    const data = await fetchCities(selectedArea.Ref);
-                    // clearErrors("city");
-                    setCities(data);
-                } catch (error) {
-                    console.error("Помилка завантаження міст:", error);
-                    setCities([]);
-                }
-            };
-            loadCities();
-
+        if (!selectedArea) {
+            setCities([]);
             setSelectedCity(null);
             setSelectedWarehouse(null);
             setWarehouses([]);
+            return;
         }
-    }, [selectedArea]);
 
-    useEffect(() => {
-        if (selectedCity) {
-            const loadWarehouses = async () => {
-                try {
-                    const data = await fetchWarehouses(selectedCity.Ref);
-                    // clearErrors("postDepartment");
-                    setWarehouses(data);
-                } catch (error) {
-                    console.error("Помилка завантаження відділень:", error);
-                    setWarehouses([]);
-                }
-            };
-            loadWarehouses();
-
-            setSelectedWarehouse(null);
-        }
-    }, [selectedCity]);
-
-    const onSubmit = async (data: FormData) => {
-        if (!mergedCart) return;
-        const userId = user?.id;
-
-        const orderData: IOrder = {
-            fullName: data.fullName,
-            phoneNumber: data.phoneNumber,
-            email: data.email,
-            area: selectedArea?.Description || "",
-            city: selectedCity?.Description || "",
-            postDepartment: selectedWarehouse?.Description || "",
-            additionalInfo: "",
-            status: "pending",
-            paymentMethod: data.paymentMethod,
-            userId,
-            total:
-                mergedCart.reduce(
-                    (acc, item) =>
-                        acc +
-                        (item.product?.price
-                            ? item.product?.price * item.quantity
-                            : 0),
-                    0
-                ) || 0,
-            items:
-                mergedCart.map((item) => ({
-                    productId: item.productId,
-                    price: Number(item.product?.price),
-                    quantity: Number(item.quantity),
-                    color: item.color,
-                    size: item.size,
-                    type: item.type,
-                })) || [],
+        const loadCities = async () => {
+            setNovaPoshtaLoading((prev) => ({ ...prev, cities: true }));
+            setNovaPoshtaError(null);
+            try {
+                const data = await fetchCities(selectedArea.Ref);
+                setCities(data);
+            } catch (error) {
+                console.error("Помилка завантаження міст:", error);
+                setNovaPoshtaError("Не вдалося завантажити міста");
+                toast.error("Не вдалося завантажити міста");
+                setCities([]);
+            } finally {
+                setNovaPoshtaLoading((prev) => ({ ...prev, cities: false }));
+            }
         };
 
-        try {
-            await createOrderMutation.mutateAsync(orderData);
+        loadCities();
+        setSelectedCity(null);
+        setSelectedWarehouse(null);
+        setWarehouses([]);
+        setValue("city", "");
+        setValue("postDepartment", "");
+    }, [selectedArea, setValue]);
 
-            await // setTimeout(() => {
-            //     redirect("/orders");
-            // }, 1000);
-            reset();
-        } catch (error) {
-            console.error("Помилка створення замовлення:", error);
+    // Завантаження відділень при виборі міста
+    useEffect(() => {
+        if (!selectedCity) {
+            setWarehouses([]);
+            setSelectedWarehouse(null);
+            return;
+        }
+
+        const loadWarehouses = async () => {
+            setNovaPoshtaLoading((prev) => ({ ...prev, warehouses: true }));
+            setNovaPoshtaError(null);
+            try {
+                const data = await fetchWarehouses(selectedCity.Ref);
+                setWarehouses(data);
+            } catch (error) {
+                console.error("Помилка завантаження відділень:", error);
+                setNovaPoshtaError("Не вдалося завантажити відділення");
+                toast.error("Не вдалося завантажити відділення");
+                setWarehouses([]);
+            } finally {
+                setNovaPoshtaLoading((prev) => ({
+                    ...prev,
+                    warehouses: false,
+                }));
+            }
+        };
+
+        loadWarehouses();
+        setSelectedWarehouse(null);
+        setValue("postDepartment", "");
+    }, [selectedCity, setValue]);
+
+    // Обробники вибору
+    const handleAreaChange = useCallback(
+        (e: React.ChangeEvent<HTMLSelectElement>) => {
+            const area = areas.find((a) => a.Ref === e.target.value) || null;
+            setSelectedArea(area);
+            setValue("area", e.target.value);
+        },
+        [areas, setValue]
+    );
+
+    const handleCityChange = useCallback(
+        (e: React.ChangeEvent<HTMLSelectElement>) => {
+            const city = cities.find((c) => c.Ref === e.target.value) || null;
+            setSelectedCity(city);
+            setValue("city", e.target.value);
+        },
+        [cities, setValue]
+    );
+
+    const handleWarehouseChange = useCallback(
+        (e: React.ChangeEvent<HTMLSelectElement>) => {
+            const warehouse =
+                warehouses.find((w) => w.Ref === e.target.value) || null;
+            setSelectedWarehouse(warehouse);
+            setValue("postDepartment", e.target.value);
+        },
+        [warehouses, setValue]
+    );
+
+    // Очищення кошика
+    const clearUserCart = async () => {
+        if (user && userCartItems) {
+            const deletePromises = userCartItems.map((item) =>
+                deleteCartItemMutation.mutateAsync(item.id)
+            );
+            await Promise.all(deletePromises);
+        } else {
+            clearCart();
         }
     };
 
+    // Відправка форми
+    const onSubmit = async (data: FormData) => {
+        if (!mergedCart.length) {
+            toast.error("Кошик порожній");
+            return;
+        }
+
+        if (!selectedArea || !selectedCity || !selectedWarehouse) {
+            toast.error("Будь ласка, оберіть адресу доставки повністю");
+            return;
+        }
+
+        const hasInvalidProducts = mergedCart.some(
+            (item) => !item.product || !item.product.price
+        );
+        if (hasInvalidProducts) {
+            toast.error("Деякі товари недоступні. Оновіть кошик");
+            return;
+        }
+
+        setIsSubmitting(true);
+
+        try {
+            if (data.paymentMethod === "stripe") {
+                const destructedCart = mergedCart.map(
+                    ({ product, ...item }) => item
+                );
+
+                const order = await createOrderMutation.mutateAsync({
+                    userId: user?.id,
+                    fullName: data.fullName,
+                    phoneNumber: data.phoneNumber,
+                    email: data.email,
+                    area: selectedArea.Description,
+                    city: selectedCity.Description,
+                    postDepartment: selectedWarehouse.Description,
+                    paymentMethod: data.paymentMethod,
+                    items: destructedCart,
+                });
+
+                if (!order.data) {
+                    toast.error("Не вдалося створити замовлення");
+                    return;
+                }
+
+                // await clearUserCart();
+
+                console.log(order.data.id);
+
+                const res = await fetch(
+                    `${
+                        process.env.NEXT_PUBLIC_API_URL ||
+                        "http://localhost:5000/api"
+                    }/stripe/checkout`,
+                    {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                        body: JSON.stringify({ orderId: order.data.id }),
+                    }
+                );
+
+                const { url } = await res.json();
+                if (url) {
+                    window.location.href = url;
+                } else {
+                    toast.error("Не вдалося створити платіжну сесію");
+                }
+            } else if (data.paymentMethod === "cod") {
+                const destructedCart = mergedCart.map(
+                    ({ product, ...item }) => item
+                );
+                await createOrderMutation.mutateAsync({
+                    userId: user?.id,
+                    fullName: data.fullName,
+                    phoneNumber: data.phoneNumber,
+                    email: data.email,
+                    area: selectedArea.Description,
+                    city: selectedCity.Description,
+                    postDepartment: selectedWarehouse.Description,
+                    paymentMethod: data.paymentMethod,
+                    items: destructedCart,
+                });
+
+                // await clearUserCart();
+
+                toast.success(
+                    "Замовлення успішно оформлено. Очікуйте... Наші менеджери зв'яжуться з вами для підтвердження"
+                );
+            }
+        } catch (err) {
+            console.error(err);
+            toast.error("Помилка при оформленні замовлення");
+        } finally {
+            setIsSubmitting(false);
+        }
+    };
+
+    // Стани завантаження
     if (isUserCartPending || isProductsPending) return <CheckoutSkeleton />;
 
     if (isUserCartError)
         return (
             <ErrorWithMessage message="Помилка під час завантаження кошика, спробуйте пізніше" />
         );
+
+    if (!cartToShow.length) {
+        return (
+            <div className="flex flex-col gap-[50px] text-white items-center justify-center min-h-[60vh]">
+                <ShopTitle
+                    title={"Ваш кошик порожній"}
+                    subtitle={"Your cart is empty"}
+                />
+                <MonoButton onClick={() => router.push("/")}>
+                    Перейти до покупок
+                </MonoButton>
+            </div>
+        );
+    }
 
     return (
         <div className="flex flex-col gap-[50px] text-white">
@@ -235,7 +399,7 @@ function Checkout() {
                                                 pattern: {
                                                     value: /^[А-ЯІЇЄҐ][а-яіїєґ']+\s[А-ЯІЇЄҐ][а-яіїєґ']+\s[А-ЯІЇЄҐ][а-яіїєґ']+$/,
                                                     message:
-                                                        "Введіть ПІБ у форматі: Прізвище Ім’я По батькові",
+                                                        "Введіть ПІБ у форматі: Прізвище Ім'я По батькові",
                                                 },
                                             }),
                                         }}
@@ -262,7 +426,7 @@ function Checkout() {
                                     />
 
                                     <InputField
-                                        label="Електронна пошта"
+                                        label="Електронна пошта*"
                                         placeholder="petro@gmail.com"
                                         register={{
                                             ...register("email", {
@@ -283,57 +447,42 @@ function Checkout() {
                                     Адреса доставки
                                 </div>
                                 <hr className="border-t border-white/10" />
+                                {novaPoshtaError && (
+                                    <div className="text-red-500 text-sm bg-red-500/10 p-3 rounded-lg">
+                                        {novaPoshtaError}
+                                    </div>
+                                )}
                                 <div className="flex gap-[15px]">
                                     <div className="flex flex-col gap-[13px] w-full">
                                         <NovaPoshtaSelect
-                                            label="Область"
+                                            label="Область*"
                                             options={areas}
-                                            onChange={(e) => {
-                                                const area =
-                                                    areas.find(
-                                                        (a) =>
-                                                            a.Ref ===
-                                                            e.target.value
-                                                    ) || null;
-                                                setSelectedArea(area);
-                                            }}
+                                            onChange={handleAreaChange}
                                             register={register("area", {
                                                 required: "Оберіть область",
                                             })}
                                             errorMessage={errors.area?.message}
+                                            disabled={novaPoshtaLoading.areas}
                                         />
 
                                         <NovaPoshtaSelect
-                                            label="Місто"
+                                            label="Місто*"
                                             options={cities}
-                                            onChange={(e) => {
-                                                const city =
-                                                    cities.find(
-                                                        (c) =>
-                                                            c.Ref ===
-                                                            e.target.value
-                                                    ) || null;
-                                                setSelectedCity(city);
-                                            }}
+                                            onChange={handleCityChange}
                                             register={register("city", {
                                                 required: "Оберіть місто",
                                             })}
                                             errorMessage={errors.city?.message}
-                                            disabled={!selectedArea}
+                                            disabled={
+                                                !selectedArea ||
+                                                novaPoshtaLoading.cities
+                                            }
                                         />
 
                                         <NovaPoshtaSelect
-                                            label="Відділення"
+                                            label="Відділення*"
                                             options={warehouses}
-                                            onChange={(e) => {
-                                                const wh =
-                                                    warehouses.find(
-                                                        (w) =>
-                                                            w.Ref ===
-                                                            e.target.value
-                                                    ) || null;
-                                                setSelectedWarehouse(wh);
-                                            }}
+                                            onChange={handleWarehouseChange}
                                             register={register(
                                                 "postDepartment",
                                                 {
@@ -344,7 +493,10 @@ function Checkout() {
                                             errorMessage={
                                                 errors.postDepartment?.message
                                             }
-                                            disabled={!selectedCity}
+                                            disabled={
+                                                !selectedCity ||
+                                                novaPoshtaLoading.warehouses
+                                            }
                                         />
                                     </div>
                                 </div>
@@ -357,7 +509,7 @@ function Checkout() {
                         <CheckoutResultTable cart={mergedCart} />
                         <div>
                             <div className="text-sm font-semibold mb-2">
-                                Вибір оплати:
+                                Вибір оплати:*
                             </div>
                             <Controller
                                 name="paymentMethod"
@@ -368,44 +520,53 @@ function Checkout() {
                                         <button
                                             type="button"
                                             className={`px-6 py-3 rounded-xl transition ${
-                                                field.value === "mono"
-                                                    ? "bg-green-600 text-white"
-                                                    : "bg-green-500/30 text-white hover:bg-green-600"
+                                                field.value === "stripe"
+                                                    ? "bg-purple-600 text-white"
+                                                    : "bg-purple-500/30 text-white hover:bg-purple-600"
                                             }`}
                                             onClick={() =>
-                                                field.onChange("mono")
+                                                field.onChange("stripe")
                                             }
                                         >
-                                            MonoPay
+                                            Stripe
                                         </button>
 
                                         <button
                                             type="button"
                                             className={`px-6 py-3 rounded-xl transition ${
-                                                field.value === "liqpay"
-                                                    ? "bg-blue-600 text-white"
-                                                    : "bg-blue-500/30 text-white hover:bg-blue-600"
+                                                field.value === "cod"
+                                                    ? "bg-purple-600 text-white"
+                                                    : "bg-purple-500/30 text-white hover:bg-purple-600"
                                             }`}
                                             onClick={() =>
-                                                field.onChange("liqpay")
+                                                field.onChange("cod")
                                             }
                                         >
-                                            LiqPay
+                                            Накладений платіж
                                         </button>
                                     </div>
                                 )}
                             />
                             {errors.paymentMethod && (
-                                <span className="text-red-500 text-sm mt-1">
+                                <span className="text-red-500 text-sm mt-1 block">
                                     {errors.paymentMethod.message}
                                 </span>
                             )}
                         </div>
+
                         <MonoButton
                             type="submit"
-                            disabled={cartToShow.length === 0}
+                            disabled={
+                                cartToShow.length === 0 ||
+                                isSubmitting ||
+                                Object.values(novaPoshtaLoading).some(
+                                    (loading) => loading
+                                )
+                            }
                         >
-                            Підтвердити замовлення
+                            {isSubmitting
+                                ? "Обробка замовлення..."
+                                : "Підтвердити замовлення"}
                         </MonoButton>
                     </div>
                 </div>

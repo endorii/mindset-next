@@ -1,15 +1,14 @@
-import {
-    IsString,
-    IsNotEmpty,
-    IsOptional,
-    IsArray,
-    ValidateNested,
-    IsNumber,
-    IsEnum,
-} from "class-validator";
 import { Type } from "class-transformer";
-import { OrderStatus } from "generated/prisma";
-import { PaymentMethodType } from "../shop-orders.types";
+import {
+    IsArray,
+    IsEnum,
+    IsNotEmpty,
+    IsNumber,
+    IsOptional,
+    IsString,
+    ValidateNested,
+} from "class-validator";
+import { OrderStatus, PaymentMethod } from "generated/prisma";
 
 export class CreateOrderItemDto {
     @IsString()
@@ -40,8 +39,8 @@ export class CreateOrderDto {
     phoneNumber: string;
 
     @IsString()
-    @IsOptional()
-    email?: string;
+    @IsNotEmpty()
+    email: string;
 
     @IsString()
     @IsNotEmpty()
@@ -57,15 +56,12 @@ export class CreateOrderDto {
 
     @IsString()
     @IsNotEmpty()
-    paymentMethod: PaymentMethodType;
-
-    @IsOptional()
-    @IsString()
-    additionalInfo?: string;
+    paymentMethod: PaymentMethod;
 
     @IsNumber()
+    @IsOptional()
     @Type(() => Number)
-    total: number;
+    total?: number;
 
     @IsArray()
     @ValidateNested({ each: true })
@@ -77,6 +73,6 @@ export class CreateOrderDto {
     userId?: string;
 
     @IsEnum(OrderStatus)
-    @IsNotEmpty()
-    status: OrderStatus;
+    @IsOptional()
+    status?: OrderStatus;
 }

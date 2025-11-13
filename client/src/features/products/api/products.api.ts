@@ -33,7 +33,9 @@ export async function fetchProductsByIds(ids: string[]): Promise<IProduct[]> {
     if (!ids || ids.length === 0) return [];
 
     try {
-        const { data } = await httpService.get<IProduct[]>(`/shop/products?ids=${ids.join(",")}`);
+        const { data } = await httpService.get<IProduct[]>(
+            `/shop/products/by-ids?ids=${ids.join(",")}`
+        );
         return data;
     } catch (error: unknown) {
         handleAxiosError(error);

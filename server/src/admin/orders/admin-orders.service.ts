@@ -4,8 +4,8 @@ import {
     InternalServerErrorException,
     NotFoundException,
 } from "@nestjs/common";
-import { UpdateOrderDto } from "./dto/update-order.dto";
 import { PrismaService } from "src/prisma/prisma.service";
+import { UpdateOrderDto } from "src/shop/orders/dto/update-order.dto";
 import { AdminRecentActionsService } from "../recent-actions/admin-recent-actions.service";
 
 @Injectable()
