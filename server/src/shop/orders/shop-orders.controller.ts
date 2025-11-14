@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, Req, UseGuards } from "@nestjs/common";
+import { Body, Controller, Get, Param, Post, Req, UseGuards } from "@nestjs/common";
 import { Role } from "generated/prisma";
 import { Public } from "src/auth/decorators/public.decorator";
 import { Roles } from "src/auth/decorators/roles.decorator";
@@ -25,5 +25,14 @@ export class ShopOrdersController {
     @Roles(Role.USER, Role.ADMIN)
     getOrdersByUserId(@Req() req: Request & { user: AuthenticatedRequestUser }) {
         return this.shopOrdersService.getOrdersByUserId(req.user.id);
+    }
+
+    @Get("stripe/:sessionId")
+    @Public()
+    getOrderByStripeSessionId(
+        // @Req() req: Request & { user: AuthenticatedRequestUser },
+        @Param("sessionId") sessionId: string
+    ) {
+        return this.shopOrdersService.getOrderByStripeSessionId(sessionId);
     }
 }

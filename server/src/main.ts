@@ -7,18 +7,26 @@ import { AppModule } from "./app.module";
 
 async function bootstrap() {
     const app = await NestFactory.create(AppModule);
+
+    app.use("/api/stripe/webhook", express.raw({ type: "application/json" }));
+
+    app.use(express.json());
+    app.use(cookieParser());
+
     app.setGlobalPrefix("api");
+
     app.enableCors({
         origin: "http://localhost:3000",
         methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
         credentials: true,
     });
 
-    app.use(cookieParser());
-
-    app.use("/stripe/webhook", express.raw({ type: "application/json" }));
-
-    app.use(express.json());
+    app.useGlobalPipes(
+        new ValidationPipe({
+            transform: true,
+            whitelist: true,
+        })
+    );
 
     const config = new DocumentBuilder()
         .setTitle("Mindset API")
@@ -30,12 +38,6 @@ async function bootstrap() {
     const document = SwaggerModule.createDocument(app, config);
     SwaggerModule.setup("docs", app, document);
 
-    app.useGlobalPipes(
-        new ValidationPipe({
-            transform: true,
-            whitelist: true,
-        })
-    );
     await app.listen(5000);
 }
 

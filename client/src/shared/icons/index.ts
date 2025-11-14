@@ -6,6 +6,7 @@ export { BurgerMenuIcon } from "./BurgerMenuIcon";
 export { CardIcon } from "./CardIcon";
 export { CartIcon } from "./CartIcon";
 export { CategoriesIcon } from "./CategoriesIcon";
+export { CheckIcon } from "./CheckIcon";
 export { CloseIcon } from "./CloseIcon";
 export { CollectionsIcon } from "./CollectionsIcon";
 export { EditIcon } from "./EditIcon";

@@ -4,6 +4,7 @@ import { toast } from "sonner";
 import {
     createOrder,
     deleteOrder,
+    getOrderByStripeSessionId,
     getOrders,
     getOrdersByUserId,
     updateOrder,
@@ -21,6 +22,13 @@ export function useUserOrders() {
     return useQuery({
         queryKey: ["orders", "currentUser"],
         queryFn: () => getOrdersByUserId(),
+    });
+}
+
+export function useOrderByStripeSessionId(sessionId: string) {
+    return useQuery({
+        queryKey: ["order", sessionId],
+        queryFn: () => getOrderByStripeSessionId(sessionId),
     });
 }
 

@@ -18,6 +18,7 @@ export interface IOrder {
     postDepartment: string;
     additionalInfo?: string;
     total: number;
+    currency: "usd";
     createdAt?: string;
     updatedAt?: string;
     items: IOrderItem[];

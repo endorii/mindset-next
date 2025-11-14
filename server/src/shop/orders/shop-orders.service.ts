@@ -111,4 +111,29 @@ export class ShopOrdersService {
             throw new InternalServerErrorException("Не вдалося отримати замовлення");
         }
     }
+
+    async getOrderByStripeSessionId(sessionId: string) {
+        try {
+            const orders = await this.prisma.order.findFirst({
+                where: {
+                    stripeSessionId: sessionId,
+                },
+                include: {
+                    items: {
+                        include: {
+                            product: true,
+                        },
+                    },
+                },
+            });
+
+            return orders;
+        } catch (error) {
+            console.error("Помилка отримання замовлень:", error);
+            if (error instanceof HttpException) {
+                throw error;
+            }
+            throw new InternalServerErrorException("Не вдалося отримати замовлення");
+        }
+    }
 }

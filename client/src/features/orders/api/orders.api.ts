@@ -20,6 +20,15 @@ export async function getOrdersByUserId(): Promise<IOrder[]> {
     }
 }
 
+export async function getOrderByStripeSessionId(stripeSessionId: string): Promise<IOrder> {
+    try {
+        const { data } = await httpServiceAuth.get(`/shop/orders/stripe/${stripeSessionId}`);
+        return data;
+    } catch (error: unknown) {
+        handleHttpError(error);
+    }
+}
+
 export async function createOrder(
     payload: IOrderPayload
 ): Promise<ServerResponseWithMessage<IOrder>> {

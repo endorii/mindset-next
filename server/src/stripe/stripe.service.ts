@@ -44,7 +44,6 @@ export class StripeService {
             metadata: { orderId: order.id },
         });
 
-        // збережи session.id у БД
         await this.prisma.order.update({
             where: { id: order.id },
             data: {
@@ -55,26 +54,47 @@ export class StripeService {
         return { url: session.url };
     }
 
-    // Обробка Webhook від Stripe
-    // handleWebhook(signature: string, rawBody: Buffer) {
-    //     const webhookSecret: string = this.configService.get("STRIPE_SECRET_WEBHOOK_KEY")!;
+    async handleWebhook(req: Request & { body: Buffer }, signature: string) {
+        const webhookSecret: string = this.configService.get("STRIPE_SECRET_WEBHOOK_KEY")!;
 
-    //     if (!webhookSecret) throw new InternalServerErrorException("webhook_secret not provided");
+        let event: Stripe.Event;
 
-    //     let event: Stripe.Event;
+        try {
+            event = this.stripe.webhooks.constructEvent(req.body, signature, webhookSecret);
+        } catch (err: unknown) {
+            const error = err as Error;
+            console.error("❌ Webhook signature failed:", error.message);
+            return;
+        }
 
-    //     try {
-    //         event = this.stripe.webhooks.constructEvent(rawBody, signature, webhookSecret);
-    //     } catch (err) {
-    //         throw new Error(`Webhook signature verification failed: ${err.message}`);
-    //     }
+        if (event.type === "checkout.session.completed") {
+            const session = event.data.object;
+            await this.updateOrderAfterPayment(session);
+        }
+    }
 
-    //     // Обробка успішної оплати
-    //     if (event.type === "checkout.session.completed") {
-    //         const session = event.data.object as Stripe.Checkout.Session;
-    //         // await this.createOrderFromSession(session);
-    //     }
+    private async updateOrderAfterPayment(session: Stripe.Checkout.Session) {
+        const orderId = session.metadata?.orderId;
 
-    //     return { received: true };
-    // }
+        const order = await this.prisma.order.findUnique({
+            where: { id: orderId },
+        });
+
+        if (!order) throw new NotFoundException("Order not found");
+
+        await this.prisma.order.update({
+            where: { id: orderId },
+            data: {
+                paymentStatus: "paid",
+                stripePaymentIntentId:
+                    typeof session.payment_intent === "string"
+                        ? session.payment_intent
+                        : (session.payment_intent?.id ?? null),
+                stripeCustomerId:
+                    typeof session.customer === "string"
+                        ? session.customer
+                        : (session.customer?.id ?? null),
+            },
+        });
+    }
 }

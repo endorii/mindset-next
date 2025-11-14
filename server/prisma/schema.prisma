@@ -308,6 +308,7 @@ enum PaymentMethod {
 }
 
 enum PaymentStatus {
+  paid
   pending
   processing
   success
