@@ -52,12 +52,17 @@ select option {
 }
 
 .font-roboto {
-  font-family: 'Roboto', sans-serif;
+  font-family: var(--font-roboto);
 }
 
-.font-qwitcher-grypen {
-    font-family: 'Qwitcher Grypen', cursive;
+.font-ballet {
+  font-family: var(--font-ballet);
 }
+
+.font-perandory {
+  font-family: var(--font-perandory);
+}
+
 
 
 .swiper-wrapper {

@@ -2,17 +2,30 @@ import { getCurrentUserSSR } from "@/shared/api/authFetch.api";
 import { AuthStoreInitializer } from "@/shared/components/AuthStoreInitializer";
 import { QueryProvider } from "@/shared/components/providers/QueryProvider";
 import type { Metadata } from "next";
-import { Qwitcher_Grypen, Roboto } from "next/font/google";
+import { Ballet, Roboto } from "next/font/google";
+import localFont from "next/font/local";
 import { Toaster } from "sonner";
 import "./globals.css";
 
 export const roboto = Roboto({
-    subsets: ["cyrillic"],
+    subsets: ["latin"],
+    variable: "--font-roboto",
 });
 
-export const qwitcherGrypen = Qwitcher_Grypen({
+export const ballet = Ballet({
     subsets: ["latin"],
-    weight: ["400", "700"],
+    variable: "--font-ballet",
+});
+
+export const perandory = localFont({
+    src: [
+        {
+            path: "../fonts/PerandorySemiCondensed.otf",
+            weight: "400",
+            style: "normal",
+        },
+    ],
+    variable: "--font-perandory", // опційно для CSS
 });
 
 export const metadata: Metadata = {
@@ -26,7 +39,10 @@ export default async function RootLayout({
     const { user, accessToken } = await getCurrentUserSSR();
 
     return (
-        <html lang="en" className={roboto.className}>
+        <html
+            lang="en"
+            className={`${roboto.className} ${ballet.variable} ${perandory.variable}`}
+        >
             <body className="relative bg-black">
                 <QueryProvider>
                     <Toaster theme="dark" />

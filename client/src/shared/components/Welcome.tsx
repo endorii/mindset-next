@@ -1,15 +1,15 @@
 export function Welcome() {
-    const text = "mindset.";
+    const text = "MINDSET";
 
     return (
-        <div className="relative">
-            <div className="relative flex flex-col text-white h-screen justify-center items-center pb-[150px]">
-                <div className="overflow-hidden text-[400px] 2xl:text-[340px] xl:text-[280px] lg:text-[230px] md:text-[180px] sm:text-[110px] xs:text-[80px] xxs:text-[70px] font-extrabold uppercase tracking-[-0.05em] leading-[350px] 2xl:leading-[290px] xl:leading-[240px] lg:leading-[190px] md:leading-[150px] sm:leading-[100px] ">
+        <div className="relative flex flex-col h-screen justify-center items-center">
+            <div className="relative text-white ">
+                <div className="relative overflow-hidden text-[350px] 2xl:text-[340px] xl:text-[280px] lg:text-[230px] md:text-[180px] sm:text-[110px] xs:text-[80px] xxs:text-[70px] font-perandory uppercase leading-[350px]">
                     {text}
                 </div>
 
                 <div
-                    className={`text-center w-full text-5xl xl:text-4xl md:text-3xl xs:text-2xl font-qwitcher-grypen font-light self-start justify-start transition-all duration-450  "opacity-100" `}
+                    className={`absolute bottom-2 text-center w-full text-8xl xl:text-4xl md:text-3xl xs:text-2xl font-ballet font-light self-start justify-start transition-all duration-450 opacity-100 text-white/20 z-1`}
                 >
                     your style - your life vision
                 </div>
