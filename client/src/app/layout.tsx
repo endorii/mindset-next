@@ -25,7 +25,7 @@ export const perandory = localFont({
             style: "normal",
         },
     ],
-    variable: "--font-perandory", // опційно для CSS
+    variable: "--font-perandory",
 });
 
 export const metadata: Metadata = {

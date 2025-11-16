@@ -46,12 +46,9 @@ export function HeaderBurger() {
 
     return (
         <div>
-            <div
-                className="cursor-pointer relative flex gap-[10px] rounded-xl bg-white/5 shadow-lg px-[20px] py-[13px] backdrop-blur-2xl border border-white/5 hover:bg-white/15 transition-all duration-300"
-                onClick={() => setIsOpen(true)}
-            >
+            <button className="relative" onClick={() => setIsOpen(true)}>
                 <BurgerMenuIcon className="w-[25px] fill-none stroke-2 stroke-white" />
-            </div>
+            </button>
 
             <div
                 className={`

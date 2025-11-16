@@ -363,10 +363,7 @@ function Checkout() {
     if (!cartToShow.length) {
         return (
             <div className="flex flex-col gap-[50px] text-white items-center justify-center min-h-[60vh]">
-                <ShopTitle
-                    title={"Ваш кошик порожній"}
-                    subtitle={"Your cart is empty"}
-                />
+                <ShopTitle title={"Your cart is empty"} />
                 <MonoButton onClick={() => router.push("/")}>
                     Перейти до покупок
                 </MonoButton>
@@ -376,10 +373,7 @@ function Checkout() {
 
     return (
         <div className="flex flex-col gap-[50px] text-white">
-            <ShopTitle
-                title={"Оформлення замовлення"}
-                subtitle={"Placing an order"}
-            />
+            <ShopTitle title={"Placeing an order"} />
             <form onSubmit={handleSubmit(onSubmit)}>
                 <div className="flex justify-between px-[30px] gap-[15px]">
                     <div className="flex flex-col gap-[15px] w-1/2 rounded-xl bg-white/5 backdrop-blur-[100px] border border-white/5 p-[30px] h-fit">

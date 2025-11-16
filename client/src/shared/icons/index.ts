@@ -32,3 +32,5 @@ export { TelegramIcon } from "./TelegramIcon";
 export { TiktokIcon } from "./TiktokIcon";
 export { TrashIcon } from "./TrashIcon";
 export { WearIcon } from "./WearIcon";
+
+export { KnightIcon } from "./KnightIcon";

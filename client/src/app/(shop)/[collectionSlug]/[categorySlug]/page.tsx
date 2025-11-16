@@ -71,7 +71,7 @@ export default async function CategoryPage({
     if (errorMessage) {
         return (
             <div className="flex flex-col gap-4 mt-10 text-red-600">
-                <ShopTitle title={`Помилка`} subtitle={`Error`} />
+                <ShopTitle title={`Error`} />
                 <ErrorWithMessage message={errorMessage} />
             </div>
         );
@@ -79,10 +79,7 @@ export default async function CategoryPage({
 
     return (
         <div className="flex flex-col gap-[50px]">
-            <ShopTitle
-                title={`Товари ${collectionSlug} / ${categorySlug}`}
-                subtitle={`Products ${collectionSlug} / ${categorySlug}`}
-            />
+            <ShopTitle title={`Products ${collectionSlug} / ${categorySlug}`} />
 
             <ProductsSection
                 collectionPath={collectionSlug}

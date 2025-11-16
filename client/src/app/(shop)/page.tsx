@@ -38,7 +38,7 @@ export default async function CollectionsPage() {
         <div>
             <Welcome />
             <div className="flex flex-col gap-[50px]">
-                <ShopTitle title="Колекції" subtitle="Collections" />
+                <ShopTitle title="Collections" />
                 <CollectionsSection collections={collections} />
             </div>
         </div>
