@@ -1,10 +1,12 @@
 "use client";
 
 import { useProductsByIds } from "@/features/products/hooks/useProducts";
+import { MonoButton } from "@/shared/ui/buttons";
 import { ErrorWithMessage } from "@/shared/ui/components";
 import { UserCartSkeleton } from "@/shared/ui/skeletons";
+import { ShopTitle } from "@/shared/ui/titles/ShopTitle";
 import { useCartStore } from "@/store/useCartStore";
-import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { useCurrentUser } from "../../user-info/hooks/useUsers";
 import {
     useCartItemsFromUser,
@@ -14,6 +16,7 @@ import { CartItem } from "./CartItem";
 import { CartReceip } from "./CartReceip";
 
 export function CartContent() {
+    const router = useRouter();
     const { cartItems, removeFromCart } = useCartStore();
 
     const deleteCartItemMutation = useDeleteCartItemFromUser();
@@ -63,20 +66,11 @@ export function CartContent() {
 
     if (!mergedCart.length) {
         return (
-            <div className="flex flex-col justify-center text-center items-center p-[30px] sm:p-[10px] sm:pb-[150px]">
-                <Image
-                    src="/images/emptycart.png"
-                    alt="empty cart"
-                    width={300}
-                    height={300}
-                    className="opacity-30 w-[300px] sm:w-[200px]"
-                />
-                <div className="font-semibold text-4xl md:text-3xl text-white/50">
-                    Ваш кошик порожній
-                </div>
-                <div className="font mt-[7px] text-white/30">
-                    Наповніть його товарами!
-                </div>
+            <div className="flex flex-col gap-[30px] text-white items-center justify-center min-h-[50vh] pb-[100px]">
+                <ShopTitle title={"Your cart is empty"} />
+                <MonoButton onClick={() => router.push("/#collections")}>
+                    Start shopping
+                </MonoButton>
             </div>
         );
     }

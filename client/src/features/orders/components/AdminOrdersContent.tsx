@@ -68,7 +68,7 @@ export function AdminOrdersContent() {
                         <div>Ім'я</div>
                         <div className="lg:hidden">Телефон</div>
                         <div className="xs:text-end">Статус</div>
-                        <div className="text-center md:hidden">Сума, грн</div>
+                        <div className="text-center md:hidden">Ammount, $</div>
                         <div className="xs:hidden">
                             Дата створення / оновлення
                         </div>

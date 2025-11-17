@@ -34,7 +34,7 @@ export async function uploadImages(
         images.forEach((image) => formData.append("images", image));
 
         const { data } = await httpServiceAuth.post(
-            `files/upload/${type}/images${entityId}`,
+            `files/upload/${type}/images/${entityId}`,
             formData,
             {
                 headers: { "Content-Type": "multipart/form-data" },

@@ -13,6 +13,7 @@ import { Breadcrumbs } from "@/shared/ui/components";
 import { addToRecentlyViewed } from "@/shared/utils/addToRecentlyViewed";
 import { useCartStore } from "@/store/useCartStore";
 import { useFavoritesStore } from "@/store/useFavoritesStore";
+import Image from "next/image";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { IProduct } from "../types/products.types";
@@ -105,78 +106,79 @@ export function ProductContent({
 
     return (
         <div className="flex lg:flex-col gap-[15px] items-start text-white">
-            <div className="flex xl:flex-col gap-[10px] relative rounded-xl bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 max-h-[80vh] xl:max-h-[90vh] xl:w-full w-[55%]">
-                <div className="relative w-[85%] xl:w-full">
+            <div className="flex xl:flex-col gap-[10px] relative xl:w-full w-[55%]">
+                <div className="relative w-full h-full">
                     <button
                         onClick={handleLikeToggle}
-                        className="absolute group top-[10px] right-[10px] m-[0_auto] text-xs flex justify-center items-center gap-[10px] transition-all duration-300 cursor-pointer min-w-[60px] w-[60px] min-h-[60px] h-[60px] rounded-xl bg-black/30 hover:bg-black/40 shadow-lg backdrop-blur-[100px] border border-black/5 p-[10px]"
+                        className="absolute group top-[10px] right-[10px] m-[0_auto] text-xs flex justify-center items-center gap-[10px] transition-all duration-300 cursor-pointer min-w-[60px] w-[60px] min-h-[60px] h-[60px] p-[5px]"
                     >
                         <HeartIcon
-                            className={`group-hover:fill-white transition-all duration-300 ${
+                            className={`group-hover:fill-red-600 group-hover:stroke-red-600 transition-all duration-300 ${
                                 isLiked
-                                    ? "w-[42px] stroke-white fill-white"
-                                    : "w-[35px] stroke-white stroke-[1.5] fill-none"
+                                    ? "w-[50px] stroke-red-600 fill-red-600"
+                                    : "w-[40px] stroke-white stroke-[1.5] fill-none"
                             }`}
                         />
                     </button>
-                    <img
+                    <Image
                         src={product.banner}
                         alt={product.name}
-                        className="rounded-xl w-full h-[80vh] xl:max-h-[70vh] object-cover"
+                        className="w-full object-cover"
+                        width={700}
+                        height={700}
                     />
                 </div>
                 {product.images.length > 0 && (
-                    <div className="flex flex-col xl:flex-row gap-[10px] w-[15%] xl:w-full xl:h-[150px] overflow-y-auto xl:overflow-x-auto">
+                    <div className="flex flex-col xl:flex-row gap-[10px] w-[15%] xl:w-full xl:h-[200px] overflow-y-auto xl:overflow-x-auto">
                         {product.images.map((image, i) => (
-                            <img
+                            <Image
                                 key={i}
                                 src={image}
                                 alt={product.name}
-                                className="rounded-xl"
+                                width={200}
+                                height={200}
+                                className="object-cover"
                             />
                         ))}
                     </div>
                 )}
             </div>
 
-            <div className="flex flex-col gap-[15px] w-[45%] lg:w-full">
-                <div className="flex flex-col gap-[15px] rounded-xl bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 px-[40px] xl:p-[15px] py-[20px]">
+            <div className="flex flex-col gap-[15px] w-[45%] lg:w-full h-fit">
+                <div className="flex flex-col gap-[25px] bg-white/5 border border-white/10 px-[20px] xl:p-[15px] py-[20px]">
                     <Breadcrumbs
                         collectionPath={collectionPath}
                         categoryPath={categoryPath}
                         productPath={productPath}
                     />
 
-                    <h3 className="text-5xl 2xl:text-4xl font-bold">
+                    <h2 className="text-5xl 2xl:text-4xl font-bold font-perandory tracking-wider">
                         {product.name}
-                    </h3>
+                    </h2>
 
-                    <div className="flex gap-[15px] items-center mt-[10px]">
+                    <div className="flex gap-[15px] items-end justify-between mt-[10px]">
                         <div className="flex gap-[10px] items-center">
-                            <div className="text-xl font-semibold">
-                                {product.price} грн.
+                            <div className="text-3xl font-semibold">
+                                ${product.price}
                             </div>
                             {product.oldPrice && (
                                 <div className="text-lg line-through text-white/60 font-light">
-                                    {product.oldPrice} грн.
+                                    ${product.oldPrice}
                                 </div>
                             )}
                         </div>
+                        <div
+                            className={`text-xl font-perandory tracking-wider ${
+                                product.available
+                                    ? "text-green-600"
+                                    : "text-red-500"
+                            }`}
+                        >
+                            {product.available ? "In stock" : "Out of stock"}
+                        </div>
                     </div>
 
-                    <div
-                        className={`text-sm ${
-                            product.available
-                                ? "text-green-600"
-                                : "text-red-500"
-                        }`}
-                    >
-                        {product.available
-                            ? "В наявності"
-                            : "Немає в наявності"}
-                    </div>
-
-                    <div className="mt-[20px] xl:mt-[10px] text-sm text-white/80 break-words">
+                    <div className="mt-[20px] xl:mt-[10px] text-base font-light text-neutral-300 break-words">
                         {product.description}
                     </div>
                     <hr className="w-full border-white/10 border-t" />
@@ -184,11 +186,13 @@ export function ProductContent({
                         {product.composition}
                     </div>
 
-                    <div className="flex flex-col gap-[35px] mt-[30px] text-sm">
+                    <div className="flex flex-col gap-[15px] mt-[30px] text-sm">
                         {product.productColors?.length > 0 && (
                             <div className="flex flex-wrap gap-[10px] items-center">
                                 <div className="flex gap-[30px]">
-                                    <div>Колір:</div>
+                                    <div className="font-perandory tracking-wider text-xl">
+                                        Color:
+                                    </div>
                                     <ul className="flex flex-wrap gap-[10px]">
                                         {product.productColors.map(
                                             (item, i) => (
@@ -201,7 +205,7 @@ export function ProductContent({
                                                     }
                                                 >
                                                     <button
-                                                        className={`w-[25px] h-[25px] rounded-full border border-transparent hover:border-white/20 cursor-pointer ${
+                                                        className={`w-[25px] h-[25px] border border-transparent hover:border-white/20 cursor-pointer ${
                                                             chosenColor ===
                                                             item.color.name
                                                                 ? "border-white/100"
@@ -219,17 +223,19 @@ export function ProductContent({
                                     </ul>
                                 </div>
                                 <div className="flex gap-[10px] items-center">
-                                    <div className="text-xs text-white/40">
-                                        Обраний колір:{" "}
+                                    <div className="text-xs text-neutral-400">
+                                        Chosen color:{" "}
                                     </div>
-                                    <div>{chosenColor}</div>
+                                    <div className="capitalize font-perandory tracking-wider text-xl">
+                                        {chosenColor}
+                                    </div>
                                 </div>
                             </div>
                         )}
 
                         <AttributeSelector
                             attributeItems={product.productTypes}
-                            label="Тип"
+                            label="Type"
                             getName={(item) => item.type.name}
                             chosenValue={chosenType}
                             setFunction={setChosenType}
@@ -237,17 +243,19 @@ export function ProductContent({
 
                         <AttributeSelector
                             attributeItems={product.productSizes}
-                            label="Розмір"
+                            label="Size"
                             getName={(item) => item.size.name}
                             chosenValue={chosenSize}
                             setFunction={setChosenSize}
                         />
 
                         <div className="relative flex gap-[30px] items-center">
-                            <div>Кількість</div>
+                            <div className="font-perandory tracking-wider text-xl">
+                                Quantity
+                            </div>
                             <div className="flex gap-[15px] items-center">
                                 <button
-                                    className="p-[7px] text-center border border-white/10 rounded-xl w-[40px] h-[40px] cursor-pointer bg-white/5 hover:bg-white/10 active:bg-white active:text-black transition-all duration-200"
+                                    className="p-[7px] text-center border border-white/10 w-[40px] h-[40px] bg-white/5 hover:bg-white/10 active:bg-white active:text-black transition-all duration-200"
                                     onClick={() =>
                                         setQuantity((prev) =>
                                             prev > 1 ? prev - 1 : prev
@@ -258,7 +266,7 @@ export function ProductContent({
                                 </button>
                                 <div>{quantity}</div>
                                 <button
-                                    className="p-[7px] text-center border border-white/10 rounded-xl w-[40px] h-[40px] cursor-pointer bg-white/5 hover:bg-white/10 active:bg-white active:text-black transition-all duration-200"
+                                    className="p-[7px] text-center border border-white/10 w-[40px] h-[40px] bg-white/5 hover:bg-white/10 active:bg-white active:text-black transition-all duration-200"
                                     onClick={() =>
                                         setQuantity((prev) => prev + 1)
                                     }
@@ -282,13 +290,13 @@ export function ProductContent({
                             quantity < 1
                         }
                     >
-                        В кошик
+                        Add to cart
                     </MonoButton>
                     <MonoButton
                         onClick={handleLikeToggle}
                         className="w-full h-[50px]"
                     >
-                        {isLiked ? "Видалити з вподобаного" : "В вподобане"}
+                        {isLiked ? "Remove from favorites" : "Add to favorites"}
                     </MonoButton>
                 </div>
             </div>

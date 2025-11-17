@@ -47,10 +47,10 @@ export function FavoriteCard({ onRemove, product }: FavoriteCardProps) {
                         </div>
                         <div className="flex gap-[10px]">
                             <div className="text-xl text-white font-semibold">
-                                {product.price} грн.
+                                ${product.price}
                             </div>
                             <div className="font-semibold line-through text-lg text-white/60">
-                                {product.oldPrice} грн.
+                                ${product.oldPrice}
                             </div>
                         </div>
                     </div>

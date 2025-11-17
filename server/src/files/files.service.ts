@@ -4,7 +4,7 @@ import { PrismaService } from "src/prisma/prisma.service";
 import { SupabaseService } from "src/supabase/supabase.service";
 
 type BannerEntity = "collection" | "category" | "product";
-type ImagesEntity = "product" | "review";
+type ImagesEntity = "products" | "reviews";
 
 @Injectable()
 export class FilesService {
@@ -15,8 +15,8 @@ export class FilesService {
 
     private getBucket(type: BannerEntity | ImagesEntity, purpose: "banner" | "images") {
         if (purpose === "banner") return "banners";
-        if (purpose === "images" && type === "product") return "products";
-        if (purpose === "images" && type === "review") return "reviews";
+        if (purpose === "images" && type === "products") return "products";
+        if (purpose === "images" && type === "reviews") return "reviews";
         throw new Error("Invalid bucket mapping");
     }
 
@@ -69,12 +69,12 @@ export class FilesService {
             urls.push(url);
         }
 
-        if (type === "product") {
+        if (type === "products") {
             await this.prisma.product.update({
                 where: { id },
                 data: { images: { push: urls } },
             });
-        } else if (type === "review") {
+        } else if (type === "reviews") {
             await this.prisma.review.update({
                 where: { id },
                 data: { images: { push: urls } },

@@ -83,7 +83,7 @@ export function OrdersByCollectionsChart({
                         ))}
                     </Pie>
                     <Tooltip
-                        formatter={(value) => `${value} грн`}
+                        formatter={(value) => `$${value}`}
                         contentStyle={{
                             backgroundColor: "black",
                             border: "1px solid #ffffff20",

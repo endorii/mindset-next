@@ -362,17 +362,17 @@ function Checkout() {
 
     if (!cartToShow.length) {
         return (
-            <div className="flex flex-col gap-[50px] text-white items-center justify-center min-h-[60vh]">
+            <div className="flex flex-col gap-[30px] text-white items-center justify-center min-h-[90vh] pb-[100px]">
                 <ShopTitle title={"Your cart is empty"} />
                 <MonoButton onClick={() => router.push("/")}>
-                    Перейти до покупок
+                    Start shopping
                 </MonoButton>
             </div>
         );
     }
 
     return (
-        <div className="flex flex-col gap-[50px] text-white">
+        <div className="flex flex-col gap-[30px] mt-[30px] text-white">
             <ShopTitle title={"Placeing an order"} />
             <form onSubmit={handleSubmit(onSubmit)}>
                 <div className="flex justify-between px-[30px] gap-[15px]">

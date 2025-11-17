@@ -55,7 +55,7 @@ select option {
     color: white;
 }
 
-.font-roboto {
+body {
   font-family: var(--font-roboto);
 }
 

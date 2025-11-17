@@ -1,15 +1,18 @@
 "use client";
 
 import { useProductsByIds } from "@/features/products/hooks/useProducts";
+import { MonoButton } from "@/shared/ui/buttons";
 import { ErrorWithMessage } from "@/shared/ui/components";
 import { UserFavoritesSkeleton } from "@/shared/ui/skeletons";
+import { ShopTitle } from "@/shared/ui/titles/ShopTitle";
 import { useFavoritesStore } from "@/store/useFavoritesStore";
-import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { useCurrentUser } from "../../user-info/hooks/useUsers";
 import { useDeleteFavorite, useFavoritesFromUser } from "../hooks/useFavorites";
 import { FavoriteCard } from "./FavoriteCard";
 
 export function FavoritesContent() {
+    const router = useRouter();
     const { favoriteItems, removeFromFavorites } = useFavoritesStore();
 
     const deleteFavoriteFromUserMutation = useDeleteFavorite();
@@ -48,20 +51,11 @@ export function FavoritesContent() {
 
     if (!products?.length) {
         return (
-            <div className="flex flex-col justify-center text-center items-center p-[30px] sm:p-[10px] sm:pb-[150px]">
-                <Image
-                    src="/images/emptyfavorites.png"
-                    alt="Empty favorites"
-                    width={300}
-                    height={300}
-                    className="opacity-30 w-[300px] sm:w-[200px]"
-                />
-                <div className="font-semibold text-4xl md:text-3xl text-white/50">
-                    Немає вподобаних товарів
-                </div>
-                <div className="font mt-[7px] text-white/30">
-                    Змініть це, додайте щось!
-                </div>
+            <div className="flex flex-col gap-[30px] text-white items-center justify-center min-h-[50vh] pb-[100px]">
+                <ShopTitle title={"Your favorite list is empty"} />
+                <MonoButton onClick={() => router.push("/#collections")}>
+                    Start exploring
+                </MonoButton>
             </div>
         );
     }

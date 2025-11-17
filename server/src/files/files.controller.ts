@@ -37,7 +37,7 @@ export class FilesController {
     @Roles(Role.ADMIN)
     @UseInterceptors(FilesInterceptor("images"))
     async uploadImages(
-        @Param("type") type: "product" | "review",
+        @Param("type") type: "products" | "reviews",
         @Param("id") id: string,
         @UploadedFiles() files: Express.Multer.File[]
     ) {

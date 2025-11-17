@@ -78,9 +78,9 @@ export default async function CollectionPage({
     }
 
     return (
-        <div className="flex flex-col gap-[50px] mt-[30px]">
+        <div className="flex flex-col gap-[30px] mt-[30px]">
             <ShopTitle
-                title={`Categories ${collection?.name || collectionSlug}`}
+                title={`${collection?.name || collectionSlug} categories `}
             />
             <CategoriesSection
                 collectionPath={collectionSlug}

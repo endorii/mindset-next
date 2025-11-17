@@ -26,11 +26,16 @@ export class StripeService {
 
         const lineItems = order.items.map((item) => ({
             price_data: {
-                currency: order.currency,
+                currency: "usd",
                 product_data: {
                     name: item.product.name,
                 },
                 unit_amount: item.product.price * 100,
+                currency_options: {
+                    eur: { unit_amount: item.product.price * 100 * 0.92 },
+                    uah: { unit_amount: item.product.price * 100 * 41 },
+                    gbp: { unit_amount: item.product.price * 100 * 0.79 },
+                },
             },
             quantity: item.quantity,
         }));

@@ -17,7 +17,7 @@ export function AttributeSelector<T>({
 
     return (
         <div className="flex items-center gap-[30px]">
-            <div>{label}:</div>
+            <div className="font-perandory tracking-wider text-xl">{label}</div>
             <ul className="flex flex-wrap gap-[10px]">
                 {attributeItems.map((item, i) => {
                     const name = getName(item);
@@ -27,7 +27,7 @@ export function AttributeSelector<T>({
                         <li key={i}>
                             <button
                                 onClick={() => setFunction(name)}
-                                className={`px-[15px] py-[4px] border border-white/10 rounded-xl hover:border-white/20 cursor-pointer ${
+                                className={`px-[15px] py-[4px] border border-white/10 hover:border-white/20 cursor-pointer ${
                                     isSelected
                                         ? "bg-white text-black"
                                         : "border-gray-200"

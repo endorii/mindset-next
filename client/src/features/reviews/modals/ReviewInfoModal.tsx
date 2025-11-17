@@ -138,9 +138,9 @@ export function ReviewInfoModal({
                                     <div>{orderItem.quantity}</div>
 
                                     <div>
+                                        $
                                         {Number(orderItem.product?.price) *
                                             Number(orderItem.quantity)}
-                                        ,00 грн.
                                     </div>
                                     <Link
                                         className="underline text-center text-blue-500 hover:text-white"

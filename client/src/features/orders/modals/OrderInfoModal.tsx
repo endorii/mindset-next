@@ -112,7 +112,7 @@ export function OrderInfoModal({
                             <div>Колір</div>
                             <div>Розмір</div>
                             <div>Тип</div>
-                            <div>Ціна, грн</div>
+                            <div>Price, $</div>
                         </div>
 
                         <div className="border border-white/10 rounded-xl">

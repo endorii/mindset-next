@@ -13,61 +13,32 @@ export function CollectionsAndCategoriesList({
     basePath = "",
 }: CollectionsAndCategoriesListProps) {
     return (
-        <div className="flex flex-col w-full">
+        <div className="grid grid-cols-3 gap-[15px] w-full">
             {items.map((item, i) => (
                 <div key={i} className="relative cursor-pointer">
                     <div className="absolute opacity-0 hover:opacity-100 bg-black/80 backdrop-blur-xl w-full h-full font-thin text-3xl text-white z-[1] transition-all duration-400 flex items-center justify-center">
-                        {i % 2 === 0 ? (
-                            <>
-                                <Link
-                                    className="flex items-center w-full h-full justify-center"
-                                    href={`${basePath}/${item.path}`}
-                                >
-                                    <div className="border-b border-transparent hover:border-white">
-                                        Переглянути
-                                    </div>
-                                </Link>
-                                {item.description && (
-                                    <div className="absolute md:hidden top-[50%] translate-y-[-50%] right-[2%] w-[20%] text-base text-white">
-                                        {item.description}
-                                    </div>
-                                )}
-                            </>
-                        ) : (
-                            <>
-                                {item.description && (
-                                    <div className="absolute md:hidden top-[50%] translate-y-[-50%] left-[2%] w-[20%] text-base text-white">
-                                        {item.description}
-                                    </div>
-                                )}
-                                <Link
-                                    className="flex items-center w-full h-full justify-center"
-                                    href={`${basePath}/${item.path}`}
-                                >
-                                    <div className="border-b border-transparent hover:border-white">
-                                        Переглянути
-                                    </div>
-                                </Link>
-                            </>
-                        )}
+                        <Link
+                            className="flex items-center w-full h-full justify-center"
+                            href={`${basePath}/${item.path}`}
+                        >
+                            <div className="border-b border-white font-perandory">
+                                View
+                            </div>
+                        </Link>
                     </div>
 
                     <div className="group flex flex-col">
                         <div
-                            className={`absolute bg-black/25 border border-white/10 shadow-xl px-[50px] py-[15px] backdrop-blur-lg rounded-xl top-[50%] translate-y-[-50%] text-white text-3xl font-thin 
-                ${
-                    i % 2 === 0
-                        ? "left-[10%] md:left-[50%] translate-x-[-10%] md:translate-x-[-50%]"
-                        : "right-[10%] md:right-[50%] translate-x-[10%] md:translate-x-[50%]"
-                }`}
+                            className={`absolute font-perandory tracking-wider left-[30px] top-[30px] text-white text-3xl font-thin 
+    drop-shadow-sm/40`}
                         >
                             {item.name}
                         </div>
                         <Image
                             src={item.banner}
                             alt={item.name}
-                            width={2000}
-                            height={700}
+                            width={1000}
+                            height={1000}
                             className="w-full h-[750px] object-cover filter transition-all duration-600"
                         />
                     </div>

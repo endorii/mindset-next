@@ -56,17 +56,17 @@ function Reviews() {
 
             <div>
                 <MonoButton onClick={() => router.back()}>
-                    <BackIcon className="w-[23px] stroke-white stroke-[50] group-hover:stroke-black" />
-                    <div>Назад до товару</div>
+                    <BackIcon className="w-[23px] stroke-white stroke-50 group-hover:stroke-black" />
+                    <div>Go back</div>
                 </MonoButton>
             </div>
 
-            <div className="text-white rounded-xl bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px]">
-                <h2 className="text-2xl font-bold mb-4">
-                    Відгуки про товар ({reviews?.length || 0})
+            <div className="text-white p-[20px]">
+                <h2 className="text-4xl font-perandory tracking-wider mb-4">
+                    Clients reviews ({reviews?.length || 0})
                 </h2>
 
-                <div className="flex sm:flex-col gap-[15px]">
+                <div className="flex sm:flex-col gap-[30px]">
                     {reviews && reviews.length > 0 ? (
                         <AvgRatingStat reviews={reviews} />
                     ) : null}
@@ -81,7 +81,7 @@ function Reviews() {
                         {reviews && reviews.length > 0 ? (
                             <ProductReviewsList reviews={reviews} />
                         ) : (
-                            <div className="text-white/50">Немає відгуків</div>
+                            <div className="text-white/50">No reviews yet</div>
                         )}
                     </div>
                 </div>

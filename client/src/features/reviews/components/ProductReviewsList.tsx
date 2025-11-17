@@ -1,6 +1,7 @@
 "use client";
 
 import { useCurrentUser } from "@/features/shop/user-info/hooks/useUsers";
+import { BackIcon } from "@/shared/icons";
 import { formatDate } from "@/shared/utils/formatDate";
 import { toast } from "sonner";
 import { useToggleReviewVote } from "../hooks/useReviews";
@@ -28,15 +29,15 @@ export function ProductReviewsList({ reviews }: ProductReviewsListProps) {
                                 key={review.id}
                                 className="flex flex-col gap-[15px]"
                             >
-                                <div className="flex flex-col gap-[15px] border border-white/10 bg-white/3 rounded-lg p-[20px] shadow-sm">
+                                <div className="flex flex-col gap-[15px] border border-white/10 bg-white/5 p-[20px]">
                                     <div>
                                         <div className="flex justify-between mb-1">
-                                            <span className="font-semibold">
+                                            <div className="font-perandory tracking-wider text-xl">
                                                 {review.senderName}
-                                            </span>
-                                            <span className="text-xs text-white/50">
+                                            </div>
+                                            <div className="text-xs text-neutral-300 font-light">
                                                 {formatDate(review.createdAt)}
-                                            </span>
+                                            </div>
                                         </div>
 
                                         <div className="flex text-white-500 text-xl mb-2">
@@ -61,7 +62,7 @@ export function ProductReviewsList({ reviews }: ProductReviewsListProps) {
                                                 disabled={
                                                     useToggleReviewVoteMutaion.isPending
                                                 }
-                                                className={`flex items-center gap-[5px] px-[10px] py-[7px] border rounded-xl cursor-pointer transition hover:bg-black/20 disabled:opacity-50 ${
+                                                className={`flex items-center gap-[5px] px-[10px] py-[7px] border transition hover:bg-black/20 disabled:opacity-50 ${
                                                     isLiked
                                                         ? "bg-white/10 border-white/30"
                                                         : "border-white/10"
@@ -84,14 +85,15 @@ export function ProductReviewsList({ reviews }: ProductReviewsListProps) {
                                                     }
                                                 }}
                                             >
-                                                👍 {review.isHelpful}
+                                                <BackIcon className="fill-white w-[20px] stroke-white stroke-50 rotate-90" />{" "}
+                                                {review.isHelpful}
                                             </button>
 
                                             <button
                                                 disabled={
                                                     useToggleReviewVoteMutaion.isPending
                                                 }
-                                                className={`flex items-center gap-[5px] px-[10px] py-[7px] border rounded-xl cursor-pointer transition hover:bg-black/20 disabled:opacity-50 ${
+                                                className={`flex items-center gap-[5px] px-[10px] py-[7px] border transition hover:bg-black/20 disabled:opacity-50 ${
                                                     isDisliked
                                                         ? "bg-white/10 border-white/30"
                                                         : "border-white/10"
@@ -115,18 +117,19 @@ export function ProductReviewsList({ reviews }: ProductReviewsListProps) {
                                                     }
                                                 }}
                                             >
-                                                👎 {review.isNotHelpful}
+                                                <BackIcon className="fill-white w-[20px] stroke-white stroke-50 rotate-270" />{" "}
+                                                {review.isNotHelpful}
                                             </button>
                                         </div>
                                     </div>
 
                                     {review.adminReply && (
-                                        <div className="flex flex-col gap-[10px] border border-white/10 bg-white/3 rounded-lg p-[20px] mb-4 shadow-sm">
-                                            <div className="flex justify-between gap-[10px] text-sm font-semibold text-white/70">
-                                                <div>
-                                                    Відповідь адміністратора
+                                        <div className="flex flex-col gap-[10px] border border-white/10 bg-white/3 p-[20px]">
+                                            <div className="flex justify-between gap-[10px] text-sm font-semibold text-white">
+                                                <div className="font-perandory tracking-wider text-xl">
+                                                    Admin's answer
                                                 </div>
-                                                <div className="text-xs text-white/50">
+                                                <div className="text-xs text-neutral-300 font-light">
                                                     {formatDate(
                                                         review.adminReplyAt
                                                     )}

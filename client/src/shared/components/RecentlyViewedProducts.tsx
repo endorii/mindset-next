@@ -25,7 +25,7 @@ export function RecentlyViewedProducts() {
     return recentlyViewedProductsList ? (
         <SliderWrapper
             productsList={recentlyViewedProductsList}
-            title="Останні переглянуті"
+            title="Recently viewed"
         />
     ) : recentlyViewedProductsListPending ? (
         <ProductsSliderSkeleton />

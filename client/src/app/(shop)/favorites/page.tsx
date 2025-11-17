@@ -4,7 +4,7 @@ import { ShopTitle } from "@/shared/ui/titles/ShopTitle";
 
 export const Favorites = () => {
     return (
-        <div className="flex flex-col gap-[50px]">
+        <div className="flex flex-col gap-[30px] mt-[30px]">
             <ShopTitle title="Favorites" />
             <FavoritesContent />
             <PopularProductsWrapper />

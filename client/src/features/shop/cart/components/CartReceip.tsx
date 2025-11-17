@@ -13,19 +13,19 @@ export function CartReceip({ totalPrice }: ICartReceipProps) {
                 <div className="flex flex-col gap-[15px]">
                     <div className="flex justify-between">
                         <div>Сума товарів:</div>
-                        <div>{totalPrice.toFixed(2)} грн</div>
+                        <div>${totalPrice.toFixed(2)}</div>
                     </div>
                     <div className="flex justify-between text-white/50 text-base">
                         <div>Сума знижки:</div>
-                        <div>0 грн</div>
+                        <div>$0</div>
                     </div>
                     <div className="flex justify-between text-white/50 text-base">
                         <div>Доставка:</div>
-                        <div>0 грн</div>
+                        <div>$0</div>
                     </div>
                     <div className="flex justify-between font-bold mt-[25px]">
                         <div>До сплати:</div>
-                        <div>{totalPrice.toFixed(2)} грн</div>
+                        <div>${totalPrice.toFixed(2)}</div>
                     </div>
                 </div>
             </div>

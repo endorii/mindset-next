@@ -38,15 +38,15 @@ export function AvgRatingStat({ reviews }: AvgRatingStatProps) {
     return (
         <div className="flex flex-col gap-[15px] w-1/3 sm:w-full">
             <div className="flex items-center gap-[10px] mb-[10px] ">
-                <div className="font-light md:text-base text-white/40">
-                    Середня оцінка користувачів
+                <div className="font-light text-base text-neutral-400">
+                    Average clients review score
                 </div>
                 <span className=" text-xl font-semibold text-white">
                     {averageRating.toFixed(2)}/5 ★
                 </span>
             </div>
 
-            <div className="flex flex-col gap-[10px]">
+            <div className="flex flex-col gap-[7px]">
                 {[5, 4, 3, 2, 1].map((rating) => {
                     const count = ratingCounts[rating];
                     const percent = total
@@ -56,16 +56,16 @@ export function AvgRatingStat({ reviews }: AvgRatingStatProps) {
                     return (
                         <div
                             key={rating}
-                            className="flex items-center gap-[10px] mb-1"
+                            className="flex items-center gap-[7px] mb-1"
                         >
-                            <span className="w-5 text-sm">{rating}</span>
-                            <div className="flex-1 border border-white/10 rounded h-5 overflow-hidden">
+                            <span className="w-5 text-sm">{rating}★</span>
+                            <div className="flex-1 border border-white/10 h-5 overflow-hidden">
                                 <div
                                     className="bg-white h-full transition-all duration-300"
                                     style={{ width: `${percent}%` }}
                                 />
                             </div>
-                            <span className="text-sm w-8 text-right">
+                            <span className="text-sm w-5 text-right">
                                 {count}
                             </span>
                         </div>

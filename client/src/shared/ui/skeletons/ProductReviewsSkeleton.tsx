@@ -1,6 +1,6 @@
 export function ProductReviewsSkeleton({ items = 2 }) {
     return (
-        <div className="flex sm:flex-col gap-[15px] mt-[15px] animate-pulse">
+        <div className="flex sm:flex-col gap-[30px] mt-[15px] animate-pulse">
             <div className="flex flex-col gap-[15px] w-1/3 sm:w-full">
                 <div className="flex items-center gap-[10px] mb-[10px]">
                     <div className="h-4 w-40 bg-white/10 rounded" />

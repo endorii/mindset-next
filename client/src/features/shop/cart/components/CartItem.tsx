@@ -34,7 +34,7 @@ export function CartItem({ item, handleRemove }: CartItemProps) {
                             {item.product?.name}
                         </div>
                         <div className="text-lg font-bold">
-                            {item.product?.price} грн.
+                            ${item.product?.price}
                         </div>
                     </div>
                     <hr className="border-t border-white/10 my-[8px]" />

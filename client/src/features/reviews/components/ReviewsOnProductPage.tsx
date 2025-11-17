@@ -39,24 +39,26 @@ export function ReviewsOnProductPage({ product }: ReviewsOnProductPageProps) {
     const hasReviews = reviews && reviews.length > 0;
 
     return (
-        <div className="text-white rounded-xl bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px]">
-            <div className="flex items-center gap-[7px] text-2xl md:text-xl font-bold">
+        <div className="text-white p-[20px]">
+            <div className="flex items-center gap-[7px] text-4xl md:text-2xl font-perandory tracking-wider">
                 {hasReviews ? (
-                    <div>Відгуки про товар ({reviews.length})</div>
+                    <div>Clients reviews ({reviews.length})</div>
                 ) : (
-                    <div>Відгуки відсутні</div>
+                    <div>Reviews empty</div>
                 )}
             </div>
 
             {hasReviews && (
-                <div className="flex sm:flex-col gap-[15px] mt-[15px]">
+                <div className="flex gap-[50px] w-full sm:flex-col mt-[15px]">
                     <AvgRatingStat reviews={reviews} />
 
-                    <div className="flex flex-col gap-[10px] w-2/3 sm:w-full">
+                    <div className="flex flex-col gap-[25px] w-2/3 sm:w-full">
                         <ProductReviewsList reviews={reviews} />
-                        <MonoLink href={`${product?.path}/reviews`}>
-                            Читати всі відгуки
-                        </MonoLink>
+                        <div className="w-full flex justify-center">
+                            <MonoLink href={`${product?.path}/reviews`}>
+                                Read all
+                            </MonoLink>
+                        </div>
                     </div>
                 </div>
             )}

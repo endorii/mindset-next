@@ -172,11 +172,11 @@ const Orders = () => {
                                                 </div>
                                                 <div>
                                                     <div className="text-white/60">
-                                                        Сума
+                                                        Ammount
                                                     </div>
                                                     <div className="text-white font-medium">
                                                         {order.total.toLocaleString()}{" "}
-                                                        грн
+                                                        $
                                                     </div>
                                                 </div>
                                                 <div>

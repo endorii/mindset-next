@@ -73,10 +73,7 @@ export function Header({ serverUser }: { serverUser: IUser | null }) {
                         href="/favorites"
                         className="flex font-perandory tracking-wider text-[20px] border-b border-transparent hover:border-white transition-all duration-200"
                     >
-                        favorites{" "}
-                        {Array.isArray(favorites) && favorites.length > 0
-                            ? `(${favorites.length})`
-                            : null}
+                        favorites
                     </Link>
                 </li>
                 <li className="sm:hidden">

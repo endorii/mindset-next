@@ -1,0 +1,68 @@
+import Image from "next/image";
+import Link from "next/link";
+import { IProduct } from "../types/products.types";
+
+export function ProductCard({
+    product,
+    path,
+}: {
+    product: IProduct;
+    path: string;
+}) {
+    return (
+        <Link href={path} className="relative flex flex-col gap-[15px] h-full">
+            <div className="relative">
+                <Image
+                    className="relative w-full"
+                    width={400}
+                    height={400}
+                    src={product.banner}
+                    alt={product.name}
+                    style={{ objectFit: "cover" }}
+                />
+                <ul className="absolute top-[10px] left-[10px] flex gap-[5px] backdrop-blur-lg border border-white/20 p-[2px]">
+                    {product.productColors.map((color) => (
+                        <li
+                            key={color.color.hexCode}
+                            className="w-[20px] h-[20px]"
+                            style={{
+                                backgroundColor: color.color.hexCode,
+                            }}
+                        ></li>
+                    ))}
+                </ul>
+            </div>
+
+            <div className="flex flex-col gap-[7px] flex-grow px-[10px]">
+                <div className="text-white text-3xl font-perandory tracking-wider truncate">
+                    {product.name}
+                </div>
+
+                <div className="flex gap-[10px] justify-between items-end">
+                    <div className="flex gap-[10px] text-xl">
+                        <div className="text-white font-bold">
+                            ${product.price}
+                        </div>
+                        {product.oldPrice && (
+                            <div className="line-through text-base text-white/60">
+                                ${product.oldPrice}
+                            </div>
+                        )}
+                    </div>
+                    <div
+                        className={`font-perandory tracking-wider font-semibold ${
+                            product.available
+                                ? "text-green-600"
+                                : "text-red-700"
+                        }`}
+                    >
+                        {product.available ? "In stock" : "Out of stock"}
+                    </div>
+                </div>
+            </div>
+            <div className="absolute opacity-0 top-0 left-0 hover:opacity-100 bg-black/80 w-full h-full font-thin text-3xl text-white z-[1] transition-all duration-400 flex items-center justify-center">
+                <div className="border-b border-white font-perandory">View</div>
+            </div>
+        </Link>
+    );
+}

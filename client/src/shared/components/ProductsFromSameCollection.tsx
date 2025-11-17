@@ -21,7 +21,7 @@ export function ProductsFromSameCollection({
     return collectionId && productsFromSameCollection ? (
         <SliderWrapper
             productsList={productsFromSameCollection}
-            title={"Товари з цієї ж колекції"}
+            title={"Products from the same collection"}
         />
     ) : isProductsFromSameCollectionPending ? (
         <ProductsSliderSkeleton />

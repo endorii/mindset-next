@@ -4,7 +4,7 @@ import { ShopTitle } from "@/shared/ui/titles/ShopTitle";
 
 function Cart() {
     return (
-        <div className="flex flex-col gap-[50px] mt-[10px] text-white">
+        <div className="flex flex-col gap-[30px] mt-[30px] text-white">
             <ShopTitle title="Cart" />
             <CartContent />
             <PopularProductsWrapper />
