@@ -60,7 +60,7 @@ export function ProductCard({
                     </div>
                 </div>
             </div>
-            <div className="absolute opacity-0 top-0 left-0 hover:opacity-100 bg-black/80 w-full h-full font-thin text-3xl text-white z-[1] transition-all duration-400 flex items-center justify-center">
+            <div className="absolute opacity-0 top-0 left-0 hover:opacity-100 bg-black/80 backdrop-blur-xl w-full h-full text-3xl text-white z-[1] transition-all duration-400 flex items-center justify-center">
                 <div className="border-b border-white font-perandory">View</div>
             </div>
         </Link>

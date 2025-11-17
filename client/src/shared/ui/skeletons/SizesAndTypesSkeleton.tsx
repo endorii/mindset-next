@@ -11,7 +11,7 @@ export function SizesAndTypesSkeleton({
                 gap-[15px] p-[20px] font-semibold text-sm"
             >
                 <div className="h-4 w-20 bg-white/10 rounded" />
-                <div className="h-4 w-10 bg-white/10 rounded justify-self-end" />
+                <div className="h-4 w-10 bg-white/10 justify-self-end" />
             </div>
 
             <div className="border border-white/10 rounded-xl">

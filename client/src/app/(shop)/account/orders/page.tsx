@@ -31,7 +31,7 @@ const Orders = () => {
 
     return (
         <div className="flex flex-col gap-[15px]">
-            <div className="flex justify-between items-center rounded-xl bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px] xs:py-[10px]">
+            <div className="flex justify-between items-center bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px] xs:py-[10px]">
                 <div className="text-2xl xs:text-xl font-bold">
                     Ваш список замовлень
                 </div>
@@ -53,7 +53,7 @@ const Orders = () => {
                                             onClick={() =>
                                                 toggleExpand(order.id || "")
                                             }
-                                            className={`absolute top-[20px] right-[20px] transition-transform duration-300 bg-black/60 border border-white/10 p-[5px] shadow-lg backdrop-blur-xl rounded-xl cursor-pointer ${
+                                            className={`absolute top-[20px] right-[20px] transition-transform duration-300 bg-black/60 border border-white/10 p-[5px] shadow-lg backdrop-blur-xl cursor-pointer ${
                                                 isExpanded
                                                     ? "rotate-90"
                                                     : "rotate-270"
@@ -120,7 +120,7 @@ const Orders = () => {
                                                             />
                                                         ))}
                                                     {order.items.length > 3 && (
-                                                        <div className="flex items-center justify-center min-w-[40px] h-[120px] bg-gray-200 rounded text-black text-lg font-semibold">
+                                                        <div className="flex items-center justify-center min-w-[40px] h-[120px] bg-gray-200 text-black text-lg font-semibold">
                                                             +
                                                             {order.items
                                                                 .length - 3}
@@ -206,7 +206,7 @@ const Orders = () => {
                                                     {order.items.map((item) => (
                                                         <div
                                                             key={item.id}
-                                                            className="grid grid-cols-[2fr_1fr_0.5fr_230px] lg:grid-cols-[2fr_1fr_1fr] sm:flex sm:flex-col gap-[20px] items-center sm:items-start border border-white/10 rounded-lg p-[10px] bg-white/5"
+                                                            className="grid grid-cols-[2fr_1fr_0.5fr_230px] lg:grid-cols-[2fr_1fr_1fr] sm:flex sm:flex-col gap-[20px] items-center sm:items-start border border-white/10 p-[10px] bg-white/5"
                                                         >
                                                             <div className="flex gap-[20px] items-center">
                                                                 <img
@@ -225,7 +225,7 @@ const Orders = () => {
                                                                             ?.name ||
                                                                         "Товар"
                                                                     }
-                                                                    className="object-cover rounded w-[80px] h-[80px]"
+                                                                    className="object-cover w-[80px] h-[80px]"
                                                                 />
                                                                 <div className="flex flex-col gap-[5px]">
                                                                     <div className="font-medium text-lg lg:text-base">

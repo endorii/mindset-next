@@ -35,6 +35,18 @@ export class ProductsService {
     async findByIds(ids: string[]) {
         return this.prisma.product.findMany({
             where: { id: { in: ids } },
+            include: {
+                category: {
+                    select: {
+                        path: true,
+                        collection: {
+                            select: {
+                                path: true,
+                            },
+                        },
+                    },
+                },
+            },
         });
     }
 

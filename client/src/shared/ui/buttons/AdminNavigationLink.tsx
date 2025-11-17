@@ -18,7 +18,7 @@ export function AdminNavigationLink({
             key={href}
             href={href}
             onClick={onClick}
-            className={`flex gap-[15px] py-[13px] items-center cursor-pointer p-[10px] bg-black/40 border border-white/10 rounded-xl hover:bg-white group transition-all duration-300 ${
+            className={`flex gap-[15px] py-[13px] items-center cursor-pointer p-[10px] bg-black/40 border border-white/10 hover:bg-white group transition-all duration-300 ${
                 navOpen ? "px-[25px]" : "px-[10px]"
             }`}
         >

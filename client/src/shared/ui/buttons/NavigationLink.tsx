@@ -15,10 +15,10 @@ export function NavigationLink({
         <Link
             key={href}
             href={href}
-            className={`flex gap-[15px] py-[13px] items-center cursor-pointer bg-black/40 px-[20px] border border-white/10 rounded-xl hover:bg-white group transition-all duration-300 `}
+            className={`flex gap-[15px] py-[13px] items-center cursor-pointer bg-black/40 px-[20px] border border-white/10 hover:bg-white group transition-all duration-300 font-perandory tracking-wider text-xl`}
             onClick={onClick}
         >
-            <div className={`flex items-center gap-[15px] w-full `}>
+            <div className={`flex items-center gap-[15px] w-full`}>
                 {children}
             </div>
         </Link>

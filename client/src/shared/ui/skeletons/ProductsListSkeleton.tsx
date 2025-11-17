@@ -1,8 +1,8 @@
 export function SkeletonProductCard() {
     return (
         <div className="w-full">
-            <div className="relative flex flex-col gap-[15px] rounded-xl bg-white/5 shadow-lg backdrop-blur-lg border border-white/5 p-[20px] animate-pulse">
-                <div className="relative rounded-xl w-full aspect-square bg-white/10" />
+            <div className="relative flex flex-col gap-[15px] bg-white/5 shadow-lg backdrop-blur-lg border border-white/5 p-[20px] animate-pulse">
+                <div className="relative w-full aspect-square bg-white/10" />
 
                 <ul className="absolute top-[30px] left-[30px] flex gap-[5px] rounded-[50px] backdrop-blur-lg p-[5px]">
                     {[1, 2, 3].map((i) => (

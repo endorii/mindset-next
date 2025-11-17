@@ -10,7 +10,7 @@ export function InfoModalBanner({ image, w = 450 }: InfoModalBannerProps) {
     return (
         <div className="flex flex-col gap-[7px] w-full">
             <Label>Банер</Label>
-            <div className="border border-dashed border-white/10 flex items-center justify-center rounded-md overflow-hidden">
+            <div className="border border-dashed border-white/10 flex items-center justify-center overflow-hidden">
                 <Image
                     className="w-full"
                     src={image ? image : "/placeholder.png"}

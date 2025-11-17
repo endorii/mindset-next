@@ -31,7 +31,7 @@ export function BasicSelector<T>({
                 {...register}
                 className={`border ${
                     errorMessage ? "border-red-500" : "border-white/10"
-                } rounded p-[10px] outline-0 cursor-pointer ${className}`}
+                } p-[10px] outline-0 cursor-pointer ${className}`}
                 disabled={disabled}
             >
                 <option value="" disabled hidden>

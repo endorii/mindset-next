@@ -30,7 +30,7 @@ export function InputField({
     const inputClassName = `border ${
         errorMessage ? "border-red-500" : "border-white/10"
     } 
-     rounded px-[10px] py-[10px] outline-0 bg-black/10 text-white transition-colors duration-200 w-full ${className}`;
+     px-[10px] py-[10px] outline-0 bg-black/10 text-white transition-colors duration-200 w-full ${className}`;
 
     return (
         <div className="flex flex-col gap-[7px]">

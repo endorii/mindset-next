@@ -16,14 +16,18 @@ export function MainInfo({
     currentUser,
 }: MainInfoProps) {
     return (
-        <div className="relative flex flex-col group gap-[10px] w-1/2 lg:w-full rounded-xl bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px]">
+        <div className="relative flex flex-col group gap-[10px] w-1/2 lg:w-full bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px]">
             <button
-                className="absolute top-0 right-0 flex h-full w-full items-center justify-center rounded-xl bg-black/80 uppercase text-2xl font-light opacity-0 group-hover:opacity-100 transition-all duration-400 cursor-pointer z-10"
+                className="absolute flex gap-[5px] items-center top-[20px] right-[20px]"
                 onClick={openModal}
             >
-                Редагувати
+                <div className="font-perandory tracking-wider text-xl border-b border-transparent hover:border-white">
+                    Edit
+                </div>
             </button>
-            <div className="font-bold text-xl">Основна інформація</div>
+            <div className="font-perandory tracking-wider text-3xl">
+                Main info
+            </div>
             {isUserPending ? (
                 <MainInfoSkeleton />
             ) : isUserError ? (
@@ -34,15 +38,15 @@ export function MainInfo({
                 <div className="flex w-full">
                     <div className="flex flex-col py-[10px] gap-[15px] w-full">
                         <InfoField
-                            label={"Відображуване ім'я"}
+                            label={"Username"}
                             value={currentUser?.userName}
                         />
                         <InfoField
-                            label={"Номер телефону"}
+                            label={"Phone number"}
                             value={currentUser?.phone || "-"}
                         />
                         <InfoField
-                            label={"Електронна пошта"}
+                            label={"E-mail"}
                             value={currentUser?.email}
                         />
                     </div>

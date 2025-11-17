@@ -5,7 +5,7 @@ import VisaImage from "../../../../../public/images/visa.png";
 
 export function DeliveryAndPaymentMethod() {
     return (
-        <div className="flex flex-col gap-[10px] w-full rounded-xl bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px]">
+        <div className="flex flex-col gap-[10px] w-full bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px]">
             <div className="font-bold text-xl mb-4">Доставка та оплата</div>
 
             <div className="flex md:flex-wrap items-center gap-[15px]">

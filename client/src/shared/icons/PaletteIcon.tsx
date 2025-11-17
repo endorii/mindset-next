@@ -6,7 +6,7 @@ export function PaletteIcon({ className }: PaletteIconProps) {
     return (
         <svg
             viewBox="0 0 24 24"
-            className={className}
+            className={`${className ?? null}`}
             xmlns="http://www.w3.org/2000/svg"
         >
             <path d="M14 12.5001C14 13.3285 13.3284 14.0001 12.5 14.0001C11.6716 14.0001 11 13.3285 11 12.5001C11 11.6717 11.6716 11.0001 12.5 11.0001C13.3284 11.0001 14 11.6717 14 12.5001Z" />

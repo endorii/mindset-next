@@ -2,7 +2,7 @@ import { IIconsProps } from "../types/types";
 
 export function StatsIcon({ className }: IIconsProps) {
     return (
-        <svg className={className} viewBox="0 -0.5 25 25">
+        <svg className={`${className ?? null}`} viewBox="0 -0.5 25 25">
             <path
                 d="M19.5 19H9.5C7.29086 19 5.5 17.2091 5.5 15V5"
                 className="fill-none stroke-white group-hover:stroke-black stroke-[1.5]"

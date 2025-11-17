@@ -19,7 +19,7 @@ const OrderSuccessPage = () => {
     if (!sessionId) {
         return (
             <div className="min-h-screen flex text-white items-center justify-center">
-                <div className="flex flex-col items-center gap-[15px] rounded-xl bg-white/5 shadow-lg backdrop-blur-lg border border-white/5 p-[20px] max-w-lg text-center">
+                <div className="flex flex-col items-center gap-[15px] bg-white/5 shadow-lg backdrop-blur-lg border border-white/5 p-[20px] max-w-lg text-center">
                     <div className="inline-flex items-center justify-center w-20 h-20 bg-yellow-600 rounded-full">
                         <CheckIcon className="w-[50px] fill-none stroke-white stroke-3" />
                     </div>
@@ -61,7 +61,7 @@ const OrderSuccessPage = () => {
     if (!order) {
         return (
             <div className="min-h-screen flex text-white items-center justify-center">
-                <div className="flex flex-col items-center gap-[15px] rounded-xl bg-white/5 shadow-lg backdrop-blur-lg border border-white/5 p-[20px] max-w-lg text-center">
+                <div className="flex flex-col items-center gap-[15px] bg-white/5 shadow-lg backdrop-blur-lg border border-white/5 p-[20px] max-w-lg text-center">
                     <div className="inline-flex items-center justify-center w-20 h-20 bg-yellow-600 rounded-full">
                         <CheckIcon className="w-[50px] fill-none stroke-white stroke-3" />
                     </div>
@@ -93,7 +93,7 @@ const OrderSuccessPage = () => {
 
     return (
         <div className="min-h-screen flex text-white items-center justify-center">
-            <div className="flex flex-col gap-[15px] rounded-xl bg-white/5 shadow-lg backdrop-blur-lg border border-white/5 p-[20px] max-w-lg">
+            <div className="flex flex-col gap-[15px] bg-white/5 shadow-lg backdrop-blur-lg border border-white/5 p-[20px] max-w-lg">
                 <div className="flex flex-col items-center gap-[15px] text-center">
                     <div className="inline-flex items-center justify-center w-20 h-20 bg-green-600 rounded-full">
                         <CheckIcon className="w-[50px] fill-none stroke-white stroke-3" />
@@ -103,7 +103,7 @@ const OrderSuccessPage = () => {
                         Дякуємо за покупку. Ваше замовлення створено.
                     </p>
                     <hr className="border-t border-white/10 w-full" />
-                    <div className="bg-white/5 px-4 py-2 rounded-lg w-full">
+                    <div className="bg-white/5 px-4 py-2 w-full">
                         <p>
                             Номер замовлення:{" "}
                             <span className="font-semibold">{order.id}</span>

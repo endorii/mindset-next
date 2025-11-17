@@ -78,7 +78,7 @@ export default async function CategoryPage({
     }
 
     return (
-        <div className="flex flex-col gap-[30px] mt-[30px]">
+        <div className="flex flex-col gap-[10px] mt-[10px]">
             <ShopTitle title={`Products ${collectionSlug} / ${categorySlug}`} />
 
             <ProductsSection

@@ -182,7 +182,7 @@ export function EditCategoryModal({
                         <Label>Банер</Label>
                         <label
                             htmlFor="banner"
-                            className="min-h-[100px] max-w-[300px] border border-dashed border-white/10 mt-2 flex items-center justify-center cursor-pointer bg-black/20 hover:bg-white/10 rounded-md overflow-hidden"
+                            className="min-h-[100px] max-w-[300px] border border-dashed border-white/10 mt-2 flex items-center justify-center cursor-pointer bg-black/20 hover:bg-white/10 overflow-hidden"
                         >
                             {displaySrc ? (
                                 <Image

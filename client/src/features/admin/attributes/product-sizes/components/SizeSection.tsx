@@ -72,7 +72,7 @@ export function SizeSection() {
                     </div>
                 </div>
             ) : (
-                <div className="relative flex min-h-[200px] items-center justify-center rounded-xl bg-white/5 shadow-lg border border-white/5 p-[20px]">
+                <div className="relative flex min-h-[200px] items-center justify-center bg-white/5 shadow-lg border border-white/5 p-[20px]">
                     <div className="font-bold text-3xl z-1">
                         Список розмірів порожній
                     </div>

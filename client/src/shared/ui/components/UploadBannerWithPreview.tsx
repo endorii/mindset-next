@@ -19,7 +19,7 @@ export function UploadBannerWithPreview({
                 htmlFor="banner"
                 className={`group border min-h-[200px] border-dashed ${
                     bannerError ? "border-red-500" : "border-white/10"
-                } flex items-center justify-center cursor-pointer hover:bg-white/3 rounded-md overflow-hidden group-hover:text-white transition-all duration-300`}
+                } flex items-center justify-center cursor-pointer hover:bg-white/3 overflow-hidden group-hover:text-white transition-all duration-300`}
             >
                 {image ? (
                     <Image

@@ -30,7 +30,7 @@ export function NovaPoshtaSelect({
         <div className="flex flex-col gap-[7px] w-full">
             <Label>{label}</Label>
             <select
-                className={`border px-[10px] py-[10px] rounded bg-black/20 text-white outline-none ${
+                className={`border px-[10px] py-[10px] bg-black/20 text-white outline-none ${
                     errorMessage ? "border-red-500" : "border-white/10"
                 }`}
                 value={value}

@@ -63,7 +63,7 @@ export function HeaderBurger() {
             >
                 <button
                     onClick={handleClose}
-                    className="cursor-pointer fixed top-[20px] left-[23px] p-[10px] rounded-xl hover:bg-white/10 transition-colors"
+                    className="cursor-pointer fixed top-[20px] left-[23px] p-[10px] hover:bg-white/10 transition-colors"
                 >
                     <CloseIcon className="w-[30px] fill-none stroke-2 stroke-white" />
                 </button>

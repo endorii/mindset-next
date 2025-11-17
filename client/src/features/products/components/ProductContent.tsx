@@ -278,7 +278,7 @@ export function ProductContent({
                     </div>
                 </div>
 
-                <div className="flex md:flex-col justify-between gap-[10px] rounded-xl bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[10px]">
+                <div className="flex md:flex-col justify-between gap-[10px] bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[10px]">
                     <MonoButton
                         onClick={handleAddToCart}
                         className="w-full h-[50px] bg-white text-black!"

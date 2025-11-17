@@ -25,7 +25,7 @@ export function ReviewsOnProductPage({ product }: ReviewsOnProductPageProps) {
 
     if (isReviewsPending) {
         return (
-            <div className="text-white rounded-xl bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px]">
+            <div className="text-white bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px]">
                 <ReviewsValueSkeleton />
                 <ProductReviewsSkeleton />
             </div>

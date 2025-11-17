@@ -100,7 +100,7 @@ export function ProductInfoModal({
                                     alt={`Зображення ${i + 1}`}
                                     width={100}
                                     height={100}
-                                    className="border border-white/20 rounded w-[200px]"
+                                    className="border border-white/20 w-[200px]"
                                 />
                             ))
                         ) : (

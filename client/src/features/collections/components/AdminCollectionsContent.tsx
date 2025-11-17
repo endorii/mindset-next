@@ -218,7 +218,7 @@ export function AdminCollectionsContent() {
                     </div>
                 </div>
             ) : (
-                <div className="relative flex min-h-[200px] items-center rounded-xl bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px] overflow-hidden">
+                <div className="relative flex min-h-[200px] items-center bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px] overflow-hidden">
                     <div className="font-bold text-3xl z-1">
                         Список колекцій порожній
                     </div>

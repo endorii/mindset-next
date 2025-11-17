@@ -6,7 +6,7 @@ export function CheckoutResultTable({ cart }: { cart: ICartItem[] }) {
             <div className="text-3xl font-thin">Інформація про замволення</div>
             {cart.length > 0 ? (
                 <div className="flex flex-col gap-[10px]">
-                    <div className="flex flex-col gap-[15px] mt-[5px] border border-white/10 rounded-xl bg-white/5 p-[20px]">
+                    <div className="flex flex-col gap-[15px] mt-[5px] border border-white/10 bg-white/5 p-[20px]">
                         <div className="grid grid-cols-[1fr_0.5fr_0.5fr_0.5fr_0.5fr_0.5fr_0.5fr] border-b border-white/10 pb-2 text-sm text-white/60">
                             <div>Назва</div>
                             <div className="text-right">Колір</div>
@@ -65,7 +65,7 @@ export function CheckoutResultTable({ cart }: { cart: ICartItem[] }) {
                             </div>
                         </div>
                     </div>
-                    <div className="flex justify-between items-center font-bold text-base border border-white/10 rounded-xl bg-white/5 p-[20px]">
+                    <div className="flex justify-between items-center font-bold text-base border border-white/10 bg-white/5 p-[20px]">
                         <span>Усього до сплати:</span>
                         <span className="text-xl">
                             {cart.reduce(

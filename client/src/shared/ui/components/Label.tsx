@@ -3,5 +3,9 @@ interface LabelProps {
 }
 
 export function Label({ children }: LabelProps) {
-    return <label className="font-semibold text-sm">{children}</label>;
+    return (
+        <label className="font-perandory tracking-wider text-lg">
+            {children}
+        </label>
+    );
 }

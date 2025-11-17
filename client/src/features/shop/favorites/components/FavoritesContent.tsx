@@ -33,8 +33,7 @@ export function FavoritesContent() {
     const removeFavorite = (productId: string) => {
         if (user) {
             deleteFavoriteFromUserMutation.mutateAsync(productId);
-        }
-        {
+        } else {
             removeFromFavorites(productId);
         }
     };

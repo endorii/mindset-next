@@ -20,7 +20,7 @@ export function AttributesContent() {
 
     return (
         <div className="flex flex-col gap-[15px]">
-            <div className="flex xs:flex-col items-center xs:items-start gap-[10px] rounded-xl bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[10px] w-full">
+            <div className="flex xs:flex-col items-center xs:items-start gap-[10px] bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[10px] w-full">
                 {ATTRIBUTES.map((attr, i) => (
                     <ChooseButton
                         key={i}

@@ -257,7 +257,7 @@ export function EditOrderModal({
                                             value={
                                                 selectedArea?.Description || ""
                                             }
-                                            className={`border rounded px-[10px] py-[10px] bg-black/20 text-white outline-0 cursor-pointer ${
+                                            className={`border px-[10px] py-[10px] bg-black/20 text-white outline-0 cursor-pointer ${
                                                 errors.area
                                                     ? "border-red-500"
                                                     : "border-white/10"
@@ -307,7 +307,7 @@ export function EditOrderModal({
                                             value={
                                                 selectedCity?.Description || ""
                                             }
-                                            className={`border rounded px-[10px] py-[10px] bg-black/20 text-white outline-0 cursor-pointer ${
+                                            className={`border px-[10px] py-[10px] bg-black/20 text-white outline-0 cursor-pointer ${
                                                 errors.city
                                                     ? "border-red-500"
                                                     : "border-white/10"
@@ -361,7 +361,7 @@ export function EditOrderModal({
                                                 selectedWarehouse?.Description ||
                                                 ""
                                             }
-                                            className={`border rounded px-[10px] py-[10px] bg-black/20 text-white outline-0 cursor-pointer ${
+                                            className={`border px-[10px] py-[10px] bg-black/20 text-white outline-0 cursor-pointer ${
                                                 errors.postDepartment
                                                     ? "border-red-500"
                                                     : "border-white/10"
@@ -413,7 +413,7 @@ export function EditOrderModal({
                                             <select
                                                 {...field}
                                                 id="status"
-                                                className={`border border-white/10 rounded px-[10px] py-[10px] bg-black/20 text-white outline-0 cursor-pointer ${
+                                                className={`border border-white/10 px-[10px] py-[10px] bg-black/20 text-white outline-0 cursor-pointer ${
                                                     errors.status
                                                         ? "border-red-500"
                                                         : ""

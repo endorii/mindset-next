@@ -33,7 +33,7 @@ export function ChooseCheckoutDeliveryAddress({
                     <div className="flex flex-col gap-[7px]">
                         <Label>Область</Label>
                         <select
-                            className="border border-white/10 rounded px-[10px] py-[10px] bg-black/20 text-white outline-0 cursor-pointer"
+                            className="border border-white/10 px-[10px] py-[10px] bg-black/20 text-white outline-0 cursor-pointer"
                             value={selectedArea?.Ref || ""}
                             onChange={(e) => {
                                 const area =
@@ -57,7 +57,7 @@ export function ChooseCheckoutDeliveryAddress({
                     <div className="flex flex-col gap-[7px]">
                         <Label>Місто</Label>
                         <select
-                            className="border border-white/10 rounded px-[10px] py-[10px] bg-black/20 text-white outline-0 cursor-pointer"
+                            className="border border-white/10 px-[10px] py-[10px] bg-black/20 text-white outline-0 cursor-pointer"
                             value={selectedCity?.Ref || ""}
                             onChange={(e) => {
                                 const city =
@@ -82,7 +82,7 @@ export function ChooseCheckoutDeliveryAddress({
                     <div className="flex flex-col gap-[7px]">
                         <Label>Відділення/поштомати</Label>
                         <select
-                            className="border border-white/10 rounded px-[10px] py-[10px] bg-black/20 text-white outline-0 cursor-pointer"
+                            className="border border-white/10 px-[10px] py-[10px] bg-black/20 text-white outline-0 cursor-pointer"
                             value={selectedWarehouse?.Ref || ""}
                             onChange={(e) => {
                                 const wh =

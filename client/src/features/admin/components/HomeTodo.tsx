@@ -49,7 +49,7 @@ export function HomeTodo({ todos }: { todos: ITodoItem[] | undefined }) {
                     {todos.map((task) => (
                         <div
                             key={task.id}
-                            className="flex items-center justify-between p-[20px] gap-[10px] rounded-xl border border-white/10 shadow-md bg-white/3"
+                            className="flex items-center justify-between p-[20px] gap-[10px] border border-white/10 shadow-md bg-white/3"
                         >
                             <div className="flex flex-col">
                                 <span className="text-base font-medium text-white">

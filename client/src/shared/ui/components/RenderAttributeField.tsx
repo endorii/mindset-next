@@ -33,7 +33,7 @@ export function RenderAttributeField({
             <div
                 className={`flex flex-wrap gap-[10px] max-h-[100px] overflow-y-auto border ${
                     errorMessage ? "border-red-500" : "border-white/10"
-                } rounded p-[10px] bg-black/10`}
+                } p-[10px] bg-black/10`}
             >
                 {allItems?.map((item) => (
                     <button

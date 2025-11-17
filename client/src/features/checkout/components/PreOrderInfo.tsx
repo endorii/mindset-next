@@ -2,7 +2,7 @@ import Link from "next/link";
 
 export function PreOrderInfo() {
     return (
-        <div className="mt-2 rounded-lg bg-white/5 border p-[15px] border-white/10 shadow-inner">
+        <div className="mt-2 bg-white/5 border p-[15px] border-white/10 shadow-inner">
             <div className="text-white font-medium">
                 Введені вами дані використовуються для автоматичного створення
                 експрес-накладної у системі Нової Пошти.

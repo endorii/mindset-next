@@ -1,6 +1,6 @@
 export function SkeletonCartItem() {
     return (
-        <div className="flex items-stretch border-b pb-[30px] rounded-xl bg-white/5 backdrop-blur-[100px] border border-white/5 p-[20px] animate-pulse">
+        <div className="flex items-stretch border-b pb-[30px] bg-white/5 backdrop-blur-[100px] border border-white/5 p-[20px] animate-pulse">
             <div className="relative min-w-[300px]">
                 <div className="rounded-xl bg-white/10 w-[300px] h-[300px]" />
             </div>
@@ -28,8 +28,8 @@ export function SkeletonCartItem() {
                 </div>
 
                 <div className="flex justify-between gap-[10px]">
-                    <div className="h-[42px] w-full bg-white/10 rounded-xl " />
-                    <div className="h-[42px] w-full bg-white/10 rounded-xl " />
+                    <div className="h-[42px] w-full bg-white/10 " />
+                    <div className="h-[42px] w-full bg-white/10 " />
                 </div>
             </div>
         </div>
@@ -38,7 +38,7 @@ export function SkeletonCartItem() {
 
 export function SkeletonCartReceip() {
     return (
-        <div className="w-1/3 rounded-xl bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px] text-lg flex flex-col gap-[15px] animate-pulse">
+        <div className="w-1/3 bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px] text-lg flex flex-col gap-[15px] animate-pulse">
             <div>
                 <div className="h-[20px] w-[90px] bg-white/10 rounded" />
                 <hr className="border-t border-white/10 my-[15px]" />
@@ -62,7 +62,7 @@ export function SkeletonCartReceip() {
                 </div>
             </div>
 
-            <div className="h-[46px] w-full rounded-xl bg-white/10" />
+            <div className="h-[46px] w-full bg-white/10" />
         </div>
     );
 }

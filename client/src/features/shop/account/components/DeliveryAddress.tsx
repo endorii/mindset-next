@@ -18,7 +18,7 @@ export function DeliveryAddress({
     currentUser,
 }: DeliveryAddressProps) {
     return (
-        <div className="relative flex flex-col group gap-[10px] w-full rounded-xl bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px]">
+        <div className="relative flex flex-col group gap-[10px] w-full bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px]">
             <div className="font-bold">Адреса доставки</div>
             {!currentUser?.shippingAddress && !isUserPending ? (
                 <MonoButton onClick={() => openModal("addUserAddress")}>
@@ -33,7 +33,7 @@ export function DeliveryAddress({
             ) : (
                 <div className=" py-[10px] flex flex-col gap-[7px] h-full">
                     <button
-                        className="absolute top-0 right-0 flex h-full w-full items-center justify-center rounded-xl bg-black/80 uppercase text-2xl font-light opacity-0 group-hover:opacity-100 transition-all duration-400 cursor-pointer z-10"
+                        className="absolute top-0 right-0 flex h-full w-full items-center justify-center bg-black/80 uppercase text-2xl font-light opacity-0 group-hover:opacity-100 transition-all duration-400 cursor-pointer z-10"
                         onClick={() => openModal("editUserAddress")}
                     >
                         Редагувати

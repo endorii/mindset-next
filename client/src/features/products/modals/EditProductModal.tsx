@@ -429,7 +429,7 @@ export function EditProductModal({
                         <Label>Додаткові зображення</Label>
                         <label
                             htmlFor="images"
-                            className={`group border min-h-[200px] border-dashed border-white/10 flex items-center justify-center cursor-pointer hover:bg-white/3 rounded-md overflow-hidden group-hover:text-white transition-all duration-300`}
+                            className={`group border min-h-[200px] border-dashed border-white/10 flex items-center justify-center cursor-pointer hover:bg-white/3 overflow-hidden group-hover:text-white transition-all duration-300`}
                         >
                             <span className="text-4xl text-white/40 group-hover:text-white transition-all duration-300">
                                 +
@@ -458,7 +458,7 @@ export function EditProductModal({
                                         height={100}
                                         className="object-cover rounded-md"
                                     />
-                                    <div className="absolute flex items-center justify-center opacity-0 rounded group-hover:opacity-100 top-0 right-0 bg-black/40 w-full h-full transition-all duration-200">
+                                    <div className="absolute flex items-center justify-center opacity-0 group-hover:opacity-100 top-0 right-0 bg-black/40 w-full h-full transition-all duration-200">
                                         <TrashIcon className=" w-[35px] fill-none  stroke-white stroke-[1.5] " />
                                     </div>
                                 </div>

@@ -39,7 +39,7 @@ export default async function CollectionsPage() {
         <div className="flex flex-col gap-10">
             <Welcome />
             <div
-                className="flex flex-col gap-[30px] pt-[90px]"
+                className="flex flex-col gap-[10px] pt-[90px]"
                 id="collections"
             >
                 <ShopTitle title="Collections" />

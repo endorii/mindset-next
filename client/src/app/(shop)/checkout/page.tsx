@@ -372,11 +372,11 @@ function Checkout() {
     }
 
     return (
-        <div className="flex flex-col gap-[30px] mt-[30px] text-white">
+        <div className="flex flex-col gap-[10px] mt-[10px] text-white">
             <ShopTitle title={"Placeing an order"} />
             <form onSubmit={handleSubmit(onSubmit)}>
                 <div className="flex justify-between px-[30px] gap-[15px]">
-                    <div className="flex flex-col gap-[15px] w-1/2 rounded-xl bg-white/5 backdrop-blur-[100px] border border-white/5 p-[30px] h-fit">
+                    <div className="flex flex-col gap-[15px] w-1/2 bg-white/5 backdrop-blur-[100px] border border-white/5 p-[30px] h-fit">
                         <div className="flex gap-[15px] w-full">
                             <div className="flex flex-col gap-[15px] w-1/2">
                                 <div className="text-3xl font-thin">
@@ -499,7 +499,7 @@ function Checkout() {
                         <PreOrderInfo />
                     </div>
 
-                    <div className="flex flex-col gap-[15px] w-1/2 rounded-xl bg-white/5 backdrop-blur-[100px] border border-white/5 p-[30px] text-white">
+                    <div className="flex flex-col gap-[15px] w-1/2 bg-white/5 backdrop-blur-[100px] border border-white/5 p-[30px] text-white">
                         <CheckoutResultTable cart={mergedCart} />
                         <div>
                             <div className="text-sm font-semibold mb-2">
@@ -513,7 +513,7 @@ function Checkout() {
                                     <div className="flex gap-3">
                                         <button
                                             type="button"
-                                            className={`px-6 py-3 rounded-xl transition ${
+                                            className={`px-6 py-3 transition ${
                                                 field.value === "stripe"
                                                     ? "bg-purple-600 text-white"
                                                     : "bg-purple-500/30 text-white hover:bg-purple-600"
@@ -527,7 +527,7 @@ function Checkout() {
 
                                         <button
                                             type="button"
-                                            className={`px-6 py-3 rounded-xl transition ${
+                                            className={`px-6 py-3 transition ${
                                                 field.value === "cod"
                                                     ? "bg-purple-600 text-white"
                                                     : "bg-purple-500/30 text-white hover:bg-purple-600"

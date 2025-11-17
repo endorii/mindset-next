@@ -12,7 +12,7 @@ export function TodoSkeleton() {
                 {rows.map((_, i) => (
                     <div
                         key={i}
-                        className="h-20 bg-white/10 animate-pulse rounded-xl w-full"
+                        className="h-20 bg-white/10 animate-pulse w-full"
                     />
                 ))}
             </div>

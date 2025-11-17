@@ -11,7 +11,7 @@ export function ButtonWithIcon({
 }: IButtonWithIconProps) {
     return (
         <button
-            className={`flex gap-[10px] items-center justify-center group border border-white/10 rounded-xl hover:bg-white text-white hover:text-black transition-colors duration-300 px-[15px] py-[10px] cursor-pointer ${className}`}
+            className={`flex gap-[10px] items-center justify-center group border border-white/10 hover:bg-white text-white hover:text-black transition-colors duration-300 px-[15px] py-[10px] cursor-pointer ${className}`}
             onClick={onClick}
         >
             {children}

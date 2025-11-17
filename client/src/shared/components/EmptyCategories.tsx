@@ -28,7 +28,7 @@ export function EmptyCategories({ title, subtitle }: EmptyCategoriesProps) {
             </div>
 
             <div className="group flex flex-col">
-                <div className="absolute bg-black/25 border border-white/10 shadow-xl px-[50px] py-[15px] backdrop-blur-lg rounded-xl top-[50%] translate-y-[-50%] text-white text-3xl md:text-xl font-thin left-[10%] translate-x-[-10%]">
+                <div className="absolute bg-black/25 border border-white/10 shadow-xl px-[50px] py-[15px] backdrop-blur-lg top-[50%] translate-y-[-50%] text-white text-3xl md:text-xl font-thin left-[10%] translate-x-[-10%]">
                     {subtitle}
                 </div>
                 <img

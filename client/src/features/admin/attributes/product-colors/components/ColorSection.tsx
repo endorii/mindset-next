@@ -57,7 +57,7 @@ export function ColorSection() {
                                 xs:grid-cols-2 
                                 gap-[15px] p-[20px] border-b border-white/10 items-center text-sm"
                             >
-                                <div className="border border-white/10 rounded w-[52px] h-[52px] xs:hidden">
+                                <div className="border border-white/10 w-[52px] h-[52px] xs:hidden">
                                     <div
                                         className="w-[50px] h-[50px] rounded"
                                         style={{
@@ -90,7 +90,7 @@ export function ColorSection() {
                     </div>
                 </div>
             ) : (
-                <div className="relative flex min-h-[200px] items-center justify-center rounded-xl bg-white/5 shadow-lg border border-white/5 p-[20px]">
+                <div className="relative flex min-h-[200px] items-center justify-center bg-white/5 shadow-lg border border-white/5 p-[20px]">
                     <div className="font-bold text-3xl z-1">
                         Список кольорів порожній
                     </div>

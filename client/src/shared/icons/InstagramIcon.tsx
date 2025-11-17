@@ -2,7 +2,7 @@ import { IIconsProps } from "../types/types";
 
 export function InstagramIcon({ className }: IIconsProps) {
     return (
-        <svg viewBox="0 0 24 24" className={className}>
+        <svg viewBox="0 0 24 24" className={`${className ?? null}`}>
             <path
                 fillRule="evenodd"
                 clipRule="evenodd"

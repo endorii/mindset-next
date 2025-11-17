@@ -10,12 +10,12 @@ export function AdminProductsSkeleton() {
                 xs:grid-cols-2
                 gap-[15px] p-[20px] sm:p-[10px] rounded-t-lg font-semibold"
             >
-                <div className="h-[18px] w-[80px] bg-white/10 rounded animate-pulse" />
-                <div className="h-[18px] w-[60px] bg-white/10 rounded animate-pulse xs:hidden" />
-                <div className="h-[18px] w-[90px] bg-white/10 rounded animate-pulse sm:hidden" />
-                <div className="h-[18px] w-[120px] bg-white/10 rounded animate-pulse xl:hidden" />
-                <div className="h-[18px] w-[70px] bg-white/10 rounded animate-pulse xs:hidden" />
-                <div className="h-[18px] w-[50px] bg-white/10 rounded animate-pulse lg:hidden ml-auto" />
+                <div className="h-[18px] w-[80px] bg-white/10 animate-pulse" />
+                <div className="h-[18px] w-[60px] bg-white/10 animate-pulse xs:hidden" />
+                <div className="h-[18px] w-[90px] bg-white/10 animate-pulse sm:hidden" />
+                <div className="h-[18px] w-[120px] bg-white/10 animate-pulse xl:hidden" />
+                <div className="h-[18px] w-[70px] bg-white/10 animate-pulse xs:hidden" />
+                <div className="h-[18px] w-[50px] bg-white/10 animate-pulse lg:hidden ml-auto" />
             </div>
 
             <div className="border border-white/10 rounded-xl">
@@ -33,11 +33,11 @@ export function AdminProductsSkeleton() {
                             xs:grid-cols-2
                             gap-[15px] items-center"
                         >
-                            <div className="h-[80px] w-full bg-white/10 rounded animate-pulse" />
-                            <div className="h-[20px] w-[120px] bg-white/10 rounded animate-pulse" />
-                            <div className="h-[20px] w-[80px] bg-white/10 rounded animate-pulse sm:hidden" />
-                            <div className="h-[20px] w-[150px] bg-white/10 rounded animate-pulse xl:hidden" />
-                            <div className="h-[20px] w-[90px] bg-white/10 rounded animate-pulse xs:hidden mx-auto" />
+                            <div className="h-[80px] w-full bg-white/10 animate-pulse" />
+                            <div className="h-[20px] w-[120px] bg-white/10 animate-pulse" />
+                            <div className="h-[20px] w-[80px] bg-white/10 animate-pulse sm:hidden" />
+                            <div className="h-[20px] w-[150px] bg-white/10 animate-pulse xl:hidden" />
+                            <div className="h-[20px] w-[90px] bg-white/10 animate-pulse xs:hidden mx-auto" />
                             <div className="flex gap-[10px] justify-end lg:hidden">
                                 {[...Array(4)].map((_, j) => (
                                     <div

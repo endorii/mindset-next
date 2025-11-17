@@ -2,10 +2,22 @@ import { IIconsProps } from "../types/types";
 
 export function AdminIcon({ className }: IIconsProps) {
     return (
-        <svg viewBox="0 0 24 24" className={className}>
-            <g id="SVGRepo_bgCarrier" strokeWidth="0" />
-            <path fill="none" d="M0 0h24v24H0z" />
-            <path d="M12 14v2a6 6 0 0 0-6 6H4a8 8 0 0 1 8-8zm0-1c-3.315 0-6-2.685-6-6s2.685-6 6-6 6 2.685 6 6-2.685 6-6 6zm0-2c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm9 6h1v5h-8v-5h1v-1a3 3 0 0 1 6 0v1zm-2 0v-1a1 1 0 0 0-2 0v1h2z" />
+        <svg viewBox="0 0 256 256" className={`${className ?? null}`}>
+            <g
+                id="SVGRepo_tracerCarrier"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+            />
+
+            <g>
+                <g>
+                    <rect x="68.5" y="231.1" width="120.8" height="24.5" />
+                    <path
+                        id="XMLID_2_"
+                        d="M86.5,223h84.6l8-27.1c-21.1-23.2-34.5-36.3-34.5-67.1c0-6.3,0.4-7.2,1-13.2h17.1V92.2H150 c0,0,15.9-30.7,15.9-34.4c0-10.2-8.3-18.4-18.4-18.4c-5.2,0-9.8,2.1-13.2,5.6V22.5h11.1V12h-11.1V0h-10.5v12h-11.1v10.5h11.1v22.6 c-3.4-3.5-8.1-5.7-13.3-5.7c-10.2,0-18.4,8.3-18.4,18.4c0,3.6,16.3,34.4,16.3,34.4H95v23.4h17.5c0.7,6,1,6.9,1,13.2 c0,30.8-13.6,44.2-34.8,67.4L86.5,223z"
+                    />
+                </g>
+            </g>
         </svg>
     );
 }

@@ -13,7 +13,7 @@ export function AdminNavigation({ children }: { children: React.ReactNode }) {
     return (
         <div className="fixed pt-[90px] flex h-screen w-full z-[5] text-white">
             <button
-                className="absolute top-[83px] left-[10px] flex gap-[15px] shadow-lg backdrop-blur-[100px] items-center cursor-pointer p-[7px] border border-white/10 rounded-xl hover:bg-white group transition-all duration-300 z-10"
+                className="absolute top-[83px] left-[10px] flex gap-[15px] shadow-lg backdrop-blur-[100px] items-center cursor-pointer p-[7px] border border-white/10 hover:bg-white group transition-all duration-300 z-10"
                 onClick={() => setNavOpen(!navOpen)}
             >
                 <BackIcon
@@ -23,14 +23,14 @@ export function AdminNavigation({ children }: { children: React.ReactNode }) {
                 />
             </button>
             <div
-                className={`sm:absolute relative flex max-h-screen-minus-header overflow-y-auto flex-col gap-[15px] transition-all duration-500 ease-in-out ml-[10px] mt-[30px] z-10 rounded-xl ${
+                className={`sm:absolute relative flex max-h-screen-minus-header overflow-y-auto flex-col gap-[15px] transition-all duration-500 ease-in-out ml-[10px] mt-[30px] z-10 ${
                     navOpen
                         ? "w-[300px] sm:left-[0px]"
                         : "w-[90px] sm:left-[-320px]"
                 }`}
             >
                 <div
-                    className={`flex flex-col gap-[15px] rounded-xl bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[15px]`}
+                    className={`flex flex-col gap-[15px] bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[15px]`}
                 >
                     {adminPanelNavigationLinks.map(({ href, Icon, text }) => (
                         <AdminNavigationLink
@@ -48,7 +48,7 @@ export function AdminNavigation({ children }: { children: React.ReactNode }) {
                 </div>
 
                 <div
-                    className={`flex flex-col gap-[15px] rounded-xl bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[15px] ${
+                    className={`flex flex-col gap-[15px] bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[15px] ${
                         navOpen ? "justify-start" : "justify-center"
                     }`}
                 >
