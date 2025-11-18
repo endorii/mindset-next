@@ -71,10 +71,7 @@ export function EditUserInfoModal({
     if (!isOpen || !user) return null;
 
     const modalContent = (
-        <ModalWrapper
-            onClose={onClose}
-            modalTitle={"Редагування інформації користувача"}
-        >
+        <ModalWrapper onClose={onClose} modalTitle={"Edit user information"}>
             <form
                 className="flex flex-col gap-[15px]"
                 onSubmit={handleSubmit(onSubmit)}
@@ -82,10 +79,10 @@ export function EditUserInfoModal({
                 <FormFillingWrapper>
                     <div className="grid grid-cols-3 gap-[15px]">
                         <InputField
-                            label="Нікнейм*"
+                            label="Username*"
                             type="text"
                             {...register("userName", {
-                                required: "Введіть нікнейм",
+                                required: "Enter username",
                                 minLength: {
                                     value: 3,
                                     message: "Мінімум 3 символи",
@@ -103,10 +100,10 @@ export function EditUserInfoModal({
                             errorMessage={modalErrors.userName?.message}
                         />
                         <InputField
-                            label="Електронна пошта*"
+                            label="Email*"
                             type="email"
                             {...register("email", {
-                                required: "Введіть email",
+                                required: "Enter e-mail",
                                 pattern: {
                                     value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
                                     message: "Некоректний формат email",
@@ -115,10 +112,11 @@ export function EditUserInfoModal({
                             errorMessage={modalErrors.email?.message}
                         />
                         <InputField
-                            label="Номер телефону*"
+                            label="Phone number*"
                             type="tel"
+                            placeholder="+380 XX XXX XX XX"
                             {...register("phone", {
-                                required: "Введіть номер телефону",
+                                required: "Enter phone number",
                                 pattern: {
                                     value: /^\+?[\d\s\-]{10,15}$/,
                                     message: "Некоректний номер телефону",
@@ -132,8 +130,8 @@ export function EditUserInfoModal({
                     <p className="text-red-500 text-sm">{modalMessage}</p>
                 )}
                 <FormButtonsWrapper>
-                    <MonoButton onClick={onClose}>Скасувати</MonoButton>
-                    <MonoButton type="submit">Підтвердити</MonoButton>
+                    <MonoButton onClick={onClose}>Cancel</MonoButton>
+                    <MonoButton type="submit">Confirm</MonoButton>
                 </FormButtonsWrapper>
             </form>
         </ModalWrapper>

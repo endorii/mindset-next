@@ -437,8 +437,8 @@ function Checkout() {
                                 </div>
                             </div>
                             <div className="flex flex-col gap-[15px] w-1/2">
-                                <div className="text-3xl font-thin">
-                                    Адреса доставки
+                                <div className="text-3xl font-perandory tracking-wider">
+                                    Delivery address
                                 </div>
                                 <hr className="border-t border-white/10" />
                                 {novaPoshtaError && (

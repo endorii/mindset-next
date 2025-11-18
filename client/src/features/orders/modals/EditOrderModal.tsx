@@ -233,7 +233,7 @@ export function EditOrderModal({
                             </div>
                         </div>
                         <div className="flex flex-col gap-[15px]">
-                            <div className="text-lg">Адреса доставки</div>
+                            <div className="text-lg">Delivery address</div>
                             <Controller
                                 name="area"
                                 control={control}

@@ -45,7 +45,7 @@ export default async function RootLayout({
         >
             <body className="relative bg-black">
                 <QueryProvider>
-                    <Toaster theme="dark" />
+                    <Toaster theme="dark" position="bottom-center" />
                     <AuthStoreInitializer
                         user={user}
                         accessToken={accessToken || null}

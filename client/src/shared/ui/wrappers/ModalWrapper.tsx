@@ -18,8 +18,10 @@ export function ModalWrapper({
                 className="bg-black text-white bg-gradient-to-br from-black/0 to-white/3 border border-white/10 p-[40px] h-auto max-h-[80vh] shadow-lg overflow-y-auto cursor-default"
                 onClick={(e) => e.stopPropagation()}
             >
-                <h4 className="text-3xl font-thin mb-4">{modalTitle}</h4>
-                <hr className="border-t border-white/10 py-[10px]" />
+                <h4 className="text-4xl font-perandory tracking-wider mb-4">
+                    {modalTitle}
+                </h4>
+                {/* <hr className="border-t border-white/10 py-[10px]" /> */}
                 {children}
             </div>
         </div>

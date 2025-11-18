@@ -72,7 +72,7 @@ export function AddUserAddressModal({
     const modalContent = (
         <ModalWrapper
             onClose={handleClose}
-            modalTitle={"Додавання адреси доставки"}
+            modalTitle={"Add personal delivery address (optional)"}
         >
             <form
                 className="flex flex-col gap-[15px]"
@@ -81,74 +81,74 @@ export function AddUserAddressModal({
                 <FormFillingWrapper>
                     <div className="grid grid-cols-3 gap-[15px]">
                         <InputField
-                            label={"Одержувач (ПІБ)*"}
-                            placeholder={"Іванов Іван Іванович"}
+                            label={"Recipient (Full Name)*"}
+                            placeholder={"John Doe Smith"}
                             type="text"
                             {...register("recipient", {
-                                required: "Обов'язкове поле",
+                                required: "Enter recipient name",
                             })}
                             errorMessage={errors.recipient?.message}
                         />
                         <InputField
-                            label={"Країна*"}
-                            placeholder={"Україна"}
+                            label={"Country*"}
+                            placeholder={"Ukraine"}
                             type="text"
                             {...register("country", {
-                                required: "Обов'язкове поле",
+                                required: "Enter country",
                             })}
                             errorMessage={errors.country?.message}
                         />
                         <InputField
-                            label={"Область*"}
-                            placeholder={"Київська"}
+                            label={"Region*"}
+                            placeholder={"Kyivska"}
                             type="text"
                             {...register("region", {
-                                required: "Обов'язкове поле",
+                                required: "Enter region",
                             })}
                             errorMessage={errors.region?.message}
                         />
                         <InputField
-                            label={"Місто*"}
-                            placeholder={"Київ"}
+                            label={"City*"}
+                            placeholder={"Kyiv"}
                             type="text"
                             {...register("city", {
-                                required: "Обов'язкове поле",
+                                required: "Enter city",
                             })}
                             errorMessage={errors.city?.message}
                         />
                         <InputField
-                            label={"Вулиця*"}
-                            placeholder={"Степана Бандери"}
+                            label={"Address (street)*"}
+                            placeholder={"Shevchenko street"}
                             type="text"
                             {...register("street", {
-                                required: "Обов'язкове поле",
+                                required: "Enter street",
                             })}
                             errorMessage={errors.street?.message}
                         />
                         <InputField
-                            label={"Будинок*"}
+                            label={"Building*"}
                             placeholder={"45"}
                             type="text"
                             {...register("building", {
-                                required: "Обов'язкове поле",
+                                required: "Enter building",
                             })}
                             errorMessage={errors.building?.message}
                         />
                         <InputField
-                            label={"Номер квартири/будинку*"}
+                            label={"Number of appartment/house*"}
                             placeholder={"12"}
                             type="text"
                             {...register("apartment", {
-                                required: "Обов'язкове поле",
+                                required: "Enter apartment/house number",
                             })}
                             errorMessage={errors.apartment?.message}
                         />
                         <InputField
-                            label={"Поштовий індекс*"}
+                            label={"Postal code*"}
                             placeholder={"01001"}
                             type="text"
                             {...register("postalCode", {
-                                required: "Обов'язкове поле",
+                                required: "Enter postal code",
                                 pattern: {
                                     value: /^\d{5}$/,
                                     message: "Має бути рівно 5 цифр",
@@ -165,12 +165,12 @@ export function AddUserAddressModal({
 
                 <FormButtonsWrapper>
                     <MonoButton type="button" onClick={handleClose}>
-                        Скасувати
+                        Cancel
                     </MonoButton>
                     <MonoButton type="submit">
                         {createUserAddressMutation.isPending
-                            ? "Завантаження..."
-                            : "Підтвердити"}
+                            ? "Processing..."
+                            : "Add address"}
                     </MonoButton>
                 </FormButtonsWrapper>
             </form>

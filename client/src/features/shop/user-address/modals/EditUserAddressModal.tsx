@@ -92,7 +92,7 @@ export function EditUserAddressModal({
     const modalContent = (
         <ModalWrapper
             onClose={onClose}
-            modalTitle={"Редагування адреси доставки"}
+            modalTitle={"Edit personal delivery address"}
         >
             <form
                 className="flex flex-col gap-[15px]"
@@ -101,66 +101,66 @@ export function EditUserAddressModal({
                 <FormFillingWrapper>
                     <div className="grid grid-cols-3 gap-[15px]">
                         <InputField
-                            label="Одержувач (ПІБ)*"
+                            label="Recepient (Full name)*"
                             type="text"
                             {...register("recipient", {
-                                required: "Обов'язкове поле",
+                                required: "Enter recipient full name",
                             })}
                             errorMessage={errors.recipient?.message}
                         />
                         <InputField
-                            label="Країна*"
+                            label="County*"
                             type="text"
                             {...register("country", {
-                                required: "Обов'язкове поле",
+                                required: "Enter country",
                             })}
                             errorMessage={errors.country?.message}
                         />
                         <InputField
-                            label="Область*"
+                            label="Region*"
                             type="text"
                             {...register("region", {
-                                required: "Обов'язкове поле",
+                                required: "Enter region",
                             })}
                             errorMessage={errors.region?.message}
                         />
                         <InputField
-                            label="Місто*"
+                            label="City*"
                             type="text"
                             {...register("city", {
-                                required: "Обов'язкове поле",
+                                required: "Enter city",
                             })}
                             errorMessage={errors.city?.message}
                         />
                         <InputField
-                            label="Вулиця*"
+                            label="Street*"
                             type="text"
                             {...register("street", {
-                                required: "Обов'язкове поле",
+                                required: "Enter street",
                             })}
                             errorMessage={errors.street?.message}
                         />
                         <InputField
-                            label="Будинок*"
+                            label="Builing*"
                             type="text"
                             {...register("building", {
-                                required: "Обов'язкове поле",
+                                required: "Enter building",
                             })}
                             errorMessage={errors.building?.message}
                         />
                         <InputField
-                            label="Номер квартири/будинку*"
+                            label="Appartment/house number*"
                             type="text"
                             {...register("apartment", {
-                                required: "Обов'язкове поле",
+                                required: "Enter apartment/house number",
                             })}
                             errorMessage={errors.apartment?.message}
                         />
                         <InputField
-                            label="Поштовий індекс*"
+                            label="Postal code*"
                             type="text"
                             {...register("postalCode", {
-                                required: "Обов'язкове поле",
+                                required: "Enter postal code",
                                 pattern: {
                                     value: /^\d{5}$/,
                                     message: "Має бути рівно 5 цифр",
@@ -174,8 +174,8 @@ export function EditUserAddressModal({
                     <p className="text-red-500 text-sm">{modalMessage}</p>
                 )}
                 <FormButtonsWrapper>
-                    <MonoButton onClick={onClose}>Скасувати</MonoButton>
-                    <MonoButton type="submit">Підтвердити</MonoButton>
+                    <MonoButton onClick={onClose}>Cancel</MonoButton>
+                    <MonoButton type="submit">Confirm</MonoButton>
                 </FormButtonsWrapper>
             </form>
         </ModalWrapper>

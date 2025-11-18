@@ -17,12 +17,14 @@ export function ChangePassword({
 }: ChangePasswordProps) {
     return (
         <div className="flex flex-col gap-[10px] w-full bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px]">
-            <div className="font-bold">Зміна паролю</div>
+            <div className="font-perandory tracking-wider text-3xl">
+                Change password
+            </div>
             <MonoButton
                 onClick={() => openModal("changePassword")}
                 disabled={isUserError || isUserPending || !currentUser}
             >
-                Змінити пароль
+                Change password
             </MonoButton>
         </div>
     );

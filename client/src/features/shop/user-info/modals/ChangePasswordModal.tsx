@@ -66,7 +66,7 @@ export function ChangePasswordModal({
     if (!isOpen) return null;
 
     const modalContent = (
-        <ModalWrapper onClose={onClose} modalTitle={"Зміна паролю"}>
+        <ModalWrapper onClose={onClose} modalTitle={"Change password"}>
             <form
                 className="flex flex-col gap-[15px]"
                 onSubmit={handleSubmit(onSubmit)}
@@ -74,10 +74,10 @@ export function ChangePasswordModal({
                 <FormFillingWrapper>
                     <div className="grid grid-cols-2 gap-[15px]">
                         <InputField
-                            label={"Старий пароль*"}
+                            label={"Old password*"}
                             type="password"
                             {...register("oldPassword", {
-                                required: "Введіть пароль",
+                                required: "Enter password",
                                 minLength: {
                                     value: 8,
                                     message:
@@ -97,10 +97,10 @@ export function ChangePasswordModal({
                             errorMessage={errors.oldPassword?.message}
                         />
                         <InputField
-                            label={"Новий пароль*"}
+                            label={"New password*"}
                             type="password"
                             {...register("newPassword", {
-                                required: "Введіть пароль",
+                                required: "Enter password",
                                 minLength: {
                                     value: 8,
                                     message:
@@ -130,15 +130,15 @@ export function ChangePasswordModal({
                         onClick={handleClose}
                         disabled={changePasswordMutation.isPending}
                     >
-                        Скасувати
+                        Cancel
                     </MonoButton>
                     <MonoButton
                         type="submit"
                         disabled={changePasswordMutation.isPending}
                     >
                         {changePasswordMutation.isPending
-                            ? "Завантаження..."
-                            : "Змінити"}
+                            ? "Changing..."
+                            : "Change"}
                     </MonoButton>
                 </FormButtonsWrapper>
             </form>

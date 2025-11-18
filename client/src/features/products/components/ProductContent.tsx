@@ -105,8 +105,8 @@ export function ProductContent({
     };
 
     return (
-        <div className="flex lg:flex-col gap-[15px] items-start text-white">
-            <div className="flex xl:flex-col gap-[10px] relative xl:w-full w-[55%]">
+        <div className="flex sm:flex-col gap-[15px] items-start text-white">
+            <div className="flex sm:flex-col gap-[10px] relative">
                 <div className="relative w-full h-full">
                     <button
                         onClick={handleLikeToggle}
@@ -123,13 +123,13 @@ export function ProductContent({
                     <Image
                         src={product.banner}
                         alt={product.name}
-                        className="w-full object-cover"
-                        width={700}
-                        height={700}
+                        className="h-[500px] sm:h-[400px] object-cover w-full"
+                        width={1500}
+                        height={1500}
                     />
                 </div>
                 {product.images.length > 0 && (
-                    <div className="flex flex-col xl:flex-row gap-[10px] w-[15%] xl:w-full xl:h-[200px] overflow-y-auto xl:overflow-x-auto">
+                    <div className="flex flex-col sm:flex-row gap-[10px] w-full sm:h-[200px] overflow-y-auto sm:overflow-x-auto">
                         {product.images.map((image, i) => (
                             <Image
                                 key={i}
@@ -144,7 +144,7 @@ export function ProductContent({
                 )}
             </div>
 
-            <div className="flex flex-col gap-[15px] w-[45%] lg:w-full h-fit">
+            <div className="flex flex-col gap-[15px] w-[65%] lg:w-full h-fit">
                 <div className="flex flex-col gap-[25px] bg-white/5 border border-white/10 px-[20px] xl:p-[15px] py-[20px]">
                     <Breadcrumbs
                         collectionPath={collectionPath}

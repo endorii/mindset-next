@@ -19,10 +19,12 @@ export function DeliveryAddress({
 }: DeliveryAddressProps) {
     return (
         <div className="relative flex flex-col group gap-[10px] w-full bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px]">
-            <div className="font-bold">Адреса доставки</div>
+            <div className="text-3xl font-perandory tracking-wider">
+                Personal delivery address (optional)
+            </div>
             {!currentUser?.shippingAddress && !isUserPending ? (
                 <MonoButton onClick={() => openModal("addUserAddress")}>
-                    Додати адресу
+                    Add address
                 </MonoButton>
             ) : isUserPending ? (
                 <DeliveryAddressSkeleton />
@@ -33,26 +35,28 @@ export function DeliveryAddress({
             ) : (
                 <div className=" py-[10px] flex flex-col gap-[7px] h-full">
                     <button
-                        className="absolute top-0 right-0 flex h-full w-full items-center justify-center bg-black/80 uppercase text-2xl font-light opacity-0 group-hover:opacity-100 transition-all duration-400 cursor-pointer z-10"
+                        className="absolute flex gap-[5px] items-center top-[20px] right-[20px]"
                         onClick={() => openModal("editUserAddress")}
                     >
-                        Редагувати
+                        <div className="font-perandory tracking-wider text-xl border-b border-transparent hover:border-white">
+                            Edit
+                        </div>
                     </button>
                     <div className="grid grid-cols-2 xl:grid-cols-1 gap-[15px]">
                         <InfoField
-                            label={"Одержувач (ПІБ)"}
+                            label={"Recepient (Full name)"}
                             value={currentUser?.shippingAddress?.recipient}
                         />
                         <InfoField
-                            label={"Країна проживання, область"}
-                            value={`${currentUser?.shippingAddress?.country}, ${currentUser?.shippingAddress?.region} обл.`}
+                            label={"Country of residence, region"}
+                            value={`${currentUser?.shippingAddress?.country}, ${currentUser?.shippingAddress?.region} reg.`}
                         />
                         <InfoField
-                            label={"Місто, вулиця, будинок, квартира"}
-                            value={`${currentUser?.shippingAddress?.city}, вул.${currentUser?.shippingAddress?.street}, ${currentUser?.shippingAddress?.building}. ${currentUser?.shippingAddress?.apartment}`}
+                            label={"City, street, house, apartment"}
+                            value={`${currentUser?.shippingAddress?.city}, ${currentUser?.shippingAddress?.street} str., ${currentUser?.shippingAddress?.building}. ${currentUser?.shippingAddress?.apartment}`}
                         />
                         <InfoField
-                            label={"Поштовий індекс"}
+                            label={"Postal code"}
                             value={currentUser?.shippingAddress?.postalCode}
                         />
                     </div>

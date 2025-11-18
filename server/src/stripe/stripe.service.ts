@@ -31,11 +31,6 @@ export class StripeService {
                     name: item.product.name,
                 },
                 unit_amount: item.product.price * 100,
-                currency_options: {
-                    eur: { unit_amount: item.product.price * 100 * 0.92 },
-                    uah: { unit_amount: item.product.price * 100 * 41 },
-                    gbp: { unit_amount: item.product.price * 100 * 0.79 },
-                },
             },
             quantity: item.quantity,
         }));

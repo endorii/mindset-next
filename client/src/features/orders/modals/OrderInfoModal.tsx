@@ -67,7 +67,7 @@ export function OrderInfoModal({
                         </div>
                     </div>
                     <div className="flex flex-col gap-[15px]">
-                        <div className="text-lg">Адреса доставки</div>
+                        <div className="text-lg">Delivery address</div>
                         <div className="flex flex-col gap-[15px]">
                             <InfoField label="Область" value={area} />
                             <InfoField label="Місто" value={city} />

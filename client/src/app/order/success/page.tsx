@@ -115,9 +115,9 @@ const OrderSuccessPage = () => {
                         <hr className="border-t border-white/10 w-full" />
                         <div className="flex flex-col gap-[20px]">
                             <div className="flex flex-col gap-[15px] p-[20px] bg-white/5 rounded-lg">
-                                <h3 className="font-bold flex items-center">
-                                    Адреса доставки
-                                </h3>
+                                <div className="text-3xl font-perandory tracking-wider">
+                                    Delivery address
+                                </div>
                                 <div className="flex flex-col gap-1">
                                     <div>
                                         Область:{" "}

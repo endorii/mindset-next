@@ -1,14 +1,16 @@
 import Image from "next/image";
 import MastercardImage from "../../../../../public/images/mastercard.png";
-import NovaPoshtaImage from "../../../../../public/images/nova-poshta.png";
+import NovaPoshtaImage from "../../../../../public/images/nova-post.png";
 import VisaImage from "../../../../../public/images/visa.png";
 
 export function DeliveryAndPaymentMethod() {
     return (
         <div className="flex flex-col gap-[10px] w-full bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px]">
-            <div className="font-bold text-xl mb-4">Доставка та оплата</div>
+            <div className="font-perandory tracking-wider text-3xl">
+                Delivery and payment
+            </div>
 
-            <div className="flex md:flex-wrap items-center gap-[15px]">
+            <div className="flex md:flex-wrap items-center gap-[15px] py-[10px]">
                 <Image
                     src={NovaPoshtaImage}
                     width={160}
@@ -17,19 +19,19 @@ export function DeliveryAndPaymentMethod() {
                 />
                 <div className="flex md:flex-wrap gap-[15px]">
                     <div className="flex flex-col gap-[10px]">
-                        <div className="font-semibold text-lg">
-                            Доставка у відділення "Нова Пошта"
+                        <div className="font-perandory tracking-wider text-xl">
+                            Delivery to Nova Post branch
                         </div>
-                        <div className="text-sm text-white/60  max-w-md">
-                            Отримуйте свої замовлення у найближчому відділенні
-                            "Нова Пошта". Зручне самовивезення, швидка обробка
-                            та відстеження посилки.
+                        <div className="text-sm text-neutral-400 max-w-md font-light">
+                            Receive your orders at the nearest Nova Poshta
+                            branch. Convenient pickup, fast processing, and
+                            real-time parcel tracking.
                         </div>
                     </div>
-                    <ul className="list-disc list-inside mt-2 text-sm text-white/60">
-                        <li>Термін доставки: 1-3 робочі дні</li>
-                        <li>Відстеження посилки у реальному часі</li>
-                        <li>Можливість оплатити при отриманні</li>
+                    <ul className="list-disc list-inside mt-2 text-sm text-neutral-400 font-light">
+                        <li>Delivery time: 1–3 business days</li>
+                        <li>Real-time parcel tracking</li>
+                        <li>Option to pay upon pickup</li>
                     </ul>
                 </div>
             </div>
@@ -53,19 +55,19 @@ export function DeliveryAndPaymentMethod() {
                 </div>
                 <div className="flex md:flex-wrap gap-[15px]">
                     <div className="flex flex-col gap-[10px]">
-                        <div className="font-semibold text-lg">
-                            Оплата карткою онлайн
+                        <div className="font-perandory tracking-wider text-xl">
+                            Online card payment
                         </div>
-                        <div className="text-sm text-white/60 max-w-md">
-                            Швидка і безпечна оплата банківськими картками Visa,
-                            MasterCard та іншими популярними платіжними
-                            системами. Підтвердження платежу відразу.
+                        <div className="text-sm text-neutral-400 max-w-md font-light">
+                            Fast and secure payment with Visa, MasterCard, and
+                            other popular payment systems. Instant payment
+                            confirmation.
                         </div>
                     </div>
-                    <ul className="list-disc list-inside mt-2 text-sm text-white/60">
-                        <li>Підтримка 3D Secure для безпеки платежів</li>
-                        <li>Оплата з мобільних пристроїв та комп’ютерів</li>
-                        <li>Можливість збереження даних для швидших покупок</li>
+                    <ul className="list-disc list-inside mt-2 text-sm text-neutral-400 font-light">
+                        <li>3D Secure support for safe payments</li>
+                        <li>Payment via mobile devices and computers</li>
+                        <li>Option to save card details for faster checkout</li>
                     </ul>
                 </div>
             </div>
