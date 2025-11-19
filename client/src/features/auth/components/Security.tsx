@@ -2,47 +2,48 @@ import { LoginComponentsWrapper } from "@/shared/ui/wrappers";
 
 export function Security() {
     return (
-        <LoginComponentsWrapper title="Захист Вашої інформації">
+        <LoginComponentsWrapper title="Protecting your information">
             <div className="flex flex-col gap-[15px]">
                 <div className="flex flex-col gap-[15px]">
                     <p className="text-white/80 text-sm">
-                        Ми серйозно ставимось до безпеки ваших персональних
-                        даних і не передаємо їх третім особам. Ваше право на
-                        конфіденційність для нас — понад усе.
+                        We take the security of your personal data seriously and
+                        do not share it with third parties. Your right to
+                        privacy is paramount to us.
                     </p>
 
                     <p className="text-white/60 text-sm">
-                        Наша система використовує сучасні методи захисту
-                        інформації, включно з багаторівневою аутентифікацією,
-                        шифруванням та регулярним аудитом безпеки.
+                        Our system uses modern methods of information
+                        protection, including multi-level authentication,
+                        encryption, and regular security audits.
                     </p>
 
                     <ul className="flex flex-col gap-[7px] text-sm list-disc list-inside text-white/50">
-                        <li>Ваші дані зберігаються безпечно</li>
-                        <li>Ми використовуємо захищене з'єднання (SSL)</li>
-                        <li>Інформація не передається третім особам</li>
-                        <li>Конфіденційність — наш пріоритет</li>
-                        <li>Регулярне оновлення політики безпеки</li>
+                        <li>Your data is stored securely</li>
+                        <li>We use a secure connection (SSL)</li>
+                        <li>Information is not shared with third parties</li>
+                        <li>Privacy is our priority</li>
+                        <li>Regularly updated security policy</li>
                     </ul>
 
                     <div className="flex flex-wrap gap-[10px] mt-2 text-xs text-green-300">
-                        <span className="bg-green-800/30 px-2 py-1 rounded-md">
+                        <span className="bg-green-800/30 px-2 py-1  ">
                             SSL Secure
                         </span>
-                        <span className="bg-green-800/30 px-2 py-1 rounded-md">
+                        <span className="bg-green-800/30 px-2 py-1  ">
                             GDPR Ready
                         </span>
                     </div>
 
                     <p className="text-xs text-white/40 mt-1">
-                        🔒 Понад 100 користувачів вже довірили нам свої дані.
+                        🔒 Over 100 users have already entrusted us with their
+                        data.
                     </p>
                 </div>
                 <div className="flex flex-col gap-[15px]">
                     <p className="text-sm text-white/60">
-                        Якщо у вас виникли питання щодо того, як ми зберігаємо
-                        чи обробляємо ваші дані — зв’яжіться з нашою службою
-                        підтримки, і ми з радістю відповімо.
+                        If you have any questions about how we store or process
+                        your data, please contact our support team and we will
+                        be happy to answer.
                     </p>
 
                     <div className="flex flex-col gap-[5px]">
@@ -50,10 +51,10 @@ export function Security() {
                             href="/privacy-policy"
                             className="text-xs underline text-blue-400 hover:text-blue-300 w-fit"
                         >
-                            Детальніше про політику конфіденційності
+                            More about privacy policy
                         </a>
                         <p className="text-xs text-white/30">
-                            Останнє оновлення: червень 2025
+                            Last updated: June 2025
                         </p>
                     </div>
                 </div>

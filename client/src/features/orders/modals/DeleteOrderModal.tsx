@@ -31,15 +31,15 @@ export function DeleteOrderModal({
     };
 
     const modalContent = (
-        <ModalWrapper onClose={onClose} modalTitle={"Видалення замовлення"}>
+        <ModalWrapper onClose={onClose} modalTitle={"Deletting order"}>
             <div className="mb-6 text-white/80 text-[16px] leading-[1.6]">
-                Ви дійсно хочете видалити замовлення?
+                Do you really want to Delete the order?
             </div>
             <FormButtonsWrapper>
                 <MonoButton type="button" onClick={onClose}>
-                    Скасувати
+                    Cancel
                 </MonoButton>
-                <DeleteButton onClick={handleDelete}>Видалити</DeleteButton>
+                <DeleteButton onClick={handleDelete}>Delete</DeleteButton>
             </FormButtonsWrapper>
         </ModalWrapper>
     );

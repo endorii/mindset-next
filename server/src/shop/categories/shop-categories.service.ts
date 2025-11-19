@@ -18,15 +18,15 @@ export class ShopCategoriesService {
                 },
             });
 
-            if (!categories) throw new NotFoundException("Категорій не знайдено");
+            if (!categories) throw new NotFoundException("No categories found");
 
             return categories;
         } catch (error) {
-            console.error("Помилка отримання категорій:", error);
+            console.error("Error fetching categories:", error);
             if (error instanceof HttpException) {
                 throw error;
             }
-            throw new InternalServerErrorException("Помилка сервера при отриманні категорій");
+            throw new InternalServerErrorException("Server error while fetching categories");
         }
     }
 
@@ -53,15 +53,15 @@ export class ShopCategoriesService {
                 },
             });
 
-            if (!categories) throw new NotFoundException("Категорій не знайдено");
+            if (!categories) throw new NotFoundException("No categories found");
 
             return categories;
         } catch (error) {
-            console.error("Помилка отримання категорій:", error);
+            console.error("Error fetching categories:", error);
             if (error instanceof HttpException) {
                 throw error;
             }
-            throw new InternalServerErrorException("Помилка сервера при отриманні категорій");
+            throw new InternalServerErrorException("Server error while fetching categories");
         }
     }
 
@@ -91,15 +91,15 @@ export class ShopCategoriesService {
                 },
             });
 
-            if (!category) throw new NotFoundException("Категорію не знайдено");
+            if (!category) throw new NotFoundException("Category not found");
 
             return category;
         } catch (error) {
-            console.error("Помилка отримання категорії:", error);
+            console.error("Error fetching category:", error);
             if (error instanceof HttpException) {
                 throw error;
             }
-            throw new InternalServerErrorException("Помилка сервера при отримання категорії");
+            throw new InternalServerErrorException("Server error while fetching category");
         }
     }
 }

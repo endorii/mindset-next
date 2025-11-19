@@ -6,21 +6,21 @@ import { FilterSection } from "../../attributes/components/FilterSection";
 import { useRecentActions } from "../../recent-actions/hooks/useRecentActions";
 
 export function AdminAccountContent() {
-    const actionTypeFilters = ["Всі", "Додано", "Редаговано", "Видалено"];
+    const actionTypeFilters = ["All", "Added", "Edited", "Deleted"];
     const entityFilters = [
-        "Всі",
-        "колекцію",
-        "категорію",
-        "товар",
-        "колір",
-        "тип",
-        "розмір",
+        "All",
+        "collection",
+        "category",
+        "product",
+        "color",
+        "type",
+        "size",
     ];
-    const sortFilters = ["Спочатку новіші", "Спочатку старіші"];
+    const sortFilters = ["Newer first", "First the older ones"];
 
-    const [selectedType, setSelectedType] = useState("Всі");
-    const [selectedEntity, setSelectedEntity] = useState("Всі");
-    const [selectedSort, setSelectedSort] = useState("Спочатку новіші");
+    const [selectedType, setSelectedType] = useState("All");
+    const [selectedEntity, setSelectedEntity] = useState("All");
+    const [selectedSort, setSelectedSort] = useState("Newer first");
 
     const { data: actions } = useRecentActions();
 
@@ -29,10 +29,10 @@ export function AdminAccountContent() {
 
         let result = actions.filter((action) => {
             const isTypeMatch =
-                selectedType === "Всі" ||
+                selectedType === "All" ||
                 action.action.startsWith(selectedType);
             const isEntityMatch =
-                selectedEntity === "Всі" ||
+                selectedEntity === "All" ||
                 action.action.includes(selectedEntity);
             return isTypeMatch && isEntityMatch;
         });
@@ -40,7 +40,7 @@ export function AdminAccountContent() {
         result.sort((a, b) => {
             const aDate = new Date(a.createdAt).getTime();
             const bDate = new Date(b.createdAt).getTime();
-            return selectedSort === "Спочатку старіші"
+            return selectedSort === "First the older ones"
                 ? aDate - bDate
                 : bDate - aDate;
         });
@@ -50,21 +50,21 @@ export function AdminAccountContent() {
     return (
         <>
             <FilterSection
-                title="Фільтрувати за дією:"
+                title="Filter by action"
                 filters={actionTypeFilters}
                 onFilterClick={(filter) => setSelectedType(filter)}
                 selectedItem={selectedType}
             />
 
             <FilterSection
-                title="Фільтрувати за об'єктом:"
+                title="Filter by object"
                 filters={entityFilters}
                 onFilterClick={(filter) => setSelectedEntity(filter)}
                 selectedItem={selectedEntity}
             />
 
             <FilterSection
-                title="Сортування:"
+                title="Sorting"
                 filters={sortFilters}
                 onFilterClick={(filter) => setSelectedSort(filter)}
                 selectedItem={selectedSort}

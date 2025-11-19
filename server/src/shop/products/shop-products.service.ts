@@ -24,11 +24,9 @@ export class ProductsService {
 
             return products;
         } catch (error) {
-            console.error("Помилка отримання товарів:", error);
-            if (error instanceof HttpException) {
-                throw error;
-            }
-            throw new InternalServerErrorException("Не вдалося отримати товари");
+            console.error("Error fetching products:", error);
+            if (error instanceof HttpException) throw error;
+            throw new InternalServerErrorException("Failed to fetch products");
         }
     }
 
@@ -63,11 +61,9 @@ export class ProductsService {
 
             return products;
         } catch (error) {
-            console.error("Помилка отримання товарів:", error);
-            if (error instanceof HttpException) {
-                throw error;
-            }
-            throw new InternalServerErrorException("Не вдалося отримати товари");
+            console.error("Error fetching products by category:", error);
+            if (error instanceof HttpException) throw error;
+            throw new InternalServerErrorException("Failed to fetch products by category");
         }
     }
 
@@ -92,16 +88,14 @@ export class ProductsService {
             });
 
             if (!product) {
-                throw new NotFoundException("Товар не знайдено");
+                throw new NotFoundException("Product not found");
             }
 
             return product;
         } catch (error) {
-            console.error("Помилка отримання товару:", error);
-            if (error instanceof HttpException) {
-                throw error;
-            }
-            throw new InternalServerErrorException("Не вдалося отримати товар");
+            console.error("Error fetching product by path:", error);
+            if (error instanceof HttpException) throw error;
+            throw new InternalServerErrorException("Failed to fetch product");
         }
     }
 
@@ -128,11 +122,9 @@ export class ProductsService {
 
             return products;
         } catch (error) {
-            console.error("Помилка отримання популярних товарів:", error);
-            if (error instanceof HttpException) {
-                throw error;
-            }
-            throw new InternalServerErrorException("Не вдалося отримати популярні товари");
+            console.error("Error fetching popular products:", error);
+            if (error instanceof HttpException) throw error;
+            throw new InternalServerErrorException("Failed to fetch popular products");
         }
     }
 
@@ -157,11 +149,9 @@ export class ProductsService {
 
             return products;
         } catch (error) {
-            console.error("Помилка отримання товарів з колекції:", error);
-            if (error instanceof HttpException) {
-                throw error;
-            }
-            throw new InternalServerErrorException("Не вдалося отримати товари з колекції");
+            console.error("Error fetching products from collection:", error);
+            if (error instanceof HttpException) throw error;
+            throw new InternalServerErrorException("Failed to fetch products from collection");
         }
     }
 }

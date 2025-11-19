@@ -7,8 +7,8 @@ import { AuthService } from "../auth.service";
 @Injectable()
 export class JwtAccessStrategy extends PassportStrategy(Strategy, "jwt-access") {
     constructor(
-        private configService: ConfigService,
-        private authService: AuthService
+        private readonly configService: ConfigService,
+        private readonly authService: AuthService
     ) {
         super({
             jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
@@ -20,7 +20,7 @@ export class JwtAccessStrategy extends PassportStrategy(Strategy, "jwt-access") 
     async validate(payload: { sub: string }) {
         const user = await this.authService.validateJwtUser(payload.sub);
         if (!user) {
-            throw new UnauthorizedException("Користувача не знайдено");
+            throw new UnauthorizedException("User not found");
         }
         return user;
     }

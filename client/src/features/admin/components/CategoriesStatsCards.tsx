@@ -13,18 +13,18 @@ export function CategoriesStatsCards({
 }: CategoriesStatsCardsProps) {
     return (
         <div className="w-1/3 lg:w-full grid grid-cols-2 xxs:grid-cols-1 gap-[15px]">
-            <StatCard title="Кількість категорій" value={totalCategories} />
+            <StatCard title="Number of categories" value={totalCategories} />
             <StatCard
-                title="Найпопулярніша категорія"
+                title="Most popular category"
                 value={mostPopularCategory?.name || "-"}
             />
             <StatCard
-                title="Категорія з найбільшим обсягом продажів"
+                title="Category with the highest sales volume"
                 value={
                     highestSalesCategory
                         ? `${
                               highestSalesCategory.name
-                          } (${highestSalesCategory.salesSum.toFixed(2)} ₴)`
+                          } (${highestSalesCategory.salesSum.toFixed(2)} $)`
                         : "-"
                 }
             />

@@ -1,84 +1,84 @@
 import {
-    IsString,
-    IsNotEmpty,
-    IsInt,
-    IsEnum,
     IsArray,
-    IsOptional,
     IsDefined,
+    IsEnum,
+    IsInt,
+    IsNotEmpty,
+    IsOptional,
+    IsString,
 } from "class-validator";
 
 export enum EStatus {
-    ACTIVE = "Активно",
-    NOTACTIVE = "Не активно",
+    ACTIVE = "Active",
+    NOTACTIVE = "Not active",
 }
 
 export enum EAvailable {
-    AVAILABLE = "Доступно",
-    NOTAVAILABLE = "Не доступно",
+    AVAILABLE = "Available",
+    NOTAVAILABLE = "Not available",
 }
 
 export class CreateProductDto {
-    @IsString({ message: "Назва повинна бути рядком." })
-    @IsNotEmpty({ message: "Назва не може бути порожньою." })
+    @IsString({ message: "Name must be a string." })
+    @IsNotEmpty({ message: "Name cannot be empty." })
     name: string;
 
-    @IsString({ message: "Шлях повинен бути рядком." })
-    @IsNotEmpty({ message: "Шлях не може бути порожнім." })
+    @IsString({ message: "Path must be a string." })
+    @IsNotEmpty({ message: "Path cannot be empty." })
     path: string;
 
-    @IsString({ message: "Банер повинен бути рядком." })
-    @IsNotEmpty({ message: "Банер не може бути порожнім." })
+    @IsString({ message: "Banner must be a string." })
+    @IsNotEmpty({ message: "Banner cannot be empty." })
     banner: string;
 
-    @IsInt({ message: "Ціна повинна бути цілим числом." })
-    @IsDefined({ message: "Ціна повинна бути визначена." })
+    @IsInt({ message: "Price must be an integer." })
+    @IsDefined({ message: "Price is required." })
     price: number;
 
-    @IsInt({ message: "Попередня ціна повинна бути цілим числом." })
-    @IsDefined({ message: "Попередня ціна повинна бути визначена." })
+    @IsInt({ message: "Old price must be an integer." })
+    @IsDefined({ message: "Old price is required." })
     oldPrice: number;
 
-    @IsEnum(EAvailable, { message: "Недійсна доступність продукту." })
-    @IsDefined({ message: "Доступність повинна бути визначена." })
+    @IsEnum(EAvailable, { message: "Invalid product availability." })
+    @IsDefined({ message: "Availability is required." })
     available: EAvailable;
 
-    @IsString({ message: "Опис повинен бути рядком." })
-    @IsNotEmpty({ message: "Опис не може бути порожнім." })
+    @IsString({ message: "Description must be a string." })
+    @IsNotEmpty({ message: "Description cannot be empty." })
     description: string;
 
-    @IsString({ message: "Склад повинен бути рядком." })
-    @IsNotEmpty({ message: "Склад не може бути порожнім." })
+    @IsString({ message: "Composition must be a string." })
+    @IsNotEmpty({ message: "Composition cannot be empty." })
     composition: string;
 
-    @IsInt({ message: "Перегляди повинні бути цілим числом." })
-    @IsDefined({ message: "Перегляди повинні бути визначені." })
+    @IsInt({ message: "Views must be an integer." })
+    @IsDefined({ message: "Views are required." })
     views: number;
 
-    @IsEnum(EStatus, { message: "Недійсний статус продукту." })
-    @IsDefined({ message: "Cтатус повинен бути визначений." })
+    @IsEnum(EStatus, { message: "Invalid product status." })
+    @IsDefined({ message: "Status is required." })
     status: EStatus;
 
-    @IsString({ message: "ID категорії повинен бути рядком." })
-    @IsNotEmpty({ message: "ID категорії не може бути порожнім." })
+    @IsString({ message: "Category ID must be a string." })
+    @IsNotEmpty({ message: "Category ID cannot be empty." })
     categoryId: string;
 
-    @IsArray({ message: "Зображення повинні бути масивом." })
-    @IsString({ each: true, message: "Кожен елемент у масиві зображень повинен бути рядком." })
+    @IsArray({ message: "Images must be an array." })
+    @IsString({ each: true, message: "Each image must be a string." })
     images: string[];
 
     @IsOptional()
-    @IsArray({ message: "Кольори повинні бути масивом ID." })
-    @IsString({ each: true, message: "Кожен ID кольору повинен бути рядком." })
+    @IsArray({ message: "Colors must be an array of IDs." })
+    @IsString({ each: true, message: "Each color ID must be a string." })
     colorIds?: string[];
 
     @IsOptional()
-    @IsArray({ message: "Розміри повинні бути масивом ID." })
-    @IsString({ each: true, message: "Кожен ID розміру повинен бути рядком." })
+    @IsArray({ message: "Sizes must be an array of IDs." })
+    @IsString({ each: true, message: "Each size ID must be a string." })
     sizeIds?: string[];
 
     @IsOptional()
-    @IsArray({ message: "Типи повинні бути масивом ID." })
-    @IsString({ each: true, message: "Кожен ID типу повинен бути рядком." })
+    @IsArray({ message: "Types must be an array of IDs." })
+    @IsString({ each: true, message: "Each type ID must be a string." })
     typeIds?: string[];
 }

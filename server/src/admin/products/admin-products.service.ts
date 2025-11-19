@@ -29,7 +29,7 @@ export class AdminProductsService {
             });
 
             if (existingProduct) {
-                throw new ConflictException("Товар з таким шляхом вже існує");
+                throw new ConflictException("A product with this path already exists");
             }
 
             const product = await this.prisma.product.create({
@@ -64,18 +64,18 @@ export class AdminProductsService {
                 },
             });
 
-            await this.adminRecentActions.createAction(userId, `Додано товар ${product.name}`);
+            await this.adminRecentActions.createAction(userId, `Added product ${product.name}`);
 
             return {
-                message: "Товар успішно створено",
+                message: "Product successfully created",
                 data: product,
             };
         } catch (error) {
-            console.error("Помилка створення товару:", error);
+            console.error("Error creating product:", error);
             if (error instanceof HttpException) {
                 throw error;
             }
-            throw new InternalServerErrorException("Не вдалося створити товар");
+            throw new InternalServerErrorException("Failed to create product");
         }
     }
 
@@ -90,7 +90,7 @@ export class AdminProductsService {
             });
 
             if (!product) {
-                throw new NotFoundException("Товару з таким ID не знайдено");
+                throw new NotFoundException("Product with this ID not found");
             }
 
             const dataToUpdate: Prisma.ProductUpdateInput = {
@@ -155,19 +155,19 @@ export class AdminProductsService {
 
             await this.adminRecentActions.createAction(
                 userId,
-                `Редаговано товар ${updatedProduct.name}`
+                `Edited product ${updatedProduct.name}`
             );
 
             return {
-                message: "Товар успішно оновлено",
+                message: "Product successfully updated",
                 product: updatedProduct,
             };
         } catch (error) {
-            console.error("Помилка оновлення товару:", error);
+            console.error("Error updating product:", error);
             if (error instanceof HttpException) {
                 throw error;
             }
-            throw new InternalServerErrorException("Не вдалося редагувати товар");
+            throw new InternalServerErrorException("Failed to update product");
         }
     }
 
@@ -180,7 +180,7 @@ export class AdminProductsService {
             });
 
             if (!product) {
-                throw new NotFoundException("Товару з таким ID не знайдено");
+                throw new NotFoundException("Product with this ID not found");
             }
 
             await this.prisma.product.delete({
@@ -189,17 +189,17 @@ export class AdminProductsService {
                 },
             });
 
-            await this.adminRecentActions.createAction(userId, `Видалено товар ${product.name}`);
+            await this.adminRecentActions.createAction(userId, `Deleted product ${product.name}`);
 
             return {
-                message: "Товар успішно видалено",
+                message: "Product successfully deleted",
             };
         } catch (error) {
-            console.error("Помилка видалення товару:", error);
+            console.error("Error deleting product:", error);
             if (error instanceof HttpException) {
                 throw error;
             }
-            throw new InternalServerErrorException("Не вдалося видалити товар");
+            throw new InternalServerErrorException("Failed to delete product");
         }
     }
 }

@@ -70,10 +70,10 @@ export function EditProductModal({
             path: "",
             price: 0,
             oldPrice: 0,
-            available: "Не доступно",
+            available: "Not available",
             description: "",
             composition: "",
-            status: "Не активно",
+            status: "Not active",
             colorIds: [],
             sizeIds: [],
             typeIds: [],
@@ -190,7 +190,7 @@ export function EditProductModal({
             if (colorsToSend.length === 0) {
                 setError("colorIds", {
                     type: "manual",
-                    message: "Оберіть хоча б один колір",
+                    message: "Choose at least one color",
                 });
                 hasError = true;
             } else clearErrors("colorIds");
@@ -198,7 +198,7 @@ export function EditProductModal({
             if (sizesToSend.length === 0) {
                 setError("sizeIds", {
                     type: "manual",
-                    message: "Оберіть хоча б один розмір",
+                    message: "Choose at least one size",
                 });
                 hasError = true;
             } else clearErrors("sizeIds");
@@ -206,13 +206,13 @@ export function EditProductModal({
             if (typesToSend.length === 0) {
                 setError("typeIds", {
                     type: "manual",
-                    message: "Оберіть хоча б один тип",
+                    message: "Choose at least one type",
                 });
                 hasError = true;
             } else clearErrors("typeIds");
 
             if (!banner) {
-                setBannerError("Оберіть банер");
+                setBannerError("Choose banner");
                 hasError = true;
             } else {
                 setBannerError(null);
@@ -282,12 +282,12 @@ export function EditProductModal({
             setModalMessage("");
             onClose();
         } catch (err: any) {
-            setModalMessage(err?.message || "Не вдалося відредагувати товар");
+            setModalMessage(err?.message || "Unable to edit product");
         }
     };
 
     const modalContent = (
-        <ModalWrapper onClose={onClose} modalTitle={"Редагування товару"}>
+        <ModalWrapper onClose={onClose} modalTitle={"Product editing"}>
             <form
                 onSubmit={handleSubmit(onSubmit)}
                 className="flex flex-col gap-[15px]"
@@ -295,125 +295,125 @@ export function EditProductModal({
                 <FormFillingWrapper>
                     <div className="grid grid-cols-3 gap-[15px]">
                         <InputField
-                            label="Назва*"
+                            label="Name*"
                             id="editProductName"
-                            placeholder="Назва товару"
+                            placeholder="Product name"
                             type="text"
                             {...register("name", {
-                                required: "Введіть назву",
+                                required: "Enter product name",
                                 minLength: {
                                     value: 3,
-                                    message: "Мінімум 3 символи",
+                                    message: "Minimum 3 characters",
                                 },
                             })}
                             errorMessage={errors.name?.message}
                         />
                         <InputField
-                            label="Шлях*"
+                            label="Path*"
                             id="editProductPath"
-                            placeholder="Шлях"
+                            placeholder="Path"
                             type="text"
                             {...register("path", {
-                                required: "Введіть шлях",
+                                required: "Enter path",
                                 minLength: {
                                     value: 3,
-                                    message: "Мінімум 3 символи",
+                                    message: "Minimum 3 characters",
                                 },
                             })}
                             errorMessage={errors.path?.message}
                         />
                         <InputField
-                            label="Ціна*"
+                            label="Price*"
                             id="editProductPrice"
-                            placeholder="Ціна"
+                            placeholder="Price"
                             type="number"
                             {...register("price", {
-                                required: "Введіть ціну",
+                                required: "Enter price",
                                 valueAsNumber: true,
                                 min: {
                                     value: 1,
-                                    message: "Ціна має бути не менше 1",
+                                    message: "Price must be at least 1",
                                 },
                             })}
                             errorMessage={errors.price?.message}
                         />
                         <InputField
-                            label="Стара ціна*"
+                            label="Old price*"
                             id="editProductOldPrice"
-                            placeholder="Стара ціна"
+                            placeholder="Old price"
                             type="number"
                             {...register("oldPrice", {
-                                required: "Введіть стару ціну",
+                                required: "Enter old price",
                                 valueAsNumber: true,
                                 min: {
                                     value: 1,
-                                    message: "Ціна має бути не менше 1",
+                                    message: "Price must be at least 1",
                                 },
                             })}
                             errorMessage={errors.oldPrice?.message}
                         />
 
                         <BasicSelector<string>
-                            label={"Доступність*"}
+                            label={"Accessibility*"}
                             register={{
                                 ...register("available", {
-                                    required: "Оберіть доступність",
+                                    required: "Choose availability",
                                 }),
                             }}
                             itemsList={availables}
-                            basicOptionLabel="Оберіть доступність"
+                            basicOptionLabel="Choose availability"
                             getOptionLabel={(available) => available}
                             getOptionValue={(available) => available}
                             errorMessage={errors.available?.message}
                         />
                         <BasicSelector<string>
-                            label={"Статус*"}
+                            label={"Status*"}
                             register={{
                                 ...register("status", {
-                                    required: "Оберіть статус",
+                                    required: "Choose a status",
                                 }),
                             }}
                             itemsList={statuses}
-                            basicOptionLabel="Оберіть статус"
+                            basicOptionLabel="Choose a status"
                             getOptionLabel={(status) => status}
                             getOptionValue={(status) => status}
                             errorMessage={errors.status?.message}
                         />
                     </div>
                     <BasicTextarea
-                        label="Опис*"
+                        label="Description*"
                         register={{
                             ...register("description", {
-                                required: "Введіть опис",
+                                required: "Enter a description",
                             }),
                         }}
                         errorMessage={errors.description?.message}
                     />
                     <BasicTextarea
-                        label="Склад*"
+                        label="Composition*"
                         register={{
                             ...register("composition", {
-                                required: "Введіть склад",
+                                required: "Enter the product composition",
                             }),
                         }}
                         errorMessage={errors.composition?.message}
                     />
                     <RenderAttributeField
-                        label={"Кольори"}
+                        label={"Colors"}
                         allItems={allColors}
                         selected={colorsToSend}
                         setSelected={setColorsToSend}
                         errorMessage={errors.colorIds?.message}
                     />
                     <RenderAttributeField
-                        label={"Розміри"}
+                        label={"Sizes"}
                         allItems={allSizes}
                         selected={sizesToSend}
                         setSelected={setSizesToSend}
                         errorMessage={errors.sizeIds?.message}
                     />
                     <RenderAttributeField
-                        label={"Типи"}
+                        label={"Types"}
                         allItems={allTypes}
                         selected={typesToSend}
                         setSelected={setTypesToSend}
@@ -426,7 +426,7 @@ export function EditProductModal({
                         bannerError={bannerError}
                     />
                     <div className="flex flex-col gap-[7px] w-full max-w-[300px]">
-                        <Label>Додаткові зображення</Label>
+                        <Label>Additional images</Label>
                         <label
                             htmlFor="images"
                             className={`group border min-h-[200px] border-dashed border-white/10 flex items-center justify-center cursor-pointer hover:bg-white/3 overflow-hidden group-hover:text-white transition-all duration-300`}
@@ -456,7 +456,7 @@ export function EditProductModal({
                                         alt={`img-${i}`}
                                         width={100}
                                         height={100}
-                                        className="object-cover rounded-md"
+                                        className="object-cover  "
                                     />
                                     <div className="absolute flex items-center justify-center opacity-0 group-hover:opacity-100 top-0 right-0 bg-black/40 w-full h-full transition-all duration-200">
                                         <TrashIcon className=" w-[35px] fill-none  stroke-white stroke-[1.5] " />
@@ -490,7 +490,7 @@ export function EditProductModal({
                             editProductMutation.isPending
                         }
                     >
-                        Скасувати
+                        Cancel
                     </MonoButton>
                     <MonoButton
                         type="submit"
@@ -503,8 +503,8 @@ export function EditProductModal({
                         {uploadBannerMutation.isPending ||
                         uploadImagesMutation.isPending ||
                         editProductMutation.isPending
-                            ? "Завантаження..."
-                            : "Зберегти"}
+                            ? "Loading..."
+                            : "Save"}
                     </MonoButton>
                 </FormButtonsWrapper>
             </form>

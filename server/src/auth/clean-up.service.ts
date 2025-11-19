@@ -6,7 +6,7 @@ import { PrismaService } from "src/prisma/prisma.service";
 export class CleanupService {
     constructor(private readonly prisma: PrismaService) {}
 
-    // Запускати кожен день о 3:00 ранку
+    // Run every day at 3:00 AM
     @Cron("0 3 * * *")
     async deleteExpiredUnverifiedUsers() {
         await this.prisma.user.deleteMany({
@@ -15,6 +15,6 @@ export class CleanupService {
                 verificationTokenExpires: { lt: new Date() },
             },
         });
-        console.log("Непідтверджені користувачі видалені");
+        console.log("Unverified users deleted");
     }
 }

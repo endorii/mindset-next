@@ -8,7 +8,7 @@ interface ErrorFallbackProps {
 export function ErrorFallback({ error, message }: ErrorFallbackProps) {
     return (
         <ErrorWithMessage
-            message={message ?? error?.message ?? "Невідома помилка"}
+            message={message ?? error?.message ?? "Unknown error"}
         />
     );
 }

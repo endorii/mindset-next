@@ -2,8 +2,8 @@ import { IIconsProps } from "../types/types";
 
 export function CartIcon({ className }: IIconsProps) {
     return (
-        <svg viewBox="0 0 24 24" className={`${className ?? null}`}>
-            <path d="M6.29977 5H21L19 12H7.37671M20 16H8L6 3H3M9 20C9 20.5523 8.55228 21 8 21C7.44772 21 7 20.5523 7 20C7 19.4477 7.44772 19 8 19C8.55228 19 9 19.4477 9 20ZM20 20C20 20.5523 19.5523 21 19 21C18.4477 21 18 20.5523 18 20C18 19.4477 18.4477 19 19 19C19.5523 19 20 19.4477 20 20Z" />
+        <svg className={`${className ?? null}`} viewBox="0 0 24 24">
+            <path d="M15 11C15 12.6569 13.6569 14 12 14C10.3431 14 9 12.6569 9 11M20 7L18 3H6L4 7M20 7H4M20 7V18C20 19.1046 19.1046 20 18 20H6C4.89543 20 4 19.1046 4 18V7" />
         </svg>
     );
 }

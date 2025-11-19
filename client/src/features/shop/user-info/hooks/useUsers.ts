@@ -38,7 +38,7 @@ export function useEditUser() {
             if (error?.message) {
                 toast.error(error.message);
             } else {
-                toast.error("Сталася невідома помилка");
+                toast.error("An unknown error occurred.");
             }
         },
     });
@@ -59,7 +59,7 @@ export function useChangePassword() {
             if (error?.message) {
                 toast.error(error.message);
             } else {
-                toast.error("Сталася невідома помилка");
+                toast.error("An unknown error occurred.");
             }
         },
     });
@@ -80,7 +80,7 @@ export function useDeleteUser() {
             if (error?.message) {
                 toast.error(error.message);
             } else {
-                toast.error("Сталася невідома помилка");
+                toast.error("An unknown error occurred.");
             }
         },
     });

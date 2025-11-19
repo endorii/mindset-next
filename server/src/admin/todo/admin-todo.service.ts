@@ -1,12 +1,12 @@
 import {
+    HttpException,
     Injectable,
     InternalServerErrorException,
-    HttpException,
     NotFoundException,
 } from "@nestjs/common";
+import { PrismaService } from "src/prisma/prisma.service";
 import { CreateTodoDto } from "./dto/create-todo.dto";
 import { UpdateTodoDto } from "./dto/update-todo.dto";
-import { PrismaService } from "src/prisma/prisma.service";
 
 @Injectable()
 export class AdminTodoService {
@@ -22,11 +22,11 @@ export class AdminTodoService {
 
             return todos;
         } catch (error: unknown) {
-            console.error("Помилка отримання списку завдань:", error);
+            console.error("Error fetching todo list:", error);
             if (error instanceof HttpException) {
                 throw error;
             }
-            throw new InternalServerErrorException("Не вдалося отримати список завдань");
+            throw new InternalServerErrorException("Failed to fetch todo list");
         }
     }
 
@@ -37,15 +37,15 @@ export class AdminTodoService {
             });
 
             return {
-                message: "Завдання успішно створено",
+                message: "Todo item successfully created",
                 todo,
             };
         } catch (error: unknown) {
-            console.error("Помилка створення завдання:", error);
+            console.error("Error creating todo item:", error);
             if (error instanceof HttpException) {
                 throw error;
             }
-            throw new InternalServerErrorException("Не вдалося створити завдання");
+            throw new InternalServerErrorException("Failed to create todo item");
         }
     }
 
@@ -56,7 +56,7 @@ export class AdminTodoService {
             });
 
             if (!todo) {
-                throw new NotFoundException("Завдання з тамки ID не знайдено");
+                throw new NotFoundException(`Todo item with ID ${todoId} not found`);
             }
 
             const updatingTodo = await this.prisma.todo.update({
@@ -68,15 +68,15 @@ export class AdminTodoService {
             });
 
             return {
-                message: "Завдання успішно оновлено",
+                message: "Todo item successfully updated",
                 todo: updatingTodo,
             };
         } catch (error: unknown) {
-            console.error("Помилка оновлення завдання:", error);
+            console.error("Error updating todo item:", error);
             if (error instanceof HttpException) {
                 throw error;
             }
-            throw new InternalServerErrorException("Не вдалося оновити завдання");
+            throw new InternalServerErrorException("Failed to update todo item");
         }
     }
 
@@ -87,7 +87,7 @@ export class AdminTodoService {
             });
 
             if (!todo) {
-                throw new NotFoundException("Завдання з тамки ID не знайдено");
+                throw new NotFoundException(`Todo item with ID ${todoId} not found`);
             }
 
             await this.prisma.todo.delete({
@@ -97,14 +97,14 @@ export class AdminTodoService {
             });
 
             return {
-                message: "Завдання видалено",
+                message: "Todo item deleted",
             };
         } catch (error: unknown) {
-            console.error("Помилка видалення завдання:", error);
+            console.error("Error deleting todo item:", error);
             if (error instanceof HttpException) {
                 throw error;
             }
-            throw new InternalServerErrorException("Не вдалося видалити завдання");
+            throw new InternalServerErrorException("Failed to delete todo item");
         }
     }
 }

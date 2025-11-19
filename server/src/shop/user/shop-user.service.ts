@@ -18,22 +18,22 @@ export class ShopUserService {
         try {
             const { password, ...rest } = createUserDto;
             const hashedPassword = await bcrypt.hash(password, 10);
+
             const user = await this.prisma.user.create({
                 data: {
                     password: hashedPassword,
                     ...rest,
                 },
             });
+
             return {
-                message: "Користувача успішно створено",
+                message: "User successfully created",
                 data: user,
             };
         } catch (error) {
-            console.error("Помилка створення користувача:", error);
-            if (error instanceof HttpException) {
-                throw error;
-            }
-            throw new InternalServerErrorException("Не вдалося створити користувача.");
+            console.error("Error creating user:", error);
+            if (error instanceof HttpException) throw error;
+            throw new InternalServerErrorException("Failed to create user.");
         }
     }
 
@@ -41,18 +41,14 @@ export class ShopUserService {
         try {
             return await this.prisma.user.findMany();
         } catch (error) {
-            console.error("Помилка отримання користувачів:", error);
-            if (error instanceof HttpException) {
-                throw error;
-            }
-            throw new InternalServerErrorException("Не вдалося отримати користувачів.");
+            console.error("Error fetching users:", error);
+            if (error instanceof HttpException) throw error;
+            throw new InternalServerErrorException("Failed to fetch users.");
         }
     }
 
     async findByEmail(email: string) {
-        const user = await this.prisma.user.findUnique({
-            where: { email },
-        });
+        const user = await this.prisma.user.findUnique({ where: { email } });
 
         if (!user) {
             throw new NotFoundException(`User with email ${email} not found`);
@@ -70,9 +66,7 @@ export class ShopUserService {
                         include: {
                             product: {
                                 include: {
-                                    category: {
-                                        include: { collection: true },
-                                    },
+                                    category: { include: { collection: true } },
                                 },
                             },
                         },
@@ -81,9 +75,7 @@ export class ShopUserService {
                         include: {
                             product: {
                                 include: {
-                                    category: {
-                                        include: { collection: true },
-                                    },
+                                    category: { include: { collection: true } },
                                 },
                             },
                         },
@@ -92,46 +84,39 @@ export class ShopUserService {
                 },
             });
 
-            if (!user) {
-                throw new NotFoundException(`Користувач з id ${userId} не знайдений`);
-            }
+            if (!user) throw new NotFoundException(`User with id ${userId} not found`);
 
             return user;
         } catch (error) {
-            console.error("Помилка отримання користувача:", error);
-            if (error instanceof HttpException) {
-                throw error;
-            }
-            throw new InternalServerErrorException("Не вдалося отримати користувача.");
+            console.error("Error fetching user:", error);
+            if (error instanceof HttpException) throw error;
+            throw new InternalServerErrorException("Failed to fetch user.");
         }
     }
 
     async editUserInfo(userId: string, updateUserDto: UpdateUserDto) {
         try {
             const user = await this.prisma.user.findUnique({ where: { id: userId } });
-            if (!user) {
-                throw new NotFoundException(`Користувач з id ${userId} не знайдений`);
-            }
+            if (!user) throw new NotFoundException(`User with id ${userId} not found`);
+
             const updatedUser = await this.prisma.user.update({
                 where: { id: userId },
                 data: updateUserDto,
             });
 
             return {
-                message: "Дані користувача успішно змінено",
+                message: "User information successfully updated",
                 data: updatedUser,
             };
         } catch (error) {
-            console.error("Помилка оновлення інформації користувача:", error);
-            if (error instanceof HttpException) {
-                throw error;
-            }
-            throw new InternalServerErrorException("Не вдалося оновити інформацію користувача.");
+            console.error("Error updating user info:", error);
+            if (error instanceof HttpException) throw error;
+            throw new InternalServerErrorException("Failed to update user information.");
         }
     }
 
     async updateHashedRefreshToken(userId: string, hashedRT: string | null) {
-        return await this.prisma.user.update({
+        return this.prisma.user.update({
             where: { id: userId },
             data: { hashedRefreshToken: hashedRT },
         });
@@ -140,19 +125,10 @@ export class ShopUserService {
     async changePassword(userId: string, data: { oldPassword: string; newPassword: string }) {
         try {
             const existingUser = await this.prisma.user.findUnique({ where: { id: userId } });
+            if (!existingUser) throw new NotFoundException(`User with id ${userId} not found`);
 
-            if (!existingUser) {
-                throw new NotFoundException(`Користувач з id ${userId} не знайдений`);
-            }
-
-            const isComparedPassword = await bcrypt.compare(
-                data.oldPassword,
-                existingUser.password
-            );
-
-            if (!isComparedPassword) {
-                throw new BadRequestException("Неправильний старий пароль");
-            }
+            const isMatched = await bcrypt.compare(data.oldPassword, existingUser.password);
+            if (!isMatched) throw new BadRequestException("Incorrect old password");
 
             const hashedPassword = await bcrypt.hash(data.newPassword, 10);
 
@@ -161,51 +137,34 @@ export class ShopUserService {
                 data: { password: hashedPassword },
             });
 
-            return {
-                message: "Пароль успішно змінено",
-            };
+            return { message: "Password successfully changed" };
         } catch (error) {
-            console.error("Помилка зміни пароля:", error);
-            if (error instanceof HttpException) {
-                throw error;
-            }
-            throw new InternalServerErrorException("Не вдалося змінити пароль.");
+            console.error("Error changing password:", error);
+            if (error instanceof HttpException) throw error;
+            throw new InternalServerErrorException("Failed to change password.");
         }
     }
 
     async deleteAccount(userId: string, password: string) {
         try {
             const existingUser = await this.prisma.user.findUnique({ where: { id: userId } });
+            if (!existingUser) throw new NotFoundException(`User with id ${userId} not found`);
 
-            if (!existingUser) {
-                throw new NotFoundException(`Користувач з id ${userId} не знайдений`);
-            }
+            const isMatched = await bcrypt.compare(password, existingUser.password);
+            if (!isMatched) throw new BadRequestException("Incorrect password");
 
-            const isComparedPassword = await bcrypt.compare(password, existingUser.password);
+            await this.prisma.user.delete({ where: { id: userId } });
 
-            if (!isComparedPassword) {
-                throw new BadRequestException("Неправильний пароль");
-            }
-
-            await this.prisma.user.delete({
-                where: { id: userId },
-            });
-            return {
-                message: "Акаунт успішно видалено",
-            };
+            return { message: "Account successfully deleted" };
         } catch (error) {
-            console.error("Помилка видалення акаунту:", error);
-            if (error instanceof HttpException) {
-                throw error;
-            }
-            throw new InternalServerErrorException("Не вдалося видалити акаунт.");
+            console.error("Error deleting account:", error);
+            if (error instanceof HttpException) throw error;
+            throw new InternalServerErrorException("Failed to delete account.");
         }
     }
 
     async findByVerificationToken(token: string) {
-        const user = await this.prisma.user.findFirst({
-            where: { verificationToken: token },
-        });
+        const user = await this.prisma.user.findFirst({ where: { verificationToken: token } });
 
         if (
             !user ||

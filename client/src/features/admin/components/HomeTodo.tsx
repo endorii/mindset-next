@@ -36,11 +36,11 @@ export function HomeTodo({ todos }: { todos: ITodoItem[] | undefined }) {
     };
 
     return (
-        <div className="rounded-xl bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px] flex flex-col gap-[15px] w-1/2 lg:w-full">
+        <div className="  bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px] flex flex-col gap-[15px] w-1/2 lg:w-full">
             <div className="flex gap-[15px] justify-between">
                 <div className="text-xl font-semibold">ToDo</div>
                 <MonoButton onClick={() => openModal("add")}>
-                    <div>Додати завдання</div>
+                    <div>Add task</div>
                     <PlusIcon className="stroke-white stroke-2 w-[30px] group-hover:stroke-black" />
                 </MonoButton>
             </div>
@@ -56,7 +56,7 @@ export function HomeTodo({ todos }: { todos: ITodoItem[] | undefined }) {
                                     {task.title}
                                 </span>
                                 <span className="text-xs mt-[7px] text-white/50">
-                                    Пріоритет:{" "}
+                                    Priority:{" "}
                                     <span
                                         className={`${
                                             task.priority === "high"
@@ -91,7 +91,7 @@ export function HomeTodo({ todos }: { todos: ITodoItem[] | undefined }) {
                 </div>
             ) : (
                 <div className=" p-[20px]  flex items-center justify-center text-center text-white/60">
-                    Завдання відсутні
+                    No tasks available.
                 </div>
             )}
 

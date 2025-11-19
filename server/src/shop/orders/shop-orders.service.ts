@@ -13,24 +13,20 @@ export class ShopOrdersService {
 
     async createOrder(createOrderDto: CreateOrderDto) {
         try {
-            // 1️⃣ Отримуємо усі продукти по productId
             const productIds = createOrderDto.items.map((item) => item.productId);
             const products = await this.prisma.product.findMany({
                 where: { id: { in: productIds } },
             });
 
-            // 2️⃣ Створюємо мапу для швидкого доступу до ціни
             const productMap = new Map(products.map((p) => [p.id, p]));
 
-            // 3️⃣ Обчислюємо total
             const total =
                 createOrderDto.items.reduce((acc, item) => {
                     const product = productMap.get(item.productId);
-                    if (!product) return acc; // якщо товар не знайдено
+                    if (!product) return acc;
                     return acc + product.price * item.quantity;
                 }, 0) || 0;
 
-            // 4️⃣ Готуємо дані замовлення
             const orderData = {
                 fullName: createOrderDto.fullName,
                 phoneNumber: createOrderDto.phoneNumber,
@@ -55,7 +51,6 @@ export class ShopOrdersService {
                     : {}),
             };
 
-            // 5️⃣ Створюємо замовлення
             const order = await this.prisma.order.create({
                 data: orderData,
                 include: {
@@ -63,28 +58,25 @@ export class ShopOrdersService {
                 },
             });
 
-            // 6️⃣ Якщо користувач авторизований — очищаємо його кошик
             if (createOrderDto.userId) {
                 await this.shopCartService.removeCartFromUser(createOrderDto.userId);
             }
 
             return {
-                message: "Замовлення успішно створено",
+                message: "Order created successfully",
                 data: order,
             };
         } catch (error) {
-            console.error("Помилка створення замовлення:", error);
+            console.error("Error creating order:", error);
             if (error instanceof HttpException) throw error;
-            throw new InternalServerErrorException("Помилка сервера при створенні замовлення");
+            throw new InternalServerErrorException("Server error while creating order");
         }
     }
 
     async getOrdersByUserId(userId: string) {
         try {
             const orders = await this.prisma.order.findMany({
-                where: {
-                    userId,
-                },
+                where: { userId },
                 include: {
                     items: {
                         include: {
@@ -104,20 +96,16 @@ export class ShopOrdersService {
 
             return orders;
         } catch (error) {
-            console.error("Помилка отримання замовлень:", error);
-            if (error instanceof HttpException) {
-                throw error;
-            }
-            throw new InternalServerErrorException("Не вдалося отримати замовлення");
+            console.error("Error fetching orders:", error);
+            if (error instanceof HttpException) throw error;
+            throw new InternalServerErrorException("Failed to fetch orders");
         }
     }
 
     async getOrderByStripeSessionId(sessionId: string) {
         try {
-            const orders = await this.prisma.order.findFirst({
-                where: {
-                    stripeSessionId: sessionId,
-                },
+            const order = await this.prisma.order.findFirst({
+                where: { stripeSessionId: sessionId },
                 include: {
                     items: {
                         include: {
@@ -127,13 +115,11 @@ export class ShopOrdersService {
                 },
             });
 
-            return orders;
+            return order;
         } catch (error) {
-            console.error("Помилка отримання замовлень:", error);
-            if (error instanceof HttpException) {
-                throw error;
-            }
-            throw new InternalServerErrorException("Не вдалося отримати замовлення");
+            console.error("Error fetching order by Stripe session ID:", error);
+            if (error instanceof HttpException) throw error;
+            throw new InternalServerErrorException("Failed to fetch order");
         }
     }
 }

@@ -30,6 +30,6 @@ export function RecentlyViewedProducts() {
     ) : recentlyViewedProductsListPending ? (
         <ProductsSliderSkeleton />
     ) : (
-        <div>Список товарів порожній</div>
+        <div>The product list is empty</div>
     );
 }

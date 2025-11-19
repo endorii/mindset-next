@@ -27,7 +27,7 @@ export function DeleteCategoryModal({
     const handleDelete = async () => {
         if (category.products && category.products.length > 0) {
             toast.info(
-                "Категорія містить товари, щоб її видалити, видаліть товари, які у ній знаходяться"
+                "Category contains products, to Delete it, delete the products that are in it"
             );
             return;
         }
@@ -44,20 +44,20 @@ export function DeleteCategoryModal({
     useEscapeKeyClose({ isOpen, onClose });
 
     const modalContent = (
-        <ModalWrapper onClose={onClose} modalTitle={"Видалення категорії"}>
+        <ModalWrapper onClose={onClose} modalTitle={"Deletting category"}>
             <div className="mb-6 text-white">
-                Ви дійсно хочете видалити категорію{" "}
-                <strong>{category?.name || "Без назви"}</strong>?
+                Do you really want to Delete the category?{" "}
+                <strong>{category?.name || "No name"}</strong>?
             </div>
             <FormButtonsWrapper>
-                <MonoButton onClick={onClose}>Скасувати</MonoButton>
+                <MonoButton onClick={onClose}>Cancel</MonoButton>
                 <DeleteButton
                     onClick={() => {
                         onClose();
                         handleDelete();
                     }}
                 >
-                    Видалити
+                    Delete
                 </DeleteButton>
             </FormButtonsWrapper>
         </ModalWrapper>

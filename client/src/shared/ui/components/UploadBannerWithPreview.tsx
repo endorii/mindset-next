@@ -14,7 +14,7 @@ export function UploadBannerWithPreview({
 }: UploadBannerWithPreviewProps) {
     return (
         <div className="flex flex-col gap-[7px] w-full">
-            <Label>Банер</Label>
+            <Label>Banner</Label>
             <label
                 htmlFor="banner"
                 className={`group border min-h-[200px] border-dashed ${

@@ -24,13 +24,10 @@ const OrderSuccessPage = () => {
                         <CheckIcon className="w-[50px] fill-none stroke-white stroke-3" />
                     </div>
 
-                    <h2 className="text-2xl font-bold">
-                        Замовлення не знайдено
-                    </h2>
+                    <h2 className="text-2xl font-bold">Order not found</h2>
                     <p className="text-neutral-400">
-                        Ми не змогли отримати деталі замовлення. Якщо ви
-                        впевнені що ваше замовлення існує - зверніться в службу
-                        підтримки.
+                        We were unable to retrieve your order details. If you
+                        are sure your order exists, please contact support.
                     </p>
 
                     <hr className="border-t border-white/10 w-full" />
@@ -40,7 +37,7 @@ const OrderSuccessPage = () => {
                         className="bg-white/5 w-full"
                         onClick={() => {}}
                     >
-                        На головну
+                        To the main page
                     </ButtonWithIcon>
                 </div>
             </div>
@@ -66,13 +63,10 @@ const OrderSuccessPage = () => {
                         <CheckIcon className="w-[50px] fill-none stroke-white stroke-3" />
                     </div>
 
-                    <h2 className="text-2xl font-bold">
-                        Замовлення не знайдено
-                    </h2>
+                    <h2 className="text-2xl font-bold">Order not found</h2>
                     <p className="text-neutral-400">
-                        Ми не змогли отримати деталі Вашого замовлення. Якщо ви
-                        впевнені що ваше замовлення існує - зверніться в службу
-                        підтримки.
+                        We were unable to retrieve your order details. If you
+                        are sure that your order exists, please contact support.
                     </p>
 
                     <hr className="border-t border-white/10 w-full" />
@@ -82,7 +76,7 @@ const OrderSuccessPage = () => {
                         className="bg-white/5 w-full"
                         onClick={() => {}}
                     >
-                        На головну
+                        To the main page
                     </ButtonWithIcon>
                 </div>
             </div>
@@ -98,14 +92,15 @@ const OrderSuccessPage = () => {
                     <div className="inline-flex items-center justify-center w-20 h-20 bg-green-600 rounded-full">
                         <CheckIcon className="w-[50px] fill-none stroke-white stroke-3" />
                     </div>
-                    <h1 className="text-3xl font-bold">Оплата успішна!</h1>
+                    <h1 className="text-3xl font-bold">Payment successful!</h1>
                     <p className="text-neutral-400">
-                        Дякуємо за покупку. Ваше замовлення створено.
+                        Thank you for your purchase. Your order has been
+                        created.
                     </p>
                     <hr className="border-t border-white/10 w-full" />
                     <div className="bg-white/5 px-4 py-2 w-full">
                         <p>
-                            Номер замовлення:{" "}
+                            Order number:{" "}
                             <span className="font-semibold">{order.id}</span>
                         </p>
                     </div>
@@ -114,34 +109,34 @@ const OrderSuccessPage = () => {
                     <>
                         <hr className="border-t border-white/10 w-full" />
                         <div className="flex flex-col gap-[20px]">
-                            <div className="flex flex-col gap-[15px] p-[20px] bg-white/5 rounded-lg">
+                            <div className="flex flex-col gap-[15px] p-[20px] bg-white/5">
                                 <div className="text-3xl font-perandory tracking-wider">
                                     Delivery address
                                 </div>
                                 <div className="flex flex-col gap-1">
                                     <div>
-                                        Область:{" "}
+                                        Region:{" "}
                                         <span className="font-semibold">
                                             {order.area}
                                         </span>
                                     </div>
                                     <div>
-                                        Місто/село:{" "}
+                                        City/village:{" "}
                                         <span className="font-semibold">
                                             {order.city}
                                         </span>
                                     </div>
                                     <div>
-                                        Відділення/поштомат:{" "}
+                                        Branch/post office:{" "}
                                         <span className="font-semibold">
                                             {order.postDepartment}
                                         </span>
                                     </div>
                                 </div>
                             </div>
-                            <div className="flex flex-col gap-[15px] p-[20px] bg-white/5 rounded-lg">
+                            <div className="flex flex-col gap-[15px] p-[20px] bg-white/5">
                                 <h3 className="font-bold flex items-center">
-                                    Деталі замовлення
+                                    Order details
                                 </h3>
 
                                 <div className="">
@@ -157,7 +152,7 @@ const OrderSuccessPage = () => {
                                                         {item.product?.name}
                                                     </p>
                                                     <p className="text-sm text-neutral-500">
-                                                        Кількість:{" "}
+                                                        Quantity:{" "}
                                                         {item.quantity}
                                                     </p>
                                                 </div>
@@ -181,9 +176,7 @@ const OrderSuccessPage = () => {
                                 <hr className="border-t border-white/10 w-full" />
                                 <div>
                                     <div className="flex justify-between items-center text-lg font-bold">
-                                        <span className="">
-                                            Загальна вартість
-                                        </span>
+                                        <span className="">Total cost</span>
                                         <span className="">
                                             ${order.total || 0}{" "}
                                         </span>
@@ -199,7 +192,7 @@ const OrderSuccessPage = () => {
                     className="bg-white/5"
                     onClick={() => {}}
                 >
-                    Продовжити покупки
+                    Continue shopping
                 </ButtonWithIcon>
             </div>
         </div>

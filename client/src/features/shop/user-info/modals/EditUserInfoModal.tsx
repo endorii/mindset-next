@@ -62,7 +62,7 @@ export function EditUserInfoModal({
             });
             onClose();
         } catch (err: any) {
-            setModalMessage(err?.message || "Помилка редагування інформації");
+            setModalMessage(err?.message || "Error editing information");
         }
     };
 
@@ -85,28 +85,28 @@ export function EditUserInfoModal({
                                 required: "Enter username",
                                 minLength: {
                                     value: 3,
-                                    message: "Мінімум 3 символи",
+                                    message: "Minimum 3 characters",
                                 },
                                 maxLength: {
                                     value: 15,
-                                    message: "Максимум 15 символів",
+                                    message: "Maximum 15 characters",
                                 },
                                 pattern: {
                                     value: /^[A-Za-z0-9]+$/,
                                     message:
-                                        "Дозволено лише англійські літери та цифри",
+                                        "Only English letters and numbers are allowed",
                                 },
                             })}
                             errorMessage={modalErrors.userName?.message}
                         />
                         <InputField
-                            label="Email*"
+                            label="E-mail*"
                             type="email"
                             {...register("email", {
                                 required: "Enter e-mail",
                                 pattern: {
                                     value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-                                    message: "Некоректний формат email",
+                                    message: "Incorrect e-mail format",
                                 },
                             })}
                             errorMessage={modalErrors.email?.message}
@@ -119,7 +119,7 @@ export function EditUserInfoModal({
                                 required: "Enter phone number",
                                 pattern: {
                                     value: /^\+?[\d\s\-]{10,15}$/,
-                                    message: "Некоректний номер телефону",
+                                    message: "Incorrect phone number",
                                 },
                             })}
                             errorMessage={modalErrors.phone?.message}

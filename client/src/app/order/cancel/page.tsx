@@ -55,10 +55,10 @@ const OrderCancelPage = () => {
                     <div className="inline-flex items-center justify-center w-20 h-20 bg-red-600 rounded-full">
                         <CloseIcon className="w-[40px] fill-none stroke-3 stroke-white" />
                     </div>
-                    <h1 className="text-3xl font-bold">Оплата скасована</h1>
+                    <h1 className="text-3xl font-bold">Payment canceled</h1>
                     <p className="text-neutral-400">
-                        Ваше замовлення не було оброблено. Не хвилюйтеся, з вас
-                        нічого не списано.
+                        Your order has not been processed. Don't worry, you
+                        haven't been charged.
                     </p>
                     {/* <hr className="border-t border-white/10 w-full" />
                     <div className="bg-white/5 px-4 py-2 w-full">
@@ -73,7 +73,7 @@ const OrderCancelPage = () => {
                     <>
                         <hr className="border-t border-white/10 w-full" />
                         <div className="flex flex-col gap-[20px]">
-                            <div className="flex flex-col gap-[15px] p-[20px] bg-white/5 rounded-lg">
+                            <div className="flex flex-col gap-[15px] p-[20px] bg-white/5  ">
                                 <h3 className="font-bold flex items-center">
                                     Товари в кошику
                                 </h3>
@@ -91,7 +91,7 @@ const OrderCancelPage = () => {
                                                         {item.product?.name}
                                                     </p>
                                                     <p className="text-sm text-neutral-500">
-                                                        Кількість:{" "}
+                                                        Quantity:{" "}
                                                         {item.quantity}
                                                     </p>
                                                 </div>
@@ -122,7 +122,7 @@ const OrderCancelPage = () => {
                                 </div>
                             </div>
 
-                            <div className="flex flex-col gap-[15px] p-[20px] bg-white/5 rounded-lg">
+                            <div className="flex flex-col gap-[15px] p-[20px] bg-white/5  ">
                                 <h3 className="font-bold">Що сталося?</h3>
                                 <ul className="space-y-2 text-sm text-neutral-400">
                                     <li className="flex items-start gap-2">
@@ -162,7 +162,7 @@ const OrderCancelPage = () => {
 
                 <div className="flex flex-col gap-3">
                     <ButtonWithIcon className="bg-white/5" onClick={() => {}}>
-                        На головну
+                        To main page
                     </ButtonWithIcon>
                     {/* <ButtonWithIcon className="bg-white/5" onClick={() => {}}>
                         Переглянути кошик

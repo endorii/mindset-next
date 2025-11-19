@@ -44,7 +44,7 @@ export function NovaPoshtaSelect({
                 disabled={disabled}
             >
                 <option value="" disabled>
-                    {`Оберіть ${label.toLowerCase()}`}
+                    {`Choose ${label.toLowerCase()}`}
                 </option>
                 {options.map((option) => (
                     <option key={option.Ref} value={option.Ref}>

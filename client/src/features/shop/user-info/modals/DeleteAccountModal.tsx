@@ -49,7 +49,7 @@ export function DeleteAccountModal({
             await deleteAccountMutation.mutateAsync(data.password);
             onClose();
         } catch (err: any) {
-            setModalMessage(err?.message || "Помилка при зміні паролю");
+            setModalMessage(err?.message || "Error while changing password");
         }
     };
 
@@ -58,31 +58,32 @@ export function DeleteAccountModal({
     if (!isOpen) return null;
 
     const modalContent = (
-        <ModalWrapper onClose={onClose} modalTitle={"Видалення акаунту"}>
+        <ModalWrapper onClose={onClose} modalTitle={"Deletting account"}>
             <form onSubmit={handleSubmit(handleDelete)}>
                 <div className="mb-6 text-white/80 text-[16px]">
-                    Ви дійсно хочете видалити ваш акаунт?
+                    Do you really want to Delete your account?
                 </div>
                 <div className="mb-6 text-white/80 text-[16px] flex flex-col gap-[15px]">
-                    <div>Для підтвердження введіть пароль</div>
+                    <div>Enter password to confirm.</div>
                     <InputField
-                        label={"Пароль*"}
+                        label={"Password*"}
                         type="password"
                         {...register("password", {
-                            required: "Введіть пароль",
+                            required: "Enter password",
                             minLength: {
                                 value: 8,
                                 message:
-                                    "Пароль повинен містити щонайменше 8 символів",
+                                    "Password must contain at least 8 characters",
                             },
                             maxLength: {
                                 value: 32,
                                 message:
-                                    "Пароль не повинен перевищувати 32 символи",
+                                    "Password must not exceed 32 characters.",
                             },
                             pattern: {
                                 value: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d@$!%*?&]{8,}$/,
-                                message: "Пароль має містити літери та цифри",
+                                message:
+                                    "Password must contain letters and numbers",
                             },
                         })}
                         errorMessage={errors.password?.message}
@@ -92,8 +93,8 @@ export function DeleteAccountModal({
                     <p className="text-red-500 text-sm">{modalMessage}</p>
                 )}
                 <FormButtonsWrapper>
-                    <MonoButton onClick={onClose}>Скасувати</MonoButton>
-                    <DeleteButton type="submit">Видалити</DeleteButton>
+                    <MonoButton onClick={onClose}>Cancel</MonoButton>
+                    <DeleteButton type="submit">Delete</DeleteButton>
                 </FormButtonsWrapper>
             </form>
         </ModalWrapper>

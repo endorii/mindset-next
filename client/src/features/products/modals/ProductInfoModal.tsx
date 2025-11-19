@@ -54,35 +54,32 @@ export function ProductInfoModal({
     if (!isOpen || !product) return null;
 
     const modalContent = (
-        <ModalWrapper onClose={onClose} modalTitle={"Інформація про товар"}>
+        <ModalWrapper onClose={onClose} modalTitle={"Product information"}>
             <FormFillingWrapper>
                 <div className="grid grid-cols-3 gap-[15px]">
-                    <InfoField label="Назва" value={name} />
-                    <InfoField label="Шлях" value={path} />
-                    <InfoField label="Ціна" value={price} />
-                    <InfoField label="Стара ціна" value={oldPrice} />
-                    <InfoField label="Доступність" value={available} />
-                    <InfoField label="Статус" value={status} />
-                    <InfoField label="Перегляди" value={views} />
-                    <InfoField label="Створено" value={formatDate(createdAt)} />
-                    <InfoField
-                        label="Редаговано"
-                        value={formatDate(updatedAt)}
-                    />
+                    <InfoField label="Name" value={name} />
+                    <InfoField label="Path" value={path} />
+                    <InfoField label="Price" value={price} />
+                    <InfoField label="Old price" value={oldPrice} />
+                    <InfoField label="Accessibility" value={available} />
+                    <InfoField label="Status" value={status} />
+                    <InfoField label="Views" value={views} />
+                    <InfoField label="Created" value={formatDate(createdAt)} />
+                    <InfoField label="Edited" value={formatDate(updatedAt)} />
                 </div>
-                <TextareaInfoField label={"Опис"} value={description} />
-                <TextareaInfoField label={"Склад"} value={composition} />
+                <TextareaInfoField label={"Description"} value={description} />
+                <TextareaInfoField label={"Composition"} value={composition} />
                 <div className="grid grid-cols-3 gap-[15px]">
                     <AtributesInfoField
-                        label={"Кольори"}
+                        label={"Colors"}
                         atributeList={productColors}
                     />
                     <AtributesInfoField
-                        label={"Розміри"}
+                        label={"Sizes"}
                         atributeList={productSizes}
                     />
                     <AtributesInfoField
-                        label={"Типи"}
+                        label={"Types"}
                         atributeList={productTypes}
                     />
                 </div>
@@ -90,14 +87,14 @@ export function ProductInfoModal({
                 <InfoModalBanner image={banner} />
 
                 <div className="flex flex-col gap-[7px]">
-                    <Label>Додаткові зображення</Label>
+                    <Label>Additional images</Label>
                     <div className="flex gap-[10px]">
                         {images.length > 0 ? (
                             images.map((image, i) => (
                                 <Image
                                     key={i}
                                     src={image}
-                                    alt={`Зображення ${i + 1}`}
+                                    alt={`Images ${i + 1}`}
                                     width={100}
                                     height={100}
                                     className="border border-white/20 w-[200px]"
@@ -105,14 +102,14 @@ export function ProductInfoModal({
                             ))
                         ) : (
                             <div className="text-white opacity-50">
-                                Немає зображень
+                                No images
                             </div>
                         )}
                     </div>
                 </div>
             </FormFillingWrapper>
             <FormButtonsWrapper>
-                <MonoButton onClick={onClose}>Закрити</MonoButton>
+                <MonoButton onClick={onClose}>Close</MonoButton>
             </FormButtonsWrapper>
         </ModalWrapper>
     );

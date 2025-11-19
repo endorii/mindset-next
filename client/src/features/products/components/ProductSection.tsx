@@ -14,9 +14,7 @@ export function ProductSection({
     product: IProduct | null | undefined;
 }) {
     if (!product) {
-        return (
-            <ErrorWithMessage message="Товар не знайдено, або він відсутній" />
-        );
+        return <ErrorWithMessage message="Product not found or missing" />;
         // notFound();
     }
 

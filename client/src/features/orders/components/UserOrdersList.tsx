@@ -54,16 +54,18 @@ export function UserOrdersList({
                                 <BackIcon className="fill-white stroke-80 stroke-white w-[20px]" />
                             </button>
 
-                            <div className="flex flex-col gap-[10px]">
-                                <div className="text-sm text-neutral-400">
-                                    {formatDate(order.createdAt || "-")}
-                                </div>
-                                <div className="xs:text-sm">
-                                    № {order.id?.slice(0, 12)}...
+                            <div className="flex flex-col justify-between gap-[10px]">
+                                <div className="flex flex-col gap-[3px]">
+                                    <div className="text-xs text-neutral-400">
+                                        {formatDate(order.createdAt || "-")}
+                                    </div>
+                                    <div className="xs:text-sm">
+                                        № {order.id?.slice(0, 12)}...
+                                    </div>
                                 </div>
 
                                 <div
-                                    className={`font-semibold xs:text-sm ${status.className}`}
+                                    className={`font-semibold text-lg xs:text-md font-perandory tracking-widest  ${status.className}`}
                                 >
                                     {status.label}
                                 </div>

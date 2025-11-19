@@ -44,7 +44,7 @@ export function AddSizeModal({ isOpen, onClose }: AddSizeModalProps) {
             await createSizeMutation.mutateAsync({ name: data.name });
             handleClose();
         } catch (error: any) {
-            setModalMessage(error?.message || "Помилка при додаванні розміру");
+            setModalMessage(error?.message || "Error adding size");
         }
     };
 
@@ -53,7 +53,7 @@ export function AddSizeModal({ isOpen, onClose }: AddSizeModalProps) {
     if (!isOpen) return null;
 
     const modalContent = (
-        <ModalWrapper onClose={handleClose} modalTitle={"Додавання розміру"}>
+        <ModalWrapper onClose={handleClose} modalTitle={"Adding size"}>
             <form
                 className="flex flex-col gap-[15px]"
                 onSubmit={handleSubmit(onSubmit)}
@@ -61,20 +61,20 @@ export function AddSizeModal({ isOpen, onClose }: AddSizeModalProps) {
                 <FormFillingWrapper>
                     <div className="flex flex-col gap-[15px] w-full">
                         <InputField
-                            label={"Назва*"}
-                            placeholder={"Назва розміру"}
+                            label={"Name*"}
+                            placeholder={"Size name"}
                             type={"text"}
                             {...register("name", {
-                                required: "Введіть назву",
+                                required: "Enter name",
                                 minLength: {
                                     value: 1,
                                     message:
-                                        "Назва повинна містити хоча б 1 символ",
+                                        "Name must contain at least 1 character",
                                 },
                                 maxLength: {
                                     value: 25,
                                     message:
-                                        "Назва не може перевищувати 25 символів",
+                                        "Name cannot exceed 25 characters.",
                                 },
                             })}
                             errorMessage={errors.name?.message}
@@ -92,15 +92,13 @@ export function AddSizeModal({ isOpen, onClose }: AddSizeModalProps) {
                         onClick={handleClose}
                         disabled={createSizeMutation.isPending}
                     >
-                        Скасувати
+                        Cancel
                     </MonoButton>
                     <MonoButton
                         type="submit"
                         disabled={createSizeMutation.isPending}
                     >
-                        {createSizeMutation.isPending
-                            ? "Завантаження..."
-                            : "Додати"}
+                        {createSizeMutation.isPending ? "Loading..." : "Add"}
                     </MonoButton>
                 </FormButtonsWrapper>
             </form>

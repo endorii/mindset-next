@@ -73,7 +73,7 @@ export function AddReviewModal({
             });
             handleClose();
         } catch (err: any) {
-            setModalMessage(err?.message || "Помилка при створенні відгуку");
+            setModalMessage(err?.message || "Error creating review");
         }
     };
 
@@ -82,7 +82,7 @@ export function AddReviewModal({
     if (!isOpen) return null;
 
     const modalContent = (
-        <ModalWrapper onClose={onClose} modalTitle={"Залишити відгук"}>
+        <ModalWrapper onClose={onClose} modalTitle={"Leave a review"}>
             <form
                 className="flex flex-col gap-[15px]"
                 onSubmit={handleSubmit(onSubmit)}
@@ -95,12 +95,12 @@ export function AddReviewModal({
 
                     <BasicTextarea
                         className="min-w-[600px]"
-                        label={"Відгук*"}
+                        label={"Review*"}
                         register={register("content", {
-                            required: "Введіть текст відгуку",
+                            required: "Enter your review text",
                             minLength: {
                                 value: 3,
-                                message: "Мінімум 3 символи",
+                                message: "Minimum 3 characters",
                             },
                         })}
                         errorMessage={errors.content?.message}
@@ -108,29 +108,28 @@ export function AddReviewModal({
 
                     <div className="grid grid-cols-2 gap-[15px]">
                         <InputField
-                            label={"Ваше ім'я та прізвище*"}
+                            label={"Your name and surname*"}
                             type={"text"}
                             placeholder={""}
                             {...register("senderName", {
-                                required: "Поле є обов’язковим",
+                                required: "The field is required.",
                                 pattern: {
                                     value: /^[А-ЯІЇЄҐа-яіїєґA-Za-z]+\s+[А-ЯІЇЄҐа-яіїєґA-Za-z]+$/,
                                     message:
-                                        "Введіть і ім’я, і прізвище через пробіл",
+                                        "Enter both first and last name separated by a space",
                                 },
                             })}
                             errorMessage={errors.senderName?.message}
                         />
                         <InputField
-                            label={"Електронна пошта*"}
+                            label={"E-mail*"}
                             type="email"
                             placeholder=""
                             {...register("senderEmail", {
-                                required: "Введіть електронну пошту",
+                                required: "Enter e-mail",
                                 pattern: {
                                     value: /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/,
-                                    message:
-                                        "Невірний формат електронної пошти",
+                                    message: "Invalid email format",
                                 },
                             })}
                             errorMessage={errors.senderEmail?.message}
@@ -146,15 +145,13 @@ export function AddReviewModal({
                         onClick={handleClose}
                         disabled={createReviewMutation.isPending}
                     >
-                        Скасувати
+                        Cancel
                     </MonoButton>
                     <MonoButton
                         type="submit"
                         disabled={createReviewMutation.isPending}
                     >
-                        {createReviewMutation.isPending
-                            ? "Завантаження..."
-                            : "Додати"}
+                        {createReviewMutation.isPending ? "Loading..." : "Add"}
                     </MonoButton>
                 </FormButtonsWrapper>
             </form>

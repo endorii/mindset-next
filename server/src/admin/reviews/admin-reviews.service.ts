@@ -1,13 +1,13 @@
 import {
-    Injectable,
     BadRequestException,
-    InternalServerErrorException,
     HttpException,
+    Injectable,
+    InternalServerErrorException,
     NotFoundException,
 } from "@nestjs/common";
 import { PrismaService } from "src/prisma/prisma.service";
-import { AdminUpdateReviewDto } from "./dto/update-admin-review.dto";
 import { AdminRecentActionsService } from "../recent-actions/admin-recent-actions.service";
+import { AdminUpdateReviewDto } from "./dto/update-admin-review.dto";
 
 @Injectable()
 export class AdminReviewsService {
@@ -37,11 +37,11 @@ export class AdminReviewsService {
             });
             return reviews;
         } catch (error) {
-            console.error("Помилка отримання відгуків:", error);
+            console.error("Error fetching reviews:", error);
             if (error instanceof HttpException) {
                 throw error;
             }
-            throw new InternalServerErrorException("Не вдалося отримати відгуки");
+            throw new InternalServerErrorException("Failed to fetch reviews");
         }
     }
 
@@ -61,11 +61,11 @@ export class AdminReviewsService {
             });
 
             if (!review) {
-                throw new NotFoundException("Відгуку з таким ID не знайдено");
+                throw new NotFoundException(`Review with ID ${reviewId} not found`);
             }
 
             if (review.isApproved) {
-                throw new BadRequestException("Відгук вже погоджено");
+                throw new BadRequestException("Review is already approved");
             }
 
             await this.prisma.review.update({
@@ -79,18 +79,18 @@ export class AdminReviewsService {
 
             await this.adminRecentActions.createAction(
                 userId,
-                `Відгук до товару "${review.orderItem.product.name}" погоджено ${review.id}`
+                `Review for product "${review.orderItem.product.name}" approved ${review.id}`
             );
 
             return {
-                message: "Відгук успішно погоджено",
+                message: "Review successfully approved",
             };
         } catch (error: unknown) {
-            console.error("Помилка погодження відгуку:", error);
+            console.error("Error approving review:", error);
             if (error instanceof HttpException) {
                 throw error;
             }
-            throw new InternalServerErrorException("Не вдалося погодити відгук");
+            throw new InternalServerErrorException("Failed to approve review");
         }
     }
 
@@ -105,7 +105,7 @@ export class AdminReviewsService {
             });
 
             if (!review) {
-                throw new NotFoundException("Відгуку з таким ID не знайдено");
+                throw new NotFoundException(`Review with ID ${reviewId} not found`);
             }
 
             const updatedReview = await this.prisma.review.update({
@@ -115,18 +115,18 @@ export class AdminReviewsService {
                 data: adminUpdateReviewDto,
             });
 
-            await this.adminRecentActions.createAction(userId, `Редаговано відгук ${reviewId}`);
+            await this.adminRecentActions.createAction(userId, `Edited review ${reviewId}`);
 
             return {
-                message: "Відгук успішно оновлено",
+                message: "Review successfully updated",
                 review: updatedReview,
             };
         } catch (error: unknown) {
-            console.error("Помилка редагування відгуку:", error);
+            console.error("Error editing review:", error);
             if (error instanceof HttpException) {
                 throw error;
             }
-            throw new InternalServerErrorException("Не вдалося оновити відгук");
+            throw new InternalServerErrorException("Failed to update review");
         }
     }
 }

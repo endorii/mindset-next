@@ -43,79 +43,75 @@ export function OrderInfoModal({
     if (!isOpen || !onClose) return null;
 
     const modalContent = (
-        <ModalWrapper
-            onClose={onClose}
-            modalTitle={"Інформація про замовлення"}
-        >
+        <ModalWrapper onClose={onClose} modalTitle={"Order information"}>
             <FormFillingWrapper>
                 <div className="grid grid-cols-3 gap-[15px]">
                     <div className="flex flex-col gap-[15px]">
-                        <div className="text-lg">Контактна інформація</div>
+                        <div className="text-lg">Contact information</div>
                         <div className="flex flex-col gap-[15px]">
+                            <InfoField label="Full name" value={fullName} />
                             <InfoField
-                                label="Ініціали замовника (ПІБ)"
-                                value={fullName}
-                            />
-                            <InfoField
-                                label="Номер телефону"
+                                label="Phone number"
                                 value={phoneNumber}
                             />
                             <InfoField
-                                label="Електронна пошта"
-                                value={email || "Не вказано"}
+                                label="E-mail"
+                                value={email || "Not specified"}
                             />
                         </div>
                     </div>
                     <div className="flex flex-col gap-[15px]">
                         <div className="text-lg">Delivery address</div>
                         <div className="flex flex-col gap-[15px]">
-                            <InfoField label="Область" value={area} />
-                            <InfoField label="Місто" value={city} />
+                            <InfoField label="Region" value={area} />
+                            <InfoField label="City" value={city} />
                             <InfoField
-                                label="Відділення/поштомат"
+                                label="Branch/post office"
                                 value={postDepartment}
                             />
                         </div>
                     </div>
                     <div className="flex flex-col gap-[15px]">
-                        <div className="text-lg">Інформація про замовлення</div>
+                        <div className="text-lg">Order information</div>
                         <div className="flex flex-col gap-[15px]">
-                            <InfoField label="Статус" value={status} />
-                            <InfoField label="Сума замовлення" value={total} />
+                            <InfoField label="Status" value={status} />
+                            <InfoField label="Sum of order" value={total} />
                             <InfoField
-                                label="Додаткова інформація"
-                                value={additionalInfo || "Не вказано"}
+                                label="Additional information"
+                                value={additionalInfo || "Not specified"}
                             />
                             <InfoField
-                                label="Дата стоврення"
+                                label="Creation date"
                                 value={
-                                    formatDate(createdAt || "") || "Не вказано"
+                                    formatDate(createdAt || "") ||
+                                    "Not specified"
                                 }
                             />
                             <InfoField
-                                label="Дата редагування"
+                                label="Edit date"
                                 value={
-                                    formatDate(updatedAt || "") || "Не вказано"
+                                    formatDate(updatedAt || "") ||
+                                    "Not specified"
                                 }
                             />
                         </div>
                     </div>
                 </div>
                 <div className="flex flex-col gap-[10px]">
-                    <div className="text-lg">Список товарів</div>
-                    <div className="rounded-xl bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[15px]">
+                    <div className="text-lg">List of products</div>
+                    <div className="  bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[15px]">
                         <div className="grid grid-cols-[1fr_1fr_1fr_1fr_1fr_1fr_1fr_1fr] gap-[15px] p-[20px] rounded-t-lg font-semibold text-sm">
-                            <div>Колекція</div>
-                            <div>Категорія</div>
-                            <div>Назва товару</div>
-                            <div>Кількість</div>
-                            <div>Колір</div>
-                            <div>Розмір</div>
-                            <div>Тип</div>
+                            <div>Collection</div>
+                            <div>Category</div>
+                            <div>Product name</div>
+                            <div>Quantity</div>
+                            <div>Color</div>
+                            <div>Size</div>
+                            <div>Type</div>
                             <div>Price, $</div>
                         </div>
 
-                        <div className="border border-white/10 rounded-xl">
+                        <div className="border border-white/10  ">
                             {items.length > 0 ? (
                                 items.map((item) => (
                                     <div
@@ -143,14 +139,14 @@ export function OrderInfoModal({
                                 ))
                             ) : (
                                 <div className="p-[20px] text-sm text-white/60">
-                                    Товарів не знайдено
+                                    Products not found
                                 </div>
                             )}
                         </div>
                     </div>
                 </div>
                 <FormButtonsWrapper>
-                    <MonoButton onClick={onClose}>Закрити</MonoButton>
+                    <MonoButton onClick={onClose}>Close</MonoButton>
                 </FormButtonsWrapper>
             </FormFillingWrapper>
         </ModalWrapper>

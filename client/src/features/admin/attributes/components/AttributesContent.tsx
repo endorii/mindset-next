@@ -14,9 +14,9 @@ import { SizeSection } from "../product-sizes/components/SizeSection";
 import { TypeSection } from "../product-types/components/TypeSection";
 
 export function AttributesContent() {
-    const ATTRIBUTES = ["кольори", "типи", "розміри"];
+    const ATTRIBUTES = ["colors", "types", "sizes"];
     const [selectedAttribute, setSelectedAttribute] =
-        useState<string>("кольори");
+        useState<string>("colors");
 
     return (
         <div className="flex flex-col gap-[15px]">
@@ -33,7 +33,7 @@ export function AttributesContent() {
                 ))}
             </div>
 
-            {selectedAttribute === "кольори" && (
+            {selectedAttribute === "colors" && (
                 <ErrorBoundary
                     fallbackRender={({ error }) => (
                         <ErrorWithMessage message={error.message} />
@@ -52,7 +52,7 @@ export function AttributesContent() {
                 </ErrorBoundary>
             )}
 
-            {selectedAttribute === "типи" && (
+            {selectedAttribute === "types" && (
                 <ErrorBoundary
                     fallbackRender={({ error }) => (
                         <ErrorWithMessage message={error.message} />
@@ -71,7 +71,7 @@ export function AttributesContent() {
                 </ErrorBoundary>
             )}
 
-            {selectedAttribute === "розміри" && (
+            {selectedAttribute === "sizes" && (
                 <ErrorBoundary
                     fallbackRender={({ error }) => (
                         <ErrorWithMessage message={error.message} />

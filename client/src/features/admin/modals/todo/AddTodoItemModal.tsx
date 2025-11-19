@@ -57,7 +57,7 @@ export function AddTodoItemModal({ isOpen, onClose }: AddTodoItemModalProps) {
             });
             handleClose();
         } catch (error: any) {
-            setModalMessage(error?.message || "Помилка при створенні завдання");
+            setModalMessage(error?.message || "Error creating task");
         }
     };
 
@@ -66,7 +66,7 @@ export function AddTodoItemModal({ isOpen, onClose }: AddTodoItemModalProps) {
     if (!isOpen) return null;
 
     const modalContent = (
-        <ModalWrapper onClose={onClose} modalTitle={"Додавання завдання"}>
+        <ModalWrapper onClose={onClose} modalTitle={"Adding a task"}>
             <form
                 className="flex flex-col gap-[15px]"
                 onSubmit={handleSubmit(onSubmit)}
@@ -74,28 +74,28 @@ export function AddTodoItemModal({ isOpen, onClose }: AddTodoItemModalProps) {
                 <FormFillingWrapper>
                     <div className="grid grid-cols-2 gap-[15px]">
                         <InputField
-                            label="Назва завдання*"
+                            label="Task name*"
                             type="text"
-                            placeholder="Назва завдання"
+                            placeholder="Task name"
                             {...register("title", {
-                                required: "Введіть назву",
+                                required: "Enter task name",
                                 minLength: {
                                     value: 2,
-                                    message: "Мінімум 2 символи",
+                                    message: "Minimum 2 characters",
                                 },
                             })}
                             errorMessage={errors.title?.message}
                         />
 
                         <BasicSelector<string>
-                            label={"Пріорітет*"}
+                            label={"Priority*"}
                             register={{
                                 ...register("priority", {
-                                    required: "Оберіть пріорітет",
+                                    required: "Choose a priority",
                                 }),
                             }}
                             itemsList={priorities}
-                            basicOptionLabel="Оберіть пріорітет"
+                            basicOptionLabel="Choose a priority"
                             getOptionLabel={(priority) => priority}
                             getOptionValue={(priority) => priority}
                             errorMessage={errors.priority?.message}
@@ -116,7 +116,7 @@ export function AddTodoItemModal({ isOpen, onClose }: AddTodoItemModalProps) {
                             addTodoItemMutation.isPending
                         }
                     >
-                        Скасувати
+                        Cancel
                     </MonoButton>
                     <MonoButton
                         type="submit"
@@ -127,8 +127,8 @@ export function AddTodoItemModal({ isOpen, onClose }: AddTodoItemModalProps) {
                     >
                         {addTodoItemMutation.isPending ||
                         addTodoItemMutation.isPending
-                            ? "Завантаження..."
-                            : "Додати"}
+                            ? "Loading..."
+                            : "Add"}
                     </MonoButton>
                 </FormButtonsWrapper>
             </form>

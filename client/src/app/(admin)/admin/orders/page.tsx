@@ -4,7 +4,7 @@ import { AdminOrdersWrapper } from "@/features/orders/components/AdminOrdersWrap
 function Orders() {
     return (
         <div className="flex flex-col gap-[15px]">
-            <Title title="Список замовлень" />
+            <Title title="Orders list" />
             <AdminOrdersWrapper />
         </div>
     );

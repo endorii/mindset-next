@@ -39,7 +39,7 @@ export function useCreateCollection() {
             if (error?.message) {
                 toast.error(error.message);
             } else {
-                toast.error("Сталася невідома помилка");
+                toast.error("An unknown error occurred.");
             }
         },
     });
@@ -68,7 +68,7 @@ export function useEditCollection() {
             if (error?.message) {
                 toast.error(error.message);
             } else {
-                toast.error("Сталася невідома помилка");
+                toast.error("An unknown error occurred.");
             }
         },
     });
@@ -87,7 +87,7 @@ export function useDeleteCollection() {
             if (error?.message) {
                 toast.error(error.message);
             } else {
-                toast.error("Сталася невідома помилка");
+                toast.error("An unknown error occurred.");
             }
         },
     });

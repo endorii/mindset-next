@@ -10,15 +10,15 @@ interface StarRatingProps {
 export function StarRating({ control, errorMessage }: StarRatingProps) {
     return (
         <div className="flex flex-col gap-[5px]">
-            <label className="font-semibold text-sm">Оцініть товар*</label>
+            <label className="font-semibold text-sm">Rate the product*</label>
 
             <Controller
                 name="rating"
                 control={control}
                 rules={{
-                    required: "Виберіть оцінку",
-                    min: { value: 1, message: "Мінімум 1" },
-                    max: { value: 5, message: "Максимум 5" },
+                    required: "Select a rating",
+                    min: { value: 1, message: "Minimum 1" },
+                    max: { value: 5, message: "Maximum 5" },
                 }}
                 render={({ field }) => (
                     <div className="flex gap-[5px]">

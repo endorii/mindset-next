@@ -17,28 +17,25 @@ export function UsersStatsCards({
 }: UsersStatsCardsProps) {
     return (
         <div className="grid grid-cols-4 sm:grid-cols-3 xs:grid-cols-2 xxs:grid-cols-1 gap-[15px]">
+            <StatCard title="Total number of users" value={totalUsers} />
             <StatCard
-                title="Загальна кількість користувачів"
-                value={totalUsers}
-            />
-            <StatCard
-                title="Активні користувачі за останній місяць"
+                title="Active users in the last month"
                 value={activeUsersLastMonth}
             />
             <StatCard
-                title="Користувачі з роллю ADMIN"
+                title="Users with the ADMIN role"
                 value={roleCounts.ADMIN || 0}
             />
             <StatCard
-                title="Користувачі з роллю USER"
+                title="Users with the USER role"
                 value={roleCounts.USER || 0}
             />
             <StatCard
-                title="Користувачі, які зробили замовлення"
+                title="Users who placed an order"
                 value={usersWithOrdersCount}
             />
             <StatCard
-                title="Середня кількість замовлень на користувача"
+                title="Average number of orders per user"
                 value={avgOrdersPerUser}
             />
         </div>

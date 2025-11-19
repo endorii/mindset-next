@@ -26,8 +26,8 @@ export function ProductsFromSameCollection({
     ) : isProductsFromSameCollectionPending ? (
         <ProductsSliderSkeleton />
     ) : isProductsFromSameCollectionError ? (
-        <ErrorWithMessage message="Виникла помилка під час завантаження товарів з цієї колекції" />
+        <ErrorWithMessage message="An error occurred while loading products from this collection." />
     ) : (
-        <div>Список товарів порожній</div>
+        <div>The product list is empty</div>
     );
 }

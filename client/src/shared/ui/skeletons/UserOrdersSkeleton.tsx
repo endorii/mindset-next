@@ -1,6 +1,6 @@
 export function UserOrdersSkeleton() {
     return (
-        <div className="rounded-xl bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px] xs:p-[10px]">
+        <div className="  bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px] xs:p-[10px]">
             <div className="border border-white/10 animate-pulse w-full">
                 {[1, 2, 3].map((_, i) => (
                     <div

@@ -49,7 +49,7 @@ export function AddColorModal({ isOpen, onClose }: AddColorModalProps) {
             });
             handleClose();
         } catch (err: any) {
-            setModalMessage(err?.message || "Помилка при додаванні кольору");
+            setModalMessage(err?.message || "Error adding color");
         }
     };
 
@@ -63,7 +63,7 @@ export function AddColorModal({ isOpen, onClose }: AddColorModalProps) {
                 onClose();
                 setModalMessage("");
             }}
-            modalTitle={"Додавання кольору"}
+            modalTitle={"Adding color"}
         >
             <form
                 className="flex flex-col gap-[15px]"
@@ -72,37 +72,37 @@ export function AddColorModal({ isOpen, onClose }: AddColorModalProps) {
                 <FormFillingWrapper>
                     <div className="grid grid-cols-2 gap-[15px]">
                         <InputField
-                            label={"Назва*"}
-                            placeholder={"Назва кольору"}
+                            label={"Name*"}
+                            placeholder={"Color name"}
                             type={"text"}
                             {...register("name", {
-                                required: "Введіть назву",
+                                required: "Enter name",
                                 minLength: {
                                     value: 2,
                                     message:
-                                        "Назва кольору повинна містити щонайменше 2 символи.",
+                                        "The color name must contain at least 2 characters.",
                                 },
                                 maxLength: {
                                     value: 25,
                                     message:
-                                        "Назва кольору не може перевищувати 25 символів.",
+                                        "The color name cannot exceed 25 characters.",
                                 },
                             })}
                             errorMessage={errors.name?.message}
                         />
 
                         <InputField
-                            label={"HEX-код*"}
+                            label={"HEX-code*"}
                             placeholder={"#000000"}
                             type={"text"}
                             {...register("hexCode", {
-                                required: "Введіть hex-код",
+                                required: "Enter hex-code",
                                 validate: (value) => {
                                     if (!value) return true;
                                     const hexRegex = /^#([A-Fa-f0-9]{3}){1,2}$/;
                                     return (
                                         hexRegex.test(value) ||
-                                        "Недійсний формат HEX-коду. Наприклад: #FF0000 або #FFF."
+                                        "Invalid HEX code format. For example: #FF0000 or #FFF."
                                     );
                                 },
                             })}
@@ -119,15 +119,13 @@ export function AddColorModal({ isOpen, onClose }: AddColorModalProps) {
                         type="button"
                         disabled={createColorMutation.isPending}
                     >
-                        Скасувати
+                        Cancel
                     </MonoButton>
                     <MonoButton
                         type="submit"
                         disabled={createColorMutation.isPending}
                     >
-                        {createColorMutation.isPending
-                            ? "Завантаження..."
-                            : "Додати"}
+                        {createColorMutation.isPending ? "Loading..." : "Add"}
                     </MonoButton>
                 </FormButtonsWrapper>
             </form>

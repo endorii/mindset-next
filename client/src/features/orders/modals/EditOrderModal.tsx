@@ -111,7 +111,7 @@ export function EditOrderModal({
                 );
                 if (matchedArea) setSelectedArea(matchedArea);
             } catch (error) {
-                console.error("Помилка завантаження областей:", error);
+                console.error("Error loading areas:", error);
             }
         };
         loadAreas();
@@ -129,7 +129,7 @@ export function EditOrderModal({
                     );
                     if (matchedCity) setSelectedCity(matchedCity);
                 } catch (error) {
-                    console.error("Помилка завантаження міст:", error);
+                    console.error("Error loading cities:", error);
                     setCities([]);
                 }
             };
@@ -151,7 +151,7 @@ export function EditOrderModal({
                     );
                     if (matched) setSelectedWarehouse(matched);
                 } catch (err) {
-                    console.error("Помилка завантаження відділень:", err);
+                    console.error("Error loading branches:", err);
                     setWarehouses([]);
                 }
             };
@@ -171,16 +171,14 @@ export function EditOrderModal({
             });
             onClose();
         } catch (err: any) {
-            setModalMessage(
-                err?.message || "Помилка при редагуванні замовлення"
-            );
+            setModalMessage(err?.message || "Error while editing order");
         }
     };
 
     if (!isOpen || !order) return null;
 
     const modalContent = (
-        <ModalWrapper onClose={onClose} modalTitle={"Редагування замовлення"}>
+        <ModalWrapper onClose={onClose} modalTitle={"Editing an order"}>
             <form
                 onSubmit={handleSubmit(onSubmit)}
                 className="flex flex-col gap-[15px]"
@@ -188,44 +186,44 @@ export function EditOrderModal({
                 <FormFillingWrapper>
                     <div className="grid grid-cols-3 gap-[15px]">
                         <div className="flex flex-col gap-[15px]">
-                            <div className="text-lg">Контактна інформація</div>
+                            <div className="text-lg">Contact information</div>
                             <div className="flex flex-col gap-[15px]">
                                 <InputField
-                                    label="Ініціали замовника (ПІБ)*"
-                                    placeholder="Іванов Іван Іванович"
+                                    label="Full name*"
+                                    placeholder="Ivanov Ivan Ivanovych"
                                     {...register("fullName", {
-                                        required: "Введіть ініціали (ПІБ)",
+                                        required: "Enter full name",
                                         minLength: {
                                             value: 8,
-                                            message: "Мінімум 8 символів",
+                                            message: "Minimum 8 characters",
                                         },
                                         pattern: {
                                             value: /^[А-ЯІЇЄҐA-Z][а-яіїєґa-z']+\s[А-ЯІЇЄҐA-Z][а-яіїєґa-z']+\s[А-ЯІЇЄҐA-Z][а-яіїєґa-z']+$/,
                                             message:
-                                                "Формат: Прізвище Ім’я По батькові (три слова з великої літери)",
+                                                "Format: Last Name First Name Middle Name (three words in capital letters)",
                                         },
                                     })}
                                     errorMessage={errors.fullName?.message}
                                 />
                                 <InputField
-                                    label="Номер телефону*"
+                                    label="Phone number*"
                                     {...register("phoneNumber", {
-                                        required: "Введіть номер телефону",
+                                        required: "Enter your phone number",
                                         pattern: {
                                             value: /^(0\d{9}|380\d{9})$/,
                                             message:
-                                                "Формат: 0XXXXXXXXX або 380XXXXXXXXX",
+                                                "Format: 0XXXXXXXXX or 380XXXXXXXXX",
                                         },
                                     })}
                                     errorMessage={errors.phoneNumber?.message}
                                 />
 
                                 <InputField
-                                    label="Електронна пошта*"
+                                    label="E-mail*"
                                     {...register("email", {
                                         pattern: {
                                             value: /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/,
-                                            message: "Некоректний формат пошти",
+                                            message: "Incorrect mail format",
                                         },
                                     })}
                                     errorMessage={errors.email?.message}
@@ -237,10 +235,10 @@ export function EditOrderModal({
                             <Controller
                                 name="area"
                                 control={control}
-                                rules={{ required: "Оберіть область" }}
+                                rules={{ required: "Choose an area" }}
                                 render={({ field }) => (
                                     <div className="flex flex-col gap-[7px]">
-                                        <Label>Область*</Label>
+                                        <Label>Region*</Label>
                                         <select
                                             {...field}
                                             onChange={(e) => {
@@ -264,7 +262,7 @@ export function EditOrderModal({
                                             }`}
                                         >
                                             <option value="">
-                                                Оберіть область
+                                                Choose an area
                                             </option>
                                             {areas.map((area) => (
                                                 <option
@@ -287,10 +285,10 @@ export function EditOrderModal({
                             <Controller
                                 name="city"
                                 control={control}
-                                rules={{ required: "Оберіть місто" }}
+                                rules={{ required: "Choose a city" }}
                                 render={({ field }) => (
                                     <div className="flex flex-col gap-[7px]">
-                                        <Label>Місто</Label>
+                                        <Label>City</Label>
                                         <select
                                             {...field}
                                             onChange={(e) => {
@@ -314,7 +312,7 @@ export function EditOrderModal({
                                             }`}
                                         >
                                             <option value="">
-                                                Оберіть місто
+                                                Choose a city
                                             </option>
                                             {cities.map((city) => (
                                                 <option
@@ -338,11 +336,11 @@ export function EditOrderModal({
                                 name="postDepartment"
                                 control={control}
                                 rules={{
-                                    required: "Оберіть відділення/поштомат",
+                                    required: "Choose a branch/post office",
                                 }}
                                 render={({ field }) => (
                                     <div className="flex flex-col gap-[7px]">
-                                        <Label>Відділення/поштомат</Label>
+                                        <Label>Branch/post office</Label>
                                         <select
                                             {...field}
                                             onChange={(e) => {
@@ -368,7 +366,7 @@ export function EditOrderModal({
                                             }`}
                                         >
                                             <option value="">
-                                                Оберіть відділення
+                                                Choose a branch
                                             </option>
                                             {warehouses.map((wh) => (
                                                 <option
@@ -389,12 +387,10 @@ export function EditOrderModal({
                             />
                         </div>
                         <div className="flex flex-col gap-[15px]">
-                            <div className="text-lg">
-                                Інформація про замовлення
-                            </div>
+                            <div className="text-lg">Order information</div>
                             <div className="flex flex-col gap-[15px]">
                                 <InputField
-                                    label="Додаткова інформація*"
+                                    label="Additional information*"
                                     {...register("additionalInfo")}
                                 />
 
@@ -402,14 +398,14 @@ export function EditOrderModal({
                                     name="status"
                                     control={control}
                                     rules={{
-                                        required: "Оберіть статус",
+                                        required: "Choose a status",
                                         validate: (value) =>
                                             value !== null ||
-                                            "Оберіть статус зі списку",
+                                            "Choose a status from the list",
                                     }}
                                     render={({ field }) => (
                                         <div className="flex flex-col gap-[7px]">
-                                            <Label>Статус</Label>
+                                            <Label>Status</Label>
                                             <select
                                                 {...field}
                                                 id="status"
@@ -424,7 +420,7 @@ export function EditOrderModal({
                                                     disabled
                                                     hidden
                                                 >
-                                                    Оберіть статус
+                                                    Choose a status
                                                 </option>
                                                 {statusOptions.map((s) => (
                                                     <option key={s} value={s}>
@@ -460,7 +456,7 @@ export function EditOrderModal({
                             useUpdateOrderMutation.isPending
                         }
                     >
-                        Скасувати
+                        Cancel
                     </MonoButton>
                     <MonoButton
                         type="submit"
@@ -471,8 +467,8 @@ export function EditOrderModal({
                     >
                         {useUpdateOrderMutation.isPending ||
                         useUpdateOrderMutation.isPending
-                            ? "Завантаження..."
-                            : "Зберегти"}
+                            ? "Loading..."
+                            : "Save"}
                     </MonoButton>
                 </FormButtonsWrapper>
             </form>

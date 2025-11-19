@@ -20,7 +20,7 @@ export function AdminProductsWrapper({
     return (
         <ErrorBoundary
             fallbackRender={() => (
-                <ErrorWithMessage message="Помилка завантаження колекцій" />
+                <ErrorWithMessage message="Error loading collections" />
             )}
         >
             <Suspense

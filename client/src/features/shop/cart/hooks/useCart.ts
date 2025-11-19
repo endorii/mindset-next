@@ -35,7 +35,7 @@ export function useAddCartItemToUser() {
             if (error?.message) {
                 toast.error(error.message);
             } else {
-                toast.error("Сталася невідома помилка");
+                toast.error("An unknown error occurred.");
             }
         },
     });
@@ -54,7 +54,7 @@ export function useDeleteCartItemFromUser() {
             if (error?.message) {
                 toast.error(error.message);
             } else {
-                toast.error("Сталася невідома помилка");
+                toast.error("An unknown error occurred.");
             }
         },
     });
@@ -73,7 +73,7 @@ export function useDeleteCartFromUser() {
             if (error?.message) {
                 toast.error(error.message);
             } else {
-                toast.error("Сталася невідома помилка");
+                toast.error("An unknown error occurred.");
             }
         },
     });

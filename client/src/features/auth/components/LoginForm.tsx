@@ -23,40 +23,40 @@ export function LoginForm() {
         try {
             await loginUserMutation.mutateAsync(data);
         } catch (err: any) {
-            setLoginMessage(err?.message || "Помилка входу");
+            setLoginMessage(err?.message || "Login error");
         }
     };
 
     return (
-        <LoginComponentsWrapper title="Вхід">
+        <LoginComponentsWrapper title="Log In">
             <form
                 className="flex flex-col gap-[15px]"
                 onSubmit={handleLoginSubmit(onLoginSubmit)}
             >
                 <InputField
-                    label="електронна пошта*"
+                    label="e-mail*"
                     id={"loginEmail"}
                     type="email"
                     {...loginRegister("email", {
-                        required: "Введіть email",
+                        required: "Enter e-mail",
                         pattern: {
                             value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-                            message: "Некоректна електронна адреса",
+                            message: "Invalid e-mail address",
                         },
                     })}
                     errorMessage={loginErrors.email?.message}
                 />
 
                 <InputField
-                    label="пароль*"
+                    label="password*"
                     id={"loginPassword"}
                     type="password"
                     {...loginRegister("password", {
-                        required: "Введіть пароль",
+                        required: "Enter password",
                         minLength: {
                             value: 8,
                             message:
-                                "Пароль повинен містити щонайменше 8 символів",
+                                "Password must contain at least 8 characters",
                         },
                     })}
                     errorMessage={loginErrors.password?.message}
@@ -70,16 +70,14 @@ export function LoginForm() {
                     type="submit"
                     disabled={loginUserMutation.isPending}
                 >
-                    {loginUserMutation.isPending ? "Завантаження..." : "Увійти"}
+                    {loginUserMutation.isPending ? "Loading..." : "Log In"}
                 </MonoButton>
             </form>
-            <div className="font-semibold text-neutral-400 text-center">
-                Або
-            </div>
+            <div className="font-semibold text-neutral-400 text-center">Or</div>
             <div className="w-full">
                 <ButtonWithIcon onClick={handleGoogleLogin} className="w-full">
                     <img src="./google.svg" alt="" />
-                    <div>Продовжити з Google</div>
+                    <div>Continue with Google</div>
                 </ButtonWithIcon>
             </div>
         </LoginComponentsWrapper>

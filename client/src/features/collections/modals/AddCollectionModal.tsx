@@ -47,7 +47,7 @@ export function AddCollectionModal({
         formState: { errors },
     } = useForm<FormValues>({
         defaultValues: {
-            status: "Не активно",
+            status: "Not active",
         },
     });
 
@@ -74,7 +74,7 @@ export function AddCollectionModal({
     const onSubmit = async (data: FormValues) => {
         try {
             if (!banner) {
-                setBannerError("Оберіть банер");
+                setBannerError("Choose banner");
                 return;
             } else {
                 setBannerError(null);
@@ -89,7 +89,7 @@ export function AddCollectionModal({
             });
 
             if (!collection.data?.id) {
-                throw new Error("Не вдалося отримати ID колекції");
+                throw new Error("Failed to get collection ID");
             }
 
             await uploadBannerMutation.mutateAsync({
@@ -101,7 +101,7 @@ export function AddCollectionModal({
 
             handleClose();
         } catch (err: any) {
-            setModalMessage(err?.message || "Помилка при створенні колекції");
+            setModalMessage(err?.message || "Error creating collection");
         }
     };
 
@@ -110,7 +110,7 @@ export function AddCollectionModal({
     if (!isOpen) return null;
 
     const modalContent = (
-        <ModalWrapper onClose={onClose} modalTitle={"Додавання колекції"}>
+        <ModalWrapper onClose={onClose} modalTitle={"Adding a collection"}>
             <form
                 className="flex flex-col gap-[15px]"
                 onSubmit={handleSubmit(onSubmit)}
@@ -118,51 +118,51 @@ export function AddCollectionModal({
                 <FormFillingWrapper>
                     <div className="grid grid-cols-3 gap-[15px]">
                         <InputField
-                            label={"Назва*"}
+                            label={"Name*"}
                             type={"text"}
-                            placeholder={"Назва колекції"}
+                            placeholder={"Collection name"}
                             {...register("name", {
-                                required: "Введіть назву",
+                                required: "Enter collection name",
                                 minLength: {
                                     value: 3,
-                                    message: "Мінімум 3 символи",
+                                    message: "Minimum 3 characters",
                                 },
                             })}
                             errorMessage={errors.name?.message}
                         />
                         <InputField
-                            label={"Шлях*"}
+                            label={"Path*"}
                             type={"text"}
-                            placeholder={"Шлях"}
+                            placeholder={"Path"}
                             {...register("path", {
-                                required: "Введіть шлях",
+                                required: "Enter path",
                                 minLength: {
                                     value: 3,
-                                    message: "Мінімум 3 символи",
+                                    message: "Minimum 3 characters",
                                 },
                             })}
                             errorMessage={errors.path?.message}
                         />
 
                         <BasicSelector<string>
-                            label={"Статус*"}
+                            label={"Status*"}
                             register={{
                                 ...register("status", {
-                                    required: "Оберіть статус",
+                                    required: "Choose a status",
                                 }),
                             }}
                             itemsList={statuses}
-                            basicOptionLabel="Оберіть статус"
+                            basicOptionLabel="Choose a status"
                             getOptionLabel={(status) => status}
                             getOptionValue={(status) => status}
                             errorMessage={errors.status?.message}
                         />
                     </div>
                     <BasicTextarea
-                        label="Опис*"
+                        label="Description*"
                         register={{
                             ...register("description", {
-                                required: "Введіть опис",
+                                required: "Enter a description",
                             }),
                         }}
                         errorMessage={errors.description?.message}
@@ -185,7 +185,7 @@ export function AddCollectionModal({
                             createCollectionMutation.isPending
                         }
                     >
-                        Скасувати
+                        Cancel
                     </MonoButton>
                     <MonoButton
                         type="submit"
@@ -196,8 +196,8 @@ export function AddCollectionModal({
                     >
                         {uploadBannerMutation.isPending ||
                         createCollectionMutation.isPending
-                            ? "Завантаження..."
-                            : "Додати"}
+                            ? "Loading..."
+                            : "Add"}
                     </MonoButton>
                 </FormButtonsWrapper>
             </form>

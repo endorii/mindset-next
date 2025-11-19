@@ -1,14 +1,14 @@
 import {
-    Injectable,
     BadRequestException,
     ForbiddenException,
-    NotFoundException,
-    InternalServerErrorException,
     HttpException,
+    Injectable,
+    InternalServerErrorException,
+    NotFoundException,
 } from "@nestjs/common";
+import { OrderStatus } from "generated/prisma";
 import { PrismaService } from "src/prisma/prisma.service";
 import { CreateReviewDto } from "./dto/create-review.dto";
-import { OrderStatus } from "generated/prisma";
 
 @Injectable()
 export class ShopReviewsService {
@@ -20,7 +20,7 @@ export class ShopReviewsService {
 
         if (!orderItemId) {
             throw new BadRequestException(
-                "Не вказано orderItemId — неможливо перевірити існуючий відгук."
+                "Order item ID not specified — cannot verify existing review."
             );
         }
 
@@ -29,10 +29,10 @@ export class ShopReviewsService {
         });
 
         if (existingReviewForOrderItem) {
-            throw new BadRequestException("Ви вже залишили відгук для цього елемента замовлення.");
+            throw new BadRequestException("You have already left a review for this order item.");
         }
 
-        // Перевірка, що користувач дійсно купив цей товар та замовлення в потрібному статусі
+        // Check that user actually purchased this product and order is in correct status
         const orderItem = await this.prisma.orderItem.findFirst({
             where: {
                 id: orderItemId,
@@ -50,7 +50,7 @@ export class ShopReviewsService {
 
         if (!orderItem) {
             throw new ForbiddenException(
-                "Ви не можете залишити відгук для цього товару, оскільки він не був придбаний або замовлення ще не завершене."
+                "You cannot leave a review for this product because it was not purchased or the order is not completed."
             );
         }
 
@@ -69,16 +69,14 @@ export class ShopReviewsService {
             });
 
             return {
-                message: "Відгук успішно створено!",
+                message: "Review successfully created!",
                 review,
             };
         } catch (error) {
-            console.error("Помилка створення відгуку:", error);
-            if (error instanceof HttpException) {
-                throw error;
-            }
+            console.error("Error creating review:", error);
+            if (error instanceof HttpException) throw error;
             throw new InternalServerErrorException(
-                "Не вдалося створити відгук через внутрішню помилку."
+                "Failed to create review due to internal error."
             );
         }
     }
@@ -88,12 +86,7 @@ export class ShopReviewsService {
 
         try {
             const existingVote = await this.prisma.reviewVote.findUnique({
-                where: {
-                    userId_reviewId: {
-                        userId,
-                        reviewId,
-                    },
-                },
+                where: { userId_reviewId: { userId, reviewId } },
             });
 
             if (!existingVote) {
@@ -135,11 +128,9 @@ export class ShopReviewsService {
                 });
             }
         } catch (error) {
-            console.error("Помилка голосування за відгук:", error);
-            if (error instanceof HttpException) {
-                throw error;
-            }
-            throw new InternalServerErrorException("Не вдалося оновити голосування за відгук");
+            console.error("Error toggling review vote:", error);
+            if (error instanceof HttpException) throw error;
+            throw new InternalServerErrorException("Failed to update review vote.");
         }
     }
 
@@ -163,16 +154,14 @@ export class ShopReviewsService {
             });
 
             if (!reviews || reviews.length === 0) {
-                throw new NotFoundException("Відгуки відсутні");
+                throw new NotFoundException("No reviews found.");
             }
 
             return reviews;
         } catch (error) {
-            console.error("Помилка отримання відгуків:", error);
-            if (error instanceof HttpException) {
-                throw error;
-            }
-            throw new InternalServerErrorException("Не вдалося отримати відгуки");
+            console.error("Error fetching reviews:", error);
+            if (error instanceof HttpException) throw error;
+            throw new InternalServerErrorException("Failed to fetch reviews.");
         }
     }
 
@@ -197,11 +186,9 @@ export class ShopReviewsService {
 
             return reviews;
         } catch (error) {
-            console.error("Помилка отримання відгуків:", error);
-            if (error instanceof HttpException) {
-                throw error;
-            }
-            throw new InternalServerErrorException("Не вдалося отримати відгуки");
+            console.error("Error fetching product reviews:", error);
+            if (error instanceof HttpException) throw error;
+            throw new InternalServerErrorException("Failed to fetch product reviews.");
         }
     }
 
@@ -212,24 +199,20 @@ export class ShopReviewsService {
             });
 
             if (!review) {
-                throw new NotFoundException("Відгук не знайдено");
+                throw new NotFoundException("Review not found.");
             }
 
             if (review.userId !== userId) {
-                throw new ForbiddenException("Ви не маєте права видаляти цей відгук");
+                throw new ForbiddenException("You do not have permission to delete this review.");
             }
 
-            await this.prisma.review.delete({
-                where: { id: reviewId },
-            });
+            await this.prisma.review.delete({ where: { id: reviewId } });
 
-            return { message: "Відгук успішно видалено" };
+            return { message: "Review successfully deleted." };
         } catch (error) {
-            console.error("Помилка видалення відгуку:", error);
-            if (error instanceof HttpException) {
-                throw error;
-            }
-            throw new InternalServerErrorException("Не вдалося видалити відгук");
+            console.error("Error deleting review:", error);
+            if (error instanceof HttpException) throw error;
+            throw new InternalServerErrorException("Failed to delete review.");
         }
     }
 }

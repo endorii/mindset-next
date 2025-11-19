@@ -30,23 +30,23 @@ export function DeleteReviewModal({
     useEscapeKeyClose({ isOpen, onClose });
 
     const modalContent = (
-        <ModalWrapper onClose={onClose} modalTitle={"Видалення відгуку"}>
+        <ModalWrapper onClose={onClose} modalTitle={"Deletting review"}>
             <div className="mb-6 text-white/80 text-[16px] leading-[1.6]">
-                Ви дійсно хочете видалити відгук до товару{" "}
+                Do you really want to Delete product review?{" "}
                 <span className="font-semibold text-white">
                     {review.product?.name}
                 </span>
                 ?
             </div>
             <FormButtonsWrapper>
-                <MonoButton onClick={onClose}>Скасувати</MonoButton>
+                <MonoButton onClick={onClose}>Cancel</MonoButton>
                 <DeleteButton
                     onClick={() => {
                         onClose();
                         handleDelete();
                     }}
                 >
-                    Видалити
+                    Delete
                 </DeleteButton>
             </FormButtonsWrapper>
         </ModalWrapper>

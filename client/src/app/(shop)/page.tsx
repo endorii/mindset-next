@@ -7,14 +7,14 @@ import { ShopTitle } from "@/shared/ui/titles/ShopTitle";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-    title: "Mindset – головна сторінка",
-    description: "Купуйте товари, які асоціюються з вашоб особистістю.",
+    title: "Mindset – Main Page",
+    description: "Lour style - your life vision.",
     openGraph: {
         title: "Mindset",
-        description: "Інтернет магазин особливого одягу.",
+        description: "Online cloathes shop.",
         url: "https://localhost:3000",
         siteName: "Mindset",
-        locale: "uk_UA",
+        locale: "en_US",
         type: "website",
     },
 };
@@ -30,7 +30,7 @@ export default async function CollectionsPage() {
     if (!res.ok) {
         const text = await res.text();
         console.error("Nest API error response:", text);
-        throw new Error("Не вдалося отримати колекції");
+        throw new Error("Failed to retrieve collections");
     }
 
     const collections: ICollection[] = await res.json();

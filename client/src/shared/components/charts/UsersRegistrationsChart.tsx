@@ -124,18 +124,18 @@ function generateUsersChartData(users: IUser[], period: Period): ChartPoint[] {
     if (period === "year") {
         // по місяцях року
         const monthNames = [
-            "Січ",
-            "Лют",
-            "Бер",
-            "Кві",
-            "Тра",
-            "Чер",
-            "Лип",
-            "Сер",
-            "Вер",
-            "Жов",
-            "Лис",
-            "Гру",
+            "Jan",
+            "Feb",
+            "Mar",
+            "Apr",
+            "Thu",
+            "Jun",
+            "Jul",
+            "Apr",
+            "Sep",
+            "Oct",
+            "Nov",
+            "Dec",
         ];
 
         const data: ChartPoint[] = Array.from({ length: 12 }, (_, i) => ({
@@ -169,8 +169,8 @@ export function UsersRegistrationsChart({
 
     if (!users || users.length === 0) {
         return (
-            <div className="rounded-xl bg-white/5 p-[20px] w-full text-white/60 border border-white/5">
-                Користувачі для діаграми відсутні
+            <div className="  bg-white/5 p-[20px] w-full text-white/60 border border-white/5">
+                There are no users for the chart.
             </div>
         );
     }
@@ -181,16 +181,16 @@ export function UsersRegistrationsChart({
     );
 
     const periodLabels: Record<Period, string> = {
-        day: "За день (по годинах)",
-        week: "За тиждень (по днях)",
-        month: "За місяць (по днях)",
-        year: "За рік (по місяцях)",
+        day: "Per day (by hour)",
+        week: "Per week (by day)",
+        month: "Per month (by day)",
+        year: "Per year (by month)",
     };
 
     return (
-        <div className="rounded-xl bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px] flex flex-col gap-[15px] w-full">
+        <div className="  bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px] flex flex-col gap-[15px] w-full">
             <h2 className="text-lg font-semibold">
-                Статистика реєстрацій користувачів {periodLabels[period]}
+                User registration statistics {periodLabels[period]}
             </h2>
             <div className="flex flex-wrap gap-[10px] mb-[20px]">
                 {(["day", "week", "month", "year"] as Period[]).map((p) => (
@@ -210,7 +210,7 @@ export function UsersRegistrationsChart({
                     <YAxis
                         allowDecimals={false}
                         label={{
-                            value: "Кількість користувачів",
+                            value: "Quantity of users",
                             angle: -90,
                             position: "insideLeft",
                         }}
@@ -228,7 +228,7 @@ export function UsersRegistrationsChart({
                         type="monotone"
                         dataKey="users"
                         stroke="#82ca9d"
-                        name="Реєстрації"
+                        name="Registrations"
                         activeDot={{ r: 8 }}
                     />
                 </LineChart>

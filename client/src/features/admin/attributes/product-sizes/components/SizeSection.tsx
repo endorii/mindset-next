@@ -24,22 +24,22 @@ export function SizeSection() {
     return (
         <>
             <TitleWithAddElementButton
-                title={"Список розмірів"}
+                title={"Size list"}
                 onClick={() => setModalType("add")}
-                buttonText={"Додати розмір"}
+                buttonText={"Add size"}
             />
 
             {sizes && (sizes ?? []).length > 0 ? (
-                <div className="rounded-xl bg-white/5 shadow-lg border border-white/5 p-[20px] sm:px-[10px] pt-0">
+                <div className="  bg-white/5 shadow-lg border border-white/5 p-[20px] sm:px-[10px] pt-0">
                     <div
                         className="grid 
                     grid-cols-2 
                     gap-[15px] p-[20px] font-semibold text-sm"
                     >
-                        <div>Назва</div>
-                        <div className="text-right">Дії</div>
+                        <div>Name</div>
+                        <div className="text-right">Actions</div>
                     </div>
-                    <div className="border border-white/10 rounded-xl">
+                    <div className="border border-white/10  ">
                         {sizes.map((size) => (
                             <div
                                 key={size.id}
@@ -74,7 +74,7 @@ export function SizeSection() {
             ) : (
                 <div className="relative flex min-h-[200px] items-center justify-center bg-white/5 shadow-lg border border-white/5 p-[20px]">
                     <div className="font-bold text-3xl z-1">
-                        Список розмірів порожній
+                        The size list is empty.
                     </div>
                     <PaletteIcon className="absolute fill-black top-[-60px] right-20 w-[400px] opacity-20 pointer-events-none" />
                 </div>

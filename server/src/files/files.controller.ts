@@ -11,7 +11,6 @@ import {
 import { FileInterceptor, FilesInterceptor } from "@nestjs/platform-express";
 import { Role } from "generated/prisma";
 import { Roles } from "src/auth/decorators/roles.decorator";
-// import { JwtAccessGuard } from "src/auth/guards/jwt/jwt-access.guard";
 import { RolesGuard } from "src/auth/guards/roles/roles.guard";
 import { FilesService } from "./files.service";
 
@@ -50,7 +49,7 @@ export class FilesController {
     // @Roles(Role.ADMIN)
     // deleteImage(@Query("path") imagePath: string) {
     //     if (!imagePath) {
-    //         throw new BadRequestException("Шлях до зображення не вказано");
+    //         throw new BadRequestException("Image path is not provided");
     //     }
 
     //     const cleanedPath = imagePath.replace(/^\/+/, "");
@@ -58,9 +57,9 @@ export class FilesController {
 
     //     if (fs.existsSync(fullPath)) {
     //         fs.unlinkSync(fullPath);
-    //         return { message: "Зображення видалено" };
+    //         return { message: "Image deleted" };
     //     } else {
-    //         throw new NotFoundException("Файл не знайдено");
+    //         throw new NotFoundException("File not found");
     //     }
     // }
 
@@ -68,7 +67,7 @@ export class FilesController {
     // @Roles(Role.ADMIN)
     // deleteImages(@Body() body: { paths: string[] }) {
     //     if (!body.paths || !Array.isArray(body.paths) || body.paths.length === 0) {
-    //         throw new BadRequestException("Масив шляхів зображень не вказано або порожній");
+    //         throw new BadRequestException("Array of image paths is missing or empty");
     //     }
 
     //     const results: { path: string; status: string }[] = [];
@@ -90,6 +89,6 @@ export class FilesController {
     //         }
     //     }
 
-    //     return { message: "Обробка масового видалення завершена", results };
+    //     return { message: "Bulk deletion processing completed", results };
     // }
 }

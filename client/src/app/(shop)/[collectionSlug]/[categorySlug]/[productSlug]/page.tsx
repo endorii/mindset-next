@@ -27,8 +27,8 @@ export async function generateMetadata({
 
     if (!res.ok) {
         return {
-            title: `Товар ${productSlug} – Помилка`,
-            description: "Не вдалося завантажити товар",
+            title: `Product ${productSlug} – Error`,
+            description: "Failed to load product",
         };
     }
 
@@ -38,13 +38,13 @@ export async function generateMetadata({
         title: `"${product.name}" | ${categorySlug} | ${collectionSlug} – Mindset`,
         description:
             product.description ||
-            `Дивіться товар з колекції ${categorySlug} від Mindset.`,
+            `See the product from the collection ${categorySlug} by Mindset.`,
         openGraph: {
             title: `"${product.name}" | ${categorySlug} | ${collectionSlug} – Mindset`,
             description: product.description,
             images: product.banner ? [product.banner] : [],
             type: "website",
-            locale: "uk_UA",
+            locale: "en_US",
         },
     };
 }
@@ -72,14 +72,13 @@ export default async function ProductPage({
         if (!res.ok) {
             const text = await res.text();
             console.error("Nest API error response:", text);
-            errorMessage =
-                JSON.parse(text).message || "Помилка завантаження товару";
+            errorMessage = JSON.parse(text).message || "Error loading product";
         } else {
             product = await res.json();
         }
     } catch (error: any) {
         console.error(error);
-        errorMessage = error.message || "Невідома помилка";
+        errorMessage = error.message || "Unknown error";
     }
 
     if (errorMessage) {

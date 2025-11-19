@@ -14,8 +14,8 @@ export function CollectionsSection({
     if (!collections?.length) {
         return (
             <EmptyCategories
-                title="Наш віртуальний склад щойно отримав оновлення..."
-                subtitle="Вибачте за незручності — колекції ще в процесі сортування"
+                title="Our virtual warehouse just got an update..."
+                subtitle="Sorry for the inconvenience - the collections are still in the process of sorting."
             />
         );
     }

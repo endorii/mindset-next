@@ -85,7 +85,7 @@ function Checkout() {
     const [selectedWarehouse, setSelectedWarehouse] =
         useState<INovaPostDataObj | null>(null);
 
-    // Стани завантаження
+    // Стани loading
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [novaPoshtaLoading, setNovaPoshtaLoading] =
         useState<NovaPoshtaLoadingState>({
@@ -116,7 +116,7 @@ function Checkout() {
 
     const createOrderMutation = useCreateOrder();
 
-    // Завантаження даних користувача
+    // Loading даних користувача
     useEffect(() => {
         if (user) {
             reset({
@@ -127,7 +127,7 @@ function Checkout() {
         }
     }, [user, reset]);
 
-    // Завантаження областей при монтуванні
+    // Loading областей при монтуванні
     useEffect(() => {
         const loadAreas = async () => {
             setNovaPoshtaLoading((prev) => ({ ...prev, areas: true }));
@@ -136,9 +136,9 @@ function Checkout() {
                 const data = await fetchAreas();
                 setAreas(data);
             } catch (error) {
-                console.error("Помилка завантаження областей:", error);
-                setNovaPoshtaError("Не вдалося завантажити області");
-                toast.error("Не вдалося завантажити області");
+                console.error("Error loading areas:", error);
+                setNovaPoshtaError("Failed to load areas");
+                toast.error("Failed to load areas");
             } finally {
                 setNovaPoshtaLoading((prev) => ({ ...prev, areas: false }));
             }
@@ -146,7 +146,7 @@ function Checkout() {
         loadAreas();
     }, []);
 
-    // Завантаження міст при виборі області
+    // Loading міст при виборі області
     useEffect(() => {
         if (!selectedArea) {
             setCities([]);
@@ -163,9 +163,9 @@ function Checkout() {
                 const data = await fetchCities(selectedArea.Ref);
                 setCities(data);
             } catch (error) {
-                console.error("Помилка завантаження міст:", error);
-                setNovaPoshtaError("Не вдалося завантажити міста");
-                toast.error("Не вдалося завантажити міста");
+                console.error("Error loading cities:", error);
+                setNovaPoshtaError("Could not load cities");
+                toast.error("Could not load cities");
                 setCities([]);
             } finally {
                 setNovaPoshtaLoading((prev) => ({ ...prev, cities: false }));
@@ -180,7 +180,7 @@ function Checkout() {
         setValue("postDepartment", "");
     }, [selectedArea, setValue]);
 
-    // Завантаження відділень при виборі міста
+    // Loading відділень при виборі міста
     useEffect(() => {
         if (!selectedCity) {
             setWarehouses([]);
@@ -195,9 +195,9 @@ function Checkout() {
                 const data = await fetchWarehouses(selectedCity.Ref);
                 setWarehouses(data);
             } catch (error) {
-                console.error("Помилка завантаження відділень:", error);
-                setNovaPoshtaError("Не вдалося завантажити відділення");
-                toast.error("Не вдалося завантажити відділення");
+                console.error("Error loading branches:", error);
+                setNovaPoshtaError("Failed to load branch");
+                toast.error("Failed to load branch");
                 setWarehouses([]);
             } finally {
                 setNovaPoshtaLoading((prev) => ({
@@ -256,12 +256,12 @@ function Checkout() {
     // Відправка форми
     const onSubmit = async (data: FormData) => {
         if (!mergedCart.length) {
-            toast.error("Кошик порожній");
+            toast.error("Cart is empty.");
             return;
         }
 
         if (!selectedArea || !selectedCity || !selectedWarehouse) {
-            toast.error("Будь ласка, оберіть адресу доставки повністю");
+            toast.error("Please select a complete delivery address");
             return;
         }
 
@@ -269,7 +269,7 @@ function Checkout() {
             (item) => !item.product || !item.product.price
         );
         if (hasInvalidProducts) {
-            toast.error("Деякі товари недоступні. Оновіть кошик");
+            toast.error("Some products are unavailable. Update cart");
             return;
         }
 
@@ -294,7 +294,7 @@ function Checkout() {
                 });
 
                 if (!order.data) {
-                    toast.error("Не вдалося створити замовлення");
+                    toast.error("Failed to create order");
                     return;
                 }
 
@@ -320,7 +320,7 @@ function Checkout() {
                 if (url) {
                     window.location.href = url;
                 } else {
-                    toast.error("Не вдалося створити платіжну сесію");
+                    toast.error("Failed to create payment session");
                 }
             } else if (data.paymentMethod === "cod") {
                 const destructedCart = mergedCart.map(
@@ -341,23 +341,23 @@ function Checkout() {
                 // await clearUserCart();
 
                 toast.success(
-                    "Замовлення успішно оформлено. Очікуйте... Наші менеджери зв'яжуться з вами для підтвердження"
+                    "Your order has been successfully placed. Please wait... Our managers will contact you for confirmation."
                 );
             }
         } catch (err) {
             console.error(err);
-            toast.error("Помилка при оформленні замовлення");
+            toast.error("Error when placing an order");
         } finally {
             setIsSubmitting(false);
         }
     };
 
-    // Стани завантаження
+    // Стани loading
     if (isUserCartPending || isProductsPending) return <CheckoutSkeleton />;
 
     if (isUserCartError)
         return (
-            <ErrorWithMessage message="Помилка під час завантаження кошика, спробуйте пізніше" />
+            <ErrorWithMessage message="Error loading cart, please try again later" />
         );
 
     if (!cartToShow.length) {
@@ -380,20 +380,20 @@ function Checkout() {
                         <div className="flex gap-[15px] w-full">
                             <div className="flex flex-col gap-[15px] w-1/2">
                                 <div className="text-3xl font-thin">
-                                    Реквізити для відправки
+                                    Shipping details
                                 </div>
                                 <hr className="border-t border-white/10" />
                                 <div className="flex flex-col gap-[13px] w-full">
                                     <InputField
-                                        label="Ініціали (ПІБ)*"
-                                        placeholder="Петренко Петро Петрович"
+                                        label="Full name*"
+                                        placeholder="Petrenko Petro Petrovych"
                                         register={{
                                             ...register("fullName", {
-                                                required: "Введіть ініціали",
+                                                required: "Enter full name",
                                                 pattern: {
                                                     value: /^[А-ЯІЇЄҐ][а-яіїєґ']+\s[А-ЯІЇЄҐ][а-яіїєґ']+\s[А-ЯІЇЄҐ][а-яіїєґ']+$/,
                                                     message:
-                                                        "Введіть ПІБ у форматі: Прізвище Ім'я По батькові",
+                                                        "Enter your full name in the format: Last Name First Name Patronymic",
                                                 },
                                             }),
                                         }}
@@ -401,16 +401,15 @@ function Checkout() {
                                     />
 
                                     <InputField
-                                        label="Номер телефону*"
+                                        label="Phone number*"
                                         placeholder="+380*********"
                                         register={{
                                             ...register("phoneNumber", {
-                                                required:
-                                                    "Введіть номер телефону",
+                                                required: "Enter phone number",
                                                 pattern: {
                                                     value: /^(?:\+380\d{9}|380\d{9}|0\d{9}|\(\d{3}\)-\d{2}-\d{2}-\d{3})$/,
                                                     message:
-                                                        "Невірний формат телефону",
+                                                        "Incorrect phone format",
                                                 },
                                             }),
                                         }}
@@ -420,15 +419,15 @@ function Checkout() {
                                     />
 
                                     <InputField
-                                        label="Електронна пошта*"
+                                        label="E-mail*"
                                         placeholder="petro@gmail.com"
                                         register={{
                                             ...register("email", {
-                                                required: "Введіть email",
+                                                required: "Enter e-mail",
                                                 pattern: {
                                                     value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
                                                     message:
-                                                        "Невірний формат email",
+                                                        "Invalid e-mail format",
                                                 },
                                             }),
                                         }}
@@ -442,29 +441,29 @@ function Checkout() {
                                 </div>
                                 <hr className="border-t border-white/10" />
                                 {novaPoshtaError && (
-                                    <div className="text-red-500 text-sm bg-red-500/10 p-3 rounded-lg">
+                                    <div className="text-red-500 text-sm bg-red-500/10 p-3">
                                         {novaPoshtaError}
                                     </div>
                                 )}
                                 <div className="flex gap-[15px]">
                                     <div className="flex flex-col gap-[13px] w-full">
                                         <NovaPoshtaSelect
-                                            label="Область*"
+                                            label="Region*"
                                             options={areas}
                                             onChange={handleAreaChange}
                                             register={register("area", {
-                                                required: "Оберіть область",
+                                                required: "Choose region",
                                             })}
                                             errorMessage={errors.area?.message}
                                             disabled={novaPoshtaLoading.areas}
                                         />
 
                                         <NovaPoshtaSelect
-                                            label="Місто*"
+                                            label="City*"
                                             options={cities}
                                             onChange={handleCityChange}
                                             register={register("city", {
-                                                required: "Оберіть місто",
+                                                required: "Choose city",
                                             })}
                                             errorMessage={errors.city?.message}
                                             disabled={
@@ -474,14 +473,14 @@ function Checkout() {
                                         />
 
                                         <NovaPoshtaSelect
-                                            label="Відділення*"
+                                            label="Post office*"
                                             options={warehouses}
                                             onChange={handleWarehouseChange}
                                             register={register(
                                                 "postDepartment",
                                                 {
                                                     required:
-                                                        "Оберіть відділення або поштомат",
+                                                        "Choose Post office",
                                                 }
                                             )}
                                             errorMessage={
@@ -503,12 +502,12 @@ function Checkout() {
                         <CheckoutResultTable cart={mergedCart} />
                         <div>
                             <div className="text-sm font-semibold mb-2">
-                                Вибір оплати:*
+                                Payment option:*
                             </div>
                             <Controller
                                 name="paymentMethod"
                                 control={control}
-                                rules={{ required: "Оберіть метод оплати" }}
+                                rules={{ required: "Choose a payment method" }}
                                 render={({ field }) => (
                                     <div className="flex gap-3">
                                         <button
@@ -536,7 +535,7 @@ function Checkout() {
                                                 field.onChange("cod")
                                             }
                                         >
-                                            Накладений платіж
+                                            Cash on delivery
                                         </button>
                                     </div>
                                 )}
@@ -559,8 +558,8 @@ function Checkout() {
                             }
                         >
                             {isSubmitting
-                                ? "Обробка замовлення..."
-                                : "Підтвердити замовлення"}
+                                ? "Order processing..."
+                                : "Confirm order"}
                         </MonoButton>
                     </div>
                 </div>

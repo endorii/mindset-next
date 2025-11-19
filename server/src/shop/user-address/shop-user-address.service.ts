@@ -5,9 +5,9 @@ import {
     InternalServerErrorException,
     NotFoundException,
 } from "@nestjs/common";
+import { PrismaService } from "src/prisma/prisma.service";
 import { CreateUserAddressDto } from "./dto/create-user-address.dto";
 import { UpdateUserAddressDto } from "./dto/update-user-address.dto";
-import { PrismaService } from "src/prisma/prisma.service";
 
 @Injectable()
 export class ShopUserAddressService {
@@ -22,7 +22,7 @@ export class ShopUserAddressService {
             });
 
             if (existingAddress) {
-                throw new ConflictException(`Адреса доставки вже існує`);
+                throw new ConflictException("Shipping address already exists");
             }
 
             const address = await this.prisma.shippingAddress.create({
@@ -35,15 +35,15 @@ export class ShopUserAddressService {
             });
 
             return {
-                message: "Адресу доставки додано",
+                message: "Shipping address added successfully",
                 data: address,
             };
         } catch (error) {
-            console.error("Помилка додавання адреси користувача:", error);
+            console.error("Error adding user address:", error);
             if (error instanceof HttpException) {
                 throw error;
             }
-            throw new InternalServerErrorException("Не вдалося додати адресу користувача.");
+            throw new InternalServerErrorException("Failed to add user address");
         }
     }
 
@@ -54,7 +54,7 @@ export class ShopUserAddressService {
             });
 
             if (!existingAddress) {
-                throw new NotFoundException(`Адреса для користувача з ID ${userId} не знайдена.`);
+                throw new NotFoundException(`Shipping address for user ID ${userId} not found`);
             }
 
             const updatedAddress = await this.prisma.shippingAddress.update({
@@ -63,15 +63,15 @@ export class ShopUserAddressService {
             });
 
             return {
-                message: "Адресу доставки успішно редаговано",
+                message: "Shipping address updated successfully",
                 data: updatedAddress,
             };
         } catch (error) {
-            console.error("Помилка оновлення адреси користувача:", error);
+            console.error("Error updating user address:", error);
             if (error instanceof HttpException) {
                 throw error;
             }
-            throw new InternalServerErrorException("Не вдалося оновити адресу користувача.");
+            throw new InternalServerErrorException("Failed to update user address");
         }
     }
 }

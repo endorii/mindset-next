@@ -1,39 +1,36 @@
-import { IsString, IsInt, Min, Max, IsOptional, IsArray, IsUrl, IsNotEmpty } from "class-validator";
 import { Type } from "class-transformer";
+import { IsArray, IsInt, IsNotEmpty, IsOptional, IsString, IsUrl, Max, Min } from "class-validator";
 
 export class CreateReviewDto {
     @IsString()
-    @IsNotEmpty({ message: "Текст відгуку не може бути порожнім." })
+    @IsNotEmpty({ message: "Review content cannot be empty." })
     content: string;
 
     @IsInt()
-    @Min(1, { message: "Рейтинг має бути не менше 1." })
-    @Max(5, { message: "Рейтинг має бути не більше 5." })
+    @Min(1, { message: "Rating must be at least 1." })
+    @Max(5, { message: "Rating cannot be more than 5." })
     @Type(() => Number)
     rating: number;
 
     @IsString()
-    @IsNotEmpty({ message: "Поле електронної пошти не може бути пустим" })
+    @IsNotEmpty({ message: "Email field cannot be empty." })
     senderEmail: string;
 
     @IsString()
-    @IsNotEmpty({ message: "Поле імені та прізвища відправника не може бути пустим" })
+    @IsNotEmpty({ message: "Sender name field cannot be empty." })
     senderName: string;
 
-    @IsString({ message: "productId має бути рядком." })
-    @IsNotEmpty({ message: "productId є обовʼязковим." })
+    @IsString({ message: "productId must be a string." })
+    @IsNotEmpty({ message: "productId is required." })
     productId: string;
 
-    @IsString({ message: "orderItemId має бути рядком." })
-    @IsNotEmpty({ message: "orderItemId є обовʼязковим." })
+    @IsString({ message: "orderItemId must be a string." })
+    @IsNotEmpty({ message: "orderItemId is required." })
     orderItemId: string;
 
     @IsOptional()
-    @IsArray({ message: "Зображення повинні бути масивом." })
-    @IsString({ each: true, message: "Кожне зображення має бути рядком URL." })
-    @IsUrl(
-        {},
-        { each: true, message: "Кожен елемент у масиві зображень має бути валідною URL-адресою." }
-    )
+    @IsArray({ message: "Images must be an array." })
+    @IsString({ each: true, message: "Each image must be a URL string." })
+    @IsUrl({}, { each: true, message: "Each element in the images array must be a valid URL." })
     images?: string[];
 }

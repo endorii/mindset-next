@@ -70,7 +70,7 @@ export function ProductReviewsList({ reviews }: ProductReviewsListProps) {
                                                 onClick={() => {
                                                     if (!user) {
                                                         toast.info(
-                                                            "Щоб оцінити відгук потрібно увійти в акаунт"
+                                                            "You must be logged in to rate a review"
                                                         );
                                                         return;
                                                     }
@@ -101,7 +101,7 @@ export function ProductReviewsList({ reviews }: ProductReviewsListProps) {
                                                 onClick={() => {
                                                     if (!user) {
                                                         toast.info(
-                                                            "Щоб оцінити відгук потрібно увійти в акаунт"
+                                                            "You must be logged in to rate a review"
                                                         );
                                                         return;
                                                     }
@@ -146,7 +146,7 @@ export function ProductReviewsList({ reviews }: ProductReviewsListProps) {
                     })
             ) : (
                 <div className="p-[30px] text-center text-2xl xs:text-xl text-white/60">
-                    Відгуки відсутні
+                    No reviews available.
                 </div>
             )}
         </div>

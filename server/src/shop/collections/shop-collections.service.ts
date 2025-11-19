@@ -1,8 +1,8 @@
 import {
-    Injectable,
-    NotFoundException,
-    InternalServerErrorException,
     HttpException,
+    Injectable,
+    InternalServerErrorException,
+    NotFoundException,
 } from "@nestjs/common";
 import { PrismaService } from "src/prisma/prisma.service";
 
@@ -20,11 +20,11 @@ export class ShopCollectionsService {
 
             return collections;
         } catch (error) {
-            console.error("Помилка отримання колекцій:", error);
+            console.error("Error fetching collections:", error);
             if (error instanceof HttpException) {
                 throw error;
             }
-            throw new InternalServerErrorException("Не вдалося отримати колекції");
+            throw new InternalServerErrorException("Failed to fetch collections");
         }
     }
 
@@ -36,15 +36,15 @@ export class ShopCollectionsService {
             });
 
             if (!collection) {
-                throw new NotFoundException("Колекція з таким шляхом не знайдена");
+                throw new NotFoundException("Collection with this path not found");
             }
             return collection;
         } catch (error) {
-            console.error("Помилка отримання колекції:", error);
+            console.error("Error fetching collection:", error);
             if (error instanceof HttpException) {
                 throw error;
             }
-            throw new InternalServerErrorException("Не вдалося отримати колекцію");
+            throw new InternalServerErrorException("Failed to fetch collection");
         }
     }
 }

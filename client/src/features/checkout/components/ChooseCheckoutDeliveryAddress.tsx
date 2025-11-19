@@ -33,7 +33,7 @@ export function ChooseCheckoutDeliveryAddress({
             <div className="flex gap-[15px]">
                 <div className="flex flex-col gap-[13px] w-full">
                     <div className="flex flex-col gap-[7px]">
-                        <Label>Область</Label>
+                        <Label>Region</Label>
                         <select
                             className="border border-white/10 px-[10px] py-[10px] bg-black/20 text-white outline-0 cursor-pointer"
                             value={selectedArea?.Ref || ""}
@@ -46,7 +46,7 @@ export function ChooseCheckoutDeliveryAddress({
                             }}
                         >
                             <option value="" disabled>
-                                Оберіть область
+                                Choose an area
                             </option>
                             {areas.map((area) => (
                                 <option key={area.Ref} value={area.Ref}>
@@ -57,7 +57,7 @@ export function ChooseCheckoutDeliveryAddress({
                     </div>
 
                     <div className="flex flex-col gap-[7px]">
-                        <Label>Місто</Label>
+                        <Label>City</Label>
                         <select
                             className="border border-white/10 px-[10px] py-[10px] bg-black/20 text-white outline-0 cursor-pointer"
                             value={selectedCity?.Ref || ""}
@@ -71,7 +71,7 @@ export function ChooseCheckoutDeliveryAddress({
                             disabled={!selectedArea}
                         >
                             <option value="" disabled>
-                                Оберіть місто
+                                Choose a city
                             </option>
                             {cities.map((city) => (
                                 <option key={city.Ref} value={city.Ref}>
@@ -82,7 +82,7 @@ export function ChooseCheckoutDeliveryAddress({
                     </div>
 
                     <div className="flex flex-col gap-[7px]">
-                        <Label>Відділення/поштомати</Label>
+                        <Label>Branches/post offices</Label>
                         <select
                             className="border border-white/10 px-[10px] py-[10px] bg-black/20 text-white outline-0 cursor-pointer"
                             value={selectedWarehouse?.Ref || ""}
@@ -96,7 +96,7 @@ export function ChooseCheckoutDeliveryAddress({
                             disabled={!selectedCity}
                         >
                             <option value="" disabled>
-                                Оберіть відділення
+                                Choose a branch
                             </option>
                             {warehouses.map((wh) => (
                                 <option key={wh.Ref} value={wh.Ref}>

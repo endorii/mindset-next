@@ -22,7 +22,7 @@ const VerifyPage = () => {
 
     useEffect(() => {
         if (!token) {
-            toast.info("Токена для підтвердження не знайдено або він застарів");
+            toast.info("Verification token not found or expired");
             router.push("/auth");
             return;
         }
@@ -37,27 +37,27 @@ const VerifyPage = () => {
                     verifyMutation.isPending
                         ? ""
                         : verifyMutation.isSuccess
-                        ? "bg-green-500/10 border border-green-500 rounded-xl"
+                        ? "bg-green-500/10 border border-green-500"
                         : verifyMutation.isError
-                        ? "bg-red-500/10 border border-red-500 rounded-xl"
+                        ? "bg-red-500/10 border border-red-500"
                         : null
                 }`}
             >
                 {verifyMutation.isPending
-                    ? "Підтвердження пошти, зачекайте..."
+                    ? "Confirming email, please wait..."
                     : verifyMutation.isSuccess
-                    ? "✅ Пошта успішно підтверджена"
+                    ? "✅ Email successfully verified"
                     : verifyMutation.isError
-                    ? "❌ Недійсний або застарілий токен. Щоб надіслати новий, введіть вашу електронну пошту нижче"
+                    ? "❌ Invalid or expired token. To send a new one, enter your email below."
                     : null}
             </div>
 
             {verifyMutation.isError && (
                 <div className="flex flex-col gap-2 items-center">
                     <InputField
-                        label="Електронна пошта"
+                        label="E-mail"
                         type="email"
-                        placeholder="Введіть ваш email"
+                        placeholder="Enter your e-mail"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                     />
@@ -65,9 +65,7 @@ const VerifyPage = () => {
                         onClick={() => resendMutation.mutate(email)}
                         disabled={resendMutation.isPending || !email}
                     >
-                        {resendMutation.isPending
-                            ? "Надсилаємо..."
-                            : "Надіслати повторно"}
+                        {resendMutation.isPending ? "Sending..." : "Resend"}
                     </MonoButton>
                 </div>
             )}

@@ -1,4 +1,4 @@
-import { Injectable, InternalServerErrorException, HttpException } from "@nestjs/common";
+import { HttpException, Injectable, InternalServerErrorException } from "@nestjs/common";
 import { PrismaService } from "src/prisma/prisma.service";
 
 @Injectable()
@@ -10,11 +10,11 @@ export class AdminUserService {
             const users = await this.prisma.user.findMany();
             return users;
         } catch (error: unknown) {
-            console.error("Помилка отримання користувачів:", error);
+            console.error("Error fetching users:", error);
             if (error instanceof HttpException) {
                 throw error;
             }
-            throw new InternalServerErrorException("Не вдалося отримати користувачів");
+            throw new InternalServerErrorException("Failed to fetch users");
         }
     }
 }

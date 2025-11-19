@@ -1,17 +1,17 @@
-import { useQuery, useQueryClient, useMutation, useSuspenseQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient, useSuspenseQuery } from "@tanstack/react-query";
 import {
+    approveReview,
+    createReview,
+    deleteReview,
     fetchAllReviews,
     fetchReviewsByProductId,
     fetchReviewsByUserId,
-    createReview,
     updateReview,
-    approveReview,
-    deleteReview,
 } from "../api/reviews.api";
 import { IReview } from "../types/reviews.types";
 
-import { toggleReviewVote } from "../api/reviews.api";
 import { toast } from "sonner";
+import { toggleReviewVote } from "../api/reviews.api";
 
 export function useToggleReviewVote() {
     const queryClient = useQueryClient();
@@ -25,7 +25,7 @@ export function useToggleReviewVote() {
             if (error?.message) {
                 toast.error(error.message);
             } else {
-                toast.error("Сталася невідома помилка");
+                toast.error("An unknown error occurred.");
             }
         },
     });
@@ -68,7 +68,7 @@ export function useCreateReview() {
             if (error?.message) {
                 toast.error(error.message);
             } else {
-                toast.error("Сталася невідома помилка");
+                toast.error("An unknown error occurred.");
             }
         },
     });
@@ -88,7 +88,7 @@ export function useEditReview() {
             if (error?.message) {
                 toast.error(error.message);
             } else {
-                toast.error("Сталася невідома помилка");
+                toast.error("An unknown error occurred.");
             }
         },
     });
@@ -107,7 +107,7 @@ export function useApproveReview() {
             if (error?.message) {
                 toast.error(error.message);
             } else {
-                toast.error("Сталася невідома помилка");
+                toast.error("An unknown error occurred.");
             }
         },
     });
@@ -126,7 +126,7 @@ export function useDeleteReview() {
             if (error?.message) {
                 toast.error(error.message);
             } else {
-                toast.error("Сталася невідома помилка");
+                toast.error("An unknown error occurred.");
             }
         },
     });

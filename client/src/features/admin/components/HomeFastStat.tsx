@@ -4,8 +4,8 @@ import { StatCard } from "@/shared/components/cards/StatCard";
 export function HomeFastStat({ orders }: { orders: IOrder[] | undefined }) {
     if (!orders || orders.length === 0) {
         return (
-            <div className="rounded-xl bg-white/5 p-[20px] text-white/60 border border-white/5">
-                Замовлення для швидкої статистики відсутні
+            <div className="  bg-white/5 p-[20px] text-white/60 border border-white/5">
+                There are no orders for quick statistics.
             </div>
         );
     }
@@ -34,32 +34,20 @@ export function HomeFastStat({ orders }: { orders: IOrder[] | undefined }) {
         : "0";
     return (
         <div className="grid grid-cols-4 sm:grid-cols-3 xs:grid-cols-2 xxs:grid-cols-1 gap-[15px]">
+            <StatCard title="Total number of orders" value={totalOrders} />
+            <StatCard title="Successful orders" value={paidOrders.length} />
+            <StatCard title="Unfinished orders" value={unpaidOrders.length} />
+            <StatCard title="Cancelled orders" value={cancelledOrders.length} />
             <StatCard
-                title="Загальна кількість замовлень"
-                value={totalOrders}
+                title="Sales amount"
+                value={"$" + totalSales.toFixed(2)}
             />
-            <StatCard title="Успішні замовлення" value={paidOrders.length} />
+            <StatCard title="Average check" value={"$" + avgCheck} />
             <StatCard
-                title="Незакінчені замовлення"
-                value={unpaidOrders.length}
-            />
-            <StatCard
-                title="Відмінені замовлення"
-                value={cancelledOrders.length}
-            />
-            <StatCard
-                title="Сума продажів"
-                value={totalSales.toFixed(2) + " ₴"}
-            />
-            <StatCard title="Середній чек" value={avgCheck + " ₴"} />
-            <StatCard
-                title="Замовлення за останній тиждень"
+                title="Orders for the last week"
                 value={ordersLastWeek.length}
             />
-            <StatCard
-                title="Конверсія замовлень"
-                value={conversionRate + " %"}
-            />
+            <StatCard title="Order conversion" value={conversionRate + " %"} />
         </div>
     );
 }

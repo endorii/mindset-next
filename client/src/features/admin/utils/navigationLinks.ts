@@ -9,35 +9,35 @@ import {
 } from "@/shared/icons";
 
 export const adminPanelNavigationLinks = [
-    { href: "/admin", Icon: MainPageIcon, text: "Головна" },
+    { href: "/admin", Icon: MainPageIcon, text: "Main" },
     {
         href: "/admin/stats",
         Icon: StatsIcon,
-        text: "Статистика",
+        text: "Statistics",
     },
     {
         href: "/admin/collections",
         Icon: CollectionsIcon,
-        text: "Колекції",
+        text: "Collections",
     },
     {
         href: "/admin/attributes",
         Icon: TagIcon,
-        text: "Атрибути",
+        text: "Attributes",
     },
     {
         href: "/admin/orders",
         Icon: OrderIcon,
-        text: "Замовлення",
+        text: "Orders",
     },
     {
         href: "/admin/reviews",
         Icon: ReviewIcon,
-        text: "Відгуки",
+        text: "Reviews",
     },
     {
         href: "/admin/account",
         Icon: AccountIcon,
-        text: "Акаунт",
+        text: "Account",
     },
 ];

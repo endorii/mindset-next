@@ -4,16 +4,16 @@ export function PreOrderInfo() {
     return (
         <div className="mt-2 bg-white/5 border p-[15px] border-white/10 shadow-inner">
             <div className="text-white font-medium">
-                Введені вами дані використовуються для автоматичного створення
-                експрес-накладної у системі Нової Пошти.
+                The data you enter is used to automatically create an express
+                invoice in the Nova Post system.
             </div>
 
             <div className="text-white italic text-xs mt-[10px]">
-                Будь ласка, перевірте адресу перед підтвердженням замовлення.
-                Якщо ви змінюєте номер або місто — оновіть інформацію в акаунті
-                або зверніться в{" "}
+                Please check the address before confirming the order. If you
+                change your number or city, update your account information or
+                contact{" "}
                 <Link href="#" className="text-blue-400 underline">
-                    технічну підтримку
+                    technical support
                 </Link>
                 .
             </div>

@@ -37,11 +37,11 @@ export class AdminOrdersService {
 
             return orders;
         } catch (error) {
-            console.error("Помилка отримання замовлень:", error);
+            console.error("Error fetching orders:", error);
             if (error instanceof HttpException) {
                 throw error;
             }
-            throw new InternalServerErrorException("Не вдалося отримати замовлення");
+            throw new InternalServerErrorException("Failed to fetch orders");
         }
     }
 
@@ -57,7 +57,7 @@ export class AdminOrdersService {
             });
 
             if (!order) {
-                throw new NotFoundException("Замовлення з таким ID не існує");
+                throw new NotFoundException("Order with this ID does not exist");
             }
 
             const updatedOrder = await this.prisma.order.update({
@@ -65,18 +65,18 @@ export class AdminOrdersService {
                 data,
             });
 
-            await this.adminRecentActions.createAction(userId, `Оновлено замовлення ID:${orderId}`);
+            await this.adminRecentActions.createAction(userId, `Updated order ID:${orderId}`);
 
             return {
-                message: "Замовлення успішно оновлено",
+                message: "Order successfully updated",
                 order: updatedOrder,
             };
         } catch (error) {
-            console.error("Помилка оновлення замовлення:", error);
+            console.error("Error updating order:", error);
             if (error instanceof HttpException) {
                 throw error;
             }
-            throw new InternalServerErrorException("Не вдалося оновити замовлення");
+            throw new InternalServerErrorException("Failed to update order");
         }
     }
 
@@ -89,24 +89,24 @@ export class AdminOrdersService {
             });
 
             if (!order) {
-                throw new NotFoundException("Замовлення з таким ID не існує");
+                throw new NotFoundException("Order with this ID does not exist");
             }
 
             await this.prisma.order.delete({
                 where: { id: orderId },
             });
 
-            await this.adminRecentActions.createAction(userId, `Видалено замовлення ID:${orderId}`);
+            await this.adminRecentActions.createAction(userId, `Deleted order ID:${orderId}`);
 
             return {
-                message: "Замовлення видалено",
+                message: "Order deleted",
             };
         } catch (error) {
-            console.error("Помилка видалення замовлення:", error);
+            console.error("Error deleting order:", error);
             if (error instanceof HttpException) {
                 throw error;
             }
-            throw new InternalServerErrorException("Не вдалося видалити замовлення");
+            throw new InternalServerErrorException("Failed to delete order");
         }
     }
 }

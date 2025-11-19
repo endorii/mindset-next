@@ -35,10 +35,10 @@ export function AdminProductsContent({
     categoryPath: string;
 }) {
     const filters = [
-        "спочатку нові",
-        "останнi оновленi",
-        "по алфавіту",
-        "кількість переглядів",
+        "newest first",
+        "latest updated",
+        "alphabetically",
+        "number of views",
     ];
 
     const router = useRouter();
@@ -73,18 +73,18 @@ export function AdminProductsContent({
                     }
                 >
                     <BackIcon className="w-[23px] stroke-white stroke-[50] fill-white group-hover:stroke-black" />
-                    <div>Назад до категорій</div>
+                    <div>Back to categories</div>
                 </MonoButton>
             </div>
 
             <TitleWithAddElementButton
-                title={`Список товарів [${collectionPath}/${categoryPath}]`}
+                title={`List of products [${collectionPath}/${categoryPath}]`}
                 onClick={() => setActiveModal("add")}
-                buttonText={"Додати товар"}
+                buttonText={"Add product"}
             />
 
             <FilterSection
-                title={"Фільтрувати"}
+                title={"Filter"}
                 filters={filters}
                 onFilterClick={function (filter: string): void {
                     throw new Error("Function not implemented.");
@@ -93,7 +93,7 @@ export function AdminProductsContent({
             />
 
             {products && products.length > 0 ? (
-                <div className="rounded-xl bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px] sm:px-[10px] pt-0">
+                <div className="  bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px] sm:px-[10px] pt-0">
                     <div
                         className="grid 
                     grid-cols-[120px_1fr_1fr_1fr_1fr_1fr] 
@@ -103,14 +103,14 @@ export function AdminProductsContent({
                     xs:grid-cols-2 
                     gap-[15px] p-[20px] sm:p-[10px] rounded-t-lg font-semibold text-sm"
                     >
-                        <div>Банер</div>
-                        <div>Назва</div>
-                        <div className="sm:hidden">Статус</div>
-                        <div className="xl:hidden">Додано/оновлено</div>
-                        <div className="xs:hidden text-center">Посилання</div>
-                        <div className="text-right lg:hidden">Дії</div>
+                        <div>Banner</div>
+                        <div>Name</div>
+                        <div className="sm:hidden">Status</div>
+                        <div className="xl:hidden">Added/updated</div>
+                        <div className="xs:hidden text-center">Link</div>
+                        <div className="text-right lg:hidden">Actions</div>
                     </div>
-                    <div className="border border-white/10 rounded-xl">
+                    <div className="border border-white/10  ">
                         {products.map((product) => (
                             <div
                                 key={product.id}
@@ -127,7 +127,7 @@ export function AdminProductsContent({
                                 >
                                     <img
                                         src={product.banner}
-                                        className="max-h-[120px] w-full object-cover rounded"
+                                        className="max-h-[120px] w-full object-cover"
                                         alt="banner"
                                     />
                                     <div>{product.name}</div>
@@ -142,7 +142,7 @@ export function AdminProductsContent({
                                         href={`/${collectionPath}/${categoryPath}/${product.path}`}
                                         className="text-blue-500 hover:text-white hover:underline xs:hidden text-center"
                                     >
-                                        Товар
+                                        Product
                                     </Link>
                                     <div className="flex gap-[10px] justify-end lg:justify-start lg:hidden">
                                         <ButtonWithIcon
@@ -201,7 +201,7 @@ export function AdminProductsContent({
             ) : (
                 <div className="relative flex min-h-[200px] items-center bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px] overflow-hidden">
                     <div className="font-bold text-3xl z-1">
-                        Список товарів порожній
+                        The product list is empty.
                     </div>
                     <ProductsIcon className="absolute top-[-150px] right-40 w-[600px] opacity-20 rotate-[340deg] pointer-events-none" />
                 </div>

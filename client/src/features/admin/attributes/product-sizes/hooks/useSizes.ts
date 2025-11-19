@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient, useSuspenseQuery } from "@tanstack/react-query";
+import { toast } from "sonner";
 import { createSize, deleteSize, editSize, fetchSizes } from "../api/sizes.api";
 import { ISizePayload } from "../types/product-size.types";
-import { toast } from "sonner";
 
 export function useSizes() {
     return useSuspenseQuery({
@@ -25,7 +25,7 @@ export function useCreateSize() {
             if (error?.message) {
                 toast.error(error.message);
             } else {
-                toast.error("Сталася невідома помилка");
+                toast.error("An unknown error occurred.");
             }
         },
     });
@@ -45,7 +45,7 @@ export function useEditSize() {
             if (error?.message) {
                 toast.error(error.message);
             } else {
-                toast.error("Сталася невідома помилка");
+                toast.error("An unknown error occurred.");
             }
         },
     });
@@ -66,7 +66,7 @@ export function useDeleteSize() {
             if (error?.message) {
                 toast.error(error.message);
             } else {
-                toast.error("Сталася невідома помилка");
+                toast.error("An unknown error occurred.");
             }
         },
     });

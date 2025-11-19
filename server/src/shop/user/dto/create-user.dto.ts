@@ -10,21 +10,21 @@ import {
 } from "class-validator";
 
 export class CreateUserDto {
-    @IsString({ message: "Ім'я користувача обов'язкове" })
-    @MinLength(3, { message: "Мінімальна довжина імені — 3 символи" })
-    @MaxLength(15, { message: "Максимальна довжина імені — 15 символів" })
+    @IsString({ message: "Username is required" })
+    @MinLength(3, { message: "Username must be at least 3 characters long" })
+    @MaxLength(15, { message: "Username must not exceed 15 characters" })
     @Matches(/^[A-Za-z0-9]+$/, {
-        message: "Нікнейм має містити англійські літери або цифри",
+        message: "Username can contain only English letters or numbers",
     })
     userName: string;
 
-    @IsEmail({}, { message: "Некоректна електронна адреса" })
+    @IsEmail({}, { message: "Invalid email address" })
     email: string;
 
     @IsOptional()
     @Transform(({ value }: { value: string }) => (value === "" ? undefined : value))
     @Matches(/^\+?[\d\s-]{10,15}$/, {
-        message: "Некоректний формат телефону",
+        message: "Invalid phone number format",
     })
     phone?: string;
 
@@ -35,11 +35,11 @@ export class CreateUserDto {
 
     verificationTokenExpires?: Date | null;
 
-    @IsString({ message: "Пароль обов'язковий" })
-    @MinLength(8, { message: "Пароль повинен містити щонайменше 8 символів" })
-    @MaxLength(32, { message: "Пароль не повинен перевищувати 32 символи" })
+    @IsString({ message: "Password is required" })
+    @MinLength(8, { message: "Password must be at least 8 characters long" })
+    @MaxLength(32, { message: "Password must not exceed 32 characters" })
     @Matches(/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d@$!%*?&]+$/, {
-        message: "Пароль має містити літери та цифри",
+        message: "Password must contain both letters and numbers",
     })
     password: string;
 }

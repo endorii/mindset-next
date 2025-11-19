@@ -19,7 +19,7 @@ export function StatsContent() {
     const { data: users } = useAllUsers();
 
     if (!orders || !users) {
-        return <ErrorWithMessage message="Дані відсутні" />;
+        return <ErrorWithMessage message="Data missing" />;
     }
 
     const totalOrders = orders.length;

@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient, useSuspenseQuery } from "@tanstack/react-query";
+import { toast } from "sonner";
 import { createColor, deleteColor, editColor, fetchColors } from "../api/colors.api";
 import { IColorPayload } from "../types/product-color.types";
-import { toast } from "sonner";
 
 export function useColors() {
     return useSuspenseQuery({
@@ -25,7 +25,7 @@ export function useCreateColor() {
             if (error?.message) {
                 toast.error(error.message);
             } else {
-                toast.error("Сталася невідома помилка");
+                toast.error("An unknown error occurred.");
             }
         },
     });
@@ -45,7 +45,7 @@ export function useEditColor() {
             if (error?.message) {
                 toast.error(error.message);
             } else {
-                toast.error("Сталася невідома помилка");
+                toast.error("An unknown error occurred.");
             }
         },
     });
@@ -66,7 +66,7 @@ export function useDeleteColor() {
             if (error?.message) {
                 toast.error(error.message);
             } else {
-                toast.error("Сталася невідома помилка");
+                toast.error("An unknown error occurred.");
             }
         },
     });

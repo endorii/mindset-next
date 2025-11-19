@@ -35,7 +35,9 @@ export class ShopCartService {
             });
 
             if (existingCartItem) {
-                throw new ConflictException("Товар з такими параметрами вже доданий у кошик");
+                throw new ConflictException(
+                    "Product with these parameters is already added to the cart"
+                );
             }
 
             await this.prisma.cartItem.create({
@@ -50,16 +52,14 @@ export class ShopCartService {
             });
 
             return {
-                message: "Товар додано до кошика",
+                message: "Product added to the cart",
             };
         } catch (error) {
-            console.error("Помилка при додаванні товару до кошика:", error);
+            console.error("Error adding product to the cart:", error);
             if (error instanceof HttpException) {
                 throw error;
             }
-            throw new InternalServerErrorException(
-                "Помилка сервера про додаванні товару до кошика"
-            );
+            throw new InternalServerErrorException("Server error while adding product to the cart");
         }
     }
 
@@ -70,20 +70,22 @@ export class ShopCartService {
             });
 
             if (!existingItem) {
-                throw new NotFoundException("Товар у кошику не знайдений");
+                throw new NotFoundException("Product in the cart not found");
             }
 
             await this.prisma.cartItem.delete({
                 where: { userId, id: cartItemId },
             });
 
-            return { message: "Товар видалено з кошика" };
+            return { message: "Product removed from the cart" };
         } catch (error) {
-            console.error("Помилка при видаленні товару з кошика:", error);
+            console.error("Error removing product from the cart:", error);
             if (error instanceof HttpException) {
                 throw error;
             }
-            throw new InternalServerErrorException("Помилка сервера при видаленні товару з кошика");
+            throw new InternalServerErrorException(
+                "Server error while removing product from the cart"
+            );
         }
     }
 
@@ -94,16 +96,16 @@ export class ShopCartService {
             });
 
             if (!cart) {
-                throw new NotFoundException("Товарів у корзині не знайдено");
+                throw new NotFoundException("No products found in the cart");
             }
 
-            return { message: "Кошик очищено", cart };
+            return { message: "Cart cleared", cart };
         } catch (error) {
-            console.error("Помилка при очищенні кошика:", error);
+            console.error("Error clearing the cart:", error);
             if (error instanceof HttpException) {
                 throw error;
             }
-            throw new InternalServerErrorException("Помилка сервера при очищенні кошика");
+            throw new InternalServerErrorException("Server error while clearing the cart");
         }
     }
 }

@@ -1,31 +1,31 @@
 import { IsEnum, IsInt, IsNotEmpty, IsString, Min } from "class-validator";
 
 export enum CollectionStatus {
-    ACTIVE = "Активно",
-    NOTACTIVE = "Не активно",
+    ACTIVE = "Active",
+    NOTACTIVE = "Not active",
 }
 
 export class CreateCollectionDto {
     @IsString()
-    @IsNotEmpty({ message: "Назва колекції не може бути порожньою" })
+    @IsNotEmpty({ message: "Collection name cannot be empty" })
     name: string;
 
     @IsString()
-    @IsNotEmpty({ message: "Шлях не може бути порожнім" })
+    @IsNotEmpty({ message: "Path cannot be empty" })
     path: string;
 
     @IsString()
-    @IsNotEmpty({ message: "Опис не може бути порожнім" })
+    @IsNotEmpty({ message: "Description cannot be empty" })
     description: string;
 
     // @IsString()
-    // @IsNotEmpty({ message: "Банер повинен бути вказаний" })
+    // @IsNotEmpty({ message: "Banner must be provided" })
     // banner: string;
 
-    @IsInt({ message: "Кількість переглядів має бути цілим числом" })
-    @Min(0, { message: "Кількість переглядів не може бути від’ємною" })
+    @IsInt({ message: "Views count must be an integer" })
+    @Min(0, { message: "Views count cannot be negative" })
     views: number;
 
-    @IsEnum(CollectionStatus, { message: "Статус повинен бути Активно або Не активно" })
+    @IsEnum(CollectionStatus, { message: "Status must be Active or Not active" })
     status: CollectionStatus;
 }

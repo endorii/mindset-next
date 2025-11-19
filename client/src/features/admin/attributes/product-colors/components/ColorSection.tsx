@@ -28,13 +28,13 @@ export function ColorSection() {
     return (
         <>
             <TitleWithAddElementButton
-                title={"Список кольорів"}
+                title={"Color list"}
                 onClick={() => setModalType("add")}
-                buttonText={"Додати колір"}
+                buttonText={"Add color"}
             />
 
             {colors && (colors ?? []).length > 0 ? (
-                <div className="rounded-xl bg-white/5 shadow-lg border border-white/5 p-[20px] sm:px-[10px] pt-0">
+                <div className="bg-white/5 shadow-lg border border-white/5 p-[20px] sm:px-[10px] pt-0">
                     <div
                         className="grid 
                     grid-cols-4 
@@ -42,12 +42,12 @@ export function ColorSection() {
                     xs:grid-cols-2 
                     gap-[15px] p-[20px] font-semibold text-sm"
                     >
-                        <div className="xs:hidden">Колір</div>
-                        <div>Назва</div>
-                        <div className="md:hidden">Код</div>
-                        <div className="text-right">Дії</div>
+                        <div className="xs:hidden">Color</div>
+                        <div>Name</div>
+                        <div className="md:hidden">Code</div>
+                        <div className="text-right">Actions</div>
                     </div>
-                    <div className="border border-white/10 rounded-xl">
+                    <div className="border border-white/10  ">
                         {colors.map((color) => (
                             <div
                                 key={color.id}
@@ -59,7 +59,7 @@ export function ColorSection() {
                             >
                                 <div className="border border-white/10 w-[52px] h-[52px] xs:hidden">
                                     <div
-                                        className="w-[50px] h-[50px] rounded"
+                                        className="w-[50px] h-[50px]"
                                         style={{
                                             backgroundColor: color.hexCode,
                                         }}
@@ -92,7 +92,7 @@ export function ColorSection() {
             ) : (
                 <div className="relative flex min-h-[200px] items-center justify-center bg-white/5 shadow-lg border border-white/5 p-[20px]">
                     <div className="font-bold text-3xl z-1">
-                        Список кольорів порожній
+                        The color list is empty.
                     </div>
                     <PaletteIcon className="absolute fill-black top-[-60px] right-20 w-[400px] opacity-20 pointer-events-none" />
                 </div>

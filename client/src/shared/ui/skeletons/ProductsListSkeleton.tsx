@@ -4,7 +4,7 @@ export function SkeletonProductCard() {
             <div className="relative flex flex-col gap-[15px] bg-white/5 shadow-lg backdrop-blur-lg border border-white/5 p-[20px] animate-pulse">
                 <div className="relative w-full aspect-square bg-white/10" />
 
-                <ul className="absolute top-[30px] left-[30px] flex gap-[5px] rounded-[50px] backdrop-blur-lg p-[5px]">
+                <ul className="absolute top-[30px] left-[30px] flex gap-[5px]  backdrop-blur-lg p-[5px]">
                     {[1, 2, 3].map((i) => (
                         <li
                             key={i}
@@ -15,14 +15,14 @@ export function SkeletonProductCard() {
 
                 <div className="flex flex-col gap-[7px]">
                     <div className="flex flex-col gap-[10px] flex-wrap">
-                        <div className="h-[28px] w-3/5 bg-white/10 rounded" />
+                        <div className="h-[28px] w-3/5 bg-white/10" />
                         <div className="flex gap-[10px]">
-                            <div className="h-[22px] w-[80px] bg-white/10 rounded" />
-                            <div className="h-[20px] w-[70px] bg-white/10 rounded" />
+                            <div className="h-[22px] w-[80px] bg-white/10" />
+                            <div className="h-[20px] w-[70px] bg-white/10" />
                         </div>
                     </div>
 
-                    <div className="h-[16px] w-[100px] bg-white/10 rounded" />
+                    <div className="h-[16px] w-[100px] bg-white/10" />
 
                     <hr className="border-t border-white/10 mt-[5px]" />
 
@@ -31,7 +31,7 @@ export function SkeletonProductCard() {
                             {[1, 2, 3].map((i) => (
                                 <li
                                     key={i}
-                                    className="h-[24px] w-[50px] bg-white/10 rounded-xl"
+                                    className="h-[24px] w-[50px] bg-white/10  "
                                 />
                             ))}
                         </ul>
@@ -39,7 +39,7 @@ export function SkeletonProductCard() {
                             {[1, 2].map((i) => (
                                 <li
                                     key={i}
-                                    className="h-[24px] w-[60px] bg-white/10 rounded-xl"
+                                    className="h-[24px] w-[60px] bg-white/10  "
                                 />
                             ))}
                         </ul>

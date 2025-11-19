@@ -4,7 +4,7 @@ import { AdminReviewsWrapper } from "@/features/reviews/components/AdminReviewsW
 function Reviews() {
     return (
         <div className="flex flex-col gap-[15px]">
-            <Title title="Список відгуків до товарів" />
+            <Title title="Reviews list" />
             <AdminReviewsWrapper />
         </div>
     );

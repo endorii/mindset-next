@@ -41,37 +41,37 @@ export function CategoryInfoModal({
     useEscapeKeyClose({ isOpen, onClose });
 
     const modalContent = (
-        <ModalWrapper onClose={onClose} modalTitle={"Інформація про категорію"}>
+        <ModalWrapper onClose={onClose} modalTitle={"Category information"}>
             <FormFillingWrapper>
                 <div className="grid grid-cols-3 gap-[15px]">
-                    <InfoField label="Назва" value={name} />
-                    <InfoField label="Шлях" value={path} />{" "}
-                    <InfoField label="Статус" value={status} />
+                    <InfoField label="Name" value={name} />
+                    <InfoField label="Path" value={path} />{" "}
+                    <InfoField label="Status" value={status} />
                 </div>
-                <TextareaInfoField label={"Опис"} value={description} />
+                <TextareaInfoField label={"Description"} value={description} />
                 <div className="grid grid-cols-3 gap-[15px]">
-                    <InfoField label="Переглядів" value={views} />
+                    <InfoField label="Views" value={views} />
                     <InfoField
-                        label="Створено"
+                        label="Created"
                         value={formatDate(createdAt || "")}
                     />
                     <InfoField
-                        label="Редаговано"
+                        label="Edited"
                         value={formatDate(updatedAt || "")}
                     />
                     <InfoField
-                        label="Кількість товарів"
+                        label="Number of products"
                         value={products?.length}
                     />
                     <InfoField
-                        label="Входить до колекції"
+                        label="Included in the collection"
                         value={category.collection?.path}
                     />
                 </div>
                 <InfoModalBanner image={banner} />
             </FormFillingWrapper>
             <FormButtonsWrapper>
-                <MonoButton onClick={onClose}>Закрити</MonoButton>
+                <MonoButton onClick={onClose}>Close</MonoButton>
             </FormButtonsWrapper>
         </ModalWrapper>
     );

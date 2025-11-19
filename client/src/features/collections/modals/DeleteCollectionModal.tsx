@@ -28,7 +28,7 @@ export function DeleteCollectionModal({
         if (!collection || !collection.id) return;
         if (collection.categories && collection.categories.length > 0) {
             toast.error(
-                "Колекція містить категорії, щоб її видалити, видаліть категорії, які у ній знаходяться"
+                "Collection contains categories, to Delete it, delete the categories it contains"
             );
             return;
         }
@@ -40,23 +40,23 @@ export function DeleteCollectionModal({
     useEscapeKeyClose({ isOpen, onClose });
 
     const modalContent = (
-        <ModalWrapper onClose={onClose} modalTitle={"Видалення колекції"}>
+        <ModalWrapper onClose={onClose} modalTitle={"Deletting collections"}>
             <div className="mb-6 text-white/80 text-[16px] leading-[1.6]">
-                Ви дійсно хочете видалити колекцію{" "}
+                Do you really want to Delete the collection{" "}
                 <span className="font-semibold text-white">
                     {collection.name}
                 </span>
                 ?
             </div>
             <FormButtonsWrapper>
-                <MonoButton onClick={onClose}>Скасувати</MonoButton>
+                <MonoButton onClick={onClose}>Cancel</MonoButton>
                 <DeleteButton
                     onClick={() => {
                         onClose();
                         handleDelete();
                     }}
                 >
-                    Видалити
+                    Delete
                 </DeleteButton>
             </FormButtonsWrapper>
         </ModalWrapper>

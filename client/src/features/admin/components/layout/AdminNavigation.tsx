@@ -55,7 +55,7 @@ export function AdminNavigation({ children }: { children: React.ReactNode }) {
                     <div
                         onClick={() =>
                             toast.success(
-                                "Ви успішно вийшли з панелі адміністратора"
+                                "You have successfully logged out of the admin panel."
                             )
                         }
                     >
@@ -65,7 +65,7 @@ export function AdminNavigation({ children }: { children: React.ReactNode }) {
                         >
                             <LogoutIcon className="w-[25px] h-[25px] min-w-[25px] min-h-[25px] fill-white group-hover:fill-black" />
                             <NavigationHideTextWrapper navOpen={navOpen}>
-                                Вийти з панелі
+                                Exit the panel
                             </NavigationHideTextWrapper>
                         </AdminNavigationLink>
                     </div>

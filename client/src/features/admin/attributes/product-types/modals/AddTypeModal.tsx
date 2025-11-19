@@ -44,7 +44,7 @@ export function AddTypeModal({ isOpen, onClose }: AddTypeModalProps) {
             await createTypeMutation.mutateAsync({ name: data.name });
             handleClose();
         } catch (error: any) {
-            setModalMessage(error?.message || "Помилка при додаванні типу");
+            setModalMessage(error?.message || "Error adding type");
         }
     };
 
@@ -53,7 +53,7 @@ export function AddTypeModal({ isOpen, onClose }: AddTypeModalProps) {
     if (!isOpen) return null;
 
     const modalContent = (
-        <ModalWrapper onClose={handleClose} modalTitle={"Додавання типу"}>
+        <ModalWrapper onClose={handleClose} modalTitle={"Adding a type"}>
             <form
                 className="flex flex-col gap-[15px]"
                 onSubmit={handleSubmit(onSubmit)}
@@ -61,20 +61,20 @@ export function AddTypeModal({ isOpen, onClose }: AddTypeModalProps) {
                 <FormFillingWrapper>
                     <div className="flex flex-col gap-[15px] w-full">
                         <InputField
-                            label={"Назва*"}
-                            placeholder={"Назва типу"}
+                            label={"Name*"}
+                            placeholder={"Type name"}
                             type={"text"}
                             {...register("name", {
-                                required: "Введіть назву",
+                                required: "Enter type name",
                                 minLength: {
                                     value: 1,
                                     message:
-                                        "Назва повинна містити хоча б 1 символ",
+                                        "Name must contain at least 1 character",
                                 },
                                 maxLength: {
                                     value: 25,
                                     message:
-                                        "Назва не може перевищувати 25 символів",
+                                        "Name cannot exceed 25 characters.",
                                 },
                             })}
                             errorMessage={errors.name?.message}
@@ -92,15 +92,13 @@ export function AddTypeModal({ isOpen, onClose }: AddTypeModalProps) {
                         onClick={handleClose}
                         disabled={createTypeMutation.isPending}
                     >
-                        Скасувати
+                        Cancel
                     </MonoButton>
                     <MonoButton
                         type="submit"
                         disabled={createTypeMutation.isPending}
                     >
-                        {createTypeMutation.isPending
-                            ? "Завантаження..."
-                            : "Додати"}
+                        {createTypeMutation.isPending ? "Loading..." : "Add"}
                     </MonoButton>
                 </FormButtonsWrapper>
             </form>

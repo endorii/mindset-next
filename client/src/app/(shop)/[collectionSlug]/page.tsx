@@ -17,24 +17,24 @@ export async function generateMetadata({
 
     if (!res.ok) {
         return {
-            title: `Колекція ${collectionSlug} – Помилка`,
-            description: "Не вдалося завантажити колекцію",
+            title: `Collection ${collectionSlug} – Error`,
+            description: "Failed to load collection.",
         };
     }
 
     const collection: ICollection = await res.json();
 
     return {
-        title: `Колекція "${collection.name}" – Mindset`,
+        title: `Collection "${collection.name}" – Mindset`,
         description:
             collection.description ||
-            `Дивіться категорії та товари з колекції ${collectionSlug} від Mindset.`,
+            `See categories and products from the ${collectionSlug} collection by Mindset.`,
         openGraph: {
-            title: `Колекція "${collection.name}" – Mindset`,
+            title: `Collection "${collection.name}" – Mindset`,
             description: collection.description,
             images: collection.banner ? [collection.banner] : [],
             type: "website",
-            locale: "uk_UA",
+            locale: "en_US",
         },
     };
 }
@@ -59,13 +59,13 @@ export default async function CollectionPage({
             const text = await res.text();
             console.error("Nest API error response:", text);
             errorMessage =
-                JSON.parse(text).message || "Помилка завантаження категорій";
+                JSON.parse(text).message || "Error loading categories";
         } else {
             collection = await res.json();
         }
     } catch (error: any) {
         console.error(error);
-        errorMessage = error.message || "Невідома помилка";
+        errorMessage = error.message || "Unknown error";
     }
 
     if (errorMessage) {

@@ -6,7 +6,7 @@ export async function fetchAreas(): Promise<INovaPostDataObj[]> {
         method: "POST",
         headers: { "Content-Type": "application/json" },
     });
-    if (!res.ok) throw new Error("Не вдалося завантажити області");
+    if (!res.ok) throw new Error("Failed to load areas");
     return res.json();
 }
 
@@ -16,7 +16,7 @@ export async function fetchCities(areaRef: string): Promise<INovaPostDataObj[]> 
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ areaRef }),
     });
-    if (!res.ok) throw new Error("Не вдалося завантажити міста");
+    if (!res.ok) throw new Error("Could not load cities");
     return res.json();
 }
 
@@ -26,6 +26,6 @@ export async function fetchWarehouses(cityRef: string): Promise<INovaPostDataObj
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ cityRef }),
     });
-    if (!res.ok) throw new Error("Не вдалося завантажити відділення");
+    if (!res.ok) throw new Error("Failed to load branch");
     return res.json();
 }

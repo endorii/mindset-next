@@ -25,8 +25,8 @@ export function OrdersByCollectionsChart({
 }) {
     if (!orders || orders.length === 0) {
         return (
-            <div className="rounded-xl bg-white/5 p-[20px] w-full text-white/60 border border-white/5">
-                Замовлення для діаграми відсутні
+            <div className="  bg-white/5 p-[20px] w-full text-white/60 border border-white/5">
+                There are no orders for the chart.
             </div>
         );
     }
@@ -37,7 +37,7 @@ export function OrdersByCollectionsChart({
         orders.forEach((order) => {
             order.items.forEach((item) => {
                 const collectionName =
-                    item.product?.category?.collection?.name || "Інше";
+                    item.product?.category?.collection?.name || "Other";
                 const total = (item.product?.price || 0) * item.quantity;
 
                 if (collectionMap[collectionName]) {
@@ -55,9 +55,9 @@ export function OrdersByCollectionsChart({
     }, [orders]);
 
     return (
-        <div className="rounded-xl bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px] flex flex-col gap-[15px] w-2/3 lg:w-full">
+        <div className="  bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px] flex flex-col gap-[15px] w-2/3 lg:w-full">
             <h2 className="text-lg font-semibold">
-                Розподіл продажів за колекціями товарів
+                Sales distribution by product collections
             </h2>
             <ResponsiveContainer width="100%" height={350}>
                 <PieChart>

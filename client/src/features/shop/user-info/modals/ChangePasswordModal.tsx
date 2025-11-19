@@ -57,7 +57,7 @@ export function ChangePasswordModal({
             });
             handleClose();
         } catch (err: any) {
-            setModalMessage(err?.message || "Помилка при зміні паролю");
+            setModalMessage(err?.message || "Error while changing password");
         }
     };
 
@@ -81,17 +81,17 @@ export function ChangePasswordModal({
                                 minLength: {
                                     value: 8,
                                     message:
-                                        "Пароль повинен містити щонайменше 8 символів",
+                                        "Password must contain at least 8 characters",
                                 },
                                 maxLength: {
                                     value: 32,
                                     message:
-                                        "Пароль не повинен перевищувати 32 символи",
+                                        "Password must not exceed 32 characters.",
                                 },
                                 pattern: {
                                     value: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d@$!%*?&]{8,}$/,
                                     message:
-                                        "Пароль має містити літери та цифри",
+                                        "Password must contain letters and numbers",
                                 },
                             })}
                             errorMessage={errors.oldPassword?.message}
@@ -104,17 +104,17 @@ export function ChangePasswordModal({
                                 minLength: {
                                     value: 8,
                                     message:
-                                        "Пароль повинен містити щонайменше 8 символів",
+                                        "Password must contain at least 8 characters",
                                 },
                                 maxLength: {
                                     value: 32,
                                     message:
-                                        "Пароль не повинен перевищувати 32 символи",
+                                        "Password must not exceed 32 characters.",
                                 },
                                 pattern: {
                                     value: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d@$!%*?&]{8,}$/,
                                     message:
-                                        "Пароль має містити літери та цифри",
+                                        "Password must contain letters and numbers",
                                 },
                             })}
                             errorMessage={errors.newPassword?.message}

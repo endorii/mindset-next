@@ -7,27 +7,27 @@ import { MenuSection } from "./MenuSection";
 
 const sections = [
     {
-        title: "Навігація",
+        title: "Navigation",
         subtitle: "Navigation",
         items: [
-            { name: "Головна", href: "/" },
-            { name: "Корзина", href: "/cart" },
-            { name: "Вподобані товари", href: "/favorites" },
-            { name: "Акаунт/вхід", href: "/account" },
+            { name: "Main", href: "/" },
+            { name: "Cart", href: "/cart" },
+            { name: "Favorites", href: "/favorites" },
+            { name: "Account/Log In", href: "/account" },
         ],
     },
     {
-        title: "Інформація",
+        title: "Information",
         subtitle: "Information",
         items: [
-            { name: "Наша політика", href: "#" },
-            { name: "Про нас", href: "#" },
+            { name: "Our policy", href: "#" },
+            { name: "About us", href: "#" },
             { name: "FAQ", href: "#" },
-            { name: "Контакти", href: "#" },
+            { name: "Contacts", href: "#" },
         ],
     },
     {
-        title: "Соціальні мережі",
+        title: "Social media",
         subtitle: "Social media",
         items: [
             { name: "Instagram", href: "#" },
@@ -73,7 +73,7 @@ export function HeaderBurger() {
                         collections.length > 0 &&
                         !isCollectionsPending && (
                             <MenuSection
-                                title="Наші колекції"
+                                title="Our collections"
                                 subtitle="Collections"
                                 onItemClick={handleClose}
                                 items={collections.map((c) => ({

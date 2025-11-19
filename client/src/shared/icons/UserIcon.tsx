@@ -1,4 +1,4 @@
-export function KnightIcon({ className }: { className: string }) {
+export function UserIcon({ className }: { className: string }) {
     return (
         <svg viewBox="0 0 16 16" className={`${className ?? null}`}>
             <path

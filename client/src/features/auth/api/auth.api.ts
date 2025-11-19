@@ -55,7 +55,10 @@ export async function fetchCurrentUser(): Promise<IUser | null> {
 export async function refreshToken(): Promise<{ accessToken: string }> {
     try {
         const { data } = await httpServiceAuth.post("/auth/refresh");
+        console.log("refresh data:", data);
+
         if (!data.accessToken) throw new Error("No access token returned from server");
+
         return data;
     } catch (error: unknown) {
         handleAxiosError(error);

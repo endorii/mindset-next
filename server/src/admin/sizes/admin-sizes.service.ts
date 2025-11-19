@@ -1,14 +1,14 @@
 import {
-    Injectable,
     ConflictException,
-    InternalServerErrorException,
     HttpException,
+    Injectable,
+    InternalServerErrorException,
     NotFoundException,
 } from "@nestjs/common";
-import { CreateSizeDto } from "./dto/create-size.dto";
-import { UpdateSizeDto } from "./dto/update-size.dto";
 import { PrismaService } from "src/prisma/prisma.service";
 import { AdminRecentActionsService } from "../recent-actions/admin-recent-actions.service";
+import { CreateSizeDto } from "./dto/create-size.dto";
+import { UpdateSizeDto } from "./dto/update-size.dto";
 
 @Injectable()
 export class AdminSizesService {
@@ -20,14 +20,13 @@ export class AdminSizesService {
     async getSizes() {
         try {
             const sizes = await this.prisma.size.findMany();
-
             return sizes;
         } catch (error: unknown) {
-            console.error("Помилка отримання розмірів:", error);
+            console.error("Error fetching sizes:", error);
             if (error instanceof HttpException) {
                 throw error;
             }
-            throw new InternalServerErrorException("Не вдалося отримати розміри");
+            throw new InternalServerErrorException("Failed to fetch sizes");
         }
     }
 
@@ -40,25 +39,25 @@ export class AdminSizesService {
             });
 
             if (existingSize) {
-                throw new ConflictException("Розмір з такою назвою вже існує");
+                throw new ConflictException("Size with this name already exists");
             }
 
             const size = await this.prisma.size.create({
                 data: { name },
             });
 
-            await this.adminRecentActions.createAction(userId, `Додано розмір ${size.name}`);
+            await this.adminRecentActions.createAction(userId, `Added size ${size.name}`);
 
             return {
-                message: "Розмір успішно створено",
+                message: "Size successfully created",
                 size,
             };
         } catch (error: unknown) {
-            console.error("Помилка створення розміру:", error);
+            console.error("Error creating size:", error);
             if (error instanceof HttpException) {
                 throw error;
             }
-            throw new InternalServerErrorException("Не вдалося створити розмір");
+            throw new InternalServerErrorException("Failed to create size");
         }
     }
 
@@ -69,14 +68,15 @@ export class AdminSizesService {
             });
 
             if (!size) {
-                throw new NotFoundException("Розміру з таким ID не знайдено");
+                throw new NotFoundException(`Size with ID ${sizeId} not found`);
             }
+
             const existingSize = await this.prisma.size.findUnique({
                 where: { name: updateSizeDto.name },
             });
 
             if (existingSize && existingSize.id !== sizeId) {
-                throw new ConflictException("Розмір з такою назвою вже існує");
+                throw new ConflictException("Size with this name already exists");
             }
 
             const updatedSize = await this.prisma.size.update({
@@ -84,21 +84,18 @@ export class AdminSizesService {
                 data: updateSizeDto,
             });
 
-            await this.adminRecentActions.createAction(
-                userId,
-                `Редаговано розмір ${updatedSize.name}`
-            );
+            await this.adminRecentActions.createAction(userId, `Edited size ${updatedSize.name}`);
 
             return {
-                message: "Розмір успішно оновлено",
+                message: "Size successfully updated",
                 size: updatedSize,
             };
         } catch (error: unknown) {
-            console.error("Помилка редагування розміру:", error);
+            console.error("Error editing size:", error);
             if (error instanceof HttpException) {
                 throw error;
             }
-            throw new InternalServerErrorException("Не вдалося оновити розмір");
+            throw new InternalServerErrorException("Failed to update size");
         }
     }
 
@@ -109,24 +106,24 @@ export class AdminSizesService {
             });
 
             if (!size) {
-                throw new NotFoundException("Розміру з таким ID не знайдено");
+                throw new NotFoundException(`Size with ID ${sizeId} not found`);
             }
 
             await this.prisma.size.delete({
                 where: { id: sizeId },
             });
 
-            await this.adminRecentActions.createAction(userId, `Видалено розмір ${size.name}`);
+            await this.adminRecentActions.createAction(userId, `Deleted size ${size.name}`);
 
             return {
-                message: "Розмір видалено",
+                message: "Size deleted",
             };
         } catch (error: unknown) {
-            console.error("Помилка видалення розміру:", error);
+            console.error("Error deleting size:", error);
             if (error instanceof HttpException) {
                 throw error;
             }
-            throw new InternalServerErrorException("Не вдалося видалити розмір");
+            throw new InternalServerErrorException("Failed to delete size");
         }
     }
 }

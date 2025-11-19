@@ -31,13 +31,13 @@ export default function AdminLayout({
         if (isChecking) return;
 
         if (!user || !accessToken) {
-            toast.info("Ви не авторизовані, перенаправлення...");
+            toast.info("You are not logged in. Redirecting to login page...");
             router.replace("/auth");
             return;
         }
 
         if (user.role !== "ADMIN") {
-            toast.info("У вас немає доступу до адмін панелі");
+            toast.info("You dont have access to the admin panel");
             router.replace("/account");
             return;
         }
@@ -47,9 +47,7 @@ export default function AdminLayout({
         return (
             <div className="text-white flex flex-col gap-[15px] h-screen w-full justify-center items-center pb-[10%]">
                 <div className="text-xl font-bold">
-                    {isChecking
-                        ? "Завантаження адмін панелі..."
-                        : "Перевірка доступу..."}
+                    {isChecking ? "Loading admin page..." : "Pending access..."}
                 </div>
                 <div>
                     <SpinnerIcon className="w-[70px] h-[70px] fill-white animate-spin" />

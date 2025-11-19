@@ -72,16 +72,14 @@ export function EditTodoItemModal({
             });
             onClose();
         } catch (error: any) {
-            setModalMessage(
-                error?.message || "Помилка при редагуванні завдання"
-            );
+            setModalMessage(error?.message || "Error while editing task");
         }
     };
 
     useEscapeKeyClose({ isOpen, onClose });
 
     const modalContent = (
-        <ModalWrapper onClose={onClose} modalTitle={"Редагування завдання"}>
+        <ModalWrapper onClose={onClose} modalTitle={"Editing a task"}>
             <form
                 className="flex flex-col gap-[15px]"
                 onSubmit={handleSubmit(onSubmit)}
@@ -89,28 +87,28 @@ export function EditTodoItemModal({
                 <FormFillingWrapper>
                     <div className="grid grid-cols-2 gap-[15px]">
                         <InputField
-                            label="Назва завдання*"
+                            label="Task name*"
                             type="text"
-                            placeholder="Назва завдання"
+                            placeholder="Task name"
                             {...register("title", {
-                                required: "Введіть назву завдання",
+                                required: "Enter task name",
                                 minLength: {
                                     value: 3,
-                                    message: "Мінімум 3 символи",
+                                    message: "Minimum 3 characters",
                                 },
                             })}
                             errorMessage={errors.title?.message}
                         />
 
                         <BasicSelector<string>
-                            label={"Пріорітет*"}
+                            label={"Priority*"}
                             register={{
                                 ...register("priority", {
-                                    required: "Оберіть пріорітет",
+                                    required: "Choose a priority",
                                 }),
                             }}
                             itemsList={priorities}
-                            basicOptionLabel="Оберіть пріорітет"
+                            basicOptionLabel="Choose a priority"
                             getOptionLabel={(priority) => priority}
                             getOptionValue={(priority) => priority}
                             errorMessage={errors.priority?.message}
@@ -124,7 +122,7 @@ export function EditTodoItemModal({
 
                 <FormButtonsWrapper>
                     <MonoButton onClick={onClose} type="button">
-                        Скасувати
+                        Cancel
                     </MonoButton>
                     <MonoButton
                         type="submit"
@@ -135,8 +133,8 @@ export function EditTodoItemModal({
                     >
                         {editTodoItemMutation.isPending ||
                         editTodoItemMutation.isPending
-                            ? "Завантаження..."
-                            : "Підтвердити"}
+                            ? "Loading..."
+                            : "Confirm"}
                     </MonoButton>
                 </FormButtonsWrapper>
             </form>

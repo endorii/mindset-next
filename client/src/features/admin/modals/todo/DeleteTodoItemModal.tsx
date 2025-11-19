@@ -30,19 +30,19 @@ export function DeleteTodoItemModal({
     useEscapeKeyClose({ isOpen, onClose });
 
     const modalContent = (
-        <ModalWrapper onClose={onClose} modalTitle={"Видалення завдання"}>
+        <ModalWrapper onClose={onClose} modalTitle={"Deleting tasks"}>
             <div className="mb-6 text-white">
-                Ви дійсно хочете видалити це завдання?
+                Do you really want to Delete this task?
             </div>
             <FormButtonsWrapper>
-                <MonoButton onClick={onClose}>Скасувати</MonoButton>
+                <MonoButton onClick={onClose}>Cancel</MonoButton>
                 <DeleteButton
                     onClick={() => {
                         onClose();
                         handleDelete();
                     }}
                 >
-                    Видалити
+                    Delete
                 </DeleteButton>
             </FormButtonsWrapper>
         </ModalWrapper>

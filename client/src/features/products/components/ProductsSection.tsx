@@ -16,8 +16,8 @@ export function ProductsSection({
     if (!products || products.length < 0) {
         return (
             <EmptyCategories
-                title="Наш віртуальний склад щойно отримав оновлення..."
-                subtitle="Вибачте за незручності — товари ще в процесі сортування"
+                title="Our virtual warehouse has just been updated..."
+                subtitle="Sorry for the inconvenience - items are still being sorted"
             />
         );
     }

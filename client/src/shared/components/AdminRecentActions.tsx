@@ -8,8 +8,8 @@ export function AdminRecentActions({
 }) {
     if (!actions || actions.length === 0) {
         return (
-            <div className="rounded-xl bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px] w-full min-h-[470px] flex items-center justify-center text-center text-white/60">
-                Останні дії відсутні
+            <div className="  bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px] w-full min-h-[470px] flex items-center justify-center text-center text-white/60">
+                No recent actions
             </div>
         );
     }
@@ -17,10 +17,12 @@ export function AdminRecentActions({
     return (
         <div className="flex flex-col gap-[15px] bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px] w-full">
             <div className="flex gap-[15px] items-center justify-between">
-                <div className="text-lg font-semibold w-[75%]">Останні дії</div>
+                <div className="text-lg font-semibold w-[75%]">
+                    Recent actions
+                </div>
                 <div className="text-white/60 text-sm mt-[3px] sm:text-xs sm:max-w-[200px]">
-                    (Останні дії очищуються автоматично, якщо період вище 30-ти
-                    днів)
+                    (Recent activities are cleared automatically if the period
+                    is more than 30 days)
                 </div>
             </div>
 
@@ -30,11 +32,11 @@ export function AdminRecentActions({
                         <div
                             key={action.id}
                             className={`border-l-4 ${
-                                action.action.startsWith("Додано")
+                                action.action.startsWith("Added")
                                     ? "border-green-500"
-                                    : action.action.startsWith("Редаговано")
+                                    : action.action.startsWith("Edited")
                                     ? "border-yellow-300"
-                                    : action.action.startsWith("Видалено")
+                                    : action.action.startsWith("Deleted")
                                     ? "border-red-500"
                                     : "border-blue-500"
                             } pl-4 py-2 text-white/60`}
@@ -47,7 +49,7 @@ export function AdminRecentActions({
                     ))}
                 </div>
             ) : (
-                <p className="text-sm">Немає дій за цими фільтрами</p>
+                <p className="text-sm">No actions for these filters</p>
             )}
         </div>
     );

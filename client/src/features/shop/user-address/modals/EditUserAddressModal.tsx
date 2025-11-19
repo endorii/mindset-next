@@ -79,9 +79,7 @@ export function EditUserAddressModal({
             await editUserAddress.mutateAsync(data);
             onClose();
         } catch (err: any) {
-            setModalMessage(
-                err?.message || "Помилка редагування адреси доставки"
-            );
+            setModalMessage(err?.message || "Error editing shipping address");
         }
     };
 
@@ -163,7 +161,7 @@ export function EditUserAddressModal({
                                 required: "Enter postal code",
                                 pattern: {
                                     value: /^\d{5}$/,
-                                    message: "Має бути рівно 5 цифр",
+                                    message: "Must be exactly 5 digits",
                                 },
                             })}
                             errorMessage={errors.postalCode?.message}

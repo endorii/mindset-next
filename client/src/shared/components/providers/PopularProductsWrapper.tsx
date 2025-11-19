@@ -19,7 +19,7 @@ export function PopularProductsWrapper() {
         <ErrorBoundary
             fallbackRender={() => (
                 <ErrorWithMessage
-                    message={"Помилка отримання популярних товарів"}
+                    message={"Error retrieving popular products"}
                 />
             )}
         >

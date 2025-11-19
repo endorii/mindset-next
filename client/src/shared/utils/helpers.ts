@@ -1,5 +1,5 @@
-export const statuses = ["Активно", "Не активно"];
-export const availables = ["Доступно", "Не доступно"];
+export const statuses = ["Active", "Not active"];
+export const availables = ["Available", "Not available"];
 export const priorities = ["low", "medium", "high"];
 
 export function declOfNum(number: number, words: [string, string, string]) {

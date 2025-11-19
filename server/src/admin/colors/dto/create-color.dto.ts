@@ -1,14 +1,14 @@
-import { IsString, IsNotEmpty, IsHexColor, MaxLength, MinLength } from "class-validator";
+import { IsHexColor, IsNotEmpty, IsString, MaxLength, MinLength } from "class-validator";
 
 export class CreateColorDto {
-    @IsString({ message: "Назва кольору повинна бути рядком." })
-    @IsNotEmpty({ message: "Назва кольору не може бути порожньою." })
-    @MinLength(2, { message: "Назва кольору повинна містити щонайменше 2 символи." })
-    @MaxLength(25, { message: "Назва кольору не може перевищувати 25 символів." })
+    @IsString({ message: "Color name must be a string." })
+    @IsNotEmpty({ message: "Color name cannot be empty." })
+    @MinLength(2, { message: "Color name must contain at least 2 characters." })
+    @MaxLength(25, { message: "Color name cannot exceed 25 characters." })
     name: string;
 
-    @IsString({ message: "HEX-код повинен бути рядком." })
-    @IsNotEmpty({ message: "HEX-код не може бути порожнім." })
-    @IsHexColor({ message: 'Недійсний формат HEX-коду кольору. Приклад: "#FF0000" або "#FFF".' })
+    @IsString({ message: "HEX code must be a string." })
+    @IsNotEmpty({ message: "HEX code cannot be empty." })
+    @IsHexColor({ message: 'Invalid HEX color format. Example: "#FF0000" or "#FFF".' })
     hexCode: string;
 }

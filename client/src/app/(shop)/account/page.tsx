@@ -20,7 +20,7 @@ import {
 
 import { AttributeModalType } from "@/shared/types/types";
 import { useRouter } from "next/navigation";
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "sonner";
 
 function Account() {
@@ -43,7 +43,7 @@ function Account() {
 
     useEffect(() => {
         if (isUserError) {
-            toast.info("Щоб перейти на сторінку, спочатку авторизуйтеся");
+            toast.info("To go to the page, first log in.");
             router.push("/auth");
         }
     }, [isUserError]);

@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient, useSuspenseQuery } from "@tanstack/react-query";
-import { ITypePayload } from "../types/product-type.types";
-import { createType, deleteType, editType, fetchTypes } from "../api/types.api";
 import { toast } from "sonner";
+import { createType, deleteType, editType, fetchTypes } from "../api/types.api";
+import { ITypePayload } from "../types/product-type.types";
 
 export function useTypes() {
     return useSuspenseQuery({
@@ -25,7 +25,7 @@ export function useCreateType() {
             if (error?.message) {
                 toast.error(error.message);
             } else {
-                toast.error("Сталася невідома помилка");
+                toast.error("An unknown error occurred.");
             }
         },
     });
@@ -45,7 +45,7 @@ export function useEditType() {
             if (error?.message) {
                 toast.error(error.message);
             } else {
-                toast.error("Сталася невідома помилка");
+                toast.error("An unknown error occurred.");
             }
         },
     });
@@ -66,7 +66,7 @@ export function useDeleteType() {
             if (error?.message) {
                 toast.error(error.message);
             } else {
-                toast.error("Сталася невідома помилка");
+                toast.error("An unknown error occurred.");
             }
         },
     });

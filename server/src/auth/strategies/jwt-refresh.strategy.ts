@@ -24,11 +24,11 @@ export class JwtRefreshStrategy extends PassportStrategy(Strategy, "jwt-refresh"
         const refreshToken = String(req.cookies?.refreshToken);
 
         if (!refreshToken) {
-            throw new UnauthorizedException("Refresh token відсутній");
+            throw new UnauthorizedException("Refresh token is missing");
         }
 
         const user = await this.authService.validateRefreshToken(payload.sub, refreshToken);
 
-        return { id: user.id, refreshToken }; // Повертаємо userId та сам токен
+        return { id: user.id, refreshToken }; // Return userId and the token
     }
 }

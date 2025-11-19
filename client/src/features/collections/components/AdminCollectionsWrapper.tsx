@@ -15,7 +15,7 @@ export function AdminCollectionsWrapper() {
     return (
         <ErrorBoundary
             fallbackRender={() => (
-                <ErrorWithMessage message="Виникла помилка отримання колекцій" />
+                <ErrorWithMessage message="There was an error retrieving collections." />
             )}
         >
             <Suspense

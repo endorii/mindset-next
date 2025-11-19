@@ -27,7 +27,7 @@ export function AccountNavigation({ children }: { children: React.ReactNode }) {
                 />
             </button>
             <div
-                className={`md:fixed md:top-[125px] overflow-y-auto max-h-screen-minus-header w-full max-w-[300px] ${
+                className={`sticky top-[95px] md:fixed md:top-[125px] overflow-y-auto h-fit w-full max-w-[300px] ${
                     isOpen ? "left-[10px]" : "left-[-350px]"
                 } flex flex-col justify-between gap-[100px] md:gap-[15px] bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px] z-1 transition-all duration-600 ease-in-out`}
             >

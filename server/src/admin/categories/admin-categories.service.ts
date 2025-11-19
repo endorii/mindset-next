@@ -31,23 +31,25 @@ export class AdminCategoriesService {
             });
 
             if (existingCategory) {
-                throw new ConflictException("Категорія з таким шляхом уже існує в цій колекції");
+                throw new ConflictException(
+                    "Category with this path already exists in this collection."
+                );
             }
 
             const category = await this.prisma.category.create({
                 data: createCategoryDto,
             });
 
-            await this.adminRecentActions.createAction(userId, `Додано категорію ${category.name}`);
+            await this.adminRecentActions.createAction(userId, `Added category ${category.name}`);
 
-            return { message: "Категорію успішно створено", data: category };
+            return { message: "Category successfully created", data: category };
         } catch (error) {
-            console.error("Помилка створення категорії:", error);
+            console.error("Category creation error:", error);
             if (error instanceof HttpException) {
                 throw error;
             }
             throw new InternalServerErrorException(
-                "Не вдалося створити категорію через внутрішню помилку"
+                "Category could not be created due to an internal error."
             );
         }
     }
@@ -59,7 +61,7 @@ export class AdminCategoriesService {
             });
 
             if (!category) {
-                throw new NotFoundException("Категорію з таким ID не знайдено");
+                throw new NotFoundException("Category with this ID not found");
             }
 
             if (updateCategoryDto.path && updateCategoryDto.path !== category.path) {
@@ -74,7 +76,7 @@ export class AdminCategoriesService {
 
                 if (existingCategory) {
                     throw new ConflictException(
-                        "Категорія з таким шляхом уже існує в цій колекції"
+                        "Category with this path already exists in this collection"
                     );
                 }
             }
@@ -86,20 +88,20 @@ export class AdminCategoriesService {
 
             await this.adminRecentActions.createAction(
                 userId,
-                `Редаговано категорію ${updatedCategory.name}`
+                `Edited category ${updatedCategory.name}`
             );
 
             return {
-                message: "Категорію успішно оновлено",
+                message: "Category successfully updated",
                 category: updatedCategory,
             };
         } catch (error) {
-            console.error("Помилка редагування категорії:", error);
+            console.error("Category editing error:", error);
             if (error instanceof HttpException) {
                 throw error;
             }
             throw new InternalServerErrorException(
-                "Не вдалося оновити категорію через внутрішню помилку"
+                "Failed to update category due to an internal error"
             );
         }
     }
@@ -120,12 +122,12 @@ export class AdminCategoriesService {
             });
 
             if (!category) {
-                throw new NotFoundException("Категорію з таким ID не знайдено");
+                throw new NotFoundException("Category with this ID not found");
             }
 
             if (category._count?.products > 0) {
                 throw new ConflictException(
-                    "Неможливо видалити категорію, яка містить продукти. Спочатку видаліть або перенесіть усі продукти."
+                    "Cannot delete a category that contains products. First remove or transfer all products."
                 );
             }
 
@@ -135,21 +137,18 @@ export class AdminCategoriesService {
                 },
             });
 
-            await this.adminRecentActions.createAction(
-                userId,
-                `Видалено категорію ${category.name}`
-            );
+            await this.adminRecentActions.createAction(userId, `Deleted category ${category.name}`);
 
             return {
-                message: "Категорію успішно видалено",
+                message: "Category successfully deleted",
             };
         } catch (error) {
-            console.error("Помилка видалення категорії:", error);
+            console.error("Category deleting error:", error);
             if (error instanceof HttpException) {
                 throw error;
             }
             throw new InternalServerErrorException(
-                "Не вдалося видалити категорію через внутрішню помилку"
+                "Failed to delete the category due to an internal error"
             );
         }
     }

@@ -85,7 +85,7 @@ export class FilesService {
     }
 
     /**
-     * Видалення файлу з Supabase
+     * Deletting file from Supabase
      */
     async deleteFile(bucket: string, path: string) {
         return this.supabase.deleteFile(bucket, path);

@@ -1,7 +1,7 @@
-import { IsString, IsNotEmpty } from "class-validator";
+import { IsNotEmpty, IsString } from "class-validator";
 
 export class CreateRecentActionDto {
-    @IsString()
-    @IsNotEmpty({ message: 'Поле "action" не може бути порожнім' })
+    @IsString({ message: "Action must be a string." })
+    @IsNotEmpty({ message: "Action cannot be empty." })
     action: string;
 }

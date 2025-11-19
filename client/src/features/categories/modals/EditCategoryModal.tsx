@@ -48,7 +48,7 @@ export function EditCategoryModal({
             name: "",
             path: "",
             description: "",
-            status: "Не активно",
+            status: "Not active",
         },
     });
 
@@ -95,7 +95,7 @@ export function EditCategoryModal({
 
             onClose();
         } catch (error: any) {
-            setModalMessage(error?.message || "Помилка при редагуванні");
+            setModalMessage(error?.message || "Error while editing");
         }
     };
 
@@ -116,7 +116,7 @@ export function EditCategoryModal({
     const displaySrc = preview || bannerSrc;
 
     const modalContent = (
-        <ModalWrapper onClose={onClose} modalTitle={"Редагування категорії"}>
+        <ModalWrapper onClose={onClose} modalTitle={"Editing a category"}>
             <form
                 className="flex flex-col gap-[15px]"
                 onSubmit={handleSubmit(onSubmit)}
@@ -124,62 +124,62 @@ export function EditCategoryModal({
                 <FormFillingWrapper>
                     <div className="grid grid-cols-3 gap-[15px]">
                         <InputField
-                            label="Назва*"
+                            label="Name*"
                             type="text"
-                            placeholder="Назва категорії"
+                            placeholder="Category name"
                             {...register("name", {
-                                required: "Введіть назву",
+                                required: "Enter category name",
                                 minLength: {
                                     value: 3,
-                                    message: "Мінімум 3 символи",
+                                    message: "Minimum 3 characters",
                                 },
                             })}
                             errorMessage={errors.name?.message}
                         />
                         <InputField
-                            label="Шлях*"
+                            label="Path*"
                             type="text"
-                            placeholder="Шлях"
+                            placeholder="Path"
                             {...register("path", {
-                                required: "Введіть шлях",
+                                required: "Enter path",
                                 minLength: {
                                     value: 3,
-                                    message: "Мінімум 3 символи",
+                                    message: "Minimum 3 characters",
                                 },
                                 pattern: {
                                     value: /^[a-z0-9-]+$/,
                                     message:
-                                        "Допустимі лише малі латинські літери, цифри та дефіс",
+                                        "Only lowercase Latin letters, numbers, and hyphens are allowed.",
                                 },
                             })}
                             errorMessage={errors.path?.message}
                         />
 
                         <BasicSelector<string>
-                            label={"Статус*"}
+                            label={"Status*"}
                             register={{
                                 ...register("status", {
-                                    required: "Оберіть статус",
+                                    required: "Choose a status",
                                 }),
                             }}
                             itemsList={statuses}
-                            basicOptionLabel="Оберіть статус"
+                            basicOptionLabel="Choose a status"
                             getOptionLabel={(status) => status}
                             getOptionValue={(status) => status}
                             errorMessage={errors.status?.message}
                         />
                     </div>
                     <BasicTextarea
-                        label="Опис*"
+                        label="Description*"
                         register={{
                             ...register("description", {
-                                required: "Введіть опис",
+                                required: "Enter a description",
                             }),
                         }}
                         errorMessage={errors.description?.message}
                     />
                     <div className="flex flex-col gap-[7px] w-full">
-                        <Label>Банер</Label>
+                        <Label>Banner</Label>
                         <label
                             htmlFor="banner"
                             className="min-h-[100px] max-w-[300px] border border-dashed border-white/10 mt-2 flex items-center justify-center cursor-pointer bg-black/20 hover:bg-white/10 overflow-hidden"
@@ -214,7 +214,7 @@ export function EditCategoryModal({
 
                 <FormButtonsWrapper>
                     <MonoButton onClick={onClose} type="button">
-                        Скасувати
+                        Cancel
                     </MonoButton>
                     <MonoButton
                         type="submit"
@@ -225,8 +225,8 @@ export function EditCategoryModal({
                     >
                         {uploadBannerMutation.isPending ||
                         editCategoryMutation.isPending
-                            ? "Завантаження..."
-                            : "Підтвердити"}
+                            ? "Loading..."
+                            : "Confirm"}
                     </MonoButton>
                 </FormButtonsWrapper>
             </form>

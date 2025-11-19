@@ -12,13 +12,13 @@ import { DeleteOrderModal, EditOrderModal, OrderInfoModal } from "../modals";
 import { IOrder } from "../types/orders.types";
 
 export function AdminOrdersContent() {
-    const sortFilters = ["Спочатку новіші", "Спочатку старіші"];
+    const sortFilters = ["Newer First", "Older First"];
     const statusFilters = [
-        "Обробляється",
-        "Оплачено",
-        "Відправлено",
-        "Доставлено",
-        "Відмінено",
+        "Processing",
+        "Paid",
+        "Shipped",
+        "Delivered",
+        "Cancelled",
     ];
 
     const [activeModal, setActiveModal] = useState<OrderModalType>(null);
@@ -39,7 +39,7 @@ export function AdminOrdersContent() {
     return (
         <>
             <FilterSection
-                title={"Фільтрувати за часом"}
+                title={"Filter by time"}
                 filters={sortFilters}
                 onFilterClick={function (filter: string): void {
                     throw new Error("Function not implemented.");
@@ -47,7 +47,7 @@ export function AdminOrdersContent() {
                 selectedItem={""}
             />
             <FilterSection
-                title={"Фільтрувати за статусом"}
+                title={"Filter by status"}
                 filters={statusFilters}
                 onFilterClick={function (filter: string): void {
                     throw new Error("Function not implemented.");
@@ -56,7 +56,7 @@ export function AdminOrdersContent() {
             />
 
             {orders && orders.length > 0 ? (
-                <div className="rounded-xl bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px] sm:px-[10px] pt-0">
+                <div className="  bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px] sm:px-[10px] pt-0">
                     <div
                         className="grid 
                     grid-cols-[1.5fr_1fr_1fr_1fr_1.5fr_230px] 
@@ -65,16 +65,14 @@ export function AdminOrdersContent() {
                     xs:grid-cols-2 
                     gap-[15px] p-[20px] sm:p-[10px] rounded-t-lg font-semibold text-sm"
                     >
-                        <div>Ім'я</div>
-                        <div className="lg:hidden">Телефон</div>
-                        <div className="xs:text-end">Статус</div>
+                        <div>Name</div>
+                        <div className="lg:hidden">Phone number</div>
+                        <div className="xs:text-end">Status</div>
                         <div className="text-center md:hidden">Ammount, $</div>
-                        <div className="xs:hidden">
-                            Дата створення / оновлення
-                        </div>
-                        <div className="text-right lg:hidden">Дії</div>
+                        <div className="xs:hidden">Creation/Update Date</div>
+                        <div className="text-right lg:hidden">Actions</div>
                     </div>
-                    <div className="border border-white/10 rounded-xl">
+                    <div className="border border-white/10  ">
                         {orders?.map((order) => (
                             <div
                                 key={order.id}
@@ -95,11 +93,11 @@ export function AdminOrdersContent() {
                                     <div className="xs:text-end">
                                         {
                                             {
-                                                pending: "Обробляється",
-                                                paid: "Оплачено",
-                                                shipped: "Відправлено",
-                                                delivered: "Доставлено",
-                                                cancelled: "Відмінено",
+                                                pending: "Processing",
+                                                paid: "Paid",
+                                                shipped: "Shipped",
+                                                delivered: "Delivered",
+                                                cancelled: "Cancelled",
                                             }[order.status]
                                         }
                                     </div>
@@ -167,7 +165,7 @@ export function AdminOrdersContent() {
             ) : (
                 <div className="relative flex min-h-[200px] items-center bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px] overflow-hidden">
                     <div className="font-bold text-3xl z-1">
-                        Список замовлень порожній
+                        The order list is empty.
                     </div>
                     {/* <OrderIcon className="absolute fill-none stroke-2 stroke-black top-[-60] right-20 w-[400px] rotate-20 opacity-20 pointer-events-none" /> ЗАМІНИТИ */}
                 </div>

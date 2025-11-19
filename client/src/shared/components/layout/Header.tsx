@@ -4,7 +4,7 @@ import { useCartItemsFromUser } from "@/features/shop/cart/hooks/useCart";
 import { useFavoritesFromUser } from "@/features/shop/favorites/hooks/useFavorites";
 import { useCurrentUser } from "@/features/shop/user-info/hooks/useUsers";
 import { IUser } from "@/features/shop/user-info/types/user.types";
-import { KnightIcon } from "@/shared/icons";
+import { UserIcon } from "@/shared/icons";
 import { useCartStore } from "@/store/useCartStore";
 import { useFavoritesStore } from "@/store/useFavoritesStore";
 import Link from "next/link";
@@ -60,12 +60,15 @@ export function Header({ serverUser }: { serverUser: IUser | null }) {
                 <li className="md:hidden">
                     <Link
                         href="/cart"
-                        className="flex font-perandory tracking-wider text-[20px] border-b border-transparent hover:border-white transition-all duration-200"
+                        className="flex items-start gap-[10px] font-perandory tracking-wider text-[20px] border-b border-transparent hover:border-white transition-all duration-200"
                     >
-                        cart
-                        {Array.isArray(cart) && cart.length > 0
-                            ? `(${cart.length})`
-                            : null}
+                        {/* <CartIcon className="w-[27px] stroke-white stroke-2" /> */}
+                        <div>
+                            cart
+                            {Array.isArray(cart) && cart.length > 0
+                                ? `(${cart.length})`
+                                : null}
+                        </div>
                     </Link>
                 </li>
                 <li className="md:hidden">
@@ -81,7 +84,7 @@ export function Header({ serverUser }: { serverUser: IUser | null }) {
                         href={` ${serverUser || user ? "/account" : "/auth"}`}
                         className="flex items-start gap-[10px] font-perandory tracking-wider text-[20px] border-b border-transparent hover:border-white transition-all duration-200"
                     >
-                        <KnightIcon className="w-[25px] fill-white" />
+                        <UserIcon className="w-[25px] fill-white" />
                         <div>
                             {serverUser?.userName || user?.userName
                                 ? serverUser?.userName || user?.userName

@@ -60,8 +60,8 @@ export function AddUserAddressModal({
             });
             handleClose();
         } catch (error: any) {
-            console.error("Помилка при додаванні адреси доставки:", error);
-            setModalMessage(error?.message || "Сталася помилка");
+            console.error("Error adding shipping address:", error);
+            setModalMessage(error?.message || "An error occurred.");
         }
     };
 
@@ -151,7 +151,7 @@ export function AddUserAddressModal({
                                 required: "Enter postal code",
                                 pattern: {
                                     value: /^\d{5}$/,
-                                    message: "Має бути рівно 5 цифр",
+                                    message: "Must be exactly 5 digits",
                                 },
                             })}
                             errorMessage={errors.postalCode?.message}

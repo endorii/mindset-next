@@ -35,9 +35,9 @@ export function DeleteProductModal({
     };
 
     const modalContent = (
-        <ModalWrapper onClose={onClose} modalTitle={"Видалення товару"}>
+        <ModalWrapper onClose={onClose} modalTitle={"Deletting product"}>
             <div className="mb-6 text-white/80 text-[16px] leading-[1.6]">
-                Ви дійсно хочете видалити товар{" "}
+                Do you really want to Delete the item?{" "}
                 <span className="font-semibold text-white">
                     {product?.name}
                 </span>
@@ -45,9 +45,9 @@ export function DeleteProductModal({
             </div>
             <FormButtonsWrapper>
                 <MonoButton type="button" onClick={onClose}>
-                    Скасувати
+                    Cancel
                 </MonoButton>
-                <DeleteButton onClick={handleDelete}>Видалити</DeleteButton>
+                <DeleteButton onClick={handleDelete}>Delete</DeleteButton>
             </FormButtonsWrapper>
         </ModalWrapper>
     );

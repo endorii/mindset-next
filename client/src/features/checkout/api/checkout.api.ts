@@ -22,7 +22,7 @@ export async function createMonoInvoice(
         const data = text ? JSON.parse(text) : {};
 
         if (!response.ok) {
-            const error: any = new Error(data.message || `Помилка ${response.status}`);
+            const error: any = new Error(data.message || `Error ${response.status}`);
             error.status = response.status;
             throw error;
         }

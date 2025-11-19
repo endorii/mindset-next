@@ -31,93 +31,93 @@ export function RegistrationForm() {
                 isVerified: false,
             });
             setRegisterMessage(
-                "Реєстрація успішна! Повідомлення з підтвердженням надіслано на вашу пошту"
+                "Registration successful! A confirmation message has been sent to your email"
             );
             setRegisterIsSuccess(true);
             reset();
         } catch (err: any) {
             setRegisterMessage(
-                "Виникла помилка під час реєстрації, повторіть спробу пізніше"
+                "An error occurred during registration, please try again later."
             );
             setRegisterIsSuccess(false);
-            setRegisterMessage(err?.message || "Помилка реєстрації");
+            setRegisterMessage(err?.message || "Registration error");
         }
     };
 
     return (
-        <LoginComponentsWrapper title={"Реєстрація"}>
+        <LoginComponentsWrapper title={"Registration"}>
             <form
                 className="flex flex-col gap-[15px]"
                 onSubmit={handleRegisterSubmit(onRegisterSubmit)}
             >
                 <InputField
-                    label="ім'я користувача*"
+                    label="User name*"
                     type="text"
                     {...registerForm("userName", {
-                        required: "Введіть ім'я користувача",
+                        required: "Enter user name",
                         minLength: {
                             value: 3,
-                            message: "Мінімальна довжина імені — 3 символи",
+                            message: "Minimum name length is 3 characters.",
                         },
                         maxLength: {
                             value: 15,
-                            message: "Максимальна довжина імені — 15 символів",
+                            message: "Maximum name length is 15 characters.",
                         },
                         pattern: {
                             value: /^[A-Za-z0-9]+$/,
                             message:
-                                "Нікнейм має містити лише англійські літери та цифри",
+                                "Nickname must contain only English letters and numbers",
                         },
                     })}
                     errorMessage={registerErrors.userName?.message}
                 />
 
                 <InputField
-                    label="електронна пошта*"
+                    label="E-mail*"
                     id={"registerEmail"}
                     type="email"
                     {...registerForm("email", {
-                        required: "Введіть email",
+                        required: "Enter e-mail",
                         pattern: {
                             value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-                            message: "Некоректна електронна адреса",
+                            message: "Invalid e-mail address",
                         },
                     })}
                     errorMessage={registerErrors.email?.message}
                 />
 
                 <InputField
-                    label="телефон (не обов'язково)"
+                    label="phone (optional)"
                     type="tel"
                     {...registerForm("phone", {
                         setValueAs: (value) => value?.trim() || undefined,
                         pattern: {
                             value: /^\+?[\d\s\-]{10,15}$/,
-                            message: "Некоректний формат телефону",
+                            message: "Incorrect phone format",
                         },
                     })}
                     errorMessage={registerErrors.phone?.message}
                 />
 
                 <InputField
-                    label="пароль*"
+                    label="password*"
                     id={"registerPassword"}
                     type="password"
                     {...registerForm("password", {
-                        required: "Введіть пароль",
+                        required: "Enter password",
                         minLength: {
                             value: 8,
                             message:
-                                "Пароль повинен містити щонайменше 8 символів",
+                                "Password must contain at least 8 characters",
                         },
                         maxLength: {
                             value: 32,
-                            message:
-                                "Пароль не повинен перевищувати 32 символи",
+                            message: "Password must not exceed 32 characters.",
                         },
                         pattern: {
                             value: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d@$!%*?&]{8,}$/,
-                            message: "Пароль має містити літери та цифри",
+                            message:
+                                "Password must contain letters and numbers",
                         },
                     })}
                     errorMessage={registerErrors.password?.message}
@@ -128,15 +128,14 @@ export function RegistrationForm() {
                         <input
                             type="checkbox"
                             {...registerForm("rules", {
-                                required:
-                                    "Потірбно погодитися з правилами магазину",
+                                required: "You must agree to the store rules.",
                             })}
-                            className="rounded text-blue-600 focus:ring-blue-500"
+                            className=" text-blue-600 focus:ring-blue-500"
                         />
                         <div>
-                            Я погоджуюсь з{" "}
+                            I agree with{" "}
                             <span className="underline text-blue-400 hover:text-blue-300">
-                                правилами магазину
+                                store rules
                             </span>
                         </div>
                     </div>
@@ -149,14 +148,14 @@ export function RegistrationForm() {
                         <input
                             type="checkbox"
                             {...registerForm("offers")}
-                            className="rounded text-blue-600 focus:ring-blue-500"
+                            className=" text-blue-600 focus:ring-blue-500"
                         />
                         <div>
-                            Згідний отримувати комерційні пропозиції від{" "}
+                            Agree to receive commercial offers from{" "}
                             <span className="underline text-blue-400 hover:text-blue-300">
                                 mindset.ua
                             </span>{" "}
-                            на вказаний email
+                            to the specified e-mail
                         </div>
                     </div>
                 </div>
@@ -176,9 +175,7 @@ export function RegistrationForm() {
                     type="submit"
                     disabled={registerUserMutation.isPending}
                 >
-                    {registerUserMutation.isPending
-                        ? "Завантаження..."
-                        : "Зареєструватися"}
+                    {registerUserMutation.isPending ? "Loading..." : "Register"}
                 </MonoButton>
             </form>
         </LoginComponentsWrapper>

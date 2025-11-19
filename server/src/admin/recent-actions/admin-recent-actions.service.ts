@@ -1,6 +1,6 @@
 import { HttpException, Injectable, InternalServerErrorException } from "@nestjs/common";
-import { CreateRecentActionDto } from "./dto/create-recent-action.dto";
 import { PrismaService } from "src/prisma/prisma.service";
+import { CreateRecentActionDto } from "./dto/create-recent-action.dto";
 
 @Injectable()
 export class AdminRecentActionsService {
@@ -16,11 +16,11 @@ export class AdminRecentActionsService {
             });
             return newAction;
         } catch (error) {
-            console.error("Помилка створення дії:", error);
+            console.error("Error creating action:", error);
             if (error instanceof HttpException) {
                 throw error;
             }
-            throw new InternalServerErrorException("Не вдалося створити дію");
+            throw new InternalServerErrorException("Failed to create action");
         }
     }
 
@@ -33,11 +33,11 @@ export class AdminRecentActionsService {
             });
             return actions;
         } catch (error) {
-            console.error("Помилка отримання дій:", error);
+            console.error("Error fetching actions:", error);
             if (error instanceof HttpException) {
                 throw error;
             }
-            throw new InternalServerErrorException("Не вдалося отримати дії користувача");
+            throw new InternalServerErrorException("Failed to fetch user actions");
         }
     }
 }

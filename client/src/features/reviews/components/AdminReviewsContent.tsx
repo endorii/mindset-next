@@ -21,7 +21,7 @@ import {
 import { IReview } from "../types/reviews.types";
 
 export function AdminReviewsContent() {
-    const sortFilters = ["Спочатку новіші", "Спочатку старіші"];
+    const sortFilters = ["Newer first", "Older first"];
 
     const [activeModal, setActiveModal] = useState<ReviewModalType>(null);
     const [selectedReview, setSelectedReview] = useState<IReview | null>(null);
@@ -40,7 +40,7 @@ export function AdminReviewsContent() {
     return (
         <>
             <FilterSection
-                title={"Сортувати"}
+                title={"Sort"}
                 filters={sortFilters}
                 selectedItem={""}
                 onFilterClick={function (filter: string): void {
@@ -49,7 +49,7 @@ export function AdminReviewsContent() {
             />
 
             {reviews && reviews.length > 0 ? (
-                <div className="rounded-xl bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px] sm:px-[10px] pt-0">
+                <div className="  bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px] sm:px-[10px] pt-0">
                     <div
                         className="grid 
                     grid-cols-[1fr_1fr_2.5fr_1fr_2fr_280px] 
@@ -58,16 +58,14 @@ export function AdminReviewsContent() {
                     xs:grid-cols-2
                     gap-[15px] p-[20px] sm:px-[10px] rounded-t-lg font-semibold text-sm"
                     >
-                        <div>Ім'я</div>
-                        <div className=" xs:hidden">Оцінка</div>
-                        <div className="md:hidden">Відгук</div>
-                        <div className="xs:text-right">Статус</div>
-                        <div className="lg:hidden">
-                            Дата створення / оновлення
-                        </div>
-                        <div className="text-right lg:hidden">Дії</div>
+                        <div>Name</div>
+                        <div className=" xs:hidden">Rating</div>
+                        <div className="md:hidden">Review</div>
+                        <div className="xs:text-right">Status</div>
+                        <div className="lg:hidden">Creation/Update Date</div>
+                        <div className="text-right lg:hidden">Actions</div>
                     </div>
-                    <div className="border border-white/10 rounded-xl">
+                    <div className="border border-white/10  ">
                         {reviews.map((review) => (
                             <div
                                 key={review.id}
@@ -101,8 +99,8 @@ export function AdminReviewsContent() {
                                     </div>
                                     <div className="xs:text-right">
                                         {review.isApproved
-                                            ? "Опубліковано"
-                                            : "Не опубліковано"}
+                                            ? "Published"
+                                            : "Not published"}
                                     </div>
 
                                     <div className="lg:hidden">
@@ -190,7 +188,7 @@ export function AdminReviewsContent() {
             ) : (
                 <div className="relative flex min-h-[200px] items-center bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px] overflow-hidden">
                     <div className="font-bold text-3xl z-1">
-                        Список відгуків порожній
+                        The review list is empty.
                     </div>
                     {/* <OrderIcon className="absolute fill-none stroke-2 stroke-black top-[-60] right-20 w-[400px] rotate-20 opacity-20 pointer-events-none" /> ЗАМІНИТИ */}
                 </div>

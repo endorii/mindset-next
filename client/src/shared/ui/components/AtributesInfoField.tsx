@@ -16,7 +16,7 @@ function getAtributeName(
     if ("color" in item) return item.color.name;
     if ("size" in item) return item.size.name;
     if ("type" in item) return item.type.name;
-    return "Невідомо";
+    return "Unknown";
 }
 
 export function AtributesInfoField({
@@ -36,7 +36,7 @@ export function AtributesInfoField({
                               <div>{getAtributeName(item)}</div>
                           </div>
                       ))
-                    : "Не вказано"}
+                    : "Not specified"}
             </div>
         </div>
     );

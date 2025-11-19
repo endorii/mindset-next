@@ -50,7 +50,7 @@ export function EditTypeModal({ isOpen, onClose, type }: EditTypeProps) {
             });
             onClose();
         } catch (error: any) {
-            setModalMessage(error?.message || "Помилка при редагуванні типу");
+            setModalMessage(error?.message || "Error editing type");
         }
     };
 
@@ -59,7 +59,7 @@ export function EditTypeModal({ isOpen, onClose, type }: EditTypeProps) {
     if (!isOpen || !type) return null;
 
     const modalContent = (
-        <ModalWrapper onClose={onClose} modalTitle={"Редагування типу"}>
+        <ModalWrapper onClose={onClose} modalTitle={"Editing type"}>
             <form
                 className="flex flex-col gap-[15px]"
                 onSubmit={handleSubmit(onSubmit)}
@@ -67,20 +67,20 @@ export function EditTypeModal({ isOpen, onClose, type }: EditTypeProps) {
                 <FormFillingWrapper>
                     <div className="flex flex-col gap-[15px] w-full">
                         <InputField
-                            label={"Назва*"}
-                            placeholder={"Назва типу"}
+                            label={"Name*"}
+                            placeholder={"Type name"}
                             type={"text"}
                             {...register("name", {
-                                required: "Введіть назву",
+                                required: "Enter type name",
                                 minLength: {
                                     value: 1,
                                     message:
-                                        "Назва повинна містити хоча б 1 символ",
+                                        "Name must contain at least 1 character",
                                 },
                                 maxLength: {
                                     value: 25,
                                     message:
-                                        "Назва не може перевищувати 25 символів",
+                                        "Name cannot exceed 25 characters.",
                                 },
                             })}
                             errorMessage={errors.name?.message}
@@ -98,15 +98,13 @@ export function EditTypeModal({ isOpen, onClose, type }: EditTypeProps) {
                         onClick={onClose}
                         disabled={editTypeMutation.isPending}
                     >
-                        Скасувати
+                        Cancel
                     </MonoButton>
                     <MonoButton
                         type="submit"
                         disabled={editTypeMutation.isPending}
                     >
-                        {editTypeMutation.isPending
-                            ? "Завантаження..."
-                            : "Підтвердити"}
+                        {editTypeMutation.isPending ? "Loading..." : "Confirm"}
                     </MonoButton>
                 </FormButtonsWrapper>
             </form>

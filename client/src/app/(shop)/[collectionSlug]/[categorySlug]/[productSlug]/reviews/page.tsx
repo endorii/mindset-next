@@ -38,7 +38,7 @@ function Reviews() {
 
     if (isProductError) {
         return (
-            <ErrorWithMessage message="Виникла помилка або товар не знайдено" />
+            <ErrorWithMessage message="An error occurred or the product was not found." />
         );
     }
 

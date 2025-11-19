@@ -75,7 +75,7 @@ export function ProductContent({
             toggleLocalFavorite(product.id);
             if (typeof window !== "undefined") {
                 toast.success(
-                    isLiked ? "Видалено з вподобаних" : "Додано до вподобаних"
+                    isLiked ? "Removed from favorites" : "Added to favorites"
                 );
             }
         }
@@ -100,7 +100,7 @@ export function ProductContent({
                 chosenType,
                 quantity
             );
-            toast.success("Додано в корзину");
+            toast.success("Added to cart");
         }
     };
 

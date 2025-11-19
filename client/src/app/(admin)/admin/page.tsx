@@ -4,7 +4,7 @@ import { AdminHomeWrapper } from "@/features/admin/components/AdminHomeWrapper";
 function Admin() {
     return (
         <div className="flex flex-col gap-[15px]">
-            <Title title="Головна сторінка" />
+            <Title title="Main page" />
             <AdminHomeWrapper />
         </div>
     );

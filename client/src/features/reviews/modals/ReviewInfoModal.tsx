@@ -47,80 +47,80 @@ export function ReviewInfoModal({
     if (!isOpen || !onClose) return null;
 
     const modalContent = (
-        <ModalWrapper onClose={onClose} modalTitle={"Інформація про відгук"}>
+        <ModalWrapper onClose={onClose} modalTitle={"Review information"}>
             <FormFillingWrapper>
                 <div className="grid grid-cols-3 gap-[15px]">
                     <div className="flex flex-col gap-[15px]">
-                        <div className="text-lg">
-                            Інформація про відправника
-                        </div>
+                        <div className="text-lg">Sender information</div>
                         <div className="flex flex-col gap-[15px]">
-                            <InfoField label="ID користувача" value={userId} />
+                            <InfoField label="User ID" value={userId} />
                             <InfoField
-                                label="Ім'я та прізвище відправника"
+                                label="Sender's first and last name"
                                 value={senderName}
                             />
                             <InfoField
-                                label="Електронна адреса"
+                                label="E-mail"
                                 value={senderEmail ? senderEmail : "-"}
                             />
                         </div>
                     </div>
                     <div className="flex flex-col gap-[15px]">
-                        <div className="text-lg">Інформація про відгук</div>
+                        <div className="text-lg">Review information</div>
                         <div className="flex flex-col gap-[15px]">
-                            <InfoField label="Оцінка" value={rating} />
+                            <InfoField label="Rating" value={rating} />
                             <InfoField
-                                label="Статус"
+                                label="Status"
                                 value={
-                                    isApproved
-                                        ? "Опубліковано"
-                                        : "Не опубліковано"
+                                    isApproved ? "Published" : "Not published"
                                 }
                             />
-                            <InfoField label="Лайків" value={isHelpful} />
-                            <InfoField label="Дизлайків" value={isNotHelpful} />
+                            <InfoField label="Likes" value={isHelpful} />
+                            <InfoField label="Dislikes" value={isNotHelpful} />
                         </div>
                     </div>
                     <div className="flex flex-col gap-[15px]">
-                        <div className="text-lg">Допоміжна інформація</div>
+                        <div className="text-lg">Supporting information</div>
                         <div className="flex flex-col gap-[15px]">
                             <InfoField
-                                label="Відповідь адміністратора"
-                                value={adminReply ? adminReply : "Не вказано"}
+                                label="Administrator response"
+                                value={
+                                    adminReply ? adminReply : "Not specified"
+                                }
                             />
                             <InfoField
-                                label="Дата відповіді адміністратора"
-                                value={formatDate(adminReplyAt) || "Не вказано"}
+                                label="Administrator response date"
+                                value={
+                                    formatDate(adminReplyAt) || "Not specified"
+                                }
                             />
                             <InfoField
-                                label="Дата стоврення"
-                                value={formatDate(createdAt) || "Не вказано"}
+                                label="Creation date"
+                                value={formatDate(createdAt) || "Not specified"}
                             />
                             <InfoField
-                                label="Дата редагування"
-                                value={formatDate(updatedAt) || "Не вказано"}
+                                label="Edit date"
+                                value={formatDate(updatedAt) || "Not specified"}
                             />
                         </div>
                     </div>
                 </div>
-                <InfoField label="Текст відгуку" value={content} />
+                <InfoField label="Review text" value={content} />
                 {/* <InfoField label="Прикладені фото" value={userId} /> */}
                 <div className="flex flex-col gap-[10px]">
-                    <div className="text-lg">Інформація про товар</div>
-                    <div className="rounded-xl bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[15px]">
+                    <div className="text-lg">Product information</div>
+                    <div className="  bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[15px]">
                         <div className="grid grid-cols-[1fr_1fr_1fr_1fr_1fr_1fr_1fr+1fr] gap-[15px] p-[20px] rounded-t-lg font-semibold text-sm">
-                            <div>Банер</div>
-                            <div>Назва</div>
-                            <div>Колір</div>
-                            <div>Розмір</div>
-                            <div>Тип</div>
-                            <div>Кількість</div>
-                            <div>Сума замовлення</div>
-                            <div>Посилання на товар</div>
+                            <div>Banner</div>
+                            <div>Name</div>
+                            <div>Color</div>
+                            <div>Size</div>
+                            <div>Type</div>
+                            <div>Quantity</div>
+                            <div>Sum of order</div>
+                            <div>Link</div>
                         </div>
 
-                        <div className="border border-white/10 rounded-xl">
+                        <div className="border border-white/10  ">
                             {orderItem ? (
                                 <div
                                     key={orderItem.id}
@@ -146,19 +146,19 @@ export function ReviewInfoModal({
                                         className="underline text-center text-blue-500 hover:text-white"
                                         href={`/${orderItem.product?.category?.collection?.path}/${orderItem.product?.category?.path}/${orderItem.product?.path}`}
                                     >
-                                        Товар
+                                        Product
                                     </Link>
                                 </div>
                             ) : (
                                 <div className="p-[20px] text-sm text-white/60">
-                                    Товарів не знайдено
+                                    Products not found
                                 </div>
                             )}
                         </div>
                     </div>
                 </div>
                 <FormButtonsWrapper>
-                    <MonoButton onClick={onClose}>Закрити</MonoButton>
+                    <MonoButton onClick={onClose}>Close</MonoButton>
                 </FormButtonsWrapper>
             </FormFillingWrapper>
         </ModalWrapper>

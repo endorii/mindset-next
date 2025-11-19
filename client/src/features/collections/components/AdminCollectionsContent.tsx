@@ -30,11 +30,11 @@ import { ICollection } from "../types/collections.types";
 
 export function AdminCollectionsContent() {
     const filters = [
-        "спочатку нові",
-        "oстанні оновлені",
-        "по алфавіту",
-        "кількість категорій",
-        "кількість товарів",
+        "newest first",
+        "latest updated",
+        "alphabetically",
+        "number of categories",
+        "number of products",
     ];
 
     const [activeModal, setActiveModal] = useState<ModalType>(null);
@@ -59,12 +59,12 @@ export function AdminCollectionsContent() {
     return (
         <div className="flex flex-col gap-[15px]">
             <TitleWithAddElementButton
-                title={"Список колекцій"}
+                title={"List of collections"}
                 onClick={() => setActiveModal("add")}
-                buttonText={"Додати колекцію"}
+                buttonText={"Add collection"}
             />
             <FilterSection
-                title={"Фільтрувати"}
+                title={"Filter"}
                 filters={filters}
                 onFilterClick={function (filter: string): void {
                     throw new Error("Function not implemented.");
@@ -72,7 +72,7 @@ export function AdminCollectionsContent() {
                 selectedItem={""}
             />
             {collections && collections.length > 0 ? (
-                <div className="rounded-xl bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px] sm:px-[10px] pt-0 text-sm">
+                <div className="  bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px] sm:px-[10px] pt-0 text-sm">
                     <div
                         className="grid 
                     grid-cols-[120px_0.5fr_0.5fr_0.5fr_0.5fr_1fr] 
@@ -82,16 +82,16 @@ export function AdminCollectionsContent() {
                     xs:grid-cols-2
                     gap-[15px] p-[20px] sm:p-[10px] rounded-t-lg font-semibold "
                     >
-                        <div className="hidden xs:block">Колекції</div>
-                        <div className="xs:hidden">Банер</div>
-                        <div className="xs:hidden">Назва</div>
-                        <div className="sm:hidden">Статус</div>
-                        <div className="xl:hidden">Додано/оновлено</div>
-                        <div className="xs:hidden text-center">Посилання</div>
-                        <div className="text-right lg:hidden">Дії</div>
+                        <div className="hidden xs:block">Collections</div>
+                        <div className="xs:hidden">Banner</div>
+                        <div className="xs:hidden">Name</div>
+                        <div className="sm:hidden">Status</div>
+                        <div className="xl:hidden">Added/updated</div>
+                        <div className="xs:hidden text-center">Link</div>
+                        <div className="text-right lg:hidden">Actions</div>
                     </div>
 
-                    <div className="border border-white/10 rounded-xl">
+                    <div className="border border-white/10  ">
                         {collections &&
                             collections.map((collection) => (
                                 <div
@@ -109,7 +109,7 @@ export function AdminCollectionsContent() {
                                     >
                                         <img
                                             src={collection.banner}
-                                            className="max-h-[120px] w-full object-cover rounded"
+                                            className="max-h-[120px] w-full object-cover"
                                             alt="banner"
                                         />
                                         <div>{collection.name}</div>
@@ -129,7 +129,7 @@ export function AdminCollectionsContent() {
                                             href={`/${collection.path}`}
                                             className="text-blue-500 hover:text-white hover:underline xs:hidden text-center"
                                         >
-                                            Колекція
+                                            Collection
                                         </Link>
                                         <div className="flex gap-[10px] justify-end lg:hidden">
                                             <LinkWithIcon
@@ -220,7 +220,7 @@ export function AdminCollectionsContent() {
             ) : (
                 <div className="relative flex min-h-[200px] items-center bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px] overflow-hidden">
                     <div className="font-bold text-3xl z-1">
-                        Список колекцій порожній
+                        Collection list is empty
                     </div>
                     <ProductsIcon className="absolute top-[-150] right-40 w-[600px] opacity-20 rotate-[340deg] pointer-events-none" />
                 </div>

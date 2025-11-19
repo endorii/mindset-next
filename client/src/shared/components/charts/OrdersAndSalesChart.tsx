@@ -27,26 +27,26 @@ import {
 } from "recharts";
 
 const monthNames = [
-    "Січ",
-    "Лют",
-    "Бер",
-    "Кві",
-    "Тра",
-    "Чер",
-    "Лип",
-    "Сер",
-    "Вер",
-    "Жов",
-    "Лис",
-    "Гру",
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "Thu",
+    "Jun",
+    "Jul",
+    "Apr",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec",
 ];
 
 type Period = "day" | "week" | "month" | "year";
 
 type ChartPoint = {
     name: string;
-    Замовлення: number;
-    Продажі: number;
+    Orders: number;
+    Sales: number;
 };
 
 function parseDate(date: string | Date) {
@@ -60,8 +60,8 @@ function generateChartData(orders: IOrder[], period: Period): ChartPoint[] {
         // Дані по годинах сьогодні
         const data: ChartPoint[] = Array.from({ length: 24 }, (_, i) => ({
             name: `${i.toString().padStart(2, "0")}:00`,
-            Замовлення: 0,
-            Продажі: 0,
+            Orders: 0,
+            Sales: 0,
         }));
 
         orders.forEach((order) => {
@@ -73,8 +73,8 @@ function generateChartData(orders: IOrder[], period: Period): ChartPoint[] {
                 })
             ) {
                 const hour = date.getHours();
-                data[hour].Замовлення += 1;
-                data[hour].Продажі += order.total;
+                data[hour].Orders += 1;
+                data[hour].Sales += order.total;
             }
         });
 
@@ -88,8 +88,8 @@ function generateChartData(orders: IOrder[], period: Period): ChartPoint[] {
             const day = subDays(now, i);
             data.push({
                 name: formatDate(day, "EEE dd.MM", { locale: uk }),
-                Замовлення: 0,
-                Продажі: 0,
+                Orders: 0,
+                Sales: 0,
             });
         }
 
@@ -105,8 +105,8 @@ function generateChartData(orders: IOrder[], period: Period): ChartPoint[] {
                     (d) => d.name === formatDate(date, "EEE dd.MM")
                 );
                 if (index !== -1) {
-                    data[index].Замовлення += 1;
-                    data[index].Продажі += order.total;
+                    data[index].Orders += 1;
+                    data[index].Sales += order.total;
                 }
             }
         });
@@ -128,8 +128,8 @@ function generateChartData(orders: IOrder[], period: Period): ChartPoint[] {
                 )
                     .toString()
                     .padStart(2, "0")}`, // формат: "01.08", "02.08" і т.д.
-                Замовлення: 0,
-                Продажі: 0,
+                Orders: 0,
+                Sales: 0,
             })
         );
 
@@ -137,8 +137,8 @@ function generateChartData(orders: IOrder[], period: Period): ChartPoint[] {
             const date = parseDate(order.createdAt!);
             if (isWithinInterval(date, { start, end })) {
                 const day = date.getDate(); // день місяця 1..31
-                data[day - 1].Замовлення += 1;
-                data[day - 1].Продажі += order.total;
+                data[day - 1].Orders += 1;
+                data[day - 1].Sales += order.total;
             }
         });
 
@@ -149,8 +149,8 @@ function generateChartData(orders: IOrder[], period: Period): ChartPoint[] {
         // Дані по місяцях поточного року
         const data: ChartPoint[] = Array.from({ length: 12 }, (_, i) => ({
             name: monthNames[i],
-            Замовлення: 0,
-            Продажі: 0,
+            Orders: 0,
+            Sales: 0,
         }));
 
         const start = startOfYear(now);
@@ -160,8 +160,8 @@ function generateChartData(orders: IOrder[], period: Period): ChartPoint[] {
             const date = parseDate(order.createdAt!);
             if (isWithinInterval(date, { start, end })) {
                 const month = getMonth(date); // 0-11
-                data[month].Замовлення += 1;
-                data[month].Продажі += order.total;
+                data[month].Orders += 1;
+                data[month].Sales += order.total;
             }
         });
 
@@ -179,16 +179,16 @@ export function OrdersAndSalesChart({
     const [period, setPeriod] = useState<Period>("day");
 
     const periodLabels: Record<Period, string> = {
-        day: "За день (по годинах)",
-        week: "За тиждень (по днях)",
-        month: "За місяць (по тижнях)",
-        year: "За рік (по місяцях)",
+        day: "Per day (by hour)",
+        week: "Per week (by day)",
+        month: "Per month (by week)",
+        year: "Per year (by month)",
     };
 
     if (!orders || orders.length === 0) {
         return (
-            <div className="rounded-xl bg-white/5 p-[20px] text-white/60 border border-white/5">
-                Замовлення для діаграми відсутні
+            <div className="  bg-white/5 p-[20px] text-white/60 border border-white/5">
+                Orders for the chart are missing.
             </div>
         );
     }
@@ -199,9 +199,9 @@ export function OrdersAndSalesChart({
     );
 
     return (
-        <div className="rounded-xl bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px] flex flex-col gap-[15px] w-full">
+        <div className="  bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px] flex flex-col gap-[15px] w-full">
             <h2 className="text-lg font-semibold">
-                Кількість замовлень та продажі {periodLabels[period]}
+                Number of orders and sales {periodLabels[period]}
             </h2>
 
             <div className="flex flex-wrap gap-[10px] mb-[20px]">
@@ -225,7 +225,7 @@ export function OrdersAndSalesChart({
                         orientation="left"
                         allowDecimals={false}
                         label={{
-                            value: "Продажі",
+                            value: "Sales",
                             angle: -90,
                             position: "insideLeft",
                         }}
@@ -235,7 +235,7 @@ export function OrdersAndSalesChart({
                         orientation="right"
                         allowDecimals={false}
                         label={{
-                            value: "Замовлень",
+                            value: "Orders",
                             angle: 90,
                             position: "insideRight",
                         }}
@@ -252,17 +252,17 @@ export function OrdersAndSalesChart({
                     <Line
                         yAxisId="left"
                         type="monotone"
-                        dataKey="Продажі"
+                        dataKey="Sales"
                         stroke="#8884d8"
-                        name="Продажі"
+                        name="Sales"
                         activeDot={{ r: 8 }}
                     />
                     <Line
                         yAxisId="right"
                         type="monotone"
-                        dataKey="Замовлення"
+                        dataKey="Orders"
                         stroke="#82ca9d"
-                        name="Кількість замовлень"
+                        name="Orders quantity"
                         activeDot={{ r: 8 }}
                     />
                 </LineChart>

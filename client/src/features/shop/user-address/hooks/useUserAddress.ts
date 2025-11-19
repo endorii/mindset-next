@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { createUserAddress, editUserAddress } from "../api/user-address.api";
-import { IUserShippingAdress } from "../../user-info/types/user.types";
 import { toast } from "sonner";
+import { IUserShippingAdress } from "../../user-info/types/user.types";
+import { createUserAddress, editUserAddress } from "../api/user-address.api";
 
 export function useCreateUserAddress() {
     const queryClient = useQueryClient();
@@ -18,7 +18,7 @@ export function useCreateUserAddress() {
             if (error?.message) {
                 toast.error(error.message);
             } else {
-                toast.error("Сталася невідома помилка");
+                toast.error("An unknown error occurred.");
             }
         },
     });
@@ -37,7 +37,7 @@ export function useEditUserAddress() {
             if (error?.message) {
                 toast.error(error.message);
             } else {
-                toast.error("Сталася невідома помилка");
+                toast.error("An unknown error occurred.");
             }
         },
     });

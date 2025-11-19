@@ -29,19 +29,19 @@ export function DeleteTypeModal({
     useEscapeKeyClose({ isOpen, onClose });
 
     const modalContent = (
-        <ModalWrapper onClose={onClose} modalTitle={"Видалення типу"}>
+        <ModalWrapper onClose={onClose} modalTitle={"Deletting type"}>
             <div className="mb-6">
-                Ви дійсно хочете видалити тип {type?.name}?
+                Do you really want to delete the type {type?.name}?
             </div>
             <FormButtonsWrapper>
-                <MonoButton onClick={onClose}>Скасувати</MonoButton>
+                <MonoButton onClick={onClose}>Cancel</MonoButton>
                 <DeleteButton
                     onClick={async () => {
                         onClose();
                         handleDelete();
                     }}
                 >
-                    Видалити
+                    Delete
                 </DeleteButton>
             </FormButtonsWrapper>
         </ModalWrapper>

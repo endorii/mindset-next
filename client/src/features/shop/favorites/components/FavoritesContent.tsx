@@ -44,7 +44,7 @@ export function FavoritesContent() {
 
     if (isUserFavoritesError) {
         return (
-            <ErrorWithMessage message="Виникла помилка під час завантаження вподобаних товарів" />
+            <ErrorWithMessage message="An error occurred while loading your favorite products." />
         );
     }
 

@@ -50,7 +50,7 @@ export function CartContent() {
         try {
             await deleteCartItemMutation.mutateAsync(cartItemId);
         } catch (error) {
-            console.error("Помилка видалення:", error);
+            console.error("Error Deletting:", error);
         }
     };
 
@@ -60,7 +60,7 @@ export function CartContent() {
 
     if (user && isUserCartError) {
         return (
-            <ErrorWithMessage message="Виникла помилка під час завантаження кошику" />
+            <ErrorWithMessage message="An error occurred while loading the cart." />
         );
     }
 

@@ -29,9 +29,7 @@ export function DeliveryAddress({
             ) : isUserPending ? (
                 <DeliveryAddressSkeleton />
             ) : isUserError ? (
-                <div className="text-red-500">
-                    Помилка при завантаженні користувача.
-                </div>
+                <div className="text-red-500">Error loading user.</div>
             ) : (
                 <div className=" py-[10px] flex flex-col gap-[7px] h-full">
                     <button

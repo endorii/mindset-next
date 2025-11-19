@@ -37,10 +37,10 @@ export function AdminCategoriesContent({
     collectionPath: string;
 }) {
     const filters = [
-        "спочатку нові",
-        "останні оновлені",
-        "по алфавіту",
-        "кількість товарів",
+        "newest first",
+        "latest updated",
+        "alphabetically",
+        "quantity of products",
     ];
     const router = useRouter();
 
@@ -67,16 +67,16 @@ export function AdminCategoriesContent({
             <div>
                 <MonoButton onClick={() => router.push("/admin/collections")}>
                     <BackIcon className="w-[23px] stroke-white stroke-[50] group-hover:stroke-black" />
-                    <div>Назад до колекцій</div>
+                    <div>Back to collections</div>
                 </MonoButton>
             </div>
             <TitleWithAddElementButton
-                title={`Список категорій [${collectionPath}]`}
+                title={`List of categories [${collectionPath}]`}
                 onClick={() => setActiveModal("add")}
-                buttonText={"Додати категорію"}
+                buttonText={"Add category"}
             />
             <FilterSection
-                title={"Фільтрувати"}
+                title={"Filter"}
                 filters={filters}
                 onFilterClick={function (filter: string): void {
                     throw new Error("Function not implemented.");
@@ -84,7 +84,7 @@ export function AdminCategoriesContent({
                 selectedItem={""}
             />
             {categories && categories.length > 0 ? (
-                <div className="rounded-xl bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px] sm:px-[10px] pt-0">
+                <div className="  bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px] sm:px-[10px] pt-0">
                     <div
                         className="grid 
                     grid-cols-[120px_0.5fr_0.5fr_0.5fr_0.6fr_1fr] 
@@ -94,14 +94,14 @@ export function AdminCategoriesContent({
                     xs:grid-cols-2 
                     gap-[15px] p-[20px] sm:p-[10px] rounded-t-lg font-semibold text-sm"
                     >
-                        <div>Банер</div>
-                        <div>Назва</div>
-                        <div className="sm:hidden">Статус</div>
-                        <div className="xl:hidden">Додано/оновлено</div>
-                        <div className="xs:hidden text-center">Посилання</div>
-                        <div className="text-right lg:hidden">Дії</div>
+                        <div>Banner</div>
+                        <div>Name</div>
+                        <div className="sm:hidden">Status</div>
+                        <div className="xl:hidden">Added/updated</div>
+                        <div className="xs:hidden text-center">Link</div>
+                        <div className="text-right lg:hidden">Actions</div>
                     </div>
-                    <div className="border border-white/10 rounded-xl">
+                    <div className="border border-white/10  ">
                         {categories.map((category) => (
                             <div
                                 key={category.id}
@@ -118,8 +118,8 @@ export function AdminCategoriesContent({
                                 >
                                     <img
                                         src={category.banner}
-                                        className="max-h-[120px] w-full object-cover rounded"
-                                        alt={`Банер категорії ${category.name}`}
+                                        className="max-h-[120px] w-full object-cover"
+                                        alt={`Category banner ${category.name}`}
                                     />
                                     <div>{category.name}</div>
                                     <div className="sm:hidden">
@@ -133,7 +133,7 @@ export function AdminCategoriesContent({
                                         href={`/${collectionPath}/${category.path}`}
                                         className="text-blue-500 hover:text-white hover:underline xs:hidden text-center"
                                     >
-                                        Категорія
+                                        Category
                                     </Link>
                                     <div className="flex gap-[10px] justify-end sm:justify-start lg:hidden">
                                         <LinkWithIcon
@@ -207,7 +207,7 @@ export function AdminCategoriesContent({
             ) : (
                 <div className="relative flex min-h-[200px] items-center bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px] overflow-hidden">
                     <div className="font-bold text-3xl z-1">
-                        Список категорій порожній
+                        The category list is empty.
                     </div>
                     <ProductsIcon className="absolute top-[-150] right-40 w-[600px] opacity-20 rotate-[340deg] pointer-events-none" />
                 </div>

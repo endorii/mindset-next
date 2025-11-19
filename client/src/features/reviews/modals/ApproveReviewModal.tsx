@@ -30,9 +30,9 @@ export function ApproveReviewModal({
     useEscapeKeyClose({ isOpen, onClose });
 
     const modalContent = (
-        <ModalWrapper onClose={onClose} modalTitle={"Підтвердження публікації"}>
+        <ModalWrapper onClose={onClose} modalTitle={"Publication confirmation"}>
             <div className="mb-6 text-white/80 text-[16px] leading-[1.6]">
-                Ви дійсно підтверджуєте піблікацію відгуку до товару{" "}
+                Do you really confirm the publication of the product review?{" "}
                 <span className="font-semibold text-white">
                     {review.product?.name}
                 </span>
@@ -40,14 +40,14 @@ export function ApproveReviewModal({
             </div>
 
             <FormButtonsWrapper>
-                <MonoButton onClick={onClose}>Скасувати</MonoButton>
+                <MonoButton onClick={onClose}>Cancel</MonoButton>
                 <MonoButton
                     onClick={() => {
                         onClose();
                         handleApprove();
                     }}
                 >
-                    Опублікувати
+                    Publish
                 </MonoButton>
             </FormButtonsWrapper>
         </ModalWrapper>

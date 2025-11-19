@@ -1,7 +1,7 @@
-import { useQuery, useMutation, useQueryClient, useSuspenseQuery } from "@tanstack/react-query";
+import { useMutation, useQueryClient, useSuspenseQuery } from "@tanstack/react-query";
+import { toast } from "sonner";
 import { addTodoItem, deleteTodoItem, getTodoList, updateTodoItem } from "../api/todo.api";
 import { ITodoItem } from "../types/admin.types";
-import { toast } from "sonner";
 
 export function useTodoList() {
     return useSuspenseQuery({
@@ -25,7 +25,7 @@ export function useCreateTodoItem() {
             if (error?.message) {
                 toast.error(error.message);
             } else {
-                toast.error("Сталася невідома помилка");
+                toast.error("An unknown error occurred.");
             }
         },
     });
@@ -45,7 +45,7 @@ export function useUpdateTodoItem() {
             if (error?.message) {
                 toast.error(error.message);
             } else {
-                toast.error("Сталася невідома помилка");
+                toast.error("An unknown error occurred.");
             }
         },
     });
@@ -64,7 +64,7 @@ export function useDeleteTodoItem() {
             if (error?.message) {
                 toast.error(error.message);
             } else {
-                toast.error("Сталася невідома помилка");
+                toast.error("An unknown error occurred.");
             }
         },
     });

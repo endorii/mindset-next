@@ -29,9 +29,9 @@ export function DeleteColorModal({
     useEscapeKeyClose({ isOpen, onClose });
 
     const modalContent = (
-        <ModalWrapper onClose={onClose} modalTitle={"Видалення кольору"}>
+        <ModalWrapper onClose={onClose} modalTitle={"Color removal"}>
             <div className="mb-8 text-lg">
-                Ви дійсно хочете видалити колір{" "}
+                Do you really want to remove the color?{" "}
                 <span className="font-semibold">{color.name}</span>?
             </div>
             <FormButtonsWrapper>
@@ -39,7 +39,7 @@ export function DeleteColorModal({
                     onClick={onClose}
                     disabled={deleteColorMutation.isPending}
                 >
-                    Скасувати
+                    Cancel
                 </MonoButton>
                 <DeleteButton
                     onClick={() => {
@@ -48,9 +48,7 @@ export function DeleteColorModal({
                     }}
                     disabled={deleteColorMutation.isPending}
                 >
-                    {deleteColorMutation.isPending
-                        ? "Видалення..."
-                        : "Видалити"}
+                    {deleteColorMutation.isPending ? "Deletting..." : "Delete"}
                 </DeleteButton>
             </FormButtonsWrapper>
         </ModalWrapper>

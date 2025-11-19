@@ -74,9 +74,7 @@ export function ReviewReplyModal({
             });
             handleClose();
         } catch (err: any) {
-            setModalMessage(
-                err?.message || "Помилка при створенні відповіді адміністратора"
-            );
+            setModalMessage(err?.message || "Error creating admin response");
         }
     };
 
@@ -85,40 +83,40 @@ export function ReviewReplyModal({
     if (!isOpen || !onClose) return null;
 
     const modalContent = (
-        <ModalWrapper onClose={onClose} modalTitle={"Відповідь на відгук"}>
+        <ModalWrapper onClose={onClose} modalTitle={"Reply to review"}>
             <form
                 className="flex flex-col gap-[15px]"
                 onSubmit={handleSubmit(onSubmit)}
             >
                 <FormFillingWrapper>
                     <div className="flex flex-col gap-[15px]">
-                        <div className="text-lg">Інформація про відгук</div>
+                        <div className="text-lg">Review information</div>
                         <div className="grid grid-cols-3 gap-[15px]">
                             <InfoField
-                                label="Ім'я та прізвище відправника"
+                                label="Sender's first and last name"
                                 value={senderName}
                             />
                             <InfoField
-                                label="Електронна адреса"
+                                label="E-mail"
                                 value={senderEmail ? senderEmail : "-"}
                             />
-                            <InfoField label="Оцінка" value={rating} />
+                            <InfoField label="Rating" value={rating} />
                         </div>
                     </div>
-                    <InfoField label="Текст відгуку" value={content} />
+                    <InfoField label="Review text" value={content} />
                     {/* <InfoField label="Прикладені зображення" value={images} /> */}
                     <div className="flex flex-col gap-[15px]">
                         <div className="text-lg">
-                            Написати відовідь на відгук
+                            Write a response to a review
                         </div>
                         <div className="flex flex-col gap-[15px]">
                             <BasicTextarea
-                                label="Відповідь адміністратора"
+                                label="Administrator response"
                                 register={register("adminReply", {
-                                    required: "Введіть текст відгуку",
+                                    required: "Enter the review text",
                                     minLength: {
                                         value: 3,
-                                        message: "Мінімум 3 символи",
+                                        message: "Minimum 3 characters",
                                     },
                                 })}
                                 errorMessage={errors.adminReply?.message}
@@ -129,8 +127,8 @@ export function ReviewReplyModal({
                         <p className="text-red-500 text-sm">{modalMessage}</p>
                     )}
                     <FormButtonsWrapper>
-                        <MonoButton onClick={onClose}>Закрити</MonoButton>
-                        <MonoButton type="submit">Надіслати</MonoButton>
+                        <MonoButton onClick={onClose}>Close</MonoButton>
+                        <MonoButton type="submit">Send</MonoButton>
                     </FormButtonsWrapper>
                 </FormFillingWrapper>
             </form>

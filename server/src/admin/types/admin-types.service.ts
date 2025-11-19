@@ -1,14 +1,14 @@
 import {
     ConflictException,
+    HttpException,
     Injectable,
     InternalServerErrorException,
-    HttpException,
     NotFoundException,
 } from "@nestjs/common";
-import { CreateTypeDto } from "./dto/create-type.dto";
 import { PrismaService } from "src/prisma/prisma.service";
-import { UpdateTypeDto } from "./dto/update-type.dto";
 import { AdminRecentActionsService } from "../recent-actions/admin-recent-actions.service";
+import { CreateTypeDto } from "./dto/create-type.dto";
+import { UpdateTypeDto } from "./dto/update-type.dto";
 
 @Injectable()
 export class AdminTypesService {
@@ -20,14 +20,13 @@ export class AdminTypesService {
     async getTypes() {
         try {
             const types = await this.prisma.type.findMany();
-
             return types;
         } catch (error: unknown) {
-            console.error("Помилка отримання типів:", error);
+            console.error("Error fetching types:", error);
             if (error instanceof HttpException) {
                 throw error;
             }
-            throw new InternalServerErrorException("Не вдалося отримати типи");
+            throw new InternalServerErrorException("Failed to fetch types");
         }
     }
 
@@ -40,25 +39,25 @@ export class AdminTypesService {
             });
 
             if (existingType) {
-                throw new ConflictException("Тип з такою назвою вже існує");
+                throw new ConflictException("Type with this name already exists");
             }
 
             const type = await this.prisma.type.create({
                 data: { name },
             });
 
-            await this.adminRecentActions.createAction(userId, `Додано тип ${type.name}`);
+            await this.adminRecentActions.createAction(userId, `Added type ${type.name}`);
 
             return {
-                message: "Тип успішно створено",
+                message: "Type successfully created",
                 type,
             };
         } catch (error: unknown) {
-            console.error("Помилка створення типу:", error);
+            console.error("Error creating type:", error);
             if (error instanceof HttpException) {
                 throw error;
             }
-            throw new InternalServerErrorException("Не вдалося створити тип");
+            throw new InternalServerErrorException("Failed to create type");
         }
     }
 
@@ -71,7 +70,7 @@ export class AdminTypesService {
             });
 
             if (!type) {
-                throw new NotFoundException("Тип з таким ID  не знайдено");
+                throw new NotFoundException(`Type with ID ${typeId} not found`);
             }
 
             const existingType = await this.prisma.type.findUnique({
@@ -79,7 +78,7 @@ export class AdminTypesService {
             });
 
             if (existingType && existingType.id !== typeId) {
-                throw new ConflictException("Тип з такою назвою вже існує");
+                throw new ConflictException("Type with this name already exists");
             }
 
             const updatedType = await this.prisma.type.update({
@@ -87,18 +86,18 @@ export class AdminTypesService {
                 data: updateTypeDto,
             });
 
-            await this.adminRecentActions.createAction(userId, `Редаговано тип ${name}`);
+            await this.adminRecentActions.createAction(userId, `Edited type ${name}`);
 
             return {
-                message: "Тип успішно оновлено",
+                message: "Type successfully updated",
                 type: updatedType,
             };
         } catch (error: unknown) {
-            console.error("Помилка редагування типу:", error);
+            console.error("Error editing type:", error);
             if (error instanceof HttpException) {
                 throw error;
             }
-            throw new InternalServerErrorException("Не вдалося оновити тип");
+            throw new InternalServerErrorException("Failed to update type");
         }
     }
 
@@ -109,24 +108,24 @@ export class AdminTypesService {
             });
 
             if (!type) {
-                throw new NotFoundException("Тип з таким ID  не знайдено");
+                throw new NotFoundException(`Type with ID ${typeId} not found`);
             }
 
             await this.prisma.type.delete({
                 where: { id: typeId },
             });
 
-            await this.adminRecentActions.createAction(userId, `Видалено тип ${type.name}`);
+            await this.adminRecentActions.createAction(userId, `Deleted type ${type.name}`);
 
             return {
-                message: "Тип успішно видалено",
+                message: "Type successfully deleted",
             };
         } catch (error: unknown) {
-            console.error("Помилка видалення типу:", error);
+            console.error("Error deleting type:", error);
             if (error instanceof HttpException) {
                 throw error;
             }
-            throw new InternalServerErrorException("Не вдалося видалити тип");
+            throw new InternalServerErrorException("Failed to delete type");
         }
     }
 }

@@ -22,10 +22,7 @@ const Orders = () => {
     if (!userOrders && isUserOrdersPending) return <UserOrdersSkeleton />;
     if (isUserOrdersError)
         return (
-            <ErrorWithMessage
-                message="Виникла помилка під час завантаження замовлень... Оновіть
-                    сторінку, або спробуйте пізніше"
-            />
+            <ErrorWithMessage message="An error occurred while loading orders... Please refresh the page or try again later." />
         );
     if (!userOrders || userOrders.length === 0) return;
     <div className="text-center text-white/60 p-[20px]">Orders list empty</div>;

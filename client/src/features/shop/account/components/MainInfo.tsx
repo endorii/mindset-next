@@ -31,9 +31,7 @@ export function MainInfo({
             {isUserPending ? (
                 <MainInfoSkeleton />
             ) : isUserError ? (
-                <div className="text-red-500">
-                    Помилка при завантаженні користувача.
-                </div>
+                <div className="text-red-500">Error loading user.</div>
             ) : (
                 <div className="flex w-full">
                     <div className="flex flex-col py-[10px] gap-[15px] w-full">

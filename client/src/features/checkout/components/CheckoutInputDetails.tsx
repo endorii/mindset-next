@@ -19,25 +19,25 @@ export function CheckoutInputDetails({
 }: CheckoutInputDetailsProps) {
     return (
         <div className="flex flex-col gap-[15px] w-1/2">
-            <div className="text-3xl font-thin">Реквізити для відправки</div>
+            <div className="text-3xl font-thin">Shipping details</div>
             <hr className="border-t border-white/10" />
             <div className="flex flex-col gap-[13px] w-full">
                 <InputField
-                    label="Ініціали (ПІБ)*"
+                    label="Full name*"
                     required
                     value={userInitials}
-                    placeholder="Петренко Петро Петрович"
+                    placeholder="Petrenko Petro Petrovych"
                     onChangeValue={(e) => setUserInitials(e.target.value)}
                 />
                 <InputField
-                    label="Номер телефону*"
+                    label="Phone number*"
                     required
                     value={userPhone}
                     placeholder="(09*)-**-**-***"
                     onChangeValue={(e) => setUserPhone(e.target.value)}
                 />
                 <InputField
-                    label="Електронна пошта"
+                    label="E-mail"
                     value={userEmail}
                     placeholder="petro@gmail.com"
                     onChangeValue={(e) => setUserEmail(e.target.value)}

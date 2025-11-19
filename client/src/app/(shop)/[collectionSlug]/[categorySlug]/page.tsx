@@ -17,24 +17,24 @@ export async function generateMetadata({
 
     if (!res.ok) {
         return {
-            title: `Категорія ${categorySlug} – Помилка`,
-            description: "Не вдалося завантажити категорію",
+            title: `Category ${categorySlug} – Error`,
+            description: "Failed to load category",
         };
     }
 
     const category: ICategory = await res.json();
 
     return {
-        title: `Категорія "${category.name}" | ${collectionSlug} – Mindset`,
+        title: `Category "${category.name}" | ${collectionSlug} – Mindset`,
         description:
             category.description ||
-            `Дивіться товари з категорії ${categorySlug} від Mindset.`,
+            `See products from the category ${categorySlug} by Mindset.`,
         openGraph: {
-            title: `Категорія "${category.name}" | ${collectionSlug} – Mindset`,
+            title: `Category "${category.name}" | ${collectionSlug} – Mindset`,
             description: category.description,
             images: category.banner ? [category.banner] : [],
             type: "website",
-            locale: "uk_UA",
+            locale: "en_US",
         },
     };
 }
@@ -59,13 +59,13 @@ export default async function CategoryPage({
             const text = await res.text();
             console.error("Nest API error response:", text);
             errorMessage =
-                JSON.parse(text).message || "Помилка завантаження категорій";
+                JSON.parse(text).message || "Error loading categories";
         } else {
             category = await res.json();
         }
     } catch (error: any) {
         console.error(error);
-        errorMessage = error.message || "Невідома помилка";
+        errorMessage = error.message || "Unknown error";
     }
 
     if (errorMessage) {

@@ -45,7 +45,7 @@ export function AddCategoryModal({
         formState: { errors },
     } = useForm<CategoryFormData>({
         defaultValues: {
-            status: "Не активно",
+            status: "Not active",
         },
     });
 
@@ -77,7 +77,7 @@ export function AddCategoryModal({
 
     const onSubmit = async (data: CategoryFormData) => {
         if (!banner) {
-            setBannerError("Оберіть банер");
+            setBannerError("Choose banner");
             return;
         } else {
             setBannerError(null);
@@ -95,7 +95,7 @@ export function AddCategoryModal({
                 });
 
                 if (!category.data?.id) {
-                    throw new Error("Не вдалося отримати ID категорії");
+                    throw new Error("Unable to get category ID");
                 }
 
                 await uploadBannerMutation.mutateAsync({
@@ -107,9 +107,7 @@ export function AddCategoryModal({
             }
             handleClose();
         } catch (error: any) {
-            setModalMessage(
-                error?.message || "Помилка при створенні категорії"
-            );
+            setModalMessage(error?.message || "Error creating category");
         }
     };
 
@@ -118,7 +116,7 @@ export function AddCategoryModal({
     if (!isOpen) return null;
 
     const modalContent = (
-        <ModalWrapper onClose={onClose} modalTitle={"Додавання категорії"}>
+        <ModalWrapper onClose={onClose} modalTitle={"Adding a category"}>
             <form
                 className="flex flex-col gap-[15px]"
                 onSubmit={handleSubmit(onSubmit)}
@@ -126,51 +124,51 @@ export function AddCategoryModal({
                 <FormFillingWrapper>
                     <div className="grid grid-cols-3 gap-[15px]">
                         <InputField
-                            label="Назва*"
+                            label="Name*"
                             type="text"
-                            placeholder="Назва категорії"
+                            placeholder="Category name"
                             {...register("name", {
-                                required: "Введіть назву",
+                                required: "Enter category name",
                                 minLength: {
                                     value: 2,
-                                    message: "Мінімум 2 символи",
+                                    message: "Minimum 2 characters",
                                 },
                             })}
                             errorMessage={errors.name?.message}
                         />
                         <InputField
-                            label="Шлях*"
+                            label="Path*"
                             type="text"
-                            placeholder="Шлях"
+                            placeholder="Path"
                             {...register("path", {
-                                required: "Введіть шлях",
+                                required: "Enter path",
                                 pattern: {
                                     value: /^[a-z0-9-]+$/,
                                     message:
-                                        "Лише маленькі англійські літери, цифри та дефіс",
+                                        "Only lowercase English letters, numbers, and hyphens",
                                 },
                             })}
                             errorMessage={errors.path?.message}
                         />
                         <BasicSelector
-                            label={"Статус*"}
+                            label={"Status*"}
                             register={{
                                 ...register("status", {
-                                    required: "Оберіть статус",
+                                    required: "Choose a status",
                                 }),
                             }}
                             itemsList={statuses}
-                            basicOptionLabel="Оберіть статус"
+                            basicOptionLabel="Choose a status"
                             getOptionLabel={(status) => status}
                             getOptionValue={(status) => status}
                             errorMessage={errors.status?.message}
                         />
                     </div>
                     <BasicTextarea
-                        label="Опис*"
+                        label="Description*"
                         register={{
                             ...register("description", {
-                                required: "Введіть опис",
+                                required: "Enter a description",
                             }),
                         }}
                         errorMessage={errors.description?.message}
@@ -194,7 +192,7 @@ export function AddCategoryModal({
                             createCategoryMutation.isPending
                         }
                     >
-                        Скасувати
+                        Cancel
                     </MonoButton>
                     <MonoButton
                         type="submit"
@@ -205,8 +203,8 @@ export function AddCategoryModal({
                     >
                         {uploadBannerMutation.isPending ||
                         createCategoryMutation.isPending
-                            ? "Завантаження..."
-                            : "Додати"}
+                            ? "Loading..."
+                            : "Add"}
                     </MonoButton>
                 </FormButtonsWrapper>
             </form>

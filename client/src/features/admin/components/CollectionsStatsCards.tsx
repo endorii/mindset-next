@@ -13,18 +13,18 @@ export function CollectionsStatsCards({
 }: CollectionsStatsCardsProps) {
     return (
         <div className="w-1/3 lg:w-full grid grid-cols-2 xxs:grid-cols-1 gap-[15px]">
-            <StatCard title="Кількість колекцій" value={totalCollections} />
+            <StatCard title="Number of collections" value={totalCollections} />
             <StatCard
-                title="Найпопулярніша колекція"
+                title="Most popular collection"
                 value={mostPopularCollection?.name || "-"}
             />
             <StatCard
-                title="Колекція з найбільшим обсягом продажів"
+                title="Best-selling collection"
                 value={
                     highestSalesCollection
                         ? `${
                               highestSalesCollection.name
-                          } (${highestSalesCollection.salesSum.toFixed(2)} ₴)`
+                          } (${highestSalesCollection.salesSum.toFixed(2)} $)`
                         : "-"
                 }
             />

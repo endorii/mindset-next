@@ -34,7 +34,7 @@ export class ShopFavoritesService {
             });
 
             if (existingFavorite) {
-                throw new ConflictException("Товар вже додано до вподобних");
+                throw new ConflictException("Product is already added to favorites");
             }
 
             await this.prisma.favorite.create({
@@ -44,16 +44,18 @@ export class ShopFavoritesService {
                 },
             });
 
-            return { message: "Товар додано до вподобаних" };
+            return { message: "Product added to favorites" };
         } catch (error) {
             if (error instanceof ConflictException) {
                 throw error;
             }
-            console.error("Помилка при додаванні у вподобані:", error);
+            console.error("Error adding product to favorites:", error);
             if (error instanceof HttpException) {
                 throw error;
             }
-            throw new InternalServerErrorException("Помилка сервера при додаванні у вподобані");
+            throw new InternalServerErrorException(
+                "Server error while adding product to favorites"
+            );
         }
     }
 
@@ -69,7 +71,7 @@ export class ShopFavoritesService {
             });
 
             if (!existingFavoriteItem) {
-                throw new NotFoundException("Товар у вподобаних не знайдений");
+                throw new NotFoundException("Product not found in favorites");
             }
 
             await this.prisma.favorite.delete({
@@ -81,16 +83,18 @@ export class ShopFavoritesService {
                 },
             });
 
-            return { message: "Товар видалено з вподобаних" };
+            return { message: "Product removed from favorites" };
         } catch (error) {
             if (error instanceof NotFoundException) {
                 throw error;
             }
-            console.error("Помилка при видаленні з вподобаних:", error);
+            console.error("Error removing product from favorites:", error);
             if (error instanceof HttpException) {
                 throw error;
             }
-            throw new InternalServerErrorException("Помилка сервера при видаленні з вподобаних");
+            throw new InternalServerErrorException(
+                "Server error while removing product from favorites"
+            );
         }
     }
 }

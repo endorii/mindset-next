@@ -7,11 +7,11 @@ enum TodoPriority {
 }
 
 export class CreateTodoDto {
-    @IsString({ message: "Значення повинно бути рядком" })
-    @IsNotEmpty({ message: "Обов'язкове поле" })
+    @IsString({ message: "Value must be a string" })
+    @IsNotEmpty({ message: "This field is required" })
     title: string;
 
-    @IsEnum(TodoPriority, { message: "Значення повинно бути рядком 'low', 'medium' або 'high'" })
-    @IsNotEmpty({ message: "Обов'язкове поле" })
+    @IsEnum(TodoPriority, { message: "Value must be one of 'low', 'medium', or 'high'" })
+    @IsNotEmpty({ message: "This field is required" })
     priority: TodoPriority;
 }

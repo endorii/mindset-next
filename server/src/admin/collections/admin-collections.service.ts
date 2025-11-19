@@ -28,7 +28,7 @@ export class AdminCollectionsService {
             });
 
             if (existingCollection) {
-                throw new ConflictException("Колекція з таким шляхом уже існує");
+                throw new ConflictException("A collection with this path already exists");
             }
 
             const collection = await this.prisma.collection.create({
@@ -43,7 +43,7 @@ export class AdminCollectionsService {
 
             await this.adminRecentActions.createAction(
                 userId,
-                `Додано колекцію ${collection.name}`
+                `Added collection ${collection.name}`
             );
 
             const nextUrl = this.configService.get<string>("FRONTEND_URL");
@@ -54,15 +54,15 @@ export class AdminCollectionsService {
             });
 
             return {
-                message: "Колекцію успішно створено",
+                message: "Collection successfully created",
                 data: collection,
             };
         } catch (error) {
-            console.error("Помилка створення колекції:", error);
+            console.error("Collection creation error:", error);
             if (error instanceof HttpException) {
                 throw error;
             }
-            throw new InternalServerErrorException("Не вдалося створити колекцію");
+            throw new InternalServerErrorException("Failed to create collection");
         }
     }
 
@@ -77,7 +77,7 @@ export class AdminCollectionsService {
             });
 
             if (!collection) {
-                throw new NotFoundException("Колекцію з таким ID не знайдено");
+                throw new NotFoundException("Collection with this ID not found");
             }
 
             if (updateCollectionDto.path && updateCollectionDto.path !== collection.path) {
@@ -86,7 +86,7 @@ export class AdminCollectionsService {
                 });
 
                 if (existingCollection) {
-                    throw new ConflictException("Колекція з таким шляхом уже існує");
+                    throw new ConflictException("A collection with this path already exists");
                 }
             }
 
@@ -99,8 +99,9 @@ export class AdminCollectionsService {
 
             await this.adminRecentActions.createAction(
                 userId,
-                `Редаговано колекцію ${updatedCollection.name}`
+                `Edited collection ${updatedCollection.name}`
             );
+
             const nextUrl = this.configService.get<string>("FRONTEND_URL");
             const secret = this.configService.get<string>("REVALIDATE_SECRET");
 
@@ -109,15 +110,15 @@ export class AdminCollectionsService {
             });
 
             return {
-                message: "Колекцію успішно оновлено",
+                message: "Collection successfully updated",
                 collection: updatedCollection,
             };
         } catch (error) {
-            console.error("Помилка редагування колекції:", error);
+            console.error("Collection update error:", error);
             if (error instanceof HttpException) {
                 throw error;
             }
-            throw new InternalServerErrorException("Не вдалося оновити колекцію");
+            throw new InternalServerErrorException("Failed to update collection");
         }
     }
 
@@ -135,12 +136,12 @@ export class AdminCollectionsService {
             });
 
             if (!collection) {
-                throw new NotFoundException("Колекцію з таким ID не знайдено");
+                throw new NotFoundException("Collection with this ID not found");
             }
 
             if (collection._count?.categories > 0) {
                 throw new ConflictException(
-                    "Неможливо видалити колекцію, яка містить категорії. Спочатку видаліть усі категорії."
+                    "Cannot delete a collection that contains categories. Remove all categories first."
                 );
             }
 
@@ -152,8 +153,9 @@ export class AdminCollectionsService {
 
             await this.adminRecentActions.createAction(
                 userId,
-                `Видалено колекцію ${collection.name}`
+                `Deleted collection ${collection.name}`
             );
+
             const nextUrl = this.configService.get<string>("FRONTEND_URL");
             const secret = this.configService.get<string>("REVALIDATE_SECRET");
 
@@ -162,14 +164,14 @@ export class AdminCollectionsService {
             });
 
             return {
-                message: "Колекцію успішно видалено",
+                message: "Collection successfully deleted",
             };
         } catch (error) {
-            console.error("Помилка видалення колекції:", error);
+            console.error("Collection deleting error:", error);
             if (error instanceof HttpException) {
                 throw error;
             }
-            throw new InternalServerErrorException("Не вдалося видалити колекцію");
+            throw new InternalServerErrorException("Failed to delete collection");
         }
     }
 }

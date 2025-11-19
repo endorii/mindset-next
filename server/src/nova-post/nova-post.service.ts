@@ -26,7 +26,7 @@ export class NovaPostService {
         if (response.data.success) {
             return response.data.data;
         }
-        throw new InternalServerErrorException("Не вдалося отримати області");
+        throw new InternalServerErrorException("Failed to fetch areas");
     }
 
     async getCitiesByArea(areaRef: string): Promise<City[]> {
@@ -43,7 +43,7 @@ export class NovaPostService {
         if (response.data.success) {
             return response.data.data;
         }
-        throw new InternalServerErrorException("Не вдалося отримати міста");
+        throw new InternalServerErrorException("Failed to fetch cities");
     }
 
     async getWarehouses(cityRef: string): Promise<Warehouse[]> {
@@ -60,6 +60,6 @@ export class NovaPostService {
         if (response.data.success) {
             return response.data.data;
         }
-        throw new InternalServerErrorException("Не вдалося отримати відділення");
+        throw new InternalServerErrorException("Failed to fetch warehouses");
     }
 }

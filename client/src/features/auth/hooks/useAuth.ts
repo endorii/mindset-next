@@ -32,7 +32,7 @@ export function useLoginUser() {
             toast.success(data.message);
         },
         onError: (error: any) => {
-            toast.error(error?.message || "Сталася невідома помилка");
+            toast.error(error?.message || "An unknown error occurred.");
         },
     });
 }
@@ -44,7 +44,7 @@ export function useRegisterUser() {
             toast.success(data.message);
         },
         onError: (error: any) => {
-            toast.error(error?.message || "Сталася невідома помилка");
+            toast.error(error?.message || "An unknown error occurred.");
         },
     });
 }
@@ -60,7 +60,7 @@ export function useVerifyUser() {
             return data.message;
         },
         onError: (error: any) => {
-            toast.error(error?.message || "Сталася невідома помилка");
+            toast.error(error?.message || "An unknown error occurred.");
         },
     });
 }
@@ -72,7 +72,7 @@ export function useResendVerification() {
             toast.success(data.message);
         },
         onError: (error: any) => {
-            toast.error(error?.message || "Сталася невідома помилка");
+            toast.error(error?.message || "An unknown error occurred.");
         },
     });
 }
@@ -94,7 +94,7 @@ export function useLogoutUser() {
             toast.success(data.message);
         },
         onError: (error: any) => {
-            toast.error(error?.message || "Сталася невідома помилка");
+            toast.error(error?.message || "An unknown error occurred.");
         },
     });
 }

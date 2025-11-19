@@ -5,10 +5,10 @@ function SkeletonFavoriteCard() {
                 <div className="w-full aspect-square bg-white/10" />
 
                 <div className="flex justify-between items-center flex-wrap gap-[10px]">
-                    <div className="h-[28px] w-1/2 bg-white/10 rounded" />
+                    <div className="h-[28px] w-1/2 bg-white/10" />
                     <div className="flex gap-[10px]">
-                        <div className="h-[24px] w-[80px] bg-white/10 rounded" />
-                        <div className="h-[20px] w-[70px] bg-white/10 rounded" />
+                        <div className="h-[24px] w-[80px] bg-white/10" />
+                        <div className="h-[20px] w-[70px] bg-white/10" />
                     </div>
                 </div>
             </div>

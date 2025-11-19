@@ -29,19 +29,19 @@ export function DeleteSizeModal({
     useEscapeKeyClose({ isOpen, onClose });
 
     const modalContent = (
-        <ModalWrapper onClose={onClose} modalTitle={"Видалення розміру"}>
+        <ModalWrapper onClose={onClose} modalTitle={"Deletting size"}>
             <div className="mb-6">
-                Ви дійсно хочете видалити розмір {size?.name}?
+                Do you really want to delete the size?{size?.name}?
             </div>
             <FormButtonsWrapper>
-                <MonoButton onClick={onClose}>Скасувати</MonoButton>
+                <MonoButton onClick={onClose}>Cancel</MonoButton>
                 <DeleteButton
                     onClick={async () => {
                         onClose();
                         handleDelete();
                     }}
                 >
-                    Видалити
+                    Delete
                 </DeleteButton>
             </FormButtonsWrapper>
         </ModalWrapper>
