@@ -25,7 +25,7 @@ export function SliderWrapper({ productsList, title }: SliderWrapperProps) {
 
                 <Swiper
                     spaceBetween={20}
-                    slidesPerView={1}
+                    slidesPerView={1.5}
                     modules={[Navigation, Pagination, Autoplay]}
                     navigation={true}
                     pagination={{

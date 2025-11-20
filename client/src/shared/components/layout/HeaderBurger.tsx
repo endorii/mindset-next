@@ -2,13 +2,12 @@
 
 import { useGetCollections } from "@/features/collections/hooks/useCollections";
 import { BurgerMenuIcon, CloseIcon } from "@/shared/icons";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { MenuSection } from "./MenuSection";
 
 const sections = [
     {
         title: "Navigation",
-        subtitle: "Navigation",
         items: [
             { name: "Main", href: "/" },
             { name: "Cart", href: "/cart" },
@@ -18,7 +17,6 @@ const sections = [
     },
     {
         title: "Information",
-        subtitle: "Information",
         items: [
             { name: "Our policy", href: "#" },
             { name: "About us", href: "#" },
@@ -28,7 +26,6 @@ const sections = [
     },
     {
         title: "Social media",
-        subtitle: "Social media",
         items: [
             { name: "Instagram", href: "#" },
             { name: "Telegram", href: "#" },
@@ -44,8 +41,20 @@ export function HeaderBurger() {
 
     const handleClose = () => setIsOpen(false);
 
+    useEffect(() => {
+        if (isOpen) {
+            document.body.style.overflow = "hidden";
+        } else {
+            document.body.style.overflow = "";
+        }
+
+        return () => {
+            document.body.style.overflow = "";
+        };
+    }, [isOpen]);
+
     return (
-        <div>
+        <div className="text-center">
             <button className="relative" onClick={() => setIsOpen(true)}>
                 <BurgerMenuIcon className="w-[25px] fill-none stroke-2 stroke-white" />
             </button>
@@ -58,23 +67,22 @@ export function HeaderBurger() {
                             ? "opacity-100 pointer-events-auto"
                             : "opacity-0 pointer-events-none"
                     }
-                    z-50 flex flex-col justify-center text-white overflow-y-auto pb-[100px]
+                    z-50 flex flex-col justify-center text-white overflow-y-auto py-[50px]
                 `}
             >
                 <button
                     onClick={handleClose}
-                    className="cursor-pointer fixed top-[20px] left-[23px] p-[10px] hover:bg-white/10 transition-colors"
+                    className="cursor-pointer fixed top-[20px] left-[30px] sm:left-[10px] transition-colors z-10"
                 >
-                    <CloseIcon className="w-[30px] fill-none stroke-2 stroke-white" />
+                    <CloseIcon className="w-[25px] fill-none stroke-2 stroke-white" />
                 </button>
 
-                <div className="flex flex-col w-[53%] xl:w-[70%] lg:w-full p-[30px] gap-[70px] overflow-y-auto mt-[50px]">
+                <div className="flex flex-col p-[30px] gap-[50px] overflow-y-auto">
                     {collections &&
                         collections.length > 0 &&
                         !isCollectionsPending && (
                             <MenuSection
                                 title="Our collections"
-                                subtitle="Collections"
                                 onItemClick={handleClose}
                                 items={collections.map((c) => ({
                                     name: c.name,
@@ -83,11 +91,10 @@ export function HeaderBurger() {
                             />
                         )}
 
-                    {sections.map((section) => (
+                    {sections.map((section, i) => (
                         <MenuSection
-                            key={section.title}
+                            key={i}
                             title={section.title}
-                            subtitle={section.subtitle}
                             items={section.items}
                             onItemClick={handleClose}
                         />

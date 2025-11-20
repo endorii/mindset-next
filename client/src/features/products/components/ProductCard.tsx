@@ -34,12 +34,12 @@ export function ProductCard({
             </div>
 
             <div className="flex flex-col gap-[3px] flex-grow px-[10px]">
-                <div className="text-white text-3xl font-perandory tracking-wider truncate">
+                <div className="text-white text-3xl md:text-2xl sm:text-xl xs:text-lg xxs:text-base font-perandory tracking-wider truncate">
                     {product.name}
                 </div>
 
                 <div className="flex gap-[10px] justify-between items-end">
-                    <div className="flex gap-[10px] text-xl">
+                    <div className="flex gap-[10px] text-xl md:text-lg xs:text-base">
                         <div className="text-white font-bold">
                             ${product.price}
                         </div>
@@ -50,7 +50,7 @@ export function ProductCard({
                         )}
                     </div>
                     <div
-                        className={`font-perandory tracking-wider font-semibold ${
+                        className={`font-perandory tracking-wider font-semibold text-xl md:text-lg xs:text-base ${
                             product.available
                                 ? "text-green-600"
                                 : "text-red-700"

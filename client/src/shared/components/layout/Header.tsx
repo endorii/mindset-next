@@ -10,7 +10,6 @@ import { useEffect, useState } from "react";
 import { HeaderBurger } from "./HeaderBurger";
 export function Header({ serverUser }: { serverUser: IUser | null }) {
     const { data: user } = useCurrentUser();
-    // const { data: userCart } = useCartItemsFromUser();
 
     const userCart = user?.cart.length;
 
@@ -41,7 +40,7 @@ export function Header({ serverUser }: { serverUser: IUser | null }) {
     const cartAmount = user ? userCart : cartItems.length;
 
     return (
-        <header className="fixed py-[20px] px-[30px] sm:px-[10px] sm:p-[10px] flex justify-between items-center w-full bg-black/70 backdrop-blur-xl text-white z-[100] shadow-custom">
+        <header className="fixed py-[20px] px-[30px] sm:px-[10px] sm:py-[20px] flex justify-between items-center w-full bg-black/70 backdrop-blur-xl text-white z-[100] shadow-custom">
             <HeaderBurger />
             <Link
                 href="/"
