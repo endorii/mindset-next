@@ -171,7 +171,7 @@ export function ProductContent({
                             className={`text-xl font-perandory tracking-wider ${
                                 product.available
                                     ? "text-green-600"
-                                    : "text-red-500"
+                                    : "text-red-600"
                             }`}
                         >
                             {product.available ? "In stock" : "Out of stock"}
@@ -182,7 +182,7 @@ export function ProductContent({
                         {product.description}
                     </div>
                     <hr className="w-full border-white/10 border-t" />
-                    <div className="text-sm text-neutral-200 break-words">
+                    <div className="text-sm font-light text-neutral-200 break-words">
                         {product.composition}
                     </div>
 

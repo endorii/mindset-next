@@ -25,10 +25,11 @@ export function useUserOrders() {
     });
 }
 
-export function useOrderByStripeSessionId(sessionId: string) {
+export function useOrderByStripeSessionId(sessionId: string | null | undefined) {
     return useQuery({
         queryKey: ["order", sessionId],
-        queryFn: () => getOrderByStripeSessionId(sessionId),
+        queryFn: () => getOrderByStripeSessionId(sessionId!),
+        enabled: !!sessionId,
     });
 }
 

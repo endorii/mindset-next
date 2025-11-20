@@ -53,7 +53,7 @@ export function ProductReviewsList({ reviews }: ProductReviewsListProps) {
                                             )}
                                         </div>
 
-                                        <div className="text-sm">
+                                        <div className="text-sm font-light">
                                             {review.content}
                                         </div>
 
@@ -135,7 +135,7 @@ export function ProductReviewsList({ reviews }: ProductReviewsListProps) {
                                                     )}
                                                 </div>
                                             </div>
-                                            <div className="text-sm">
+                                            <div className="text-sm font-light">
                                                 {review.adminReply}
                                             </div>
                                         </div>

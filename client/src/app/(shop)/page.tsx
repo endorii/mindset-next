@@ -11,7 +11,7 @@ export const metadata: Metadata = {
     description: "Lour style - your life vision.",
     openGraph: {
         title: "Mindset",
-        description: "Online cloathes shop.",
+        description: "Online clothes shop.",
         url: "https://localhost:3000",
         siteName: "Mindset",
         locale: "en_US",

@@ -60,36 +60,38 @@ export function DeleteAccountModal({
 
     const modalContent = (
         <ModalWrapper onClose={onClose} modalTitle={"Deletting account"}>
-            <form onSubmit={handleSubmit(handleDelete)}>
+            <form
+                onSubmit={handleSubmit(handleDelete)}
+                className="flex flex-col gap-[15px]"
+            >
                 <div className="text-neutral-200 text-[16px] leading-1.6 font-light">
-                    Do you really want to Delete your account?
+                    Do you really want to Delete your account? Enter password to
+                    confirm.
                 </div>
-                <div className="text-[16px] flex flex-col gap-[10px]">
-                    <div>Enter password to confirm.</div>
-                    <InputField
-                        label={"Password*"}
-                        type="password"
-                        {...register("password", {
-                            required: "Enter password",
-                            minLength: {
-                                value: 8,
-                                message:
-                                    "Password must contain at least 8 characters",
-                            },
-                            maxLength: {
-                                value: 32,
-                                message:
-                                    "Password must not exceed 32 characters.",
-                            },
-                            pattern: {
-                                value: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d@$!%*?&]{8,}$/,
-                                message:
-                                    "Password must contain letters and numbers",
-                            },
-                        })}
-                        errorMessage={errors.password?.message}
-                    />
-                </div>
+
+                <InputField
+                    label={"Password*"}
+                    type="password"
+                    {...register("password", {
+                        required: "Enter password",
+                        minLength: {
+                            value: 8,
+                            message:
+                                "Password must contain at least 8 characters",
+                        },
+                        maxLength: {
+                            value: 32,
+                            message: "Password must not exceed 32 characters.",
+                        },
+                        pattern: {
+                            value: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d@$!%*?&]{8,}$/,
+                            message:
+                                "Password must contain letters and numbers",
+                        },
+                    })}
+                    errorMessage={errors.password?.message}
+                />
+
                 {modalMessage && (
                     <p className="text-red-500 text-sm">{modalMessage}</p>
                 )}

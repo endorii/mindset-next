@@ -1,26 +1,23 @@
 "use client";
 
-import { useCartItemsFromUser } from "@/features/shop/cart/hooks/useCart";
-import { useFavoritesFromUser } from "@/features/shop/favorites/hooks/useFavorites";
 import { useCurrentUser } from "@/features/shop/user-info/hooks/useUsers";
 import { IUser } from "@/features/shop/user-info/types/user.types";
 import { UserIcon } from "@/shared/icons";
 import { useCartStore } from "@/store/useCartStore";
-import { useFavoritesStore } from "@/store/useFavoritesStore";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { HeaderBurger } from "./HeaderBurger";
 export function Header({ serverUser }: { serverUser: IUser | null }) {
     const { data: user } = useCurrentUser();
-    const { data: userFavorites } = useFavoritesFromUser();
-    const { data: userCart } = useCartItemsFromUser();
+    // const { data: userCart } = useCartItemsFromUser();
+
+    const userCart = user?.cart.length;
 
     const [showTitle, setShowTitle] = useState(false);
 
     const pathname = usePathname();
     const { cartItems } = useCartStore();
-    const { favoriteItems } = useFavoritesStore();
 
     useEffect(() => {
         const handleScroll = () => {
@@ -41,8 +38,7 @@ export function Header({ serverUser }: { serverUser: IUser | null }) {
         };
     }, [pathname]);
 
-    const cart = user ? userCart || [] : cartItems;
-    const favorites = user ? userFavorites || [] : favoriteItems;
+    const cartAmount = user ? userCart : cartItems.length;
 
     return (
         <header className="fixed py-[20px] px-[30px] sm:px-[10px] sm:p-[10px] flex justify-between items-center w-full bg-black/70 backdrop-blur-xl text-white z-[100] shadow-custom">
@@ -65,8 +61,8 @@ export function Header({ serverUser }: { serverUser: IUser | null }) {
                         {/* <CartIcon className="w-[27px] stroke-white stroke-2" /> */}
                         <div>
                             cart
-                            {Array.isArray(cart) && cart.length > 0
-                                ? `(${cart.length})`
+                            {cartAmount && cartAmount
+                                ? `(${cartAmount})`
                                 : null}
                         </div>
                     </Link>
