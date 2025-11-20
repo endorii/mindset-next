@@ -2,6 +2,7 @@
 
 import { useEscapeKeyClose } from "@/shared/hooks";
 import { MonoButton } from "@/shared/ui/buttons";
+import { MonoButtonUnderlined } from "@/shared/ui/buttons/MonoButtonUnderlined";
 import { InputField } from "@/shared/ui/inputs/InputField";
 import {
     FormButtonsWrapper,
@@ -66,7 +67,7 @@ export function EditColorModal({ isOpen, onClose, color }: EditColorProps) {
     const modalContent = (
         <ModalWrapper onClose={onClose} modalTitle={"Color editing"}>
             <form
-                className="flex flex-col gap-[15px]"
+                className="flex flex-col gap-[10px]"
                 onSubmit={handleSubmit(onSubmit)}
             >
                 <FormFillingWrapper>
@@ -114,13 +115,13 @@ export function EditColorModal({ isOpen, onClose, color }: EditColorProps) {
                     <p className="text-red-500 text-sm">{modalMessage}</p>
                 )}
                 <FormButtonsWrapper>
-                    <MonoButton
+                    <MonoButtonUnderlined
                         type="button"
                         onClick={onClose}
                         disabled={editColorMutation.isPending}
                     >
                         Cancel
-                    </MonoButton>
+                    </MonoButtonUnderlined>
                     <MonoButton
                         type="submit"
                         disabled={editColorMutation.isPending}

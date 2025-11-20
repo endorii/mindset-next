@@ -20,8 +20,8 @@ export function StatsWrapper() {
         >
             <Suspense
                 fallback={
-                    <div className="flex flex-col gap-[15px]">
-                        <div className="flex flex-col gap-[15px]">
+                    <div className="flex flex-col gap-[10px]">
+                        <div className="flex flex-col gap-[10px]">
                             <LineChartSkeleton />
                             <FastStatSkeleton />
                         </div>
@@ -33,7 +33,7 @@ export function StatsWrapper() {
                             <PieChartSkeleton />
                             <FastStatMiniSkeleton />
                         </div>
-                        <div className="flex flex-col gap-[15px]">
+                        <div className="flex flex-col gap-[10px]">
                             <LineChartSkeleton />
                             <FastStatSkeleton />
                         </div>

@@ -2,6 +2,7 @@
 
 import { useEscapeKeyClose } from "@/shared/hooks";
 import { MonoButton } from "@/shared/ui/buttons";
+import { MonoButtonUnderlined } from "@/shared/ui/buttons/MonoButtonUnderlined";
 import { InputField } from "@/shared/ui/inputs/InputField";
 import {
     FormButtonsWrapper,
@@ -73,7 +74,7 @@ export function EditUserInfoModal({
     const modalContent = (
         <ModalWrapper onClose={onClose} modalTitle={"Edit user information"}>
             <form
-                className="flex flex-col gap-[15px]"
+                className="flex flex-col gap-[10px]"
                 onSubmit={handleSubmit(onSubmit)}
             >
                 <FormFillingWrapper>
@@ -130,7 +131,9 @@ export function EditUserInfoModal({
                     <p className="text-red-500 text-sm">{modalMessage}</p>
                 )}
                 <FormButtonsWrapper>
-                    <MonoButton onClick={onClose}>Cancel</MonoButton>
+                    <MonoButtonUnderlined onClick={onClose}>
+                        Cancel
+                    </MonoButtonUnderlined>
                     <MonoButton type="submit">Confirm</MonoButton>
                 </FormButtonsWrapper>
             </form>

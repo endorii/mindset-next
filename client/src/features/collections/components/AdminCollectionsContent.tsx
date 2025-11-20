@@ -57,7 +57,7 @@ export function AdminCollectionsContent() {
     };
 
     return (
-        <div className="flex flex-col gap-[15px]">
+        <div className="flex flex-col gap-[10px]">
             <TitleWithAddElementButton
                 title={"List of collections"}
                 onClick={() => setActiveModal("add")}

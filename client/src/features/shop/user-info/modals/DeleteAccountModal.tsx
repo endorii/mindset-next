@@ -1,7 +1,8 @@
 "use client";
 
 import { useEscapeKeyClose } from "@/shared/hooks";
-import { DeleteButton, MonoButton } from "@/shared/ui/buttons";
+import { DeleteButton } from "@/shared/ui/buttons";
+import { MonoButtonUnderlined } from "@/shared/ui/buttons/MonoButtonUnderlined";
 import { InputField } from "@/shared/ui/inputs/InputField";
 import { FormButtonsWrapper, ModalWrapper } from "@/shared/ui/wrappers";
 import { useEffect, useState } from "react";
@@ -60,10 +61,10 @@ export function DeleteAccountModal({
     const modalContent = (
         <ModalWrapper onClose={onClose} modalTitle={"Deletting account"}>
             <form onSubmit={handleSubmit(handleDelete)}>
-                <div className="mb-6 text-white/80 text-[16px]">
+                <div className="text-neutral-200 text-[16px] leading-1.6 font-light">
                     Do you really want to Delete your account?
                 </div>
-                <div className="mb-6 text-white/80 text-[16px] flex flex-col gap-[15px]">
+                <div className="text-[16px] flex flex-col gap-[10px]">
                     <div>Enter password to confirm.</div>
                     <InputField
                         label={"Password*"}
@@ -93,7 +94,9 @@ export function DeleteAccountModal({
                     <p className="text-red-500 text-sm">{modalMessage}</p>
                 )}
                 <FormButtonsWrapper>
-                    <MonoButton onClick={onClose}>Cancel</MonoButton>
+                    <MonoButtonUnderlined onClick={onClose}>
+                        Cancel
+                    </MonoButtonUnderlined>
                     <DeleteButton type="submit">Delete</DeleteButton>
                 </FormButtonsWrapper>
             </form>

@@ -11,7 +11,7 @@ export function Welcome() {
                 </div>
 
                 <div
-                    className={`absolute bottom-5 text-center w-full text-7xl xl:text-4xl md:text-3xl xs:text-2xl font-ballet font-light self-start justify-start transition-all duration-450 opacity-100 text-white/40 z-1`}
+                    className={`absolute bottom-5 text-center w-full text-7xl xl:text-4xl md:text-3xl xs:text-2xl font-ballet font-light self-start justify-start transition-all duration-450 opacity-100 text-neutral-300 z-1`}
                 >
                     your style - your life vision
                 </div>

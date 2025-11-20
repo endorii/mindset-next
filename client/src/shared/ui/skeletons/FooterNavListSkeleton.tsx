@@ -1,6 +1,6 @@
 export function FooterNavListSkeleton() {
     return (
-        <div className="flex flex-col gap-[15px] w-full animate-pulse">
+        <div className="flex flex-col gap-[10px] w-full animate-pulse">
             <div className="h-6 w-32 bg-white/10"></div>
 
             <div className="flex flex-col gap-[10px]">

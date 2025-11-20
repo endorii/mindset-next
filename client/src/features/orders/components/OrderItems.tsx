@@ -15,7 +15,7 @@ export function OrderItems({
     router: any;
 }) {
     return (
-        <div className="flex flex-col gap-[15px]">
+        <div className="flex flex-col gap-[10px]">
             {items.map((item) => {
                 const totalOld =
                     Number(item.product?.oldPrice) * Number(item.quantity);

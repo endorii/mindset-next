@@ -19,7 +19,7 @@ export function AttributesContent() {
         useState<string>("colors");
 
     return (
-        <div className="flex flex-col gap-[15px]">
+        <div className="flex flex-col gap-[10px]">
             <div className="flex xs:flex-col items-center xs:items-start gap-[10px] bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[10px] w-full">
                 {ATTRIBUTES.map((attr, i) => (
                     <ChooseButton
@@ -41,7 +41,7 @@ export function AttributesContent() {
                 >
                     <Suspense
                         fallback={
-                            <div className="flex flex-col gap-[15px]">
+                            <div className="flex flex-col gap-[10px]">
                                 <TitleWithButtonSkeleton />
                                 <ColorsSkeleton />
                             </div>
@@ -60,7 +60,7 @@ export function AttributesContent() {
                 >
                     <Suspense
                         fallback={
-                            <div className="flex flex-col gap-[15px]">
+                            <div className="flex flex-col gap-[10px]">
                                 <TitleWithButtonSkeleton />
                                 <SizesAndTypesSkeleton />
                             </div>
@@ -79,7 +79,7 @@ export function AttributesContent() {
                 >
                     <Suspense
                         fallback={
-                            <div className="flex flex-col gap-[15px]">
+                            <div className="flex flex-col gap-[10px]">
                                 <TitleWithButtonSkeleton />
                                 <SizesAndTypesSkeleton />
                             </div>

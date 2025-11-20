@@ -24,7 +24,7 @@ export function AtributesInfoField({
     atributeList,
 }: AtributesInfoFieldProps) {
     return (
-        <div className="flex flex-col gap-[7px]">
+        <div className="flex flex-col gap-[3px]">
             <Label>{label}</Label>
             <div className="border border-white/10 bg-black/10 px-[10px] py-[7px] flex flex-wrap gap-[10px] w-full">
                 {atributeList.length > 0

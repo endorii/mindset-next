@@ -13,8 +13,8 @@ export function UploadBannerWithPreview({
     bannerError,
 }: UploadBannerWithPreviewProps) {
     return (
-        <div className="flex flex-col gap-[7px] w-full">
-            <Label>Banner</Label>
+        <div className="flex flex-col gap-[3px] w-full">
+            <Label>Banner*</Label>
             <label
                 htmlFor="banner"
                 className={`group border min-h-[200px] border-dashed ${
@@ -25,12 +25,12 @@ export function UploadBannerWithPreview({
                     <Image
                         src={image}
                         alt="banner"
-                        width={450}
-                        height={300}
-                        className="w-200"
+                        width={400}
+                        height={400}
+                        className="max-h-[400px] object-contain"
                     />
                 ) : (
-                    <span className="text-4xl text-white/40 group-hover:text-white transition-all duration-300">
+                    <span className="text-3xl font-light text-neutral-500 group-hover:text-white transition-all duration-300">
                         +
                     </span>
                 )}

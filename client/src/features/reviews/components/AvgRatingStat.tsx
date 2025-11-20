@@ -36,7 +36,7 @@ export function AvgRatingStat({ reviews }: AvgRatingStatProps) {
     }, [reviews]);
 
     return (
-        <div className="flex flex-col gap-[15px] w-1/3 sm:w-full">
+        <div className="flex flex-col gap-[10px] w-1/3 sm:w-full">
             <div className="flex items-center gap-[10px] mb-[10px] ">
                 <div className="font-light text-base text-neutral-400">
                     Average clients review score
@@ -46,7 +46,7 @@ export function AvgRatingStat({ reviews }: AvgRatingStatProps) {
                 </span>
             </div>
 
-            <div className="flex flex-col gap-[7px]">
+            <div className="flex flex-col gap-[3px]">
                 {[5, 4, 3, 2, 1].map((rating) => {
                     const count = ratingCounts[rating];
                     const percent = total

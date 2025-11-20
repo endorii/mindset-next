@@ -130,7 +130,7 @@ export function StatsContent() {
         : "0";
     return (
         <>
-            <div className="flex flex-col gap-[15px]">
+            <div className="flex flex-col gap-[10px]">
                 <OrdersAndSalesChart orders={orders} />
                 <OrdersStatsCards
                     totalOrders={totalOrders}
@@ -144,7 +144,7 @@ export function StatsContent() {
                 />
             </div>
 
-            <div className="flex flex-col gap-[15px]">
+            <div className="flex flex-col gap-[10px]">
                 <div className="flex lg:flex-col gap-[15px]">
                     <OrdersByCollectionsChart orders={orders} />
                     <CollectionsStatsCards
@@ -163,7 +163,7 @@ export function StatsContent() {
                 </div>
             </div>
 
-            <div className="flex flex-col gap-[15px]">
+            <div className="flex flex-col gap-[10px]">
                 <UsersRegistrationsChart users={users} />
                 <UsersStatsCards
                     totalUsers={totalUsers}

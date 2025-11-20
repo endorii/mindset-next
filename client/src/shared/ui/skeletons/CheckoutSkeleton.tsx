@@ -44,7 +44,7 @@ export function CheckoutSkeleton() {
                     </div>
                 </div>
 
-                <div className="flex flex-col gap-[15px] w-1/2 bg-white/10 border border-white/5 p-[30px]">
+                <div className="flex flex-col gap-[10px] w-1/2 bg-white/10 border border-white/5 p-[30px]">
                     <div className="h-[36px] w-3/4 bg-white/10 mb-[30px]"></div>
                     <div className="flex flex-col gap-[10px]">
                         {[...Array(3)].map((_, i) => (

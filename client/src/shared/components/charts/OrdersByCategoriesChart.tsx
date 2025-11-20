@@ -25,7 +25,7 @@ export function OrdersByCategoriesChart({
 }) {
     if (!orders || orders.length === 0) {
         return (
-            <div className="  bg-white/5 p-[20px] w-full text-white/60 border border-white/5">
+            <div className="  bg-white/5 p-[20px] w-full text-neutral-200 border border-white/5">
                 There are no orders for the chart.
             </div>
         );
@@ -55,7 +55,7 @@ export function OrdersByCategoriesChart({
     }, [orders]);
 
     return (
-        <div className="  bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px] flex flex-col gap-[15px] w-2/3  lg:w-full">
+        <div className="  bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px] flex flex-col gap-[10px] w-2/3  lg:w-full">
             <h2 className="text-lg font-semibold">
                 РSales breakdown by product category
             </h2>

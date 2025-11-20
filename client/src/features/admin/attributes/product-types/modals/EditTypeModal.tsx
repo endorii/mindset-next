@@ -2,6 +2,7 @@
 
 import { useEscapeKeyClose } from "@/shared/hooks";
 import { MonoButton } from "@/shared/ui/buttons";
+import { MonoButtonUnderlined } from "@/shared/ui/buttons/MonoButtonUnderlined";
 import { InputField } from "@/shared/ui/inputs/InputField";
 import {
     FormButtonsWrapper,
@@ -61,7 +62,7 @@ export function EditTypeModal({ isOpen, onClose, type }: EditTypeProps) {
     const modalContent = (
         <ModalWrapper onClose={onClose} modalTitle={"Editing type"}>
             <form
-                className="flex flex-col gap-[15px]"
+                className="flex flex-col gap-[10px]"
                 onSubmit={handleSubmit(onSubmit)}
             >
                 <FormFillingWrapper>
@@ -93,13 +94,13 @@ export function EditTypeModal({ isOpen, onClose, type }: EditTypeProps) {
                 )}
 
                 <FormButtonsWrapper>
-                    <MonoButton
+                    <MonoButtonUnderlined
                         type="button"
                         onClick={onClose}
                         disabled={editTypeMutation.isPending}
                     >
                         Cancel
-                    </MonoButton>
+                    </MonoButtonUnderlined>
                     <MonoButton
                         type="submit"
                         disabled={editTypeMutation.isPending}

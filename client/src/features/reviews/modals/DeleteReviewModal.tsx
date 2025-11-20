@@ -1,7 +1,8 @@
 "use client";
 
 import { useEscapeKeyClose } from "@/shared/hooks";
-import { DeleteButton, MonoButton } from "@/shared/ui/buttons";
+import { DeleteButton } from "@/shared/ui/buttons";
+import { MonoButtonUnderlined } from "@/shared/ui/buttons/MonoButtonUnderlined";
 import { FormButtonsWrapper, ModalWrapper } from "@/shared/ui/wrappers";
 import { createPortal } from "react-dom";
 import { useDeleteReview } from "../hooks/useReviews";
@@ -20,6 +21,8 @@ export function DeleteReviewModal({
 }: DeleteReviewModalProps) {
     if (!isOpen) return null;
 
+    console.log(review);
+
     const deleteReviewMutation = useDeleteReview();
 
     const handleDelete = async () => {
@@ -31,15 +34,21 @@ export function DeleteReviewModal({
 
     const modalContent = (
         <ModalWrapper onClose={onClose} modalTitle={"Deletting review"}>
-            <div className="mb-6 text-white/80 text-[16px] leading-[1.6]">
-                Do you really want to Delete product review?{" "}
-                <span className="font-semibold text-white">
-                    {review.product?.name}
+            <div className="text-neutral-200 text-[16px] leading-[1.6] font-light">
+                Do you really want to Delete product review{" "}
+                <span className="font-semibold underline">
+                    {review.orderItem?.product?.name}
+                </span>{" "}
+                by{" "}
+                <span className="font-semibold underline">
+                    {review.senderEmail}
                 </span>
                 ?
             </div>
             <FormButtonsWrapper>
-                <MonoButton onClick={onClose}>Cancel</MonoButton>
+                <MonoButtonUnderlined onClick={onClose}>
+                    Cancel
+                </MonoButtonUnderlined>
                 <DeleteButton
                     onClick={() => {
                         onClose();

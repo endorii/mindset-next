@@ -1,7 +1,7 @@
 "use client";
 
 import { useEscapeKeyClose } from "@/shared/hooks";
-import { MonoButton } from "@/shared/ui/buttons";
+import { MonoButtonUnderlined } from "@/shared/ui/buttons/MonoButtonUnderlined";
 import { InfoField } from "@/shared/ui/inputs/InfoField";
 import {
     FormButtonsWrapper,
@@ -46,8 +46,10 @@ export function OrderInfoModal({
         <ModalWrapper onClose={onClose} modalTitle={"Order information"}>
             <FormFillingWrapper>
                 <div className="grid grid-cols-3 gap-[15px]">
-                    <div className="flex flex-col gap-[15px]">
-                        <div className="text-lg">Contact information</div>
+                    <div className="flex flex-col gap-[10px]">
+                        <div className="text-2xl font-perandory tracking-wider">
+                            Contact information
+                        </div>
                         <div className="flex flex-col gap-[15px]">
                             <InfoField label="Full name" value={fullName} />
                             <InfoField
@@ -60,8 +62,10 @@ export function OrderInfoModal({
                             />
                         </div>
                     </div>
-                    <div className="flex flex-col gap-[15px]">
-                        <div className="text-lg">Delivery address</div>
+                    <div className="flex flex-col gap-[10px]">
+                        <div className="text-2xl font-perandory tracking-wider">
+                            Delivery address
+                        </div>
                         <div className="flex flex-col gap-[15px]">
                             <InfoField label="Region" value={area} />
                             <InfoField label="City" value={city} />
@@ -71,8 +75,10 @@ export function OrderInfoModal({
                             />
                         </div>
                     </div>
-                    <div className="flex flex-col gap-[15px]">
-                        <div className="text-lg">Order information</div>
+                    <div className="flex flex-col gap-[10px]">
+                        <div className="text-2xl font-perandory tracking-wider">
+                            Order information
+                        </div>
                         <div className="flex flex-col gap-[15px]">
                             <InfoField label="Status" value={status} />
                             <InfoField label="Sum of order" value={total} />
@@ -138,7 +144,7 @@ export function OrderInfoModal({
                                     </div>
                                 ))
                             ) : (
-                                <div className="p-[20px] text-sm text-white/60">
+                                <div className="p-[20px] text-sm text-neutral-200">
                                     Products not found
                                 </div>
                             )}
@@ -146,7 +152,9 @@ export function OrderInfoModal({
                     </div>
                 </div>
                 <FormButtonsWrapper>
-                    <MonoButton onClick={onClose}>Close</MonoButton>
+                    <MonoButtonUnderlined onClick={onClose}>
+                        Close
+                    </MonoButtonUnderlined>
                 </FormButtonsWrapper>
             </FormFillingWrapper>
         </ModalWrapper>

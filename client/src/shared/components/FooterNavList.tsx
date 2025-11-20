@@ -5,7 +5,7 @@ interface FooterNavListProps {
 
 export function FooterNavList({ title, children }: FooterNavListProps) {
     return (
-        <div className="flex flex-col gap-[15px] w-full">
+        <div className="flex flex-col gap-[10px] w-full">
             <div className="text-xl font-bold font-perandory tracking-wider">
                 {title}
             </div>

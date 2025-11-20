@@ -4,7 +4,7 @@ import { StatCard } from "@/shared/components/cards/StatCard";
 export function HomeFastStat({ orders }: { orders: IOrder[] | undefined }) {
     if (!orders || orders.length === 0) {
         return (
-            <div className="  bg-white/5 p-[20px] text-white/60 border border-white/5">
+            <div className="  bg-white/5 p-[20px] text-neutral-200 border border-white/5">
                 There are no orders for quick statistics.
             </div>
         );

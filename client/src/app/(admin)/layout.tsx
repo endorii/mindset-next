@@ -45,7 +45,7 @@ export default function AdminLayout({
 
     if (isChecking || !user || user.role !== "ADMIN") {
         return (
-            <div className="text-white flex flex-col gap-[15px] h-screen w-full justify-center items-center pb-[10%]">
+            <div className="text-white flex flex-col gap-[10px] h-screen w-full justify-center items-center pb-[10%]">
                 <div className="text-xl font-bold">
                     {isChecking ? "Loading admin page..." : "Pending access..."}
                 </div>

@@ -376,14 +376,14 @@ function Checkout() {
             <ShopTitle title={"Placeing an order"} />
             <form onSubmit={handleSubmit(onSubmit)}>
                 <div className="flex justify-between px-[30px] gap-[15px]">
-                    <div className="flex flex-col gap-[15px] w-1/2 bg-white/5 backdrop-blur-[100px] border border-white/5 p-[30px] h-fit">
+                    <div className="flex flex-col gap-[10px] w-1/2 bg-white/5 backdrop-blur-[100px] border border-white/5 p-[30px] h-fit">
                         <div className="flex gap-[15px] w-full">
-                            <div className="flex flex-col gap-[15px] w-1/2">
+                            <div className="flex flex-col gap-[10px] w-1/2">
                                 <div className="text-3xl font-thin">
                                     Shipping details
                                 </div>
                                 <hr className="border-t border-white/10" />
-                                <div className="flex flex-col gap-[13px] w-full">
+                                <div className="flex flex-col gap-[15px] w-full">
                                     <InputField
                                         label="Full name*"
                                         placeholder="Petrenko Petro Petrovych"
@@ -435,7 +435,7 @@ function Checkout() {
                                     />
                                 </div>
                             </div>
-                            <div className="flex flex-col gap-[15px] w-1/2">
+                            <div className="flex flex-col gap-[10px] w-1/2">
                                 <div className="text-3xl font-perandory tracking-wider">
                                     Delivery address
                                 </div>
@@ -498,7 +498,7 @@ function Checkout() {
                         <PreOrderInfo />
                     </div>
 
-                    <div className="flex flex-col gap-[15px] w-1/2 bg-white/5 backdrop-blur-[100px] border border-white/5 p-[30px] text-white">
+                    <div className="flex flex-col gap-[10px] w-1/2 bg-white/5 backdrop-blur-[100px] border border-white/5 p-[30px] text-white">
                         <CheckoutResultTable cart={mergedCart} />
                         <div>
                             <div className="text-sm font-semibold mb-2">

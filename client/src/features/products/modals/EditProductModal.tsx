@@ -11,7 +11,9 @@ import {
 import { TrashIcon } from "@/shared/icons";
 import { TAvailble, TStatus } from "@/shared/types/types";
 import { MonoButton } from "@/shared/ui/buttons";
+import { MonoButtonUnderlined } from "@/shared/ui/buttons/MonoButtonUnderlined";
 import {
+    Label,
     RenderAttributeField,
     UploadBannerWithPreview,
 } from "@/shared/ui/components";
@@ -28,7 +30,6 @@ import Image from "next/image";
 import { ChangeEvent, useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { useForm } from "react-hook-form";
-import { Label } from "recharts";
 import { useEditProduct } from "../hooks/useProducts";
 import { IProduct } from "../types/products.types";
 
@@ -290,7 +291,7 @@ export function EditProductModal({
         <ModalWrapper onClose={onClose} modalTitle={"Product editing"}>
             <form
                 onSubmit={handleSubmit(onSubmit)}
-                className="flex flex-col gap-[15px]"
+                className="flex flex-col gap-[10px]"
             >
                 <FormFillingWrapper>
                     <div className="grid grid-cols-3 gap-[15px]">
@@ -353,7 +354,7 @@ export function EditProductModal({
                             errorMessage={errors.oldPrice?.message}
                         />
 
-                        <BasicSelector<string>
+                        <BasicSelector
                             label={"Accessibility*"}
                             register={{
                                 ...register("available", {
@@ -366,7 +367,7 @@ export function EditProductModal({
                             getOptionValue={(available) => available}
                             errorMessage={errors.available?.message}
                         />
-                        <BasicSelector<string>
+                        <BasicSelector
                             label={"Status*"}
                             register={{
                                 ...register("status", {
@@ -425,13 +426,13 @@ export function EditProductModal({
                         handleBannerChange={handleBannerChange}
                         bannerError={bannerError}
                     />
-                    <div className="flex flex-col gap-[7px] w-full max-w-[300px]">
+                    <div className="flex flex-col gap-[3px] w-full">
                         <Label>Additional images</Label>
                         <label
                             htmlFor="images"
                             className={`group border min-h-[200px] border-dashed border-white/10 flex items-center justify-center cursor-pointer hover:bg-white/3 overflow-hidden group-hover:text-white transition-all duration-300`}
                         >
-                            <span className="text-4xl text-white/40 group-hover:text-white transition-all duration-300">
+                            <span className="text-3xl font-light text-neutral-500 group-hover:text-white transition-all duration-300">
                                 +
                             </span>
                         </label>
@@ -448,18 +449,18 @@ export function EditProductModal({
                             {imagesPreview.map((src, i) => (
                                 <div
                                     key={i}
-                                    className="relative group w-[100px] h-[100px] group cursor-pointer"
+                                    className="relative group max-h-[150px] group cursor-pointer"
                                     onClick={() => removeImage(i)}
                                 >
                                     <Image
                                         src={src}
                                         alt={`img-${i}`}
-                                        width={100}
-                                        height={100}
-                                        className="object-cover  "
+                                        width={150}
+                                        height={150}
+                                        className="max-h-[150px] object-contain"
                                     />
-                                    <div className="absolute flex items-center justify-center opacity-0 group-hover:opacity-100 top-0 right-0 bg-black/40 w-full h-full transition-all duration-200">
-                                        <TrashIcon className=" w-[35px] fill-none  stroke-white stroke-[1.5] " />
+                                    <div className="absolute flex items-center justify-center opacity-0 group-hover:opacity-100 top-0 right-0 bg-black/50 backdrop-blur-lg w-full h-full transition-all duration-200">
+                                        <TrashIcon className="w-[40px] fill-none  stroke-white stroke-[1.2] " />
                                     </div>
                                 </div>
                             ))}
@@ -470,7 +471,7 @@ export function EditProductModal({
                     <p className="text-red-500 text-sm">{modalMessage}</p>
                 )}
                 <FormButtonsWrapper>
-                    <MonoButton
+                    <MonoButtonUnderlined
                         type="button"
                         onClick={() => {
                             setBanner(null);
@@ -491,7 +492,7 @@ export function EditProductModal({
                         }
                     >
                         Cancel
-                    </MonoButton>
+                    </MonoButtonUnderlined>
                     <MonoButton
                         type="submit"
                         disabled={

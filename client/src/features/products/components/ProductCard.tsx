@@ -10,7 +10,7 @@ export function ProductCard({
     path: string;
 }) {
     return (
-        <Link href={path} className="relative flex flex-col gap-[15px] h-full">
+        <Link href={path} className="relative flex flex-col gap-[10px] h-full">
             <div className="relative">
                 <Image
                     className="relative w-full"
@@ -33,7 +33,7 @@ export function ProductCard({
                 </ul>
             </div>
 
-            <div className="flex flex-col gap-[7px] flex-grow px-[10px]">
+            <div className="flex flex-col gap-[3px] flex-grow px-[10px]">
                 <div className="text-white text-3xl font-perandory tracking-wider truncate">
                     {product.name}
                 </div>
@@ -44,7 +44,7 @@ export function ProductCard({
                             ${product.price}
                         </div>
                         {product.oldPrice && (
-                            <div className="line-through text-base text-white/60">
+                            <div className="line-through text-base text-neutral-200">
                                 ${product.oldPrice}
                             </div>
                         )}

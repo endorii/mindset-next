@@ -45,7 +45,7 @@ export function Footer() {
                     >
                         mindset
                     </Link>
-                    <div className="text-xl font-ballet tracking-wide font-light text-white/70">
+                    <div className="text-xl font-ballet tracking-wide font-light text-neutral-200">
                         More than clothes.
                     </div>
                 </div>
@@ -88,7 +88,7 @@ export function Footer() {
                     <FooterNavList title="Contacts">
                         <Link
                             href="tel:0970000000"
-                            className="text-white/80 text-sm flex gap-[10px] items-center hover:text-white group"
+                            className="text-neutral-200 text-sm flex gap-[10px] items-center hover:text-white group"
                         >
                             <PhoneIcon className="group-hover:stroke-white fill-none w-[25px] stroke-2 stroke-white/80" />
                             <div className="group-hover:underline">
@@ -97,7 +97,7 @@ export function Footer() {
                         </Link>
                         <Link
                             href="mailto:job.tenshi@gmail.com"
-                            className="text-white/80 text-sm flex gap-[10px] items-center hover:text-white group"
+                            className="text-neutral-200 text-sm flex gap-[10px] items-center hover:text-white group"
                         >
                             <MailIcon className="group-hover:stroke-white fill-none w-[25px] stroke-2 stroke-white/80" />
                             <div className="group-hover:underline">
@@ -107,7 +107,7 @@ export function Footer() {
                         <Link
                             target="_blank"
                             href="https://maps.app.goo.gl/B2e3TfjzMYLEjstU6"
-                            className="text-white/80 text-sm flex gap-[10px] items-center hover:text-white group"
+                            className="text-neutral-200 text-sm flex gap-[10px] items-center hover:text-white group"
                         >
                             <LocationIcon className="group-hover:stroke-white fill-none w-[25px] stroke-2 stroke-white/80" />
                             <div className="group-hover:underline">
@@ -138,7 +138,7 @@ export function Footer() {
                     </FooterNavList>
                 </div>
             </div>
-            <div className="relative border-t border-white/10 text-xs text-white/50 font-semibold">
+            <div className="relative border-t border-white/10 text-xs text-neutral-300 font-semibold">
                 <div className="absolute w-full flex justify-center items-center p-[10px]">
                     Mindset © 2025
                 </div>

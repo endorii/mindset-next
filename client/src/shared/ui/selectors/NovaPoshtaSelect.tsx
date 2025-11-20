@@ -27,7 +27,7 @@ export function NovaPoshtaSelect({
     errorMessage,
 }: NovaPoshtaSelectProps) {
     return (
-        <div className="flex flex-col gap-[7px] w-full">
+        <div className="flex flex-col gap-[3px] w-full">
             <Label>{label}</Label>
             <select
                 className={`border px-[10px] py-[10px] bg-black/20 text-white outline-none ${

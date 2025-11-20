@@ -18,7 +18,7 @@ export function AdminOrdersWrapper() {
         >
             <Suspense
                 fallback={
-                    <div className="flex flex-col gap-[15px]">
+                    <div className="flex flex-col gap-[10px]">
                         <FilterSectionSkeleton />
                         <FilterSectionSkeleton />
                         <AdminProductsSkeleton />

@@ -15,8 +15,8 @@ export function ProductPageSkeleton() {
                 </div>
             </div>
 
-            <div className="flex flex-col gap-[15px] w-[45%] lg:w-full">
-                <div className="flex flex-col gap-[15px] bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 px-[40px] xl:p-[15px] py-[20px]">
+            <div className="flex flex-col gap-[10px] w-[45%] lg:w-full">
+                <div className="flex flex-col gap-[10px] bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 px-[40px] xl:p-[15px] py-[20px]">
                     <div className="w-[150px] h-[20px] bg-white/10"></div>
                     <div className="w-[60%] h-[40px] bg-white/10"></div>
 

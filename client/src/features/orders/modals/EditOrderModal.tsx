@@ -7,6 +7,7 @@ import {
 } from "@/shared/api/nova-post.api";
 import { useEscapeKeyClose } from "@/shared/hooks";
 import { MonoButton } from "@/shared/ui/buttons";
+import { MonoButtonUnderlined } from "@/shared/ui/buttons/MonoButtonUnderlined";
 import { Label } from "@/shared/ui/components";
 import { InputField } from "@/shared/ui/inputs/InputField";
 import {
@@ -181,11 +182,11 @@ export function EditOrderModal({
         <ModalWrapper onClose={onClose} modalTitle={"Editing an order"}>
             <form
                 onSubmit={handleSubmit(onSubmit)}
-                className="flex flex-col gap-[15px]"
+                className="flex flex-col gap-[10px]"
             >
                 <FormFillingWrapper>
                     <div className="grid grid-cols-3 gap-[15px]">
-                        <div className="flex flex-col gap-[15px]">
+                        <div className="flex flex-col gap-[10px]">
                             <div className="text-lg">Contact information</div>
                             <div className="flex flex-col gap-[15px]">
                                 <InputField
@@ -230,14 +231,14 @@ export function EditOrderModal({
                                 />
                             </div>
                         </div>
-                        <div className="flex flex-col gap-[15px]">
+                        <div className="flex flex-col gap-[10px]">
                             <div className="text-lg">Delivery address</div>
                             <Controller
                                 name="area"
                                 control={control}
                                 rules={{ required: "Choose an area" }}
                                 render={({ field }) => (
-                                    <div className="flex flex-col gap-[7px]">
+                                    <div className="flex flex-col gap-[3px]">
                                         <Label>Region*</Label>
                                         <select
                                             {...field}
@@ -287,7 +288,7 @@ export function EditOrderModal({
                                 control={control}
                                 rules={{ required: "Choose a city" }}
                                 render={({ field }) => (
-                                    <div className="flex flex-col gap-[7px]">
+                                    <div className="flex flex-col gap-[3px]">
                                         <Label>City</Label>
                                         <select
                                             {...field}
@@ -339,7 +340,7 @@ export function EditOrderModal({
                                     required: "Choose a branch/post office",
                                 }}
                                 render={({ field }) => (
-                                    <div className="flex flex-col gap-[7px]">
+                                    <div className="flex flex-col gap-[3px]">
                                         <Label>Branch/post office</Label>
                                         <select
                                             {...field}
@@ -386,9 +387,9 @@ export function EditOrderModal({
                                 )}
                             />
                         </div>
-                        <div className="flex flex-col gap-[15px]">
+                        <div className="flex flex-col gap-[10px]">
                             <div className="text-lg">Order information</div>
-                            <div className="flex flex-col gap-[15px]">
+                            <div className="flex flex-col gap-[10px]">
                                 <InputField
                                     label="Additional information*"
                                     {...register("additionalInfo")}
@@ -404,7 +405,7 @@ export function EditOrderModal({
                                             "Choose a status from the list",
                                     }}
                                     render={({ field }) => (
-                                        <div className="flex flex-col gap-[7px]">
+                                        <div className="flex flex-col gap-[3px]">
                                             <Label>Status</Label>
                                             <select
                                                 {...field}
@@ -444,7 +445,7 @@ export function EditOrderModal({
                     <p className="text-red-500 text-sm">{modalMessage}</p>
                 )}
                 <FormButtonsWrapper>
-                    <MonoButton
+                    <MonoButtonUnderlined
                         type="button"
                         onClick={() => {
                             reset();
@@ -457,7 +458,7 @@ export function EditOrderModal({
                         }
                     >
                         Cancel
-                    </MonoButton>
+                    </MonoButtonUnderlined>
                     <MonoButton
                         type="submit"
                         disabled={

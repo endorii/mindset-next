@@ -31,7 +31,7 @@ export function StarRating({ control, errorMessage }: StarRatingProps) {
                                         ? "text-white"
                                         : errorMessage
                                         ? "text-red-500"
-                                        : "text-white/30"
+                                        : "text-neutral-400"
                                 }`}
                             >
                                 {field.value >= num ? "★" : "☆"}

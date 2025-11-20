@@ -3,6 +3,7 @@
 import { IOrderItem } from "@/features/orders/types/orders.types";
 import { useEscapeKeyClose } from "@/shared/hooks";
 import { MonoButton } from "@/shared/ui/buttons";
+import { MonoButtonUnderlined } from "@/shared/ui/buttons/MonoButtonUnderlined";
 import { InputField } from "@/shared/ui/inputs/InputField";
 import { BasicTextarea } from "@/shared/ui/textareas/BasicTextarea";
 import {
@@ -84,7 +85,7 @@ export function AddReviewModal({
     const modalContent = (
         <ModalWrapper onClose={onClose} modalTitle={"Leave a review"}>
             <form
-                className="flex flex-col gap-[15px]"
+                className="flex flex-col gap-[10px]"
                 onSubmit={handleSubmit(onSubmit)}
             >
                 <FormFillingWrapper>
@@ -140,13 +141,13 @@ export function AddReviewModal({
                     <p className="text-red-500 text-sm">{modalMessage}</p>
                 )}
                 <FormButtonsWrapper>
-                    <MonoButton
+                    <MonoButtonUnderlined
                         type="button"
                         onClick={handleClose}
                         disabled={createReviewMutation.isPending}
                     >
                         Cancel
-                    </MonoButton>
+                    </MonoButtonUnderlined>
                     <MonoButton
                         type="submit"
                         disabled={createReviewMutation.isPending}

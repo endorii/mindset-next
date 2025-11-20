@@ -25,13 +25,13 @@ export function BasicSelector<T>({
     disabled,
 }: BasicSelectorProps<T>) {
     return (
-        <div className="flex flex-col gap-[7px]">
+        <div className="flex flex-col gap-[3px]">
             <Label>{label}</Label>
             <select
                 {...register}
-                className={`border ${
+                className={`border font-light ${
                     errorMessage ? "border-red-500" : "border-white/10"
-                } p-[10px] outline-0 cursor-pointer ${className}`}
+                } p-[11.5px] outline-0 cursor-pointer ${className}`}
                 disabled={disabled}
             >
                 <option value="" disabled hidden>

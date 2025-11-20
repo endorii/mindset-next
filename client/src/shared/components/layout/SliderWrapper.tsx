@@ -18,7 +18,7 @@ interface SliderWrapperProps {
 export function SliderWrapper({ productsList, title }: SliderWrapperProps) {
     return (
         <div className="p-[30px] sm:p-[10px] text-white">
-            <div className="flex flex-col gap-[15px]">
+            <div className="flex flex-col gap-[10px]">
                 <div className="text-4xl font-perandory tracking-wider">
                     {title}
                 </div>

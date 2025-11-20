@@ -77,7 +77,7 @@ export function CartContent() {
 
     return (
         <div className="flex justify-between gap-[15px] w-full px-[30px]">
-            <div className="flex flex-col gap-[15px] w-2/3 max-h-[80vh] overflow-y-auto">
+            <div className="flex flex-col gap-[10px] w-2/3 max-h-[80vh] overflow-y-auto">
                 {mergedCart.map((item) => {
                     const isServer = !!user;
 

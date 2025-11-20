@@ -1,7 +1,7 @@
 "use client";
 
 import { useEscapeKeyClose } from "@/shared/hooks";
-import { MonoButton } from "@/shared/ui/buttons";
+import { MonoButtonUnderlined } from "@/shared/ui/buttons/MonoButtonUnderlined";
 import { InfoModalBanner, TextareaInfoField } from "@/shared/ui/components";
 import { InfoField } from "@/shared/ui/inputs/InfoField";
 import {
@@ -43,7 +43,7 @@ export function CollectionInfoModal({
     const modalContent = (
         <ModalWrapper
             onClose={onClose}
-            modalTitle={`Collection information ${name}`}
+            modalTitle={`${name} collection information`}
         >
             <FormFillingWrapper>
                 <div className="grid grid-cols-3 gap-[15px]">
@@ -59,7 +59,7 @@ export function CollectionInfoModal({
                         value={formatDate(createdAt || "")}
                     />
                     <InfoField
-                        label="Editet"
+                        label="Edited"
                         value={formatDate(updatedAt || "")}
                     />
                     <InfoField
@@ -70,7 +70,9 @@ export function CollectionInfoModal({
                 <InfoModalBanner image={banner} />
             </FormFillingWrapper>
             <FormButtonsWrapper>
-                <MonoButton onClick={onClose}>Close</MonoButton>
+                <MonoButtonUnderlined onClick={onClose}>
+                    Close
+                </MonoButtonUnderlined>
             </FormButtonsWrapper>
         </ModalWrapper>
     );

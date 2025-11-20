@@ -28,10 +28,10 @@ export function RenderAttributeField({
     };
 
     return (
-        <div className="flex flex-col gap-[10px]">
-            <Label>{label}</Label>
+        <div className="flex flex-col gap-[3px]">
+            <Label>{label}*</Label>
             <div
-                className={`flex flex-wrap gap-[10px] max-h-[100px] overflow-y-auto border ${
+                className={`flex flex-wrap gap-[10px] max-w-[600px] overflow-y-auto border ${
                     errorMessage ? "border-red-500" : "border-white/10"
                 } p-[10px] bg-black/10`}
             >
@@ -42,10 +42,10 @@ export function RenderAttributeField({
                         onClick={() => {
                             toggleSelect(item.id, selected, setSelected);
                         }}
-                        className={`px-3 py-1 rounded-full text-sm ${
+                        className={`px-3 py-1 text-sm border ${
                             selected.includes(item.id)
                                 ? "bg-white text-black cursor-default"
-                                : "border border-white/30 hover:bg-white/20"
+                                : "border-white/10 hover:bg-white/5"
                         }`}
                     >
                         {item.name}

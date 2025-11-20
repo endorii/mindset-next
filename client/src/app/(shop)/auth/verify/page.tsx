@@ -53,7 +53,7 @@ const VerifyPage = () => {
             </div>
 
             {verifyMutation.isError && (
-                <div className="flex flex-col gap-2 items-center">
+                <div className="flex flex-col gap-[15px] items-center">
                     <InputField
                         label="E-mail"
                         type="email"

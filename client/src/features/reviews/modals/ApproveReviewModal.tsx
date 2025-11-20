@@ -2,6 +2,7 @@
 
 import { useEscapeKeyClose } from "@/shared/hooks";
 import { MonoButton } from "@/shared/ui/buttons";
+import { MonoButtonUnderlined } from "@/shared/ui/buttons/MonoButtonUnderlined";
 import { FormButtonsWrapper, ModalWrapper } from "@/shared/ui/wrappers";
 import { createPortal } from "react-dom";
 import { useApproveReview } from "../hooks/useReviews";
@@ -31,16 +32,18 @@ export function ApproveReviewModal({
 
     const modalContent = (
         <ModalWrapper onClose={onClose} modalTitle={"Publication confirmation"}>
-            <div className="mb-6 text-white/80 text-[16px] leading-[1.6]">
-                Do you really confirm the publication of the product review?{" "}
+            <div className="text-neutral-200 text-[16px] leading-[1.6] font-light">
+                Do you really confirm the publication of the product review{" "}
                 <span className="font-semibold text-white">
-                    {review.product?.name}
+                    {review.orderItem?.product?.name}
                 </span>
                 ?
             </div>
 
             <FormButtonsWrapper>
-                <MonoButton onClick={onClose}>Cancel</MonoButton>
+                <MonoButtonUnderlined onClick={onClose}>
+                    Cancel
+                </MonoButtonUnderlined>
                 <MonoButton
                     onClick={() => {
                         onClose();

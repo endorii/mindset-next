@@ -1,7 +1,8 @@
 "use client";
 
 import { useEscapeKeyClose } from "@/shared/hooks";
-import { DeleteButton, MonoButton } from "@/shared/ui/buttons";
+import { DeleteButton } from "@/shared/ui/buttons";
+import { MonoButtonUnderlined } from "@/shared/ui/buttons/MonoButtonUnderlined";
 import { FormButtonsWrapper, ModalWrapper } from "@/shared/ui/wrappers";
 import { createPortal } from "react-dom";
 import { useDeleteColor } from "../hooks/useColors";
@@ -30,17 +31,17 @@ export function DeleteColorModal({
 
     const modalContent = (
         <ModalWrapper onClose={onClose} modalTitle={"Color removal"}>
-            <div className="mb-8 text-lg">
-                Do you really want to remove the color?{" "}
-                <span className="font-semibold">{color.name}</span>?
+            <div className="font-light">
+                Do you really want to remove the color{" "}
+                <span className="font-semibold underline">{color.name}</span>?
             </div>
             <FormButtonsWrapper>
-                <MonoButton
+                <MonoButtonUnderlined
                     onClick={onClose}
                     disabled={deleteColorMutation.isPending}
                 >
                     Cancel
-                </MonoButton>
+                </MonoButtonUnderlined>
                 <DeleteButton
                     onClick={() => {
                         handleDelete();

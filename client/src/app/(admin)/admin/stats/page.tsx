@@ -3,7 +3,7 @@ import { StatsWrapper } from "@/features/admin/stats/components/StatsWrapper";
 
 export default function AnalyticsPage() {
     return (
-        <div className="flex flex-col gap-[15px]">
+        <div className="flex flex-col gap-[10px]">
             <Title title={"Statictics"} />
             <StatsWrapper />
         </div>

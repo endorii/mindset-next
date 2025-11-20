@@ -52,7 +52,7 @@ export function CartItem({ item, handleRemove }: CartItemProps) {
 
                     <hr className="border-white/10 my-[8px]" />
 
-                    <div className="flex flex-col gap-[7px] text-neutral-400 font-light">
+                    <div className="flex flex-col gap-[3px] text-neutral-400 font-light">
                         <InfoRow label="Color" value={item.color} />
                         <InfoRow label="Size" value={item.size} />
                         <InfoRow label="Type" value={item.type} />

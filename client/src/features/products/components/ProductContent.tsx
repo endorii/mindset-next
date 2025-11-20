@@ -144,7 +144,7 @@ export function ProductContent({
                 )}
             </div>
 
-            <div className="flex flex-col gap-[15px] w-[65%] lg:w-full h-fit">
+            <div className="flex flex-col gap-[10px] w-[65%] lg:w-full h-fit">
                 <div className="flex flex-col gap-[25px] bg-white/5 border border-white/10 px-[20px] xl:p-[15px] py-[20px]">
                     <Breadcrumbs
                         collectionPath={collectionPath}
@@ -162,7 +162,7 @@ export function ProductContent({
                                 ${product.price}
                             </div>
                             {product.oldPrice && (
-                                <div className="text-lg line-through text-white/60 font-light">
+                                <div className="text-lg line-through text-neutral-200 font-light">
                                     ${product.oldPrice}
                                 </div>
                             )}
@@ -182,11 +182,11 @@ export function ProductContent({
                         {product.description}
                     </div>
                     <hr className="w-full border-white/10 border-t" />
-                    <div className="text-sm text-white/80 break-words">
+                    <div className="text-sm text-neutral-200 break-words">
                         {product.composition}
                     </div>
 
-                    <div className="flex flex-col gap-[15px] mt-[30px] text-sm">
+                    <div className="flex flex-col gap-[10px] mt-[30px] text-sm">
                         {product.productColors?.length > 0 && (
                             <div className="flex flex-wrap gap-[10px] items-center">
                                 <div className="flex gap-[30px]">

@@ -1,7 +1,7 @@
 "use client";
 
 import { useEscapeKeyClose } from "@/shared/hooks";
-import { MonoButton } from "@/shared/ui/buttons";
+import { MonoButtonUnderlined } from "@/shared/ui/buttons/MonoButtonUnderlined";
 import { InfoModalBanner, TextareaInfoField } from "@/shared/ui/components";
 import { InfoField } from "@/shared/ui/inputs/InfoField";
 import {
@@ -71,7 +71,9 @@ export function CategoryInfoModal({
                 <InfoModalBanner image={banner} />
             </FormFillingWrapper>
             <FormButtonsWrapper>
-                <MonoButton onClick={onClose}>Close</MonoButton>
+                <MonoButtonUnderlined onClick={onClose}>
+                    Close
+                </MonoButtonUnderlined>
             </FormButtonsWrapper>
         </ModalWrapper>
     );

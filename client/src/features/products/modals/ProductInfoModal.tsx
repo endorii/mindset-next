@@ -1,10 +1,11 @@
 "use client";
 
 import { useEscapeKeyClose } from "@/shared/hooks";
-import { MonoButton } from "@/shared/ui/buttons";
+import { MonoButtonUnderlined } from "@/shared/ui/buttons/MonoButtonUnderlined";
 import {
     AtributesInfoField,
     InfoModalBanner,
+    Label,
     TextareaInfoField,
 } from "@/shared/ui/components";
 import { InfoField } from "@/shared/ui/inputs/InfoField";
@@ -16,7 +17,6 @@ import {
 import { formatDate } from "@/shared/utils/formatDate";
 import Image from "next/image";
 import { createPortal } from "react-dom";
-import { Label } from "recharts";
 import { IProduct } from "../types/products.types";
 
 export interface ProductInfoModalProps {
@@ -86,7 +86,7 @@ export function ProductInfoModal({
 
                 <InfoModalBanner image={banner} />
 
-                <div className="flex flex-col gap-[7px]">
+                <div className="flex flex-col gap-[3px]">
                     <Label>Additional images</Label>
                     <div className="flex gap-[10px]">
                         {images.length > 0 ? (
@@ -109,7 +109,9 @@ export function ProductInfoModal({
                 </div>
             </FormFillingWrapper>
             <FormButtonsWrapper>
-                <MonoButton onClick={onClose}>Close</MonoButton>
+                <MonoButtonUnderlined onClick={onClose}>
+                    Close
+                </MonoButtonUnderlined>
             </FormButtonsWrapper>
         </ModalWrapper>
     );

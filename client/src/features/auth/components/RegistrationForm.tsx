@@ -123,7 +123,7 @@ export function RegistrationForm() {
                     errorMessage={registerErrors.password?.message}
                 />
 
-                <div className="text-sm flex flex-col gap-[7px]">
+                <div className="text-sm flex flex-col gap-[3px]">
                     <div className="flex gap-[10px] items-center">
                         <input
                             type="checkbox"

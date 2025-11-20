@@ -7,6 +7,7 @@ import { MonoButton } from "@/shared/ui/buttons";
 import { UploadBannerWithPreview } from "@/shared/ui/components";
 import { InputField } from "@/shared/ui/inputs/InputField";
 
+import { MonoButtonUnderlined } from "@/shared/ui/buttons/MonoButtonUnderlined";
 import { BasicSelector } from "@/shared/ui/selectors/BasicSelector";
 import { BasicTextarea } from "@/shared/ui/textareas/BasicTextarea";
 import {
@@ -118,7 +119,7 @@ export function AddCategoryModal({
     const modalContent = (
         <ModalWrapper onClose={onClose} modalTitle={"Adding a category"}>
             <form
-                className="flex flex-col gap-[15px]"
+                className="flex flex-col gap-[10px]"
                 onSubmit={handleSubmit(onSubmit)}
             >
                 <FormFillingWrapper>
@@ -184,7 +185,7 @@ export function AddCategoryModal({
                     <p className="text-red-500 text-sm">{modalMessage}</p>
                 )}
                 <FormButtonsWrapper>
-                    <MonoButton
+                    <MonoButtonUnderlined
                         type="button"
                         onClick={handleClose}
                         disabled={
@@ -193,7 +194,7 @@ export function AddCategoryModal({
                         }
                     >
                         Cancel
-                    </MonoButton>
+                    </MonoButtonUnderlined>
                     <MonoButton
                         type="submit"
                         disabled={

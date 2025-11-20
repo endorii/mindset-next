@@ -3,7 +3,7 @@ import { AdminReviewsWrapper } from "@/features/reviews/components/AdminReviewsW
 
 function Reviews() {
     return (
-        <div className="flex flex-col gap-[15px]">
+        <div className="flex flex-col gap-[10px]">
             <Title title="Reviews list" />
             <AdminReviewsWrapper />
         </div>

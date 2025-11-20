@@ -2,7 +2,8 @@
 
 // import { deleteImage } from "@/shared/api/files.api";
 import { useEscapeKeyClose } from "@/shared/hooks";
-import { DeleteButton, MonoButton } from "@/shared/ui/buttons";
+import { DeleteButton } from "@/shared/ui/buttons";
+import { MonoButtonUnderlined } from "@/shared/ui/buttons/MonoButtonUnderlined";
 import { FormButtonsWrapper, ModalWrapper } from "@/shared/ui/wrappers";
 import { createPortal } from "react-dom";
 import { toast } from "sonner";
@@ -45,12 +46,15 @@ export function DeleteCategoryModal({
 
     const modalContent = (
         <ModalWrapper onClose={onClose} modalTitle={"Deletting category"}>
-            <div className="mb-6 text-white">
-                Do you really want to Delete the category?{" "}
-                <strong>{category?.name || "No name"}</strong>?
+            <div className="font-light">
+                Do you really want to Delete the category{" "}
+                <span className="font-semibold underline">{category.name}</span>
+                ?
             </div>
             <FormButtonsWrapper>
-                <MonoButton onClick={onClose}>Cancel</MonoButton>
+                <MonoButtonUnderlined onClick={onClose}>
+                    Cancel
+                </MonoButtonUnderlined>
                 <DeleteButton
                     onClick={() => {
                         onClose();

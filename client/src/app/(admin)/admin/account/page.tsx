@@ -3,7 +3,7 @@ import { Title } from "@/features/admin/attributes/components/Title";
 
 function AdminAccount() {
     return (
-        <div className="flex flex-col gap-[15px]">
+        <div className="flex flex-col gap-[10px]">
             <Title title="Admin page" />
             <AdminAccountWrapper />
         </div>

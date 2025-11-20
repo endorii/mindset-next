@@ -1,7 +1,8 @@
 "use client";
 
 import { useEscapeKeyClose } from "@/shared/hooks";
-import { DeleteButton, MonoButton } from "@/shared/ui/buttons";
+import { DeleteButton } from "@/shared/ui/buttons";
+import { MonoButtonUnderlined } from "@/shared/ui/buttons/MonoButtonUnderlined";
 import { FormButtonsWrapper, ModalWrapper } from "@/shared/ui/wrappers";
 import { createPortal } from "react-dom";
 import { useDeleteSize } from "../hooks/useSizes";
@@ -30,11 +31,14 @@ export function DeleteSizeModal({
 
     const modalContent = (
         <ModalWrapper onClose={onClose} modalTitle={"Deletting size"}>
-            <div className="mb-6">
-                Do you really want to delete the size?{size?.name}?
+            <div className="font-light">
+                Do you really want to delete the size{" "}
+                <span className="font-semibold underline">{size.name}</span>?
             </div>
             <FormButtonsWrapper>
-                <MonoButton onClick={onClose}>Cancel</MonoButton>
+                <MonoButtonUnderlined onClick={onClose}>
+                    Cancel
+                </MonoButtonUnderlined>
                 <DeleteButton
                     onClick={async () => {
                         onClose();

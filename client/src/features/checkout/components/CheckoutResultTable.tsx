@@ -6,8 +6,8 @@ export function CheckoutResultTable({ cart }: { cart: ICartItem[] }) {
             <div className="text-3xl font-thin">Order information</div>
             {cart.length > 0 ? (
                 <div className="flex flex-col gap-[10px]">
-                    <div className="flex flex-col gap-[15px] mt-[5px] border border-white/10 bg-white/5 p-[20px]">
-                        <div className="grid grid-cols-[1fr_0.5fr_0.5fr_0.5fr_0.5fr_0.5fr_0.5fr] border-b border-white/10 pb-2 text-sm text-white/60">
+                    <div className="flex flex-col gap-[10px] mt-[5px] border border-white/10 bg-white/5 p-[20px]">
+                        <div className="grid grid-cols-[1fr_0.5fr_0.5fr_0.5fr_0.5fr_0.5fr_0.5fr] border-b border-white/10 pb-2 text-sm text-neutral-200">
                             <div>Name</div>
                             <div className="text-right">Color</div>
                             <div className="text-right">Size</div>
@@ -41,7 +41,7 @@ export function CheckoutResultTable({ cart }: { cart: ICartItem[] }) {
                             </div>
                         ))}
 
-                        <div className="border-t border-white/10 pt-4 flex flex-col gap-[15px]">
+                        <div className="border-t border-white/10 pt-4 flex flex-col gap-[10px]">
                             <div className="flex justify-between">
                                 <span>Sum of goods:</span>
                                 <span className=" font-semibold">
@@ -59,7 +59,7 @@ export function CheckoutResultTable({ cart }: { cart: ICartItem[] }) {
                             </div>
                             <div className="flex justify-between">
                                 <span>Delivery:</span>
-                                <span className="text-white/60 text-sm">
+                                <span className="text-neutral-200 text-sm">
                                     According to carrier tariffs
                                 </span>
                             </div>
@@ -81,7 +81,7 @@ export function CheckoutResultTable({ cart }: { cart: ICartItem[] }) {
                     </div>
                 </div>
             ) : (
-                <div className="text-sm text-white/60">Cart is empty</div>
+                <div className="text-sm text-neutral-200">Cart is empty</div>
             )}
         </>
     );

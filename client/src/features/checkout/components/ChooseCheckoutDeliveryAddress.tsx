@@ -1,5 +1,5 @@
 import { INovaPostDataObj } from "@/features/orders/types/orders.types";
-import { Label } from "recharts";
+import { Label } from "@/shared/ui/components";
 
 interface ChooseCheckoutDeliveryAddressProps {
     areas: INovaPostDataObj[];
@@ -25,14 +25,14 @@ export function ChooseCheckoutDeliveryAddress({
     setSelectedWarehouse,
 }: ChooseCheckoutDeliveryAddressProps) {
     return (
-        <div className="flex flex-col gap-[15px] w-1/2">
+        <div className="flex flex-col gap-[10px] w-1/2">
             <div className="text-3xl font-perandory tracking-wider">
                 Delivery address
             </div>
             <hr className="border-t border-white/10" />
             <div className="flex gap-[15px]">
                 <div className="flex flex-col gap-[13px] w-full">
-                    <div className="flex flex-col gap-[7px]">
+                    <div className="flex flex-col gap-[3px]">
                         <Label>Region</Label>
                         <select
                             className="border border-white/10 px-[10px] py-[10px] bg-black/20 text-white outline-0 cursor-pointer"
@@ -56,7 +56,7 @@ export function ChooseCheckoutDeliveryAddress({
                         </select>
                     </div>
 
-                    <div className="flex flex-col gap-[7px]">
+                    <div className="flex flex-col gap-[3px]">
                         <Label>City</Label>
                         <select
                             className="border border-white/10 px-[10px] py-[10px] bg-black/20 text-white outline-0 cursor-pointer"
@@ -81,7 +81,7 @@ export function ChooseCheckoutDeliveryAddress({
                         </select>
                     </div>
 
-                    <div className="flex flex-col gap-[7px]">
+                    <div className="flex flex-col gap-[3px]">
                         <Label>Branches/post offices</Label>
                         <select
                             className="border border-white/10 px-[10px] py-[10px] bg-black/20 text-white outline-0 cursor-pointer"

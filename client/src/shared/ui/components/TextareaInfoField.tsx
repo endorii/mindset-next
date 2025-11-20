@@ -7,9 +7,9 @@ interface TextareaInfoFieldProps {
 
 export function TextareaInfoField({ label, value }: TextareaInfoFieldProps) {
     return (
-        <div className="flex flex-col gap-[7px]">
+        <div className="flex flex-col gap-[3px]">
             <Label>{label}</Label>
-            <div className="border break-words border-white/10 bg-black/10 px-[10px] py-[7px] max-h-[130px] w-full overflow-y-auto">
+            <div className="border break-words border-white/10 font-light bg-black/10 px-[10px] py-[7px] max-h-[150px] max-w-[700px] overflow-y-auto">
                 {value || "Not specified"}
             </div>
         </div>

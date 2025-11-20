@@ -9,7 +9,7 @@ export function FooterNavListItem({ href, children }: FooterNavListItemProps) {
     return (
         <Link
             href={href}
-            className="text-white/80 text-sm hover:text-white hover:underline"
+            className="text-neutral-200 text-sm hover:text-white hover:underline"
         >
             {children}
         </Link>

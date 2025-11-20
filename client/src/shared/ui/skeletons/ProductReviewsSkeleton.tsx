@@ -1,7 +1,7 @@
 export function ProductReviewsSkeleton({ items = 2 }) {
     return (
         <div className="flex sm:flex-col gap-[30px] mt-[15px] animate-pulse">
-            <div className="flex flex-col gap-[15px] w-1/3 sm:w-full">
+            <div className="flex flex-col gap-[10px] w-1/3 sm:w-full">
                 <div className="flex items-center gap-[10px] mb-[10px]">
                     <div className="h-4 w-40 bg-white/10" />
                     <div className="h-5 w-16 bg-white/10" />
@@ -30,7 +30,7 @@ export function ProductReviewsSkeleton({ items = 2 }) {
                 {Array.from({ length: items }).map((_, i) => (
                     <div
                         key={i}
-                        className="flex flex-col gap-[15px] bg-white/5 p-[20px] shadow-sm"
+                        className="flex flex-col gap-[10px] bg-white/5 p-[20px] shadow-sm"
                     >
                         <div className="flex justify-between mb-1">
                             <div className="h-4 w-20 bg-white/10"></div>

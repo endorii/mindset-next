@@ -15,7 +15,7 @@ export function BasicTextarea({
     errorMessage,
 }: BasicTextareaProps) {
     return (
-        <div className="flex flex-col gap-[7px]">
+        <div className="flex flex-col gap-[3px]">
             <Label>{label}</Label>
             <textarea
                 {...register}
@@ -24,9 +24,9 @@ export function BasicTextarea({
                     target.style.height = "auto";
                     target.style.height = `${target.scrollHeight}px`;
                 }}
-                className={`resize-none border ${
+                className={`resize-none border font-light ${
                     errorMessage ? "border-red-500" : "border-white/10"
-                } p-[10px] bg-black/10 outline-0 resize-none overflow-hidden ${className}`}
+                } p-[10px] bg-black/10 outline-0 resize-none overflow-hidden max-h-[150px] ${className} overflow-y-auto`}
             />
             {errorMessage && (
                 <p className="text-red-500 text-sm">{errorMessage}</p>

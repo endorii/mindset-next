@@ -1,6 +1,6 @@
 export function LineChartSkeleton() {
     return (
-        <div className="  bg-white/5 shadow-lg backdrop-blur-[100px] p-[20px] flex flex-col gap-[15px] w-full">
+        <div className="  bg-white/5 shadow-lg backdrop-blur-[100px] p-[20px] flex flex-col gap-[10px] w-full">
             <div className="h-6 w-1/3 bg-white/10 animate-pulse  " />
 
             <div className="flex flex-wrap gap-[10px] mb-[20px]">

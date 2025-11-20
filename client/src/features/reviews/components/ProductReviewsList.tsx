@@ -27,9 +27,9 @@ export function ProductReviewsList({ reviews }: ProductReviewsListProps) {
                         return (
                             <div
                                 key={review.id}
-                                className="flex flex-col gap-[15px]"
+                                className="flex flex-col gap-[10px]"
                             >
-                                <div className="flex flex-col gap-[15px] border border-white/10 bg-white/5 p-[20px]">
+                                <div className="flex flex-col gap-[10px] border border-white/10 bg-white/5 p-[20px]">
                                     <div>
                                         <div className="flex justify-between mb-1">
                                             <div className="font-perandory tracking-wider text-xl">
@@ -40,7 +40,7 @@ export function ProductReviewsList({ reviews }: ProductReviewsListProps) {
                                             </div>
                                         </div>
 
-                                        <div className="flex text-white-500 text-xl mb-2">
+                                        <div className="flex text-white text-xl mb-2">
                                             {Array.from({ length: 5 }).map(
                                                 (_, i) => (
                                                     <span key={i}>
@@ -145,7 +145,7 @@ export function ProductReviewsList({ reviews }: ProductReviewsListProps) {
                         );
                     })
             ) : (
-                <div className="p-[30px] text-center text-2xl xs:text-xl text-white/60">
+                <div className="p-[30px] text-center text-2xl xs:text-xl text-neutral-200">
                     No reviews available.
                 </div>
             )}

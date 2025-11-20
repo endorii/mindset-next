@@ -2,6 +2,7 @@
 
 import { useEscapeKeyClose } from "@/shared/hooks";
 import { MonoButton } from "@/shared/ui/buttons";
+import { MonoButtonUnderlined } from "@/shared/ui/buttons/MonoButtonUnderlined";
 import { InputField } from "@/shared/ui/inputs/InputField";
 import {
     FormButtonsWrapper,
@@ -93,7 +94,7 @@ export function EditUserAddressModal({
             modalTitle={"Edit personal delivery address"}
         >
             <form
-                className="flex flex-col gap-[15px]"
+                className="flex flex-col gap-[10px]"
                 onSubmit={handleSubmit(onSubmit)}
             >
                 <FormFillingWrapper>
@@ -172,7 +173,9 @@ export function EditUserAddressModal({
                     <p className="text-red-500 text-sm">{modalMessage}</p>
                 )}
                 <FormButtonsWrapper>
-                    <MonoButton onClick={onClose}>Cancel</MonoButton>
+                    <MonoButtonUnderlined onClick={onClose}>
+                        Cancel
+                    </MonoButtonUnderlined>
                     <MonoButton type="submit">Confirm</MonoButton>
                 </FormButtonsWrapper>
             </form>

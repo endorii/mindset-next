@@ -63,7 +63,7 @@ export function AdminCategoriesContent({
     };
 
     return (
-        <div className="flex flex-col gap-[15px]">
+        <div className="flex flex-col gap-[10px]">
             <div>
                 <MonoButton onClick={() => router.push("/admin/collections")}>
                     <BackIcon className="w-[23px] stroke-white stroke-[50] group-hover:stroke-black" />

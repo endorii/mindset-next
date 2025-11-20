@@ -15,7 +15,7 @@ export const httpServiceAuth = axios.create({
 
 // Зберігаємо Promise для refresh, щоб уникнути множинних викликів
 let isRefreshing = false;
-let refreshPromise: Promise<{ accessToken: string }> | null = null;
+let refreshPromise: Promise<{ data: string; message: string }> | null = null;
 
 // --- ПРАВИЛЬНИЙ INTERCEPTOR ЗАПИТУ ---
 httpServiceAuth.interceptors.request.use((config) => {
@@ -50,7 +50,7 @@ httpServiceAuth.interceptors.response.use(
 
             if (isRefreshing && refreshPromise) {
                 try {
-                    const { accessToken } = await refreshPromise;
+                    const { data } = await refreshPromise;
                     originalRequest.headers.Authorization = `Bearer ${accessToken}`;
                     // Повторюємо оригінальний запит
                     return httpServiceAuth.request(originalRequest);
@@ -64,7 +64,7 @@ httpServiceAuth.interceptors.response.use(
             refreshPromise = refreshToken(); // Початок нового запиту на refresh
 
             try {
-                const { accessToken: newAccessToken } = await refreshPromise;
+                const { data: newAccessToken } = await refreshPromise;
                 // Оновлюємо стан через setUser (який ми отримали через getState)
                 setUser(user, newAccessToken);
 

@@ -2,6 +2,7 @@
 
 import { useEscapeKeyClose } from "@/shared/hooks";
 import { MonoButton } from "@/shared/ui/buttons";
+import { MonoButtonUnderlined } from "@/shared/ui/buttons/MonoButtonUnderlined";
 import { InputField } from "@/shared/ui/inputs/InputField";
 import {
     FormButtonsWrapper,
@@ -55,7 +56,7 @@ export function AddSizeModal({ isOpen, onClose }: AddSizeModalProps) {
     const modalContent = (
         <ModalWrapper onClose={handleClose} modalTitle={"Adding size"}>
             <form
-                className="flex flex-col gap-[15px]"
+                className="flex flex-col gap-[10px]"
                 onSubmit={handleSubmit(onSubmit)}
             >
                 <FormFillingWrapper>
@@ -87,13 +88,13 @@ export function AddSizeModal({ isOpen, onClose }: AddSizeModalProps) {
                 )}
 
                 <FormButtonsWrapper>
-                    <MonoButton
+                    <MonoButtonUnderlined
                         type="button"
                         onClick={handleClose}
                         disabled={createSizeMutation.isPending}
                     >
                         Cancel
-                    </MonoButton>
+                    </MonoButtonUnderlined>
                     <MonoButton
                         type="submit"
                         disabled={createSizeMutation.isPending}

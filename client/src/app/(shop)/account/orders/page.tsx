@@ -25,10 +25,12 @@ const Orders = () => {
             <ErrorWithMessage message="An error occurred while loading orders... Please refresh the page or try again later." />
         );
     if (!userOrders || userOrders.length === 0) return;
-    <div className="text-center text-white/60 p-[20px]">Orders list empty</div>;
+    <div className="text-center text-neutral-200 p-[20px]">
+        Orders list empty
+    </div>;
 
     return (
-        <div className="flex flex-col gap-[15px]">
+        <div className="flex flex-col gap-[10px]">
             <div className="flex flex-col bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px] xs:py-[10px]">
                 <div className="text-3xl xs:text-xl font-perandory tracking-wider">
                     Your orders list

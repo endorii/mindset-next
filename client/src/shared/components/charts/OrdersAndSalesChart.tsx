@@ -187,7 +187,7 @@ export function OrdersAndSalesChart({
 
     if (!orders || orders.length === 0) {
         return (
-            <div className="  bg-white/5 p-[20px] text-white/60 border border-white/5">
+            <div className="  bg-white/5 p-[20px] text-neutral-200 border border-white/5">
                 Orders for the chart are missing.
             </div>
         );
@@ -199,7 +199,7 @@ export function OrdersAndSalesChart({
     );
 
     return (
-        <div className="  bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px] flex flex-col gap-[15px] w-full">
+        <div className="  bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px] flex flex-col gap-[10px] w-full">
             <h2 className="text-lg font-semibold">
                 Number of orders and sales {periodLabels[period]}
             </h2>

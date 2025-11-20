@@ -36,7 +36,7 @@ export function HomeTodo({ todos }: { todos: ITodoItem[] | undefined }) {
     };
 
     return (
-        <div className="  bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px] flex flex-col gap-[15px] w-1/2 lg:w-full">
+        <div className="  bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px] flex flex-col gap-[10px] w-1/2 lg:w-full">
             <div className="flex gap-[15px] justify-between">
                 <div className="text-xl font-semibold">ToDo</div>
                 <MonoButton onClick={() => openModal("add")}>
@@ -55,7 +55,7 @@ export function HomeTodo({ todos }: { todos: ITodoItem[] | undefined }) {
                                 <span className="text-base font-medium text-white">
                                     {task.title}
                                 </span>
-                                <span className="text-xs mt-[7px] text-white/50">
+                                <span className="text-xs mt-[7px] text-neutral-300">
                                     Priority:{" "}
                                     <span
                                         className={`${
@@ -69,7 +69,7 @@ export function HomeTodo({ todos }: { todos: ITodoItem[] | undefined }) {
                                         {task.priority}
                                     </span>
                                 </span>
-                                <span className="text-xs text-white/50 mt-1">
+                                <span className="text-xs text-neutral-300 mt-1">
                                     {formatDate(task.createdAt || "")} /{" "}
                                     {formatDate(task.updatedAt || "")}
                                 </span>
@@ -90,7 +90,7 @@ export function HomeTodo({ todos }: { todos: ITodoItem[] | undefined }) {
                     ))}
                 </div>
             ) : (
-                <div className=" p-[20px]  flex items-center justify-center text-center text-white/60">
+                <div className=" p-[20px]  flex items-center justify-center text-center text-neutral-200">
                     No tasks available.
                 </div>
             )}

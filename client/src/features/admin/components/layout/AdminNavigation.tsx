@@ -25,12 +25,12 @@ export function AdminNavigation({ children }: { children: React.ReactNode }) {
             <div
                 className={`sm:absolute relative flex max-h-screen-minus-header overflow-y-auto flex-col gap-[15px] transition-all duration-500 ease-in-out ml-[10px] mt-[30px] z-10 ${
                     navOpen
-                        ? "w-[300px] sm:left-[0px]"
+                        ? "w-[250px] sm:left-[0px]"
                         : "w-[90px] sm:left-[-320px]"
                 }`}
             >
                 <div
-                    className={`flex flex-col gap-[15px] bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[15px]`}
+                    className={`flex flex-col gap-[10px] bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[15px]`}
                 >
                     {adminPanelNavigationLinks.map(({ href, Icon, text }) => (
                         <AdminNavigationLink
@@ -39,7 +39,7 @@ export function AdminNavigation({ children }: { children: React.ReactNode }) {
                             key={text}
                             onClick={() => setNavOpen(false)}
                         >
-                            <Icon className="w-[32px] h-[32px] min-w-[32px] min-h-[32px] fill-white group-hover:fill-black " />
+                            <Icon className="w-[30px] h-[30px] min-w-[30px] min-h-[30px] fill-white group-hover:fill-black " />
                             <NavigationHideTextWrapper navOpen={navOpen}>
                                 {text}
                             </NavigationHideTextWrapper>
@@ -48,7 +48,7 @@ export function AdminNavigation({ children }: { children: React.ReactNode }) {
                 </div>
 
                 <div
-                    className={`flex flex-col gap-[15px] bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[15px] ${
+                    className={`flex flex-col gap-[10px] bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[15px] ${
                         navOpen ? "justify-start" : "justify-center"
                     }`}
                 >

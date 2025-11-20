@@ -47,7 +47,7 @@ function Reviews() {
     }
 
     return (
-        <div className="flex flex-col gap-[15px] px-[30px] py-[10px] sm:p-[10px] text-white/70 text-sm">
+        <div className="flex flex-col gap-[10px] px-[30px] py-[10px] sm:p-[10px] text-neutral-200 text-sm">
             <Breadcrumbs
                 collectionPath={collectionPath}
                 categoryPath={categoryPath}
@@ -81,7 +81,9 @@ function Reviews() {
                         {reviews && reviews.length > 0 ? (
                             <ProductReviewsList reviews={reviews} />
                         ) : (
-                            <div className="text-white/50">No reviews yet</div>
+                            <div className="text-neutral-300">
+                                No reviews yet
+                            </div>
                         )}
                     </div>
                 </div>

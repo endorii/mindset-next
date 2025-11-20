@@ -3,6 +3,8 @@
 import { useEscapeKeyClose, useUploadBanner } from "@/shared/hooks";
 import { TStatus } from "@/shared/types/types";
 import { MonoButton } from "@/shared/ui/buttons";
+import { MonoButtonUnderlined } from "@/shared/ui/buttons/MonoButtonUnderlined";
+import { Label } from "@/shared/ui/components";
 import { InputField } from "@/shared/ui/inputs/InputField";
 import { BasicSelector } from "@/shared/ui/selectors/BasicSelector";
 import { BasicTextarea } from "@/shared/ui/textareas/BasicTextarea";
@@ -16,7 +18,6 @@ import Image from "next/image";
 import { ChangeEvent, useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { useForm } from "react-hook-form";
-import { Label } from "recharts";
 import { useEditCollection } from "../hooks/useCollections";
 import { ICollection } from "../types/collections.types";
 
@@ -120,7 +121,7 @@ export function EditCollectionModal({
     const modalContent = (
         <ModalWrapper onClose={onClose} modalTitle={"Editing a collection"}>
             <form
-                className="flex flex-col gap-[15px]"
+                className="flex flex-col gap-[10px]"
                 onSubmit={handleSubmit(onSubmit)}
             >
                 <FormFillingWrapper>
@@ -156,7 +157,7 @@ export function EditCollectionModal({
                             })}
                             errorMessage={errors.path?.message}
                         />
-                        <BasicSelector<string>
+                        <BasicSelector
                             label={"Status*"}
                             register={{
                                 ...register("status", {
@@ -181,22 +182,22 @@ export function EditCollectionModal({
                         errorMessage={errors.description?.message}
                     />
 
-                    <div className="flex flex-col gap-[7px] w-full">
+                    <div className="flex flex-col gap-[3px] w-full">
                         <Label>Banner</Label>
                         <label
                             htmlFor="banner"
-                            className="min-h-[100px] max-w-[300px] border border-dashed border-white/10 mt-2 flex items-center justify-center cursor-pointer bg-black/20 hover:bg-white/10 overflow-hidden"
+                            className={`group border min-h-[200px] border-dashed border-white/10 flex items-center justify-center cursor-pointer hover:bg-white/3 overflow-hidden group-hover:text-white transition-all duration-300`}
                         >
                             {displaySrc ? (
                                 <Image
                                     src={displaySrc}
                                     alt="preview"
-                                    width={250}
-                                    height={250}
-                                    className="object-cover"
+                                    width={400}
+                                    height={400}
+                                    className="max-h-[400px] object-contain"
                                 />
                             ) : (
-                                <span className="text-4xl text-white/60">
+                                <span className="text-3xl font-light text-neutral-500 group-hover:text-white transition-all duration-300">
                                     +
                                 </span>
                             )}
@@ -216,9 +217,9 @@ export function EditCollectionModal({
                 )}
 
                 <FormButtonsWrapper>
-                    <MonoButton onClick={onClose} type="button">
+                    <MonoButtonUnderlined onClick={onClose} type="button">
                         Cancel
-                    </MonoButton>
+                    </MonoButtonUnderlined>
                     <MonoButton
                         type="submit"
                         disabled={

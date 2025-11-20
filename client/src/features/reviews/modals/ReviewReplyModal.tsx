@@ -2,6 +2,7 @@
 
 import { useEscapeKeyClose } from "@/shared/hooks";
 import { MonoButton } from "@/shared/ui/buttons";
+import { MonoButtonUnderlined } from "@/shared/ui/buttons/MonoButtonUnderlined";
 import { InfoField } from "@/shared/ui/inputs/InfoField";
 import { BasicTextarea } from "@/shared/ui/textareas/BasicTextarea";
 import {
@@ -85,11 +86,11 @@ export function ReviewReplyModal({
     const modalContent = (
         <ModalWrapper onClose={onClose} modalTitle={"Reply to review"}>
             <form
-                className="flex flex-col gap-[15px]"
+                className="flex flex-col gap-[10px]"
                 onSubmit={handleSubmit(onSubmit)}
             >
                 <FormFillingWrapper>
-                    <div className="flex flex-col gap-[15px]">
+                    <div className="flex flex-col gap-[10px]">
                         <div className="text-lg">Review information</div>
                         <div className="grid grid-cols-3 gap-[15px]">
                             <InfoField
@@ -105,11 +106,11 @@ export function ReviewReplyModal({
                     </div>
                     <InfoField label="Review text" value={content} />
                     {/* <InfoField label="Прикладені зображення" value={images} /> */}
-                    <div className="flex flex-col gap-[15px]">
+                    <div className="flex flex-col gap-[10px]">
                         <div className="text-lg">
                             Write a response to a review
                         </div>
-                        <div className="flex flex-col gap-[15px]">
+                        <div className="flex flex-col gap-[10px]">
                             <BasicTextarea
                                 label="Administrator response"
                                 register={register("adminReply", {
@@ -127,7 +128,9 @@ export function ReviewReplyModal({
                         <p className="text-red-500 text-sm">{modalMessage}</p>
                     )}
                     <FormButtonsWrapper>
-                        <MonoButton onClick={onClose}>Close</MonoButton>
+                        <MonoButtonUnderlined onClick={onClose}>
+                            Close
+                        </MonoButtonUnderlined>
                         <MonoButton type="submit">Send</MonoButton>
                     </FormButtonsWrapper>
                 </FormFillingWrapper>

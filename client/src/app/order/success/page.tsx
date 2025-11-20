@@ -87,7 +87,7 @@ const OrderSuccessPage = () => {
 
     return (
         <div className="min-h-screen flex text-white items-center justify-center">
-            <div className="flex flex-col gap-[15px] bg-white/5 shadow-lg backdrop-blur-lg border border-white/5 p-[20px] max-w-lg">
+            <div className="flex flex-col gap-[10px] bg-white/5 shadow-lg backdrop-blur-lg border border-white/5 p-[20px] max-w-lg">
                 <div className="flex flex-col items-center gap-[15px] text-center">
                     <div className="inline-flex items-center justify-center w-20 h-20 bg-green-600 rounded-full">
                         <CheckIcon className="w-[50px] fill-none stroke-white stroke-3" />
@@ -109,7 +109,7 @@ const OrderSuccessPage = () => {
                     <>
                         <hr className="border-t border-white/10 w-full" />
                         <div className="flex flex-col gap-[20px]">
-                            <div className="flex flex-col gap-[15px] p-[20px] bg-white/5">
+                            <div className="flex flex-col gap-[10px] p-[20px] bg-white/5">
                                 <div className="text-3xl font-perandory tracking-wider">
                                     Delivery address
                                 </div>
@@ -134,7 +134,7 @@ const OrderSuccessPage = () => {
                                     </div>
                                 </div>
                             </div>
-                            <div className="flex flex-col gap-[15px] p-[20px] bg-white/5">
+                            <div className="flex flex-col gap-[10px] p-[20px] bg-white/5">
                                 <h3 className="font-bold flex items-center">
                                     Order details
                                 </h3>

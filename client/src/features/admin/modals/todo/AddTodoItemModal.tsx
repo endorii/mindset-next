@@ -2,6 +2,7 @@
 
 import { useEscapeKeyClose } from "@/shared/hooks";
 import { MonoButton } from "@/shared/ui/buttons";
+import { MonoButtonUnderlined } from "@/shared/ui/buttons/MonoButtonUnderlined";
 import { InputField } from "@/shared/ui/inputs/InputField";
 import { BasicSelector } from "@/shared/ui/selectors/BasicSelector";
 import {
@@ -68,7 +69,7 @@ export function AddTodoItemModal({ isOpen, onClose }: AddTodoItemModalProps) {
     const modalContent = (
         <ModalWrapper onClose={onClose} modalTitle={"Adding a task"}>
             <form
-                className="flex flex-col gap-[15px]"
+                className="flex flex-col gap-[10px]"
                 onSubmit={handleSubmit(onSubmit)}
             >
                 <FormFillingWrapper>
@@ -87,7 +88,7 @@ export function AddTodoItemModal({ isOpen, onClose }: AddTodoItemModalProps) {
                             errorMessage={errors.title?.message}
                         />
 
-                        <BasicSelector<string>
+                        <BasicSelector
                             label={"Priority*"}
                             register={{
                                 ...register("priority", {
@@ -108,7 +109,7 @@ export function AddTodoItemModal({ isOpen, onClose }: AddTodoItemModalProps) {
                 )}
 
                 <FormButtonsWrapper>
-                    <MonoButton
+                    <MonoButtonUnderlined
                         type="button"
                         onClick={handleClose}
                         disabled={
@@ -117,7 +118,7 @@ export function AddTodoItemModal({ isOpen, onClose }: AddTodoItemModalProps) {
                         }
                     >
                         Cancel
-                    </MonoButton>
+                    </MonoButtonUnderlined>
                     <MonoButton
                         type="submit"
                         disabled={

@@ -1,7 +1,7 @@
 "use client";
 
 import { useEscapeKeyClose } from "@/shared/hooks";
-import { MonoButton } from "@/shared/ui/buttons";
+import { MonoButtonUnderlined } from "@/shared/ui/buttons/MonoButtonUnderlined";
 import { InfoModalBanner } from "@/shared/ui/components";
 import { InfoField } from "@/shared/ui/inputs/InfoField";
 import {
@@ -50,8 +50,10 @@ export function ReviewInfoModal({
         <ModalWrapper onClose={onClose} modalTitle={"Review information"}>
             <FormFillingWrapper>
                 <div className="grid grid-cols-3 gap-[15px]">
-                    <div className="flex flex-col gap-[15px]">
-                        <div className="text-lg">Sender information</div>
+                    <div className="flex flex-col gap-[10px]">
+                        <div className="text-2xl font-perandory tracking-wider">
+                            Sender information
+                        </div>
                         <div className="flex flex-col gap-[15px]">
                             <InfoField label="User ID" value={userId} />
                             <InfoField
@@ -64,8 +66,10 @@ export function ReviewInfoModal({
                             />
                         </div>
                     </div>
-                    <div className="flex flex-col gap-[15px]">
-                        <div className="text-lg">Review information</div>
+                    <div className="flex flex-col gap-[10px]">
+                        <div className="text-2xl font-perandory tracking-wider">
+                            Review information
+                        </div>
                         <div className="flex flex-col gap-[15px]">
                             <InfoField label="Rating" value={rating} />
                             <InfoField
@@ -78,8 +82,10 @@ export function ReviewInfoModal({
                             <InfoField label="Dislikes" value={isNotHelpful} />
                         </div>
                     </div>
-                    <div className="flex flex-col gap-[15px]">
-                        <div className="text-lg">Supporting information</div>
+                    <div className="flex flex-col gap-[10px]">
+                        <div className="text-2xl font-perandory tracking-wider">
+                            Supporting information
+                        </div>
                         <div className="flex flex-col gap-[15px]">
                             <InfoField
                                 label="Administrator response"
@@ -105,9 +111,11 @@ export function ReviewInfoModal({
                     </div>
                 </div>
                 <InfoField label="Review text" value={content} />
-                {/* <InfoField label="Прикладені фото" value={userId} /> */}
+
                 <div className="flex flex-col gap-[10px]">
-                    <div className="text-lg">Product information</div>
+                    <div className="text-2xl font-perandory tracking-wider">
+                        Product information
+                    </div>
                     <div className="  bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[15px]">
                         <div className="grid grid-cols-[1fr_1fr_1fr_1fr_1fr_1fr_1fr+1fr] gap-[15px] p-[20px] rounded-t-lg font-semibold text-sm">
                             <div>Banner</div>
@@ -150,7 +158,7 @@ export function ReviewInfoModal({
                                     </Link>
                                 </div>
                             ) : (
-                                <div className="p-[20px] text-sm text-white/60">
+                                <div className="p-[20px] text-sm text-neutral-200">
                                     Products not found
                                 </div>
                             )}
@@ -158,7 +166,9 @@ export function ReviewInfoModal({
                     </div>
                 </div>
                 <FormButtonsWrapper>
-                    <MonoButton onClick={onClose}>Close</MonoButton>
+                    <MonoButtonUnderlined onClick={onClose}>
+                        Close
+                    </MonoButtonUnderlined>
                 </FormButtonsWrapper>
             </FormFillingWrapper>
         </ModalWrapper>

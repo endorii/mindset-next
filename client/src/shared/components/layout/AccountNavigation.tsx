@@ -52,7 +52,7 @@ export function AccountNavigation({ children }: { children: React.ReactNode }) {
                         )}
                     </div>
                 </div>
-                <div className="flex flex-col gap-[15px]">
+                <div className="flex flex-col gap-[10px]">
                     {user?.role === "ADMIN" ? (
                         <div>
                             <NavigationLink href="/admin">

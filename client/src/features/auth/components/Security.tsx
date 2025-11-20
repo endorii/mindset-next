@@ -3,21 +3,21 @@ import { LoginComponentsWrapper } from "@/shared/ui/wrappers";
 export function Security() {
     return (
         <LoginComponentsWrapper title="Protecting your information">
-            <div className="flex flex-col gap-[15px]">
-                <div className="flex flex-col gap-[15px]">
-                    <p className="text-white/80 text-sm">
+            <div className="flex flex-col gap-[10px]">
+                <div className="flex flex-col gap-[10px]">
+                    <p className="text-neutral-200 text-sm">
                         We take the security of your personal data seriously and
                         do not share it with third parties. Your right to
                         privacy is paramount to us.
                     </p>
 
-                    <p className="text-white/60 text-sm">
+                    <p className="text-neutral-200 text-sm">
                         Our system uses modern methods of information
                         protection, including multi-level authentication,
                         encryption, and regular security audits.
                     </p>
 
-                    <ul className="flex flex-col gap-[7px] text-sm list-disc list-inside text-white/50">
+                    <ul className="flex flex-col gap-[3px] text-sm list-disc list-inside text-neutral-300">
                         <li>Your data is stored securely</li>
                         <li>We use a secure connection (SSL)</li>
                         <li>Information is not shared with third parties</li>
@@ -34,13 +34,13 @@ export function Security() {
                         </span>
                     </div>
 
-                    <p className="text-xs text-white/40 mt-1">
+                    <p className="text-xs text-neutral-300 mt-1">
                         🔒 Over 100 users have already entrusted us with their
                         data.
                     </p>
                 </div>
-                <div className="flex flex-col gap-[15px]">
-                    <p className="text-sm text-white/60">
+                <div className="flex flex-col gap-[10px]">
+                    <p className="text-sm text-neutral-200">
                         If you have any questions about how we store or process
                         your data, please contact our support team and we will
                         be happy to answer.
@@ -53,7 +53,7 @@ export function Security() {
                         >
                             More about privacy policy
                         </a>
-                        <p className="text-xs text-white/30">
+                        <p className="text-xs text-neutral-400">
                             Last updated: June 2025
                         </p>
                     </div>

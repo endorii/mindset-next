@@ -31,7 +31,7 @@ export function DeliveryAddress({
             ) : isUserError ? (
                 <div className="text-red-500">Error loading user.</div>
             ) : (
-                <div className=" py-[10px] flex flex-col gap-[7px] h-full">
+                <div className=" py-[10px] flex flex-col gap-[3px] h-full">
                     <button
                         className="absolute flex gap-[5px] items-center top-[20px] right-[20px]"
                         onClick={() => openModal("editUserAddress")}

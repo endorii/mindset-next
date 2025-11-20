@@ -80,7 +80,7 @@ export function AdminReviewsContent() {
                                 gap-[15px] items-center"
                                 >
                                     <div>{review.senderName}</div>
-                                    <div className="flex text-white-500 text-xl mb-2 xs:hidden">
+                                    <div className="flex text-white text-xl mb-2 xs:hidden">
                                         {Array.from({ length: 5 }).map(
                                             (_, i) => (
                                                 <span key={i}>

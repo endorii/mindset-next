@@ -2,7 +2,7 @@ export function TodoSkeleton() {
     const rows = Array.from({ length: 5 });
 
     return (
-        <div className="  bg-white/5 shadow-lg backdrop-blur-[100px] p-[20px] flex flex-col gap-[15px] w-1/2 lg:w-full">
+        <div className="  bg-white/5 shadow-lg backdrop-blur-[100px] p-[20px] flex flex-col gap-[10px] w-1/2 lg:w-full">
             <div className="flex gap-[15px] justify-between items-center">
                 <div className="h-6 w-1/3 bg-white/10 animate-pulse  " />
                 <div className="h-8 w-[140px] bg-white/10 animate-pulse rounded-full" />

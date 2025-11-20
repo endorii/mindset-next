@@ -17,7 +17,7 @@ export function MenuSection({
                 <div className="text-6xl md:text-5xl font-extrabold">
                     {title}
                 </div>
-                <div className="absolute top-[0px] md:top-[20px] sm:top-[10px] text-8xl md:text-7xl font-qwitcher-grypen text-white/40">
+                <div className="absolute top-[0px] md:top-[20px] sm:top-[10px] text-8xl md:text-7xl font-qwitcher-grypen text-neutral-300">
                     {subtitle}
                 </div>
             </div>

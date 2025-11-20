@@ -169,7 +169,7 @@ export function UsersRegistrationsChart({
 
     if (!users || users.length === 0) {
         return (
-            <div className="  bg-white/5 p-[20px] w-full text-white/60 border border-white/5">
+            <div className="  bg-white/5 p-[20px] w-full text-neutral-200 border border-white/5">
                 There are no users for the chart.
             </div>
         );
@@ -188,7 +188,7 @@ export function UsersRegistrationsChart({
     };
 
     return (
-        <div className="  bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px] flex flex-col gap-[15px] w-full">
+        <div className="  bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px] flex flex-col gap-[10px] w-full">
             <h2 className="text-lg font-semibold">
                 User registration statistics {periodLabels[period]}
             </h2>

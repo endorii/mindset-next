@@ -3,7 +3,7 @@ import { AdminHomeWrapper } from "@/features/admin/components/AdminHomeWrapper";
 
 function Admin() {
     return (
-        <div className="flex flex-col gap-[15px]">
+        <div className="flex flex-col gap-[10px]">
             <Title title="Main page" />
             <AdminHomeWrapper />
         </div>

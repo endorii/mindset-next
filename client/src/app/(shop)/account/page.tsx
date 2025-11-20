@@ -49,7 +49,7 @@ function Account() {
     }, [isUserError]);
 
     return (
-        <div className="flex flex-col gap-[15px]">
+        <div className="flex flex-col gap-[10px]">
             <div className="flex lg:flex-wrap w-full justify-between gap-[15px]">
                 <MainInfo
                     openModal={() => openModal("editUserInfo")}
@@ -57,7 +57,7 @@ function Account() {
                     isUserError={isUserError}
                     currentUser={user}
                 />
-                <div className="flex flex-col gap-[15px] w-1/2 lg:w-full ">
+                <div className="flex flex-col gap-[10px] w-1/2 lg:w-full ">
                     <DeliveryAddress
                         isUserPending={isUserPending}
                         isUserError={isUserError}

@@ -3,6 +3,7 @@
 import { useEscapeKeyClose, useUploadBanner } from "@/shared/hooks";
 import { TStatus } from "@/shared/types/types";
 import { MonoButton } from "@/shared/ui/buttons";
+import { MonoButtonUnderlined } from "@/shared/ui/buttons/MonoButtonUnderlined";
 import { UploadBannerWithPreview } from "@/shared/ui/components";
 import { InputField } from "@/shared/ui/inputs/InputField";
 import { BasicSelector } from "@/shared/ui/selectors/BasicSelector";
@@ -144,7 +145,7 @@ export function AddCollectionModal({
                             errorMessage={errors.path?.message}
                         />
 
-                        <BasicSelector<string>
+                        <BasicSelector
                             label={"Status*"}
                             register={{
                                 ...register("status", {
@@ -177,7 +178,7 @@ export function AddCollectionModal({
                     <p className="text-red-500 text-sm">{modalMessage}</p>
                 )}
                 <FormButtonsWrapper>
-                    <MonoButton
+                    <MonoButtonUnderlined
                         type="button"
                         onClick={handleClose}
                         disabled={
@@ -186,7 +187,7 @@ export function AddCollectionModal({
                         }
                     >
                         Cancel
-                    </MonoButton>
+                    </MonoButtonUnderlined>
                     <MonoButton
                         type="submit"
                         disabled={

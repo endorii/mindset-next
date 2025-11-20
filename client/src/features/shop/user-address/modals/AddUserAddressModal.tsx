@@ -2,6 +2,7 @@
 
 import { useEscapeKeyClose } from "@/shared/hooks";
 import { MonoButton } from "@/shared/ui/buttons";
+import { MonoButtonUnderlined } from "@/shared/ui/buttons/MonoButtonUnderlined";
 import { InputField } from "@/shared/ui/inputs/InputField";
 import {
     FormButtonsWrapper,
@@ -75,7 +76,7 @@ export function AddUserAddressModal({
             modalTitle={"Add personal delivery address (optional)"}
         >
             <form
-                className="flex flex-col gap-[15px]"
+                className="flex flex-col gap-[10px]"
                 onSubmit={handleSubmit(onSubmit)}
             >
                 <FormFillingWrapper>
@@ -164,9 +165,9 @@ export function AddUserAddressModal({
                 )}
 
                 <FormButtonsWrapper>
-                    <MonoButton type="button" onClick={handleClose}>
+                    <MonoButtonUnderlined type="button" onClick={handleClose}>
                         Cancel
-                    </MonoButton>
+                    </MonoButtonUnderlined>
                     <MonoButton type="submit">
                         {createUserAddressMutation.isPending
                             ? "Processing..."

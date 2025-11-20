@@ -12,7 +12,7 @@ export function CartReceip({ totalPrice }: ICartReceipProps) {
                     Receip details
                 </div>
                 <hr className="border-t border-white/10 my-[15px]" />
-                <div className="flex flex-col gap-[15px] text-base font-light">
+                <div className="flex flex-col gap-[10px] text-base font-light">
                     <div className="flex justify-between">
                         <div>Amount of goods</div>
                         <div>${totalPrice.toFixed(2)}</div>

@@ -1,7 +1,8 @@
 "use client";
 
 import { useEscapeKeyClose } from "@/shared/hooks";
-import { DeleteButton, MonoButton } from "@/shared/ui/buttons";
+import { DeleteButton } from "@/shared/ui/buttons";
+import { MonoButtonUnderlined } from "@/shared/ui/buttons/MonoButtonUnderlined";
 import { FormButtonsWrapper, ModalWrapper } from "@/shared/ui/wrappers";
 import { createPortal } from "react-dom";
 import { useDeleteTodoItem } from "../../hooks/useTodo";
@@ -31,11 +32,13 @@ export function DeleteTodoItemModal({
 
     const modalContent = (
         <ModalWrapper onClose={onClose} modalTitle={"Deleting tasks"}>
-            <div className="mb-6 text-white">
+            <div className="font-light">
                 Do you really want to Delete this task?
             </div>
             <FormButtonsWrapper>
-                <MonoButton onClick={onClose}>Cancel</MonoButton>
+                <MonoButtonUnderlined onClick={onClose}>
+                    Cancel
+                </MonoButtonUnderlined>
                 <DeleteButton
                     onClick={() => {
                         onClose();

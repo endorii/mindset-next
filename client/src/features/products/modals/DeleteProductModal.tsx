@@ -2,7 +2,8 @@
 
 // import { deleteImage, deleteImages } from "@/shared/api/files.api";
 import { useEscapeKeyClose } from "@/shared/hooks";
-import { DeleteButton, MonoButton } from "@/shared/ui/buttons";
+import { DeleteButton } from "@/shared/ui/buttons";
+import { MonoButtonUnderlined } from "@/shared/ui/buttons/MonoButtonUnderlined";
 import { FormButtonsWrapper, ModalWrapper } from "@/shared/ui/wrappers";
 import { createPortal } from "react-dom";
 import { useDeleteProduct } from "../hooks/useProducts";
@@ -36,7 +37,7 @@ export function DeleteProductModal({
 
     const modalContent = (
         <ModalWrapper onClose={onClose} modalTitle={"Deletting product"}>
-            <div className="mb-6 text-white/80 text-[16px] leading-[1.6]">
+            <div className="text-neutral-200 text-[16px] leading-[1.6] font-light">
                 Do you really want to Delete the item?{" "}
                 <span className="font-semibold text-white">
                     {product?.name}
@@ -44,9 +45,9 @@ export function DeleteProductModal({
                 ?
             </div>
             <FormButtonsWrapper>
-                <MonoButton type="button" onClick={onClose}>
+                <MonoButtonUnderlined type="button" onClick={onClose}>
                     Cancel
-                </MonoButton>
+                </MonoButtonUnderlined>
                 <DeleteButton onClick={handleDelete}>Delete</DeleteButton>
             </FormButtonsWrapper>
         </ModalWrapper>

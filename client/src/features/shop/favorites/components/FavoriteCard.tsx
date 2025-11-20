@@ -13,7 +13,7 @@ interface FavoriteCardProps {
 export function FavoriteCard({ onRemove, product }: FavoriteCardProps) {
     return (
         <li className="relative text-white">
-            <div className="flex flex-col gap-[15px]">
+            <div className="flex flex-col gap-[10px]">
                 <div className="relative group">
                     <Image
                         src={product.banner}
@@ -42,7 +42,7 @@ export function FavoriteCard({ onRemove, product }: FavoriteCardProps) {
                             <div className="text-xl text-white font-semibold">
                                 ${product.price}
                             </div>
-                            <div className="font-semibold line-through text-white/60">
+                            <div className="font-semibold line-through text-neutral-200">
                                 ${product.oldPrice}
                             </div>
                         </div>

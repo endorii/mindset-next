@@ -1,7 +1,7 @@
 function SkeletonFavoriteCard() {
     return (
         <li className="relative bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px] animate-pulse">
-            <div className="flex flex-col gap-[15px]">
+            <div className="flex flex-col gap-[10px]">
                 <div className="w-full aspect-square bg-white/10" />
 
                 <div className="flex justify-between items-center flex-wrap gap-[10px]">
