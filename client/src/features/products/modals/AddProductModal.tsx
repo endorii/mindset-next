@@ -394,7 +394,7 @@ export function AddProductModal({
                             className="hidden"
                         />
 
-                        <div className="flex flex-wrap gap-[15px] mt-4">
+                        <div className="flex flex-wrap gap-[15px] mt-4 max-w-[700px]">
                             {imagesPreview.map((src, i) => (
                                 <div
                                     key={i}

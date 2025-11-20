@@ -13,7 +13,7 @@ export function CollectionsAndCategoriesList({
     basePath = "",
 }: CollectionsAndCategoriesListProps) {
     return (
-        <div className="grid grid-cols-3 gap-[15px] w-full">
+        <div className="grid grid-cols-3 md:grid-cols-2 sm:grid-cols-1 gap-[15px] w-full">
             {items.map((item, i) => (
                 <div key={i} className="relative cursor-pointer">
                     <div className="absolute opacity-0 hover:opacity-100 bg-black/80 backdrop-blur-xl w-full h-full text-3xl text-white z-[1] transition-all duration-400 flex items-center justify-center">
@@ -37,9 +37,9 @@ export function CollectionsAndCategoriesList({
                         <Image
                             src={item.banner}
                             alt={item.name}
-                            width={1000}
-                            height={1000}
-                            className="w-full h-[750px] object-cover filter transition-all duration-600"
+                            width={700}
+                            height={700}
+                            className="w-full h-[750px] md:h-[550px] sm:h-[400px] object-cover filter transition-all duration-600"
                         />
                     </div>
                 </div>

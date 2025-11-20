@@ -13,7 +13,9 @@ export function Breadcrumbs({
 }) {
     return (
         <div
-            className={`flex gap-[7px] text-neutral-300 font-light text-xl font-perandory tracking-wider ${className}`}
+            className={`flex gap-[7px] text-neutral-300 font-light text-xl font-perandory tracking-wider truncate ${
+                className ?? null
+            }`}
         >
             <Link
                 href={`/${collectionPath}`}

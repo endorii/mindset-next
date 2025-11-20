@@ -13,11 +13,12 @@ import { Breadcrumbs } from "@/shared/ui/components";
 import { addToRecentlyViewed } from "@/shared/utils/addToRecentlyViewed";
 import { useCartStore } from "@/store/useCartStore";
 import { useFavoritesStore } from "@/store/useFavoritesStore";
-import Image from "next/image";
+import { EmblaOptionsType } from "embla-carousel";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { IProduct } from "../types/products.types";
 import { AttributeSelector } from "./AttributeSelector";
+import EmblaCarousel from "./Carousel";
 
 interface ProductContentProps {
     collectionPath: string;
@@ -104,47 +105,31 @@ export function ProductContent({
         }
     };
 
+    const OPTIONS: EmblaOptionsType = { loop: true };
+
     return (
         <div className="flex sm:flex-col gap-[15px] items-start text-white">
-            <div className="flex sm:flex-col gap-[10px] relative">
-                <div className="relative w-full h-full">
-                    <button
-                        onClick={handleLikeToggle}
-                        className="absolute group top-[10px] right-[10px] m-[0_auto] text-xs flex justify-center items-center gap-[10px] transition-all duration-300 cursor-pointer min-w-[60px] w-[60px] min-h-[60px] h-[60px] p-[5px]"
-                    >
-                        <HeartIcon
-                            className={`group-hover:fill-red-600 group-hover:stroke-red-600 transition-all duration-300 ${
-                                isLiked
-                                    ? "w-[50px] stroke-red-600 fill-red-600"
-                                    : "w-[40px] stroke-white stroke-[1.5] fill-none"
-                            }`}
-                        />
-                    </button>
-                    <Image
-                        src={product.banner}
-                        alt={product.name}
-                        className="h-[500px] sm:h-[400px] object-cover w-full"
-                        width={1500}
-                        height={1500}
+            <div className="relative w-[50%] sm:w-full">
+                <button
+                    onClick={handleLikeToggle}
+                    className="absolute group top-[10px] right-[10px] z-10 text-xs flex justify-center items-center gap-[10px] transition-all duration-300 cursor-pointer min-w-[60px] w-[60px] min-h-[60px] h-[60px] p-[5px]"
+                >
+                    <HeartIcon
+                        className={`group-hover:fill-red-600 group-hover:stroke-red-600 transition-all duration-300 ${
+                            isLiked
+                                ? "w-[50px] stroke-red-600 fill-red-600"
+                                : "w-[40px] stroke-white stroke-[1.5] fill-none"
+                        }`}
                     />
-                </div>
-                {product.images.length > 0 && (
-                    <div className="flex flex-col sm:flex-row gap-[10px] w-full sm:h-[200px] overflow-y-auto sm:overflow-x-auto">
-                        {product.images.map((image, i) => (
-                            <Image
-                                key={i}
-                                src={image}
-                                alt={product.name}
-                                width={200}
-                                height={200}
-                                className="object-cover"
-                            />
-                        ))}
-                    </div>
-                )}
+                </button>
+
+                <EmblaCarousel
+                    slides={[product.banner, ...product.images]}
+                    options={OPTIONS}
+                />
             </div>
 
-            <div className="flex flex-col gap-[10px] w-[65%] lg:w-full h-fit">
+            <div className="flex flex-col gap-[10px] w-[50%] sm:w-full">
                 <div className="flex flex-col gap-[25px] bg-white/5 border border-white/10 px-[20px] xl:p-[15px] py-[20px]">
                     <Breadcrumbs
                         collectionPath={collectionPath}

@@ -28,10 +28,10 @@ export function RenderAttributeField({
     };
 
     return (
-        <div className="flex flex-col gap-[3px]">
+        <div className="flex flex-col gap-[3px] w-full">
             <Label>{label}*</Label>
             <div
-                className={`flex flex-wrap gap-[10px] max-w-[600px] overflow-y-auto border ${
+                className={`flex flex-wrap gap-[10px] overflow-y-auto border ${
                     errorMessage ? "border-red-500" : "border-white/10"
                 } p-[10px] bg-black/10`}
             >

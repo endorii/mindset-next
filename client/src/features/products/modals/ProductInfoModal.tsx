@@ -88,16 +88,16 @@ export function ProductInfoModal({
 
                 <div className="flex flex-col gap-[3px]">
                     <Label>Additional images</Label>
-                    <div className="flex gap-[10px]">
+                    <div className="flex flex-wrap gap-[15px] mt-4 max-w-[700px]">
                         {images.length > 0 ? (
                             images.map((image, i) => (
                                 <Image
                                     key={i}
                                     src={image}
                                     alt={`Images ${i + 1}`}
-                                    width={100}
-                                    height={100}
-                                    className="border border-white/20 w-[200px]"
+                                    width={150}
+                                    height={150}
+                                    className="w-[150px] object-contain"
                                 />
                             ))
                         ) : (
