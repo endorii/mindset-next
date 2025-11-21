@@ -1,5 +1,14 @@
+import {
+    Select,
+    SelectContent,
+    SelectGroup,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from "@/components/ui/select";
 import { IUser } from "@/features/shop/user-info/types/user.types";
-import { ChooseButton } from "@/shared/ui/buttons";
+import { MONTH_NAMES } from "@/shared/constants/monthsNames";
+import { Period, PERIOD_LABELS } from "@/shared/types/chartPeriods";
 import {
     endOfDay,
     endOfMonth,
@@ -25,8 +34,6 @@ import {
     XAxis,
     YAxis,
 } from "recharts";
-
-type Period = "day" | "week" | "month" | "year";
 
 type ChartPoint = {
     name: string;
@@ -122,24 +129,8 @@ function generateUsersChartData(users: IUser[], period: Period): ChartPoint[] {
     }
 
     if (period === "year") {
-        // по місяцях року
-        const monthNames = [
-            "Jan",
-            "Feb",
-            "Mar",
-            "Apr",
-            "Thu",
-            "Jun",
-            "Jul",
-            "Apr",
-            "Sep",
-            "Oct",
-            "Nov",
-            "Dec",
-        ];
-
         const data: ChartPoint[] = Array.from({ length: 12 }, (_, i) => ({
-            name: monthNames[i],
+            name: MONTH_NAMES[i],
             users: 0,
         }));
 
@@ -180,28 +171,38 @@ export function UsersRegistrationsChart({
         [users, period]
     );
 
-    const periodLabels: Record<Period, string> = {
-        day: "Per day (by hour)",
-        week: "Per week (by day)",
-        month: "Per month (by day)",
-        year: "Per year (by month)",
-    };
-
     return (
         <div className="  bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px] flex flex-col gap-[10px] w-full">
-            <h2 className="text-lg font-semibold">
-                User registration statistics {periodLabels[period]}
-            </h2>
-            <div className="flex flex-wrap gap-[10px] mb-[20px]">
-                {(["day", "week", "month", "year"] as Period[]).map((p) => (
-                    <ChooseButton
-                        key={p}
-                        onClick={() => setPeriod(p)}
-                        isActive={p === period}
-                    >
-                        {periodLabels[p]}
-                    </ChooseButton>
-                ))}
+            <div className="text-3xl font-perandory tracking-wider">
+                User registration statistics
+            </div>
+            <div className="flex gap-[10px] items-center justify-end">
+                <div className="font-semibold">Chosen:</div>
+                <Select
+                    value={period}
+                    onValueChange={(v: Period) => setPeriod(v)}
+                >
+                    <SelectTrigger>
+                        <SelectValue placeholder="Select period" />
+                    </SelectTrigger>
+
+                    <SelectContent>
+                        <SelectGroup>
+                            <SelectItem value="day">
+                                {PERIOD_LABELS.day}
+                            </SelectItem>
+                            <SelectItem value="week">
+                                {PERIOD_LABELS.week}
+                            </SelectItem>
+                            <SelectItem value="month">
+                                {PERIOD_LABELS.month}
+                            </SelectItem>
+                            <SelectItem value="year">
+                                {PERIOD_LABELS.year}
+                            </SelectItem>
+                        </SelectGroup>
+                    </SelectContent>
+                </Select>
             </div>
             <ResponsiveContainer width="100%" height={450}>
                 <LineChart data={chartData}>

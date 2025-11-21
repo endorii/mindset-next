@@ -1,25 +1,25 @@
 "use client";
 
 import { AdminRecentActions } from "@/shared/components";
+import { FiltersWrapper } from "@/shared/components/layout";
 import { useMemo, useState } from "react";
 import { FilterSection } from "../../attributes/components/FilterSection";
 import { useRecentActions } from "../../recent-actions/hooks/useRecentActions";
 
 export function AdminAccountContent() {
-    const actionTypeFilters = ["All", "Added", "Edited", "Deleted"];
+    const actionTypeFilters = ["Added", "Edited", "Deleted"];
     const entityFilters = [
-        "All",
-        "collection",
-        "category",
-        "product",
-        "color",
-        "type",
-        "size",
+        "Collection",
+        "Category",
+        "Product",
+        "Color",
+        "Type",
+        "Size",
     ];
     const sortFilters = ["Newer first", "First the older ones"];
 
-    const [selectedType, setSelectedType] = useState("All");
-    const [selectedEntity, setSelectedEntity] = useState("All");
+    const [selectedType, setSelectedType] = useState("");
+    const [selectedEntity, setSelectedEntity] = useState("");
     const [selectedSort, setSelectedSort] = useState("Newer first");
 
     const { data: actions } = useRecentActions();
@@ -29,11 +29,9 @@ export function AdminAccountContent() {
 
         let result = actions.filter((action) => {
             const isTypeMatch =
-                selectedType === "All" ||
-                action.action.startsWith(selectedType);
+                selectedType === "" || action.action.startsWith(selectedType);
             const isEntityMatch =
-                selectedEntity === "All" ||
-                action.action.includes(selectedEntity);
+                selectedEntity === "" || action.action.includes(selectedEntity);
             return isTypeMatch && isEntityMatch;
         });
 
@@ -47,30 +45,39 @@ export function AdminAccountContent() {
 
         return result;
     }, [actions, selectedType, selectedEntity, selectedSort]);
+
+    const resetFilters = () => {
+        setSelectedType("");
+        setSelectedEntity("");
+        setSelectedSort("Newer first");
+    };
+
     return (
-        <>
-            <FilterSection
-                title="Filter by action"
-                filters={actionTypeFilters}
-                onFilterClick={(filter) => setSelectedType(filter)}
-                selectedItem={selectedType}
-            />
+        <div className="flex flex-col gap-[20px] bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px] w-full">
+            <FiltersWrapper resetFilters={resetFilters}>
+                <FilterSection
+                    title="Filter by action"
+                    filters={actionTypeFilters}
+                    onFilterClick={setSelectedType}
+                    selectedItem={selectedType}
+                />
 
-            <FilterSection
-                title="Filter by object"
-                filters={entityFilters}
-                onFilterClick={(filter) => setSelectedEntity(filter)}
-                selectedItem={selectedEntity}
-            />
+                <FilterSection
+                    title="Filter by object"
+                    filters={entityFilters}
+                    onFilterClick={setSelectedEntity}
+                    selectedItem={selectedEntity}
+                />
 
-            <FilterSection
-                title="Sorting"
-                filters={sortFilters}
-                onFilterClick={(filter) => setSelectedSort(filter)}
-                selectedItem={selectedSort}
-            />
+                <FilterSection
+                    title="Sorting"
+                    filters={sortFilters}
+                    onFilterClick={setSelectedSort}
+                    selectedItem={selectedSort}
+                />
+            </FiltersWrapper>
 
             <AdminRecentActions actions={filteredActions} />
-        </>
+        </div>
     );
 }

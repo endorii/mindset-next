@@ -1,18 +1,24 @@
 "use client";
 
-import { FilterSection } from "@/features/admin/attributes/components/FilterSection";
 import { EditIcon, InfoIcon, TrashIcon } from "@/shared/icons";
 import { OrderModalType } from "@/shared/types/types";
 import { ButtonWithIcon, DeleteButtonWithIcon } from "@/shared/ui/buttons";
 
+import { FilterSection } from "@/features/admin/attributes/components/FilterSection";
+import { FiltersWrapper } from "@/shared/components/layout";
 import { formatDate } from "@/shared/utils/formatDate";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { useOrders } from "../hooks/useOrders";
 import { DeleteOrderModal, EditOrderModal, OrderInfoModal } from "../modals";
 import { IOrder } from "../types/orders.types";
 
 export function AdminOrdersContent() {
-    const sortFilters = ["Newer First", "Older First"];
+    const sortFilters = [
+        "Newer First",
+        "Older First",
+        "Amount, $ (high)",
+        "Amount, $ (low)",
+    ];
     const statusFilters = [
         "Processing",
         "Paid",
@@ -23,8 +29,55 @@ export function AdminOrdersContent() {
 
     const [activeModal, setActiveModal] = useState<OrderModalType>(null);
     const [selectedOrder, setSelectedOrder] = useState<IOrder | null>(null);
+    const [selectedSortFilter, setSelectedSortFilter] = useState("");
+    const [selectedStatusFilter, setSelectedStatusFilter] = useState("");
 
     const { data: orders } = useOrders();
+
+    const filteredAndSortedOrders = useMemo(() => {
+        if (!orders) return [];
+
+        let result = [...orders];
+
+        if (selectedStatusFilter) {
+            result = result.filter((order) => {
+                const statusMap = {
+                    pending: "Processing",
+                    paid: "Paid",
+                    shipped: "Shipped",
+                    delivered: "Delivered",
+                    cancelled: "Cancelled",
+                };
+                return statusMap[order.status] === selectedStatusFilter;
+            });
+        }
+
+        switch (selectedSortFilter) {
+            case "Newer First":
+                return result.sort(
+                    (a, b) =>
+                        new Date(b.createdAt || "").getTime() -
+                        new Date(a.createdAt || "").getTime()
+                );
+            case "Older First":
+                return result.sort(
+                    (a, b) =>
+                        new Date(a.createdAt || "").getTime() -
+                        new Date(b.createdAt || "").getTime()
+                );
+            case "Amount, $ (high)":
+                return result.sort((a, b) => b.total - a.total);
+            case "Amount, $ (low)":
+                return result.sort((a, b) => a.total - b.total);
+            default:
+                return result;
+        }
+    }, [orders, selectedSortFilter, selectedStatusFilter]);
+
+    const resetFilters = () => {
+        setSelectedSortFilter("");
+        setSelectedStatusFilter("");
+    };
 
     const openModal = (type: OrderModalType, order: IOrder | null) => {
         setSelectedOrder(order);
@@ -38,25 +91,23 @@ export function AdminOrdersContent() {
 
     return (
         <>
-            <FilterSection
-                title={"Filter by time"}
-                filters={sortFilters}
-                onFilterClick={function (filter: string): void {
-                    throw new Error("Function not implemented.");
-                }}
-                selectedItem={""}
-            />
-            <FilterSection
-                title={"Filter by status"}
-                filters={statusFilters}
-                onFilterClick={function (filter: string): void {
-                    throw new Error("Function not implemented.");
-                }}
-                selectedItem={""}
-            />
-
             {orders && orders.length > 0 ? (
-                <div className="  bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px] sm:px-[10px] pt-0">
+                <div className="flex flex-col gap-[10px] bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px] sm:px-[10px]">
+                    <FiltersWrapper resetFilters={resetFilters}>
+                        <FilterSection
+                            title="Filter by time"
+                            filters={sortFilters}
+                            selectedItem={selectedSortFilter}
+                            onFilterClick={setSelectedSortFilter}
+                        />
+
+                        <FilterSection
+                            title="Filter by status"
+                            filters={statusFilters}
+                            selectedItem={selectedStatusFilter}
+                            onFilterClick={setSelectedStatusFilter}
+                        />
+                    </FiltersWrapper>
                     <div
                         className="grid 
                     grid-cols-[1.5fr_1fr_1fr_1fr_1.5fr_230px] 
@@ -73,7 +124,7 @@ export function AdminOrdersContent() {
                         <div className="text-right lg:hidden">Actions</div>
                     </div>
                     <div className="border border-white/10  ">
-                        {orders?.map((order) => (
+                        {filteredAndSortedOrders?.map((order) => (
                             <div
                                 key={order.id}
                                 className="flex flex-col gap-[25px] p-[20px] border-b border-white/10 last:border-b-0 text-sm"

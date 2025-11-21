@@ -14,7 +14,7 @@ export function ChooseButton({
     return (
         <button
             onClick={onClick}
-            className={`transition-colors duration-300 flex items-center justify-center cursor-pointer px-[20px] py-[10px] sm:text-sm border shadow-lg xs:w-full ${className} 
+            className={`transition-colors duration-300 flex items-center justify-center cursor-pointer px-[20px] py-[10px] sm:text-sm border shadow-lg xs:w-full font-perandory tracking-wider text-xl ${className} 
                 ${
                     isActive
                         ? "bg-white text-black border-white"

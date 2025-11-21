@@ -28,6 +28,7 @@ export function SizeSection() {
                 onClick={() => setModalType("add")}
                 buttonText={"Add size"}
             />
+            <hr className="w-full border-t border-white/10" />
 
             {sizes && (sizes ?? []).length > 0 ? (
                 <div className="  bg-white/5 shadow-lg border border-white/5 p-[20px] sm:px-[10px] pt-0">

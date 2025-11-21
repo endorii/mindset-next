@@ -15,7 +15,7 @@ export function AdminRecentActions({
     }
 
     return (
-        <div className="flex flex-col gap-[10px] bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px] w-full">
+        <>
             <div className="flex gap-[15px] items-center">
                 <div className="text-3xl font-perandory tracking-wider">
                     Recent actions
@@ -51,6 +51,6 @@ export function AdminRecentActions({
             ) : (
                 <p className="text-sm">No actions for these filters</p>
             )}
-        </div>
+        </>
     );
 }

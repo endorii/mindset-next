@@ -3,8 +3,9 @@ import { AdminReviewsWrapper } from "@/features/reviews/components/AdminReviewsW
 
 function Reviews() {
     return (
-        <div className="flex flex-col gap-[10px]">
+        <div className="flex flex-col gap-[20px]">
             <Title title="Reviews list" />
+            <hr className="w-full border-t border-white/10" />
             <AdminReviewsWrapper />
         </div>
     );

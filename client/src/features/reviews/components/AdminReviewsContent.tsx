@@ -1,6 +1,7 @@
 "use client";
 
 import { FilterSection } from "@/features/admin/attributes/components/FilterSection";
+import { FiltersWrapper } from "@/shared/components/layout";
 import { ArrowIcon, InfoIcon, TrashIcon } from "@/shared/icons";
 import { ApproveIcon } from "@/shared/icons/ApproveIcon";
 import { ReviewModalType } from "@/shared/types/types";
@@ -10,7 +11,7 @@ import {
     DeleteButtonWithIcon,
 } from "@/shared/ui/buttons";
 import { formatDate } from "@/shared/utils/formatDate";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { useReviews } from "../hooks/useReviews";
 import {
     ApproveReviewModal,
@@ -22,11 +23,66 @@ import { IReview } from "../types/reviews.types";
 
 export function AdminReviewsContent() {
     const sortFilters = ["Newer first", "Older first"];
+    const statusFilters = ["Published", "Not published"];
+    const ratingFilters = ["★", "★★", "★★★", "★★★★", "★★★★★"];
 
     const [activeModal, setActiveModal] = useState<ReviewModalType>(null);
     const [selectedReview, setSelectedReview] = useState<IReview | null>(null);
+    const [selectedSortFilter, setSelectedSortFilter] = useState("");
+    const [selectedStatusFilter, setSelectedStatusFilter] = useState("");
+    const [selectedRatingFilter, setSelectedRatingFilter] = useState("");
 
     const { data: reviews } = useReviews();
+
+    const filteredAndSortedReviews = useMemo(() => {
+        if (!reviews) return [];
+
+        let result = [...reviews];
+
+        if (selectedStatusFilter) {
+            result = result.filter((r) =>
+                r.isApproved
+                    ? selectedStatusFilter === "Published"
+                    : selectedStatusFilter === "Not published"
+            );
+        }
+
+        if (selectedRatingFilter) {
+            result = result.filter(
+                (r) => Number(r.rating) === selectedRatingFilter.length
+            );
+        }
+
+        switch (selectedSortFilter) {
+            case "Newer first":
+                result.sort(
+                    (a, b) =>
+                        new Date(b.createdAt || "").getTime() -
+                        new Date(a.createdAt || "").getTime()
+                );
+                break;
+            case "Older first":
+                result.sort(
+                    (a, b) =>
+                        new Date(a.createdAt || "").getTime() -
+                        new Date(b.createdAt || "").getTime()
+                );
+                break;
+        }
+
+        return result;
+    }, [
+        reviews,
+        selectedSortFilter,
+        selectedStatusFilter,
+        selectedRatingFilter,
+    ]);
+
+    const resetFilters = () => {
+        setSelectedSortFilter("");
+        setSelectedStatusFilter("");
+        setSelectedRatingFilter("");
+    };
 
     const openModal = (type: ReviewModalType, review: IReview | null) => {
         setSelectedReview(review);
@@ -39,17 +95,30 @@ export function AdminReviewsContent() {
     };
     return (
         <>
-            <FilterSection
-                title={"Sort"}
-                filters={sortFilters}
-                selectedItem={""}
-                onFilterClick={function (filter: string): void {
-                    throw new Error("Function not implemented.");
-                }}
-            />
-
             {reviews && reviews.length > 0 ? (
-                <div className="  bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px] sm:px-[10px] pt-0">
+                <div className="flex flex-col gap-[10px] bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px] sm:px-[10px]">
+                    <FiltersWrapper resetFilters={resetFilters}>
+                        <FilterSection
+                            title="Sort"
+                            filters={sortFilters}
+                            selectedItem={selectedSortFilter}
+                            onFilterClick={setSelectedSortFilter}
+                        />
+
+                        <FilterSection
+                            title="Status"
+                            filters={statusFilters}
+                            selectedItem={selectedStatusFilter}
+                            onFilterClick={setSelectedStatusFilter}
+                        />
+
+                        <FilterSection
+                            title="Rating"
+                            filters={ratingFilters}
+                            selectedItem={selectedRatingFilter}
+                            onFilterClick={setSelectedRatingFilter}
+                        />
+                    </FiltersWrapper>
                     <div
                         className="grid 
                     grid-cols-[1fr_1fr_2.5fr_1fr_2fr_280px] 
@@ -66,7 +135,7 @@ export function AdminReviewsContent() {
                         <div className="text-right lg:hidden">Actions</div>
                     </div>
                     <div className="border border-white/10  ">
-                        {reviews.map((review) => (
+                        {filteredAndSortedReviews.map((review) => (
                             <div
                                 key={review.id}
                                 className="flex flex-col gap-[25px] p-[20px] border-b border-white/10 last:border-b-0 text-sm"

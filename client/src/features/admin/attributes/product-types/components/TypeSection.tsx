@@ -28,6 +28,7 @@ export function TypeSection() {
                 onClick={() => setModalType("add")}
                 buttonText={"Add type"}
             />
+            <hr className="w-full border-t border-white/10" />
 
             {types && (types ?? []).length > 0 ? (
                 <div className="  bg-white/5 shadow-lg border border-white/5 p-[20px] sm:px-[10px] pt-0">

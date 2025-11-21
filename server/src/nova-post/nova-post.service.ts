@@ -23,6 +23,8 @@ export class NovaPostService {
             }
         );
 
+        console.log(response.data);
+
         if (response.data.success) {
             return response.data.data;
         }

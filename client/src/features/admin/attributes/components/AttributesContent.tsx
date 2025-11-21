@@ -19,7 +19,7 @@ export function AttributesContent() {
         useState<string>("colors");
 
     return (
-        <div className="flex flex-col gap-[10px]">
+        <div className="flex flex-col gap-[20px]">
             <div className="flex xs:flex-col items-center xs:items-start gap-[10px] bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[10px] w-full">
                 {ATTRIBUTES.map((attr, i) => (
                     <ChooseButton
@@ -32,6 +32,7 @@ export function AttributesContent() {
                     </ChooseButton>
                 ))}
             </div>
+            <hr className="w-full border-t border-white/10" />
 
             {selectedAttribute === "colors" && (
                 <ErrorBoundary

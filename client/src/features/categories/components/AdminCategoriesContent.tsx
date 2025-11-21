@@ -18,10 +18,11 @@ import {
     MonoButton,
 } from "@/shared/ui/buttons";
 
+import { FiltersWrapper } from "@/shared/components/layout";
 import { formatDate } from "@/shared/utils/formatDate";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { useGetCategoriesByCollectionId } from "../hooks/useCategories";
 import {
     AddCategoryModal,
@@ -37,10 +38,11 @@ export function AdminCategoriesContent({
     collectionPath: string;
 }) {
     const filters = [
-        "newest first",
-        "latest updated",
-        "alphabetically",
-        "quantity of products",
+        "Newest first",
+        "Latest updated",
+        "Alphabetically",
+        "Quantity of products (more)",
+        "Quantity of products (less)",
     ];
     const router = useRouter();
 
@@ -48,9 +50,51 @@ export function AdminCategoriesContent({
     const [selectedCategory, setSelectedCategory] = useState<ICategory | null>(
         null
     );
+    const [selectedFilter, setSelectedFilter] = useState("");
 
     const { data: collection } = useGetCollectionByPath(collectionPath);
     const { data: categories } = useGetCategoriesByCollectionId(collection?.id);
+
+    const sortedCategories = useMemo(() => {
+        if (!categories) return [];
+
+        const catts = [...categories];
+
+        switch (selectedFilter) {
+            case "Newest first":
+                return catts.sort(
+                    (a, b) =>
+                        new Date(b.createdAt || "").getTime() -
+                        new Date(a.createdAt || "").getTime()
+                );
+            case "Latest updated":
+                return catts.sort(
+                    (a, b) =>
+                        new Date(b.updatedAt || "").getTime() -
+                        new Date(a.updatedAt || "").getTime()
+                );
+            case "Alphabetically":
+                return catts.sort((a, b) =>
+                    a.name.localeCompare(b.name, "en", { sensitivity: "base" })
+                );
+            case "Quantity of products (more)":
+                return catts.sort(
+                    (a, b) =>
+                        (b.products?.length || 0) - (a.products?.length || 0)
+                );
+            case "Quantity of products (less)":
+                return catts.sort(
+                    (a, b) =>
+                        (a.products?.length || 0) - (b.products?.length || 0)
+                );
+            default:
+                return catts;
+        }
+    }, [categories, selectedFilter]);
+
+    const resetFilters = () => {
+        setSelectedFilter("");
+    };
 
     const openModal = (type: ModalType, category: ICategory | null = null) => {
         setSelectedCategory(category);
@@ -63,7 +107,7 @@ export function AdminCategoriesContent({
     };
 
     return (
-        <div className="flex flex-col gap-[10px]">
+        <div className="flex flex-col gap-[20px]">
             <div>
                 <MonoButton onClick={() => router.push("/admin/collections")}>
                     <BackIcon className="w-[23px] stroke-white stroke-[50] group-hover:stroke-black" />
@@ -75,16 +119,20 @@ export function AdminCategoriesContent({
                 onClick={() => setActiveModal("add")}
                 buttonText={"Add category"}
             />
-            <FilterSection
-                title={"Filter"}
-                filters={filters}
-                onFilterClick={function (filter: string): void {
-                    throw new Error("Function not implemented.");
-                }}
-                selectedItem={""}
-            />
+
+            <hr className="w-full border-t border-white/10" />
             {categories && categories.length > 0 ? (
-                <div className="  bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px] sm:px-[10px] pt-0">
+                <div className="flex flex-col gap-[10px] bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px] sm:px-[10px]">
+                    <FiltersWrapper resetFilters={resetFilters}>
+                        <FilterSection
+                            title="Sort by"
+                            filters={filters}
+                            selectedItem={selectedFilter}
+                            onFilterClick={(filter) =>
+                                setSelectedFilter(filter)
+                            }
+                        />
+                    </FiltersWrapper>
                     <div
                         className="grid 
                     grid-cols-[120px_0.5fr_0.5fr_0.5fr_0.6fr_1fr] 
@@ -102,7 +150,7 @@ export function AdminCategoriesContent({
                         <div className="text-right lg:hidden">Actions</div>
                     </div>
                     <div className="border border-white/10  ">
-                        {categories.map((category) => (
+                        {sortedCategories.map((category) => (
                             <div
                                 key={category.id}
                                 className="flex flex-col gap-[25px] p-[20px] border-b border-white/10 last:border-b-0 text-sm"

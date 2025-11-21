@@ -3,8 +3,9 @@ import { AdminOrdersWrapper } from "@/features/orders/components/AdminOrdersWrap
 
 function Orders() {
     return (
-        <div className="flex flex-col gap-[10px]">
+        <div className="flex flex-col gap-[20px]">
             <Title title="Orders list" />
+            <hr className="w-full border-t border-white/10" />
             <AdminOrdersWrapper />
         </div>
     );

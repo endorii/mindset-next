@@ -1,6 +1,7 @@
 import { FilterSection } from "@/features/admin/attributes/components/FilterSection";
 import { TitleWithAddElementButton } from "@/features/admin/attributes/components/TitleWithAddElementButton";
 import { useGetCategoryByPath } from "@/features/categories/hooks/useCategories";
+import { FiltersWrapper } from "@/shared/components/layout";
 import {
     BackIcon,
     EditIcon,
@@ -17,7 +18,7 @@ import {
 import { formatDate } from "@/shared/utils/formatDate";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { useProductsByCategoryId } from "../hooks/useProducts";
 import {
     AddProductModal,
@@ -34,12 +35,7 @@ export function AdminProductsContent({
     collectionPath: string;
     categoryPath: string;
 }) {
-    const filters = [
-        "newest first",
-        "latest updated",
-        "alphabetically",
-        "number of views",
-    ];
+    const filters = ["Newest first", "Latest updated", "Alphabetically"];
 
     const router = useRouter();
 
@@ -47,6 +43,7 @@ export function AdminProductsContent({
     const [selectedProduct, setSelectedProduct] = useState<IProduct | null>(
         null
     );
+    const [selectedFilter, setSelectedFilter] = useState("");
 
     const { data: category } = useGetCategoryByPath(
         collectionPath,
@@ -54,6 +51,37 @@ export function AdminProductsContent({
     );
 
     const { data: products } = useProductsByCategoryId(category?.id);
+
+    const sortedProducts = useMemo(() => {
+        if (!products) return [];
+
+        const prods = [...products];
+
+        switch (selectedFilter) {
+            case "Newest first":
+                return prods.sort(
+                    (a, b) =>
+                        new Date(b.createdAt || "").getTime() -
+                        new Date(a.createdAt || "").getTime()
+                );
+            case "Latest updated":
+                return prods.sort(
+                    (a, b) =>
+                        new Date(b.updatedAt || "").getTime() -
+                        new Date(a.updatedAt || "").getTime()
+                );
+            case "Alphabetically":
+                return prods.sort((a, b) =>
+                    a.name.localeCompare(b.name, "en", { sensitivity: "base" })
+                );
+            default:
+                return prods;
+        }
+    }, [products, selectedFilter]);
+
+    const resetFilters = () => {
+        setSelectedFilter("");
+    };
 
     const openModal = (type: ModalType, product: IProduct | null = null) => {
         setSelectedProduct(product);
@@ -65,7 +93,7 @@ export function AdminProductsContent({
         setActiveModal(null);
     };
     return (
-        <div className="flex flex-col gap-[10px]">
+        <div className="flex flex-col gap-[20px]">
             <div>
                 <MonoButton
                     onClick={() =>
@@ -83,17 +111,20 @@ export function AdminProductsContent({
                 buttonText={"Add product"}
             />
 
-            <FilterSection
-                title={"Filter"}
-                filters={filters}
-                onFilterClick={function (filter: string): void {
-                    throw new Error("Function not implemented.");
-                }}
-                selectedItem={""}
-            />
+            <hr className="w-full border-t border-white/10" />
 
             {products && products.length > 0 ? (
-                <div className="  bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px] sm:px-[10px] pt-0">
+                <div className="flex flex-col gap-[10px] bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px] sm:px-[10px]">
+                    <FiltersWrapper resetFilters={resetFilters}>
+                        <FilterSection
+                            title={"Sort by"}
+                            filters={filters}
+                            selectedItem={selectedFilter}
+                            onFilterClick={(filter) =>
+                                setSelectedFilter(filter)
+                            }
+                        />
+                    </FiltersWrapper>
                     <div
                         className="grid 
                     grid-cols-[120px_1fr_1fr_1fr_1fr_1fr] 
@@ -111,7 +142,7 @@ export function AdminProductsContent({
                         <div className="text-right lg:hidden">Actions</div>
                     </div>
                     <div className="border border-white/10  ">
-                        {products.map((product) => (
+                        {sortedProducts.map((product) => (
                             <div
                                 key={product.id}
                                 className="flex flex-col gap-[25px] p-[20px] border-b border-white/10 last:border-b-0 text-sm"

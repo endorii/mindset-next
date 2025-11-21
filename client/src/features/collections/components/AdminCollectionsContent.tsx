@@ -15,10 +15,11 @@ import {
     LinkWithIcon,
 } from "@/shared/ui/buttons";
 
+import { FiltersWrapper } from "@/shared/components/layout";
 import { ModalType } from "@/shared/types/types";
 import { formatDate } from "@/shared/utils/formatDate";
 import Link from "next/link";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { useGetCollections } from "../hooks/useCollections";
 import {
     AddCollectionModal,
@@ -30,18 +31,62 @@ import { ICollection } from "../types/collections.types";
 
 export function AdminCollectionsContent() {
     const filters = [
-        "newest first",
-        "latest updated",
-        "alphabetically",
-        "number of categories",
-        "number of products",
+        "Newest first",
+        "Latest updated",
+        "Alphabetically",
+        "Number of categories (more)",
+        "Number of categories (less)",
     ];
 
     const [activeModal, setActiveModal] = useState<ModalType>(null);
     const [selectedCollection, setSelectedCollection] =
         useState<ICollection | null>(null);
+    const [selectedFilter, setSelectedFilter] = useState("");
 
     const { data: collections } = useGetCollections();
+
+    const sortedCollections = useMemo(() => {
+        if (!collections) return [];
+
+        const colls = [...collections];
+
+        switch (selectedFilter) {
+            case "Newest first":
+                return colls.sort(
+                    (a, b) =>
+                        new Date(b.createdAt || "").getTime() -
+                        new Date(a.createdAt || "").getTime()
+                );
+            case "Latest updated":
+                return colls.sort(
+                    (a, b) =>
+                        new Date(b.updatedAt || "").getTime() -
+                        new Date(a.updatedAt || "").getTime()
+                );
+            case "Alphabetically":
+                return colls.sort((a, b) =>
+                    a.name.localeCompare(b.name, "en", { sensitivity: "base" })
+                );
+            case "Number of categories (more)":
+                return colls.sort(
+                    (a, b) =>
+                        (b.categories?.length || 0) -
+                        (a.categories?.length || 0)
+                );
+            case "Number of categories (less)":
+                return colls.sort(
+                    (a, b) =>
+                        (a.categories?.length || 0) -
+                        (b.categories?.length || 0)
+                );
+            default:
+                return colls;
+        }
+    }, [collections, selectedFilter]);
+
+    const resetFilters = () => {
+        setSelectedFilter("");
+    };
 
     const openModal = (
         type: ModalType,
@@ -57,22 +102,25 @@ export function AdminCollectionsContent() {
     };
 
     return (
-        <div className="flex flex-col gap-[10px]">
+        <div className="flex flex-col gap-[20px]">
             <TitleWithAddElementButton
                 title={"List of collections"}
                 onClick={() => setActiveModal("add")}
                 buttonText={"Add collection"}
             />
-            <FilterSection
-                title={"Filter"}
-                filters={filters}
-                onFilterClick={function (filter: string): void {
-                    throw new Error("Function not implemented.");
-                }}
-                selectedItem={""}
-            />
+            <hr className="w-full border-t border-white/10" />
             {collections && collections.length > 0 ? (
-                <div className="  bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px] sm:px-[10px] pt-0 text-sm">
+                <div className="flex flex-col gap-[10px] bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px] sm:px-[10px] text-sm">
+                    <FiltersWrapper resetFilters={resetFilters}>
+                        <FilterSection
+                            title="Sort by"
+                            filters={filters}
+                            selectedItem={selectedFilter}
+                            onFilterClick={(filter) =>
+                                setSelectedFilter(filter)
+                            }
+                        />
+                    </FiltersWrapper>
                     <div
                         className="grid 
                     grid-cols-[120px_0.5fr_0.5fr_0.5fr_0.5fr_1fr] 
@@ -92,8 +140,8 @@ export function AdminCollectionsContent() {
                     </div>
 
                     <div className="border border-white/10  ">
-                        {collections &&
-                            collections.map((collection) => (
+                        {sortedCollections &&
+                            sortedCollections.map((collection) => (
                                 <div
                                     key={collection.id}
                                     className="flex flex-col gap-[25px] p-[20px] border-b border-white/10 last:border-b-0 text-sm"

@@ -28,10 +28,12 @@ export function ColorSection() {
     return (
         <>
             <TitleWithAddElementButton
-                title={"Color list"}
+                title={"Colors list"}
                 onClick={() => setModalType("add")}
                 buttonText={"Add color"}
             />
+
+            <hr className="w-full border-t border-white/10" />
 
             {colors && (colors ?? []).length > 0 ? (
                 <div className="bg-white/5 shadow-lg border border-white/5 p-[20px] sm:px-[10px] pt-0">

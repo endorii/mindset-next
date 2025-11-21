@@ -1,4 +1,11 @@
-import { ChooseButton } from "@/shared/ui/buttons";
+import {
+    Select,
+    SelectContent,
+    SelectGroup,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from "@/components/ui/select";
 
 interface FilterSectionProps {
     title: string;
@@ -14,19 +21,24 @@ export function FilterSection({
     onFilterClick,
 }: FilterSectionProps) {
     return (
-        <div className="flex sm:flex-col items-center sm:items-start gap-[15px] bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px]">
+        <div className="flex gap-[10px] items-center">
             <div className="font-semibold">{title}:</div>
-            <div className="flex flex-wrap gap-[10px] w-full">
-                {filters.map((name, i) => (
-                    <ChooseButton
-                        key={i}
-                        onClick={() => onFilterClick(name)}
-                        isActive={name === selectedItem}
-                    >
-                        {name}
-                    </ChooseButton>
-                ))}
-            </div>
+
+            <Select value={selectedItem} onValueChange={onFilterClick}>
+                <SelectTrigger>
+                    <SelectValue placeholder="Choose filter" />
+                </SelectTrigger>
+
+                <SelectContent>
+                    <SelectGroup>
+                        {filters.map((name, i) => (
+                            <SelectItem key={i} value={name}>
+                                {name}
+                            </SelectItem>
+                        ))}
+                    </SelectGroup>
+                </SelectContent>
+            </Select>
         </div>
     );
 }
