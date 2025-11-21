@@ -31,7 +31,7 @@ export function ChooseCheckoutDeliveryAddress({
             </div>
             <hr className="border-t border-white/10" />
             <div className="flex gap-[15px]">
-                <div className="flex flex-col gap-[13px] w-full">
+                <div className="flex flex-col gap-[15px] w-full">
                     <div className="flex flex-col gap-[3px]">
                         <Label>Region</Label>
                         <select

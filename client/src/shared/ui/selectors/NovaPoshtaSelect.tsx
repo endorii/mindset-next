@@ -1,3 +1,13 @@
+"use client";
+
+import {
+    Select,
+    SelectContent,
+    SelectGroup,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from "@/components/ui/select";
 import { ChangeEvent } from "react";
 import { UseFormRegisterReturn } from "react-hook-form";
 import { Label } from "../components";
@@ -27,31 +37,40 @@ export function NovaPoshtaSelect({
     errorMessage,
 }: NovaPoshtaSelectProps) {
     return (
-        <div className="flex flex-col gap-[3px] w-full">
+        <div className="flex flex-col gap-1 w-full">
             <Label>{label}</Label>
-            <select
-                className={`border px-[10px] py-[10px] bg-black/20 text-white outline-none ${
-                    errorMessage ? "border-red-500" : "border-white/10"
-                }`}
-                value={value}
-                onChange={(e) => {
-                    onChange?.(e);
-                    register?.onChange?.(e);
-                }}
-                onBlur={register?.onBlur}
-                name={register?.name}
-                ref={register?.ref}
+
+            <Select
                 disabled={disabled}
+                value={value}
+                onValueChange={(val) => {
+                    const event = {
+                        target: { value: val },
+                    } as ChangeEvent<HTMLSelectElement>;
+                    onChange?.(event);
+                    register?.onChange?.(event);
+                }}
             >
-                <option value="" disabled>
-                    {`Choose ${label.toLowerCase()}`}
-                </option>
-                {options.map((option) => (
-                    <option key={option.Ref} value={option.Ref}>
-                        {option.Description}
-                    </option>
-                ))}
-            </select>
+                <SelectTrigger
+                    className={`w-full min-h-[45px] border px-3 py-2 bg-black/20 text-white outline-none ${
+                        errorMessage ? "border-red-500" : "border-white/10"
+                    }`}
+                >
+                    <SelectValue
+                        placeholder={`Choose ${label.toLowerCase()}`}
+                    />
+                </SelectTrigger>
+                <SelectContent>
+                    <SelectGroup>
+                        {options.map((option) => (
+                            <SelectItem key={option.Ref} value={option.Ref}>
+                                {option.Description}
+                            </SelectItem>
+                        ))}
+                    </SelectGroup>
+                </SelectContent>
+            </Select>
+
             {errorMessage && (
                 <p className="text-sm text-red-500">{errorMessage}</p>
             )}

@@ -32,7 +32,7 @@ export function AccountNavigation({ children }: { children: React.ReactNode }) {
                 } flex flex-col justify-between gap-[100px] md:gap-[15px] bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px] z-1 transition-all duration-600 ease-in-out`}
             >
                 <div className="flex gap-[30px] flex-col">
-                    <div className={`flex flex-col gap-[13px]`}>
+                    <div className={`flex flex-col gap-[15px]`}>
                         {accountNavigationLinks.map(
                             ({ href, Icon, text, className }) => (
                                 <NavigationLink

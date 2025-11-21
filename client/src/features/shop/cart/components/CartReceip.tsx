@@ -6,7 +6,7 @@ interface ICartReceipProps {
 
 export function CartReceip({ totalPrice }: ICartReceipProps) {
     return (
-        <div className="w-1/3 h-fit bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px] text-lg flex flex-col gap-[13px]">
+        <div className="w-1/3 h-fit bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px] text-lg flex flex-col gap-[15px]">
             <div>
                 <div className="text-3xl font-perandory tracking-wider">
                     Receip details

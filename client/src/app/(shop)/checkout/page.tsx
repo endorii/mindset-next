@@ -18,6 +18,7 @@ import {
     fetchCities,
     fetchWarehouses,
 } from "@/shared/api/nova-post.api";
+import { CardIcon } from "@/shared/icons";
 import { MonoButton } from "@/shared/ui/buttons";
 import { ErrorWithMessage } from "@/shared/ui/components";
 import { InputField } from "@/shared/ui/inputs/InputField";
@@ -25,6 +26,7 @@ import { NovaPoshtaSelect } from "@/shared/ui/selectors/NovaPoshtaSelect";
 import { CheckoutSkeleton } from "@/shared/ui/skeletons";
 import { ShopTitle } from "@/shared/ui/titles/ShopTitle";
 import { useCartStore } from "@/store/useCartStore";
+import { BadgeDollarSignIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
@@ -379,7 +381,7 @@ function Checkout() {
                     <div className="flex flex-col gap-[10px] w-1/2 bg-white/5 backdrop-blur-[100px] border border-white/5 p-[30px] h-fit">
                         <div className="flex gap-[15px] w-full">
                             <div className="flex flex-col gap-[10px] w-1/2">
-                                <div className="text-3xl font-thin">
+                                <div className="text-3xl font-perandory tracking-wider">
                                     Shipping details
                                 </div>
                                 <hr className="border-t border-white/10" />
@@ -446,7 +448,7 @@ function Checkout() {
                                     </div>
                                 )}
                                 <div className="flex gap-[15px]">
-                                    <div className="flex flex-col gap-[13px] w-full">
+                                    <div className="flex flex-col gap-[15px] w-full">
                                         <NovaPoshtaSelect
                                             label="Region*"
                                             options={areas}
@@ -498,11 +500,11 @@ function Checkout() {
                         <PreOrderInfo />
                     </div>
 
-                    <div className="flex flex-col gap-[10px] w-1/2 bg-white/5 backdrop-blur-[100px] border border-white/5 p-[30px] text-white">
+                    <div className="flex flex-col gap-[20px] w-1/2 bg-white/5 backdrop-blur-[100px] border border-white/5 p-[30px] text-white">
                         <CheckoutResultTable cart={mergedCart} />
                         <div>
-                            <div className="text-sm font-semibold mb-2">
-                                Payment option:*
+                            <div className="text-xl font-semibold mb-2 font-perandory tracking-wider">
+                                Payment option*
                             </div>
                             <Controller
                                 name="paymentMethod"
@@ -512,30 +514,43 @@ function Checkout() {
                                     <div className="flex gap-3">
                                         <button
                                             type="button"
-                                            className={`px-6 py-3 transition ${
+                                            className={`flex items-center justify-center gap-2 px-6 py-3 font-medium border border-transparent transition-all ${
+                                                errors.paymentMethod &&
+                                                "border-red-500!"
+                                            } ${
                                                 field.value === "stripe"
-                                                    ? "bg-purple-600 text-white"
-                                                    : "bg-purple-500/30 text-white hover:bg-purple-600"
+                                                    ? "bg-yellow-700 text-white shadow-lg"
+                                                    : "bg-yellow-500/20 text-yellow-200 hover:bg-yellow-500/30 border border-yellow-500/30"
                                             }`}
                                             onClick={() =>
                                                 field.onChange("stripe")
                                             }
                                         >
-                                            Stripe
+                                            <CardIcon className="w-[25px] fill-white" />
+                                            <div>
+                                                <div>Pay with card</div>
+                                                <div className="text-[10px] font-light">
+                                                    (Secure with Stripe)
+                                                </div>
+                                            </div>
                                         </button>
 
                                         <button
                                             type="button"
-                                            className={`px-6 py-3 transition ${
+                                            className={`flex items-center justify-center gap-2 px-6 py-3 font-medium border border-transparent transition-all ${
+                                                errors.paymentMethod &&
+                                                "border-red-500!"
+                                            } ${
                                                 field.value === "cod"
-                                                    ? "bg-purple-600 text-white"
-                                                    : "bg-purple-500/30 text-white hover:bg-purple-600"
+                                                    ? "bg-yellow-700 text-white shadow-lg"
+                                                    : "bg-yellow-500/20 text-yellow-200 hover:bg-yellow-500/30 border border-yellow-500/30"
                                             }`}
                                             onClick={() =>
                                                 field.onChange("cod")
                                             }
                                         >
-                                            Cash on delivery
+                                            <BadgeDollarSignIcon className="w-[27px] stroke-white" />
+                                            <span>Cash on delivery</span>
                                         </button>
                                     </div>
                                 )}
