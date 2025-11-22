@@ -11,7 +11,7 @@ export class AdminUserController {
     constructor(private readonly adminUserService: AdminUserService) {}
 
     @Get()
-    @Roles(Role.ADMIN)
+    @Roles(Role.admin)
     getAllUsers() {
         return this.adminUserService.getAllUsers();
     }

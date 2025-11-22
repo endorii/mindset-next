@@ -29,13 +29,13 @@ export function ChooseCheckoutDeliveryAddress({
             <div className="text-3xl font-perandory tracking-wider">
                 Delivery address
             </div>
-            <hr className="border-t border-white/10" />
+            <hr className="border-t border-white/5" />
             <div className="flex gap-[15px]">
                 <div className="flex flex-col gap-[15px] w-full">
                     <div className="flex flex-col gap-[3px]">
                         <Label>Region</Label>
                         <select
-                            className="border border-white/10 px-[10px] py-[10px] bg-black/20 text-white outline-0 cursor-pointer"
+                            className="border border-white/5 px-[10px] py-[10px] bg-black/20 text-white outline-0 cursor-pointer"
                             value={selectedArea?.Ref || ""}
                             onChange={(e) => {
                                 const area =
@@ -59,7 +59,7 @@ export function ChooseCheckoutDeliveryAddress({
                     <div className="flex flex-col gap-[3px]">
                         <Label>City</Label>
                         <select
-                            className="border border-white/10 px-[10px] py-[10px] bg-black/20 text-white outline-0 cursor-pointer"
+                            className="border border-white/5 px-[10px] py-[10px] bg-black/20 text-white outline-0 cursor-pointer"
                             value={selectedCity?.Ref || ""}
                             onChange={(e) => {
                                 const city =
@@ -84,7 +84,7 @@ export function ChooseCheckoutDeliveryAddress({
                     <div className="flex flex-col gap-[3px]">
                         <Label>Branches/post offices</Label>
                         <select
-                            className="border border-white/10 px-[10px] py-[10px] bg-black/20 text-white outline-0 cursor-pointer"
+                            className="border border-white/5 px-[10px] py-[10px] bg-black/20 text-white outline-0 cursor-pointer"
                             value={selectedWarehouse?.Ref || ""}
                             onChange={(e) => {
                                 const wh =

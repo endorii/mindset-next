@@ -25,7 +25,7 @@ export function BasicTextarea({
                     target.style.height = `${target.scrollHeight}px`;
                 }}
                 className={`resize-none border font-light ${
-                    errorMessage ? "border-red-500" : "border-white/10"
+                    errorMessage ? "border-red-500" : "border-white/5"
                 } p-[10px] bg-black/10 outline-0 resize-none overflow-hidden max-h-[150px] ${className} overflow-y-auto`}
             />
             {errorMessage && (

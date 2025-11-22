@@ -14,7 +14,7 @@ export class AdminCategoriesController {
     constructor(private readonly categoriesService: AdminCategoriesService) {}
 
     @Post()
-    @Roles(Role.ADMIN)
+    @Roles(Role.admin)
     postCategory(
         @Body() createCategoryDto: CreateCategoryDto,
         @Req() req: Request & { user: AuthenticatedRequestUser }
@@ -23,7 +23,7 @@ export class AdminCategoriesController {
     }
 
     @Patch(":categoryId")
-    @Roles(Role.ADMIN)
+    @Roles(Role.admin)
     editCategory(
         @Param("categoryId") categoryId: string,
         @Body() updateCategoryDto: UpdateCategoryDto,
@@ -33,7 +33,7 @@ export class AdminCategoriesController {
     }
 
     @Delete(":categoryId")
-    @Roles(Role.ADMIN)
+    @Roles(Role.admin)
     deleteCategory(
         @Param("categoryId") categoryId: string,
         @Req() req: Request & { user: AuthenticatedRequestUser }

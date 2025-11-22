@@ -23,12 +23,12 @@ export function UsersStatsCards({
                 value={activeUsersLastMonth}
             />
             <StatCard
-                title="Users with the ADMIN role"
-                value={roleCounts.ADMIN || 0}
+                title="Users with the admin role"
+                value={roleCounts.admin || 0}
             />
             <StatCard
-                title="Users with the USER role"
-                value={roleCounts.USER || 0}
+                title="Users with the user role"
+                value={roleCounts.user || 0}
             />
             <StatCard
                 title="Users who placed an order"

@@ -1,7 +1,6 @@
 "use client";
 
 import { useEscapeKeyClose, useUploadBanner } from "@/shared/hooks";
-import { TStatus } from "@/shared/types/types";
 import { MonoButton } from "@/shared/ui/buttons";
 import { MonoButtonUnderlined } from "@/shared/ui/buttons/MonoButtonUnderlined";
 import { Label } from "@/shared/ui/components";
@@ -31,7 +30,7 @@ interface CategoryFormData {
     name: string;
     path: string;
     description: string;
-    status: TStatus;
+    status: boolean;
 }
 
 export function EditCategoryModal({
@@ -49,7 +48,7 @@ export function EditCategoryModal({
             name: "",
             path: "",
             description: "",
-            status: "Not active",
+            status: false,
         },
     });
 
@@ -183,7 +182,7 @@ export function EditCategoryModal({
                         <Label>Banner*</Label>
                         <label
                             htmlFor="banner"
-                            className={`group border min-h-[200px] border-dashed border-white/10 flex items-center justify-center cursor-pointer hover:bg-white/3 overflow-hidden group-hover:text-white transition-all duration-300`}
+                            className={`group border min-h-[200px] border-dashed border-white/5 flex items-center justify-center cursor-pointer hover:bg-white/3 overflow-hidden group-hover:text-white transition-all duration-300`}
                         >
                             {displaySrc ? (
                                 <Image

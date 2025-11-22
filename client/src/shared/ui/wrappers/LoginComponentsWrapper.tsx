@@ -15,7 +15,7 @@ export function LoginComponentsWrapper({
         md:w-full ${clasName ?? null}`}
         >
             <h3 className="text-3xl  font-bold text-white">{title}</h3>
-            <hr className="border-t border-white/10" />
+            <hr className="border-t border-white/5" />
             {children}
         </div>
     );

@@ -8,7 +8,7 @@ export function AdminRecentActions({
 }) {
     if (!actions || actions.length === 0) {
         return (
-            <div className="  bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px] w-full min-h-[470px] flex items-center justify-center text-center text-neutral-200">
+            <div className="bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px] w-full min-h-[470px] flex items-center justify-center text-center text-neutral-200">
                 No recent actions
             </div>
         );

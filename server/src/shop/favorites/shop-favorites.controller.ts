@@ -14,13 +14,13 @@ export class ShopFavoritesController {
     constructor(private readonly shopFavoritesService: ShopFavoritesService) {}
 
     @Get()
-    @Roles(Role.ADMIN, Role.USER)
+    @Roles(Role.admin, Role.user)
     getAllFavoritesFromUser(@Req() req: Request & { user: AuthenticatedRequestUser }) {
         return this.shopFavoritesService.getAllFavoritesFromUser(req.user.id);
     }
 
     @Post()
-    @Roles(Role.ADMIN, Role.USER)
+    @Roles(Role.admin, Role.user)
     addFavoriteToUser(
         @Req() req: Request & { user: AuthenticatedRequestUser },
         @Body() createFavoriteDto: CreateFavoriteDto
@@ -29,7 +29,7 @@ export class ShopFavoritesController {
     }
 
     @Delete(":productId")
-    @Roles(Role.ADMIN, Role.USER)
+    @Roles(Role.admin, Role.user)
     removeFavorite(
         @Req() req: Request & { user: AuthenticatedRequestUser },
         @Param("productId") productId: string

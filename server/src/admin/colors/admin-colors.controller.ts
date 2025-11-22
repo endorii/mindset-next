@@ -25,13 +25,13 @@ export class AdminColorsController {
     constructor(private readonly adminColorsService: AdminColorsService) {}
 
     @Get()
-    @Roles(Role.ADMIN)
+    @Roles(Role.admin)
     getColors() {
         return this.adminColorsService.getColors();
     }
 
     @Post()
-    @Roles(Role.ADMIN)
+    @Roles(Role.admin)
     addColor(
         @Body(new ValidationPipe()) createColorDto: CreateColorDto,
         @Req() req: Request & { user: AuthenticatedRequestUser }
@@ -40,7 +40,7 @@ export class AdminColorsController {
     }
 
     @Patch(":colorId")
-    @Roles(Role.ADMIN)
+    @Roles(Role.admin)
     editColor(
         @Param("colorId") colorId: string,
         @Body() updateColorDto: UpdateColorDto,
@@ -50,7 +50,7 @@ export class AdminColorsController {
     }
 
     @Delete(":colorId")
-    @Roles(Role.ADMIN)
+    @Roles(Role.admin)
     deleteColor(
         @Param("colorId") colorId: string,
         @Req() req: Request & { user: AuthenticatedRequestUser }

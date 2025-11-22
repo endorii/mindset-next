@@ -20,7 +20,7 @@ export class FilesController {
     constructor(private readonly filesService: FilesService) {}
 
     @Post("upload/:type/banner/:id")
-    @Roles(Role.ADMIN)
+    @Roles(Role.admin)
     @UseInterceptors(FileInterceptor("banner"))
     async uploadBanner(
         @Param("type") type: "collection" | "category" | "product",
@@ -33,7 +33,7 @@ export class FilesController {
     }
 
     @Post("upload/:type/images/:id")
-    @Roles(Role.ADMIN)
+    @Roles(Role.admin)
     @UseInterceptors(FilesInterceptor("images"))
     async uploadImages(
         @Param("type") type: "products" | "reviews",
@@ -46,7 +46,7 @@ export class FilesController {
     }
 
     // @Delete("image")
-    // @Roles(Role.ADMIN)
+    // @Roles(Role.admin)
     // deleteImage(@Query("path") imagePath: string) {
     //     if (!imagePath) {
     //         throw new BadRequestException("Image path is not provided");
@@ -64,7 +64,7 @@ export class FilesController {
     // }
 
     // @Delete("images")
-    // @Roles(Role.ADMIN)
+    // @Roles(Role.admin)
     // deleteImages(@Body() body: { paths: string[] }) {
     //     if (!body.paths || !Array.isArray(body.paths) || body.paths.length === 0) {
     //         throw new BadRequestException("Array of image paths is missing or empty");

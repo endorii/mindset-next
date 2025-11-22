@@ -39,7 +39,6 @@ export function ProductInfoModal({
         status,
         description,
         composition,
-        views,
         createdAt,
         updatedAt,
         productColors,
@@ -63,7 +62,6 @@ export function ProductInfoModal({
                     <InfoField label="Old price" value={oldPrice} />
                     <InfoField label="Accessibility" value={available} />
                     <InfoField label="Status" value={status} />
-                    <InfoField label="Views" value={views} />
                     <InfoField label="Created" value={formatDate(createdAt)} />
                     <InfoField label="Edited" value={formatDate(updatedAt)} />
                 </div>

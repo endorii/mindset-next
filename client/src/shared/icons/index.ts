@@ -33,4 +33,5 @@ export { TiktokIcon } from "./TiktokIcon";
 export { TrashIcon } from "./TrashIcon";
 export { WearIcon } from "./WearIcon";
 
+export { CastleFlagIcon } from "./CastleFlagIcon";
 export { UserIcon } from "./UserIcon";

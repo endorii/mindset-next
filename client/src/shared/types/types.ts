@@ -41,9 +41,6 @@ export type ReviewModalType =
 
 export type TodoModalType = "add" | "edit" | "delete" | null;
 
-export type TStatus = "Active" | "Not active";
-export type TAvailble = "Available" | "Not available";
-
 export interface IIconsProps {
     className?: string;
 }

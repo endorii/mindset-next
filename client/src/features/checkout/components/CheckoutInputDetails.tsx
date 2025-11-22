@@ -20,7 +20,7 @@ export function CheckoutInputDetails({
     return (
         <div className="flex flex-col gap-[10px] w-1/2">
             <div className="text-3xl font-thin">Shipping details</div>
-            <hr className="border-t border-white/10" />
+            <hr className="border-t border-white/5" />
             <div className="flex flex-col gap-[15px] w-full">
                 <InputField
                     label="Full name*"

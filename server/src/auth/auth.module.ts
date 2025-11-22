@@ -42,7 +42,10 @@ import { LocalStrategy } from "./strategies/local.strategy";
             useFactory: (config: ConfigService) => {
                 return new JwtService({
                     secret: config.get<string>("ACCESS_TOKEN_SECRET"),
-                    signOptions: { expiresIn: config.get<string>("ACCESS_TOKEN_EXPIRES") || "15m" },
+                    signOptions: {
+                        expiresIn: (config.get<string>("ACCESS_TOKEN_EXPIRES") ||
+                            "15m") as `${number}m`,
+                    },
                 });
             },
             inject: [ConfigService],
@@ -53,7 +56,10 @@ import { LocalStrategy } from "./strategies/local.strategy";
             useFactory: (config: ConfigService) => {
                 return new JwtService({
                     secret: config.get<string>("REFRESH_TOKEN_SECRET"),
-                    signOptions: { expiresIn: config.get<string>("REFRESH_TOKEN_EXPIRES") || "7d" },
+                    signOptions: {
+                        expiresIn: (config.get<string>("REFRESH_TOKEN_EXPIRES") ||
+                            "7d") as `${number}d`,
+                    },
                 });
             },
             inject: [ConfigService],

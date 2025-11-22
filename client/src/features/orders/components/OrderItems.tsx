@@ -25,7 +25,7 @@ export function OrderItems({
                 return (
                     <div
                         key={item.id}
-                        className="grid grid-cols-[2fr_1fr_0.5fr_230px] lg:grid-cols-[2fr_1fr_1fr] sm:flex sm:flex-col gap-[20px] items-center sm:items-start border border-white/10 p-[10px] bg-white/5"
+                        className="grid grid-cols-[2fr_1fr_0.5fr_230px] lg:grid-cols-[2fr_1fr_1fr] sm:flex sm:flex-col gap-[20px] items-center sm:items-start border border-white/5 p-[10px] bg-white/5"
                     >
                         <div className="flex gap-[20px] items-center">
                             <img

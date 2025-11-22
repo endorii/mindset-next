@@ -108,7 +108,7 @@ export function AdminCollectionsContent() {
                 onClick={() => setActiveModal("add")}
                 buttonText={"Add collection"}
             />
-            <hr className="w-full border-t border-white/10" />
+            <hr className="w-full border-t border-white/5" />
             {collections && collections.length > 0 ? (
                 <div className="flex flex-col gap-[10px] bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px] sm:px-[10px] text-sm">
                     <FiltersWrapper resetFilters={resetFilters}>
@@ -139,12 +139,12 @@ export function AdminCollectionsContent() {
                         <div className="text-right lg:hidden">Actions</div>
                     </div>
 
-                    <div className="border border-white/10  ">
+                    <div className="border border-white/5  ">
                         {sortedCollections &&
                             sortedCollections.map((collection) => (
                                 <div
                                     key={collection.id}
-                                    className="flex flex-col gap-[25px] p-[20px] border-b border-white/10 last:border-b-0 text-sm"
+                                    className="flex flex-col gap-[25px] p-[20px] border-b border-white/5 last:border-b-0 text-sm"
                                 >
                                     <div
                                         className="grid 

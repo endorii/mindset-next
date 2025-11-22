@@ -13,7 +13,7 @@ export function AdminNavigation({ children }: { children: React.ReactNode }) {
     return (
         <div className="fixed pt-[90px] flex h-screen w-full z-[5] text-white">
             <button
-                className="absolute top-[83px] left-[10px] flex gap-[15px] shadow-lg backdrop-blur-[100px] items-center cursor-pointer p-[7px] border border-white/10 hover:bg-white group transition-all duration-300 z-10"
+                className="absolute top-[83px] left-[10px] flex gap-[15px] shadow-lg backdrop-blur-[100px] items-center cursor-pointer p-[7px] border border-white/5 hover:bg-white group transition-all duration-300 z-10"
                 onClick={() => setNavOpen(!navOpen)}
             >
                 <BackIcon

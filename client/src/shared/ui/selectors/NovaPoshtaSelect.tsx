@@ -53,7 +53,7 @@ export function NovaPoshtaSelect({
             >
                 <SelectTrigger
                     className={`w-full min-h-[45px] border px-3 py-2 bg-black/20 text-white outline-none ${
-                        errorMessage ? "border-red-500" : "border-white/10"
+                        errorMessage ? "border-red-500" : "border-white/5"
                     }`}
                 >
                     <SelectValue

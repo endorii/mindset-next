@@ -128,11 +128,11 @@ export function ReviewInfoModal({
                             <div>Link</div>
                         </div>
 
-                        <div className="border border-white/10  ">
+                        <div className="border border-white/5  ">
                             {orderItem ? (
                                 <div
                                     key={orderItem.id}
-                                    className="grid grid-cols-[1fr_1fr_1fr_1fr_1fr_1fr_1fr_1fr] gap-[15px] p-[20px] border-b border-white/10 last:border-b-0 items-center"
+                                    className="grid grid-cols-[1fr_1fr_1fr_1fr_1fr_1fr_1fr_1fr] gap-[15px] p-[20px] border-b border-white/5 last:border-b-0 items-center"
                                 >
                                     <InfoModalBanner
                                         w={100}

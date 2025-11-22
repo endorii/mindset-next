@@ -1,5 +1,4 @@
 import { ICategory } from "@/features/categories/types/categories.types";
-import { TStatus } from "@/shared/types/types";
 
 export interface ICollection {
     id?: string;
@@ -7,8 +6,7 @@ export interface ICollection {
     path: string;
     description: string;
     banner: string;
-    views: number;
-    status: TStatus;
+    status: boolean;
     categories?: ICategory[];
     createdAt?: string;
     updatedAt?: string;

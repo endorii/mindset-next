@@ -14,7 +14,7 @@ export function ProductReviewsSkeleton({ items = 2 }) {
                             className="flex items-center gap-[10px] mb-1"
                         >
                             <span className="w-[20px] h-[20px] text-sm bg-white/10"></span>
-                            <div className="flex-1 border border-white/10 h-5 overflow-hidden">
+                            <div className="flex-1 border border-white/5 h-5 overflow-hidden">
                                 <div
                                     className="bg-white/10 h-full"
                                     style={{ width: `${rating + 4}0%` }}

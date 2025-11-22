@@ -13,7 +13,7 @@ export class ShopUserController {
     constructor(private readonly shopUserService: ShopUserService) {}
 
     @Patch()
-    @Roles(Role.ADMIN, Role.USER)
+    @Roles(Role.admin, Role.user)
     editUserInfo(
         @Req() req: Request & { user: AuthenticatedRequestUser },
         @Body() updateUserDto: UpdateUserDto
@@ -22,7 +22,7 @@ export class ShopUserController {
     }
 
     @Delete()
-    @Roles(Role.ADMIN, Role.USER)
+    @Roles(Role.admin, Role.user)
     deleteUser(
         @Req() req: Request & { user: AuthenticatedRequestUser },
         @Body() body: { password: string }
@@ -31,7 +31,7 @@ export class ShopUserController {
     }
 
     @Patch("change-password")
-    @Roles(Role.ADMIN, Role.USER)
+    @Roles(Role.admin, Role.user)
     changePassword(
         @Req() req: Request & { user: AuthenticatedRequestUser },
         @Body() data: { oldPassword: string; newPassword: string }

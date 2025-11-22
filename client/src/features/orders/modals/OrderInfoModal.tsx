@@ -117,12 +117,12 @@ export function OrderInfoModal({
                             <div>Price, $</div>
                         </div>
 
-                        <div className="border border-white/10  ">
+                        <div className="border border-white/5  ">
                             {items.length > 0 ? (
                                 items.map((item) => (
                                     <div
                                         key={item.id}
-                                        className="grid grid-cols-[1fr_1fr_1fr_1fr_1fr_1fr_1fr_1fr] gap-[15px] p-[20px] border-b border-white/10 last:border-b-0 items-center"
+                                        className="grid grid-cols-[1fr_1fr_1fr_1fr_1fr_1fr_1fr_1fr] gap-[15px] p-[20px] border-b border-white/5 last:border-b-0 items-center"
                                     >
                                         <div>
                                             {item.product?.category?.collection

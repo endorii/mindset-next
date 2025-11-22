@@ -22,7 +22,7 @@ export function DeleteAccount({
             </div>
             <MonoButton
                 disabled={isUserError || isUserPending || !currentUser}
-                className="bg-red-500/15 border border-white/10 hover:bg-red-500/70! hover:text-white!"
+                className="bg-red-500/15 border border-white/5 hover:bg-red-500/70! hover:text-white!"
                 onClick={() => openModal("deleteAccount")}
             >
                 Delete account

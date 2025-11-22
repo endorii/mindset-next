@@ -13,13 +13,13 @@ export class ShopCartController {
     constructor(private readonly shopCartService: ShopCartService) {}
 
     @Get()
-    @Roles(Role.ADMIN, Role.USER)
+    @Roles(Role.admin, Role.user)
     getAllCartItemsFromUser(@Req() req: Request & { user: AuthenticatedRequestUser }) {
         return this.shopCartService.getAllCartItemsFromUser(req.user.id);
     }
 
     @Post()
-    @Roles(Role.ADMIN, Role.USER)
+    @Roles(Role.admin, Role.user)
     addCartItemToUser(
         @Req() req: Request & { user: AuthenticatedRequestUser },
         @Body() createCartDto: CreateCartDto
@@ -28,7 +28,7 @@ export class ShopCartController {
     }
 
     @Delete(":cartItemId")
-    @Roles(Role.ADMIN, Role.USER)
+    @Roles(Role.admin, Role.user)
     removeCartItemFromUser(
         @Req() req: Request & { user: AuthenticatedRequestUser },
         @Param("cartItemId") cartItemId: string
@@ -37,7 +37,7 @@ export class ShopCartController {
     }
 
     @Delete()
-    @Roles(Role.ADMIN, Role.USER)
+    @Roles(Role.admin, Role.user)
     removeCartFromUser(@Req() req: Request & { user: AuthenticatedRequestUser }) {
         return this.shopCartService.removeCartFromUser(req.user.id);
     }

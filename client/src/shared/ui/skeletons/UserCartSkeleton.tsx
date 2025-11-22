@@ -12,7 +12,7 @@ export function SkeletonCartItem() {
                         <div className="h-[24px] w-[120px] bg-white/10" />
                     </div>
 
-                    <hr className="border-t border-white/10 my-[8px]" />
+                    <hr className="border-t border-white/5 my-[8px]" />
 
                     <div className="flex flex-col items-start gap-[7px]">
                         {[1, 2, 3, 4].map((i) => (
@@ -41,7 +41,7 @@ export function SkeletonCartReceip() {
         <div className="w-1/3 bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px] text-lg flex flex-col gap-[10px] animate-pulse">
             <div>
                 <div className="h-[20px] w-[90px] bg-white/10" />
-                <hr className="border-t border-white/10 my-[15px]" />
+                <hr className="border-t border-white/5 my-[15px]" />
                 <div className="flex flex-col gap-[10px]">
                     <div className="flex justify-between">
                         <div className="h-[18px] w-[120px] bg-white/10" />

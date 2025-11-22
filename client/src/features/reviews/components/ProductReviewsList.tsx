@@ -29,7 +29,7 @@ export function ProductReviewsList({ reviews }: ProductReviewsListProps) {
                                 key={review.id}
                                 className="flex flex-col gap-[10px]"
                             >
-                                <div className="flex flex-col gap-[10px] border border-white/10 bg-white/5 p-[20px]">
+                                <div className="flex flex-col gap-[10px] border border-white/5 bg-white/5 p-[20px]">
                                     <div>
                                         <div className="flex justify-between mb-1">
                                             <div className="font-perandory tracking-wider text-xl">
@@ -65,7 +65,7 @@ export function ProductReviewsList({ reviews }: ProductReviewsListProps) {
                                                 className={`flex items-center gap-[5px] px-[10px] py-[7px] border transition hover:bg-black/20 disabled:opacity-50 ${
                                                     isLiked
                                                         ? "bg-white/10 border-white/30"
-                                                        : "border-white/10"
+                                                        : "border-white/5"
                                                 }`}
                                                 onClick={() => {
                                                     if (!user) {
@@ -96,7 +96,7 @@ export function ProductReviewsList({ reviews }: ProductReviewsListProps) {
                                                 className={`flex items-center gap-[5px] px-[10px] py-[7px] border transition hover:bg-black/20 disabled:opacity-50 ${
                                                     isDisliked
                                                         ? "bg-white/10 border-white/30"
-                                                        : "border-white/10"
+                                                        : "border-white/5"
                                                 }`}
                                                 onClick={() => {
                                                     if (!user) {
@@ -124,7 +124,7 @@ export function ProductReviewsList({ reviews }: ProductReviewsListProps) {
                                     </div>
 
                                     {review.adminReply && (
-                                        <div className="flex flex-col gap-[10px] border border-white/10 bg-white/3 p-[20px]">
+                                        <div className="flex flex-col gap-[10px] border border-white/5 bg-white/3 p-[20px]">
                                             <div className="flex justify-between gap-[10px] text-sm font-semibold text-white">
                                                 <div className="font-perandory tracking-wider text-xl">
                                                     Admin's answer

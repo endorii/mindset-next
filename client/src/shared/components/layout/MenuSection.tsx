@@ -29,7 +29,7 @@ export function MenuSection({
                     ))}
                 </ul>
             </div>
-            <hr className="border-t border-white/10 w-full" />
+            <hr className="border-t border-white/5 w-full" />
         </>
     );
 }

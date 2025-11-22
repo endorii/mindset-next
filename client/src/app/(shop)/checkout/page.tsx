@@ -384,7 +384,7 @@ function Checkout() {
                                 <div className="text-3xl font-perandory tracking-wider">
                                     Shipping details
                                 </div>
-                                <hr className="border-t border-white/10" />
+                                <hr className="border-t border-white/5" />
                                 <div className="flex flex-col gap-[15px] w-full">
                                     <InputField
                                         label="Full name*"
@@ -441,7 +441,7 @@ function Checkout() {
                                 <div className="text-3xl font-perandory tracking-wider">
                                     Delivery address
                                 </div>
-                                <hr className="border-t border-white/10" />
+                                <hr className="border-t border-white/5" />
                                 {novaPoshtaError && (
                                     <div className="text-red-500 text-sm bg-red-500/10 p-3">
                                         {novaPoshtaError}

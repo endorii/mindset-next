@@ -14,7 +14,7 @@ export class ShopReviewsController {
     constructor(private readonly shopReviewsService: ShopReviewsService) {}
 
     @Post()
-    @Roles(Role.ADMIN, Role.USER)
+    @Roles(Role.admin, Role.user)
     createReview(
         @Req() req: Request & { user: AuthenticatedRequestUser },
         @Body() createReviewDto: CreateReviewDto
@@ -23,7 +23,7 @@ export class ShopReviewsController {
     }
 
     @Post(":reviewId/vote")
-    @Roles(Role.ADMIN, Role.USER)
+    @Roles(Role.admin, Role.user)
     toggleReviewVote(
         @Req() req: Request & { user: AuthenticatedRequestUser },
         @Param("reviewId") reviewId: string,
@@ -50,7 +50,7 @@ export class ShopReviewsController {
     }
 
     @Delete(":reviewId")
-    @Roles(Role.ADMIN, Role.USER)
+    @Roles(Role.admin, Role.user)
     async deleteReview(
         @Req() req: Request & { user: AuthenticatedRequestUser },
         @Param("reviewId") reviewId: string

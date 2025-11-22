@@ -31,7 +31,6 @@ export function CategoryInfoModal({
         path,
         description,
         status,
-        views,
         createdAt,
         updatedAt,
         banner,
@@ -50,7 +49,6 @@ export function CategoryInfoModal({
                 </div>
                 <TextareaInfoField label={"Description"} value={description} />
                 <div className="grid grid-cols-3 gap-[15px]">
-                    <InfoField label="Views" value={views} />
                     <InfoField
                         label="Created"
                         value={formatDate(createdAt || "")}

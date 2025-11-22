@@ -14,13 +14,13 @@ export class ShopUserAddressController {
     constructor(private readonly shopUserAddressService: ShopUserAddressService) {}
 
     @Post()
-    @Roles(Role.ADMIN, Role.USER)
+    @Roles(Role.admin, Role.user)
     addUserAddress(@Body() createUserAddressDto: CreateUserAddressDto) {
         return this.shopUserAddressService.addUserAddress(createUserAddressDto);
     }
 
     @Patch()
-    @Roles(Role.ADMIN, Role.USER)
+    @Roles(Role.admin, Role.user)
     updateUserAddress(
         @Req() req: Request & { user: AuthenticatedRequestUser },
         @Body() updateUserAddressDto: UpdateUserAddressDto

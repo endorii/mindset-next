@@ -16,13 +16,13 @@ export class ShopOrdersController {
 
     @Post()
     @Public()
-    // @Roles(Role.USER, Role.ADMIN)
+    // @Roles(Role.user, Role.admin)
     createOrder(@Body() createOrderDto: CreateOrderDto) {
         return this.shopOrdersService.createOrder(createOrderDto);
     }
 
     @Get("users")
-    @Roles(Role.USER, Role.ADMIN)
+    @Roles(Role.user, Role.admin)
     getOrdersByUserId(@Req() req: Request & { user: AuthenticatedRequestUser }) {
         return this.shopOrdersService.getOrdersByUserId(req.user.id);
     }

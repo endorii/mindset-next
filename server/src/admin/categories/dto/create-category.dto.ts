@@ -1,9 +1,4 @@
-import { IsEnum, IsInt, IsNotEmpty, IsString, Min } from "class-validator";
-
-export enum EStatus {
-    ACTIVE = "Active",
-    NOTACTIVE = "Not active",
-}
+import { IsBoolean, IsNotEmpty, IsString } from "class-validator";
 
 export class CreateCategoryDto {
     @IsString()
@@ -14,20 +9,12 @@ export class CreateCategoryDto {
     @IsNotEmpty({ message: "Path is required" })
     path: string;
 
-    // @IsString()
-    // @IsNotEmpty({ message: "Banner must be provided" })
-    // banner: string;
-
     @IsString()
     @IsNotEmpty({ message: "Description is required" })
     description: string;
 
-    @IsInt({ message: "Views must be an integer" })
-    @Min(0, { message: "Views cannot be negative" })
-    views: number;
-
-    @IsEnum(EStatus, { message: "Status must be Active or Not active" })
-    status: EStatus;
+    @IsBoolean({ message: "Status must be true/false" })
+    status: boolean;
 
     @IsString()
     collectionId: string;

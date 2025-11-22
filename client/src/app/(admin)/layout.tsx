@@ -36,14 +36,14 @@ export default function AdminLayout({
             return;
         }
 
-        if (user.role !== "ADMIN") {
+        if (user.role !== "admin") {
             toast.info("You dont have access to the admin panel");
             router.replace("/account");
             return;
         }
     }, [user, accessToken, isChecking, router]);
 
-    if (isChecking || !user || user.role !== "ADMIN") {
+    if (isChecking || !user || user.role !== "admin") {
         return (
             <div className="text-white flex flex-col gap-[10px] h-screen w-full justify-center items-center pb-[10%]">
                 <div className="text-xl font-bold">

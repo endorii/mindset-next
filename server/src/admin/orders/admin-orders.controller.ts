@@ -13,13 +13,13 @@ export class AdminOrdersController {
     constructor(private readonly adminOrdersService: AdminOrdersService) {}
 
     @Get()
-    @Roles(Role.ADMIN)
+    @Roles(Role.admin)
     getOrders() {
         return this.adminOrdersService.getOrders();
     }
 
     @Patch(":orderId")
-    @Roles(Role.ADMIN)
+    @Roles(Role.admin)
     updateOrder(
         @Req() req: Request & { user: AuthenticatedRequestUser },
         @Param("orderId") orderId: string,
@@ -29,7 +29,7 @@ export class AdminOrdersController {
     }
 
     @Delete(":orderId")
-    @Roles(Role.ADMIN)
+    @Roles(Role.admin)
     deleteOrder(
         @Req() req: Request & { user: AuthenticatedRequestUser },
         @Param("orderId") orderId: string

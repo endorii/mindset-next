@@ -27,7 +27,7 @@ export function AttributeSelector<T>({
                         <li key={i}>
                             <button
                                 onClick={() => setFunction(name)}
-                                className={`px-[15px] py-[4px] border border-white/10 hover:border-white/20 cursor-pointer ${
+                                className={`px-[15px] py-[4px] border border-white/5 hover:border-white/20 cursor-pointer ${
                                     isSelected
                                         ? "bg-white text-black"
                                         : "border-gray-200"

@@ -7,7 +7,7 @@ export interface IUser {
     email: string;
     password: string;
     phone: string;
-    role: "ADMIN" | "USER";
+    role: "admin" | "user";
     shippingAddress: IUserShippingAdress;
     cart: ICartItem[];
     favorites: IFavoriteItem[];

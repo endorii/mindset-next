@@ -120,7 +120,7 @@ export function AdminCategoriesContent({
                 buttonText={"Add category"}
             />
 
-            <hr className="w-full border-t border-white/10" />
+            <hr className="w-full border-t border-white/5" />
             {categories && categories.length > 0 ? (
                 <div className="flex flex-col gap-[10px] bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px] sm:px-[10px]">
                     <FiltersWrapper resetFilters={resetFilters}>
@@ -149,11 +149,11 @@ export function AdminCategoriesContent({
                         <div className="xs:hidden text-center">Link</div>
                         <div className="text-right lg:hidden">Actions</div>
                     </div>
-                    <div className="border border-white/10  ">
+                    <div className="border border-white/5  ">
                         {sortedCategories.map((category) => (
                             <div
                                 key={category.id}
-                                className="flex flex-col gap-[25px] p-[20px] border-b border-white/10 last:border-b-0 text-sm"
+                                className="flex flex-col gap-[25px] p-[20px] border-b border-white/5 last:border-b-0 text-sm"
                             >
                                 <div
                                     className="grid 

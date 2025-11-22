@@ -32,7 +32,7 @@ export function RenderAttributeField({
             <Label>{label}*</Label>
             <div
                 className={`flex flex-wrap gap-[10px] overflow-y-auto border ${
-                    errorMessage ? "border-red-500" : "border-white/10"
+                    errorMessage ? "border-red-500" : "border-white/5"
                 } p-[10px] bg-black/10`}
             >
                 {allItems?.map((item) => (
@@ -45,7 +45,7 @@ export function RenderAttributeField({
                         className={`px-3 py-1 text-sm border ${
                             selected.includes(item.id)
                                 ? "bg-white text-black cursor-default"
-                                : "border-white/10 hover:bg-white/5"
+                                : "border-white/5 hover:bg-white/5"
                         }`}
                     >
                         {item.name}

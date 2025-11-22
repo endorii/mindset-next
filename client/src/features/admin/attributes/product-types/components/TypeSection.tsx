@@ -28,7 +28,7 @@ export function TypeSection() {
                 onClick={() => setModalType("add")}
                 buttonText={"Add type"}
             />
-            <hr className="w-full border-t border-white/10" />
+            <hr className="w-full border-t border-white/5" />
 
             {types && (types ?? []).length > 0 ? (
                 <div className="  bg-white/5 shadow-lg border border-white/5 p-[20px] sm:px-[10px] pt-0">
@@ -40,13 +40,13 @@ export function TypeSection() {
                         <div>Name</div>
                         <div className="text-right">Actions</div>
                     </div>
-                    <div className="border border-white/10  ">
+                    <div className="border border-white/5  ">
                         {types.map((type) => (
                             <div
                                 key={type.id}
                                 className="grid 
                                 grid-cols-2 
-                                gap-[15px] p-[20px] border-b border-white/10 items-center text-sm"
+                                gap-[15px] p-[20px] border-b border-white/5 items-center text-sm"
                             >
                                 <div>{type.name}</div>
 

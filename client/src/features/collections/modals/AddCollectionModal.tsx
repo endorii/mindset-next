@@ -1,7 +1,6 @@
 "use client";
 
 import { useEscapeKeyClose, useUploadBanner } from "@/shared/hooks";
-import { TStatus } from "@/shared/types/types";
 import { MonoButton } from "@/shared/ui/buttons";
 import { MonoButtonUnderlined } from "@/shared/ui/buttons/MonoButtonUnderlined";
 import { UploadBannerWithPreview } from "@/shared/ui/components";
@@ -28,7 +27,7 @@ type FormValues = {
     name: string;
     path: string;
     description: string;
-    status: TStatus;
+    status: boolean;
 };
 
 export function AddCollectionModal({
@@ -48,7 +47,7 @@ export function AddCollectionModal({
         formState: { errors },
     } = useForm<FormValues>({
         defaultValues: {
-            status: "Not active",
+            status: false,
         },
     });
 
@@ -85,7 +84,6 @@ export function AddCollectionModal({
                 name: data.name,
                 path: data.path,
                 description: data.description,
-                views: 0,
                 status: data.status,
             });
 

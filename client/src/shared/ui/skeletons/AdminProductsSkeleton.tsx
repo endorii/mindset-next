@@ -18,11 +18,11 @@ export function AdminProductsSkeleton() {
                 <div className="h-[18px] w-[50px] bg-white/10 animate-pulse lg:hidden ml-auto" />
             </div>
 
-            <div className="border border-white/10  ">
+            <div className="border border-white/5  ">
                 {[...Array(3)].map((_, i) => (
                     <div
                         key={i}
-                        className="flex flex-col gap-[25px] p-[20px] border-b border-white/10 last:border-b-0 text-sm"
+                        className="flex flex-col gap-[25px] p-[20px] border-b border-white/5 last:border-b-0 text-sm"
                     >
                         <div
                             className="grid 

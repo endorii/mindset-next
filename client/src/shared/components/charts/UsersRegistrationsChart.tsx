@@ -176,7 +176,7 @@ export function UsersRegistrationsChart({
             <div className="text-3xl font-perandory tracking-wider">
                 User registration statistics
             </div>
-            <div className="flex gap-[10px] items-center justify-end">
+            <div className="flex gap-[10px] items-center">
                 <div className="font-semibold">Chosen:</div>
                 <Select
                     value={period}

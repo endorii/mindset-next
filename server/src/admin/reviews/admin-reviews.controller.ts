@@ -13,14 +13,14 @@ export class AdminReviewsController {
     constructor(private readonly adminReviewsService: AdminReviewsService) {}
 
     @Get()
-    @Roles(Role.ADMIN)
+    @Roles(Role.admin)
     async getAllReviews() {
         const reviews = await this.adminReviewsService.getAllReviews();
         return reviews;
     }
 
     @Patch(":reviewId")
-    @Roles(Role.ADMIN)
+    @Roles(Role.admin)
     async approveReview(
         @Req() req: Request & { user: AuthenticatedRequestUser },
         @Param("reviewId") reviewId: string
@@ -29,7 +29,7 @@ export class AdminReviewsController {
     }
 
     @Patch("admin-reply/:reviewId")
-    @Roles(Role.ADMIN)
+    @Roles(Role.admin)
     async updateReview(
         @Req() req: Request & { user: AuthenticatedRequestUser },
         @Param("reviewId") reviewId: string,

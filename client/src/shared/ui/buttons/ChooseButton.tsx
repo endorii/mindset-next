@@ -18,7 +18,7 @@ export function ChooseButton({
                 ${
                     isActive
                         ? "bg-white text-black border-white"
-                        : "bg-black/80 text-white border-white/10 hover:bg-white hover:text-black"
+                        : "bg-black/80 text-white border-white/5 hover:bg-white hover:text-black"
                 }
             `}
         >

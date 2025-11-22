@@ -123,11 +123,11 @@ export function AdminOrdersContent() {
                         <div className="xs:hidden">Creation/Update Date</div>
                         <div className="text-right lg:hidden">Actions</div>
                     </div>
-                    <div className="border border-white/10  ">
+                    <div className="border border-white/5  ">
                         {filteredAndSortedOrders?.map((order) => (
                             <div
                                 key={order.id}
-                                className="flex flex-col gap-[25px] p-[20px] border-b border-white/10 last:border-b-0 text-sm"
+                                className="flex flex-col gap-[25px] p-[20px] border-b border-white/5 last:border-b-0 text-sm"
                             >
                                 <div
                                     className="grid 

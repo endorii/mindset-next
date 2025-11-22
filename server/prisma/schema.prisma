@@ -15,10 +15,10 @@ model User {
   phone              String?
   createdAt          DateTime         @default(now()) @map("created_at")
   updatedAt          DateTime         @updatedAt @map("updated_at")
-  hashedRefreshToken String?
+  hashedRefreshToken String?          @map("hashed_refresh_token")
   userName           String           @map("user_name")
   googleId           String?          @unique @map("google_id")
-  role               Role             @default(USER)
+  role               Role             @default(user)
   cart               CartItem[]
   favorites          Favorite[]
   shippingAddress    ShippingAddress?
@@ -27,7 +27,7 @@ model User {
 
   isVerified               Boolean   @default(false) @map("is_verified")
   verificationToken        String?   @map("verification_token")
-  verificationTokenExpires DateTime?
+  verificationTokenExpires DateTime? @map("verification_token_expires")
 
   recentActions RecentAction[]
   reviews       Review[]
@@ -49,7 +49,7 @@ model RecentAction {
   action    String
   createdAt DateTime @default(now()) @map("created_at")
 
-  userId String
+  userId String @map("user_id")
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
@@ -71,10 +71,10 @@ model Order {
   stripePaymentIntentId String?       @map("stripe_payment_intent_id")
   stripeCustomerId      String?       @map("stripe_customer_id")
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
 
-  userId String?
+  userId String? @map("user_id")
   user   User?   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   items OrderItem[]
@@ -88,9 +88,9 @@ model OrderItem {
   type     String
 
   order   Order  @relation(fields: [orderId], references: [id], onDelete: Cascade)
-  orderId String
+  orderId String @map("order_id")
 
-  productId String
+  productId String  @map("product_id")
   product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
   review    Review?
 }
@@ -141,8 +141,7 @@ model Collection {
   banner      String?
   createdAt   DateTime   @default(now()) @map("created_at")
   updatedAt   DateTime   @updatedAt @map("updated_at")
-  status      String
-  views       Int
+  status      Boolean    @default(false)
   categories  Category[]
 }
 
@@ -155,8 +154,7 @@ model Category {
   collectionId String     @map("collection_id")
   createdAt    DateTime   @default(now()) @map("created_at")
   updatedAt    DateTime   @updatedAt @map("updated_at")
-  status       String
-  views        Int
+  status       Boolean    @default(false)
   collection   Collection @relation(fields: [collectionId], references: [id])
   products     Product[]
 
@@ -168,15 +166,14 @@ model Product {
   name          String
   path          String
   price         Int
-  oldPrice      Int              @map("old_price")
-  available     String
+  oldPrice      Int?             @map("old_price")
+  available     Boolean          @default(false)
   description   String
   composition   String
   categoryId    String           @map("category_id")
   createdAt     DateTime         @default(now()) @map("created_at")
   updatedAt     DateTime         @updatedAt @map("updated_at")
-  status        String
-  views         Int
+  status        Boolean          @default(false)
   banner        String?
   images        String[]         @default([])
   cartItems     CartItem[]
@@ -240,19 +237,19 @@ model ProductToType {
 model Review {
   id String @id @default(uuid())
 
-  content String @db.Text //@db.Text для довгих текстів.
+  content String @db.Text
   rating  Int
 
-  senderName  String
-  senderEmail String
+  senderName  String @map("sender_name")
+  senderEmail String @map("sender_email")
 
-  userId String
+  userId String @map("user_id")
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  productId String
+  productId String  @map("product_id")
   product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
 
-  orderItemId String    @unique
+  orderItemId String    @unique @map("order_item_id")
   orderItem   OrderItem @relation(fields: [orderItemId], references: [id], onDelete: Cascade)
 
   createdAt DateTime @default(now()) @map("created_at")
@@ -262,18 +259,18 @@ model Review {
   isHelpful    Int     @default(0) @map("is_helpful")
   isNotHelpful Int     @default(0) @map("is_not_helpful")
 
-  images String[]
+  images String[] @default([])
 
-  adminReply   String?      @db.Text
-  adminReplyAt DateTime?
+  adminReply   String?      @map("admin_reply") @db.Text
+  adminReplyAt DateTime?    @map("admin_reply_at")
   reviewVotes  ReviewVote[]
 }
 
 model ReviewVote {
   id        String   @id @default(cuid())
-  userId    String
-  reviewId  String
-  isHelpful Boolean
+  userId    String   @map("user_id")
+  reviewId  String   @map("review_id")
+  isHelpful Boolean  @map("is_helpful")
   createdAt DateTime @default(now()) @map("created_at")
 
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
@@ -283,9 +280,8 @@ model ReviewVote {
 }
 
 enum Role {
-  ADMIN
-  EDITOR
-  USER
+  admin
+  user
 }
 
 enum OrderStatus {

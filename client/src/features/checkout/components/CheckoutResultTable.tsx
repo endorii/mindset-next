@@ -8,8 +8,8 @@ export function CheckoutResultTable({ cart }: { cart: ICartItem[] }) {
             </div>
             {cart.length > 0 ? (
                 <div className="flex flex-col gap-[10px]">
-                    <div className="flex flex-col gap-[10px] mt-[5px] border border-white/10 bg-white/5 p-[20px]">
-                        <div className="grid grid-cols-[1fr_0.5fr_0.5fr_0.5fr_0.5fr_0.5fr_0.5fr] gap-[5px] border-b border-white/10 pb-2 text-sm text-neutral-200">
+                    <div className="flex flex-col gap-[10px] mt-[5px] border border-white/5 bg-white/5 p-[20px]">
+                        <div className="grid grid-cols-[1fr_0.5fr_0.5fr_0.5fr_0.5fr_0.5fr_0.5fr] gap-[5px] border-b border-white/5 pb-2 text-sm text-neutral-200">
                             <div>Name</div>
                             <div className="text-center">Color</div>
                             <div className="text-center">Size</div>
@@ -52,7 +52,7 @@ export function CheckoutResultTable({ cart }: { cart: ICartItem[] }) {
                             ))}
                         </div>
 
-                        <div className="border-t border-white/10 pt-4 flex flex-col gap-[10px]">
+                        <div className="border-t border-white/5 pt-4 flex flex-col gap-[10px]">
                             <div className="flex justify-between">
                                 <span>Sum of goods:</span>
                                 <span className=" font-semibold">
@@ -76,7 +76,7 @@ export function CheckoutResultTable({ cart }: { cart: ICartItem[] }) {
                             </div>
                         </div>
                     </div>
-                    <div className="flex justify-between items-center font-bold text-base border border-white/10 bg-white/5 p-[20px]">
+                    <div className="flex justify-between items-center font-bold text-base border border-white/5 bg-white/5 p-[20px]">
                         <span>Total payable:</span>
                         <span className="text-xl">
                             {cart.reduce(

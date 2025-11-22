@@ -2,7 +2,6 @@ import { CollectionsSection } from "@/features/collections/components/Collection
 import { ICollection } from "@/features/collections/types/collections.types";
 import { Welcome } from "@/shared/components";
 import { PopularProductsWrapper } from "@/shared/components/providers/PopularProductsWrapper";
-import { ShopTitle } from "@/shared/ui/titles/ShopTitle";
 
 import type { Metadata } from "next";
 
@@ -38,13 +37,9 @@ export default async function CollectionsPage() {
     return (
         <div className="flex flex-col gap-10">
             <Welcome />
-            <div
-                className="flex flex-col gap-[10px] pt-[90px]"
-                id="collections"
-            >
-                <ShopTitle title="Collections" />
-                <CollectionsSection collections={collections} />
-            </div>
+
+            <CollectionsSection collections={collections} />
+
             <PopularProductsWrapper />
         </div>
     );

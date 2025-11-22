@@ -14,13 +14,13 @@ export class AdminTypesController {
     constructor(private readonly adminTypesService: AdminTypesService) {}
 
     @Get()
-    @Roles(Role.ADMIN)
+    @Roles(Role.admin)
     getTypes() {
         return this.adminTypesService.getTypes();
     }
 
     @Post()
-    @Roles(Role.ADMIN)
+    @Roles(Role.admin)
     addType(
         @Body() createTypeDto: CreateTypeDto,
         @Req() req: Request & { user: AuthenticatedRequestUser }
@@ -29,7 +29,7 @@ export class AdminTypesController {
     }
 
     @Patch(":typeId")
-    @Roles(Role.ADMIN)
+    @Roles(Role.admin)
     editType(
         @Param("typeId") typeId: string,
         @Body() updatTypeDto: UpdateTypeDto,
@@ -39,7 +39,7 @@ export class AdminTypesController {
     }
 
     @Delete(":typeId")
-    @Roles(Role.ADMIN)
+    @Roles(Role.admin)
     deleteType(
         @Param("typeId") typeId: string,
         @Req() req: Request & { user: AuthenticatedRequestUser }

@@ -31,7 +31,6 @@ export function CollectionInfoModal({
         path,
         status,
         description,
-        views,
         createdAt,
         updatedAt,
         categories,
@@ -53,7 +52,6 @@ export function CollectionInfoModal({
                 </div>
                 <TextareaInfoField label={"Description"} value={description} />
                 <div className="grid grid-cols-3 gap-[15px]">
-                    <InfoField label={"Views"} value={views} />
                     <InfoField
                         label="Created"
                         value={formatDate(createdAt || "")}

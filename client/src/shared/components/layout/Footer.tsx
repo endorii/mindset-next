@@ -116,20 +116,20 @@ export function Footer() {
                         </Link>
                         <div className="flex gap-[15px] mt-[10px]">
                             <div>
-                                <button className="cursor-pointer p-[10px] border border-white/10 hover:bg-white group transition-all duration-300">
+                                <button className="cursor-pointer p-[10px] border border-white/5 hover:bg-white group transition-all duration-300">
                                     <Link href={"#"}>
                                         <TiktokIcon className="w-[20px] fill-white group-hover:fill-black" />
                                     </Link>
                                 </button>
                             </div>
                             <div>
-                                <button className="cursor-pointer p-[10px] border border-white/10 hover:bg-white group transition-all duration-300">
+                                <button className="cursor-pointer p-[10px] border border-white/5 hover:bg-white group transition-all duration-300">
                                     <Link href={"#"}></Link>
                                     <InstagramIcon className="w-[20px] fill-white group-hover:fill-black" />
                                 </button>
                             </div>
                             <div>
-                                <button className="cursor-pointer p-[10px] border border-white/10 hover:bg-white group transition-all duration-300">
+                                <button className="cursor-pointer p-[10px] border border-white/5 hover:bg-white group transition-all duration-300">
                                     <Link href={"#"}></Link>
                                     <TelegramIcon className="w-[20px] fill-white group-hover:fill-black" />
                                 </button>
@@ -138,7 +138,7 @@ export function Footer() {
                     </FooterNavList>
                 </div>
             </div>
-            <div className="relative border-t border-white/10 text-xs text-neutral-300 font-semibold">
+            <div className="relative border-t border-white/5 text-xs text-neutral-300 font-semibold">
                 <div className="absolute w-full flex justify-center items-center p-[10px]">
                     Mindset © 2025
                 </div>

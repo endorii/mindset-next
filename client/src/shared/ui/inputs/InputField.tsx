@@ -28,7 +28,7 @@ export function InputField({
 }: InputFieldProps) {
     const inputId = id || name;
     const inputClassName = `border font-light ${
-        errorMessage ? "border-red-500" : "border-white/10"
+        errorMessage ? "border-red-500" : "border-white/5"
     } 
      px-[10px] py-[10px] outline-0 bg-black/10 text-white transition-colors duration-200 w-full ${className}`;
 

@@ -130,7 +130,7 @@ export function ProductContent({
             </div>
 
             <div className="flex flex-col gap-[10px] w-[50%] sm:w-full">
-                <div className="flex flex-col gap-[25px] bg-white/5 border border-white/10 px-[20px] xl:p-[15px] py-[20px]">
+                <div className="flex flex-col gap-[25px] bg-white/5 border border-white/5 px-[20px] xl:p-[15px] py-[20px]">
                     <Breadcrumbs
                         collectionPath={collectionPath}
                         categoryPath={categoryPath}
@@ -166,7 +166,7 @@ export function ProductContent({
                     <div className="mt-[20px] xl:mt-[10px] text-base font-light text-neutral-300 break-words">
                         {product.description}
                     </div>
-                    <hr className="w-full border-white/10 border-t" />
+                    <hr className="w-full border-white/5 border-t" />
                     <div className="text-sm font-light text-neutral-200 break-words">
                         {product.composition}
                     </div>
@@ -240,7 +240,7 @@ export function ProductContent({
                             </div>
                             <div className="flex gap-[15px] items-center">
                                 <button
-                                    className="p-[7px] text-center border border-white/10 w-[40px] h-[40px] bg-white/5 hover:bg-white/10 active:bg-white active:text-black transition-all duration-200"
+                                    className="p-[7px] text-center border border-white/5 w-[40px] h-[40px] bg-white/5 hover:bg-white/10 active:bg-white active:text-black transition-all duration-200"
                                     onClick={() =>
                                         setQuantity((prev) =>
                                             prev > 1 ? prev - 1 : prev
@@ -251,7 +251,7 @@ export function ProductContent({
                                 </button>
                                 <div>{quantity}</div>
                                 <button
-                                    className="p-[7px] text-center border border-white/10 w-[40px] h-[40px] bg-white/5 hover:bg-white/10 active:bg-white active:text-black transition-all duration-200"
+                                    className="p-[7px] text-center border border-white/5 w-[40px] h-[40px] bg-white/5 hover:bg-white/10 active:bg-white active:text-black transition-all duration-200"
                                     onClick={() =>
                                         setQuantity((prev) => prev + 1)
                                     }

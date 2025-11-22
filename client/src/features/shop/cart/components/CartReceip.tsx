@@ -11,7 +11,7 @@ export function CartReceip({ totalPrice }: ICartReceipProps) {
                 <div className="text-3xl font-perandory tracking-wider">
                     Receip details
                 </div>
-                <hr className="border-t border-white/10 my-[15px]" />
+                <hr className="border-t border-white/5 my-[15px]" />
                 <div className="flex flex-col gap-[10px] text-base font-light">
                     <div className="flex justify-between">
                         <div>Amount of goods</div>
@@ -34,7 +34,7 @@ export function CartReceip({ totalPrice }: ICartReceipProps) {
                         </div>
                     </div>
                 </div>
-                <hr className="border-t border-white/10 my-[15px]" />
+                <hr className="border-t border-white/5 my-[15px]" />
             </div>
 
             <div className="flex justify-center">

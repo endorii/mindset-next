@@ -8,7 +8,7 @@ export function AdminHeader() {
     const { data: user, isPending: isUserPending } = useCurrentUser();
 
     return (
-        <header className="fixed top-0 py-[10px] px-[30px] sm:px-[10px] h-[80px] flex gap-[10px] items-center w-full shadow-custom bg-transparent border-b border-white/10 z-10">
+        <header className="fixed top-0 py-[10px] px-[30px] sm:px-[10px] h-[80px] flex gap-[10px] items-center w-full shadow-custom bg-transparent border-b border-white/5 z-10">
             <div className="w-full">
                 <Link
                     href={"/admin"}

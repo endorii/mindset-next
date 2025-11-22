@@ -26,7 +26,7 @@ export function AtributesInfoField({
     return (
         <div className="flex flex-col gap-[3px]">
             <Label>{label}</Label>
-            <div className="border border-white/10 bg-black/10 px-[10px] py-[7px] flex flex-wrap gap-[10px] w-full">
+            <div className="border border-white/5 bg-black/10 px-[10px] py-[7px] flex flex-wrap gap-[10px] w-full">
                 {atributeList.length > 0
                     ? atributeList.map((item, i) => (
                           <div

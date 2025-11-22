@@ -1,11 +1,11 @@
 export function UserOrdersSkeleton() {
     return (
         <div className="  bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px] xs:p-[10px]">
-            <div className="border border-white/10 animate-pulse w-full">
+            <div className="border border-white/5 animate-pulse w-full">
                 {[1, 2, 3].map((_, i) => (
                     <div
                         key={i}
-                        className="relative flex gap-[40px] border-b border-white/10 last:border-b-0 p-[20px]"
+                        className="relative flex gap-[40px] border-b border-white/5 last:border-b-0 p-[20px]"
                     >
                         <div className="absolute top-[20px] right-[20px] bg-white/10 p-[15px] "></div>
                         <div className="flex flex-col justify-between w-[150px] gap-[15px]">

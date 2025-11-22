@@ -2,7 +2,7 @@ import Link from "next/link";
 
 export function PreOrderInfo() {
     return (
-        <div className="mt-2 bg-white/5 border p-[15px] border-white/10 shadow-inner">
+        <div className="mt-2 bg-white/5 border p-[15px] border-white/5 shadow-inner">
             <div className="text-white font-medium">
                 The data you enter is used to automatically create an express
                 invoice in the Nova Post system.

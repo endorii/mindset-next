@@ -1,6 +1,5 @@
 import { ICollection } from "@/features/collections/types/collections.types";
 import { IProduct } from "@/features/products/types/products.types";
-import { TStatus } from "@/shared/types/types";
 
 export interface ICategory {
     id?: string;
@@ -8,8 +7,7 @@ export interface ICategory {
     path: string;
     description: string;
     banner: string;
-    views: number;
-    status: TStatus;
+    status: boolean;
     products?: IProduct[];
     collection?: ICollection;
     collectionId: string;

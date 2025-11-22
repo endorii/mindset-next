@@ -28,7 +28,7 @@ export function ProductPageSkeleton() {
                     <div className="w-[120px] h-[20px] bg-white/10"></div>
 
                     <div className="mt-[20px] xl:mt-[10px] w-full h-[80px] bg-white/10"></div>
-                    <hr className="w-full border-white/10 border-t " />
+                    <hr className="w-full border-white/5 border-t " />
                     <div className="w-full h-[50px] bg-white/10"></div>
 
                     <div className="flex flex-col gap-[20px] mt-[30px] text-sm">

@@ -1,22 +1,12 @@
 import {
     IsArray,
+    IsBoolean,
     IsDefined,
-    IsEnum,
     IsInt,
     IsNotEmpty,
     IsOptional,
     IsString,
 } from "class-validator";
-
-export enum EStatus {
-    ACTIVE = "Active",
-    NOTACTIVE = "Not active",
-}
-
-export enum EAvailable {
-    AVAILABLE = "Available",
-    NOTAVAILABLE = "Not available",
-}
 
 export class CreateProductDto {
     @IsString({ message: "Name must be a string." })
@@ -36,12 +26,11 @@ export class CreateProductDto {
     price: number;
 
     @IsInt({ message: "Old price must be an integer." })
-    @IsDefined({ message: "Old price is required." })
-    oldPrice: number;
+    @IsOptional()
+    oldPrice?: number | null;
 
-    @IsEnum(EAvailable, { message: "Invalid product availability." })
-    @IsDefined({ message: "Availability is required." })
-    available: EAvailable;
+    @IsBoolean({ message: "Invalid product availability." })
+    available: boolean;
 
     @IsString({ message: "Description must be a string." })
     @IsNotEmpty({ message: "Description cannot be empty." })
@@ -51,13 +40,8 @@ export class CreateProductDto {
     @IsNotEmpty({ message: "Composition cannot be empty." })
     composition: string;
 
-    @IsInt({ message: "Views must be an integer." })
-    @IsDefined({ message: "Views are required." })
-    views: number;
-
-    @IsEnum(EStatus, { message: "Invalid product status." })
-    @IsDefined({ message: "Status is required." })
-    status: EStatus;
+    @IsBoolean({ message: "Invalid product status." })
+    status: boolean;
 
     @IsString({ message: "Category ID must be a string." })
     @IsNotEmpty({ message: "Category ID cannot be empty." })

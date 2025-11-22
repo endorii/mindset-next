@@ -32,7 +32,7 @@ const OrderSuccessPage = () => {
                         contact support.
                     </p>
 
-                    <hr className="border-t border-white/10 w-full" />
+                    <hr className="border-t border-white/5 w-full" />
 
                     <MonoButtonUnderlined
                         className="mt-[10px]"
@@ -75,7 +75,7 @@ const OrderSuccessPage = () => {
                         are sure that your order exists, please contact support.
                     </p>
 
-                    <hr className="border-t border-white/10 w-full" />
+                    <hr className="border-t border-white/5 w-full" />
 
                     <MonoButtonUnderlined
                         className="mt-[10px]"
@@ -108,7 +108,7 @@ const OrderSuccessPage = () => {
                         Thank you for your purchase. Your order has been
                         created.
                     </p>
-                    <hr className="border-t border-white/10 w-full" />
+                    <hr className="border-t border-white/5 w-full" />
                     <div className="flex items-center gap-[7px] px-4 py-2 w-full">
                         <div className="font-light">Order number:</div>
                         <span className="font-semibold">{order.id}</span>
@@ -116,7 +116,7 @@ const OrderSuccessPage = () => {
                 </div>
                 {user && order.userId === user.id && (
                     <>
-                        <hr className="border-t border-white/10 w-full" />
+                        <hr className="border-t border-white/5 w-full" />
                         <div className="flex flex-col gap-[20px]">
                             <div className="flex flex-col gap-[10px] p-[20px] bg-white/5">
                                 <div className="text-2xl font-perandory tracking-wider">
@@ -182,7 +182,7 @@ const OrderSuccessPage = () => {
                                             </div>
                                         ))}
                                 </div>
-                                <hr className="border-t border-white/10 w-full" />
+                                <hr className="border-t border-white/5 w-full" />
                                 <div>
                                     <div className="flex justify-between items-center text-lg font-bold">
                                         <div className="font-perandory tracking-wider text-xl">
@@ -197,7 +197,7 @@ const OrderSuccessPage = () => {
                         </div>
                     </>
                 )}
-                <hr className="border-t border-white/10 w-full" />
+                <hr className="border-t border-white/5 w-full" />
                 <MonoButtonUnderlined
                     className="mt-[10px]"
                     onClick={() => {

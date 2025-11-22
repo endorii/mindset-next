@@ -32,7 +32,7 @@ export function AttributesContent() {
                     </ChooseButton>
                 ))}
             </div>
-            <hr className="w-full border-t border-white/10" />
+            <hr className="w-full border-t border-white/5" />
 
             {selectedAttribute === "colors" && (
                 <ErrorBoundary

@@ -111,7 +111,7 @@ export function AdminProductsContent({
                 buttonText={"Add product"}
             />
 
-            <hr className="w-full border-t border-white/10" />
+            <hr className="w-full border-t border-white/5" />
 
             {products && products.length > 0 ? (
                 <div className="flex flex-col gap-[10px] bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px] sm:px-[10px]">
@@ -141,11 +141,11 @@ export function AdminProductsContent({
                         <div className="xs:hidden text-center">Link</div>
                         <div className="text-right lg:hidden">Actions</div>
                     </div>
-                    <div className="border border-white/10  ">
+                    <div className="border border-white/5  ">
                         {sortedProducts.map((product) => (
                             <div
                                 key={product.id}
-                                className="flex flex-col gap-[25px] p-[20px] border-b border-white/10 last:border-b-0 text-sm"
+                                className="flex flex-col gap-[25px] p-[20px] border-b border-white/5 last:border-b-0 text-sm"
                             >
                                 <div
                                     className="grid 

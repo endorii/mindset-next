@@ -6,8 +6,8 @@ interface BasicSelectorProps<T> {
     register: UseFormRegisterReturn;
     itemsList: T[];
     basicOptionLabel: string;
-    getOptionValue: (item: T) => string | number;
-    getOptionLabel: (item: T) => string;
+    getOptionValue: (item: T) => boolean;
+    getOptionLabel: (item: T) => boolean;
     className?: string;
     errorMessage?: string;
     disabled?: boolean;
@@ -30,18 +30,15 @@ export function BasicSelector<T>({
             <select
                 {...register}
                 className={`border font-light ${
-                    errorMessage ? "border-red-500" : "border-white/10"
+                    errorMessage ? "border-red-500" : "border-white/5"
                 } p-[11.5px] outline-0 cursor-pointer ${className}`}
                 disabled={disabled}
             >
                 <option value="" disabled hidden>
                     {basicOptionLabel}
                 </option>
-                {itemsList.map((item) => (
-                    <option
-                        key={getOptionValue(item)}
-                        value={getOptionValue(item)}
-                    >
+                {itemsList.map((item, i) => (
+                    <option key={i} value={String(getOptionValue(item))}>
                         {getOptionLabel(item)}
                     </option>
                 ))}

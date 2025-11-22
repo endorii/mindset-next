@@ -16,7 +16,7 @@ export class AdminCollectionsController {
     constructor(private readonly collectionsService: AdminCollectionsService) {}
 
     @Post()
-    @Roles(Role.ADMIN)
+    @Roles(Role.admin)
     postCollection(
         @Body() createCollectionDto: CreateCollectionDto,
         @Req() req: Request & { user: AuthenticatedRequestUser }
@@ -25,7 +25,7 @@ export class AdminCollectionsController {
     }
 
     @Patch(":collectionId")
-    @Roles(Role.ADMIN)
+    @Roles(Role.admin)
     editCollection(
         @Param("collectionId") collectionId: string,
         @Body() updateCollectionDto: UpdateCollectionDto,
@@ -39,7 +39,7 @@ export class AdminCollectionsController {
     }
 
     @Delete(":collectionId")
-    @Roles(Role.ADMIN)
+    @Roles(Role.admin)
     deleteCollection(
         @Param("collectionId") collectionId: string,
         @Req() req: Request & { user: AuthenticatedRequestUser }

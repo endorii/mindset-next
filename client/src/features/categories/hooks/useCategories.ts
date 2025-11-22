@@ -1,4 +1,3 @@
-import { TStatus } from "@/shared/types/types";
 import { useMutation, useQueryClient, useSuspenseQuery } from "@tanstack/react-query";
 import { toast } from "sonner";
 import {
@@ -58,7 +57,7 @@ export function useEditCategory() {
             data: {
                 name: string;
                 path: string;
-                status: TStatus;
+                status: boolean;
             };
         }) => editCategory(categoryId, data),
         onSuccess(data) {

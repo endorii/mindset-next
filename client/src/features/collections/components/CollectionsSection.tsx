@@ -4,6 +4,7 @@ import {
     CollectionsAndCategoriesList,
     EmptyCategories,
 } from "@/shared/components";
+import { ShopTitle } from "@/shared/ui/titles/ShopTitle";
 import { ICollection } from "../types/collections.types";
 
 export function CollectionsSection({
@@ -14,11 +15,16 @@ export function CollectionsSection({
     if (!collections?.length) {
         return (
             <EmptyCategories
-                title="Our virtual warehouse just got an update..."
-                subtitle="Sorry for the inconvenience - the collections are still in the process of sorting."
+                title="Warehouse is in the process of being prepared..."
+                subtitle="Sorry for the inconvenience - we are preparing the best collections for you."
             />
         );
     }
 
-    return <CollectionsAndCategoriesList items={collections} />;
+    return (
+        <div className="flex flex-col gap-[10px] pt-[90px]" id="collections">
+            <ShopTitle title="Collections" />
+            <CollectionsAndCategoriesList items={collections} />
+        </div>
+    );
 }

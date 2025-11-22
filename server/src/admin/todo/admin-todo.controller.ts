@@ -14,7 +14,7 @@ export class AdminTodoController {
     constructor(private readonly adminTodoService: AdminTodoService) {}
 
     @Post()
-    @Roles(Role.ADMIN)
+    @Roles(Role.admin)
     createTodoItem(
         @Req() req: Request & { user: AuthenticatedRequestUser },
         @Body() createTodoDto: CreateTodoDto
@@ -23,13 +23,13 @@ export class AdminTodoController {
     }
 
     @Get()
-    @Roles(Role.ADMIN)
+    @Roles(Role.admin)
     getUserTodoList(@Req() req: Request & { user: AuthenticatedRequestUser }) {
         return this.adminTodoService.getUserTodoList(req.user.id);
     }
 
     @Patch(":todoId")
-    @Roles(Role.ADMIN)
+    @Roles(Role.admin)
     updateUserTodoItem(
         @Req() req: Request & { user: AuthenticatedRequestUser },
         @Param("todoId") todoId: string,
@@ -39,7 +39,7 @@ export class AdminTodoController {
     }
 
     @Delete(":todoId")
-    @Roles(Role.ADMIN)
+    @Roles(Role.admin)
     deleteUserTodoItem(
         @Req() req: Request & { user: AuthenticatedRequestUser },
         @Param("todoId") todoId: string

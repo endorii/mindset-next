@@ -25,13 +25,13 @@ export class AdminSizesController {
     constructor(private readonly adminSizesService: AdminSizesService) {}
 
     @Get()
-    @Roles(Role.ADMIN)
+    @Roles(Role.admin)
     getSizes() {
         return this.adminSizesService.getSizes();
     }
 
     @Post()
-    @Roles(Role.ADMIN)
+    @Roles(Role.admin)
     addSize(
         @Body(new ValidationPipe()) createSizeDto: CreateSizeDto,
         @Req() req: Request & { user: AuthenticatedRequestUser }
@@ -40,7 +40,7 @@ export class AdminSizesController {
     }
 
     @Patch(":sizeId")
-    @Roles(Role.ADMIN)
+    @Roles(Role.admin)
     editSize(
         @Param("sizeId") sizeId: string,
         @Body() updateSizeDto: UpdateSizeDto,
@@ -50,7 +50,7 @@ export class AdminSizesController {
     }
 
     @Delete(":sizeId")
-    @Roles(Role.ADMIN)
+    @Roles(Role.admin)
     deleteSize(
         @Param("sizeId") sizeId: string,
         @Req() req: Request & { user: AuthenticatedRequestUser }

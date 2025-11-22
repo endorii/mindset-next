@@ -34,7 +34,7 @@ export function UserOrdersList({
     if (!userOrders?.length) return null;
 
     return (
-        <div className="border border-white/10 mt-[20px]">
+        <div className="border border-white/5 mt-[20px]">
             {userOrders.map((order) => {
                 const isExpanded = expandedOrderId === order.id;
                 const status = statusMap[order.status];
@@ -42,12 +42,12 @@ export function UserOrdersList({
                 return (
                     <div
                         key={order.id}
-                        className="border-b border-white/10 last:border-b-0"
+                        className="border-b border-white/5 last:border-b-0"
                     >
                         <div className="relative flex gap-[40px] p-[20px]">
                             <button
                                 onClick={() => toggleExpand(order.id)}
-                                className={`absolute top-[20px] right-[20px] transition-transform duration-300 bg-black/60 border border-white/10 p-[5px] shadow-lg backdrop-blur-xl cursor-pointer ${
+                                className={`absolute top-[20px] right-[20px] transition-transform duration-300 bg-black/60 border border-white/5 p-[5px] shadow-lg backdrop-blur-xl cursor-pointer ${
                                     isExpanded ? "rotate-90" : "rotate-270"
                                 }`}
                             >
@@ -88,7 +88,7 @@ export function UserOrdersList({
                         </div>
 
                         {isExpanded && (
-                            <div className="px-[20px] pb-[20px] text-sm bg-white/3 border-t border-white/10">
+                            <div className="px-[20px] pb-[20px] text-sm bg-white/3 border-t border-white/5">
                                 <div className="grid grid-cols-2 gap-[20px] py-4">
                                     <Detail
                                         label="Order ID"

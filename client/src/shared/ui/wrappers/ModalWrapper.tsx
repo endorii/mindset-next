@@ -15,13 +15,13 @@ export function ModalWrapper({
             onClick={onClose}
         >
             <div
-                className="flex flex-col gap-[17px] bg-black text-white bg-gradient-to-br from-black/0 to-white/3 border border-white/10 p-[40px] pb-[25px] h-auto max-h-[80vh] min-w-[800px] md:min-w-auto shadow-lg overflow-y-auto cursor-default"
+                className="flex flex-col gap-[17px] bg-black text-white bg-gradient-to-br from-black/0 to-white/3 border border-white/5 p-[40px] pb-[25px] h-auto max-h-[80vh] min-w-[800px] md:min-w-auto shadow-lg overflow-y-auto cursor-default"
                 onClick={(e) => e.stopPropagation()}
             >
                 <h4 className="text-4xl font-perandory tracking-wider">
                     {modalTitle}
                 </h4>
-                <hr className="border-t border-white/10" />
+                <hr className="border-t border-white/5" />
                 {children}
             </div>
         </div>

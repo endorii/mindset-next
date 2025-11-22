@@ -259,7 +259,7 @@ export function EditOrderModal({
                                             className={`border px-[10px] py-[10px] bg-black/20 text-white outline-0 cursor-pointer ${
                                                 errors.area
                                                     ? "border-red-500"
-                                                    : "border-white/10"
+                                                    : "border-white/5"
                                             }`}
                                         >
                                             <option value="">
@@ -309,7 +309,7 @@ export function EditOrderModal({
                                             className={`border px-[10px] py-[10px] bg-black/20 text-white outline-0 cursor-pointer ${
                                                 errors.city
                                                     ? "border-red-500"
-                                                    : "border-white/10"
+                                                    : "border-white/5"
                                             }`}
                                         >
                                             <option value="">
@@ -363,7 +363,7 @@ export function EditOrderModal({
                                             className={`border px-[10px] py-[10px] bg-black/20 text-white outline-0 cursor-pointer ${
                                                 errors.postDepartment
                                                     ? "border-red-500"
-                                                    : "border-white/10"
+                                                    : "border-white/5"
                                             }`}
                                         >
                                             <option value="">
@@ -410,7 +410,7 @@ export function EditOrderModal({
                                             <select
                                                 {...field}
                                                 id="status"
-                                                className={`border border-white/10 px-[10px] py-[10px] bg-black/20 text-white outline-0 cursor-pointer ${
+                                                className={`border border-white/5 px-[10px] py-[10px] bg-black/20 text-white outline-0 cursor-pointer ${
                                                     errors.status
                                                         ? "border-red-500"
                                                         : ""

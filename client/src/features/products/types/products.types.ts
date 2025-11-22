@@ -4,7 +4,6 @@ import { IType } from "@/features/admin/attributes/product-types/types/product-t
 import { ICategory } from "@/features/categories/types/categories.types";
 import { ICollection } from "@/features/collections/types/collections.types";
 import { IReview } from "@/features/reviews/types/reviews.types";
-import { TAvailble, TStatus } from "@/shared/types/types";
 
 export interface IProduct {
     id: string;
@@ -12,11 +11,10 @@ export interface IProduct {
     price: number;
     oldPrice: number;
     path: string;
-    views: number;
     banner: string;
-    status: TStatus;
+    status: boolean;
     images: string[];
-    available: TAvailble;
+    available: boolean;
     description: string;
     composition: string;
     categoryId: string;
@@ -38,12 +36,11 @@ export interface ICreateProductPayload {
     path: string;
     price: number;
     oldPrice: number;
-    available: TAvailble;
+    available: boolean;
     description: string;
     composition: string;
     categoryId?: string;
-    status: TStatus;
-    views: number;
+    status: boolean;
     banner: string;
     images: string[];
 

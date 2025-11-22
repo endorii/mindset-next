@@ -20,7 +20,7 @@ export class AdminCollectionsService {
     ) {}
 
     async postCollection(userId: string, createCollectionDto: CreateCollectionDto) {
-        const { name, path, description, views, status } = createCollectionDto;
+        const { name, path, description, status } = createCollectionDto;
 
         try {
             const existingCollection = await this.prisma.collection.findUnique({
@@ -36,7 +36,6 @@ export class AdminCollectionsService {
                     name,
                     path,
                     description,
-                    views,
                     status,
                 },
             });

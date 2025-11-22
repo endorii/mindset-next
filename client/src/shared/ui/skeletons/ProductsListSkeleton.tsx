@@ -24,7 +24,7 @@ export function SkeletonProductCard() {
 
                     <div className="h-[16px] w-[100px] bg-white/10" />
 
-                    <hr className="border-t border-white/10 mt-[5px]" />
+                    <hr className="border-t border-white/5 mt-[5px]" />
 
                     <div className="flex flex-col gap-[5px]">
                         <ul className="flex gap-[5px] flex-wrap">

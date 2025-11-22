@@ -2,7 +2,6 @@
 
 import { ICollection } from "@/features/collections/types/collections.types";
 import { useEscapeKeyClose, useUploadBanner } from "@/shared/hooks";
-import { TStatus } from "@/shared/types/types";
 import { MonoButton } from "@/shared/ui/buttons";
 import { UploadBannerWithPreview } from "@/shared/ui/components";
 import { InputField } from "@/shared/ui/inputs/InputField";
@@ -15,7 +14,6 @@ import {
     FormFillingWrapper,
     ModalWrapper,
 } from "@/shared/ui/wrappers";
-import { statuses } from "@/shared/utils/helpers";
 import { useState } from "react";
 import { createPortal } from "react-dom";
 import { useForm } from "react-hook-form";
@@ -31,7 +29,7 @@ interface CategoryFormData {
     name: string;
     path: string;
     description: string;
-    status: TStatus;
+    status: boolean;
 }
 
 export function AddCategoryModal({
@@ -46,7 +44,7 @@ export function AddCategoryModal({
         formState: { errors },
     } = useForm<CategoryFormData>({
         defaultValues: {
-            status: "Not active",
+            status: false,
         },
     });
 
@@ -89,7 +87,6 @@ export function AddCategoryModal({
                 const category = await createCategoryMutation.mutateAsync({
                     name: data.name.trim(),
                     path: data.path.trim(),
-                    views: 0,
                     status: data.status,
                     collectionId,
                     description: data.description,
@@ -158,7 +155,7 @@ export function AddCategoryModal({
                                     required: "Choose a status",
                                 }),
                             }}
-                            itemsList={statuses}
+                            itemsList={[false, true]}
                             basicOptionLabel="Choose a status"
                             getOptionLabel={(status) => status}
                             getOptionValue={(status) => status}

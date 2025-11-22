@@ -24,7 +24,7 @@ const OrderCancelPage = () => {
                     </p>
                 </div>
 
-                <hr className="border-t border-white/10 w-full" />
+                <hr className="border-t border-white/5 w-full" />
 
                 <div className="flex flex-col gap-3">
                     <MonoButtonUnderlined

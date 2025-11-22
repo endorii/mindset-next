@@ -14,7 +14,7 @@ export function ColorsSkeleton() {
                 <div className="h-4 w-10 bg-white/10 justify-self-end" />
             </div>
 
-            <div className="border border-white/10  ">
+            <div className="border border-white/5  ">
                 {Array.from({ length: 5 }).map((_, i) => (
                     <div
                         key={i}
@@ -22,9 +22,9 @@ export function ColorsSkeleton() {
                             grid-cols-4 
                             md:grid-cols-3 
                             xs:grid-cols-2 
-                            gap-[15px] p-[20px] border-b border-white/10 items-center text-sm"
+                            gap-[15px] p-[20px] border-b border-white/5 items-center text-sm"
                     >
-                        <div className="border border-white/10 w-[52px] h-[52px] xs:hidden bg-white/10" />
+                        <div className="border border-white/5 w-[52px] h-[52px] xs:hidden bg-white/10" />
                         <div className="h-4 w-24 bg-white/10" />
                         <div className="md:hidden h-4 w-16 bg-white/10" />
                         <div className="flex justify-end gap-[10px]">

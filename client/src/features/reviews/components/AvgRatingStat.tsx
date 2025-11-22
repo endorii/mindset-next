@@ -59,7 +59,7 @@ export function AvgRatingStat({ reviews }: AvgRatingStatProps) {
                             className="flex items-center gap-[7px] mb-1"
                         >
                             <span className="w-5 text-sm">{rating}★</span>
-                            <div className="flex-1 border border-white/10 h-5 overflow-hidden">
+                            <div className="flex-1 border border-white/5 h-5 overflow-hidden">
                                 <div
                                     className="bg-white h-full transition-all duration-300"
                                     style={{ width: `${percent}%` }}

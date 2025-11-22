@@ -36,7 +36,7 @@ export function DeliveryAndPaymentMethod() {
                 </div>
             </div>
 
-            <hr className="border-t border-white/10" />
+            <hr className="border-t border-white/5" />
 
             <div className="flex md:flex-wrap items-center gap-[15px]">
                 <div className="flex items-center gap-[10px]">

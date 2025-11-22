@@ -9,7 +9,6 @@ import {
     useUploadImages,
 } from "@/shared/hooks";
 import { TrashIcon } from "@/shared/icons";
-import { TAvailble, TStatus } from "@/shared/types/types";
 import { MonoButton } from "@/shared/ui/buttons";
 import { MonoButtonUnderlined } from "@/shared/ui/buttons/MonoButtonUnderlined";
 import {
@@ -43,10 +42,10 @@ interface FormData {
     path: string;
     price: number;
     oldPrice: number;
-    available: TAvailble;
+    available: boolean;
     description: string;
     composition: string;
-    status: TStatus;
+    status: boolean;
     colorIds?: string[];
     sizeIds?: string[];
     typeIds?: string[];
@@ -70,10 +69,10 @@ export function AddProductModal({
             path: "",
             price: 0,
             oldPrice: 0,
-            available: "Not available",
+            available: false,
             description: "",
             composition: "",
-            status: "Not active",
+            status: false,
             colorIds: [],
             sizeIds: [],
             typeIds: [],
@@ -198,7 +197,6 @@ export function AddProductModal({
                     colorIds: colorsToSend,
                     sizeIds: sizesToSend,
                     typeIds: typesToSend,
-                    views: 0,
                 });
 
                 if (!product.data?.id) {
@@ -379,7 +377,7 @@ export function AddProductModal({
                         <Label>Additional images</Label>
                         <label
                             htmlFor="images"
-                            className={`group border min-h-[200px] border-dashed border-white/10 flex items-center justify-center cursor-pointer hover:bg-white/3 overflow-hidden group-hover:text-white transition-all duration-300`}
+                            className={`group border min-h-[200px] border-dashed border-white/5 flex items-center justify-center cursor-pointer hover:bg-white/3 overflow-hidden group-hover:text-white transition-all duration-300`}
                         >
                             <span className="text-3xl font-light text-neutral-500 group-hover:text-white transition-all duration-300">
                                 +
