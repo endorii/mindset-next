@@ -37,8 +37,10 @@ export function HomeTodo({ todos }: { todos: ITodoItem[] | undefined }) {
 
     return (
         <div className="  bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px] flex flex-col gap-[10px] w-1/2 lg:w-full">
-            <div className="flex gap-[15px] justify-between">
-                <div className="text-xl font-semibold">ToDo</div>
+            <div className="flex gap-[15px] justify-between items-center">
+                <div className="text-3xl font-perandory tracking-wider">
+                    Tasks
+                </div>
                 <MonoButton onClick={() => openModal("add")}>
                     <div>Add task</div>
                     <PlusIcon className="stroke-white stroke-2 w-[30px] group-hover:stroke-black" />
@@ -55,10 +57,10 @@ export function HomeTodo({ todos }: { todos: ITodoItem[] | undefined }) {
                                 <span className="text-base font-medium text-white">
                                     {task.title}
                                 </span>
-                                <span className="text-xs mt-[7px] text-neutral-300">
+                                <span className="text-sm mt-[7px] text-neutral-300">
                                     Priority:{" "}
                                     <span
-                                        className={`${
+                                        className={`text-base font-perandory tracking-wider ${
                                             task.priority === "high"
                                                 ? "text-red-500"
                                                 : task.priority === "medium"

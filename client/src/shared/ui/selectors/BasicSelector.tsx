@@ -1,13 +1,21 @@
-import { UseFormRegisterReturn } from "react-hook-form";
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from "@/components/ui/select";
+import { Control, Controller } from "react-hook-form";
 import { Label } from "../components";
 
 interface BasicSelectorProps<T> {
     label: string;
-    register: UseFormRegisterReturn;
+    control: Control<any>;
+    name: string;
     itemsList: T[];
     basicOptionLabel: string;
-    getOptionValue: (item: T) => boolean;
-    getOptionLabel: (item: T) => boolean;
+    getOptionValue: (item: T) => string;
+    getOptionLabel: (item: T) => string;
     className?: string;
     errorMessage?: string;
     disabled?: boolean;
@@ -15,37 +23,56 @@ interface BasicSelectorProps<T> {
 
 export function BasicSelector<T>({
     label,
-    register,
+    control,
+    name,
     itemsList,
     basicOptionLabel,
     getOptionValue,
     getOptionLabel,
     className = "",
     errorMessage,
-    disabled,
+    disabled = false,
 }: BasicSelectorProps<T>) {
     return (
-        <div className="flex flex-col gap-[3px]">
-            <Label>{label}</Label>
-            <select
-                {...register}
-                className={`border font-light ${
-                    errorMessage ? "border-red-500" : "border-white/5"
-                } p-[11.5px] outline-0 cursor-pointer ${className}`}
-                disabled={disabled}
-            >
-                <option value="" disabled hidden>
-                    {basicOptionLabel}
-                </option>
-                {itemsList.map((item, i) => (
-                    <option key={i} value={String(getOptionValue(item))}>
-                        {getOptionLabel(item)}
-                    </option>
-                ))}
-            </select>
-            {errorMessage && (
-                <p className="text-red-500 text-sm">{errorMessage}</p>
+        <Controller
+            name={name}
+            control={control}
+            render={({ field }) => (
+                <div className="flex flex-col gap-[3px]">
+                    <Label>{label}</Label>
+
+                    <Select
+                        value={field.value || ""}
+                        onValueChange={(val) => field.onChange(val)}
+                        disabled={disabled}
+                    >
+                        <SelectTrigger
+                            className={`w-full ${className} ${
+                                errorMessage
+                                    ? "border-red-500"
+                                    : "border-white/5"
+                            }`}
+                        >
+                            <SelectValue placeholder={basicOptionLabel} />
+                        </SelectTrigger>
+
+                        <SelectContent>
+                            {itemsList.map((item, idx) => (
+                                <SelectItem
+                                    key={idx}
+                                    value={getOptionValue(item)}
+                                >
+                                    {getOptionLabel(item)}
+                                </SelectItem>
+                            ))}
+                        </SelectContent>
+                    </Select>
+
+                    {errorMessage && (
+                        <p className="text-red-500 text-sm">{errorMessage}</p>
+                    )}
+                </div>
             )}
-        </div>
+        />
     );
 }

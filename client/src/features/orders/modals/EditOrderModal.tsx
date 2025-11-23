@@ -1,6 +1,13 @@
 "use client";
 
 import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from "@/components/ui/select";
+import {
     fetchAreas,
     fetchCities,
     fetchWarehouses,
@@ -56,19 +63,9 @@ export function EditOrderModal({
         handleSubmit,
         reset,
         control,
+        setValue,
         formState: { errors },
-    } = useForm<FormData>({
-        defaultValues: {
-            fullName: "",
-            phoneNumber: "",
-            email: "",
-            area: "",
-            city: "",
-            postDepartment: "",
-            additionalInfo: "",
-            status: "pending",
-        },
-    });
+    } = useForm<FormData>();
 
     const [areas, setAreas] = useState<INovaPostDataObj[]>([]);
     const [cities, setCities] = useState<INovaPostDataObj[]>([]);
@@ -87,7 +84,10 @@ export function EditOrderModal({
 
     useEscapeKeyClose({ isOpen, onClose });
 
+    // LOAD FORM DATA
     useEffect(() => {
+        if (!order) return;
+
         reset({
             fullName: order.fullName,
             phoneNumber: order.phoneNumber,
@@ -98,340 +98,302 @@ export function EditOrderModal({
             additionalInfo: order.additionalInfo || "",
             status: order.status,
         });
+
         setModalMessage("");
     }, [order, reset]);
 
+    // LOAD AREAS
     useEffect(() => {
         const loadAreas = async () => {
             try {
-                const areas = await fetchAreas();
-                setAreas(areas);
+                const fetched = await fetchAreas();
+                setAreas(fetched);
 
-                const matchedArea = areas.find(
+                const matched = fetched.find(
                     (a) => a.Description === order.area
                 );
-                if (matchedArea) setSelectedArea(matchedArea);
+
+                if (matched) {
+                    setSelectedArea(matched);
+                    setValue("area", matched.Description);
+                }
             } catch (error) {
                 console.error("Error loading areas:", error);
             }
         };
+
         loadAreas();
-    }, [order.area]);
+    }, [order.area, setValue]);
 
+    // LOAD CITIES
     useEffect(() => {
-        if (selectedArea?.Ref) {
-            const loadCities = async () => {
-                try {
-                    const cities = await fetchCities(selectedArea.Ref);
-                    setCities(cities);
+        if (!selectedArea?.Ref) return;
 
-                    const matchedCity = cities.find(
-                        (c) => c.Description === order.city
-                    );
-                    if (matchedCity) setSelectedCity(matchedCity);
-                } catch (error) {
-                    console.error("Error loading cities:", error);
-                    setCities([]);
+        const loadCities = async () => {
+            try {
+                const fetched = await fetchCities(selectedArea.Ref);
+                setCities(fetched);
+
+                const matched = fetched.find(
+                    (c) => c.Description === order.city
+                );
+
+                if (matched) {
+                    setSelectedCity(matched);
+                    setValue("city", matched.Description);
                 }
-            };
-            loadCities();
-            setSelectedWarehouse(null);
-            setWarehouses([]);
-        }
-    }, [selectedArea, order.city]);
+            } catch (error) {
+                console.error("Error loading cities:", error);
+                setCities([]);
+            }
+        };
 
+        loadCities();
+
+        setSelectedWarehouse(null);
+        setWarehouses([]);
+    }, [selectedArea, order.city, setValue]);
+
+    // LOAD WAREHOUSES
     useEffect(() => {
-        if (selectedCity?.Ref) {
-            const loadWarehouses = async () => {
-                try {
-                    const warehouse = await fetchWarehouses(selectedCity.Ref);
-                    setWarehouses(warehouse);
+        if (!selectedCity?.Ref) return;
 
-                    const matched = warehouse.find(
-                        (w) => w.Description === order.postDepartment
-                    );
-                    if (matched) setSelectedWarehouse(matched);
-                } catch (err) {
-                    console.error("Error loading branches:", err);
-                    setWarehouses([]);
+        const loadWarehouses = async () => {
+            try {
+                const fetched = await fetchWarehouses(selectedCity.Ref);
+                setWarehouses(fetched);
+
+                const matched = fetched.find(
+                    (w) => w.Description === order.postDepartment
+                );
+
+                if (matched) {
+                    setSelectedWarehouse(matched);
+                    setValue("postDepartment", matched.Description);
                 }
-            };
-            loadWarehouses();
-        }
-    }, [selectedCity?.Ref, order.postDepartment]);
+            } catch (error) {
+                console.error("Error loading warehouses:", error);
+                setWarehouses([]);
+            }
+        };
 
-    const useUpdateOrderMutation = useUpdateOrder();
+        loadWarehouses();
+    }, [selectedCity, order.postDepartment, setValue]);
+
+    const updateOrderMutation = useUpdateOrder();
 
     const onSubmit = async (data: FormData) => {
         try {
-            if (!order?.id) return;
-
-            await useUpdateOrderMutation.mutateAsync({
+            await updateOrderMutation.mutateAsync({
                 orderId: order.id,
                 data,
             });
+
             onClose();
         } catch (err: any) {
             setModalMessage(err?.message || "Error while editing order");
         }
     };
 
-    if (!isOpen || !order) return null;
+    if (!isOpen) return null;
 
     const modalContent = (
-        <ModalWrapper onClose={onClose} modalTitle={"Editing an order"}>
+        <ModalWrapper onClose={onClose} modalTitle="Editing an order">
             <form
                 onSubmit={handleSubmit(onSubmit)}
-                className="flex flex-col gap-[10px]"
+                className="flex flex-col gap-3 max-w-[900px]"
             >
                 <FormFillingWrapper>
                     <div className="grid grid-cols-3 gap-[15px]">
+                        {/* CONTACT */}
                         <div className="flex flex-col gap-[10px]">
                             <div className="text-lg">Contact information</div>
                             <div className="flex flex-col gap-[15px]">
                                 <InputField
                                     label="Full name*"
-                                    placeholder="Ivanov Ivan Ivanovych"
                                     {...register("fullName", {
                                         required: "Enter full name",
-                                        minLength: {
-                                            value: 8,
-                                            message: "Minimum 8 characters",
-                                        },
-                                        pattern: {
-                                            value: /^[А-ЯІЇЄҐA-Z][а-яіїєґa-z']+\s[А-ЯІЇЄҐA-Z][а-яіїєґa-z']+\s[А-ЯІЇЄҐA-Z][а-яіїєґa-z']+$/,
-                                            message:
-                                                "Format: Last Name First Name Middle Name (three words in capital letters)",
-                                        },
                                     })}
                                     errorMessage={errors.fullName?.message}
                                 />
+
                                 <InputField
                                     label="Phone number*"
                                     {...register("phoneNumber", {
                                         required: "Enter your phone number",
-                                        pattern: {
-                                            value: /^(0\d{9}|380\d{9})$/,
-                                            message:
-                                                "Format: 0XXXXXXXXX or 380XXXXXXXXX",
-                                        },
                                     })}
                                     errorMessage={errors.phoneNumber?.message}
                                 />
 
                                 <InputField
-                                    label="E-mail*"
-                                    {...register("email", {
-                                        pattern: {
-                                            value: /^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/,
-                                            message: "Incorrect mail format",
-                                        },
-                                    })}
+                                    label="E-mail"
+                                    {...register("email")}
                                     errorMessage={errors.email?.message}
                                 />
                             </div>
                         </div>
+
+                        {/* DELIVERY */}
                         <div className="flex flex-col gap-[10px]">
                             <div className="text-lg">Delivery address</div>
-                            <Controller
-                                name="area"
-                                control={control}
-                                rules={{ required: "Choose an area" }}
-                                render={({ field }) => (
-                                    <div className="flex flex-col gap-[3px]">
-                                        <Label>Region*</Label>
-                                        <select
-                                            {...field}
-                                            onChange={(e) => {
-                                                const areaObj = areas.find(
-                                                    (a) =>
-                                                        a.Description ===
-                                                        e.target.value
-                                                );
-                                                setSelectedArea(
-                                                    areaObj || null
-                                                );
-                                                field.onChange(e);
-                                            }}
-                                            value={
-                                                selectedArea?.Description || ""
-                                            }
-                                            className={`border px-[10px] py-[10px] bg-black/20 text-white outline-0 cursor-pointer ${
-                                                errors.area
-                                                    ? "border-red-500"
-                                                    : "border-white/5"
-                                            }`}
-                                        >
-                                            <option value="">
-                                                Choose an area
-                                            </option>
-                                            {areas.map((area) => (
-                                                <option
-                                                    key={area.Ref}
-                                                    value={area.Description}
-                                                >
-                                                    {area.Description}
-                                                </option>
-                                            ))}
-                                        </select>
-                                        {errors.area && (
-                                            <span className="text-sm text-red-500">
-                                                {errors.area.message}
-                                            </span>
-                                        )}
-                                    </div>
-                                )}
-                            />
-
-                            <Controller
-                                name="city"
-                                control={control}
-                                rules={{ required: "Choose a city" }}
-                                render={({ field }) => (
-                                    <div className="flex flex-col gap-[3px]">
-                                        <Label>City</Label>
-                                        <select
-                                            {...field}
-                                            onChange={(e) => {
-                                                const cityObj = cities.find(
-                                                    (c) =>
-                                                        c.Description ===
-                                                        e.target.value
-                                                );
-                                                setSelectedCity(
-                                                    cityObj || null
-                                                );
-                                                field.onChange(e);
-                                            }}
-                                            value={
-                                                selectedCity?.Description || ""
-                                            }
-                                            className={`border px-[10px] py-[10px] bg-black/20 text-white outline-0 cursor-pointer ${
-                                                errors.city
-                                                    ? "border-red-500"
-                                                    : "border-white/5"
-                                            }`}
-                                        >
-                                            <option value="">
-                                                Choose a city
-                                            </option>
-                                            {cities.map((city) => (
-                                                <option
-                                                    key={city.Ref}
-                                                    value={city.Description}
-                                                >
-                                                    {city.Description}
-                                                </option>
-                                            ))}
-                                        </select>
-                                        {errors.city && (
-                                            <span className="text-sm text-red-500">
-                                                {errors.city.message}
-                                            </span>
-                                        )}
-                                    </div>
-                                )}
-                            />
-
-                            <Controller
-                                name="postDepartment"
-                                control={control}
-                                rules={{
-                                    required: "Choose a branch/post office",
-                                }}
-                                render={({ field }) => (
-                                    <div className="flex flex-col gap-[3px]">
-                                        <Label>Branch/post office</Label>
-                                        <select
-                                            {...field}
-                                            onChange={(e) => {
-                                                const warehouseObj =
-                                                    warehouses.find(
-                                                        (w) =>
-                                                            w.Description ===
-                                                            e.target.value
-                                                    );
-                                                setSelectedWarehouse(
-                                                    warehouseObj || null
-                                                );
-                                                field.onChange(e);
-                                            }}
-                                            value={
-                                                selectedWarehouse?.Description ||
-                                                ""
-                                            }
-                                            className={`border px-[10px] py-[10px] bg-black/20 text-white outline-0 cursor-pointer ${
-                                                errors.postDepartment
-                                                    ? "border-red-500"
-                                                    : "border-white/5"
-                                            }`}
-                                        >
-                                            <option value="">
-                                                Choose a branch
-                                            </option>
-                                            {warehouses.map((wh) => (
-                                                <option
-                                                    key={wh.Ref}
-                                                    value={wh.Description}
-                                                >
-                                                    {wh.Description}
-                                                </option>
-                                            ))}
-                                        </select>
-                                        {errors.postDepartment && (
-                                            <span className="text-sm text-red-500">
-                                                {errors.postDepartment.message}
-                                            </span>
-                                        )}
-                                    </div>
-                                )}
-                            />
-                        </div>
-                        <div className="flex flex-col gap-[10px]">
-                            <div className="text-lg">Order information</div>
-                            <div className="flex flex-col gap-[10px]">
-                                <InputField
-                                    label="Additional information*"
-                                    {...register("additionalInfo")}
-                                />
-
+                            <div className="flex flex-col gap-[15px]">
+                                {/* AREA */}
                                 <Controller
-                                    name="status"
+                                    name="area"
                                     control={control}
-                                    rules={{
-                                        required: "Choose a status",
-                                        validate: (value) =>
-                                            value !== null ||
-                                            "Choose a status from the list",
-                                    }}
+                                    rules={{ required: "Choose an area" }}
                                     render={({ field }) => (
                                         <div className="flex flex-col gap-[3px]">
-                                            <Label>Status</Label>
-                                            <select
-                                                {...field}
-                                                id="status"
-                                                className={`border border-white/5 px-[10px] py-[10px] bg-black/20 text-white outline-0 cursor-pointer ${
-                                                    errors.status
-                                                        ? "border-red-500"
-                                                        : ""
-                                                }`}
+                                            <Label>Region*</Label>
+                                            <Select
+                                                value={field.value || ""}
+                                                onValueChange={(value) => {
+                                                    const areaObj = areas.find(
+                                                        (a) =>
+                                                            a.Description ===
+                                                            value
+                                                    );
+                                                    setSelectedArea(
+                                                        areaObj || null
+                                                    );
+                                                    field.onChange(value);
+                                                }}
                                             >
-                                                <option
-                                                    value=""
-                                                    disabled
-                                                    hidden
+                                                <SelectTrigger
+                                                    className={`w-full ${
+                                                        errors.area
+                                                            ? "border-red-500"
+                                                            : "border-white/5"
+                                                    }`}
                                                 >
-                                                    Choose a status
-                                                </option>
-                                                {statusOptions.map((s) => (
-                                                    <option key={s} value={s}>
-                                                        {s}
-                                                    </option>
-                                                ))}
-                                            </select>
-                                            {errors.status && (
-                                                <span className="text-sm text-red-500">
-                                                    {errors.status.message}
+                                                    <SelectValue placeholder="Choose an area" />
+                                                </SelectTrigger>
+                                                <SelectContent>
+                                                    {areas.map((a) => (
+                                                        <SelectItem
+                                                            key={a.Ref}
+                                                            value={
+                                                                a.Description
+                                                            }
+                                                        >
+                                                            {a.Description}
+                                                        </SelectItem>
+                                                    ))}
+                                                </SelectContent>
+                                            </Select>
+                                            {errors.area && (
+                                                <span className="text-red-500 text-sm">
+                                                    {errors.area.message}
+                                                </span>
+                                            )}
+                                        </div>
+                                    )}
+                                />
+
+                                {/* CITY */}
+                                <Controller
+                                    name="city"
+                                    control={control}
+                                    rules={{ required: "Choose city" }}
+                                    render={({ field }) => (
+                                        <div className="flex flex-col gap-[3px]">
+                                            <Label>City*</Label>
+                                            <Select
+                                                value={field.value || ""}
+                                                onValueChange={(value) => {
+                                                    const cityObj = cities.find(
+                                                        (c) =>
+                                                            c.Description ===
+                                                            value
+                                                    );
+                                                    setSelectedCity(
+                                                        cityObj || null
+                                                    );
+                                                    field.onChange(value);
+                                                }}
+                                            >
+                                                <SelectTrigger
+                                                    className={`w-full ${
+                                                        errors.city
+                                                            ? "border-red-500"
+                                                            : "border-white/5"
+                                                    }`}
+                                                >
+                                                    <SelectValue placeholder="Choose city" />
+                                                </SelectTrigger>
+                                                <SelectContent>
+                                                    {cities.map((c) => (
+                                                        <SelectItem
+                                                            key={c.Ref}
+                                                            value={
+                                                                c.Description
+                                                            }
+                                                        >
+                                                            {c.Description}
+                                                        </SelectItem>
+                                                    ))}
+                                                </SelectContent>
+                                            </Select>
+                                            {errors.city && (
+                                                <span className="text-red-500 text-sm">
+                                                    {errors.city.message}
+                                                </span>
+                                            )}
+                                        </div>
+                                    )}
+                                />
+
+                                {/* WAREHOUSE */}
+                                <Controller
+                                    name="postDepartment"
+                                    control={control}
+                                    rules={{ required: "Choose a branch" }}
+                                    render={({ field }) => (
+                                        <div className="flex flex-col gap-[3px]">
+                                            <Label>Branch/post office*</Label>
+                                            <Select
+                                                value={field.value || ""}
+                                                onValueChange={(value) => {
+                                                    const whObj =
+                                                        warehouses.find(
+                                                            (w) =>
+                                                                w.Description ===
+                                                                value
+                                                        );
+                                                    setSelectedWarehouse(
+                                                        whObj || null
+                                                    );
+                                                    field.onChange(value);
+                                                }}
+                                            >
+                                                <SelectTrigger
+                                                    className={`w-full ${
+                                                        errors.postDepartment
+                                                            ? "border-red-500"
+                                                            : "border-white/5"
+                                                    }`}
+                                                >
+                                                    <SelectValue placeholder="Choose a branch" />
+                                                </SelectTrigger>
+                                                <SelectContent>
+                                                    {warehouses.map((w) => (
+                                                        <SelectItem
+                                                            key={w.Ref}
+                                                            value={
+                                                                w.Description
+                                                            }
+                                                        >
+                                                            {w.Description}
+                                                        </SelectItem>
+                                                    ))}
+                                                </SelectContent>
+                                            </Select>
+                                            {errors.postDepartment && (
+                                                <span className="text-red-500 text-sm">
+                                                    {
+                                                        errors.postDepartment
+                                                            .message
+                                                    }
                                                 </span>
                                             )}
                                         </div>
@@ -439,37 +401,82 @@ export function EditOrderModal({
                                 />
                             </div>
                         </div>
+
+                        {/* STATUS */}
+                        <div className="flex flex-col gap-[10px]">
+                            <div className="text-lg">Order information</div>
+                            <Controller
+                                name="status"
+                                control={control}
+                                rules={{
+                                    required: "Choose a status",
+                                }}
+                                render={({ field }) => (
+                                    <div className="flex flex-col gap-[3px]">
+                                        <Label>Status</Label>
+
+                                        <Select
+                                            key={field.value} // <-- ВИПРАВЛЕННЯ
+                                            value={field.value} // <-- НЕ ""!
+                                            onValueChange={(v) =>
+                                                field.onChange(v)
+                                            }
+                                        >
+                                            <SelectTrigger
+                                                className={`w-full ${
+                                                    errors.status
+                                                        ? "border-red-500"
+                                                        : "border-white/5"
+                                                }`}
+                                            >
+                                                <SelectValue placeholder="Choose a status" />
+                                            </SelectTrigger>
+
+                                            <SelectContent className="bg-black/90 text-white border border-white/5">
+                                                {statusOptions.map((s) => (
+                                                    <SelectItem
+                                                        key={s}
+                                                        value={s}
+                                                    >
+                                                        {s}
+                                                    </SelectItem>
+                                                ))}
+                                            </SelectContent>
+                                        </Select>
+
+                                        {errors.status && (
+                                            <span className="text-sm text-red-500">
+                                                {errors.status.message}
+                                            </span>
+                                        )}
+                                    </div>
+                                )}
+                            />
+                        </div>
                     </div>
                 </FormFillingWrapper>
+
                 {modalMessage && (
                     <p className="text-red-500 text-sm">{modalMessage}</p>
                 )}
+
                 <FormButtonsWrapper>
                     <MonoButtonUnderlined
                         type="button"
                         onClick={() => {
                             reset();
-                            setModalMessage("");
                             onClose();
                         }}
-                        disabled={
-                            useUpdateOrderMutation.isPending ||
-                            useUpdateOrderMutation.isPending
-                        }
+                        disabled={updateOrderMutation.isPending}
                     >
                         Cancel
                     </MonoButtonUnderlined>
+
                     <MonoButton
                         type="submit"
-                        disabled={
-                            useUpdateOrderMutation.isPending ||
-                            useUpdateOrderMutation.isPending
-                        }
+                        disabled={updateOrderMutation.isPending}
                     >
-                        {useUpdateOrderMutation.isPending ||
-                        useUpdateOrderMutation.isPending
-                            ? "Loading..."
-                            : "Save"}
+                        {updateOrderMutation.isPending ? "Loading..." : "Save"}
                     </MonoButton>
                 </FormButtonsWrapper>
             </form>

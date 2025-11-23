@@ -13,40 +13,22 @@ export class AdminTodoService {
     constructor(private readonly prisma: PrismaService) {}
 
     async getUserTodoList(userId: string) {
-        try {
-            const todos = await this.prisma.todo.findMany({
-                where: {
-                    userId,
-                },
-            });
-
-            return todos;
-        } catch (error: unknown) {
-            console.error("Error fetching todo list:", error);
-            if (error instanceof HttpException) {
-                throw error;
-            }
-            throw new InternalServerErrorException("Failed to fetch todo list");
-        }
+        return await this.prisma.todo.findMany({
+            where: {
+                userId,
+            },
+        });
     }
 
     async createTodoItem(userId: string, createTodoDto: CreateTodoDto) {
-        try {
-            const todo = await this.prisma.todo.create({
-                data: { userId, ...createTodoDto },
-            });
+        const todo = await this.prisma.todo.create({
+            data: { userId, ...createTodoDto },
+        });
 
-            return {
-                message: "Todo item successfully created",
-                todo,
-            };
-        } catch (error: unknown) {
-            console.error("Error creating todo item:", error);
-            if (error instanceof HttpException) {
-                throw error;
-            }
-            throw new InternalServerErrorException("Failed to create todo item");
-        }
+        return {
+            message: "Todo item successfully created",
+            todo,
+        };
     }
 
     async updateUserTodoItem(userId: string, todoId: string, updateTodoDto: UpdateTodoDto) {
@@ -81,30 +63,22 @@ export class AdminTodoService {
     }
 
     async deleteUserTodoItem(userId: string, todoId: string) {
-        try {
-            const todo = await this.prisma.todo.findUniqueOrThrow({
-                where: { id: todoId, userId },
-            });
+        const todo = await this.prisma.todo.findUniqueOrThrow({
+            where: { id: todoId, userId },
+        });
 
-            if (!todo) {
-                throw new NotFoundException(`Todo item with ID ${todoId} not found`);
-            }
-
-            await this.prisma.todo.delete({
-                where: {
-                    id: todoId,
-                },
-            });
-
-            return {
-                message: "Todo item deleted",
-            };
-        } catch (error: unknown) {
-            console.error("Error deleting todo item:", error);
-            if (error instanceof HttpException) {
-                throw error;
-            }
-            throw new InternalServerErrorException("Failed to delete todo item");
+        if (!todo) {
+            throw new NotFoundException(`Todo item with ID ${todoId} not found`);
         }
+
+        await this.prisma.todo.delete({
+            where: {
+                id: todoId,
+            },
+        });
+
+        return {
+            message: "Todo item deleted",
+        };
     }
 }

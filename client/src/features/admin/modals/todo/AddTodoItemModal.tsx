@@ -13,7 +13,7 @@ import {
 import { priorities } from "@/shared/utils/helpers";
 import { useState } from "react";
 import { createPortal } from "react-dom";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import { useCreateTodoItem } from "../../hooks/useTodo";
 import { TodoPriority } from "../../types/admin.types";
 
@@ -32,6 +32,7 @@ export function AddTodoItemModal({ isOpen, onClose }: AddTodoItemModalProps) {
         register,
         handleSubmit,
         reset,
+        control,
         formState: { errors },
     } = useForm<TodoFormData>({
         defaultValues: {
@@ -41,7 +42,6 @@ export function AddTodoItemModal({ isOpen, onClose }: AddTodoItemModalProps) {
     });
 
     const [modalMessage, setModalMessage] = useState("");
-
     const addTodoItemMutation = useCreateTodoItem();
 
     const handleClose = () => {
@@ -66,14 +66,14 @@ export function AddTodoItemModal({ isOpen, onClose }: AddTodoItemModalProps) {
 
     if (!isOpen) return null;
 
-    const modalContent = (
-        <ModalWrapper onClose={onClose} modalTitle={"Adding a task"}>
+    return createPortal(
+        <ModalWrapper onClose={handleClose} modalTitle="Adding a task">
             <form
-                className="flex flex-col gap-[10px]"
+                className="flex flex-col gap-3"
                 onSubmit={handleSubmit(onSubmit)}
             >
                 <FormFillingWrapper>
-                    <div className="grid grid-cols-2 gap-[15px]">
+                    <div className="grid grid-cols-2 gap-4">
                         <InputField
                             label="Task name*"
                             type="text"
@@ -88,18 +88,22 @@ export function AddTodoItemModal({ isOpen, onClose }: AddTodoItemModalProps) {
                             errorMessage={errors.title?.message}
                         />
 
-                        <BasicSelector
-                            label={"Priority*"}
-                            register={{
-                                ...register("priority", {
-                                    required: "Choose a priority",
-                                }),
-                            }}
-                            itemsList={priorities}
-                            basicOptionLabel="Choose a priority"
-                            getOptionLabel={(priority) => priority}
-                            getOptionValue={(priority) => priority}
-                            errorMessage={errors.priority?.message}
+                        <Controller
+                            name="priority"
+                            control={control}
+                            rules={{ required: "Choose a priority" }}
+                            render={({ field }) => (
+                                <BasicSelector
+                                    label="Priority*"
+                                    control={control}
+                                    name="priority"
+                                    itemsList={priorities}
+                                    basicOptionLabel="Choose a priority"
+                                    getOptionValue={(p) => p}
+                                    getOptionLabel={(p) => p}
+                                    errorMessage={errors.priority?.message}
+                                />
+                            )}
                         />
                     </div>
                 </FormFillingWrapper>
@@ -112,29 +116,20 @@ export function AddTodoItemModal({ isOpen, onClose }: AddTodoItemModalProps) {
                     <MonoButtonUnderlined
                         type="button"
                         onClick={handleClose}
-                        disabled={
-                            addTodoItemMutation.isPending ||
-                            addTodoItemMutation.isPending
-                        }
+                        disabled={addTodoItemMutation.isPending}
                     >
                         Cancel
                     </MonoButtonUnderlined>
+
                     <MonoButton
                         type="submit"
-                        disabled={
-                            addTodoItemMutation.isPending ||
-                            addTodoItemMutation.isPending
-                        }
+                        disabled={addTodoItemMutation.isPending}
                     >
-                        {addTodoItemMutation.isPending ||
-                        addTodoItemMutation.isPending
-                            ? "Loading..."
-                            : "Add"}
+                        {addTodoItemMutation.isPending ? "Loading..." : "Add"}
                     </MonoButton>
                 </FormButtonsWrapper>
             </form>
-        </ModalWrapper>
+        </ModalWrapper>,
+        document.body
     );
-
-    return createPortal(modalContent, document.body);
 }

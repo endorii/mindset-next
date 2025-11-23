@@ -12,7 +12,7 @@ export class NovaPostService {
         this.apiKey = this.configService.get<string>("NOVA_POST_API_KEY");
     }
 
-    async getAreas(): Promise<Area[]> {
+    async getAreas() {
         const response: AxiosResponse<{ success: boolean; data: Area[] }> = await axios.post(
             this.API_BASE_URL,
             {
@@ -27,14 +27,15 @@ export class NovaPostService {
             const areas = response.data.data;
 
             return areas.map((area) => ({
-                ...area,
+                // ...area,
+                Ref: area.Ref,
                 Description: this.transliterateToLatin(area.Description),
             }));
         }
         throw new InternalServerErrorException("Failed to fetch areas");
     }
 
-    async getCitiesByArea(areaRef: string): Promise<City[]> {
+    async getCitiesByArea(areaRef: string) {
         const response: AxiosResponse<{ success: boolean; data: City[] }> = await axios.post(
             this.API_BASE_URL,
             {
@@ -49,14 +50,15 @@ export class NovaPostService {
             const cities = response.data.data;
 
             return cities.map((city) => ({
-                ...city,
+                // ...city,
+                Ref: city.Ref,
                 Description: this.transliterateToLatin(city.Description),
             }));
         }
         throw new InternalServerErrorException("Failed to fetch cities");
     }
 
-    async getWarehouses(cityRef: string): Promise<Warehouse[]> {
+    async getWarehouses(cityRef: string) {
         const response: AxiosResponse<{ success: boolean; data: Warehouse[] }> = await axios.post(
             this.API_BASE_URL,
             {
@@ -71,7 +73,8 @@ export class NovaPostService {
             const warehouses = response.data.data;
 
             return warehouses.map((warehouse) => ({
-                ...warehouse,
+                // ...warehouse,
+                Ref: warehouse.Ref,
                 Description: this.transliterateToLatin(warehouse.Description),
             }));
         }

@@ -23,7 +23,10 @@ export function AdminHomeContent() {
             <HomeFastStat orders={orders} />
 
             <div className="flex lg:flex-col gap-[15px]">
-                <AdminRecentActions actions={actions} />
+                <div className="flex flex-col bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px] w-full gap-[15px]">
+                    <AdminRecentActions actions={actions} />
+                </div>
+
                 <HomeTodo todos={todos} />
             </div>
         </>

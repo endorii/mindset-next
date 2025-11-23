@@ -16,7 +16,7 @@ import {
 } from "@/shared/ui/wrappers";
 import { useState } from "react";
 import { createPortal } from "react-dom";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import { useCreateCategory } from "../hooks/useCategories";
 
 interface AddCategoryModalProps {
@@ -41,6 +41,7 @@ export function AddCategoryModal({
         register,
         handleSubmit,
         reset,
+        control,
         formState: { errors },
     } = useForm<CategoryFormData>({
         defaultValues: {
@@ -148,18 +149,22 @@ export function AddCategoryModal({
                             })}
                             errorMessage={errors.path?.message}
                         />
-                        <BasicSelector
-                            label={"Status*"}
-                            register={{
-                                ...register("status", {
-                                    required: "Choose a status",
-                                }),
-                            }}
-                            itemsList={[false, true]}
-                            basicOptionLabel="Choose a status"
-                            getOptionLabel={(status) => status}
-                            getOptionValue={(status) => status}
-                            errorMessage={errors.status?.message}
+                        <Controller
+                            name="status"
+                            control={control}
+                            rules={{ required: "Choose a status" }}
+                            render={({ field }) => (
+                                <BasicSelector
+                                    label="Status*"
+                                    control={control}
+                                    name="status"
+                                    itemsList={[true, false]}
+                                    basicOptionLabel="Choose a status"
+                                    getOptionValue={(p) => String(p)}
+                                    getOptionLabel={(p) => String(p)}
+                                    errorMessage={errors.status?.message}
+                                />
+                            )}
                         />
                     </div>
                     <BasicTextarea

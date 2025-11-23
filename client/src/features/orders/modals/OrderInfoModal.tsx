@@ -83,10 +83,6 @@ export function OrderInfoModal({
                             <InfoField label="Status" value={status} />
                             <InfoField label="Sum of order" value={total} />
                             <InfoField
-                                label="Additional information"
-                                value={additionalInfo || "Not specified"}
-                            />
-                            <InfoField
                                 label="Creation date"
                                 value={
                                     formatDate(createdAt || "") ||

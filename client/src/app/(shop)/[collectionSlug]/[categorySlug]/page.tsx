@@ -63,9 +63,10 @@ export default async function CategoryPage({
         } else {
             category = await res.json();
         }
-    } catch (error: any) {
-        console.error(error);
-        errorMessage = error.message || "Unknown error";
+    } catch (error) {
+        const err = error instanceof Error ? error : new Error(String(error));
+        console.error(err);
+        errorMessage = err.message || "Unknown error";
     }
 
     if (errorMessage) {
