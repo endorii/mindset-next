@@ -19,9 +19,7 @@ import {
 } from "@/features/shop/user-info/modals";
 
 import { AttributeModalType } from "@/shared/types/types";
-import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
-import { toast } from "sonner";
+import { useState } from "react";
 
 function Account() {
     const {
@@ -29,9 +27,8 @@ function Account() {
         isPending: isUserPending,
         isError: isUserError,
     } = useCurrentUser();
-    const [activeModal, setActiveModal] = useState<AttributeModalType>(null);
 
-    const router = useRouter();
+    const [activeModal, setActiveModal] = useState<AttributeModalType>(null);
 
     const openModal = (type: AttributeModalType) => {
         setActiveModal(type);
@@ -41,12 +38,10 @@ function Account() {
         setActiveModal(null);
     };
 
-    useEffect(() => {
-        if (isUserError || !user) {
-            toast.info("To go to the page, first log in.");
-            router.push("/auth");
-        }
-    }, [isUserError]);
+    // ✅ Редірект вже відбувся на сервері, тут тільки показуємо loader
+    if (isUserPending) {
+        return <div>Loading...</div>;
+    }
 
     return (
         <div className="flex flex-col gap-[10px]">
