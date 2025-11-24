@@ -19,6 +19,25 @@
   }
 }
 
+@keyframes wobble {
+  0% {
+    transform: rotate(-3deg);
+  }
+  50% {
+    transform: rotate(3deg);
+  }
+  100% {
+    transform: rotate(-3deg);
+  }
+}
+
+.animate-wobble {
+  animation: wobble 7.5s ease-in-out infinite;
+  transform-origin: center;
+}
+
+
+
 * {
     /* cursor: none; */
     scrollbar-width: thin;

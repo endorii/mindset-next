@@ -1,14 +1,19 @@
-import Link from "next/link";
+import { MonoLink } from "@/shared/ui/buttons";
+import { ShopTitle } from "@/shared/ui/titles/ShopTitle";
+import Image from "next/image";
 
 export default function NotFound() {
     return (
-        <div className="text-center text-white">
-            <h2 className="text-7xl font-bold">Not found</h2>
-            <hr className="border-b border-gray-200 w-[33%] m-[30px_auto] " />
-            <p>The page at this address was not found.</p>
-            <Link href="/" className="hover:underline ">
-                [Home page]
-            </Link>
+        <div className="relative flex flex-col gap-[30px] text-white items-center justify-center min-h-[70vh] pb-[100px]">
+            <ShopTitle title="Page not found" />
+            <MonoLink href="/">Return to shopping</MonoLink>
+            <Image
+                src={"/lamp.png"}
+                alt="lamp"
+                width={400}
+                height={400}
+                className="absolute w-[300px] xl:w-[250px] lg:w-[200px] md:w-[150px] sm:w-[150px] xs:w-[100px] rotate-20 z-[-1] right-[10%] top-[30%] animate-wobble"
+            />
         </div>
     );
 }

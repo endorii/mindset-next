@@ -1,4 +1,3 @@
-import { ErrorWithMessage } from "@/shared/ui/components";
 import { IProduct } from "../types/products.types";
 import { ProductContent } from "./ProductContent";
 
@@ -11,13 +10,8 @@ export function ProductSection({
     collectionPath: string;
     categoryPath: string;
     productPath: string;
-    product: IProduct | null | undefined;
+    product: IProduct;
 }) {
-    if (!product) {
-        return <ErrorWithMessage message="Product not found or missing" />;
-        // notFound();
-    }
-
     return (
         <ProductContent
             collectionPath={collectionPath}

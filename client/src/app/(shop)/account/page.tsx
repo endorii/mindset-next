@@ -42,7 +42,7 @@ function Account() {
     };
 
     useEffect(() => {
-        if (isUserError) {
+        if (isUserError || !user) {
             toast.info("To go to the page, first log in.");
             router.push("/auth");
         }

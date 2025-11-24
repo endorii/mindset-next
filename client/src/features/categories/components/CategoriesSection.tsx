@@ -13,11 +13,11 @@ export function CategoriesSection({
     collectionPath: string;
     categories: ICategory[] | undefined;
 }) {
-    if (!categories || categories.length < 0) {
+    if (!categories || categories.length <= 0) {
         return (
             <EmptyCategories
-                title="Our virtual warehouse just got an update..."
-                subtitle="Sorry for the inconvenience — categories are still being sorted."
+                title="Warehouse is in the process of being prepared..."
+                subtitle="Sorry for the inconvenience - we are preparing the best categories for you."
             />
         );
     }

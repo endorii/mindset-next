@@ -13,11 +13,11 @@ export function ProductsSection({
     categoryPath: string;
     products: IProduct[] | undefined;
 }) {
-    if (!products || products.length < 0) {
+    if (!products || products.length <= 0) {
         return (
             <EmptyCategories
-                title="Our virtual warehouse has just been updated..."
-                subtitle="Sorry for the inconvenience - items are still being sorted"
+                title="Warehouse is in the process of being prepared..."
+                subtitle="Sorry for the inconvenience - we are preparing the best clothes for you."
             />
         );
     }
