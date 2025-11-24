@@ -7,6 +7,7 @@ import {
 } from "@nestjs/common";
 import { Prisma } from "generated/prisma";
 import { PrismaService } from "src/prisma/prisma.service";
+import { RevalidateService } from "src/revalidate/revalidate.service";
 import { AdminRecentActionsService } from "../recent-actions/admin-recent-actions.service";
 import { CreateProductDto } from "./dto/create-product.dto";
 import { UpdateProductDto } from "./dto/update-product.dto";
@@ -15,7 +16,8 @@ import { UpdateProductDto } from "./dto/update-product.dto";
 export class AdminProductsService {
     constructor(
         private readonly prisma: PrismaService,
-        private readonly adminRecentActions: AdminRecentActionsService
+        private readonly adminRecentActions: AdminRecentActionsService,
+        private readonly revalidateService: RevalidateService
     ) {}
 
     async postProduct(userId: string, createProductDto: CreateProductDto) {
@@ -65,6 +67,7 @@ export class AdminProductsService {
             });
 
             await this.adminRecentActions.createAction(userId, `Added product ${product.name}`);
+            await this.revalidateService.revalidate("/products");
 
             return {
                 message: "Product successfully created",
@@ -157,6 +160,7 @@ export class AdminProductsService {
                 userId,
                 `Edited product ${updatedProduct.name}`
             );
+            await this.revalidateService.revalidate("/products");
 
             return {
                 message: "Product successfully updated",
@@ -190,6 +194,7 @@ export class AdminProductsService {
             });
 
             await this.adminRecentActions.createAction(userId, `Deleted product ${product.name}`);
+            await this.revalidateService.revalidate("/products");
 
             return {
                 message: "Product successfully deleted",

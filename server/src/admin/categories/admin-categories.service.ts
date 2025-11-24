@@ -6,6 +6,7 @@ import {
     NotFoundException,
 } from "@nestjs/common";
 import { PrismaService } from "src/prisma/prisma.service";
+import { RevalidateService } from "src/revalidate/revalidate.service";
 import { AdminRecentActionsService } from "../recent-actions/admin-recent-actions.service";
 import { CreateCategoryDto } from "./dto/create-category.dto";
 import { UpdateCategoryDto } from "./dto/update-category.dto";
@@ -14,7 +15,8 @@ import { UpdateCategoryDto } from "./dto/update-category.dto";
 export class AdminCategoriesService {
     constructor(
         private readonly prisma: PrismaService,
-        private readonly adminRecentActions: AdminRecentActionsService
+        private readonly adminRecentActions: AdminRecentActionsService,
+        private readonly revalidateService: RevalidateService
     ) {}
 
     async postCategory(userId: string, createCategoryDto: CreateCategoryDto) {
@@ -41,6 +43,8 @@ export class AdminCategoriesService {
             });
 
             await this.adminRecentActions.createAction(userId, `Added category ${category.name}`);
+
+            await this.revalidateService.revalidate("/categories");
 
             return { message: "Category successfully created", data: category };
         } catch (error) {
@@ -91,6 +95,8 @@ export class AdminCategoriesService {
                 `Edited category ${updatedCategory.name}`
             );
 
+            await this.revalidateService.revalidate("/categories");
+
             return {
                 message: "Category successfully updated",
                 category: updatedCategory,
@@ -138,6 +144,8 @@ export class AdminCategoriesService {
             });
 
             await this.adminRecentActions.createAction(userId, `Deleted category ${category.name}`);
+
+            await this.revalidateService.revalidate("/categories");
 
             return {
                 message: "Category successfully deleted",

@@ -10,6 +10,7 @@ import { NovaPostModule } from "./nova-post/nova-post.module";
 import { PrismaModule } from "./prisma/prisma.module";
 import { ShopModule } from "./shop/shop.module";
 import { StripeModule } from './stripe/stripe.module';
+import { RevalidateModule } from './revalidate/revalidate.module';
 
 @Module({
     imports: [
@@ -28,6 +29,7 @@ import { StripeModule } from './stripe/stripe.module';
         NovaPostModule,
         EmailModule,
         StripeModule,
+        RevalidateModule,
     ],
 })
 export class AppModule {}

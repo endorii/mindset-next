@@ -1,5 +1,5 @@
-import { NextRequest, NextResponse } from "next/server";
 import { revalidatePath } from "next/cache";
+import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(req: NextRequest) {
     const secret = req.nextUrl.searchParams.get("secret");
@@ -12,6 +12,8 @@ export async function GET(req: NextRequest) {
     if (!path) return NextResponse.json({ message: "Missing path" }, { status: 400 });
 
     revalidatePath(path);
+
+    console.log("Revalidating path:", path);
 
     return NextResponse.json({ revalidated: true, path });
 }

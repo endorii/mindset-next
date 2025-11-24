@@ -5,8 +5,8 @@ import {
     InternalServerErrorException,
     NotFoundException,
 } from "@nestjs/common";
-import { ConfigService } from "@nestjs/config";
 import { PrismaService } from "src/prisma/prisma.service";
+import { RevalidateService } from "src/revalidate/revalidate.service";
 import { AdminRecentActionsService } from "../recent-actions/admin-recent-actions.service";
 import { CreateCollectionDto } from "./dto/create-collection.dto";
 import { UpdateCollectionDto } from "./dto/update-collection.dto";
@@ -16,7 +16,7 @@ export class AdminCollectionsService {
     constructor(
         private readonly prisma: PrismaService,
         private readonly adminRecentActions: AdminRecentActionsService,
-        private readonly configService: ConfigService
+        private readonly revalidateService: RevalidateService
     ) {}
 
     async postCollection(userId: string, createCollectionDto: CreateCollectionDto) {
@@ -45,12 +45,7 @@ export class AdminCollectionsService {
                 `Added collection ${collection.name}`
             );
 
-            const nextUrl = this.configService.get<string>("FRONTEND_URL");
-            const secret = this.configService.get<string>("REVALIDATE_SECRET");
-
-            await fetch(`${nextUrl}/api/revalidate?secret=${secret}&path=/collections`, {
-                method: "GET",
-            });
+            await this.revalidateService.revalidate("/collections");
 
             return {
                 message: "Collection successfully created",
@@ -101,12 +96,7 @@ export class AdminCollectionsService {
                 `Edited collection ${updatedCollection.name}`
             );
 
-            const nextUrl = this.configService.get<string>("FRONTEND_URL");
-            const secret = this.configService.get<string>("REVALIDATE_SECRET");
-
-            await fetch(`${nextUrl}/api/revalidate?secret=${secret}&path=/collections`, {
-                method: "GET",
-            });
+            await this.revalidateService.revalidate("/collections");
 
             return {
                 message: "Collection successfully updated",
@@ -155,12 +145,7 @@ export class AdminCollectionsService {
                 `Deleted collection ${collection.name}`
             );
 
-            const nextUrl = this.configService.get<string>("FRONTEND_URL");
-            const secret = this.configService.get<string>("REVALIDATE_SECRET");
-
-            await fetch(`${nextUrl}/api/revalidate?secret=${secret}&path=/collections`, {
-                method: "GET",
-            });
+            await this.revalidateService.revalidate("/collections");
 
             return {
                 message: "Collection successfully deleted",
