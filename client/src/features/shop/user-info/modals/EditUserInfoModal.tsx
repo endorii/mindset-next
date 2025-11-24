@@ -114,15 +114,17 @@ export function EditUserInfoModal({
                         />
                         <InputField
                             label="Phone number*"
-                            type="tel"
-                            placeholder="+380 XX XXX XX XX"
-                            {...register("phone", {
-                                required: "Enter phone number",
-                                pattern: {
-                                    value: /^\+?[\d\s\-]{10,15}$/,
-                                    message: "Incorrect phone number",
-                                },
-                            })}
+                            placeholder="+380XXXXXXXXX"
+                            register={{
+                                ...register("phone", {
+                                    required: "Enter phone number",
+                                    pattern: {
+                                        value: /^(?:\+380\d{9}|380\d{9}|0\d{9})$/,
+                                        message:
+                                            "Incorrect Ukrainian phone format",
+                                    },
+                                }),
+                            }}
                             errorMessage={modalErrors.phone?.message}
                         />
                     </div>

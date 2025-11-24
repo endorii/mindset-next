@@ -106,6 +106,8 @@ export function AdminCategoriesContent({
         setActiveModal(null);
     };
 
+    console.log(sortedCategories);
+
     return (
         <div className="flex flex-col gap-[20px]">
             <div>
@@ -171,7 +173,9 @@ export function AdminCategoriesContent({
                                     />
                                     <div>{category.name}</div>
                                     <div className="sm:hidden">
-                                        {category.status}
+                                        {category.status === false
+                                            ? "Not active"
+                                            : "Active"}
                                     </div>
                                     <div className="xl:hidden">
                                         {formatDate(category.createdAt || "")} /{" "}

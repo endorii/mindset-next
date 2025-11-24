@@ -162,7 +162,9 @@ export function AdminCollectionsContent() {
                                         />
                                         <div>{collection.name}</div>
                                         <div className="sm:hidden">
-                                            {collection.status}
+                                            {collection.status === false
+                                                ? "Not active"
+                                                : "Active"}
                                         </div>
                                         <div className="xl:hidden">
                                             {formatDate(

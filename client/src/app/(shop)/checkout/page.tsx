@@ -393,9 +393,9 @@ function Checkout() {
                                             ...register("fullName", {
                                                 required: "Enter full name",
                                                 pattern: {
-                                                    value: /^[А-ЯІЇЄҐ][а-яіїєґ']+\s[А-ЯІЇЄҐ][а-яіїєґ']+\s[А-ЯІЇЄҐ][а-яіїєґ']+$/,
+                                                    value: /^[A-Z][a-z]+ [A-Z][a-z]+ [A-Z][a-z]+$/,
                                                     message:
-                                                        "Enter your full name in the format: Last Name First Name Patronymic",
+                                                        "Enter your full name in the format: Last Name First Name Patronymic (English letters only)",
                                                 },
                                             }),
                                         }}
@@ -404,14 +404,14 @@ function Checkout() {
 
                                     <InputField
                                         label="Phone number*"
-                                        placeholder="+380*********"
+                                        placeholder="+380XXXXXXXXX"
                                         register={{
                                             ...register("phoneNumber", {
                                                 required: "Enter phone number",
                                                 pattern: {
-                                                    value: /^(?:\+380\d{9}|380\d{9}|0\d{9}|\(\d{3}\)-\d{2}-\d{2}-\d{3})$/,
+                                                    value: /^(?:\+380\d{9}|380\d{9}|0\d{9})$/,
                                                     message:
-                                                        "Incorrect phone format",
+                                                        "Incorrect Ukrainian phone format",
                                                 },
                                             }),
                                         }}

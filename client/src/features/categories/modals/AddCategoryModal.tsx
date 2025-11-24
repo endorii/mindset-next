@@ -143,9 +143,9 @@ export function AddCategoryModal({
                             {...register("path", {
                                 required: "Enter path",
                                 pattern: {
-                                    value: /^[a-z0-9-]+$/,
+                                    value: /^[a-z0-9]{3,}(-[a-z0-9]+)*$/,
                                     message:
-                                        "Only lowercase English letters, numbers, and hyphens",
+                                        "Path must be at least 3 characters, only lowercase letters, numbers, and single hyphens between words",
                                 },
                             })}
                             errorMessage={errors.path?.message}

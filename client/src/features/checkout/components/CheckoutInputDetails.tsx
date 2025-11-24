@@ -23,17 +23,17 @@ export function CheckoutInputDetails({
             <hr className="border-t border-white/5" />
             <div className="flex flex-col gap-[15px] w-full">
                 <InputField
-                    label="Full name*"
+                    label="Full name"
                     required
                     value={userInitials}
                     placeholder="Petrenko Petro Petrovych"
                     onChangeValue={(e) => setUserInitials(e.target.value)}
                 />
                 <InputField
-                    label="Phone number*"
+                    label="Phone number"
                     required
                     value={userPhone}
-                    placeholder="(09*)-**-**-***"
+                    placeholder="+380XXXXXXXXX"
                     onChangeValue={(e) => setUserPhone(e.target.value)}
                 />
                 <InputField

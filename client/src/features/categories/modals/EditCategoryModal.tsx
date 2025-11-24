@@ -143,14 +143,10 @@ export function EditCategoryModal({
                             placeholder="Path"
                             {...register("path", {
                                 required: "Enter path",
-                                minLength: {
-                                    value: 3,
-                                    message: "Minimum 3 characters",
-                                },
                                 pattern: {
-                                    value: /^[a-z0-9-]+$/,
+                                    value: /^[a-z0-9]{3,}(-[a-z0-9]+)*$/,
                                     message:
-                                        "Only lowercase Latin letters, numbers, and hyphens are allowed.",
+                                        "Path must be at least 3 characters, only lowercase letters, numbers, and single hyphens between words",
                                 },
                             })}
                             errorMessage={errors.path?.message}
@@ -160,10 +156,10 @@ export function EditCategoryModal({
                             label="Status*"
                             control={control}
                             name="status"
-                            itemsList={STATUSES} // [{ label: "Active", value: true }, { label: "Not active", value: false }]
+                            itemsList={STATUSES}
                             basicOptionLabel="Choose a status"
                             getOptionLabel={(s) => s.label}
-                            getOptionValue={(s) => String(s.value)} // залишаємо string для Select
+                            getOptionValue={(s) => String(s.value)}
                         />
                     </div>
                     <BasicTextarea

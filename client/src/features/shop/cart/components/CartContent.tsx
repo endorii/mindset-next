@@ -66,7 +66,7 @@ export function CartContent() {
 
     if (!mergedCart.length) {
         return (
-            <div className="flex flex-col gap-[30px] text-white items-center justify-center min-h-[50vh] pb-[100px]">
+            <div className="flex flex-col gap-[30px] text-white items-center text-center justify-center h-screen pb-[200px]">
                 <ShopTitle title={"Your cart is empty"} />
                 <MonoButton onClick={() => router.push("/#collections")}>
                     Start shopping
@@ -76,30 +76,33 @@ export function CartContent() {
     }
 
     return (
-        <div className="flex justify-between gap-[15px] w-full px-[30px]">
-            <div className="flex flex-col gap-[10px] w-2/3 max-h-[80vh] overflow-y-auto">
-                {mergedCart.map((item) => {
-                    const isServer = !!user;
+        <>
+            <ShopTitle title="Cart" />
+            <div className="flex justify-between gap-[15px] w-full px-[30px]">
+                <div className="flex flex-col gap-[10px] w-2/3 max-h-[80vh] overflow-y-auto">
+                    {mergedCart.map((item) => {
+                        const isServer = !!user;
 
-                    const handleRemove = () => {
-                        if (isServer) {
-                            removeCartItemFromServer(item?.id);
-                        } else {
-                            removeFromCart(item.productId);
-                        }
-                    };
+                        const handleRemove = () => {
+                            if (isServer) {
+                                removeCartItemFromServer(item?.id);
+                            } else {
+                                removeFromCart(item.productId);
+                            }
+                        };
 
-                    return (
-                        <CartItem
-                            key={item.id ?? item.productId}
-                            item={item}
-                            handleRemove={handleRemove}
-                        />
-                    );
-                })}
+                        return (
+                            <CartItem
+                                key={item.id ?? item.productId}
+                                item={item}
+                                handleRemove={handleRemove}
+                            />
+                        );
+                    })}
+                </div>
+
+                <CartReceip totalPrice={totalPrice} />
             </div>
-
-            <CartReceip totalPrice={totalPrice} />
-        </div>
+        </>
     );
 }

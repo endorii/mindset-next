@@ -145,14 +145,10 @@ export function EditCollectionModal({
                             placeholder="Path"
                             {...register("path", {
                                 required: "Enter path",
-                                minLength: {
-                                    value: 3,
-                                    message: "Minimum 3 characters",
-                                },
                                 pattern: {
-                                    value: /^[a-z0-9-]+$/,
+                                    value: /^[a-z0-9]{3,}(-[a-z0-9]+)*$/,
                                     message:
-                                        "Only lowercase Latin letters, numbers, and hyphens are allowed.",
+                                        "Path must be at least 3 characters, only lowercase letters, numbers, and single hyphens between words",
                                 },
                             })}
                             errorMessage={errors.path?.message}

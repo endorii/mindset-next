@@ -4,7 +4,7 @@ import Image from "next/image";
 
 export default function NotFound() {
     return (
-        <div className="relative flex flex-col gap-[30px] text-white items-center justify-center min-h-[70vh] pb-[100px]">
+        <div className="flex flex-col gap-[30px] text-white items-center text-center justify-center h-screen pb-[200px]">
             <ShopTitle title="Page not found" />
             <MonoLink href="/">Return to shopping</MonoLink>
             <Image

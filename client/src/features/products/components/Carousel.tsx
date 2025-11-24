@@ -47,8 +47,8 @@ const EmblaCarousel: React.FC<PropType> = ({ slides, options }) => {
                             <Image
                                 src={src}
                                 alt={`Slide ${index}`}
-                                width={600}
-                                height={600}
+                                width={1000}
+                                height={1000}
                                 className="object-contain w-full h-[600px] md:h-[500px] xs:h-[400px]"
                             />
                         </div>

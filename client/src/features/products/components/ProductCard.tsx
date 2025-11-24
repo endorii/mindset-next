@@ -10,15 +10,14 @@ export function ProductCard({
     path: string;
 }) {
     return (
-        <Link href={path} className="relative flex flex-col gap-[10px] h-full">
+        <Link href={path} className="relative flex flex-col gap-[10px]">
             <div className="relative">
                 <Image
-                    className="relative w-full"
                     width={400}
                     height={400}
                     src={product.banner}
                     alt={product.name}
-                    style={{ objectFit: "cover" }}
+                    className="relative w-full h-[400px] object-cover"
                 />
                 <ul className="absolute top-[10px] left-[10px] flex gap-[5px] backdrop-blur-lg border border-white/20 p-[2px]">
                     {product.productColors.map((color) => (

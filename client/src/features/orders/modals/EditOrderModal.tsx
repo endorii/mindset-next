@@ -205,23 +205,37 @@ export function EditOrderModal({
             >
                 <FormFillingWrapper>
                     <div className="grid grid-cols-3 gap-[15px]">
-                        {/* CONTACT */}
                         <div className="flex flex-col gap-[10px]">
                             <div className="text-lg">Contact information</div>
                             <div className="flex flex-col gap-[15px]">
                                 <InputField
                                     label="Full name*"
-                                    {...register("fullName", {
-                                        required: "Enter full name",
-                                    })}
+                                    register={{
+                                        ...register("fullName", {
+                                            required: "Enter full name",
+                                            pattern: {
+                                                value: /^[A-Z][a-z]+ [A-Z][a-z]+ [A-Z][a-z]+$/,
+                                                message:
+                                                    "Enter your full name in the format: Last Name First Name Patronymic (English letters only)",
+                                            },
+                                        }),
+                                    }}
                                     errorMessage={errors.fullName?.message}
                                 />
 
                                 <InputField
                                     label="Phone number*"
-                                    {...register("phoneNumber", {
-                                        required: "Enter your phone number",
-                                    })}
+                                    placeholder="+380XXXXXXXXX"
+                                    register={{
+                                        ...register("phoneNumber", {
+                                            required: "Enter phone number",
+                                            pattern: {
+                                                value: /^(?:\+380\d{9}|380\d{9}|0\d{9})$/,
+                                                message:
+                                                    "Incorrect Ukrainian phone format",
+                                            },
+                                        }),
+                                    }}
                                     errorMessage={errors.phoneNumber?.message}
                                 />
 
@@ -233,11 +247,9 @@ export function EditOrderModal({
                             </div>
                         </div>
 
-                        {/* DELIVERY */}
                         <div className="flex flex-col gap-[10px]">
                             <div className="text-lg">Delivery address</div>
                             <div className="flex flex-col gap-[15px]">
-                                {/* AREA */}
                                 <Controller
                                     name="area"
                                     control={control}
@@ -290,7 +302,6 @@ export function EditOrderModal({
                                     )}
                                 />
 
-                                {/* CITY */}
                                 <Controller
                                     name="city"
                                     control={control}
@@ -343,7 +354,6 @@ export function EditOrderModal({
                                     )}
                                 />
 
-                                {/* WAREHOUSE */}
                                 <Controller
                                     name="postDepartment"
                                     control={control}
@@ -402,7 +412,6 @@ export function EditOrderModal({
                             </div>
                         </div>
 
-                        {/* STATUS */}
                         <div className="flex flex-col gap-[10px]">
                             <div className="text-lg">Order information</div>
                             <Controller
@@ -416,8 +425,8 @@ export function EditOrderModal({
                                         <Label>Status</Label>
 
                                         <Select
-                                            key={field.value} // <-- ВИПРАВЛЕННЯ
-                                            value={field.value} // <-- НЕ ""!
+                                            key={field.value}
+                                            value={field.value}
                                             onValueChange={(v) =>
                                                 field.onChange(v)
                                             }

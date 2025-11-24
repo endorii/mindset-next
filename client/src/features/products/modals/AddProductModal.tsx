@@ -146,44 +146,43 @@ export function AddProductModal({
     };
 
     const onSubmit = async (data: FormData) => {
+        let hasError = false;
+
+        if (colorsToSend.length === 0) {
+            setError("colorIds", {
+                type: "manual",
+                message: "Choose at least one color",
+            });
+            hasError = true;
+        } else clearErrors("colorIds");
+
+        if (sizesToSend.length === 0) {
+            setError("sizeIds", {
+                type: "manual",
+                message: "Choose at least one size",
+            });
+            hasError = true;
+        } else clearErrors("sizeIds");
+
+        if (typesToSend.length === 0) {
+            setError("typeIds", {
+                type: "manual",
+                message: "Choose at least one type",
+            });
+            hasError = true;
+        } else clearErrors("typeIds");
+
+        if (!banner) {
+            setBannerError("Choose banner");
+            hasError = true;
+            return;
+        } else {
+            hasError = false;
+            setBannerError(null);
+        }
+
+        if (hasError) return;
         try {
-            let hasError = false;
-
-            if (colorsToSend.length === 0) {
-                setError("colorIds", {
-                    type: "manual",
-                    message: "Choose at least one color",
-                });
-                hasError = true;
-            } else clearErrors("colorIds");
-
-            if (sizesToSend.length === 0) {
-                setError("sizeIds", {
-                    type: "manual",
-                    message: "Choose at least one size",
-                });
-                hasError = true;
-            } else clearErrors("sizeIds");
-
-            if (typesToSend.length === 0) {
-                setError("typeIds", {
-                    type: "manual",
-                    message: "Choose at least one type",
-                });
-                hasError = true;
-            } else clearErrors("typeIds");
-
-            if (!banner) {
-                setBannerError("Choose banner");
-                hasError = true;
-                return;
-            } else {
-                hasError = false;
-                setBannerError(null);
-            }
-
-            if (hasError) return;
-
             if (categoryId) {
                 const product = await createProductMutation.mutateAsync({
                     name: data.name.trim(),
@@ -264,9 +263,10 @@ export function AddProductModal({
                             type="text"
                             {...register("path", {
                                 required: "Enter path",
-                                minLength: {
-                                    value: 3,
-                                    message: "Minimum 3 characters",
+                                pattern: {
+                                    value: /^[a-z0-9]{3,}(-[a-z0-9]+)*$/,
+                                    message:
+                                        "Path must be at least 3 characters, only lowercase letters, numbers, and single hyphens between words",
                                 },
                             })}
                             errorMessage={errors.path?.message}

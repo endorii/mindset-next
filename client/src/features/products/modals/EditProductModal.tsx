@@ -316,9 +316,10 @@ export function EditProductModal({
                             type="text"
                             {...register("path", {
                                 required: "Enter path",
-                                minLength: {
-                                    value: 3,
-                                    message: "Minimum 3 characters",
+                                pattern: {
+                                    value: /^[a-z0-9]{3,}(-[a-z0-9]+)*$/,
+                                    message:
+                                        "Path must be at least 3 characters, only lowercase letters, numbers, and single hyphens between words",
                                 },
                             })}
                             errorMessage={errors.path?.message}
