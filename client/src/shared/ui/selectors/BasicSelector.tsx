@@ -42,8 +42,12 @@ export function BasicSelector<T>({
                     <Label>{label}</Label>
 
                     <Select
-                        value={field.value || ""}
-                        onValueChange={(val) => field.onChange(val)}
+                        value={
+                            field.value === undefined ? "" : String(field.value)
+                        }
+                        onValueChange={(val) => {
+                            field.onChange(val === "true"); // конвертуємо назад у boolean
+                        }}
                         disabled={disabled}
                     >
                         <SelectTrigger

@@ -6,6 +6,7 @@ import { MonoButton } from "@/shared/ui/buttons";
 import { UploadBannerWithPreview } from "@/shared/ui/components";
 import { InputField } from "@/shared/ui/inputs/InputField";
 
+import { STATUSES } from "@/shared/constants/constants";
 import { MonoButtonUnderlined } from "@/shared/ui/buttons/MonoButtonUnderlined";
 import { BasicSelector } from "@/shared/ui/selectors/BasicSelector";
 import { BasicTextarea } from "@/shared/ui/textareas/BasicTextarea";
@@ -16,7 +17,7 @@ import {
 } from "@/shared/ui/wrappers";
 import { useState } from "react";
 import { createPortal } from "react-dom";
-import { Controller, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { useCreateCategory } from "../hooks/useCategories";
 
 interface AddCategoryModalProps {
@@ -149,22 +150,16 @@ export function AddCategoryModal({
                             })}
                             errorMessage={errors.path?.message}
                         />
-                        <Controller
-                            name="status"
+
+                        <BasicSelector
+                            label="Status*"
                             control={control}
-                            rules={{ required: "Choose a status" }}
-                            render={({ field }) => (
-                                <BasicSelector
-                                    label="Status*"
-                                    control={control}
-                                    name="status"
-                                    itemsList={[true, false]}
-                                    basicOptionLabel="Choose a status"
-                                    getOptionValue={(p) => String(p)}
-                                    getOptionLabel={(p) => String(p)}
-                                    errorMessage={errors.status?.message}
-                                />
-                            )}
+                            name="status"
+                            itemsList={STATUSES}
+                            basicOptionLabel="Choose a status"
+                            getOptionValue={(p) => String(p.value)}
+                            getOptionLabel={(p) => p.label}
+                            errorMessage={errors.status?.message}
                         />
                     </div>
                     <BasicTextarea

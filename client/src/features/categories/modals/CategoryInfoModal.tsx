@@ -45,7 +45,10 @@ export function CategoryInfoModal({
                 <div className="grid grid-cols-3 gap-[15px]">
                     <InfoField label="Name" value={name} />
                     <InfoField label="Path" value={path} />{" "}
-                    <InfoField label="Status" value={status} />
+                    <InfoField
+                        label="Status"
+                        value={status === false ? "Not active" : "Active"}
+                    />
                 </div>
                 <TextareaInfoField label={"Description"} value={description} />
                 <div className="grid grid-cols-3 gap-[15px]">

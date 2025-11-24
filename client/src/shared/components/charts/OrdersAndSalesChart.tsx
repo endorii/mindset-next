@@ -8,7 +8,7 @@ import {
     SelectValue,
 } from "@/components/ui/select";
 import { IOrder } from "@/features/orders/types/orders.types";
-import { MONTH_NAMES } from "@/shared/constants/monthsNames";
+import { MONTH_NAMES } from "@/shared/constants/constants";
 import { Period, PERIOD_LABELS } from "@/shared/types/chartPeriods";
 import {
     endOfDay,

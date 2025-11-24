@@ -10,7 +10,7 @@ export function InfoField({ label, value }: InfoFieldProps) {
         <div className="flex flex-col gap-[3px] w-full">
             <Label>{label}</Label>
             <div className="border border-white/5 bg-black/10 px-[10px] py-[7px] font-light">
-                {value}
+                {value || "-"}
             </div>
         </div>
     );

@@ -163,7 +163,9 @@ export function AdminProductsContent({
                                     />
                                     <div>{product.name}</div>
                                     <div className="sm:hidden">
-                                        {product.status}
+                                        {product.status === true
+                                            ? "Active"
+                                            : "Not active"}
                                     </div>
                                     <div className="xl:hidden">
                                         {formatDate(product.createdAt)} /{" "}

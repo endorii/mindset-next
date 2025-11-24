@@ -35,22 +35,24 @@ export function RenderAttributeField({
                     errorMessage ? "border-red-500" : "border-white/5"
                 } p-[10px] bg-black/10`}
             >
-                {allItems?.map((item) => (
-                    <button
-                        key={item.id}
-                        type="button"
-                        onClick={() => {
-                            toggleSelect(item.id, selected, setSelected);
-                        }}
-                        className={`px-3 py-1 text-sm border ${
-                            selected.includes(item.id)
-                                ? "bg-white text-black cursor-default"
-                                : "border-white/5 hover:bg-white/5"
-                        }`}
-                    >
-                        {item.name}
-                    </button>
-                ))}
+                {allItems && allItems.length > 0
+                    ? allItems.map((item) => (
+                          <button
+                              key={item.id}
+                              type="button"
+                              onClick={() => {
+                                  toggleSelect(item.id, selected, setSelected);
+                              }}
+                              className={`px-3 py-1 text-sm border ${
+                                  selected.includes(item.id)
+                                      ? "bg-white text-black cursor-default"
+                                      : "border-white/5 hover:bg-white/5"
+                              }`}
+                          >
+                              {item.name}
+                          </button>
+                      ))
+                    : "-"}
             </div>
             {errorMessage && (
                 <p className="text-red-500 text-sm">{errorMessage}</p>

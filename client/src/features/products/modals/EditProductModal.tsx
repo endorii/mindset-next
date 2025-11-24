@@ -3,6 +3,7 @@
 import { useColors } from "@/features/admin/attributes/product-colors/hooks/useColors";
 import { useSizes } from "@/features/admin/attributes/product-sizes/hooks/useSizes";
 import { useTypes } from "@/features/admin/attributes/product-types/hooks/useTypes";
+import { AVAILABILITIES, STATUSES } from "@/shared/constants/constants";
 import {
     useEscapeKeyClose,
     useUploadBanner,
@@ -24,7 +25,6 @@ import {
     FormFillingWrapper,
     ModalWrapper,
 } from "@/shared/ui/wrappers";
-import { availables, statuses } from "@/shared/utils/helpers";
 import Image from "next/image";
 import { ChangeEvent, useEffect, useState } from "react";
 import { createPortal } from "react-dom";
@@ -42,7 +42,7 @@ interface FormData {
     name: string;
     path: string;
     price: number;
-    oldPrice: number;
+    oldPrice: number | null;
     available: boolean;
     description: string;
     composition: string;
@@ -63,13 +63,14 @@ export function EditProductModal({
         reset,
         setError,
         clearErrors,
+        control,
         formState: { errors },
     } = useForm<FormData>({
         defaultValues: {
             name: "",
             path: "",
             price: 0,
-            oldPrice: 0,
+            oldPrice: null,
             available: false,
             description: "",
             composition: "",
@@ -338,46 +339,40 @@ export function EditProductModal({
                             errorMessage={errors.price?.message}
                         />
                         <InputField
-                            label="Old price*"
+                            label="Old price"
                             id="editProductOldPrice"
                             placeholder="Old price"
                             type="number"
                             {...register("oldPrice", {
-                                required: "Enter old price",
-                                valueAsNumber: true,
-                                min: {
-                                    value: 1,
-                                    message: "Price must be at least 1",
-                                },
+                                setValueAs: (v) =>
+                                    v === "" ? null : Number(v),
+                                validate: (value) =>
+                                    value === null ||
+                                    value >= 1 ||
+                                    "Price must be at least 1",
                             })}
                             errorMessage={errors.oldPrice?.message}
                         />
 
                         <BasicSelector
-                            label={"Accessibility*"}
-                            register={{
-                                ...register("available", {
-                                    required: "Choose availability",
-                                }),
-                            }}
-                            itemsList={availables}
+                            label={"Availability*"}
+                            control={control}
+                            itemsList={AVAILABILITIES}
                             basicOptionLabel="Choose availability"
-                            getOptionLabel={(available) => available}
-                            getOptionValue={(available) => available}
+                            getOptionLabel={(a) => a.label}
+                            getOptionValue={(a) => String(a.value)}
                             errorMessage={errors.available?.message}
+                            name={`available`}
                         />
                         <BasicSelector
                             label={"Status*"}
-                            register={{
-                                ...register("status", {
-                                    required: "Choose a status",
-                                }),
-                            }}
-                            itemsList={statuses}
+                            control={control}
+                            itemsList={STATUSES}
                             basicOptionLabel="Choose a status"
-                            getOptionLabel={(status) => status}
-                            getOptionValue={(status) => status}
+                            getOptionLabel={(s) => s.label}
+                            getOptionValue={(s) => String(s.value)}
                             errorMessage={errors.status?.message}
+                            name={"status"}
                         />
                     </div>
                     <BasicTextarea

@@ -36,7 +36,7 @@ export function AtributesInfoField({
                               <div>{getAtributeName(item)}</div>
                           </div>
                       ))
-                    : "Not specified"}
+                    : "-"}
             </div>
         </div>
     );

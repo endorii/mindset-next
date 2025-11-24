@@ -89,23 +89,19 @@ export function ReviewInfoModal({
                         <div className="flex flex-col gap-[15px]">
                             <InfoField
                                 label="Administrator response"
-                                value={
-                                    adminReply ? adminReply : "Not specified"
-                                }
+                                value={adminReply}
                             />
                             <InfoField
                                 label="Administrator response date"
-                                value={
-                                    formatDate(adminReplyAt) || "Not specified"
-                                }
+                                value={formatDate(adminReplyAt)}
                             />
                             <InfoField
                                 label="Creation date"
-                                value={formatDate(createdAt) || "Not specified"}
+                                value={formatDate(createdAt)}
                             />
                             <InfoField
                                 label="Edit date"
-                                value={formatDate(updatedAt) || "Not specified"}
+                                value={formatDate(updatedAt)}
                             />
                         </div>
                     </div>

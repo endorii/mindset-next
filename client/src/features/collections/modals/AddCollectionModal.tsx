@@ -1,5 +1,6 @@
 "use client";
 
+import { STATUSES } from "@/shared/constants/constants";
 import { useEscapeKeyClose, useUploadBanner } from "@/shared/hooks";
 import { MonoButton } from "@/shared/ui/buttons";
 import { MonoButtonUnderlined } from "@/shared/ui/buttons/MonoButtonUnderlined";
@@ -12,7 +13,6 @@ import {
     FormFillingWrapper,
     ModalWrapper,
 } from "@/shared/ui/wrappers";
-import { statuses } from "@/shared/utils/helpers";
 import { useState } from "react";
 import { createPortal } from "react-dom";
 import { useForm } from "react-hook-form";
@@ -44,6 +44,7 @@ export function AddCollectionModal({
         register,
         handleSubmit,
         reset,
+        control,
         formState: { errors },
     } = useForm<FormValues>({
         defaultValues: {
@@ -145,16 +146,13 @@ export function AddCollectionModal({
 
                         <BasicSelector
                             label={"Status*"}
-                            register={{
-                                ...register("status", {
-                                    required: "Choose a status",
-                                }),
-                            }}
-                            itemsList={statuses}
+                            control={control}
+                            itemsList={STATUSES}
                             basicOptionLabel="Choose a status"
-                            getOptionLabel={(status) => status}
-                            getOptionValue={(status) => status}
+                            getOptionLabel={(s) => s.label}
+                            getOptionValue={(s) => String(s.value)}
                             errorMessage={errors.status?.message}
+                            name={"status"}
                         />
                     </div>
                     <BasicTextarea

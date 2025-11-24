@@ -56,10 +56,7 @@ export function OrderInfoModal({
                                 label="Phone number"
                                 value={phoneNumber}
                             />
-                            <InfoField
-                                label="E-mail"
-                                value={email || "Not specified"}
-                            />
+                            <InfoField label="E-mail" value={email} />
                         </div>
                     </div>
                     <div className="flex flex-col gap-[10px]">
@@ -84,17 +81,11 @@ export function OrderInfoModal({
                             <InfoField label="Sum of order" value={total} />
                             <InfoField
                                 label="Creation date"
-                                value={
-                                    formatDate(createdAt || "") ||
-                                    "Not specified"
-                                }
+                                value={formatDate(createdAt)}
                             />
                             <InfoField
                                 label="Edit date"
-                                value={
-                                    formatDate(updatedAt || "") ||
-                                    "Not specified"
-                                }
+                                value={formatDate(updatedAt)}
                             />
                         </div>
                     </div>

@@ -1,5 +1,6 @@
 "use client";
 
+import { PRIORITIES } from "@/shared/constants/constants";
 import { useEscapeKeyClose } from "@/shared/hooks";
 import { MonoButton } from "@/shared/ui/buttons";
 import { MonoButtonUnderlined } from "@/shared/ui/buttons/MonoButtonUnderlined";
@@ -10,10 +11,9 @@ import {
     FormFillingWrapper,
     ModalWrapper,
 } from "@/shared/ui/wrappers";
-import { priorities } from "@/shared/utils/helpers";
 import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
-import { Controller, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { useUpdateTodoItem } from "../../hooks/useTodo";
 import { ITodoItem, TodoPriority } from "../../types/admin.types";
 
@@ -102,22 +102,15 @@ export function EditTodoItemModal({
                             errorMessage={errors.title?.message}
                         />
 
-                        <Controller
-                            name="priority"
+                        <BasicSelector
+                            label="Priority*"
                             control={control}
-                            rules={{ required: "Choose a priority" }}
-                            render={({ field }) => (
-                                <BasicSelector
-                                    label="Priority*"
-                                    control={control}
-                                    name="priority"
-                                    itemsList={priorities}
-                                    basicOptionLabel="Choose a priority"
-                                    getOptionValue={(p) => p}
-                                    getOptionLabel={(p) => p}
-                                    errorMessage={errors.priority?.message}
-                                />
-                            )}
+                            name="priority"
+                            itemsList={PRIORITIES}
+                            basicOptionLabel="Choose a priority"
+                            getOptionValue={(p) => p}
+                            getOptionLabel={(p) => p}
+                            errorMessage={errors.priority?.message}
                         />
                     </div>
                 </FormFillingWrapper>

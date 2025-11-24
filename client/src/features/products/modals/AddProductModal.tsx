@@ -3,6 +3,7 @@
 import { useColors } from "@/features/admin/attributes/product-colors/hooks/useColors";
 import { useSizes } from "@/features/admin/attributes/product-sizes/hooks/useSizes";
 import { useTypes } from "@/features/admin/attributes/product-types/hooks/useTypes";
+import { AVAILABILITIES, STATUSES } from "@/shared/constants/constants";
 import {
     useEscapeKeyClose,
     useUploadBanner,
@@ -24,7 +25,6 @@ import {
     FormFillingWrapper,
     ModalWrapper,
 } from "@/shared/ui/wrappers";
-import { availables, statuses } from "@/shared/utils/helpers";
 import Image from "next/image";
 import { ChangeEvent, useEffect, useState } from "react";
 import { createPortal } from "react-dom";
@@ -41,7 +41,7 @@ interface FormData {
     name: string;
     path: string;
     price: number;
-    oldPrice: number;
+    oldPrice: number | null;
     available: boolean;
     description: string;
     composition: string;
@@ -60,6 +60,7 @@ export function AddProductModal({
         register,
         handleSubmit,
         reset,
+        control,
         setError,
         clearErrors,
         formState: { errors },
@@ -68,7 +69,7 @@ export function AddProductModal({
             name: "",
             path: "",
             price: 0,
-            oldPrice: 0,
+            oldPrice: null,
             available: false,
             description: "",
             composition: "",
@@ -286,13 +287,13 @@ export function AddProductModal({
                             errorMessage={errors.price?.message}
                         />
                         <InputField
-                            label="Old price*"
+                            label="Old price"
                             id="addProductOldPrice"
-                            placeholder="Old price"
+                            placeholder="Old price (optional)"
                             type="number"
                             {...register("oldPrice", {
-                                required: "Enter old price",
-                                valueAsNumber: true,
+                                setValueAs: (v) =>
+                                    v === "" ? null : Number(v),
                                 min: {
                                     value: 1,
                                     message: "Price must be at least 1",
@@ -302,30 +303,25 @@ export function AddProductModal({
                         />
 
                         <BasicSelector
-                            label={"Accessibility*"}
-                            register={{
-                                ...register("available", {
-                                    required: "Choose availability",
-                                }),
-                            }}
-                            itemsList={availables}
+                            label={"Availability*"}
+                            control={control}
+                            itemsList={AVAILABILITIES}
                             basicOptionLabel="Choose availability"
-                            getOptionLabel={(available) => available}
-                            getOptionValue={(available) => available}
+                            getOptionLabel={(a) => a.label}
+                            getOptionValue={(a) => String(a.value)}
                             errorMessage={errors.available?.message}
+                            name="available"
                         />
+
                         <BasicSelector
                             label={"Status*"}
-                            register={{
-                                ...register("status", {
-                                    required: "Choose a status",
-                                }),
-                            }}
-                            itemsList={statuses}
+                            control={control}
+                            itemsList={STATUSES}
                             basicOptionLabel="Choose a status"
-                            getOptionLabel={(status) => status}
-                            getOptionValue={(status) => status}
+                            getOptionLabel={(s) => s.label}
+                            getOptionValue={(s) => String(s.value)}
                             errorMessage={errors.status?.message}
+                            name={"status"}
                         />
                     </div>
                     <BasicTextarea

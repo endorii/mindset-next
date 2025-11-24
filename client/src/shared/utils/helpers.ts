@@ -1,7 +1,3 @@
-export const statuses = [false, true];
-export const availables = [false, true];
-export const priorities = ["low", "medium", "high"];
-
 export function declOfNum(number: number, words: [string, string, string]) {
     const mod10 = number % 10;
     const mod100 = number % 100;

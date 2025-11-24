@@ -22,8 +22,8 @@ export class CreateProductDto {
     price: number;
 
     @IsInt({ message: "Old price must be an integer." })
-    @IsDefined({ message: "Old price must be defined." })
-    oldPrice: number;
+    @IsOptional()
+    oldPrice?: number;
 
     @IsBoolean({ message: "Availability must be true/false." })
     available: boolean;

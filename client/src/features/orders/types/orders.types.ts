@@ -6,8 +6,6 @@ export interface INovaPostDataObj {
     Ref: string;
 }
 
-export type OrderStatus = "pending" | "paid" | "shipped" | "delivered" | "cancelled";
-
 export interface IOrder {
     id: string;
     fullName: string;
@@ -54,3 +52,5 @@ export interface IOrderItem {
     type: string;
     product?: IProduct;
 }
+
+export type OrderStatus = "paid" | "cancelled" | "delivered" | "pending" | "shipped";

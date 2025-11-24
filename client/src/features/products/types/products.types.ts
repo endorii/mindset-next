@@ -9,7 +9,7 @@ export interface IProduct {
     id: string;
     name: string;
     price: number;
-    oldPrice: number;
+    oldPrice: number | null;
     path: string;
     banner: string;
     status: boolean;
@@ -35,7 +35,7 @@ export interface ICreateProductPayload {
     name: string;
     path: string;
     price: number;
-    oldPrice: number;
+    oldPrice: number | null;
     available: boolean;
     description: string;
     composition: string;
