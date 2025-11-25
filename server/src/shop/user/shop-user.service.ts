@@ -1,10 +1,4 @@
-import {
-    BadRequestException,
-    HttpException,
-    Injectable,
-    InternalServerErrorException,
-    NotFoundException,
-} from "@nestjs/common";
+import { BadRequestException, Injectable, NotFoundException } from "@nestjs/common";
 import * as bcrypt from "bcryptjs";
 import { PrismaService } from "src/prisma/prisma.service";
 import { CreateUserDto } from "./dto/create-user.dto";
@@ -15,36 +9,24 @@ export class ShopUserService {
     constructor(private readonly prisma: PrismaService) {}
 
     async create(createUserDto: CreateUserDto) {
-        try {
-            const { password, ...rest } = createUserDto;
-            const hashedPassword = await bcrypt.hash(password, 10);
+        const { password, ...rest } = createUserDto;
+        const hashedPassword = await bcrypt.hash(password, 10);
 
-            const user = await this.prisma.user.create({
-                data: {
-                    password: hashedPassword,
-                    ...rest,
-                },
-            });
+        const user = await this.prisma.user.create({
+            data: {
+                password: hashedPassword,
+                ...rest,
+            },
+        });
 
-            return {
-                message: "User successfully created",
-                data: user,
-            };
-        } catch (error) {
-            console.error("Error creating user:", error);
-            if (error instanceof HttpException) throw error;
-            throw new InternalServerErrorException("Failed to create user.");
-        }
+        return {
+            message: "User successfully created",
+            data: user,
+        };
     }
 
     async getAllUsers() {
-        try {
-            return await this.prisma.user.findMany();
-        } catch (error) {
-            console.error("Error fetching users:", error);
-            if (error instanceof HttpException) throw error;
-            throw new InternalServerErrorException("Failed to fetch users.");
-        }
+        return await this.prisma.user.findMany();
     }
 
     async findByEmail(email: string) {
@@ -58,61 +40,49 @@ export class ShopUserService {
     }
 
     async findOne(userId: string) {
-        try {
-            const user = await this.prisma.user.findUnique({
-                where: { id: userId },
-                include: {
-                    favorites: {
-                        include: {
-                            product: {
-                                include: {
-                                    category: { include: { collection: true } },
-                                },
+        const user = await this.prisma.user.findUnique({
+            where: { id: userId },
+            include: {
+                favorites: {
+                    include: {
+                        product: {
+                            include: {
+                                category: { include: { collection: true } },
                             },
                         },
                     },
-                    cart: {
-                        include: {
-                            product: {
-                                include: {
-                                    category: { include: { collection: true } },
-                                },
-                            },
-                        },
-                    },
-                    shippingAddress: true,
                 },
-            });
+                cart: {
+                    include: {
+                        product: {
+                            include: {
+                                category: { include: { collection: true } },
+                            },
+                        },
+                    },
+                },
+                shippingAddress: true,
+            },
+        });
 
-            if (!user) throw new NotFoundException(`User with id ${userId} not found`);
+        if (!user) throw new NotFoundException(`User with id ${userId} not found`);
 
-            return user;
-        } catch (error) {
-            console.error("Error fetching user:", error);
-            if (error instanceof HttpException) throw error;
-            throw new InternalServerErrorException("Failed to fetch user.");
-        }
+        return user;
     }
 
     async editUserInfo(userId: string, updateUserDto: UpdateUserDto) {
-        try {
-            const user = await this.prisma.user.findUnique({ where: { id: userId } });
-            if (!user) throw new NotFoundException(`User with id ${userId} not found`);
+        const user = await this.prisma.user.findUnique({ where: { id: userId } });
+        if (!user) throw new NotFoundException(`User with id ${userId} not found`);
 
-            const updatedUser = await this.prisma.user.update({
-                where: { id: userId },
-                data: updateUserDto,
-            });
+        const updatedUser = await this.prisma.user.update({
+            where: { id: userId },
+            data: updateUserDto,
+        });
 
-            return {
-                message: "User information successfully updated",
-                data: updatedUser,
-            };
-        } catch (error) {
-            console.error("Error updating user info:", error);
-            if (error instanceof HttpException) throw error;
-            throw new InternalServerErrorException("Failed to update user information.");
-        }
+        return {
+            message: "User information successfully updated",
+            data: updatedUser,
+        };
     }
 
     async updateHashedRefreshToken(userId: string, hashedRT: string | null) {
@@ -123,44 +93,32 @@ export class ShopUserService {
     }
 
     async changePassword(userId: string, data: { oldPassword: string; newPassword: string }) {
-        try {
-            const existingUser = await this.prisma.user.findUnique({ where: { id: userId } });
-            if (!existingUser) throw new NotFoundException(`User with id ${userId} not found`);
+        const existingUser = await this.prisma.user.findUnique({ where: { id: userId } });
+        if (!existingUser) throw new NotFoundException(`User with id ${userId} not found`);
 
-            const isMatched = await bcrypt.compare(data.oldPassword, existingUser.password);
-            if (!isMatched) throw new BadRequestException("Incorrect old password");
+        const isMatched = await bcrypt.compare(data.oldPassword, existingUser.password);
+        if (!isMatched) throw new BadRequestException("Incorrect old password");
 
-            const hashedPassword = await bcrypt.hash(data.newPassword, 10);
+        const hashedPassword = await bcrypt.hash(data.newPassword, 10);
 
-            await this.prisma.user.update({
-                where: { id: userId },
-                data: { password: hashedPassword },
-            });
+        await this.prisma.user.update({
+            where: { id: userId },
+            data: { password: hashedPassword },
+        });
 
-            return { message: "Password successfully changed" };
-        } catch (error) {
-            console.error("Error changing password:", error);
-            if (error instanceof HttpException) throw error;
-            throw new InternalServerErrorException("Failed to change password.");
-        }
+        return { message: "Password successfully changed" };
     }
 
     async deleteAccount(userId: string, password: string) {
-        try {
-            const existingUser = await this.prisma.user.findUnique({ where: { id: userId } });
-            if (!existingUser) throw new NotFoundException(`User with id ${userId} not found`);
+        const existingUser = await this.prisma.user.findUnique({ where: { id: userId } });
+        if (!existingUser) throw new NotFoundException(`User with id ${userId} not found`);
 
-            const isMatched = await bcrypt.compare(password, existingUser.password);
-            if (!isMatched) throw new BadRequestException("Incorrect password");
+        const isMatched = await bcrypt.compare(password, existingUser.password);
+        if (!isMatched) throw new BadRequestException("Incorrect password");
 
-            await this.prisma.user.delete({ where: { id: userId } });
+        await this.prisma.user.delete({ where: { id: userId } });
 
-            return { message: "Account successfully deleted" };
-        } catch (error) {
-            console.error("Error deleting account:", error);
-            if (error instanceof HttpException) throw error;
-            throw new InternalServerErrorException("Failed to delete account.");
-        }
+        return { message: "Account successfully deleted" };
     }
 
     async findByVerificationToken(token: string) {

@@ -1,3 +1,4 @@
+"use client";
 import { Title } from "@/features/admin/attributes/components/Title";
 import { AdminHomeWrapper } from "@/features/admin/components/AdminHomeWrapper";
 

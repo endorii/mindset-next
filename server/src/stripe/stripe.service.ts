@@ -63,7 +63,7 @@ export class StripeService {
             event = this.stripe.webhooks.constructEvent(req.body, signature, webhookSecret);
         } catch (err: unknown) {
             const error = err as Error;
-            console.error("❌ Webhook signature failed:", error.message);
+            console.error("Webhook signature failed:", error.message);
             return;
         }
 

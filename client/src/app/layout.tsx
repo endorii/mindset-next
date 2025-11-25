@@ -7,17 +7,17 @@ import localFont from "next/font/local";
 import { Toaster } from "sonner";
 import "./globals.css";
 
-export const roboto = Roboto({
+const roboto = Roboto({
     subsets: ["latin"],
     variable: "--font-roboto",
 });
 
-export const ballet = Ballet({
+const ballet = Ballet({
     subsets: ["latin"],
     variable: "--font-ballet",
 });
 
-export const perandory = localFont({
+const perandory = localFont({
     src: [
         {
             path: "../fonts/PerandorySemiCondensed.otf",

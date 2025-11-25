@@ -34,6 +34,7 @@ export async function generateMetadata({
     }>;
 }): Promise<Metadata> {
     const { collectionSlug, categorySlug, productSlug } = await params;
+
     const product = await fetchProduct(
         collectionSlug,
         categorySlug,
@@ -65,6 +66,7 @@ export default async function ProductPage({
     }>;
 }) {
     const { collectionSlug, categorySlug, productSlug } = await params;
+
     const product = await fetchProduct(
         collectionSlug,
         categorySlug,

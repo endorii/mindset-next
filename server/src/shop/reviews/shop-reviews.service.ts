@@ -1,9 +1,7 @@
 import {
     BadRequestException,
     ForbiddenException,
-    HttpException,
     Injectable,
-    InternalServerErrorException,
     NotFoundException,
 } from "@nestjs/common";
 import { OrderStatus } from "generated/prisma";
@@ -54,165 +52,133 @@ export class ShopReviewsService {
             );
         }
 
-        try {
-            const review = await this.prisma.review.create({
-                data: {
-                    content,
-                    rating,
-                    senderEmail,
-                    senderName,
-                    productId,
-                    orderItemId,
-                    userId,
-                    images,
-                },
-            });
+        const review = await this.prisma.review.create({
+            data: {
+                content,
+                rating,
+                senderEmail,
+                senderName,
+                productId,
+                orderItemId,
+                userId,
+                images,
+            },
+        });
 
-            return {
-                message: "Review successfully created!",
-                review,
-            };
-        } catch (error) {
-            console.error("Error creating review:", error);
-            if (error instanceof HttpException) throw error;
-            throw new InternalServerErrorException(
-                "Failed to create review due to internal error."
-            );
-        }
+        return {
+            message: "Review successfully created!",
+            review,
+        };
     }
 
     async toggleReviewVote(userId: string, reviewId: string, body: { isHelpful: boolean }) {
         const { isHelpful } = body;
 
-        try {
-            const existingVote = await this.prisma.reviewVote.findUnique({
+        const existingVote = await this.prisma.reviewVote.findUnique({
+            where: { userId_reviewId: { userId, reviewId } },
+        });
+
+        if (!existingVote) {
+            await this.prisma.reviewVote.create({ data: { userId, reviewId, isHelpful } });
+
+            return this.prisma.review.update({
+                where: { id: reviewId },
+                data: {
+                    isHelpful: { increment: isHelpful ? 1 : 0 },
+                    isNotHelpful: { increment: !isHelpful ? 1 : 0 },
+                },
+            });
+        }
+
+        if (existingVote.isHelpful === isHelpful) {
+            await this.prisma.reviewVote.delete({
                 where: { userId_reviewId: { userId, reviewId } },
             });
 
-            if (!existingVote) {
-                await this.prisma.reviewVote.create({ data: { userId, reviewId, isHelpful } });
+            return this.prisma.review.update({
+                where: { id: reviewId },
+                data: {
+                    isHelpful: { decrement: isHelpful ? 1 : 0 },
+                    isNotHelpful: { decrement: !isHelpful ? 1 : 0 },
+                },
+            });
+        } else {
+            await this.prisma.reviewVote.update({
+                where: { userId_reviewId: { userId, reviewId } },
+                data: { isHelpful },
+            });
 
-                return this.prisma.review.update({
-                    where: { id: reviewId },
-                    data: {
-                        isHelpful: { increment: isHelpful ? 1 : 0 },
-                        isNotHelpful: { increment: !isHelpful ? 1 : 0 },
-                    },
-                });
-            }
-
-            if (existingVote.isHelpful === isHelpful) {
-                await this.prisma.reviewVote.delete({
-                    where: { userId_reviewId: { userId, reviewId } },
-                });
-
-                return this.prisma.review.update({
-                    where: { id: reviewId },
-                    data: {
-                        isHelpful: { decrement: isHelpful ? 1 : 0 },
-                        isNotHelpful: { decrement: !isHelpful ? 1 : 0 },
-                    },
-                });
-            } else {
-                await this.prisma.reviewVote.update({
-                    where: { userId_reviewId: { userId, reviewId } },
-                    data: { isHelpful },
-                });
-
-                return this.prisma.review.update({
-                    where: { id: reviewId },
-                    data: {
-                        isHelpful: { increment: isHelpful ? 1 : -1 },
-                        isNotHelpful: { increment: !isHelpful ? 1 : -1 },
-                    },
-                });
-            }
-        } catch (error) {
-            console.error("Error toggling review vote:", error);
-            if (error instanceof HttpException) throw error;
-            throw new InternalServerErrorException("Failed to update review vote.");
+            return this.prisma.review.update({
+                where: { id: reviewId },
+                data: {
+                    isHelpful: { increment: isHelpful ? 1 : -1 },
+                    isNotHelpful: { increment: !isHelpful ? 1 : -1 },
+                },
+            });
         }
     }
 
     async getReviewsByUserId(userId: string) {
-        try {
-            const reviews = await this.prisma.review.findMany({
-                where: { userId },
-                include: {
-                    orderItem: {
-                        include: {
-                            product: {
-                                include: {
-                                    category: {
-                                        include: { collection: true },
-                                    },
+        const reviews = await this.prisma.review.findMany({
+            where: { userId },
+            include: {
+                orderItem: {
+                    include: {
+                        product: {
+                            include: {
+                                category: {
+                                    include: { collection: true },
                                 },
                             },
                         },
                     },
                 },
-            });
+            },
+        });
 
-            if (!reviews || reviews.length === 0) {
-                throw new NotFoundException("No reviews found.");
-            }
-
-            return reviews;
-        } catch (error) {
-            console.error("Error fetching reviews:", error);
-            if (error instanceof HttpException) throw error;
-            throw new InternalServerErrorException("Failed to fetch reviews.");
+        if (!reviews || reviews.length === 0) {
+            throw new NotFoundException("No reviews found.");
         }
+
+        return reviews;
     }
 
     async getReviewsByProductId(productId: string) {
-        try {
-            const reviews = await this.prisma.review.findMany({
-                where: { productId, isApproved: true },
-                include: {
-                    orderItem: {
-                        include: {
-                            product: {
-                                include: {
-                                    category: {
-                                        include: { collection: true },
-                                    },
+        const reviews = await this.prisma.review.findMany({
+            where: { productId, isApproved: true },
+            include: {
+                orderItem: {
+                    include: {
+                        product: {
+                            include: {
+                                category: {
+                                    include: { collection: true },
                                 },
                             },
                         },
                     },
                 },
-            });
+            },
+        });
 
-            return reviews;
-        } catch (error) {
-            console.error("Error fetching product reviews:", error);
-            if (error instanceof HttpException) throw error;
-            throw new InternalServerErrorException("Failed to fetch product reviews.");
-        }
+        return reviews;
     }
 
     async deleteReview(userId: string, reviewId: string) {
-        try {
-            const review = await this.prisma.review.findUnique({
-                where: { id: reviewId },
-            });
+        const review = await this.prisma.review.findUnique({
+            where: { id: reviewId },
+        });
 
-            if (!review) {
-                throw new NotFoundException("Review not found.");
-            }
-
-            if (review.userId !== userId) {
-                throw new ForbiddenException("You do not have permission to delete this review.");
-            }
-
-            await this.prisma.review.delete({ where: { id: reviewId } });
-
-            return { message: "Review successfully deleted." };
-        } catch (error) {
-            console.error("Error deleting review:", error);
-            if (error instanceof HttpException) throw error;
-            throw new InternalServerErrorException("Failed to delete review.");
+        if (!review) {
+            throw new NotFoundException("Review not found.");
         }
+
+        if (review.userId !== userId) {
+            throw new ForbiddenException("You do not have permission to delete this review.");
+        }
+
+        await this.prisma.review.delete({ where: { id: reviewId } });
+
+        return { message: "Review successfully deleted." };
     }
 }

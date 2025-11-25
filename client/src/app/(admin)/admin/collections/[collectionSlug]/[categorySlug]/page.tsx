@@ -1,14 +1,20 @@
-import { AdminProductsWrapper } from "@/features/products/components/AdminProductsWrapper";
+"use client";
 
-async function AdminProducts({
-    params,
-}: {
-    params: {
-        collectionSlug: string;
-        categorySlug: string;
-    };
-}) {
-    const { collectionSlug, categorySlug } = await params;
+import { AdminProductsWrapper } from "@/features/products/components/AdminProductsWrapper";
+import { useParams } from "next/navigation";
+
+export default function AdminProducts() {
+    const params = useParams();
+
+    const collectionSlug = Array.isArray(params?.collectionSlug)
+        ? params.collectionSlug[0]
+        : params?.collectionSlug;
+
+    const categorySlug = Array.isArray(params?.categorySlug)
+        ? params.categorySlug[0]
+        : params?.categorySlug;
+
+    if (!collectionSlug || !categorySlug) return null;
 
     return (
         <AdminProductsWrapper
@@ -17,5 +23,3 @@ async function AdminProducts({
         />
     );
 }
-
-export default AdminProducts;

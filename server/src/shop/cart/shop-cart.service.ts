@@ -1,10 +1,4 @@
-import {
-    ConflictException,
-    HttpException,
-    Injectable,
-    InternalServerErrorException,
-    NotFoundException,
-} from "@nestjs/common";
+import { ConflictException, Injectable, NotFoundException } from "@nestjs/common";
 import { PrismaService } from "src/prisma/prisma.service";
 import { CreateCartDto } from "./dto/create-cart.dto";
 
@@ -21,91 +15,65 @@ export class ShopCartService {
     }
 
     async addCartItemToUser(userId: string, createCartDto: CreateCartDto) {
-        try {
-            const existingCartItem = await this.prisma.cartItem.findUnique({
-                where: {
-                    userId_productId_size_type_color: {
-                        userId,
-                        productId: createCartDto.productId,
-                        size: createCartDto.size,
-                        type: createCartDto.type,
-                        color: createCartDto.color,
-                    },
-                },
-            });
-
-            if (existingCartItem) {
-                throw new ConflictException(
-                    "Product with these parameters is already added to the cart"
-                );
-            }
-
-            await this.prisma.cartItem.create({
-                data: {
+        const existingCartItem = await this.prisma.cartItem.findUnique({
+            where: {
+                userId_productId_size_type_color: {
                     userId,
                     productId: createCartDto.productId,
                     size: createCartDto.size,
                     type: createCartDto.type,
                     color: createCartDto.color,
-                    quantity: createCartDto.quantity,
                 },
-            });
+            },
+        });
 
-            return {
-                message: "Product added to the cart",
-            };
-        } catch (error) {
-            console.error("Error adding product to the cart:", error);
-            if (error instanceof HttpException) {
-                throw error;
-            }
-            throw new InternalServerErrorException("Server error while adding product to the cart");
+        if (existingCartItem) {
+            throw new ConflictException(
+                "Product with these parameters is already added to the cart"
+            );
         }
+
+        await this.prisma.cartItem.create({
+            data: {
+                userId,
+                productId: createCartDto.productId,
+                size: createCartDto.size,
+                type: createCartDto.type,
+                color: createCartDto.color,
+                quantity: createCartDto.quantity,
+            },
+        });
+
+        return {
+            message: "Product added to the cart",
+        };
     }
 
     async removeCartItemFromUser(userId: string, cartItemId: string) {
-        try {
-            const existingItem = await this.prisma.cartItem.findUnique({
-                where: { userId, id: cartItemId },
-            });
+        const existingItem = await this.prisma.cartItem.findUnique({
+            where: { userId, id: cartItemId },
+        });
 
-            if (!existingItem) {
-                throw new NotFoundException("Product in the cart not found");
-            }
-
-            await this.prisma.cartItem.delete({
-                where: { userId, id: cartItemId },
-            });
-
-            return { message: "Product removed from the cart" };
-        } catch (error) {
-            console.error("Error removing product from the cart:", error);
-            if (error instanceof HttpException) {
-                throw error;
-            }
-            throw new InternalServerErrorException(
-                "Server error while removing product from the cart"
-            );
+        if (!existingItem) {
+            throw new NotFoundException("Product in the cart not found");
         }
+
+        await this.prisma.cartItem.delete({
+            where: { userId, id: cartItemId },
+        });
+
+        return { message: "Product removed from the cart" };
     }
 
     async removeCartFromUser(userId: string) {
-        try {
-            const cart = await this.prisma.cartItem.deleteMany({
-                where: { userId },
-            });
+        const cart = await this.prisma.cartItem.deleteMany({
+            where: { userId },
+        });
 
-            if (!cart) {
-                throw new NotFoundException("No products found in the cart");
-            }
-
-            return { message: "Cart cleared", cart };
-        } catch (error) {
-            console.error("Error clearing the cart:", error);
-            if (error instanceof HttpException) {
-                throw error;
-            }
-            throw new InternalServerErrorException("Server error while clearing the cart");
+        if (!cart) {
+            throw new NotFoundException("No products found in the cart");
         }
+
+        return { message: "Cart cleared", cart };
     }
 }

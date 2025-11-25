@@ -21,7 +21,7 @@ export function useCreateColor() {
             });
             toast.success(data.message);
         },
-        onError: (error: any) => {
+        onError: (error: unknown) => {
             if (error?.message) {
                 toast.error(error.message);
             } else {

@@ -36,8 +36,6 @@ export class SupabaseService {
         return true;
     }
 
-    //  Опційно: створення signed URL
-
     async getSignedUrl(bucket: string, path: string, expiresIn: number = 3600) {
         const { data, error } = await this.supabase.storage
             .from(bucket)

@@ -1,10 +1,4 @@
-import {
-    ConflictException,
-    HttpException,
-    Injectable,
-    InternalServerErrorException,
-    NotFoundException,
-} from "@nestjs/common";
+import { ConflictException, Injectable, NotFoundException } from "@nestjs/common";
 import { PrismaService } from "src/prisma/prisma.service";
 import { AdminRecentActionsService } from "../recent-actions/admin-recent-actions.service";
 import { CreateTypeDto } from "./dto/create-type.dto";
@@ -18,114 +12,82 @@ export class AdminTypesService {
     ) {}
 
     async getTypes() {
-        try {
-            const types = await this.prisma.type.findMany();
-            return types;
-        } catch (error: unknown) {
-            console.error("Error fetching types:", error);
-            if (error instanceof HttpException) {
-                throw error;
-            }
-            throw new InternalServerErrorException("Failed to fetch types");
-        }
+        const types = await this.prisma.type.findMany();
+        return types;
     }
 
     async addType(userId: string, createTypeDto: CreateTypeDto) {
-        try {
-            const { name } = createTypeDto;
+        const { name } = createTypeDto;
 
-            const existingType = await this.prisma.type.findUnique({
-                where: { name },
-            });
+        const existingType = await this.prisma.type.findUnique({
+            where: { name },
+        });
 
-            if (existingType) {
-                throw new ConflictException("Type with this name already exists");
-            }
-
-            const type = await this.prisma.type.create({
-                data: { name },
-            });
-
-            await this.adminRecentActions.createAction(userId, `Added type ${type.name}`);
-
-            return {
-                message: "Type successfully created",
-                type,
-            };
-        } catch (error: unknown) {
-            console.error("Error creating type:", error);
-            if (error instanceof HttpException) {
-                throw error;
-            }
-            throw new InternalServerErrorException("Failed to create type");
+        if (existingType) {
+            throw new ConflictException("Type with this name already exists");
         }
+
+        const type = await this.prisma.type.create({
+            data: { name },
+        });
+
+        await this.adminRecentActions.createAction(userId, `Added type ${type.name}`);
+
+        return {
+            message: "Type successfully created",
+            type,
+        };
     }
 
     async editType(userId: string, typeId: string, updateTypeDto: UpdateTypeDto) {
-        try {
-            const { name } = updateTypeDto;
+        const { name } = updateTypeDto;
 
-            const type = await this.prisma.type.findUnique({
-                where: { id: typeId },
-            });
+        const type = await this.prisma.type.findUnique({
+            where: { id: typeId },
+        });
 
-            if (!type) {
-                throw new NotFoundException(`Type with ID ${typeId} not found`);
-            }
-
-            const existingType = await this.prisma.type.findUnique({
-                where: { name },
-            });
-
-            if (existingType && existingType.id !== typeId) {
-                throw new ConflictException("Type with this name already exists");
-            }
-
-            const updatedType = await this.prisma.type.update({
-                where: { id: typeId },
-                data: updateTypeDto,
-            });
-
-            await this.adminRecentActions.createAction(userId, `Edited type ${name}`);
-
-            return {
-                message: "Type successfully updated",
-                type: updatedType,
-            };
-        } catch (error: unknown) {
-            console.error("Error editing type:", error);
-            if (error instanceof HttpException) {
-                throw error;
-            }
-            throw new InternalServerErrorException("Failed to update type");
+        if (!type) {
+            throw new NotFoundException(`Type with ID ${typeId} not found`);
         }
+
+        const existingType = await this.prisma.type.findUnique({
+            where: { name },
+        });
+
+        if (existingType && existingType.id !== typeId) {
+            throw new ConflictException("Type with this name already exists");
+        }
+
+        const updatedType = await this.prisma.type.update({
+            where: { id: typeId },
+            data: updateTypeDto,
+        });
+
+        await this.adminRecentActions.createAction(userId, `Edited type ${name}`);
+
+        return {
+            message: "Type successfully updated",
+            type: updatedType,
+        };
     }
 
     async deleteType(userId: string, typeId: string) {
-        try {
-            const type = await this.prisma.type.findUnique({
-                where: { id: typeId },
-            });
+        const type = await this.prisma.type.findUnique({
+            where: { id: typeId },
+        });
 
-            if (!type) {
-                throw new NotFoundException(`Type with ID ${typeId} not found`);
-            }
-
-            await this.prisma.type.delete({
-                where: { id: typeId },
-            });
-
-            await this.adminRecentActions.createAction(userId, `Deleted type ${type.name}`);
-
-            return {
-                message: "Type successfully deleted",
-            };
-        } catch (error: unknown) {
-            console.error("Error deleting type:", error);
-            if (error instanceof HttpException) {
-                throw error;
-            }
-            throw new InternalServerErrorException("Failed to delete type");
+        if (!type) {
+            throw new NotFoundException(`Type with ID ${typeId} not found`);
         }
+
+        await this.prisma.type.delete({
+            where: { id: typeId },
+        });
+
+        await this.adminRecentActions.createAction(userId, `Deleted type ${type.name}`);
+
+        return {
+            message: "Type successfully deleted",
+        };
     }
 }
