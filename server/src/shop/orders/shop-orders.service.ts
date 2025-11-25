@@ -1,5 +1,6 @@
 import { Injectable } from "@nestjs/common";
 import { OrderStatus } from "generated/prisma";
+import { EmailService } from "src/email/email.service";
 import { PrismaService } from "src/prisma/prisma.service";
 import { ShopCartService } from "../cart/shop-cart.service";
 import { CreateOrderDto } from "./dto/create-order.dto";
@@ -8,7 +9,8 @@ import { CreateOrderDto } from "./dto/create-order.dto";
 export class ShopOrdersService {
     constructor(
         private readonly prisma: PrismaService,
-        private readonly shopCartService: ShopCartService
+        private readonly shopCartService: ShopCartService,
+        private readonly emailService: EmailService
     ) {}
 
     async createOrder(createOrderDto: CreateOrderDto) {
@@ -54,6 +56,8 @@ export class ShopOrdersService {
                 items: { include: { product: true } },
             },
         });
+
+        await this.emailService.sendOrderCreatedEmail(order);
 
         if (createOrderDto.userId) {
             await this.shopCartService.removeCartFromUser(createOrderDto.userId);

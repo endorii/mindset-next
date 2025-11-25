@@ -16,7 +16,6 @@ export class ShopOrdersController {
 
     @Post()
     @Public()
-    // @Roles(Role.user, Role.admin)
     createOrder(@Body() createOrderDto: CreateOrderDto) {
         return this.shopOrdersService.createOrder(createOrderDto);
     }

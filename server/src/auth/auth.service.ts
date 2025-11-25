@@ -15,6 +15,7 @@ import { EmailService } from "src/email/email.service";
 import { PrismaService } from "src/prisma/prisma.service";
 import { ShopUserService } from "src/shop/user/shop-user.service";
 import { CreateUserDto } from "../shop/user/dto/create-user.dto";
+import { GoogleAuthRequest } from "./interfaces/google-auth-request.interface";
 import { GoogleUser } from "./interfaces/google-user.interface";
 
 @Injectable()
@@ -32,6 +33,7 @@ export class AuthService {
         const existingUser = await this.prisma.user.findUnique({
             where: { email: createUserDto.email },
         });
+
         if (existingUser) throw new ConflictException("User with this email already exists");
 
         try {
@@ -69,6 +71,8 @@ export class AuthService {
         if (!user) throw new BadRequestException("Invalid or expired token, or user not found");
 
         await this.shopUserService.update(user.id, { isVerified: true, verificationToken: null });
+        await this.emailService.sendRegistrationEmail(user.email);
+
         return { message: "Email verified successfully!" };
     }
 
@@ -114,62 +118,84 @@ export class AuthService {
     }
 
     async googleLogin(googleUser: GoogleUser) {
-        try {
-            return await this.prisma.$transaction(async (tx) => {
-                let user = await tx.user.findUnique({
-                    where: { email: googleUser.email },
-                });
+        return await this.prisma.$transaction(async (tx) => {
+            let user = await tx.user.findUnique({
+                where: { email: googleUser.email },
+            });
 
-                if (!user) {
-                    user = await tx.user.create({
-                        data: {
-                            email: googleUser.email,
-                            userName: `${googleUser.firstName} ${googleUser.lastName}`,
-                            password: "",
-                            phone: "",
-                            googleId: googleUser.googleId,
-                            isVerified: true,
-                        },
-                    });
-                } else if (!user.googleId) {
-                    user = await tx.user.update({
-                        where: { id: user.id },
-                        data: {
-                            googleId: googleUser.googleId,
-                            isVerified: true,
-                        },
-                    });
-                }
-
-                const accessToken = this.jwtAccessService.sign({
-                    sub: user.id,
-                    userName: user.userName,
-                    email: user.email,
-                });
-
-                const refreshToken = this.jwtRefreshService.sign({
-                    sub: user.id,
-                    userName: user.userName,
-                    email: user.email,
-                });
-
-                const hashedRefreshToken = await bcrypt.hash(refreshToken, 10);
-
-                await tx.user.update({
-                    where: { id: user.id },
+            if (!user) {
+                user = await tx.user.create({
                     data: {
-                        hashedRefreshToken,
+                        email: googleUser.email,
+                        userName: `${googleUser.firstName} ${googleUser.lastName}`,
+                        password: "",
+                        phone: "",
+                        googleId: googleUser.googleId,
+                        isVerified: true,
                     },
                 });
 
-                return {
-                    accessToken,
-                    refreshToken,
-                };
+                await this.emailService.sendRegistrationEmail(googleUser.email);
+            } else if (!user.googleId) {
+                user = await tx.user.update({
+                    where: { id: user.id },
+                    data: {
+                        googleId: googleUser.googleId,
+                        isVerified: true,
+                    },
+                });
+            }
+
+            const accessToken = this.jwtAccessService.sign({
+                sub: user.id,
+                userName: user.userName,
+                email: user.email,
             });
+
+            const refreshToken = this.jwtRefreshService.sign({
+                sub: user.id,
+                userName: user.userName,
+                email: user.email,
+            });
+
+            const hashedRefreshToken = await bcrypt.hash(refreshToken, 10);
+
+            await tx.user.update({
+                where: { id: user.id },
+                data: {
+                    hashedRefreshToken,
+                },
+            });
+
+            return {
+                accessToken,
+                refreshToken,
+            };
+        });
+    }
+
+    async googleAuthRedirect(req: GoogleAuthRequest, res: Response) {
+        try {
+            const { accessToken, refreshToken } = await this.googleLogin(req.user);
+
+            res.cookie("refreshToken", refreshToken, {
+                httpOnly: true,
+                sameSite: "lax",
+                secure: this.configService.get("NODE_ENV") === "production",
+                maxAge: parseInt(this.configService.get("REFRESH_TOKEN_EXPIRES_MS") || "604800000"), // 7d
+                path: "/",
+            });
+
+            // Редірект на фронтенд з токеном
+            const frontendUrl: string =
+                this.configService.get("FRONTEND_URL") || "http://localhost:3000";
+            return res.redirect(`${frontendUrl}/auth/callback?token=${accessToken}`);
         } catch (error) {
-            console.error("Google login error:", error);
-            throw new BadRequestException("Failed to authenticate with Google");
+            console.log(error);
+
+            const frontendUrl: string =
+                this.configService.get("FRONTEND_URL") || "http://localhost:3000";
+            return res.redirect(`${frontendUrl}/signin?error=google_auth_failed`);
         }
     }
 

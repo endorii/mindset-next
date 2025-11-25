@@ -260,7 +260,7 @@ export function EditProductModal({
                     name: data.name.trim(),
                     path: data.path.trim(),
                     price: Number(data.price),
-                    oldPrice: Number(data.oldPrice),
+                    oldPrice: data.oldPrice,
                     available: data.available,
                     description: data.description.trim(),
                     composition: data.composition.trim(),

@@ -1,5 +1,6 @@
 import { Injectable, NotFoundException } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
+import { OrderStatus, PaymentStatus } from "generated/prisma";
 import { PrismaService } from "src/prisma/prisma.service";
 import Stripe from "stripe";
 
@@ -76,25 +77,33 @@ export class StripeService {
     private async updateOrderAfterPayment(session: Stripe.Checkout.Session) {
         const orderId = session.metadata?.orderId;
 
+        console.log("Session metadata:", session.metadata);
+
         const order = await this.prisma.order.findUnique({
             where: { id: orderId },
         });
 
         if (!order) throw new NotFoundException("Order not found");
 
-        await this.prisma.order.update({
-            where: { id: orderId },
-            data: {
-                paymentStatus: "paid",
-                stripePaymentIntentId:
-                    typeof session.payment_intent === "string"
-                        ? session.payment_intent
-                        : (session.payment_intent?.id ?? null),
-                stripeCustomerId:
-                    typeof session.customer === "string"
-                        ? session.customer
-                        : (session.customer?.id ?? null),
-            },
-        });
+        try {
+            await this.prisma.order.update({
+                where: { id: orderId },
+                data: {
+                    status: OrderStatus.paid,
+                    paymentStatus: PaymentStatus.paid,
+                    stripePaymentIntentId:
+                        typeof session.payment_intent === "string"
+                            ? session.payment_intent
+                            : (session.payment_intent?.id ?? null),
+                    stripeCustomerId:
+                        typeof session.customer === "string"
+                            ? session.customer
+                            : (session.customer?.id ?? null),
+                },
+            });
+            console.log("Order updated successfully");
+        } catch (err) {
+            console.error("Failed to update order:", err);
+        }
     }
 }

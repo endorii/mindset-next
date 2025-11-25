@@ -93,7 +93,7 @@ const OrderSuccessPage = () => {
     console.log(order);
 
     return (
-        <div className="min-h-screen flex text-white items-center justify-center">
+        <div className="min-h-screen flex text-white items-center justify-center py-[20px]">
             <div className="flex flex-col gap-[10px] bg-white/5 shadow-lg backdrop-blur-lg border border-white/5 p-[20px] max-w-lg">
                 <div className="flex flex-col items-center gap-[15px] text-center">
                     <div className="flex flex-col gap-[20px] items-center">
@@ -148,13 +148,13 @@ const OrderSuccessPage = () => {
                                     Order details
                                 </div>
 
-                                <div className="">
+                                <div className="flex flex-col gap-[15px]">
                                     {order.items &&
                                         order.items.length > 0 &&
                                         order.items.map((item) => (
                                             <div
                                                 key={item.id}
-                                                className="flex justify-between items-center pb-4 border-b border-gray-100 last:border-0"
+                                                className="flex justify-between items-center pb-4 border-b border-white/5 last:border-0"
                                             >
                                                 <div>
                                                     <div className="font-perandory tracking-wider text-xl">

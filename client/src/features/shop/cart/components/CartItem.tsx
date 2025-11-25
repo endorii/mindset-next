@@ -34,8 +34,8 @@ export function CartItem({ item, handleRemove }: CartItemProps) {
                     src={product?.banner || ""}
                     alt={product?.name || ""}
                     width={300}
-                    height={400}
-                    className="object-cover w-full"
+                    height={380}
+                    className="object-cover w-full max-h-[380px]"
                 />
             </Link>
 

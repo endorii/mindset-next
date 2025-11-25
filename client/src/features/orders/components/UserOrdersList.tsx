@@ -127,7 +127,6 @@ export function UserOrdersList({
                                     <OrderItems
                                         items={order.items}
                                         order={order}
-                                        router={router}
                                         setActiveModal={setActiveModal}
                                         setSelectedOrderItem={
                                             setSelectedOrderItem

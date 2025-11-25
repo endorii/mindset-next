@@ -8,15 +8,15 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { HeaderBurger } from "./HeaderBurger";
+
 export function Header({ serverUser }: { serverUser: IUser | null }) {
     const { data: user } = useCurrentUser();
+    const pathname = usePathname();
 
-    const userCart = user?.cart.length;
+    // Підписуємося на зміни в стору
+    const { cartItems } = useCartStore();
 
     const [showTitle, setShowTitle] = useState(false);
-
-    const pathname = usePathname();
-    const { cartItems } = useCartStore();
 
     useEffect(() => {
         const handleScroll = () => {
@@ -37,7 +37,8 @@ export function Header({ serverUser }: { serverUser: IUser | null }) {
         };
     }, [pathname]);
 
-    const cartAmount = user ? userCart : cartItems.length;
+    // Обчислюємо кількість товарів динамічно
+    const cartAmount = user ? user.cart?.length ?? 0 : cartItems.length;
 
     return (
         <header
@@ -67,12 +68,9 @@ export function Header({ serverUser }: { serverUser: IUser | null }) {
                         href="/cart"
                         className="flex items-start gap-[10px] font-perandory tracking-wider text-[20px] border-b border-transparent hover:border-white transition-all duration-200"
                     >
-                        {/* <CartIcon className="w-[27px] stroke-white stroke-2" /> */}
                         <div>
                             cart
-                            {cartAmount && cartAmount
-                                ? `(${cartAmount})`
-                                : null}
+                            {cartAmount > 0 && `(${cartAmount})`}
                         </div>
                     </Link>
                 </li>

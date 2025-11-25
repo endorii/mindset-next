@@ -107,6 +107,8 @@ export function ProductContent({
 
     const OPTIONS: EmblaOptionsType = { loop: true };
 
+    console.log(product);
+
     return (
         <div className="flex sm:flex-col gap-[15px] items-start text-white">
             <div className="relative w-[50%] sm:w-full">

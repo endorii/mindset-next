@@ -84,27 +84,6 @@ export class AuthController {
         @Req() req: GoogleAuthRequest,
         @Res({ passthrough: true }) res: Response
     ) {
-        try {
-            const { accessToken, refreshToken } = await this.authService.googleLogin(req.user);
-
-            res.cookie("refreshToken", refreshToken, {
-                httpOnly: true,
-                sameSite: "lax",
-                secure: this.configService.get("NODE_ENV") === "production",
-                maxAge: parseInt(this.configService.get("REFRESH_TOKEN_EXPIRES_MS") || "604800000"), // 7d
-                path: "/",
-            });
-
-            // Редірект на фронтенд з токеном
-            const frontendUrl: string =
-                this.configService.get("FRONTEND_URL") || "http://localhost:3000";
-            return res.redirect(`${frontendUrl}/auth/callback?token=${accessToken}`);
-        } catch (error) {
-            console.log(error);
-
-            const frontendUrl: string =
-                this.configService.get("FRONTEND_URL") || "http://localhost:3000";
-            return res.redirect(`${frontendUrl}/signin?error=google_auth_failed`);
-        }
+        return this.authService.googleAuthRedirect(req, res);
     }
 }

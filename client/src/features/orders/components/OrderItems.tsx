@@ -1,4 +1,7 @@
+"use client";
+
 import { MonoButton } from "@/shared/ui/buttons";
+import { useRouter } from "next/navigation";
 import { IOrder, IOrderItem } from "../types/orders.types";
 
 export function OrderItems({
@@ -6,14 +9,14 @@ export function OrderItems({
     order,
     setActiveModal,
     setSelectedOrderItem,
-    router,
 }: {
     items: IOrderItem[];
     order: IOrder;
-    setActiveModal: (v: boolean) => void;
+    setActiveModal: (open: boolean) => void;
     setSelectedOrderItem: (i: IOrderItem) => void;
-    router: any;
 }) {
+    const router = useRouter();
+
     return (
         <div className="flex flex-col gap-[10px]">
             {items.map((item) => {
