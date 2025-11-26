@@ -1,7 +1,13 @@
 import { httpService, httpServiceAuth } from "@/shared/api/httpService";
 import { ServerResponseWithMessage } from "@/shared/interfaces/interfaces";
 import { AxiosError } from "axios";
-import { ICreateProductPayload, IProduct } from "../types/products.types";
+import {
+    ICreateProductPayload,
+    IProduct,
+    IProductToColor,
+    IProductToSize,
+    IProductToType,
+} from "../types/products.types";
 
 export async function fetchProductsByCategoryId(categoryId: string): Promise<IProduct[]> {
     try {
@@ -90,6 +96,33 @@ export async function deleteProduct(productId: string): Promise<ServerResponseWi
         const { data } = await httpServiceAuth.delete<ServerResponseWithMessage>(
             `/admin/products/${productId}`
         );
+        return data;
+    } catch (error: unknown) {
+        handleAxiosError(error);
+    }
+}
+
+export async function fetchProductColors(id: string): Promise<IProductToColor[]> {
+    try {
+        const { data } = await httpService.get<IProductToColor[]>(`/shop/products/${id}/colors`);
+        return data;
+    } catch (error: unknown) {
+        handleAxiosError(error);
+    }
+}
+
+export async function fetchProductTypes(id: string): Promise<IProductToType[]> {
+    try {
+        const { data } = await httpService.get<IProductToType[]>(`/shop/products/${id}/types`);
+        return data;
+    } catch (error: unknown) {
+        handleAxiosError(error);
+    }
+}
+
+export async function fetchProductSizes(id: string): Promise<IProductToSize[]> {
+    try {
+        const { data } = await httpService.get<IProductToSize[]>(`/shop/products/${id}/sizes`);
         return data;
     } catch (error: unknown) {
         handleAxiosError(error);

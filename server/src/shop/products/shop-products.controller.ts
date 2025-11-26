@@ -39,6 +39,24 @@ export class ShopProductsController {
         return this.productsService.getProductsByCategoryId(categoryId);
     }
 
+    @Get(":productId/colors")
+    @Public()
+    getProductColors(@Param("productId") productId: string) {
+        return this.productsService.getProductColors(productId);
+    }
+
+    @Get(":productId/types")
+    @Public()
+    getProductTypes(@Param("productId") productId: string) {
+        return this.productsService.getProductTypes(productId);
+    }
+
+    @Get(":productId/sizes")
+    @Public()
+    getProductSizes(@Param("productId") productId: string) {
+        return this.productsService.getProductSizes(productId);
+    }
+
     @Get(":collectionPath/:categoryPath/:productPath")
     @Public()
     getProductByPath(

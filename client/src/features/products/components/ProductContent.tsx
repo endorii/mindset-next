@@ -10,12 +10,19 @@ import { useCurrentUser } from "@/features/shop/user-info/hooks/useUsers";
 import { HeartIcon } from "@/shared/icons";
 import { MonoButton } from "@/shared/ui/buttons";
 import { Breadcrumbs } from "@/shared/ui/components";
+import { AttributeSelectorSkeleton } from "@/shared/ui/skeletons/AttributeSelectorSkeleton";
+import { ColorSelectorSkeleton } from "@/shared/ui/skeletons/ColorSelectorSkeleton";
 import { addToRecentlyViewed } from "@/shared/utils/addToRecentlyViewed";
 import { useCartStore } from "@/store/useCartStore";
 import { useFavoritesStore } from "@/store/useFavoritesStore";
 import { EmblaOptionsType } from "embla-carousel";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
+import {
+    useProductColors,
+    useProductSizes,
+    useProductTypes,
+} from "../hooks/useProducts";
 import { IProduct } from "../types/products.types";
 import { AttributeSelector } from "./AttributeSelector";
 import EmblaCarousel from "./Carousel";
@@ -39,6 +46,22 @@ export function ProductContent({
     const { addToCart: addToLocalCart } = useCartStore();
     const { isInFavorites, toggleFavorite: toggleLocalFavorite } =
         useFavoritesStore();
+
+    const {
+        data: colors,
+        isPending: isColorsPending,
+        isError: isColorsError,
+    } = useProductColors(product.id);
+    const {
+        data: types,
+        isPending: isTypesPending,
+        isError: isTypesError,
+    } = useProductTypes(product.id);
+    const {
+        data: sizes,
+        isPending: isSizesPending,
+        isError: isSizesError,
+    } = useProductSizes(product.id);
 
     const addToFavoriteMutation = useAddFavorite();
     const deleteFromFavoriteMutation = useDeleteFavorite();
@@ -171,40 +194,38 @@ export function ProductContent({
                         {product.composition}
                     </div>
 
-                    <div className="flex flex-col gap-[10px] mt-[30px] text-sm">
-                        {product.productColors?.length > 0 && (
+                    <div className="flex flex-col gap-[20px] mt-[30px] text-sm">
+                        {colors && colors.length > 0 ? (
                             <div className="flex flex-wrap gap-[10px] items-center">
                                 <div className="flex gap-[30px]">
                                     <div className="font-perandory tracking-wider text-xl">
                                         Color:
                                     </div>
                                     <ul className="flex flex-wrap gap-[10px]">
-                                        {product.productColors.map(
-                                            (item, i) => (
-                                                <li
-                                                    key={i}
-                                                    onClick={() =>
-                                                        setChosenColor(
-                                                            item.color.name
-                                                        )
-                                                    }
-                                                >
-                                                    <button
-                                                        className={`w-[25px] h-[25px] border border-transparent hover:border-white/20 cursor-pointer ${
-                                                            chosenColor ===
-                                                            item.color.name
-                                                                ? "border-white/100"
-                                                                : "border-black"
-                                                        }`}
-                                                        style={{
-                                                            backgroundColor:
-                                                                item.color
-                                                                    .hexCode,
-                                                        }}
-                                                    ></button>
-                                                </li>
-                                            )
-                                        )}
+                                        {colors.map((item, i) => (
+                                            <li
+                                                key={i}
+                                                onClick={() =>
+                                                    setChosenColor(
+                                                        item.color.name
+                                                    )
+                                                }
+                                                className="h-[25px]"
+                                            >
+                                                <button
+                                                    className={`w-[25px] h-[25px] border border-transparent hover:border-white/20 cursor-pointer ${
+                                                        chosenColor ===
+                                                        item.color.name
+                                                            ? "border-white/100"
+                                                            : "border-black"
+                                                    }`}
+                                                    style={{
+                                                        backgroundColor:
+                                                            item.color.hexCode,
+                                                    }}
+                                                ></button>
+                                            </li>
+                                        ))}
                                     </ul>
                                 </div>
                                 <div className="flex gap-[10px] items-center">
@@ -216,23 +237,39 @@ export function ProductContent({
                                     </div>
                                 </div>
                             </div>
-                        )}
+                        ) : isColorsPending ? (
+                            <ColorSelectorSkeleton />
+                        ) : isColorsError ? (
+                            "Can`t find colors"
+                        ) : null}
 
-                        <AttributeSelector
-                            attributeItems={product.productTypes}
-                            label="Type"
-                            getName={(item) => item.type.name}
-                            chosenValue={chosenType}
-                            setFunction={setChosenType}
-                        />
+                        {types && types.length > 0 ? (
+                            <AttributeSelector
+                                attributeItems={types}
+                                label="Types:"
+                                getName={(item) => item.type.name}
+                                chosenValue={chosenType}
+                                setFunction={setChosenType}
+                            />
+                        ) : isTypesPending ? (
+                            <AttributeSelectorSkeleton label="Types" />
+                        ) : isTypesError ? (
+                            "Can`t find types"
+                        ) : null}
 
-                        <AttributeSelector
-                            attributeItems={product.productSizes}
-                            label="Size"
-                            getName={(item) => item.size.name}
-                            chosenValue={chosenSize}
-                            setFunction={setChosenSize}
-                        />
+                        {sizes && sizes.length > 0 ? (
+                            <AttributeSelector
+                                attributeItems={sizes}
+                                label="Sizes:"
+                                getName={(item) => item.size.name}
+                                chosenValue={chosenSize}
+                                setFunction={setChosenSize}
+                            />
+                        ) : isSizesPending ? (
+                            <AttributeSelectorSkeleton label="Sizes" />
+                        ) : isSizesError ? (
+                            "Can`t find sizes"
+                        ) : null}
 
                         <div className="relative flex gap-[30px] items-center">
                             <div className="font-perandory tracking-wider text-xl">

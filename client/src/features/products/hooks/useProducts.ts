@@ -6,9 +6,12 @@ import {
     editProduct,
     fetchGetProductByPath,
     fetchPopularProducts,
+    fetchProductColors,
     fetchProductsByCategoryId,
     fetchProductsByIds,
     fetchProductsFromSameCollection,
+    fetchProductSizes,
+    fetchProductTypes,
 } from "../api/products.api";
 import { ICreateProductPayload } from "../types/products.types";
 
@@ -121,5 +124,26 @@ export function useDeleteProduct() {
                 toast.error("An unknown error occurred.");
             }
         },
+    });
+}
+
+export function useProductColors(id: string) {
+    return useQuery({
+        queryKey: ["product", id, "colors"],
+        queryFn: () => fetchProductColors(id),
+    });
+}
+
+export function useProductTypes(id: string) {
+    return useQuery({
+        queryKey: ["product", id, "sizes"],
+        queryFn: () => fetchProductTypes(id),
+    });
+}
+
+export function useProductSizes(id: string) {
+    return useQuery({
+        queryKey: ["product", id, "types"],
+        queryFn: () => fetchProductSizes(id),
     });
 }

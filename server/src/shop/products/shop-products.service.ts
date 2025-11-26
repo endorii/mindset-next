@@ -119,4 +119,43 @@ export class ProductsService {
 
         return products;
     }
+
+    async getProductColors(productId: string) {
+        const colors = await this.prisma.productToColor.findMany({
+            where: {
+                productId,
+            },
+            include: {
+                color: true,
+            },
+        });
+
+        return colors;
+    }
+
+    async getProductTypes(productId: string) {
+        const types = await this.prisma.productToType.findMany({
+            where: {
+                productId,
+            },
+            include: {
+                type: true,
+            },
+        });
+
+        return types;
+    }
+
+    async getProductSizes(productId: string) {
+        const sizes = await this.prisma.productToSize.findMany({
+            where: {
+                productId,
+            },
+            include: {
+                size: true,
+            },
+        });
+
+        return sizes;
+    }
 }

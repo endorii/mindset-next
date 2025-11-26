@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { IProduct } from "../types/products.types";
+import { ProductCardColors } from "./ProductCardColors";
 
 export function ProductCard({
     product,
@@ -19,17 +20,7 @@ export function ProductCard({
                     alt={product.name}
                     className="relative w-full h-[400px] object-cover"
                 />
-                <ul className="absolute top-[10px] left-[10px] flex gap-[5px] backdrop-blur-lg border border-white/20 p-[2px]">
-                    {product.productColors.map((color) => (
-                        <li
-                            key={color.color.hexCode}
-                            className="w-[20px] h-[20px]"
-                            style={{
-                                backgroundColor: color.color.hexCode,
-                            }}
-                        ></li>
-                    ))}
-                </ul>
+                <ProductCardColors productId={product.id} />
             </div>
 
             <div className="flex flex-col gap-[3px] flex-grow px-[10px]">
