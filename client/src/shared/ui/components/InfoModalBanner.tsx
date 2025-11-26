@@ -12,11 +12,11 @@ export function InfoModalBanner({ image }: InfoModalBannerProps) {
             <Label>Banner</Label>
             <div className="border border-dashed border-white/5 flex items-center justify-center overflow-hidden">
                 <Image
-                    className="max-h-[400px] object-contain"
+                    className="h-[200px] object-cover"
                     src={image ? image : "/placeholder.png"}
                     alt={image ? "Banner" : "Image undefined"}
-                    width={400}
-                    height={400}
+                    width={200}
+                    height={200}
                 />
             </div>
         </div>

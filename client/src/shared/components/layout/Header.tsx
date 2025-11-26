@@ -13,7 +13,6 @@ export function Header({ serverUser }: { serverUser: IUser | null }) {
     const { data: user } = useCurrentUser();
     const pathname = usePathname();
 
-    // Підписуємося на зміни в стору
     const { cartItems } = useCartStore();
 
     const [showTitle, setShowTitle] = useState(false);
@@ -37,7 +36,6 @@ export function Header({ serverUser }: { serverUser: IUser | null }) {
         };
     }, [pathname]);
 
-    // Обчислюємо кількість товарів динамічно
     const cartAmount = user ? user.cart?.length ?? 0 : cartItems.length;
 
     return (

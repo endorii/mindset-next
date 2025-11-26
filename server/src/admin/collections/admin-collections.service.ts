@@ -35,7 +35,7 @@ export class AdminCollectionsService {
 
         await this.adminRecentActions.createAction(userId, `Added collection ${collection.name}`);
 
-        await this.revalidateService.revalidate("/collections");
+        await this.revalidateService.revalidate("/");
 
         return {
             message: "Collection successfully created",
@@ -78,7 +78,7 @@ export class AdminCollectionsService {
             `Edited collection ${updatedCollection.name}`
         );
 
-        await this.revalidateService.revalidate("/collections");
+        await this.revalidateService.revalidate("/");
 
         return {
             message: "Collection successfully updated",
@@ -116,7 +116,7 @@ export class AdminCollectionsService {
 
         await this.adminRecentActions.createAction(userId, `Deleted collection ${collection.name}`);
 
-        await this.revalidateService.revalidate("/collections");
+        await this.revalidateService.revalidate("/");
 
         return {
             message: "Collection successfully deleted",

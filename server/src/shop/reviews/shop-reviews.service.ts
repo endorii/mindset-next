@@ -30,7 +30,6 @@ export class ShopReviewsService {
             throw new BadRequestException("You have already left a review for this order item.");
         }
 
-        // Check that user actually purchased this product and order is in correct status
         const orderItem = await this.prisma.orderItem.findFirst({
             where: {
                 id: orderItemId,
@@ -67,7 +66,7 @@ export class ShopReviewsService {
 
         return {
             message: "Review successfully created!",
-            review,
+            data: review,
         };
     }
 
@@ -158,6 +157,7 @@ export class ShopReviewsService {
                         },
                     },
                 },
+                reviewVotes: true,
             },
         });
 

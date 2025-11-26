@@ -22,8 +22,4 @@ export interface IReview {
     adminReplyAt?: string;
 
     reviewVotes?: { userId: string; isHelpful: boolean }[];
-
-    userVote?: {
-        isHelpful: boolean;
-    } | null;
 }

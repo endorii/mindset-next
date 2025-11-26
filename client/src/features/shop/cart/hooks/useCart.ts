@@ -26,7 +26,6 @@ export function useAddCartItemToUser() {
     return useMutation({
         mutationFn: (cartItem: Omit<ICartItem, "id">) => addCartItemToUser(cartItem),
         onSuccess: (data) => {
-            // Інвалідуємо обидва кеші
             queryClient.invalidateQueries({ queryKey: ["cart"] });
             queryClient.invalidateQueries({ queryKey: ["currentUser"] });
             toast.success(data.message);
@@ -47,7 +46,6 @@ export function useDeleteCartItemFromUser() {
     return useMutation({
         mutationFn: (cartItemId: string) => deleteCartItemFromUser(cartItemId),
         onSuccess: (data) => {
-            // Інвалідуємо обидва кеші
             queryClient.invalidateQueries({ queryKey: ["cart"] });
             queryClient.invalidateQueries({ queryKey: ["currentUser"] });
             toast.success(data.message);
@@ -68,7 +66,6 @@ export function useDeleteCartFromUser() {
     return useMutation({
         mutationFn: () => deleteCartFromUser(),
         onSuccess: (data) => {
-            // Інвалідуємо обидва кеші
             queryClient.invalidateQueries({ queryKey: ["cart"] });
             queryClient.invalidateQueries({ queryKey: ["currentUser"] });
             toast.success(data.message);

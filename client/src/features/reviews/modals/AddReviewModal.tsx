@@ -1,9 +1,11 @@
 "use client";
 
 import { IOrderItem } from "@/features/orders/types/orders.types";
-import { useEscapeKeyClose } from "@/shared/hooks";
+import { useEscapeKeyClose, useUploadImages } from "@/shared/hooks";
+import { TrashIcon } from "@/shared/icons";
 import { MonoButton } from "@/shared/ui/buttons";
 import { MonoButtonUnderlined } from "@/shared/ui/buttons/MonoButtonUnderlined";
+import { Label } from "@/shared/ui/components";
 import { InputField } from "@/shared/ui/inputs/InputField";
 import { BasicTextarea } from "@/shared/ui/textareas/BasicTextarea";
 import {
@@ -11,7 +13,8 @@ import {
     FormFillingWrapper,
     ModalWrapper,
 } from "@/shared/ui/wrappers";
-import { useState } from "react";
+import Image from "next/image";
+import { ChangeEvent, useState } from "react";
 import { createPortal } from "react-dom";
 import { useForm } from "react-hook-form";
 import { StarRating } from "../components";
@@ -36,6 +39,10 @@ export function AddReviewModal({
     selectedOrderItem,
 }: AddReviewModalProps) {
     const [modalMessage, setModalMessage] = useState("");
+    const [images, setImages] = useState<File[]>([]);
+    const [imagesPreview, setImagesPreview] = useState<string[]>([]);
+
+    const uploadImagesMutation = useUploadImages();
 
     const {
         register,
@@ -60,11 +67,25 @@ export function AddReviewModal({
         onClose();
     };
 
+    const handleImagesChange = (e: ChangeEvent<HTMLInputElement>) => {
+        const files = e.target.files ? Array.from(e.target.files) : [];
+        setImages((prev) => [...prev, ...files]);
+        setImagesPreview((prev) => [
+            ...prev,
+            ...files.map((f) => URL.createObjectURL(f)),
+        ]);
+    };
+
+    const removeImage = (index: number) => {
+        setImages((prev) => prev.filter((_, i) => i !== index));
+        setImagesPreview((prev) => prev.filter((_, i) => i !== index));
+    };
+
     const onSubmit = async (data: FormValues) => {
         if (!selectedOrderItem?.id || !selectedOrderItem.product?.id) return;
 
         try {
-            await createReviewMutation.mutateAsync({
+            const review = await createReviewMutation.mutateAsync({
                 content: data.content,
                 rating: data.rating,
                 senderEmail: data.senderEmail,
@@ -72,6 +93,18 @@ export function AddReviewModal({
                 orderItemId: selectedOrderItem.id,
                 productId: selectedOrderItem.product?.id,
             });
+
+            if (!review.data?.id) {
+                throw new Error("Failed to get review ID");
+            }
+
+            images.length
+                ? await uploadImagesMutation.mutateAsync({
+                      type: "reviews",
+                      entityId: review.data.id,
+                      images,
+                  })
+                : { paths: [] };
             handleClose();
         } catch (err: any) {
             setModalMessage(err?.message || "Error creating review");
@@ -136,6 +169,46 @@ export function AddReviewModal({
                             errorMessage={errors.senderEmail?.message}
                         />
                     </div>
+                    <div className="flex flex-col gap-[3px] w-full">
+                        <Label>Review images</Label>
+                        <label
+                            htmlFor="images"
+                            className={`group border min-h-[200px] border-dashed border-white/5 flex items-center justify-center cursor-pointer hover:bg-white/3 overflow-hidden group-hover:text-white transition-all duration-300`}
+                        >
+                            <span className="text-3xl font-light text-neutral-500 group-hover:text-white transition-all duration-300">
+                                +
+                            </span>
+                        </label>
+                        <input
+                            type="file"
+                            id="images"
+                            multiple
+                            accept="image/*"
+                            onChange={handleImagesChange}
+                            className="hidden"
+                        />
+
+                        <div className="flex flex-wrap gap-[15px] mt-4 max-w-[700px]">
+                            {imagesPreview.map((src, i) => (
+                                <div
+                                    key={i}
+                                    className="relative group max-h-[150px] group cursor-pointer"
+                                    onClick={() => removeImage(i)}
+                                >
+                                    <Image
+                                        src={src}
+                                        alt={`img-${i}`}
+                                        width={150}
+                                        height={150}
+                                        className="max-h-[150px] object-contain"
+                                    />
+                                    <div className="absolute flex items-center justify-center opacity-0 group-hover:opacity-100 top-0 right-0 bg-black/50 backdrop-blur-lg w-full h-full transition-all duration-200">
+                                        <TrashIcon className="w-[40px] fill-none  stroke-white stroke-[1.2] " />
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
                 </FormFillingWrapper>
                 {modalMessage && (
                     <p className="text-red-500 text-sm">{modalMessage}</p>
@@ -150,9 +223,15 @@ export function AddReviewModal({
                     </MonoButtonUnderlined>
                     <MonoButton
                         type="submit"
-                        disabled={createReviewMutation.isPending}
+                        disabled={
+                            createReviewMutation.isPending ||
+                            uploadImagesMutation.isPending
+                        }
                     >
-                        {createReviewMutation.isPending ? "Loading..." : "Add"}
+                        {createReviewMutation.isPending ||
+                        uploadImagesMutation.isPending
+                            ? "Loading..."
+                            : "Add"}
                     </MonoButton>
                 </FormButtonsWrapper>
             </form>

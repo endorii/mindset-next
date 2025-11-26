@@ -290,13 +290,25 @@ export function AddProductModal({
                             label="Old price"
                             id="addProductOldPrice"
                             placeholder="Old price (optional)"
-                            type="number"
+                            type="text"
                             {...register("oldPrice", {
-                                setValueAs: (v) =>
-                                    v === "" ? null : Number(v),
-                                min: {
-                                    value: 1,
-                                    message: "Price must be at least 1",
+                                setValueAs: (v) => {
+                                    if (v === "" || v == null) return null;
+
+                                    if (isNaN(Number(v))) return v;
+
+                                    return Number(v);
+                                },
+                                validate: (value) => {
+                                    if (value === null) return true;
+
+                                    if (isNaN(Number(value)))
+                                        return "Please enter a valid number";
+
+                                    if (Number(value) < 1)
+                                        return "Price must be at least 1";
+
+                                    return true;
                                 },
                             })}
                             errorMessage={errors.oldPrice?.message}

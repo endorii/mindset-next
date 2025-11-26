@@ -106,8 +106,6 @@ export function AdminCategoriesContent({
         setActiveModal(null);
     };
 
-    console.log(sortedCategories);
-
     return (
         <div className="flex flex-col gap-[20px]">
             <div>

@@ -77,8 +77,6 @@ export class StripeService {
     private async updateOrderAfterPayment(session: Stripe.Checkout.Session) {
         const orderId = session.metadata?.orderId;
 
-        console.log("Session metadata:", session.metadata);
-
         const order = await this.prisma.order.findUnique({
             where: { id: orderId },
         });
@@ -101,7 +99,6 @@ export class StripeService {
                             : (session.customer?.id ?? null),
                 },
             });
-            console.log("Order updated successfully");
         } catch (err) {
             console.error("Failed to update order:", err);
         }

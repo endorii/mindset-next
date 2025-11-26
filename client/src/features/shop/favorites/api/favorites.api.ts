@@ -4,7 +4,6 @@ import { ServerResponseWithMessage } from "@/shared/interfaces/interfaces";
 export async function fetchFavoritesFromUser(): Promise<string[]> {
     try {
         const { data } = await httpServiceAuth.get("/shop/favorites");
-        console.log(data);
 
         return data;
     } catch (error: unknown) {

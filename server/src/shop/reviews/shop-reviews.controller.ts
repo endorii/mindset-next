@@ -21,6 +21,12 @@ export class ShopReviewsController {
     ) {
         return this.shopReviewsService.createReview(req.user.id, createReviewDto);
     }
+    @Get("user")
+    @Public()
+    async getReviewsByUserId(@Req() req: Request & { user: AuthenticatedRequestUser }) {
+        const reviews = await this.shopReviewsService.getReviewsByUserId(req.user.id);
+        return reviews;
+    }
 
     @Post(":reviewId/vote")
     @Roles(Role.admin, Role.user)
@@ -35,20 +41,6 @@ export class ShopReviewsController {
         return this.shopReviewsService.toggleReviewVote(req.user.id, reviewId, body);
     }
 
-    @Get("user")
-    @Public()
-    async getReviewsByUserId(@Req() req: Request & { user: AuthenticatedRequestUser }) {
-        const reviews = await this.shopReviewsService.getReviewsByUserId(req.user.id);
-        return reviews;
-    }
-
-    @Get("product/:productId")
-    @Public()
-    async getReviewsByProductId(@Param("productId") productId: string) {
-        const reviews = await this.shopReviewsService.getReviewsByProductId(productId);
-        return reviews;
-    }
-
     @Delete(":reviewId")
     @Roles(Role.admin, Role.user)
     async deleteReview(
@@ -56,5 +48,12 @@ export class ShopReviewsController {
         @Param("reviewId") reviewId: string
     ) {
         return this.shopReviewsService.deleteReview(req.user.id, reviewId);
+    }
+
+    @Get("product/:productId")
+    @Public()
+    async getReviewsByProductId(@Param("productId") productId: string) {
+        const reviews = await this.shopReviewsService.getReviewsByProductId(productId);
+        return reviews;
     }
 }

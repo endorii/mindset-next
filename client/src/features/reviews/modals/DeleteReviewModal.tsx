@@ -21,8 +21,6 @@ export function DeleteReviewModal({
 }: DeleteReviewModalProps) {
     if (!isOpen) return null;
 
-    console.log(review);
-
     const deleteReviewMutation = useDeleteReview();
 
     const handleDelete = async () => {

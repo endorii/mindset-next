@@ -41,7 +41,7 @@ export function useCreateOrder() {
         mutationFn: (data: IOrderPayload) => createOrder(data),
         onSuccess: (data) => {
             if (!data.data?.userId) {
-                // clearCart();
+                clearCart();
             } else {
                 queryClient.invalidateQueries({ queryKey: ["orders"] });
                 queryClient.invalidateQueries({ queryKey: ["cart"] });

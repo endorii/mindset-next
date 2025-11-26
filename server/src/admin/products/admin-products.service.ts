@@ -18,9 +18,7 @@ export class AdminProductsService {
         const { path, categoryId, colorIds, sizeIds, typeIds, ...rest } = createProductDto;
 
         const existingProduct = await this.prisma.product.findUnique({
-            where: {
-                categoryId_path: { categoryId, path },
-            },
+            where: { categoryId_path: { categoryId, path } },
         });
 
         if (existingProduct) {
@@ -34,46 +32,43 @@ export class AdminProductsService {
                 path,
                 productColors: {
                     create:
-                        colorIds?.map((colorId) => ({
-                            color: { connect: { id: colorId } },
-                        })) || [],
+                        colorIds?.map((colorId) => ({ color: { connect: { id: colorId } } })) || [],
                 },
                 productSizes: {
-                    create:
-                        sizeIds?.map((sizeId) => ({
-                            size: { connect: { id: sizeId } },
-                        })) || [],
+                    create: sizeIds?.map((sizeId) => ({ size: { connect: { id: sizeId } } })) || [],
                 },
                 productTypes: {
-                    create:
-                        typeIds?.map((typeId) => ({
-                            type: { connect: { id: typeId } },
-                        })) || [],
+                    create: typeIds?.map((typeId) => ({ type: { connect: { id: typeId } } })) || [],
                 },
             },
             include: {
-                productColors: { include: { color: true } },
-                productSizes: { include: { size: true } },
-                productTypes: { include: { type: true } },
-                category: true,
+                category: {
+                    include: {
+                        collection: { select: { path: true } },
+                    },
+                },
             },
         });
 
         await this.adminRecentActions.createAction(userId, `Added product ${product.name}`);
-        await this.revalidateService.revalidate("/products");
 
-        return {
-            message: "Product successfully created",
-            data: product,
-        };
+        await this.revalidateService.revalidate(
+            `/${product.category.collection.path}/${product.category.path}`
+        );
+        await this.revalidateService.revalidate(
+            `/${product.category.collection.path}/${product.category.path}/${product.path}`
+        );
+
+        return { message: "Product successfully created", data: product };
     }
 
     async editProduct(userId: string, productId: string, updateProductDto: UpdateProductDto) {
-        const { colorIds, sizeIds, typeIds, ...restOfProductData } = updateProductDto;
+        const { colorIds, sizeIds, typeIds, ...rest } = updateProductDto;
 
         const product = await this.prisma.product.findUnique({
-            where: {
-                id: productId,
+            where: { id: productId },
+            include: {
+                category: { include: { collection: { select: { path: true } } } },
             },
         });
 
@@ -81,79 +76,54 @@ export class AdminProductsService {
             throw new NotFoundException("Product with this ID not found");
         }
 
-        const dataToUpdate: Prisma.ProductUpdateInput = {
-            ...restOfProductData,
-            updatedAt: new Date(),
-        };
+        const dataToUpdate: Prisma.ProductUpdateInput = { ...rest, updatedAt: new Date() };
 
         if (colorIds !== undefined) {
             dataToUpdate.productColors = {
-                deleteMany: { productId: product.id },
+                deleteMany: { productId },
+                create: colorIds.map((id) => ({ color: { connect: { id } } })),
             };
-            if (colorIds.length > 0) {
-                dataToUpdate.productColors = {
-                    ...dataToUpdate.productColors,
-                    create: colorIds.map((colorId) => ({
-                        color: { connect: { id: colorId } },
-                    })),
-                };
-            }
         }
 
         if (sizeIds !== undefined) {
             dataToUpdate.productSizes = {
-                deleteMany: { productId: product.id },
+                deleteMany: { productId },
+                create: sizeIds.map((id) => ({ size: { connect: { id } } })),
             };
-            if (sizeIds.length > 0) {
-                dataToUpdate.productSizes = {
-                    ...dataToUpdate.productSizes,
-                    create: sizeIds.map((sizeId) => ({
-                        size: { connect: { id: sizeId } },
-                    })),
-                };
-            }
         }
 
         if (typeIds !== undefined) {
             dataToUpdate.productTypes = {
-                deleteMany: { productId: product.id },
+                deleteMany: { productId },
+                create: typeIds.map((id) => ({ type: { connect: { id } } })),
             };
-            if (typeIds.length > 0) {
-                dataToUpdate.productTypes = {
-                    ...dataToUpdate.productTypes,
-                    create: typeIds.map((typeId) => ({
-                        type: { connect: { id: typeId } },
-                    })),
-                };
-            }
         }
 
         const updatedProduct = await this.prisma.product.update({
-            where: {
-                id: productId,
-            },
+            where: { id: productId },
             data: dataToUpdate,
             include: {
-                productColors: { include: { color: true } },
-                productSizes: { include: { size: true } },
-                productTypes: { include: { type: true } },
-                category: true,
+                category: { include: { collection: { select: { path: true } } } },
             },
         });
 
         await this.adminRecentActions.createAction(userId, `Edited product ${updatedProduct.name}`);
-        await this.revalidateService.revalidate("/products");
 
-        return {
-            message: "Product successfully updated",
-            product: updatedProduct,
-        };
+        await this.revalidateService.revalidate(
+            `/${updatedProduct.category.collection.path}/${updatedProduct.category.path}`
+        );
+        await this.revalidateService.revalidate(
+            `/${updatedProduct.category.collection.path}/${updatedProduct.category.path}/${updatedProduct.path}`
+        );
+
+        return { message: "Product successfully updated", product: updatedProduct };
     }
 
     async deleteProduct(userId: string, productId: string) {
         const product = await this.prisma.product.findUnique({
-            where: {
-                id: productId,
+            where: { id: productId },
+            include: {
+                category: { include: { collection: { select: { path: true } } } },
             },
         });
 
@@ -161,17 +131,17 @@ export class AdminProductsService {
             throw new NotFoundException("Product with this ID not found");
         }
 
-        await this.prisma.product.delete({
-            where: {
-                id: productId,
-            },
-        });
+        await this.prisma.product.delete({ where: { id: productId } });
 
         await this.adminRecentActions.createAction(userId, `Deleted product ${product.name}`);
-        await this.revalidateService.revalidate("/products");
 
-        return {
-            message: "Product successfully deleted",
-        };
+        await this.revalidateService.revalidate(
+            `/${product.category.collection.path}/${product.category.path}`
+        );
+        await this.revalidateService.revalidate(
+            `/${product.category.collection.path}/${product.category.path}/${product.path}`
+        );
+
+        return { message: "Product successfully deleted" };
     }
 }

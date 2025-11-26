@@ -3,6 +3,7 @@
 import { useCurrentUser } from "@/features/shop/user-info/hooks/useUsers";
 import { BackIcon } from "@/shared/icons";
 import { formatDate } from "@/shared/utils/formatDate";
+import Image from "next/image";
 import { toast } from "sonner";
 import { useToggleReviewVote } from "../hooks/useReviews";
 import { IReview } from "../types/reviews.types";
@@ -21,8 +22,17 @@ export function ProductReviewsList({ reviews }: ProductReviewsListProps) {
                 reviews
                     .filter((review) => review.isApproved && review.id)
                     .map((review) => {
-                        const isLiked = review.userVote?.isHelpful === true;
-                        const isDisliked = review.userVote?.isHelpful === false;
+                        const isLiked = review.reviewVotes?.some(
+                            (vote) =>
+                                vote.userId === user?.id &&
+                                vote.isHelpful === true
+                        );
+
+                        const isDisliked = review.reviewVotes?.some(
+                            (vote) =>
+                                vote.userId === user?.id &&
+                                vote.isHelpful === false
+                        );
 
                         return (
                             <div
@@ -57,15 +67,42 @@ export function ProductReviewsList({ reviews }: ProductReviewsListProps) {
                                             {review.content}
                                         </div>
 
+                                        {review.images && (
+                                            <div className="flex flex-col gap-[3px]">
+                                                <div className="flex flex-wrap gap-[15px] mt-4 max-w-[700px]">
+                                                    {review.images.length >
+                                                    0 ? (
+                                                        review.images.map(
+                                                            (image, i) => (
+                                                                <Image
+                                                                    key={i}
+                                                                    src={image}
+                                                                    alt={`Images ${
+                                                                        i + 1
+                                                                    }`}
+                                                                    width={150}
+                                                                    height={150}
+                                                                    className="w-[150px] object-contain"
+                                                                />
+                                                            )
+                                                        )
+                                                    ) : (
+                                                        <div className="text-white opacity-50">
+                                                            No images
+                                                        </div>
+                                                    )}
+                                                </div>
+                                            </div>
+                                        )}
+
                                         <div className="mt-3 flex gap-[10px] text-sm">
                                             <button
                                                 disabled={
                                                     useToggleReviewVoteMutaion.isPending
                                                 }
-                                                className={`flex items-center gap-[5px] px-[10px] py-[7px] border transition hover:bg-black/20 disabled:opacity-50 ${
-                                                    isLiked
-                                                        ? "bg-white/10 border-white/30"
-                                                        : "border-white/5"
+                                                className={`flex group items-center gap-[5px] px-[10px] py-[7px] border transition hover:bg-white/10 hover:text-white disabled:opacity-50 border-white/5 ${
+                                                    isLiked &&
+                                                    "bg-white text-black border-white/30"
                                                 }`}
                                                 onClick={() => {
                                                     if (!user) {
@@ -85,7 +122,13 @@ export function ProductReviewsList({ reviews }: ProductReviewsListProps) {
                                                     }
                                                 }}
                                             >
-                                                <BackIcon className="fill-white w-[20px] stroke-white stroke-50 rotate-90" />{" "}
+                                                <BackIcon
+                                                    className={`w-[20px] stroke-50 rotate-90 group-hover:fill-white group-hover:stroke-white ${
+                                                        isLiked
+                                                            ? "fill-black stroke-black"
+                                                            : "fill-white stroke-white"
+                                                    }`}
+                                                />{" "}
                                                 {review.isHelpful}
                                             </button>
 
@@ -93,10 +136,9 @@ export function ProductReviewsList({ reviews }: ProductReviewsListProps) {
                                                 disabled={
                                                     useToggleReviewVoteMutaion.isPending
                                                 }
-                                                className={`flex items-center gap-[5px] px-[10px] py-[7px] border transition hover:bg-black/20 disabled:opacity-50 ${
-                                                    isDisliked
-                                                        ? "bg-white/10 border-white/30"
-                                                        : "border-white/5"
+                                                className={`flex group items-center gap-[5px] px-[10px] py-[7px] border transition border-white/5 hover:bg-white/10 hover:text-white disabled:opacity-50 ${
+                                                    isDisliked &&
+                                                    "bg-white text-black border-white/30"
                                                 }`}
                                                 onClick={() => {
                                                     if (!user) {
@@ -117,7 +159,13 @@ export function ProductReviewsList({ reviews }: ProductReviewsListProps) {
                                                     }
                                                 }}
                                             >
-                                                <BackIcon className="fill-white w-[20px] stroke-white stroke-50 rotate-270" />{" "}
+                                                <BackIcon
+                                                    className={`w-[20px] stroke-50 rotate-270 group-hover:fill-white group-hover:stroke-white ${
+                                                        isDisliked
+                                                            ? "fill-black stroke-black"
+                                                            : "fill-white stroke-white"
+                                                    }`}
+                                                />{" "}
                                                 {review.isNotHelpful}
                                             </button>
                                         </div>

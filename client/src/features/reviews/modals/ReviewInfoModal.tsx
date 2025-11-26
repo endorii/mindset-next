@@ -2,7 +2,7 @@
 
 import { useEscapeKeyClose } from "@/shared/hooks";
 import { MonoButtonUnderlined } from "@/shared/ui/buttons/MonoButtonUnderlined";
-import { InfoModalBanner } from "@/shared/ui/components";
+import { InfoModalBanner, Label } from "@/shared/ui/components";
 import { InfoField } from "@/shared/ui/inputs/InfoField";
 import {
     FormButtonsWrapper,
@@ -10,6 +10,7 @@ import {
     ModalWrapper,
 } from "@/shared/ui/wrappers";
 import { formatDate } from "@/shared/utils/formatDate";
+import Image from "next/image";
 import Link from "next/link";
 import { createPortal } from "react-dom";
 import { IReview } from "../types/reviews.types";
@@ -107,6 +108,29 @@ export function ReviewInfoModal({
                     </div>
                 </div>
                 <InfoField label="Review text" value={content} />
+                {images && (
+                    <div className="flex flex-col gap-[3px]">
+                        <Label>Additional images</Label>
+                        <div className="flex flex-wrap gap-[15px] mt-4 max-w-[700px]">
+                            {images.length > 0 ? (
+                                images.map((image, i) => (
+                                    <Image
+                                        key={i}
+                                        src={image}
+                                        alt={`Images ${i + 1}`}
+                                        width={200}
+                                        height={200}
+                                        className="w-[200px] object-contain"
+                                    />
+                                ))
+                            ) : (
+                                <div className="text-white opacity-50">
+                                    No images
+                                </div>
+                            )}
+                        </div>
+                    </div>
+                )}
 
                 <div className="flex flex-col gap-[10px]">
                     <div className="text-2xl font-perandory tracking-wider">

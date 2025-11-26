@@ -194,16 +194,18 @@ export function AdminReviewsContent() {
                                         >
                                             <ArrowIcon className="rotate-270 transform scale-x-[-1] w-[30px] lg:w-[25px] md:w-[20px] xs:w-[18px] stroke-white stroke-[2.5] group-hover:stroke-black fill-none" />
                                         </ButtonWithIcon>
-                                        <ApproveButtonWithIcon
-                                            onClick={() => {
-                                                openModal(
-                                                    "reviewApprove",
-                                                    review
-                                                );
-                                            }}
-                                        >
-                                            <ApproveIcon className="w-[24px] lg:w-[25px] md:w-[20px] xs:w-[18px] fill-none stroke-white stroke-2 group-hover:stroke-white" />
-                                        </ApproveButtonWithIcon>
+                                        {review.isApproved === false && (
+                                            <ApproveButtonWithIcon
+                                                onClick={() => {
+                                                    openModal(
+                                                        "reviewApprove",
+                                                        review
+                                                    );
+                                                }}
+                                            >
+                                                <ApproveIcon className="w-[24px] lg:w-[25px] md:w-[20px] xs:w-[18px] fill-none stroke-white stroke-2 group-hover:stroke-white" />
+                                            </ApproveButtonWithIcon>
+                                        )}
                                         <DeleteButtonWithIcon
                                             onClick={() => {
                                                 openModal(
@@ -233,14 +235,19 @@ export function AdminReviewsContent() {
                                     >
                                         <ArrowIcon className="rotate-270 transform scale-x-[-1] w-[30px] lg:w-[25px] md:w-[20px] xs:w-[18px] stroke-white stroke-[2.5] group-hover:stroke-black fill-none" />
                                     </ButtonWithIcon>
-                                    <ApproveButtonWithIcon
-                                        className="w-full flex items-center justify-center"
-                                        onClick={() => {
-                                            openModal("reviewApprove", review);
-                                        }}
-                                    >
-                                        <ApproveIcon className="w-[24px] lg:w-[25px] md:w-[20px] xs:w-[18px] fill-none stroke-white stroke-2 group-hover:stroke-white" />
-                                    </ApproveButtonWithIcon>
+                                    {review.isApproved === false && (
+                                        <ApproveButtonWithIcon
+                                            className="w-full flex items-center justify-center"
+                                            onClick={() => {
+                                                openModal(
+                                                    "reviewApprove",
+                                                    review
+                                                );
+                                            }}
+                                        >
+                                            <ApproveIcon className="w-[24px] lg:w-[25px] md:w-[20px] xs:w-[18px] fill-none stroke-white stroke-2 group-hover:stroke-white" />
+                                        </ApproveButtonWithIcon>
+                                    )}
                                     <DeleteButtonWithIcon
                                         className="w-full flex items-center justify-center"
                                         onClick={() => {
@@ -259,7 +266,6 @@ export function AdminReviewsContent() {
                     <div className="font-bold text-3xl z-1">
                         The review list is empty.
                     </div>
-                    {/* <OrderIcon className="absolute fill-none stroke-2 stroke-black top-[-60] right-20 w-[400px] rotate-20 opacity-20 pointer-events-none" /> ЗАМІНИТИ */}
                 </div>
             )}
 

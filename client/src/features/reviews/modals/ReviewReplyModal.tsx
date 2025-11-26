@@ -3,6 +3,7 @@
 import { useEscapeKeyClose } from "@/shared/hooks";
 import { MonoButton } from "@/shared/ui/buttons";
 import { MonoButtonUnderlined } from "@/shared/ui/buttons/MonoButtonUnderlined";
+import { Label } from "@/shared/ui/components";
 import { InfoField } from "@/shared/ui/inputs/InfoField";
 import { BasicTextarea } from "@/shared/ui/textareas/BasicTextarea";
 import {
@@ -10,6 +11,7 @@ import {
     FormFillingWrapper,
     ModalWrapper,
 } from "@/shared/ui/wrappers";
+import Image from "next/image";
 import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { useForm } from "react-hook-form";
@@ -105,7 +107,29 @@ export function ReviewReplyModal({
                         </div>
                     </div>
                     <InfoField label="Review text" value={content} />
-                    {/* <InfoField label="Прикладені зображення" value={images} /> */}
+                    {review.images && (
+                        <div className="flex flex-col gap-[3px]">
+                            <Label>Additional images</Label>
+                            <div className="flex flex-wrap gap-[15px] mt-4 max-w-[700px]">
+                                {review.images.length > 0 ? (
+                                    review.images.map((image, i) => (
+                                        <Image
+                                            key={i}
+                                            src={image}
+                                            alt={`Images ${i + 1}`}
+                                            width={150}
+                                            height={150}
+                                            className="w-[200px] object-contain"
+                                        />
+                                    ))
+                                ) : (
+                                    <div className="text-white opacity-50">
+                                        No images
+                                    </div>
+                                )}
+                            </div>
+                        </div>
+                    )}
                     <div className="flex flex-col gap-[10px]">
                         <div className="text-lg">
                             Write a response to a review

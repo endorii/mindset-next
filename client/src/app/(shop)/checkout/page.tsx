@@ -300,9 +300,7 @@ function Checkout() {
                     return;
                 }
 
-                // await clearUserCart();
-
-                console.log(order.data.id);
+                await clearUserCart();
 
                 const res = await fetch(
                     `${
@@ -340,7 +338,7 @@ function Checkout() {
                     items: destructedCart,
                 });
 
-                // await clearUserCart();
+                await clearUserCart();
 
                 toast.success(
                     "Your order has been successfully placed. Please wait... Our managers will contact you for confirmation."

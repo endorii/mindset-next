@@ -55,7 +55,6 @@ export async function fetchCurrentUser(): Promise<IUser | null> {
 export async function refreshToken(): Promise<{ data: string; message: string }> {
     try {
         const { data } = await httpServiceAuth.post("/auth/refresh");
-        console.log("refresh data:", data);
 
         if (!data.data) throw new Error("No access token returned from server");
 
@@ -74,7 +73,6 @@ export async function logoutUser(): Promise<ServerResponseWithMessage> {
     }
 }
 
-// === Внутрішня допоміжна функція для обробки помилок Axios ===
 function handleAxiosError(error: unknown): never {
     if (error instanceof AxiosError) {
         const message = error.response?.data?.message || error.message;

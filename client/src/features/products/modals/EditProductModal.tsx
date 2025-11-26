@@ -341,16 +341,28 @@ export function EditProductModal({
                         />
                         <InputField
                             label="Old price"
-                            id="editProductOldPrice"
-                            placeholder="Old price"
-                            type="number"
+                            id="addProductOldPrice"
+                            placeholder="Old price (optional)"
+                            type="text"
                             {...register("oldPrice", {
-                                setValueAs: (v) =>
-                                    v === "" ? null : Number(v),
-                                validate: (value) =>
-                                    value === null ||
-                                    value >= 1 ||
-                                    "Price must be at least 1",
+                                setValueAs: (v) => {
+                                    if (v === "" || v == null) return null;
+
+                                    if (isNaN(Number(v))) return v;
+
+                                    return Number(v);
+                                },
+                                validate: (value) => {
+                                    if (value === null) return true;
+
+                                    if (isNaN(Number(value)))
+                                        return "Please enter a valid number";
+
+                                    if (Number(value) < 1)
+                                        return "Price must be at least 1";
+
+                                    return true;
+                                },
                             })}
                             errorMessage={errors.oldPrice?.message}
                         />

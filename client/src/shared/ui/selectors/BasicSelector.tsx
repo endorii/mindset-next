@@ -46,7 +46,7 @@ export function BasicSelector<T>({
                             field.value === undefined ? "" : String(field.value)
                         }
                         onValueChange={(val) => {
-                            field.onChange(val === "true"); // конвертуємо назад у boolean
+                            field.onChange(val === "true");
                         }}
                         disabled={disabled}
                     >

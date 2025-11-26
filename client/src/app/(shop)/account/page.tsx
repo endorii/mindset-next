@@ -38,7 +38,6 @@ function Account() {
         setActiveModal(null);
     };
 
-    // ✅ Редірект вже відбувся на сервері, тут тільки показуємо loader
     if (isUserPending) {
         return <div>Loading...</div>;
     }

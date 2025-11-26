@@ -80,6 +80,17 @@ export class AdminSizesService {
 
         await this.prisma.size.delete({
             where: { id: sizeId },
+            include: {
+                productSizes: {
+                    include: {
+                        product: {
+                            select: {
+                                path: true,
+                            },
+                        },
+                    },
+                },
+            },
         });
 
         await this.adminRecentActions.createAction(userId, `Deleted size ${size.name}`);

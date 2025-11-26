@@ -17,9 +17,8 @@ export const httpServiceAuth = axios.create({
 let isRefreshing = false;
 let refreshPromise: Promise<{ data: string; message: string }> | null = null;
 
-// --- ПРАВИЛЬНИЙ INTERCEPTOR ЗАПИТУ ---
+// ПРАВИЛЬНИЙ INTERCEPTOR ЗАПИТУ
 httpServiceAuth.interceptors.request.use((config) => {
-    // ✅ ВИКОРИСТАННЯ: useUserStore.getState()
     const { accessToken } = useUserStore.getState();
 
     if (accessToken) {
@@ -28,7 +27,7 @@ httpServiceAuth.interceptors.request.use((config) => {
     return config;
 });
 
-// --- ПРАВИЛЬНИЙ INTERCEPTOR ВІДПОВІДІ ---
+// ПРАВИЛЬНИЙ INTERCEPTOR ВІДПОВІДІ
 httpServiceAuth.interceptors.response.use(
     (res) => res,
     async (error) => {
@@ -37,14 +36,9 @@ httpServiceAuth.interceptors.response.use(
         if (error.response?.status === 401 && !originalRequest._retry) {
             originalRequest._retry = true;
 
-            // ✅ ВИКОРИСТАННЯ: useUserStore.getState()
-            // Отримуємо всі необхідні значення та функції
             const { accessToken, setUser, clearUser, user } = useUserStore.getState();
 
-            // Перевірка: чи є токен взагалі
             if (!accessToken) {
-                // Немає токена - не намагаємося refresh
-                // Оскільки ми поза компонентом, то тут не можемо викликати useRouter
                 return Promise.reject(error);
             }
 
@@ -52,20 +46,19 @@ httpServiceAuth.interceptors.response.use(
                 try {
                     const { data } = await refreshPromise;
                     originalRequest.headers.Authorization = `Bearer ${accessToken}`;
-                    // Повторюємо оригінальний запит
+
                     return httpServiceAuth.request(originalRequest);
                 } catch {
-                    // Якщо паралельний refresh не вдався
                     return Promise.reject(error);
                 }
             }
 
             isRefreshing = true;
-            refreshPromise = refreshToken(); // Початок нового запиту на refresh
+            refreshPromise = refreshToken();
 
             try {
                 const { data: newAccessToken } = await refreshPromise;
-                // Оновлюємо стан через setUser (який ми отримали через getState)
+
                 setUser(user, newAccessToken);
 
                 isRefreshing = false;

@@ -90,8 +90,6 @@ const OrderSuccessPage = () => {
         );
     }
 
-    console.log(order);
-
     return (
         <div className="min-h-screen flex text-white items-center justify-center py-[20px]">
             <div className="flex flex-col gap-[10px] bg-white/5 shadow-lg backdrop-blur-lg border border-white/5 p-[20px] max-w-lg">

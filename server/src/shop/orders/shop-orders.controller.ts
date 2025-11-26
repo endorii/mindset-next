@@ -28,10 +28,7 @@ export class ShopOrdersController {
 
     @Get("stripe/:sessionId")
     @Public()
-    getOrderByStripeSessionId(
-        // @Req() req: Request & { user: AuthenticatedRequestUser },
-        @Param("sessionId") sessionId: string
-    ) {
+    getOrderByStripeSessionId(@Param("sessionId") sessionId: string) {
         return this.shopOrdersService.getOrderByStripeSessionId(sessionId);
     }
 }

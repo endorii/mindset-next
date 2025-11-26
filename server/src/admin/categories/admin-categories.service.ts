@@ -33,11 +33,18 @@ export class AdminCategoriesService {
 
         const category = await this.prisma.category.create({
             data: createCategoryDto,
+            include: {
+                collection: {
+                    select: {
+                        path: true,
+                    },
+                },
+            },
         });
 
         await this.adminRecentActions.createAction(userId, `Added category ${category.name}`);
 
-        await this.revalidateService.revalidate("/categories");
+        await this.revalidateService.revalidate(`/${category.collection.path}`);
 
         return { message: "Category successfully created", data: category };
     }
@@ -45,6 +52,13 @@ export class AdminCategoriesService {
     async editCategory(userId: string, categoryId: string, updateCategoryDto: UpdateCategoryDto) {
         const category = await this.prisma.category.findUnique({
             where: { id: categoryId },
+            include: {
+                collection: {
+                    select: {
+                        path: true,
+                    },
+                },
+            },
         });
 
         if (!category) {
@@ -71,6 +85,13 @@ export class AdminCategoriesService {
         const updatedCategory = await this.prisma.category.update({
             where: { id: categoryId },
             data: updateCategoryDto,
+            include: {
+                collection: {
+                    select: {
+                        path: true,
+                    },
+                },
+            },
         });
 
         await this.adminRecentActions.createAction(
@@ -78,7 +99,7 @@ export class AdminCategoriesService {
             `Edited category ${updatedCategory.name}`
         );
 
-        await this.revalidateService.revalidate("/categories");
+        await this.revalidateService.revalidate(`/${updatedCategory.collection.path}`);
 
         return {
             message: "Category successfully updated",
@@ -95,6 +116,11 @@ export class AdminCategoriesService {
                 _count: {
                     select: {
                         products: true,
+                    },
+                },
+                collection: {
+                    select: {
+                        path: true,
                     },
                 },
             },
@@ -118,7 +144,7 @@ export class AdminCategoriesService {
 
         await this.adminRecentActions.createAction(userId, `Deleted category ${category.name}`);
 
-        await this.revalidateService.revalidate("/categories");
+        await this.revalidateService.revalidate(`/${category.collection.path}`);
 
         return {
             message: "Category successfully deleted",
