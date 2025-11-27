@@ -26,6 +26,7 @@ export function DeleteTodoItemModal({
     const handleDelete = async () => {
         if (!todoItem.id) return;
         await deleteTodoItemMutation.mutateAsync(todoItem.id);
+        onClose();
     };
 
     useEscapeKeyClose({ isOpen, onClose });
@@ -36,16 +37,19 @@ export function DeleteTodoItemModal({
                 Do you really want to Delete this task?
             </div>
             <FormButtonsWrapper>
-                <MonoButtonUnderlined onClick={onClose}>
+                <MonoButtonUnderlined
+                    onClick={onClose}
+                    disabled={deleteTodoItemMutation.isPending}
+                >
                     Cancel
                 </MonoButtonUnderlined>
                 <DeleteButton
-                    onClick={() => {
-                        onClose();
-                        handleDelete();
-                    }}
+                    onClick={handleDelete}
+                    disabled={deleteTodoItemMutation.isPending}
                 >
-                    Delete
+                    {deleteTodoItemMutation.isPending
+                        ? "Deletting..."
+                        : "Delete"}
                 </DeleteButton>
             </FormButtonsWrapper>
         </ModalWrapper>

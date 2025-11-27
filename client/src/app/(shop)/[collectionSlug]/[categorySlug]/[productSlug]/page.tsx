@@ -21,7 +21,13 @@ async function fetchProduct(
 
     if (!res.ok) notFound();
 
-    return res.json();
+    const product: IProduct = await res.json();
+
+    if (!product.isVisible) {
+        notFound();
+    }
+
+    return product;
 }
 
 export async function generateMetadata({

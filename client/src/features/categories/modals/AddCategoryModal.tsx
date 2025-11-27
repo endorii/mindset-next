@@ -30,7 +30,7 @@ interface CategoryFormData {
     name: string;
     path: string;
     description: string;
-    status: boolean;
+    isVisible: boolean;
 }
 
 export function AddCategoryModal({
@@ -46,7 +46,7 @@ export function AddCategoryModal({
         formState: { errors },
     } = useForm<CategoryFormData>({
         defaultValues: {
-            status: false,
+            isVisible: false,
         },
     });
 
@@ -89,7 +89,7 @@ export function AddCategoryModal({
                 const category = await createCategoryMutation.mutateAsync({
                     name: data.name.trim(),
                     path: data.path.trim(),
-                    status: data.status,
+                    isVisible: data.isVisible,
                     collectionId,
                     description: data.description,
                 });
@@ -152,14 +152,14 @@ export function AddCategoryModal({
                         />
 
                         <BasicSelector
-                            label="Status*"
+                            label="Visibility*"
                             control={control}
-                            name="status"
+                            name="visibility"
                             itemsList={STATUSES}
-                            basicOptionLabel="Choose a status"
+                            basicOptionLabel="Choose visibility"
                             getOptionValue={(p) => String(p.value)}
                             getOptionLabel={(p) => p.label}
-                            errorMessage={errors.status?.message}
+                            errorMessage={errors.isVisible?.message}
                         />
                     </div>
                     <BasicTextarea

@@ -46,9 +46,9 @@ const VerifyPage = () => {
                 {verifyMutation.isPending
                     ? "Confirming email, please wait..."
                     : verifyMutation.isSuccess
-                    ? "✅ Email successfully verified"
+                    ? "Email successfully verified"
                     : verifyMutation.isError
-                    ? "❌ Invalid or expired token. To send a new one, enter your email below."
+                    ? "Invalid or expired token. To send a new one, enter your email below."
                     : null}
             </div>
 

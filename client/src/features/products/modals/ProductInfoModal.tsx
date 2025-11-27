@@ -35,8 +35,8 @@ export function ProductInfoModal({
         path,
         price,
         oldPrice,
-        available,
-        status,
+        isAvailable,
+        isVisible,
         description,
         composition,
         createdAt,
@@ -63,12 +63,14 @@ export function ProductInfoModal({
                     <InfoField
                         label="Availability"
                         value={
-                            available === false ? "Not available" : "Available"
+                            isAvailable === false
+                                ? "Not available"
+                                : "Available"
                         }
                     />
                     <InfoField
                         label="Status"
-                        value={status === false ? "Not active" : "Active"}
+                        value={isVisible === false ? "Not visible" : "Visible"}
                     />
                     <InfoField label="Created" value={formatDate(createdAt)} />
                     <InfoField label="Edited" value={formatDate(updatedAt)} />

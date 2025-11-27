@@ -34,8 +34,8 @@ export function DeleteCollectionModal({
             return;
         }
 
-        // await deleteImage(collection.banner);
         await deleteCollectionMutation.mutateAsync(collection.id);
+        onClose();
     };
 
     useEscapeKeyClose({ isOpen, onClose });
@@ -50,16 +50,19 @@ export function DeleteCollectionModal({
                 ?
             </div>
             <FormButtonsWrapper>
-                <MonoButtonUnderlined onClick={onClose}>
+                <MonoButtonUnderlined
+                    onClick={onClose}
+                    disabled={deleteCollectionMutation.isPending}
+                >
                     Cancel
                 </MonoButtonUnderlined>
                 <DeleteButton
-                    onClick={() => {
-                        onClose();
-                        handleDelete();
-                    }}
+                    onClick={handleDelete}
+                    disabled={deleteCollectionMutation.isPending}
                 >
-                    Delete
+                    {deleteCollectionMutation.isPending
+                        ? "Deletting..."
+                        : "Delete"}
                 </DeleteButton>
             </FormButtonsWrapper>
         </ModalWrapper>

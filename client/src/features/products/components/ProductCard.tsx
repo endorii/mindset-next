@@ -41,12 +41,12 @@ export function ProductCard({
                     </div>
                     <div
                         className={`font-perandory tracking-wider font-semibold text-xl md:text-lg xs:text-base ${
-                            product.available
+                            product.isAvailable
                                 ? "text-green-600"
                                 : "text-red-700"
                         }`}
                     >
-                        {product.available ? "In stock" : "Out of stock"}
+                        {product.isAvailable ? "In stock" : "Out of stock"}
                     </div>
                 </div>
             </div>

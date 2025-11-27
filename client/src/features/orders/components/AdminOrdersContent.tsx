@@ -118,7 +118,7 @@ export function AdminOrdersContent() {
                     >
                         <div>Name</div>
                         <div className="lg:hidden">Phone number</div>
-                        <div className="xs:text-end">Status</div>
+                        <div className="xs:text-end">Visibility</div>
                         <div className="text-center md:hidden">Ammount, $</div>
                         <div className="xs:hidden">Creation/Update Date</div>
                         <div className="text-right lg:hidden">Actions</div>

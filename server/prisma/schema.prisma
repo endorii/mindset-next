@@ -141,7 +141,7 @@ model Collection {
   banner      String?
   createdAt   DateTime   @default(now()) @map("created_at")
   updatedAt   DateTime   @updatedAt @map("updated_at")
-  status      Boolean    @default(false)
+  isVisible   Boolean    @default(false)
   categories  Category[]
 }
 
@@ -154,7 +154,7 @@ model Category {
   collectionId String     @map("collection_id")
   createdAt    DateTime   @default(now()) @map("created_at")
   updatedAt    DateTime   @updatedAt @map("updated_at")
-  status       Boolean    @default(false)
+  isVisible    Boolean    @default(false)
   collection   Collection @relation(fields: [collectionId], references: [id])
   products     Product[]
 
@@ -167,13 +167,13 @@ model Product {
   path          String
   price         Int
   oldPrice      Int?             @map("old_price")
-  available     Boolean          @default(false)
+  isAvailable   Boolean          @default(false)
   description   String
   composition   String
   categoryId    String           @map("category_id")
   createdAt     DateTime         @default(now()) @map("created_at")
   updatedAt     DateTime         @updatedAt @map("updated_at")
-  status        Boolean          @default(false)
+  isVisible     Boolean          @default(false)
   banner        String?
   images        String[]         @default([])
   cartItems     CartItem[]

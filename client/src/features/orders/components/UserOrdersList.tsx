@@ -114,10 +114,6 @@ export function UserOrdersList({
                                         label="Phone number"
                                         value={order.phoneNumber}
                                     />
-                                    <Detail
-                                        label="Additional info"
-                                        value={order.additionalInfo || "—"}
-                                    />
                                 </div>
 
                                 <div className="mt-4">

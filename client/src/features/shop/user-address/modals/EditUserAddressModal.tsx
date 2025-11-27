@@ -37,7 +37,7 @@ export function EditUserAddressModal({
     onClose,
     address,
 }: EditUserAddressModalProps) {
-    const editUserAddress = useEditUserAddress();
+    const editUserAddressMutation = useEditUserAddress();
 
     const {
         register,
@@ -77,7 +77,7 @@ export function EditUserAddressModal({
 
     const onSubmit = async (data: FormInputs) => {
         try {
-            await editUserAddress.mutateAsync(data);
+            await editUserAddressMutation.mutateAsync(data);
             onClose();
         } catch (err: any) {
             setModalMessage(err?.message || "Error editing shipping address");
@@ -173,10 +173,20 @@ export function EditUserAddressModal({
                     <p className="text-red-500 text-sm">{modalMessage}</p>
                 )}
                 <FormButtonsWrapper>
-                    <MonoButtonUnderlined onClick={onClose}>
+                    <MonoButtonUnderlined
+                        onClick={onClose}
+                        disabled={editUserAddressMutation.isPending}
+                    >
                         Cancel
                     </MonoButtonUnderlined>
-                    <MonoButton type="submit">Confirm</MonoButton>
+                    <MonoButton
+                        type="submit"
+                        disabled={editUserAddressMutation.isPending}
+                    >
+                        {editUserAddressMutation.isPending
+                            ? "Confirming..."
+                            : "Confirm"}
+                    </MonoButton>
                 </FormButtonsWrapper>
             </form>
         </ModalWrapper>

@@ -30,7 +30,7 @@ interface CategoryFormData {
     name: string;
     path: string;
     description: string;
-    status: boolean;
+    isVisible: boolean;
 }
 
 export function EditCategoryModal({
@@ -49,7 +49,7 @@ export function EditCategoryModal({
             name: "",
             path: "",
             description: "",
-            status: false,
+            isVisible: false,
         },
     });
 
@@ -66,7 +66,7 @@ export function EditCategoryModal({
                 name: category.name,
                 path: category.path,
                 description: category.description,
-                status: category.status,
+                isVisible: category.isVisible,
             });
             setBanner(category.banner || "");
             setModalMessage("");
@@ -153,11 +153,11 @@ export function EditCategoryModal({
                         />
 
                         <BasicSelector
-                            label="Status*"
+                            label="Visibility*"
                             control={control}
-                            name="status"
+                            name="visibility"
                             itemsList={STATUSES}
-                            basicOptionLabel="Choose a status"
+                            basicOptionLabel="Choose visibility"
                             getOptionLabel={(s) => s.label}
                             getOptionValue={(s) => String(s.value)}
                         />
@@ -206,7 +206,14 @@ export function EditCategoryModal({
                 )}
 
                 <FormButtonsWrapper>
-                    <MonoButtonUnderlined onClick={onClose} type="button">
+                    <MonoButtonUnderlined
+                        onClick={onClose}
+                        type="button"
+                        disabled={
+                            uploadBannerMutation.isPending ||
+                            editCategoryMutation.isPending
+                        }
+                    >
                         Cancel
                     </MonoButtonUnderlined>
                     <MonoButton

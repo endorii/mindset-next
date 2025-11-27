@@ -1,6 +1,6 @@
 export const STATUSES = [
-    { value: "false", label: "Not active" },
-    { value: "true", label: "Active" },
+    { value: "false", label: "Not visible" },
+    { value: "true", label: "Visible" },
 ];
 
 export const AVAILABILITIES = [

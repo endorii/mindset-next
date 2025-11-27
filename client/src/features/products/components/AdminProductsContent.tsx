@@ -1,6 +1,6 @@
 import { FilterSection } from "@/features/admin/attributes/components/FilterSection";
 import { TitleWithAddElementButton } from "@/features/admin/attributes/components/TitleWithAddElementButton";
-import { useGetCategoryByPath } from "@/features/categories/hooks/useCategories";
+import { useGetAdminCategoryByPath } from "@/features/categories/hooks/useCategories";
 import { FiltersWrapper } from "@/shared/components/layout";
 import {
     BackIcon,
@@ -45,12 +45,12 @@ export function AdminProductsContent({
     );
     const [selectedFilter, setSelectedFilter] = useState("");
 
-    const { data: category } = useGetCategoryByPath(
+    const { data: category } = useGetAdminCategoryByPath(
         collectionPath,
         categoryPath
     );
 
-    const { data: products } = useProductsByCategoryId(category?.id);
+    const { data: products } = useProductsByCategoryId(category.id);
 
     const sortedProducts = useMemo(() => {
         if (!products) return [];
@@ -136,7 +136,7 @@ export function AdminProductsContent({
                     >
                         <div>Banner</div>
                         <div>Name</div>
-                        <div className="sm:hidden">Status</div>
+                        <div className="sm:hidden">Visibility</div>
                         <div className="xl:hidden">Added/updated</div>
                         <div className="xs:hidden text-center">Link</div>
                         <div className="text-right lg:hidden">Actions</div>
@@ -163,9 +163,9 @@ export function AdminProductsContent({
                                     />
                                     <div>{product.name}</div>
                                     <div className="sm:hidden">
-                                        {product.status === true
-                                            ? "Active"
-                                            : "Not active"}
+                                        {product.isVisible === false
+                                            ? "Not visible"
+                                            : "Visible"}
                                     </div>
                                     <div className="xl:hidden">
                                         {formatDate(product.createdAt)} /{" "}

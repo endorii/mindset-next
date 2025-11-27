@@ -26,6 +26,7 @@ export function DeleteCategoryModal({
     const deleteCategoryMutation = useDeleteCategory();
 
     const handleDelete = async () => {
+        if (!category.id) return;
         if (category.products && category.products.length > 0) {
             toast.info(
                 "Category contains products, to Delete it, delete the products that are in it"
@@ -33,13 +34,8 @@ export function DeleteCategoryModal({
             return;
         }
 
-        if (category.banner) {
-            // await deleteImage(category.banner);
-        }
-
-        if (category.id) {
-            await deleteCategoryMutation.mutateAsync(category.id);
-        }
+        await deleteCategoryMutation.mutateAsync(category.id);
+        onClose();
     };
 
     useEscapeKeyClose({ isOpen, onClose });
@@ -52,16 +48,19 @@ export function DeleteCategoryModal({
                 ?
             </div>
             <FormButtonsWrapper>
-                <MonoButtonUnderlined onClick={onClose}>
+                <MonoButtonUnderlined
+                    onClick={onClose}
+                    disabled={deleteCategoryMutation.isPending}
+                >
                     Cancel
                 </MonoButtonUnderlined>
                 <DeleteButton
-                    onClick={() => {
-                        onClose();
-                        handleDelete();
-                    }}
+                    onClick={handleDelete}
+                    disabled={deleteCategoryMutation.isPending}
                 >
-                    Delete
+                    {deleteCategoryMutation.isPending
+                        ? "Deletting..."
+                        : "Delete"}
                 </DeleteButton>
             </FormButtonsWrapper>
         </ModalWrapper>

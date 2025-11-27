@@ -27,7 +27,7 @@ type FormValues = {
     name: string;
     path: string;
     description: string;
-    status: boolean;
+    isVisible: boolean;
 };
 
 export function AddCollectionModal({
@@ -48,7 +48,7 @@ export function AddCollectionModal({
         formState: { errors },
     } = useForm<FormValues>({
         defaultValues: {
-            status: false,
+            isVisible: false,
         },
     });
 
@@ -85,7 +85,7 @@ export function AddCollectionModal({
                 name: data.name,
                 path: data.path,
                 description: data.description,
-                status: data.status,
+                isVisible: data.isVisible,
             });
 
             if (!collection.data?.id) {
@@ -146,14 +146,14 @@ export function AddCollectionModal({
                         />
 
                         <BasicSelector
-                            label={"Status*"}
+                            label={"Visibility*"}
                             control={control}
                             itemsList={STATUSES}
-                            basicOptionLabel="Choose a status"
+                            basicOptionLabel="Choose visibility"
                             getOptionLabel={(s) => s.label}
                             getOptionValue={(s) => String(s.value)}
-                            errorMessage={errors.status?.message}
-                            name={"status"}
+                            errorMessage={errors.isVisible?.message}
+                            name={"isVisible"}
                         />
                     </div>
                     <BasicTextarea

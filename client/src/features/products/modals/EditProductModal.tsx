@@ -43,10 +43,10 @@ interface FormData {
     path: string;
     price: number;
     oldPrice: number | null;
-    available: boolean;
+    isAvailable: boolean;
     description: string;
     composition: string;
-    status: boolean;
+    isVisible: boolean;
     colorIds?: string[];
     sizeIds?: string[];
     typeIds?: string[];
@@ -71,10 +71,10 @@ export function EditProductModal({
             path: "",
             price: 0,
             oldPrice: null,
-            available: false,
+            isAvailable: false,
             description: "",
             composition: "",
-            status: false,
+            isVisible: false,
             colorIds: [],
             sizeIds: [],
             typeIds: [],
@@ -127,10 +127,10 @@ export function EditProductModal({
                 path: product.path,
                 price: product.price,
                 oldPrice: product.oldPrice,
-                available: product.available,
+                isAvailable: product.isAvailable,
                 description: product.description,
                 composition: product.composition,
-                status: product.status,
+                isVisible: product.isVisible,
                 colorIds: product.productColors.map((pc) => pc.color.id),
                 sizeIds: product.productSizes.map((ps) => ps.size.id),
                 typeIds: product.productTypes.map((pt) => pt.type.id),
@@ -261,10 +261,10 @@ export function EditProductModal({
                     path: data.path.trim(),
                     price: Number(data.price),
                     oldPrice: data.oldPrice,
-                    available: data.available,
+                    isAvailable: data.isAvailable,
                     description: data.description.trim(),
                     composition: data.composition.trim(),
-                    status: data.status,
+                    isVisible: data.isVisible,
                     images: allImagePaths,
                     colorIds: colorsToSend,
                     sizeIds: sizesToSend,
@@ -374,18 +374,18 @@ export function EditProductModal({
                             basicOptionLabel="Choose availability"
                             getOptionLabel={(a) => a.label}
                             getOptionValue={(a) => String(a.value)}
-                            errorMessage={errors.available?.message}
+                            errorMessage={errors.isAvailable?.message}
                             name={`available`}
                         />
                         <BasicSelector
-                            label={"Status*"}
+                            label={"Visibility*"}
                             control={control}
                             itemsList={STATUSES}
-                            basicOptionLabel="Choose a status"
+                            basicOptionLabel="Choose visibility"
                             getOptionLabel={(s) => s.label}
                             getOptionValue={(s) => String(s.value)}
-                            errorMessage={errors.status?.message}
-                            name={"status"}
+                            errorMessage={errors.isVisible?.message}
+                            name={"isVisible"}
                         />
                     </div>
                     <BasicTextarea

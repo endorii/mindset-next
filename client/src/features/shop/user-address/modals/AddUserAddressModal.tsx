@@ -165,10 +165,17 @@ export function AddUserAddressModal({
                 )}
 
                 <FormButtonsWrapper>
-                    <MonoButtonUnderlined type="button" onClick={handleClose}>
+                    <MonoButtonUnderlined
+                        type="button"
+                        onClick={handleClose}
+                        disabled={createUserAddressMutation.isPending}
+                    >
                         Cancel
                     </MonoButtonUnderlined>
-                    <MonoButton type="submit">
+                    <MonoButton
+                        type="submit"
+                        disabled={createUserAddressMutation.isPending}
+                    >
                         {createUserAddressMutation.isPending
                             ? "Processing..."
                             : "Add address"}

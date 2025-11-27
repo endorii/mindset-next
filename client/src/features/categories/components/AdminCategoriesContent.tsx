@@ -2,7 +2,7 @@
 
 import { FilterSection } from "@/features/admin/attributes/components/FilterSection";
 import { TitleWithAddElementButton } from "@/features/admin/attributes/components/TitleWithAddElementButton";
-import { useGetCollectionByPath } from "@/features/collections/hooks/useCollections";
+import { useGetAdminCollectionByPath } from "@/features/collections/hooks/useCollections";
 import {
     BackIcon,
     EditIcon,
@@ -23,7 +23,7 @@ import { formatDate } from "@/shared/utils/formatDate";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useMemo, useState } from "react";
-import { useGetCategoriesByCollectionId } from "../hooks/useCategories";
+import { useGetAdminCategoriesByCollectionId } from "../hooks/useCategories";
 import {
     AddCategoryModal,
     CategoryInfoModal,
@@ -52,8 +52,13 @@ export function AdminCategoriesContent({
     );
     const [selectedFilter, setSelectedFilter] = useState("");
 
-    const { data: collection } = useGetCollectionByPath(collectionPath);
-    const { data: categories } = useGetCategoriesByCollectionId(collection?.id);
+    const { data: collection } = useGetAdminCollectionByPath(collectionPath);
+
+    if (!collection.id) return;
+
+    const { data: categories } = useGetAdminCategoriesByCollectionId(
+        collection.id
+    );
 
     const sortedCategories = useMemo(() => {
         if (!categories) return [];
@@ -144,7 +149,7 @@ export function AdminCategoriesContent({
                     >
                         <div>Banner</div>
                         <div>Name</div>
-                        <div className="sm:hidden">Status</div>
+                        <div className="sm:hidden">Visibility</div>
                         <div className="xl:hidden">Added/updated</div>
                         <div className="xs:hidden text-center">Link</div>
                         <div className="text-right lg:hidden">Actions</div>
@@ -171,9 +176,9 @@ export function AdminCategoriesContent({
                                     />
                                     <div>{category.name}</div>
                                     <div className="sm:hidden">
-                                        {category.status === false
-                                            ? "Not active"
-                                            : "Active"}
+                                        {category.isVisible === false
+                                            ? "Not visible"
+                                            : "Visible"}
                                     </div>
                                     <div className="xl:hidden">
                                         {formatDate(category.createdAt || "")} /{" "}

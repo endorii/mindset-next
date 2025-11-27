@@ -120,18 +120,18 @@ export function EditTodoItemModal({
                 )}
 
                 <FormButtonsWrapper>
-                    <MonoButtonUnderlined onClick={onClose} type="button">
+                    <MonoButtonUnderlined
+                        onClick={onClose}
+                        type="button"
+                        disabled={editTodoItemMutation.isPending}
+                    >
                         Cancel
                     </MonoButtonUnderlined>
                     <MonoButton
                         type="submit"
-                        disabled={
-                            editTodoItemMutation.isPending ||
-                            editTodoItemMutation.isPending
-                        }
+                        disabled={editTodoItemMutation.isPending}
                     >
-                        {editTodoItemMutation.isPending ||
-                        editTodoItemMutation.isPending
+                        {editTodoItemMutation.isPending
                             ? "Loading..."
                             : "Confirm"}
                     </MonoButton>

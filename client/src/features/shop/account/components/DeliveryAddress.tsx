@@ -23,7 +23,10 @@ export function DeliveryAddress({
                 Personal delivery address (optional)
             </div>
             {!currentUser?.shippingAddress && !isUserPending ? (
-                <MonoButton onClick={() => openModal("addUserAddress")}>
+                <MonoButton
+                    onClick={() => openModal("addUserAddress")}
+                    disabled={isUserPending}
+                >
                     Add address
                 </MonoButton>
             ) : isUserPending ? (

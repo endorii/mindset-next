@@ -7,7 +7,7 @@ export interface ICategory {
     path: string;
     description: string;
     banner: string;
-    status: boolean;
+    isVisible: boolean;
     products?: IProduct[];
     collection?: ICollection;
     collectionId: string;

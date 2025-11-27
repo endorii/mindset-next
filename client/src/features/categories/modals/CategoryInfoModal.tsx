@@ -30,7 +30,7 @@ export function CategoryInfoModal({
         name,
         path,
         description,
-        status,
+        isVisible,
         createdAt,
         updatedAt,
         banner,
@@ -46,8 +46,8 @@ export function CategoryInfoModal({
                     <InfoField label="Name" value={name} />
                     <InfoField label="Path" value={path} />{" "}
                     <InfoField
-                        label="Status"
-                        value={status === false ? "Not active" : "Active"}
+                        label="Visibility"
+                        value={isVisible === false ? "Not visible" : "Visible"}
                     />
                 </div>
                 <TextareaInfoField label={"Description"} value={description} />

@@ -14,7 +14,13 @@ async function fetchCollection(collectionSlug: string): Promise<ICollection> {
         notFound();
     }
 
-    return res.json();
+    const collection: ICollection = await res.json();
+
+    if (!collection.isVisible) {
+        notFound();
+    }
+
+    return collection;
 }
 
 export async function generateMetadata({

@@ -4,7 +4,7 @@ import { ServerResponseWithMessage } from "@/shared/interfaces/interfaces";
 import { AxiosError } from "axios";
 import { ICategory } from "../types/categories.types";
 
-export async function fetchCategoryByPath(
+export async function fetchShopCategoryByPath(
     collectionPath: ICollection["path"],
     categoryPath: ICategory["path"]
 ): Promise<ICategory> {
@@ -18,9 +18,38 @@ export async function fetchCategoryByPath(
     }
 }
 
-export async function fetchGetCategoriesByCollectionId(collectionId: string): Promise<ICategory[]> {
+export async function fetchAdminCategoryByPath(
+    collectionPath: ICollection["path"],
+    categoryPath: ICategory["path"]
+): Promise<ICategory> {
+    try {
+        const { data } = await httpServiceAuth.get<ICategory>(
+            `/admin/categories/collections/${collectionPath}/${categoryPath}`
+        );
+        return data;
+    } catch (error: unknown) {
+        handleAxiosError(error);
+    }
+}
+
+export async function fetchGetShopCategoriesByCollectionId(
+    collectionId: string
+): Promise<ICategory[]> {
     try {
         const { data } = await httpService.get<ICategory[]>(`/shop/categories/${collectionId}`);
+        return data;
+    } catch (error: unknown) {
+        handleAxiosError(error);
+    }
+}
+
+export async function fetchGetAdminCategoriesByCollectionId(
+    collectionId: string
+): Promise<ICategory[]> {
+    try {
+        const { data } = await httpServiceAuth.get<ICategory[]>(
+            `/admin/categories/collections/${collectionId}`
+        );
         return data;
     } catch (error: unknown) {
         handleAxiosError(error);

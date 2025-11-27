@@ -30,7 +30,7 @@ interface CategoryFormData {
     name: string;
     path: string;
     description: string;
-    status: boolean;
+    isVisible: boolean;
 }
 
 export function EditCollectionModal({
@@ -49,7 +49,7 @@ export function EditCollectionModal({
             name: "",
             path: "",
             description: "",
-            status: false,
+            isVisible: false,
         },
     });
 
@@ -66,7 +66,7 @@ export function EditCollectionModal({
                 name: collection.name,
                 path: collection.path,
                 description: collection.description,
-                status: collection.status,
+                isVisible: collection.isVisible,
             });
             setBanner(collection.banner || "");
             setModalMessage("");
@@ -82,7 +82,7 @@ export function EditCollectionModal({
                     data: {
                         name: data.name,
                         path: data.path,
-                        status: data.status,
+                        isVisible: data.isVisible,
                     },
                 });
 
@@ -154,14 +154,14 @@ export function EditCollectionModal({
                             errorMessage={errors.path?.message}
                         />
                         <BasicSelector
-                            label={"Status*"}
+                            label={"Visibiity*"}
                             control={control}
                             itemsList={STATUSES}
-                            basicOptionLabel="Choose a status"
+                            basicOptionLabel="Choose visibility"
                             getOptionLabel={(s) => s.label}
                             getOptionValue={(s) => String(s.value)}
-                            errorMessage={errors.status?.message}
-                            name={"status"}
+                            errorMessage={errors.isVisible?.message}
+                            name={"isVisible"}
                         />
                     </div>
 
@@ -210,7 +210,14 @@ export function EditCollectionModal({
                 )}
 
                 <FormButtonsWrapper>
-                    <MonoButtonUnderlined onClick={onClose} type="button">
+                    <MonoButtonUnderlined
+                        onClick={onClose}
+                        type="button"
+                        disabled={
+                            uploadBannerMutation.isPending ||
+                            editCollectionMutation.isPending
+                        }
+                    >
                         Cancel
                     </MonoButtonUnderlined>
                     <MonoButton

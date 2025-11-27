@@ -96,10 +96,20 @@ export function DeleteAccountModal({
                     <p className="text-red-500 text-sm">{modalMessage}</p>
                 )}
                 <FormButtonsWrapper>
-                    <MonoButtonUnderlined onClick={onClose}>
+                    <MonoButtonUnderlined
+                        onClick={onClose}
+                        disabled={deleteAccountMutation.isPending}
+                    >
                         Cancel
                     </MonoButtonUnderlined>
-                    <DeleteButton type="submit">Delete</DeleteButton>
+                    <DeleteButton
+                        type="submit"
+                        disabled={deleteAccountMutation.isPending}
+                    >
+                        {deleteAccountMutation.isPending
+                            ? "Deletting..."
+                            : "Delete"}
+                    </DeleteButton>
                 </FormButtonsWrapper>
             </form>
         </ModalWrapper>

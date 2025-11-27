@@ -37,10 +37,19 @@ export function DeleteOrderModal({
                 Do you really want to Delete the order?
             </div>
             <FormButtonsWrapper>
-                <MonoButtonUnderlined type="button" onClick={onClose}>
+                <MonoButtonUnderlined
+                    type="button"
+                    onClick={onClose}
+                    disabled={deleteOrderMutation.isPending}
+                >
                     Cancel
                 </MonoButtonUnderlined>
-                <DeleteButton onClick={handleDelete}>Delete</DeleteButton>
+                <DeleteButton
+                    onClick={handleDelete}
+                    disabled={deleteOrderMutation.isPending}
+                >
+                    {deleteOrderMutation.isPending ? "Deletting..." : "Delete"}
+                </DeleteButton>
             </FormButtonsWrapper>
         </ModalWrapper>
     );

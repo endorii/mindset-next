@@ -217,7 +217,10 @@ export function AddReviewModal({
                     <MonoButtonUnderlined
                         type="button"
                         onClick={handleClose}
-                        disabled={createReviewMutation.isPending}
+                        disabled={
+                            createReviewMutation.isPending ||
+                            uploadImagesMutation.isPending
+                        }
                     >
                         Cancel
                     </MonoButtonUnderlined>

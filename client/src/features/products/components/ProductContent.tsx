@@ -177,12 +177,12 @@ export function ProductContent({
                         </div>
                         <div
                             className={`text-xl font-perandory tracking-wider ${
-                                product.available
+                                product.isAvailable
                                     ? "text-green-600"
                                     : "text-red-600"
                             }`}
                         >
-                            {product.available ? "In stock" : "Out of stock"}
+                            {product.isAvailable ? "In stock" : "Out of stock"}
                         </div>
                     </div>
 
@@ -305,7 +305,7 @@ export function ProductContent({
                         onClick={handleAddToCart}
                         className="w-full h-[50px] bg-white text-black!"
                         disabled={
-                            !product.available ||
+                            !product.isAvailable ||
                             !chosenColor ||
                             !chosenSize ||
                             !chosenType ||

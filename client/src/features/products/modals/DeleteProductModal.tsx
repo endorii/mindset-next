@@ -20,7 +20,7 @@ export function DeleteProductModal({
     onClose,
     product,
 }: DeleteProductModalProps) {
-    const deleteProduct = useDeleteProduct();
+    const deleteProductMutation = useDeleteProduct();
 
     useEscapeKeyClose({ isOpen, onClose });
 
@@ -31,7 +31,7 @@ export function DeleteProductModal({
         if (product.images.length > 0) {
             // await deleteImages(product.images);
         }
-        await deleteProduct.mutateAsync(product.id);
+        await deleteProductMutation.mutateAsync(product.id);
         onClose();
     };
 
@@ -45,10 +45,21 @@ export function DeleteProductModal({
                 ?
             </div>
             <FormButtonsWrapper>
-                <MonoButtonUnderlined type="button" onClick={onClose}>
+                <MonoButtonUnderlined
+                    type="button"
+                    onClick={onClose}
+                    disabled={deleteProductMutation.isPending}
+                >
                     Cancel
                 </MonoButtonUnderlined>
-                <DeleteButton onClick={handleDelete}>Delete</DeleteButton>
+                <DeleteButton
+                    onClick={handleDelete}
+                    disabled={deleteProductMutation.isPending}
+                >
+                    {deleteProductMutation.isPending
+                        ? "Deletting..."
+                        : "Delete"}
+                </DeleteButton>
             </FormButtonsWrapper>
         </ModalWrapper>
     );

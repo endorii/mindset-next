@@ -37,9 +37,7 @@ export default async function CollectionsPage() {
     return (
         <div className="flex flex-col gap-10">
             <Welcome />
-
             <CollectionsSection collections={collections} />
-
             <PopularProductsWrapper />
         </div>
     );

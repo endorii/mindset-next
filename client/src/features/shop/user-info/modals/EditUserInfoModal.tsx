@@ -133,10 +133,20 @@ export function EditUserInfoModal({
                     <p className="text-red-500 text-sm">{modalMessage}</p>
                 )}
                 <FormButtonsWrapper>
-                    <MonoButtonUnderlined onClick={onClose}>
+                    <MonoButtonUnderlined
+                        onClick={onClose}
+                        disabled={editUserMutation.isPending}
+                    >
                         Cancel
                     </MonoButtonUnderlined>
-                    <MonoButton type="submit">Confirm</MonoButton>
+                    <MonoButton
+                        type="submit"
+                        disabled={editUserMutation.isPending}
+                    >
+                        {editUserMutation.isPending
+                            ? "Confirming..."
+                            : "Confirm"}
+                    </MonoButton>
                 </FormButtonsWrapper>
             </form>
         </ModalWrapper>

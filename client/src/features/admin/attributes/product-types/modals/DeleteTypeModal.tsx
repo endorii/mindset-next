@@ -25,6 +25,7 @@ export function DeleteTypeModal({
 
     const handleDelete = async () => {
         await deleteTypeMutation.mutateAsync(type.id);
+        onClose();
     };
 
     useEscapeKeyClose({ isOpen, onClose });
@@ -36,16 +37,17 @@ export function DeleteTypeModal({
                 <span className="font-semibold underline">{type.name}</span>?
             </div>
             <FormButtonsWrapper>
-                <MonoButtonUnderlined onClick={onClose}>
+                <MonoButtonUnderlined
+                    onClick={onClose}
+                    disabled={deleteTypeMutation.isPending}
+                >
                     Cancel
                 </MonoButtonUnderlined>
                 <DeleteButton
-                    onClick={async () => {
-                        onClose();
-                        handleDelete();
-                    }}
+                    onClick={handleDelete}
+                    disabled={deleteTypeMutation.isPending}
                 >
-                    Delete
+                    {deleteTypeMutation.isPending ? "Deletting..." : "Delete"}
                 </DeleteButton>
             </FormButtonsWrapper>
         </ModalWrapper>

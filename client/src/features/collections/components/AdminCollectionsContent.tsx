@@ -20,7 +20,7 @@ import { ModalType } from "@/shared/types/types";
 import { formatDate } from "@/shared/utils/formatDate";
 import Link from "next/link";
 import { useMemo, useState } from "react";
-import { useGetCollections } from "../hooks/useCollections";
+import { useGetAdminCollections } from "../hooks/useCollections";
 import {
     AddCollectionModal,
     CollectionInfoModal,
@@ -43,7 +43,7 @@ export function AdminCollectionsContent() {
         useState<ICollection | null>(null);
     const [selectedFilter, setSelectedFilter] = useState("");
 
-    const { data: collections } = useGetCollections();
+    const { data: collections } = useGetAdminCollections();
 
     const sortedCollections = useMemo(() => {
         if (!collections) return [];
@@ -133,7 +133,7 @@ export function AdminCollectionsContent() {
                         <div className="hidden xs:block">Collections</div>
                         <div className="xs:hidden">Banner</div>
                         <div className="xs:hidden">Name</div>
-                        <div className="sm:hidden">Status</div>
+                        <div className="sm:hidden">Visibility</div>
                         <div className="xl:hidden">Added/updated</div>
                         <div className="xs:hidden text-center">Link</div>
                         <div className="text-right lg:hidden">Actions</div>
@@ -162,9 +162,9 @@ export function AdminCollectionsContent() {
                                         />
                                         <div>{collection.name}</div>
                                         <div className="sm:hidden">
-                                            {collection.status === false
-                                                ? "Not active"
-                                                : "Active"}
+                                            {collection.isVisible === false
+                                                ? "Not visible"
+                                                : "Visible"}
                                         </div>
                                         <div className="xl:hidden">
                                             {formatDate(

@@ -26,6 +26,7 @@ export function ApproveReviewModal({
     const handleApprove = async () => {
         if (!review.id) return;
         await approveReviewMutation.mutateAsync(review.id);
+        onClose();
     };
 
     useEscapeKeyClose({ isOpen, onClose });
@@ -41,16 +42,19 @@ export function ApproveReviewModal({
             </div>
 
             <FormButtonsWrapper>
-                <MonoButtonUnderlined onClick={onClose}>
+                <MonoButtonUnderlined
+                    onClick={onClose}
+                    disabled={approveReviewMutation.isPending}
+                >
                     Cancel
                 </MonoButtonUnderlined>
                 <MonoButton
-                    onClick={() => {
-                        onClose();
-                        handleApprove();
-                    }}
+                    onClick={handleApprove}
+                    disabled={approveReviewMutation.isPending}
                 >
-                    Publish
+                    {approveReviewMutation.isPending
+                        ? "Publishing..."
+                        : "Publish"}
                 </MonoButton>
             </FormButtonsWrapper>
         </ModalWrapper>

@@ -4,22 +4,22 @@ import {
     addCategoryToCollection,
     deleteCategory,
     editCategory,
-    fetchCategoryByPath,
-    fetchGetCategoriesByCollectionId,
+    fetchAdminCategoryByPath,
+    fetchGetAdminCategoriesByCollectionId,
 } from "../api/categories.api";
 import { ICategory } from "../types/categories.types";
 
-export function useGetCategoryByPath(collectionPath: string, categoryPath: string) {
+export function useGetAdminCategoryByPath(collectionPath: string, categoryPath: string) {
     return useSuspenseQuery({
-        queryKey: ["category", collectionPath, categoryPath],
-        queryFn: () => fetchCategoryByPath(collectionPath, categoryPath),
+        queryKey: ["admin", "categories", collectionPath, categoryPath],
+        queryFn: () => fetchAdminCategoryByPath(collectionPath, categoryPath),
     });
 }
 
-export function useGetCategoriesByCollectionId(collectionId: string | undefined) {
+export function useGetAdminCategoriesByCollectionId(collectionId: string) {
     return useSuspenseQuery({
-        queryKey: ["categories", collectionId],
-        queryFn: () => fetchGetCategoriesByCollectionId(collectionId || ""),
+        queryKey: ["admin", "categories", collectionId],
+        queryFn: () => fetchGetAdminCategoriesByCollectionId(collectionId),
     });
 }
 
@@ -30,17 +30,12 @@ export function useCreateCategory() {
         mutationFn: (categoryData: Omit<ICategory, "banner">) =>
             addCategoryToCollection(categoryData),
         onSuccess: (data) => {
-            queryClient.invalidateQueries({
-                queryKey: ["categories"],
-            });
+            queryClient.invalidateQueries({ queryKey: ["shop", "categories"] });
+            queryClient.invalidateQueries({ queryKey: ["admin", "categories"] });
             toast.success(data.message);
         },
         onError: (error: any) => {
-            if (error?.message) {
-                toast.error(error.message);
-            } else {
-                toast.error("An unknown error occurred.");
-            }
+            toast.error(error?.message || "An unknown error occurred.");
         },
     });
 }
@@ -54,24 +49,15 @@ export function useEditCategory() {
             data,
         }: {
             categoryId: string;
-            data: {
-                name: string;
-                path: string;
-                status: boolean;
-            };
+            data: { name: string; path: string; isVisible: boolean };
         }) => editCategory(categoryId, data),
         onSuccess(data) {
-            queryClient.invalidateQueries({
-                queryKey: ["categories"],
-            });
+            queryClient.invalidateQueries({ queryKey: ["shop", "categories"] });
+            queryClient.invalidateQueries({ queryKey: ["admin", "categories"] });
             toast.success(data.message);
         },
         onError: (error: any) => {
-            if (error?.message) {
-                toast.error(error.message);
-            } else {
-                toast.error("An unknown error occurred.");
-            }
+            toast.error(error?.message || "An unknown error occurred.");
         },
     });
 }
@@ -82,17 +68,12 @@ export function useDeleteCategory() {
     return useMutation({
         mutationFn: (categoryId: string) => deleteCategory(categoryId),
         onSuccess: (data) => {
-            queryClient.invalidateQueries({
-                queryKey: ["categories"],
-            });
+            queryClient.invalidateQueries({ queryKey: ["shop", "categories"] });
+            queryClient.invalidateQueries({ queryKey: ["admin", "categories"] });
             toast.success(data.message);
         },
         onError: (error: any) => {
-            if (error?.message) {
-                toast.error(error.message);
-            } else {
-                toast.error("An unknown error occurred.");
-            }
+            toast.error(error?.message || "An unknown error occurred.");
         },
     });
 }

@@ -12,9 +12,9 @@ export interface IProduct {
     oldPrice: number | null;
     path: string;
     banner: string;
-    status: boolean;
+    isVisible: boolean;
     images: string[];
-    available: boolean;
+    isAvailable: boolean;
     description: string;
     composition: string;
     categoryId: string;
@@ -36,11 +36,11 @@ export interface ICreateProductPayload {
     path: string;
     price: number;
     oldPrice: number | null;
-    available: boolean;
+    isAvailable: boolean;
     description: string;
     composition: string;
     categoryId?: string;
-    status: boolean;
+    isVisible: boolean;
     banner: string;
     images: string[];
 

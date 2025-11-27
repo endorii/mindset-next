@@ -38,10 +38,6 @@ function Account() {
         setActiveModal(null);
     };
 
-    if (isUserPending) {
-        return <div>Loading...</div>;
-    }
-
     return (
         <div className="flex flex-col gap-[10px]">
             <div className="flex lg:flex-wrap w-full justify-between gap-[15px]">

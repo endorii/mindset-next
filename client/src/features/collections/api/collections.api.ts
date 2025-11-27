@@ -3,7 +3,16 @@ import { ServerResponseWithMessage } from "@/shared/interfaces/interfaces";
 import { AxiosError } from "axios";
 import { ICollection } from "../types/collections.types";
 
-export async function fetchCollections(): Promise<ICollection[]> {
+export async function fetchAdminCollections(): Promise<ICollection[]> {
+    try {
+        const { data } = await httpServiceAuth.get("/admin/collections");
+        return data;
+    } catch (error: unknown) {
+        handleAxiosError(error);
+    }
+}
+
+export async function fetchShopCollections(): Promise<ICollection[]> {
     try {
         const { data } = await httpService.get("/shop/collections");
         return data;
@@ -12,9 +21,18 @@ export async function fetchCollections(): Promise<ICollection[]> {
     }
 }
 
-export async function fetchGetCollectionByPath(collectionPath: string): Promise<ICollection> {
+export async function fetchGetShopCollectionByPath(collectionPath: string): Promise<ICollection> {
     try {
         const { data } = await httpService.get(`/shop/collections/${collectionPath}`);
+        return data;
+    } catch (error: unknown) {
+        handleAxiosError(error);
+    }
+}
+
+export async function fetchGetAdminCollectionByPath(collectionPath: string): Promise<ICollection> {
+    try {
+        const { data } = await httpServiceAuth.get(`/admin/collections/${collectionPath}`);
         return data;
     } catch (error: unknown) {
         handleAxiosError(error);

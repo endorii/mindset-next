@@ -11,7 +11,7 @@ interface IMonoButtonProps {
 export function MonoButton({
     type = "button",
     onClick,
-    disabled = false,
+    disabled,
     children,
     className = "",
 }: IMonoButtonProps) {

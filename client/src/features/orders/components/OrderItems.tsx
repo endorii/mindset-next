@@ -20,10 +20,15 @@ export function OrderItems({
     return (
         <div className="flex flex-col gap-[10px]">
             {items.map((item) => {
-                const totalOld =
-                    Number(item.product?.oldPrice) * Number(item.quantity);
+                const hasOldPrice =
+                    typeof item.product?.oldPrice === "number" &&
+                    item.product.oldPrice > 0;
+
                 const total =
                     Number(item.product?.price) * Number(item.quantity);
+                const totalOld = hasOldPrice
+                    ? Number(item.product?.oldPrice) * Number(item.quantity)
+                    : null;
 
                 return (
                     <div
@@ -52,9 +57,11 @@ export function OrderItems({
                         </div>
 
                         <div className="flex flex-col items-center">
-                            <div className="text-neutral-400 text-xs line-through">
-                                ${totalOld}.00
-                            </div>
+                            {hasOldPrice && (
+                                <div className="text-neutral-400 text-xs line-through">
+                                    ${totalOld}.00
+                                </div>
+                            )}
                             <div className="text-white text-base font-semibold">
                                 ${total}.00
                             </div>

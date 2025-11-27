@@ -6,7 +6,7 @@ export interface ICollection {
     path: string;
     description: string;
     banner: string;
-    status: boolean;
+    isVisible: boolean;
     categories?: ICategory[];
     createdAt?: string;
     updatedAt?: string;

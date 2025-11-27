@@ -25,6 +25,7 @@ export function DeleteColorModal({
 
     const handleDelete = async () => {
         await deleteColorMutation.mutateAsync(color.id);
+        onClose();
     };
 
     useEscapeKeyClose({ isOpen, onClose });
@@ -43,10 +44,7 @@ export function DeleteColorModal({
                     Cancel
                 </MonoButtonUnderlined>
                 <DeleteButton
-                    onClick={() => {
-                        handleDelete();
-                        onClose();
-                    }}
+                    onClick={handleDelete}
                     disabled={deleteColorMutation.isPending}
                 >
                     {deleteColorMutation.isPending ? "Deletting..." : "Delete"}

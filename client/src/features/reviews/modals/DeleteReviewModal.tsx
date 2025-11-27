@@ -26,6 +26,7 @@ export function DeleteReviewModal({
     const handleDelete = async () => {
         if (!review.id) return;
         await deleteReviewMutation.mutateAsync(review.id);
+        onClose();
     };
 
     useEscapeKeyClose({ isOpen, onClose });
@@ -44,16 +45,17 @@ export function DeleteReviewModal({
                 ?
             </div>
             <FormButtonsWrapper>
-                <MonoButtonUnderlined onClick={onClose}>
+                <MonoButtonUnderlined
+                    onClick={onClose}
+                    disabled={deleteReviewMutation.isPending}
+                >
                     Cancel
                 </MonoButtonUnderlined>
                 <DeleteButton
-                    onClick={() => {
-                        onClose();
-                        handleDelete();
-                    }}
+                    onClick={handleDelete}
+                    disabled={deleteReviewMutation.isPending}
                 >
-                    Delete
+                    {deleteReviewMutation.isPending ? "Deletting..." : "Delete"}
                 </DeleteButton>
             </FormButtonsWrapper>
         </ModalWrapper>

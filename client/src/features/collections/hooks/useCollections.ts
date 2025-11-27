@@ -4,22 +4,30 @@ import {
     createCollection,
     deleteCollection,
     editCollection,
-    fetchCollections,
-    fetchGetCollectionByPath,
+    fetchAdminCollections,
+    fetchGetAdminCollectionByPath,
+    fetchShopCollections,
 } from "../api/collections.api";
 import { ICollection } from "../types/collections.types";
 
-export function useGetCollections() {
+export function useGetShopCollections() {
     return useSuspenseQuery({
-        queryKey: ["collections"],
-        queryFn: () => fetchCollections(),
+        queryKey: ["shop", "collections"],
+        queryFn: () => fetchShopCollections(),
     });
 }
 
-export function useGetCollectionByPath(collectionPath: string) {
+export function useGetAdminCollections() {
     return useSuspenseQuery({
-        queryKey: ["collection", collectionPath],
-        queryFn: () => fetchGetCollectionByPath(collectionPath),
+        queryKey: ["admin", "collections"],
+        queryFn: () => fetchAdminCollections(),
+    });
+}
+
+export function useGetAdminCollectionByPath(collectionPath: string) {
+    return useSuspenseQuery({
+        queryKey: ["admin", "collections", collectionPath],
+        queryFn: () => fetchGetAdminCollectionByPath(collectionPath),
     });
 }
 
@@ -29,11 +37,11 @@ export function useCreateCollection() {
     return useMutation({
         mutationFn: (data: Omit<ICollection, "banner">) => createCollection(data),
         onSuccess: (data) => {
-            queryClient.invalidateQueries({
-                queryKey: ["collections"],
-            });
+            queryClient.invalidateQueries({ queryKey: ["shop", "collections"] });
+            queryClient.invalidateQueries({ queryKey: ["admin", "collections"] });
             toast.success(data.message);
         },
+
         onError: (error: any) => {
             if (error?.message) {
                 toast.error(error.message);
@@ -56,13 +64,22 @@ export function useEditCollection() {
             data: {
                 name: string;
                 path: string;
-                status: boolean;
+                isVisible: boolean;
             };
         }) => editCollection(collectionId, data),
-        onSuccess: (data) => {
-            queryClient.invalidateQueries({ queryKey: ["collections"] });
+        onSuccess: (data, variables) => {
+            queryClient.invalidateQueries({ queryKey: ["shop", "collections"] });
+            queryClient.invalidateQueries({ queryKey: ["admin", "collections"] });
+            queryClient.invalidateQueries({
+                queryKey: ["shop", "collections", variables.collectionId],
+            });
+            queryClient.invalidateQueries({
+                queryKey: ["admin", "collections", variables.collectionId],
+            });
+
             toast.success(data.message);
         },
+
         onError: (error: any) => {
             if (error?.message) {
                 toast.error(error.message);
@@ -79,7 +96,8 @@ export function useDeleteCollection() {
     return useMutation({
         mutationFn: (collectionId: string) => deleteCollection(collectionId),
         onSuccess: (data) => {
-            queryClient.invalidateQueries({ queryKey: ["collections"] });
+            queryClient.invalidateQueries({ queryKey: ["shop", "collections"] });
+            queryClient.invalidateQueries({ queryKey: ["admin", "collections"] });
             toast.success(data.message);
         },
         onError: (error: any) => {

@@ -14,7 +14,9 @@ export function LoginComponentsWrapper({
             className={`flex flex-col gap-[10px] w-1/3 h-fit bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px]
         md:w-full ${clasName ?? null}`}
         >
-            <h3 className="text-3xl  font-bold text-white">{title}</h3>
+            <h3 className="text-3xl font-perandory tracking-wider text-white">
+                {title}
+            </h3>
             <hr className="border-t border-white/5" />
             {children}
         </div>

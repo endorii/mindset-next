@@ -15,7 +15,13 @@ async function fetchCategory(
 
     if (!res.ok) notFound();
 
-    return res.json();
+    const category: ICategory = await res.json();
+
+    if (!category.isVisible) {
+        notFound();
+    }
+
+    return category;
 }
 
 export async function generateMetadata({

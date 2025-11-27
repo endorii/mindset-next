@@ -352,7 +352,6 @@ function Checkout() {
         }
     };
 
-    // Стани loading
     if (isUserCartPending || isProductsPending) return <CheckoutSkeleton />;
 
     if (isUserCartError)
@@ -563,6 +562,7 @@ function Checkout() {
                         <MonoButton
                             type="submit"
                             disabled={
+                                isUserCartPending ||
                                 cartToShow.length === 0 ||
                                 isSubmitting ||
                                 Object.values(novaPoshtaLoading).some(

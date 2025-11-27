@@ -29,7 +29,7 @@ export function CollectionInfoModal({
     const {
         name,
         path,
-        status,
+        isVisible,
         description,
         createdAt,
         updatedAt,
@@ -50,7 +50,7 @@ export function CollectionInfoModal({
                     <InfoField label={"Path"} value={path} />
                     <InfoField
                         label={"Status"}
-                        value={status === false ? "Not active" : "Active"}
+                        value={isVisible === false ? "Not visible" : "Visible"}
                     />
                 </div>
                 <TextareaInfoField label={"Description"} value={description} />

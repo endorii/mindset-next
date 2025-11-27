@@ -25,6 +25,7 @@ export function DeleteSizeModal({
 
     const handleDelete = async () => {
         await deleteSizeMutation.mutateAsync(size.id);
+        onClose();
     };
 
     useEscapeKeyClose({ isOpen, onClose });
@@ -36,16 +37,17 @@ export function DeleteSizeModal({
                 <span className="font-semibold underline">{size.name}</span>?
             </div>
             <FormButtonsWrapper>
-                <MonoButtonUnderlined onClick={onClose}>
+                <MonoButtonUnderlined
+                    onClick={onClose}
+                    disabled={deleteSizeMutation.isPending}
+                >
                     Cancel
                 </MonoButtonUnderlined>
                 <DeleteButton
-                    onClick={async () => {
-                        onClose();
-                        handleDelete();
-                    }}
+                    onClick={handleDelete}
+                    disabled={deleteSizeMutation.isPending}
                 >
-                    Delete
+                    {deleteSizeMutation.isPending ? "Deletting..." : "Delete"}
                 </DeleteButton>
             </FormButtonsWrapper>
         </ModalWrapper>

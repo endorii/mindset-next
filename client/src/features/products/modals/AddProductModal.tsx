@@ -42,10 +42,10 @@ interface FormData {
     path: string;
     price: number;
     oldPrice: number | null;
-    available: boolean;
+    isAvailable: boolean;
     description: string;
     composition: string;
-    status: boolean;
+    isVisible: boolean;
     colorIds?: string[];
     sizeIds?: string[];
     typeIds?: string[];
@@ -70,10 +70,10 @@ export function AddProductModal({
             path: "",
             price: 0,
             oldPrice: null,
-            available: false,
+            isAvailable: false,
             description: "",
             composition: "",
-            status: false,
+            isVisible: false,
             colorIds: [],
             sizeIds: [],
             typeIds: [],
@@ -189,10 +189,10 @@ export function AddProductModal({
                     path: data.path.trim(),
                     price: Number(data.price),
                     oldPrice: data.oldPrice,
-                    available: data.available,
+                    isAvailable: data.isAvailable,
                     description: data.description.trim(),
                     composition: data.composition.trim(),
-                    status: data.status,
+                    isVisible: data.isVisible,
                     categoryId,
                     colorIds: colorsToSend,
                     sizeIds: sizesToSend,
@@ -321,19 +321,19 @@ export function AddProductModal({
                             basicOptionLabel="Choose availability"
                             getOptionLabel={(a) => a.label}
                             getOptionValue={(a) => String(a.value)}
-                            errorMessage={errors.available?.message}
+                            errorMessage={errors.isAvailable?.message}
                             name="available"
                         />
 
                         <BasicSelector
-                            label={"Status*"}
+                            label={"Visibility*"}
                             control={control}
                             itemsList={STATUSES}
-                            basicOptionLabel="Choose a status"
+                            basicOptionLabel="Choose visibility"
                             getOptionLabel={(s) => s.label}
                             getOptionValue={(s) => String(s.value)}
-                            errorMessage={errors.status?.message}
-                            name={"status"}
+                            errorMessage={errors.isVisible?.message}
+                            name={"isVisible"}
                         />
                     </div>
                     <BasicTextarea
@@ -442,6 +442,7 @@ export function AddProductModal({
                         }}
                         disabled={
                             uploadBannerMutation.isPending ||
+                            uploadImagesMutation.isPending ||
                             createProductMutation.isPending
                         }
                     >
@@ -451,10 +452,12 @@ export function AddProductModal({
                         type="submit"
                         disabled={
                             uploadBannerMutation.isPending ||
+                            uploadImagesMutation.isPending ||
                             createProductMutation.isPending
                         }
                     >
                         {uploadBannerMutation.isPending ||
+                        uploadImagesMutation.isPending ||
                         createProductMutation.isPending
                             ? "Loading..."
                             : "Add"}

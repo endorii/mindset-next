@@ -87,8 +87,8 @@ export function Header({ serverUser }: { serverUser: IUser | null }) {
                     >
                         <UserIcon className="w-[25px] fill-white" />
                         <div>
-                            {serverUser?.userName || user?.userName
-                                ? serverUser?.userName || user?.userName
+                            {user?.userName || serverUser?.userName
+                                ? user?.userName || serverUser?.userName
                                 : "Login"}
                         </div>
                     </Link>

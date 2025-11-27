@@ -3,7 +3,7 @@ import { LoginComponentsWrapper } from "@/shared/ui/wrappers";
 export function Security() {
     return (
         <LoginComponentsWrapper title="Protecting your information">
-            <div className="flex flex-col gap-[10px]">
+            <div className="flex flex-col gap-[10px] font-light">
                 <div className="flex flex-col gap-[10px]">
                     <p className="text-neutral-200 text-sm">
                         We take the security of your personal data seriously and
