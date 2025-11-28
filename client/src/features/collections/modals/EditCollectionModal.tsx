@@ -82,6 +82,7 @@ export function EditCollectionModal({
                     data: {
                         name: data.name,
                         path: data.path,
+                        description: data.description,
                         isVisible: data.isVisible,
                     },
                 });
@@ -91,7 +92,6 @@ export function EditCollectionModal({
                         type: "collection",
                         entityId: collection.id,
                         banner,
-                        includedIn: null,
                     });
                 }
             }

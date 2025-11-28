@@ -32,6 +32,11 @@ export class CreateProductDto {
     @IsNotEmpty({ message: "Description cannot be empty." })
     description: string;
 
+    @IsOptional()
+    @IsArray({ message: "Images must be an array of URLs." })
+    @IsString({ each: true, message: "Each image URL must be a string." })
+    images?: string[];
+
     @IsString({ message: "Composition must be a string." })
     @IsNotEmpty({ message: "Composition cannot be empty." })
     composition: string;

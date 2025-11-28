@@ -16,14 +16,26 @@ export function useAdminCategory(categoryId: string) {
     });
 }
 
+export function useAdminCategoryProducts(categoryId: string) {
+    return useSuspenseQuery({
+        queryKey: ["admin", "categories", categoryId, "products"],
+        queryFn: () => fetchCategoryProducts(categoryId),
+    });
+}
+
 export function useCreateCategory() {
     const queryClient = useQueryClient();
 
     return useMutation({
         mutationFn: (categoryData: ICategory) => addCategoryToCollection(categoryData),
-        onSuccess: (data) => {
-            queryClient.invalidateQueries({ queryKey: ["shop", "categories"] });
-            queryClient.invalidateQueries({ queryKey: ["admin", "categories"] });
+        onSuccess: (data, variables) => {
+            queryClient.invalidateQueries({
+                queryKey: ["shop", "collections", variables.collectionId, "categories"],
+            });
+            queryClient.invalidateQueries({
+                queryKey: ["admin", "collections", variables.collectionId, "categories"],
+            });
+
             toast.success(data.message);
         },
         onError: (error: any) => {
@@ -37,27 +49,27 @@ export function useEditCategory() {
 
     return useMutation({
         mutationFn: ({
+            collectionId,
             categoryId,
             data,
         }: {
             categoryId: string;
+            collectionId: string;
             data: { name: string; path: string; isVisible: boolean };
         }) => editCategory(categoryId, data),
-        onSuccess(data) {
-            queryClient.invalidateQueries({ queryKey: ["shop", "categories"] });
-            queryClient.invalidateQueries({ queryKey: ["admin", "categories"] });
+        onSuccess: (data, variables) => {
+            queryClient.invalidateQueries({
+                queryKey: ["shop", "collections", variables.collectionId, "categories"],
+            });
+            queryClient.invalidateQueries({
+                queryKey: ["admin", "collections", variables.collectionId, "categories"],
+            });
             toast.success(data.message);
         },
+
         onError: (error: any) => {
             toast.error(error?.message || "An unknown error occurred.");
         },
-    });
-}
-
-export function useAdminCategoryProducts(categoryId: string) {
-    return useSuspenseQuery({
-        queryKey: ["admin", "categories", categoryId, "products"],
-        queryFn: () => fetchCategoryProducts(categoryId),
     });
 }
 
@@ -65,10 +77,15 @@ export function useDeleteCategory() {
     const queryClient = useQueryClient();
 
     return useMutation({
-        mutationFn: (categoryId: string) => deleteCategory(categoryId),
-        onSuccess: (data) => {
-            queryClient.invalidateQueries({ queryKey: ["shop", "categories"] });
-            queryClient.invalidateQueries({ queryKey: ["admin", "categories"] });
+        mutationFn: ({ collectionId, categoryId }: { collectionId: string; categoryId: string }) =>
+            deleteCategory(categoryId),
+        onSuccess: (data, variables) => {
+            queryClient.invalidateQueries({
+                queryKey: ["shop", "collections", variables.collectionId, "categories"],
+            });
+            queryClient.invalidateQueries({
+                queryKey: ["admin", "collections", variables.collectionId, "categories"],
+            });
             toast.success(data.message);
         },
         onError: (error: any) => {

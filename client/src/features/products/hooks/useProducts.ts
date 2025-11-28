@@ -80,25 +80,34 @@ export function useEditProduct() {
     return useMutation({
         mutationFn: ({
             productId,
+            categoryId,
             productData,
         }: {
             productId: string;
+            categoryId: string;
             productData: Partial<ICreateProductPayload>;
         }) => editProduct(productId, productData),
 
         onSuccess(data, variables) {
-            const id = variables.productId;
+            const { productId, categoryId } = variables;
 
-            // refresh product detail
-            queryClient.invalidateQueries({ queryKey: ["products", id] });
-            queryClient.invalidateQueries({ queryKey: ["products", id, "colors"] });
-            queryClient.invalidateQueries({ queryKey: ["products", id, "sizes"] });
-            queryClient.invalidateQueries({ queryKey: ["products", id, "types"] });
+            queryClient.invalidateQueries({
+                queryKey: ["products", productId, "colors"],
+            });
+            queryClient.invalidateQueries({
+                queryKey: ["products", productId, "sizes"],
+            });
+            queryClient.invalidateQueries({
+                queryKey: ["products", productId, "types"],
+            });
 
-            // refresh lists
-            queryClient.invalidateQueries({ queryKey: ["admin", "products"] });
-            queryClient.invalidateQueries({ queryKey: ["shop", "products"] });
-            queryClient.invalidateQueries({ queryKey: ["shop", "products", "popular"] });
+            queryClient.invalidateQueries({
+                queryKey: ["admin", "categories", categoryId, "products"],
+            });
+
+            queryClient.invalidateQueries({
+                queryKey: ["shop", "products", "popular"],
+            });
 
             toast.success(data.message);
         },
@@ -113,11 +122,14 @@ export function useDeleteProduct() {
     const queryClient = useQueryClient();
 
     return useMutation({
-        mutationFn: (productId: string) => deleteProduct(productId),
+        mutationFn: ({ categoryId, productId }: { categoryId: string; productId: string }) =>
+            deleteProduct(productId),
 
-        onSuccess(data) {
+        onSuccess(data, variables) {
             // refresh admin lists
-            queryClient.invalidateQueries({ queryKey: ["admin", "products"] });
+            queryClient.invalidateQueries({
+                queryKey: ["admin", "categories", variables.categoryId, "products"],
+            });
 
             // refresh shop lists
             queryClient.invalidateQueries({ queryKey: ["shop", "products"] });

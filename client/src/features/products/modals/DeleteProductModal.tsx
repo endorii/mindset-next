@@ -31,7 +31,10 @@ export function DeleteProductModal({
         if (product.images.length > 0) {
             // await deleteImages(product.images);
         }
-        await deleteProductMutation.mutateAsync(product.id);
+        await deleteProductMutation.mutateAsync({
+            categoryId: product.categoryId,
+            productId: product.id,
+        });
         onClose();
     };
 

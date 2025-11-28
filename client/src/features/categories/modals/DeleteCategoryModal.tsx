@@ -34,7 +34,10 @@ export function DeleteCategoryModal({
             return;
         }
 
-        await deleteCategoryMutation.mutateAsync(category.id);
+        await deleteCategoryMutation.mutateAsync({
+            collectionId: category.collectionId,
+            categoryId: category.id,
+        });
         onClose();
     };
 

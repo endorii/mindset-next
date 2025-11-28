@@ -79,6 +79,7 @@ export function EditCategoryModal({
             if (category.id) {
                 await editCategoryMutation.mutateAsync({
                     categoryId: category.id,
+                    collectionId: category.collectionId,
                     data: {
                         ...data,
                     },

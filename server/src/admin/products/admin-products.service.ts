@@ -63,7 +63,7 @@ export class AdminProductsService {
     }
 
     async editProduct(userId: string, productId: string, updateProductDto: UpdateProductDto) {
-        const { colorIds, sizeIds, typeIds, ...rest } = updateProductDto;
+        const { colorIds, sizeIds, typeIds, images, ...rest } = updateProductDto;
 
         const product = await this.prisma.product.findUnique({
             where: { id: productId },
@@ -76,7 +76,14 @@ export class AdminProductsService {
             throw new NotFoundException("Product with this ID not found");
         }
 
-        const dataToUpdate: Prisma.ProductUpdateInput = { ...rest, updatedAt: new Date() };
+        const dataToUpdate: Prisma.ProductUpdateInput = {
+            ...rest,
+            updatedAt: new Date(),
+        };
+
+        if (images !== undefined) {
+            dataToUpdate.images = images; // Це повністю замінює старий масив
+        }
 
         if (colorIds !== undefined) {
             dataToUpdate.productColors = {

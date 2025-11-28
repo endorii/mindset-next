@@ -15,30 +15,53 @@ export function useUploadBanner() {
             type: BannerEntity;
             entityId: string;
             banner: File;
-            includedIn: string | null;
+            includedIn?: string;
         }) => uploadBanner(type, entityId, banner),
 
         onSuccess: (_, variables) => {
-            const listMap = {
-                collection: ["collections"],
-                category: ["categories", variables.includedIn],
-                product: ["products", variables.includedIn],
-            };
+            const { type, entityId, includedIn } = variables;
 
-            const adminListKey = ["admin", ...listMap[variables.type]];
-            const shopListKey = ["shop", ...listMap[variables.type]];
+            if (type === "collection") {
+                queryClient.invalidateQueries({ queryKey: ["shop", "collections"] });
+                queryClient.invalidateQueries({ queryKey: ["admin", "collections"] });
+                queryClient.invalidateQueries({
+                    queryKey: ["admin", "collections", entityId],
+                });
+            }
 
-            // invalidate списки
-            queryClient.invalidateQueries({ queryKey: adminListKey });
-            queryClient.invalidateQueries({ queryKey: shopListKey });
+            if (type === "category") {
+                // ВАЖЛИВО: інвалідуємо саму категорію
+                queryClient.invalidateQueries({
+                    queryKey: ["admin", "categories", entityId],
+                });
 
-            // invalidate детальну сторінку
-            queryClient.invalidateQueries({
-                queryKey: ["admin", variables.type, variables.entityId],
-            });
-            queryClient.invalidateQueries({
-                queryKey: ["shop", variables.type, variables.entityId],
-            });
+                // Інвалідуємо список категорій у колекції
+                if (includedIn) {
+                    queryClient.invalidateQueries({
+                        queryKey: ["admin", "collections", includedIn, "categories"],
+                    });
+                    queryClient.invalidateQueries({
+                        queryKey: ["admin", "collections", includedIn],
+                    });
+                }
+            }
+
+            if (type === "product") {
+                // ВАЖЛИВО: інвалідуємо сам продукт
+                queryClient.invalidateQueries({
+                    queryKey: ["admin", "products", entityId],
+                });
+
+                // Інвалідуємо список продуктів у категорії
+                if (includedIn) {
+                    queryClient.invalidateQueries({
+                        queryKey: ["admin", "categories", includedIn, "products"],
+                    });
+                    queryClient.invalidateQueries({
+                        queryKey: ["admin", "categories", includedIn],
+                    });
+                }
+            }
         },
     });
 }
@@ -51,19 +74,21 @@ export function useUploadImages() {
             type,
             entityId,
             images,
+            includedIn,
         }: {
             type: ImagesEntity;
             entityId: string;
             images: File[];
+            includedIn?: string;
         }) => uploadImages(type, entityId, images),
 
         onSuccess: (_, variables) => {
             // invalidate детальні сторінки
             queryClient.invalidateQueries({
-                queryKey: ["admin", variables.type, variables.entityId],
+                queryKey: ["admin", "categories", variables.includedIn, "products"],
             });
             queryClient.invalidateQueries({
-                queryKey: ["shop", variables.type, variables.entityId],
+                queryKey: ["admin", "categories", variables.includedIn],
             });
         },
     });

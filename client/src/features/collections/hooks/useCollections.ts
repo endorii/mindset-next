@@ -72,6 +72,7 @@ export function useEditCollection() {
             data: {
                 name: string;
                 path: string;
+                description: string;
                 isVisible: boolean;
             };
         }) => editCollection(collectionId, data),

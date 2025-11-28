@@ -215,6 +215,7 @@ export function AddProductModal({
                           type: "products",
                           entityId: product.data.id,
                           images,
+                          includedIn: product.data.categoryId,
                       })
                     : { paths: [] };
             }

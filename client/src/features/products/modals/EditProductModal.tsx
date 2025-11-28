@@ -246,6 +246,7 @@ export function EditProductModal({
                       type: "products",
                       entityId: product.id,
                       images: imagesToUpload,
+                      includedIn: product.categoryId,
                   })
                 : { paths: [] };
 
@@ -255,6 +256,7 @@ export function EditProductModal({
             ];
 
             await editProductMutation.mutateAsync({
+                categoryId: product.categoryId,
                 productId: product.id,
                 productData: {
                     name: data.name.trim(),

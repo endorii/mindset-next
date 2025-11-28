@@ -102,7 +102,7 @@ export function AddCategoryModal({
                     type: "category",
                     entityId: category.data?.id,
                     banner,
-                    includedIn: collectionId,
+                    includedIn: category.data.collectionId,
                 });
             }
             handleClose();
