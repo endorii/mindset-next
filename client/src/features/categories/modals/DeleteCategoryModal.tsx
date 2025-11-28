@@ -1,6 +1,5 @@
 "use client";
 
-// import { deleteImage } from "@/shared/api/files.api";
 import { useEscapeKeyClose } from "@/shared/hooks";
 import { DeleteButton } from "@/shared/ui/buttons";
 import { MonoButtonUnderlined } from "@/shared/ui/buttons/MonoButtonUnderlined";

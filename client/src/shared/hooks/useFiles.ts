@@ -30,12 +30,10 @@ export function useUploadBanner() {
             }
 
             if (type === "category") {
-                // ВАЖЛИВО: інвалідуємо саму категорію
                 queryClient.invalidateQueries({
                     queryKey: ["admin", "categories", entityId],
                 });
 
-                // Інвалідуємо список категорій у колекції
                 if (includedIn) {
                     queryClient.invalidateQueries({
                         queryKey: ["admin", "collections", includedIn, "categories"],
@@ -47,12 +45,10 @@ export function useUploadBanner() {
             }
 
             if (type === "product") {
-                // ВАЖЛИВО: інвалідуємо сам продукт
                 queryClient.invalidateQueries({
                     queryKey: ["admin", "products", entityId],
                 });
 
-                // Інвалідуємо список продуктів у категорії
                 if (includedIn) {
                     queryClient.invalidateQueries({
                         queryKey: ["admin", "categories", includedIn, "products"],

@@ -56,12 +56,10 @@ export function useCreateProduct() {
         mutationFn: (payload: ICreateProductPayload) => addProductToCategory(payload),
 
         onSuccess(data, variables) {
-            // refresh category products
             queryClient.invalidateQueries({
                 queryKey: ["admin", "categories", variables.categoryId, "products"],
             });
 
-            // refresh shop lists
             queryClient.invalidateQueries({ queryKey: ["shop", "products"] });
             queryClient.invalidateQueries({ queryKey: ["shop", "products", "popular"] });
 
@@ -126,12 +124,10 @@ export function useDeleteProduct() {
             deleteProduct(productId),
 
         onSuccess(data, variables) {
-            // refresh admin lists
             queryClient.invalidateQueries({
                 queryKey: ["admin", "categories", variables.categoryId, "products"],
             });
 
-            // refresh shop lists
             queryClient.invalidateQueries({ queryKey: ["shop", "products"] });
             queryClient.invalidateQueries({ queryKey: ["shop", "products", "popular"] });
 

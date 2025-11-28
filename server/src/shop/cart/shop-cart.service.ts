@@ -59,7 +59,6 @@ export class ShopCartService {
             throw new BadRequestException("Invalid type for this product");
         }
 
-        // --- Перевірка дубліката у кошику ---
         const existingCartItem = await this.prisma.cartItem.findUnique({
             where: {
                 userId_productId_size_type_color: {
@@ -78,7 +77,6 @@ export class ShopCartService {
             );
         }
 
-        // --- Створення ---
         await this.prisma.cartItem.create({
             data: {
                 userId,

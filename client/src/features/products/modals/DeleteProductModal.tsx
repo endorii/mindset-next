@@ -1,6 +1,5 @@
 "use client";
 
-// import { deleteImage, deleteImages } from "@/shared/api/files.api";
 import { useEscapeKeyClose } from "@/shared/hooks";
 import { DeleteButton } from "@/shared/ui/buttons";
 import { MonoButtonUnderlined } from "@/shared/ui/buttons/MonoButtonUnderlined";
@@ -27,10 +26,6 @@ export function DeleteProductModal({
     if (!isOpen) return null;
 
     const handleDelete = async () => {
-        // await deleteImage(product.banner);
-        if (product.images.length > 0) {
-            // await deleteImages(product.images);
-        }
         await deleteProductMutation.mutateAsync({
             categoryId: product.categoryId,
             productId: product.id,

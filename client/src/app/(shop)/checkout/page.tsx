@@ -73,7 +73,6 @@ function Checkout() {
         return { ...item, product };
     });
 
-    // Стани для Нової Пошти
     const [areas, setAreas] = useState<INovaPostDataObj[]>([]);
     const [cities, setCities] = useState<INovaPostDataObj[]>([]);
     const [warehouses, setWarehouses] = useState<INovaPostDataObj[]>([]);
@@ -87,7 +86,6 @@ function Checkout() {
     const [selectedWarehouse, setSelectedWarehouse] =
         useState<INovaPostDataObj | null>(null);
 
-    // Стани loading
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [novaPoshtaLoading, setNovaPoshtaLoading] =
         useState<NovaPoshtaLoadingState>({
@@ -118,7 +116,6 @@ function Checkout() {
 
     const createOrderMutation = useCreateOrder();
 
-    // Loading даних користувача
     useEffect(() => {
         if (user) {
             reset({
@@ -129,7 +126,6 @@ function Checkout() {
         }
     }, [user, reset]);
 
-    // Loading областей при монтуванні
     useEffect(() => {
         const loadAreas = async () => {
             setNovaPoshtaLoading((prev) => ({ ...prev, areas: true }));
@@ -148,7 +144,6 @@ function Checkout() {
         loadAreas();
     }, []);
 
-    // Loading міст при виборі області
     useEffect(() => {
         if (!selectedArea) {
             setCities([]);
@@ -182,7 +177,6 @@ function Checkout() {
         setValue("postDepartment", "");
     }, [selectedArea, setValue]);
 
-    // Loading відділень при виборі міста
     useEffect(() => {
         if (!selectedCity) {
             setWarehouses([]);
@@ -214,7 +208,6 @@ function Checkout() {
         setValue("postDepartment", "");
     }, [selectedCity, setValue]);
 
-    // Обробники вибору
     const handleAreaChange = useCallback(
         (e: React.ChangeEvent<HTMLSelectElement>) => {
             const area = areas.find((a) => a.Ref === e.target.value) || null;
@@ -243,7 +236,6 @@ function Checkout() {
         [warehouses, setValue]
     );
 
-    // Очищення кошика
     const clearUserCart = async () => {
         if (user && userCartItems) {
             const deletePromises = userCartItems.map((item) =>
@@ -255,7 +247,6 @@ function Checkout() {
         }
     };
 
-    // Відправка форми
     const onSubmit = async (data: FormData) => {
         if (!mergedCart.length) {
             toast.error("Cart is empty.");

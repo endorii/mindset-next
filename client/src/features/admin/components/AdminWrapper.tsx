@@ -12,7 +12,6 @@ export function AdminWrapper({ children }: { children: React.ReactNode }) {
     const [isChecking, setIsChecking] = useState(true);
 
     useEffect(() => {
-        // Дати час на гідрацію стору
         const timer = setTimeout(() => setIsChecking(false), 50);
         return () => clearTimeout(timer);
     }, []);
