@@ -14,11 +14,11 @@ export function ProductCard({
         <Link href={path} className="relative flex flex-col gap-[10px]">
             <div className="relative">
                 <Image
-                    width={400}
+                    width={500}
                     height={400}
                     src={product.banner}
                     alt={product.name}
-                    className="relative w-full h-[400px] object-cover"
+                    className="relative h-[400px] w-[500px] object-cover"
                 />
                 <ProductCardColors productId={product.id} />
             </div>

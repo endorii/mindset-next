@@ -56,6 +56,7 @@ export class AdminCollectionsService {
 
         await this.adminRecentActions.createAction(userId, `Added collection ${collection.name}`);
 
+        await this.revalidateService.revalidate("/");
         await this.revalidateService.revalidate(`/${collection.path}`);
 
         return {
@@ -99,6 +100,7 @@ export class AdminCollectionsService {
             `Edited collection ${updatedCollection.name}`
         );
 
+        await this.revalidateService.revalidate(`/`);
         await this.revalidateService.revalidate(`/${collection.path}`);
 
         return {
@@ -137,6 +139,7 @@ export class AdminCollectionsService {
 
         await this.adminRecentActions.createAction(userId, `Deleted collection ${collection.name}`);
 
+        await this.revalidateService.revalidate(`/`);
         await this.revalidateService.revalidate(`/${collection.path}`);
 
         return {

@@ -25,7 +25,7 @@ export function SliderWrapper({ productsList, title }: SliderWrapperProps) {
 
                 <Swiper
                     spaceBetween={20}
-                    slidesPerView={1.5}
+                    slidesPerView={1}
                     modules={[Navigation, Pagination, Autoplay]}
                     navigation={true}
                     pagination={{
@@ -37,19 +37,22 @@ export function SliderWrapper({ productsList, title }: SliderWrapperProps) {
                         disableOnInteraction: false,
                     }}
                     breakpoints={{
+                        360: {
+                            slidesPerView: 1,
+                        },
                         480: {
                             slidesPerView: 2,
                         },
                         768: {
                             slidesPerView: 2,
                         },
-                        1024: {
+                        992: {
                             slidesPerView: 3,
                         },
-                        1280: {
+                        1200: {
                             slidesPerView: 4,
                         },
-                        1440: {
+                        1650: {
                             slidesPerView: 5,
                         },
                     }}

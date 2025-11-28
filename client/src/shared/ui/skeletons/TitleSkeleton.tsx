@@ -1,5 +1,5 @@
 export function TitleSkeleton() {
     return (
-        <div className="h-[28px] xs:h-[24px] w-[150px] bg-white/10 animate-pulse" />
+        <div className="h-[48px] xs:h-[36px] w-[250px] bg-white/10 animate-pulse" />
     );
 }

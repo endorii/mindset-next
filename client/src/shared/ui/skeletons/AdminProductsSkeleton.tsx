@@ -1,6 +1,9 @@
+import { FilterSectionSkeleton } from "./FilterSectionSkeleton";
+
 export function AdminProductsSkeleton() {
     return (
-        <div className="  bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px] sm:px-[10px] pt-0 text-sm">
+        <div className=" bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px] sm:px-[10px] pt-0 text-sm">
+            <FilterSectionSkeleton />
             <div
                 className="grid 
                 grid-cols-[120px_0.5fr_0.5fr_0.5fr_0.5fr_1fr] 

@@ -22,13 +22,15 @@ export function RecentlyViewedProducts() {
         }
     }, []);
 
+    if (recentlyViewedProductsListPending) {
+        return <ProductsSliderSkeleton />;
+    }
+
     return recentlyViewedProductsList ? (
         <SliderWrapper
             productsList={recentlyViewedProductsList}
             title="Recently viewed"
         />
-    ) : recentlyViewedProductsListPending ? (
-        <ProductsSliderSkeleton />
     ) : (
         <div>The product list is empty</div>
     );

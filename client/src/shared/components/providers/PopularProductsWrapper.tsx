@@ -10,7 +10,7 @@ export function PopularProductsWrapper() {
     const [showSkeleton, setShowSkeleton] = useState(true);
 
     useEffect(() => {
-        const timeout = setTimeout(() => setShowSkeleton(false), 200);
+        const timeout = setTimeout(() => setShowSkeleton(false), 100);
         return () => clearTimeout(timeout);
     }, []);
 

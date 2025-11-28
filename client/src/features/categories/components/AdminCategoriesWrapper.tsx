@@ -4,7 +4,6 @@ import { ErrorWithMessage } from "@/shared/ui/components";
 import {
     AdminProductsSkeleton,
     ButtonSkeleton,
-    FilterSectionSkeleton,
     TitleWithButtonSkeleton,
 } from "@/shared/ui/skeletons";
 import { Suspense } from "react";
@@ -25,10 +24,10 @@ export function AdminCategoriesWrapper({
         >
             <Suspense
                 fallback={
-                    <div className="flex flex-col gap-[10px]">
+                    <div className="flex flex-col gap-[20px]">
                         <ButtonSkeleton />
                         <TitleWithButtonSkeleton />
-                        <FilterSectionSkeleton />
+                        <hr className="border border-b border-white/5" />
                         <AdminProductsSkeleton />
                     </div>
                 }

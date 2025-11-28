@@ -1,6 +1,6 @@
 export function FilterSectionSkeleton() {
     return (
-        <div className="flex sm:flex-col items-center sm:items-start gap-[15px] bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px]">
+        <div className="flex items-center sm:flex-col gap-[15px] py-[20px]">
             <div className="h-[20px] w-[100px] bg-white/10 animate-pulse" />
 
             <div className="flex flex-wrap gap-[10px] w-full">

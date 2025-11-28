@@ -1,4 +1,4 @@
-import { useMutation, useQuery, useQueryClient, useSuspenseQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import {
     addProductToCategory,
@@ -15,7 +15,7 @@ import {
 import { ICreateProductPayload } from "../types/products.types";
 
 export function usePopularProducts() {
-    return useSuspenseQuery({
+    return useQuery({
         queryKey: ["shop", "products", "popular"],
         queryFn: () => fetchPopularProducts(),
     });

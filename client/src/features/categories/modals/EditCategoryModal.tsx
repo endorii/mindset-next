@@ -156,7 +156,7 @@ export function EditCategoryModal({
                         <BasicSelector
                             label="Visibility*"
                             control={control}
-                            name="visibility"
+                            name="isVisible"
                             itemsList={STATUSES}
                             basicOptionLabel="Choose visibility"
                             getOptionLabel={(s) => s.label}
