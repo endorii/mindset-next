@@ -13,9 +13,9 @@ import { ErrorBoundary } from "react-error-boundary";
 import { AdminCategoriesContent } from "./AdminCategoriesContent";
 
 export function AdminCategoriesWrapper({
-    collectionPath,
+    collectionId,
 }: {
-    collectionPath: string;
+    collectionId: string;
 }) {
     return (
         <ErrorBoundary
@@ -33,7 +33,7 @@ export function AdminCategoriesWrapper({
                     </div>
                 }
             >
-                <AdminCategoriesContent collectionPath={collectionPath} />
+                <AdminCategoriesContent collectionId={collectionId} />
             </Suspense>
         </ErrorBoundary>
     );

@@ -13,8 +13,8 @@ export class CreateCategoryDto {
     @IsNotEmpty({ message: "Description is required" })
     description: string;
 
-    @IsBoolean({ message: "Status must be true/false" })
-    status: boolean;
+    @IsBoolean({ message: "Visibility must be true/false" })
+    isVisible: boolean;
 
     @IsString()
     collectionId: string;

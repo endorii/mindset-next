@@ -26,7 +26,7 @@ export class CreateProductDto {
     oldPrice?: number;
 
     @IsBoolean({ message: "Availability must be true/false." })
-    available: boolean;
+    isAvailable: boolean;
 
     @IsString({ message: "Description must be a string." })
     @IsNotEmpty({ message: "Description cannot be empty." })
@@ -36,8 +36,8 @@ export class CreateProductDto {
     @IsNotEmpty({ message: "Composition cannot be empty." })
     composition: string;
 
-    @IsBoolean({ message: "Status must be true/false." })
-    status: boolean;
+    @IsBoolean({ message: "Visibility must be true/false." })
+    isVisible: boolean;
 
     @IsString({ message: "Category ID must be a string." })
     @IsNotEmpty({ message: "Category ID cannot be empty." })

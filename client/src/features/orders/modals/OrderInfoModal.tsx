@@ -93,7 +93,7 @@ export function OrderInfoModal({
                 <div className="flex flex-col gap-[10px]">
                     <div className="text-lg">List of products</div>
                     <div className="  bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[15px]">
-                        <div className="grid grid-cols-[1fr_1fr_1fr_1fr_1fr_1fr_1fr_1fr] gap-[15px] p-[20px] rounded-t-lg font-semibold text-sm">
+                        <div className="grid grid-cols-[1fr_1fr_1fr_1fr_1fr_1fr_1fr_1fr] gap-[15px] p-[20px] font-semibold text-sm">
                             <div>Collection</div>
                             <div>Category</div>
                             <div>Product name</div>

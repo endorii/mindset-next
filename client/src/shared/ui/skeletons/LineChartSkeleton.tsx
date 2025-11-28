@@ -7,7 +7,7 @@ export function LineChartSkeleton() {
                 {Array.from({ length: 4 }).map((_, i) => (
                     <div
                         key={i}
-                        className="h-8 w-[120px] bg-white/10 animate-pulse rounded-full"
+                        className="h-8 w-[120px] bg-white/10 animate-pulse "
                     />
                 ))}
             </div>

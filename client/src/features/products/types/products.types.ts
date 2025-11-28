@@ -41,8 +41,7 @@ export interface ICreateProductPayload {
     composition: string;
     categoryId?: string;
     isVisible: boolean;
-    banner: string;
-    images: string[];
+    images?: string[];
 
     colorIds?: string[];
     sizeIds?: string[];

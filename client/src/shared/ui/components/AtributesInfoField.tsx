@@ -31,7 +31,7 @@ export function AtributesInfoField({
                     ? atributeList.map((item, i) => (
                           <div
                               key={i}
-                              className="flex gap-[5px] items-center px-3 py-1 rounded-full text-sm border border-white/30 bg-white text-black"
+                              className="flex gap-[5px] items-center px-3 py-1 text-sm border border-white/30 bg-white text-black"
                           >
                               <div>{getAtributeName(item)}</div>
                           </div>

@@ -125,7 +125,7 @@ export function AdminReviewsContent() {
                     lg:grid-cols-[120px_1fr_2.5fr_1fr] 
                     md:grid-cols-3 
                     xs:grid-cols-2
-                    gap-[15px] p-[20px] sm:px-[10px] rounded-t-lg font-semibold text-sm"
+                    gap-[15px] p-[20px] sm:px-[10px] font-semibold text-sm"
                     >
                         <div>Name</div>
                         <div className=" xs:hidden">Rating</div>
@@ -262,9 +262,9 @@ export function AdminReviewsContent() {
                     </div>
                 </div>
             ) : (
-                <div className="relative flex min-h-[200px] items-center bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px] overflow-hidden">
-                    <div className="font-bold text-3xl z-1">
-                        The review list is empty.
+                <div className="relative flex min-h-[200px] items-center justify-center bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px] overflow-hidden">
+                    <div className="font-bold text-4xl font-perandory tracking-wider z-1">
+                        Reviews list is empty.
                     </div>
                 </div>
             )}

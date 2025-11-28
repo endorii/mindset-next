@@ -1,6 +1,6 @@
 "use client";
 
-import { useGetShopCollections } from "@/features/collections/hooks/useCollections";
+import { useShopCollections } from "@/features/collections/hooks/useCollections";
 import { BurgerMenuIcon, CloseIcon } from "@/shared/icons";
 import { useEffect, useState } from "react";
 import { MenuSection } from "./MenuSection";
@@ -36,7 +36,7 @@ const sections = [
 
 export function HeaderBurger() {
     const { data: collections, isPending: isCollectionsPending } =
-        useGetShopCollections();
+        useShopCollections();
     const [isOpen, setIsOpen] = useState(false);
 
     const handleClose = () => setIsOpen(false);

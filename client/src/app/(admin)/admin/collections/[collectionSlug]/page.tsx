@@ -11,5 +11,5 @@ export default function AdminCategories() {
 
     if (!collectionSlug) return null;
 
-    return <AdminCategoriesWrapper collectionPath={collectionSlug} />;
+    return <AdminCategoriesWrapper collectionId={collectionSlug} />;
 }

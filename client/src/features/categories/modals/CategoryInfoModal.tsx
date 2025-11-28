@@ -64,12 +64,8 @@ export function CategoryInfoModal({
                         label="Number of products"
                         value={products?.length}
                     />
-                    <InfoField
-                        label="Included in the collection"
-                        value={category.collection?.path}
-                    />
                 </div>
-                <InfoModalBanner image={banner} />
+                <InfoModalBanner image={banner || ""} />
             </FormFillingWrapper>
             <FormButtonsWrapper>
                 <MonoButtonUnderlined onClick={onClose}>

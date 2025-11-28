@@ -4,6 +4,7 @@ import { BannerEntity, ImagesEntity } from "../types/types";
 
 export function useUploadBanner() {
     const queryClient = useQueryClient();
+
     return useMutation({
         mutationFn: ({
             type,
@@ -16,15 +17,27 @@ export function useUploadBanner() {
             banner: File;
             includedIn: string | null;
         }) => uploadBanner(type, entityId, banner),
+
         onSuccess: (_, variables) => {
-            const keyMap: Record<string, string> = {
-                collection: "collections",
-                category: "categories",
-                product: "products",
+            const listMap = {
+                collection: ["collections"],
+                category: ["categories", variables.includedIn],
+                product: ["products", variables.includedIn],
             };
 
+            const adminListKey = ["admin", ...listMap[variables.type]];
+            const shopListKey = ["shop", ...listMap[variables.type]];
+
+            // invalidate списки
+            queryClient.invalidateQueries({ queryKey: adminListKey });
+            queryClient.invalidateQueries({ queryKey: shopListKey });
+
+            // invalidate детальну сторінку
             queryClient.invalidateQueries({
-                queryKey: [keyMap[variables.type], variables.includedIn],
+                queryKey: ["admin", variables.type, variables.entityId],
+            });
+            queryClient.invalidateQueries({
+                queryKey: ["shop", variables.type, variables.entityId],
             });
         },
     });
@@ -32,6 +45,7 @@ export function useUploadBanner() {
 
 export function useUploadImages() {
     const queryClient = useQueryClient();
+
     return useMutation({
         mutationFn: ({
             type,
@@ -42,9 +56,14 @@ export function useUploadImages() {
             entityId: string;
             images: File[];
         }) => uploadImages(type, entityId, images),
+
         onSuccess: (_, variables) => {
+            // invalidate детальні сторінки
             queryClient.invalidateQueries({
-                queryKey: [variables.type, variables.entityId],
+                queryKey: ["admin", variables.type, variables.entityId],
+            });
+            queryClient.invalidateQueries({
+                queryKey: ["shop", variables.type, variables.entityId],
             });
         },
     });

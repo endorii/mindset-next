@@ -1,6 +1,6 @@
 "use client";
 
-import { useGetProductByPath } from "@/features/products/hooks/useProducts";
+import { useProductByPath } from "@/features/products/hooks/useProducts";
 import {
     AvgRatingStat,
     ProductReviewsList,
@@ -24,7 +24,7 @@ function Reviews() {
         data: product,
         isPending: isProductPending,
         isError: isProductError,
-    } = useGetProductByPath(collectionPath, categoryPath, productPath);
+    } = useProductByPath(collectionPath, categoryPath, productPath);
     const {
         data: reviews,
         isPending: isReviewsPending,

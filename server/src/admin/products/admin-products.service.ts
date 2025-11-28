@@ -144,4 +144,26 @@ export class AdminProductsService {
 
         return { message: "Product successfully deleted" };
     }
+
+    async getCategoryProducts(categoryId: string) {
+        const products = await this.prisma.product.findMany({
+            where: { categoryId },
+            include: {
+                productColors: {
+                    include: { color: true },
+                },
+                productTypes: {
+                    include: { type: true },
+                },
+                productSizes: {
+                    include: { size: true },
+                },
+            },
+        });
+
+        if (!products) {
+            throw new NotFoundException("Products not found");
+        }
+        return products;
+    }
 }

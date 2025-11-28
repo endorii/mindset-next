@@ -7,7 +7,6 @@ import {
     fetchGetProductByPath,
     fetchPopularProducts,
     fetchProductColors,
-    fetchProductsByCategoryId,
     fetchProductsByIds,
     fetchProductsFromSameCollection,
     fetchProductSizes,
@@ -17,25 +16,18 @@ import { ICreateProductPayload } from "../types/products.types";
 
 export function usePopularProducts() {
     return useSuspenseQuery({
-        queryKey: ["popularProducts"],
+        queryKey: ["shop", "products", "popular"],
         queryFn: () => fetchPopularProducts(),
     });
 }
 
-export function useProductsByCategoryId(categoryId: string | undefined) {
-    return useSuspenseQuery({
-        queryKey: ["products", categoryId],
-        queryFn: () => fetchProductsByCategoryId(categoryId || ""),
-    });
-}
-
-export function useGetProductByPath(
+export function useProductByPath(
     collectionPath: string,
     categoryPath: string,
     productPath: string
 ) {
     return useQuery({
-        queryKey: ["product", productPath],
+        queryKey: ["shop", "products", productPath],
         queryFn: () => fetchGetProductByPath(collectionPath, categoryPath, productPath),
         enabled: !!collectionPath || !!categoryPath || !!productPath,
     });
@@ -44,14 +36,14 @@ export function useGetProductByPath(
 export function useProductsByIds(ids: string[]) {
     const nonEmptyIds = ids.filter(Boolean);
     return useQuery({
-        queryKey: ["productsByIds", nonEmptyIds],
+        queryKey: ["shop", "products", "by-ids", nonEmptyIds],
         queryFn: () => fetchProductsByIds(nonEmptyIds),
     });
 }
 
 export function useProductsFromSameCollection(collectionId: string) {
     return useQuery({
-        queryKey: ["products", "collection", collectionId],
+        queryKey: ["shop", "products", "collection", collectionId],
         queryFn: () => fetchProductsFromSameCollection(collectionId),
         enabled: !!collectionId,
     });
@@ -61,20 +53,23 @@ export function useCreateProduct() {
     const queryClient = useQueryClient();
 
     return useMutation({
-        mutationFn: (productData: Omit<ICreateProductPayload, "images" | "banner">) =>
-            addProductToCategory(productData),
-        onSuccess: (data) => {
+        mutationFn: (payload: ICreateProductPayload) => addProductToCategory(payload),
+
+        onSuccess(data, variables) {
+            // refresh category products
             queryClient.invalidateQueries({
-                queryKey: ["products"],
+                queryKey: ["admin", "categories", variables.categoryId, "products"],
             });
+
+            // refresh shop lists
+            queryClient.invalidateQueries({ queryKey: ["shop", "products"] });
+            queryClient.invalidateQueries({ queryKey: ["shop", "products", "popular"] });
+
             toast.success(data.message);
         },
-        onError: (error: any) => {
-            if (error?.message) {
-                toast.error(error.message);
-            } else {
-                toast.error("An unknown error occurred.");
-            }
+
+        onError(error: any) {
+            toast.error(error?.message ?? "Unknown error");
         },
     });
 }
@@ -90,18 +85,26 @@ export function useEditProduct() {
             productId: string;
             productData: Partial<ICreateProductPayload>;
         }) => editProduct(productId, productData),
-        onSuccess(data) {
-            queryClient.invalidateQueries({
-                queryKey: ["products"],
-            });
+
+        onSuccess(data, variables) {
+            const id = variables.productId;
+
+            // refresh product detail
+            queryClient.invalidateQueries({ queryKey: ["products", id] });
+            queryClient.invalidateQueries({ queryKey: ["products", id, "colors"] });
+            queryClient.invalidateQueries({ queryKey: ["products", id, "sizes"] });
+            queryClient.invalidateQueries({ queryKey: ["products", id, "types"] });
+
+            // refresh lists
+            queryClient.invalidateQueries({ queryKey: ["admin", "products"] });
+            queryClient.invalidateQueries({ queryKey: ["shop", "products"] });
+            queryClient.invalidateQueries({ queryKey: ["shop", "products", "popular"] });
+
             toast.success(data.message);
         },
-        onError: (error: any) => {
-            if (error?.message) {
-                toast.error(error.message);
-            } else {
-                toast.error("An unknown error occurred.");
-            }
+
+        onError(error: any) {
+            toast.error(error?.message ?? "Unknown error");
         },
     });
 }
@@ -111,39 +114,40 @@ export function useDeleteProduct() {
 
     return useMutation({
         mutationFn: (productId: string) => deleteProduct(productId),
-        onSuccess: (data) => {
-            queryClient.invalidateQueries({
-                queryKey: ["products"],
-            });
+
+        onSuccess(data) {
+            // refresh admin lists
+            queryClient.invalidateQueries({ queryKey: ["admin", "products"] });
+
+            // refresh shop lists
+            queryClient.invalidateQueries({ queryKey: ["shop", "products"] });
+            queryClient.invalidateQueries({ queryKey: ["shop", "products", "popular"] });
+
             toast.success(data.message);
         },
-        onError: (error: any) => {
-            if (error?.message) {
-                toast.error(error.message);
-            } else {
-                toast.error("An unknown error occurred.");
-            }
+
+        onError(error: any) {
+            toast.error(error?.message ?? "Unknown error");
         },
     });
 }
-
 export function useProductColors(id: string) {
     return useQuery({
-        queryKey: ["product", id, "colors"],
+        queryKey: ["products", id, "colors"],
         queryFn: () => fetchProductColors(id),
     });
 }
 
 export function useProductTypes(id: string) {
     return useQuery({
-        queryKey: ["product", id, "sizes"],
+        queryKey: ["products", id, "types"],
         queryFn: () => fetchProductTypes(id),
     });
 }
 
 export function useProductSizes(id: string) {
     return useQuery({
-        queryKey: ["product", id, "types"],
+        queryKey: ["products", id, "sizes"],
         queryFn: () => fetchProductSizes(id),
     });
 }

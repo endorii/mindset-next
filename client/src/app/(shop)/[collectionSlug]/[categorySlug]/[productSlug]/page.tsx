@@ -15,7 +15,7 @@ async function fetchProduct(
     productSlug: string
 ): Promise<IProduct> {
     const res = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/shop/products/${collectionSlug}/${categorySlug}/${productSlug}`,
+        `${process.env.NEXT_PUBLIC_API_URL}/shop/collections/${collectionSlug}/categories/${categorySlug}/products/${productSlug}`,
         { next: { revalidate: 60 } }
     );
 

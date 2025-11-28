@@ -1,25 +1,18 @@
+import { fetchCategoryProducts } from "@/features/products/api/products.api";
 import { useMutation, useQueryClient, useSuspenseQuery } from "@tanstack/react-query";
 import { toast } from "sonner";
 import {
     addCategoryToCollection,
     deleteCategory,
     editCategory,
-    fetchAdminCategoryByPath,
-    fetchGetAdminCategoriesByCollectionId,
+    fetchAdminCategory,
 } from "../api/categories.api";
 import { ICategory } from "../types/categories.types";
 
-export function useGetAdminCategoryByPath(collectionPath: string, categoryPath: string) {
+export function useAdminCategory(categoryId: string) {
     return useSuspenseQuery({
-        queryKey: ["admin", "categories", collectionPath, categoryPath],
-        queryFn: () => fetchAdminCategoryByPath(collectionPath, categoryPath),
-    });
-}
-
-export function useGetAdminCategoriesByCollectionId(collectionId: string) {
-    return useSuspenseQuery({
-        queryKey: ["admin", "categories", collectionId],
-        queryFn: () => fetchGetAdminCategoriesByCollectionId(collectionId),
+        queryKey: ["admin", "categories", categoryId],
+        queryFn: () => fetchAdminCategory(categoryId),
     });
 }
 
@@ -27,8 +20,7 @@ export function useCreateCategory() {
     const queryClient = useQueryClient();
 
     return useMutation({
-        mutationFn: (categoryData: Omit<ICategory, "banner">) =>
-            addCategoryToCollection(categoryData),
+        mutationFn: (categoryData: ICategory) => addCategoryToCollection(categoryData),
         onSuccess: (data) => {
             queryClient.invalidateQueries({ queryKey: ["shop", "categories"] });
             queryClient.invalidateQueries({ queryKey: ["admin", "categories"] });
@@ -59,6 +51,13 @@ export function useEditCategory() {
         onError: (error: any) => {
             toast.error(error?.message || "An unknown error occurred.");
         },
+    });
+}
+
+export function useAdminCategoryProducts(categoryId: string) {
+    return useSuspenseQuery({
+        queryKey: ["admin", "categories", categoryId, "products"],
+        queryFn: () => fetchCategoryProducts(categoryId),
     });
 }
 

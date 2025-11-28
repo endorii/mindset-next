@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Param, Patch, Post, Req, UseGuards } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Param, Patch, Post, Req, UseGuards } from "@nestjs/common";
 
 import { CreateCollectionDto } from "./dto/create-collection.dto";
 import { UpdateCollectionDto } from "./dto/update-collection.dto";
@@ -8,30 +8,43 @@ import { Roles } from "src/auth/decorators/roles.decorator";
 import { JwtAccessGuard } from "src/auth/guards/jwt/jwt-access.guard";
 import { RolesGuard } from "src/auth/guards/roles/roles.guard";
 import { AuthenticatedRequestUser } from "src/auth/interfaces/auth-request-user";
+import { AdminCategoriesService } from "../categories/admin-categories.service";
 import { AdminCollectionsService } from "./admin-collections.service";
 
 @Controller("admin/collections")
 @UseGuards(JwtAccessGuard, RolesGuard)
+@Roles(Role.admin)
 export class AdminCollectionsController {
-    constructor(private readonly collectionsService: AdminCollectionsService) {}
+    constructor(
+        private readonly adminCollectionsService: AdminCollectionsService,
+        private readonly adminCategoriesService: AdminCategoriesService
+    ) {}
+
+    @Get()
+    getCollections() {
+        return this.adminCollectionsService.getCollections();
+    }
 
     @Post()
-    @Roles(Role.admin)
     postCollection(
         @Body() createCollectionDto: CreateCollectionDto,
         @Req() req: Request & { user: AuthenticatedRequestUser }
     ) {
-        return this.collectionsService.postCollection(req.user.id, createCollectionDto);
+        return this.adminCollectionsService.postCollection(req.user.id, createCollectionDto);
+    }
+
+    @Get(":collectionId")
+    getCollection(@Param("collectionId") collectionId: string) {
+        return this.adminCollectionsService.getCollection(collectionId);
     }
 
     @Patch(":collectionId")
-    @Roles(Role.admin)
     editCollection(
         @Param("collectionId") collectionId: string,
         @Body() updateCollectionDto: UpdateCollectionDto,
         @Req() req: Request & { user: AuthenticatedRequestUser }
     ) {
-        return this.collectionsService.editCollection(
+        return this.adminCollectionsService.editCollection(
             req.user.id,
             collectionId,
             updateCollectionDto
@@ -39,11 +52,15 @@ export class AdminCollectionsController {
     }
 
     @Delete(":collectionId")
-    @Roles(Role.admin)
     deleteCollection(
         @Param("collectionId") collectionId: string,
         @Req() req: Request & { user: AuthenticatedRequestUser }
     ) {
-        return this.collectionsService.deleteCollection(req.user.id, collectionId);
+        return this.adminCollectionsService.deleteCollection(req.user.id, collectionId);
+    }
+
+    @Get(":collectionId/categories")
+    getCollectionCategories(@Param("collectionId") collectionId: string) {
+        return this.adminCategoriesService.getCollectionCategories(collectionId);
     }
 }

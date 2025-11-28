@@ -13,8 +13,29 @@ export class AdminCollectionsService {
         private readonly revalidateService: RevalidateService
     ) {}
 
+    async getCollections() {
+        const collections = await this.prisma.collection.findMany({
+            include: {
+                categories: true,
+            },
+        });
+
+        return collections;
+    }
+
+    async getCollection(collectionId: string) {
+        const collection = await this.prisma.collection.findUnique({
+            where: { id: collectionId },
+        });
+
+        if (!collection) {
+            throw new NotFoundException("Collection not found");
+        }
+        return collection;
+    }
+
     async postCollection(userId: string, createCollectionDto: CreateCollectionDto) {
-        const { name, path, description, status } = createCollectionDto;
+        const { name, path, description, isVisible } = createCollectionDto;
 
         const existingCollection = await this.prisma.collection.findUnique({
             where: { path },
@@ -29,13 +50,13 @@ export class AdminCollectionsService {
                 name,
                 path,
                 description,
-                status,
+                isVisible,
             },
         });
 
         await this.adminRecentActions.createAction(userId, `Added collection ${collection.name}`);
 
-        await this.revalidateService.revalidate("/");
+        await this.revalidateService.revalidate(`/${collection.path}`);
 
         return {
             message: "Collection successfully created",
@@ -78,7 +99,7 @@ export class AdminCollectionsService {
             `Edited collection ${updatedCollection.name}`
         );
 
-        await this.revalidateService.revalidate("/");
+        await this.revalidateService.revalidate(`/${collection.path}`);
 
         return {
             message: "Collection successfully updated",
@@ -116,7 +137,7 @@ export class AdminCollectionsService {
 
         await this.adminRecentActions.createAction(userId, `Deleted collection ${collection.name}`);
 
-        await this.revalidateService.revalidate("/");
+        await this.revalidateService.revalidate(`/${collection.path}`);
 
         return {
             message: "Collection successfully deleted",

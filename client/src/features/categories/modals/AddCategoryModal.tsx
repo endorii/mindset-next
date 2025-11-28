@@ -154,7 +154,7 @@ export function AddCategoryModal({
                         <BasicSelector
                             label="Visibility*"
                             control={control}
-                            name="visibility"
+                            name="isVisible"
                             itemsList={STATUSES}
                             basicOptionLabel="Choose visibility"
                             getOptionValue={(p) => String(p.value)}

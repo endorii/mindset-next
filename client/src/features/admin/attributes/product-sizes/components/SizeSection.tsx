@@ -74,8 +74,8 @@ export function SizeSection() {
                 </div>
             ) : (
                 <div className="relative flex min-h-[200px] items-center justify-center bg-white/5 shadow-lg border border-white/5 p-[20px]">
-                    <div className="font-bold text-3xl z-1">
-                        The size list is empty.
+                    <div className="font-bold text-4xl font-perandory tracking-wider z-1">
+                        Sizes list is empty.
                     </div>
                     <PaletteIcon className="absolute fill-black top-[-60px] right-20 w-[400px] opacity-20 pointer-events-none" />
                 </div>

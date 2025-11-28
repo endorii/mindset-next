@@ -322,7 +322,7 @@ export function AddProductModal({
                             getOptionLabel={(a) => a.label}
                             getOptionValue={(a) => String(a.value)}
                             errorMessage={errors.isAvailable?.message}
-                            name="available"
+                            name="isAvailable"
                         />
 
                         <BasicSelector

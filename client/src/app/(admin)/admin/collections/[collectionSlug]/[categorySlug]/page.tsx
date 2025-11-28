@@ -18,8 +18,8 @@ export default function AdminProducts() {
 
     return (
         <AdminProductsWrapper
-            collectionPath={collectionSlug}
-            categoryPath={categorySlug}
+            collectionId={collectionSlug}
+            categoryId={categorySlug}
         />
     );
 }

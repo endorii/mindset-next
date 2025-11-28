@@ -6,10 +6,7 @@ export function SkeletonProductCard() {
 
                 <ul className="absolute top-[30px] left-[30px] flex gap-[5px]  backdrop-blur-lg p-[5px]">
                     {[1, 2, 3].map((i) => (
-                        <li
-                            key={i}
-                            className="rounded-full w-[20px] h-[20px] bg-white/5"
-                        />
+                        <li key={i} className="w-[20px] h-[20px] bg-white/5" />
                     ))}
                 </ul>
 

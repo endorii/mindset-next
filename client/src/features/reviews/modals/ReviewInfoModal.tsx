@@ -137,7 +137,7 @@ export function ReviewInfoModal({
                         Product information
                     </div>
                     <div className="  bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[15px]">
-                        <div className="grid grid-cols-[1fr_1fr_1fr_1fr_1fr_1fr_1fr+1fr] gap-[15px] p-[20px] rounded-t-lg font-semibold text-sm">
+                        <div className="grid grid-cols-[1fr_1fr_1fr_1fr_1fr_1fr_1fr+1fr] gap-[15px] p-[20px] font-semibold text-sm">
                             <div>Banner</div>
                             <div>Name</div>
                             <div>Color</div>

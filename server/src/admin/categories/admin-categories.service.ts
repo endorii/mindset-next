@@ -150,4 +150,36 @@ export class AdminCategoriesService {
             message: "Category successfully deleted",
         };
     }
+
+    async getCategory(categoryId: string) {
+        const category = await this.prisma.category.findUnique({
+            where: { id: categoryId },
+            include: {
+                collection: {
+                    select: {
+                        name: true,
+                    },
+                },
+            },
+        });
+
+        if (!category) {
+            throw new NotFoundException("Category not found");
+        }
+        return category;
+    }
+
+    async getCollectionCategories(collectionId: string) {
+        const categories = await this.prisma.category.findMany({
+            where: { collectionId },
+            include: {
+                products: true,
+            },
+        });
+
+        if (!categories) {
+            throw new NotFoundException("Categories not found");
+        }
+        return categories;
+    }
 }

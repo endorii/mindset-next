@@ -2,7 +2,7 @@
 
 import { FilterSection } from "@/features/admin/attributes/components/FilterSection";
 import { TitleWithAddElementButton } from "@/features/admin/attributes/components/TitleWithAddElementButton";
-import { useGetAdminCollectionByPath } from "@/features/collections/hooks/useCollections";
+import { useAdminCollection } from "@/features/collections/hooks/useCollections";
 import {
     BackIcon,
     EditIcon,
@@ -18,12 +18,12 @@ import {
     MonoButton,
 } from "@/shared/ui/buttons";
 
+import { useAdminCollectionCategories } from "@/features/collections/hooks/useCollections";
 import { FiltersWrapper } from "@/shared/components/layout";
 import { formatDate } from "@/shared/utils/formatDate";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useMemo, useState } from "react";
-import { useGetAdminCategoriesByCollectionId } from "../hooks/useCategories";
 import {
     AddCategoryModal,
     CategoryInfoModal,
@@ -33,9 +33,9 @@ import {
 import { ICategory } from "../types/categories.types";
 
 export function AdminCategoriesContent({
-    collectionPath,
+    collectionId,
 }: {
-    collectionPath: string;
+    collectionId: string;
 }) {
     const filters = [
         "Newest first",
@@ -52,13 +52,11 @@ export function AdminCategoriesContent({
     );
     const [selectedFilter, setSelectedFilter] = useState("");
 
-    const { data: collection } = useGetAdminCollectionByPath(collectionPath);
+    const { data: collection } = useAdminCollection(collectionId);
 
     if (!collection.id) return;
 
-    const { data: categories } = useGetAdminCategoriesByCollectionId(
-        collection.id
-    );
+    const { data: categories } = useAdminCollectionCategories(collection.id);
 
     const sortedCategories = useMemo(() => {
         if (!categories) return [];
@@ -120,7 +118,7 @@ export function AdminCategoriesContent({
                 </MonoButton>
             </div>
             <TitleWithAddElementButton
-                title={`List of categories [${collectionPath}]`}
+                title={`List of categories [${collection.name}]`}
                 onClick={() => setActiveModal("add")}
                 buttonText={"Add category"}
             />
@@ -145,7 +143,7 @@ export function AdminCategoriesContent({
                     lg:grid-cols-4
                     sm:grid-cols-3 
                     xs:grid-cols-2 
-                    gap-[15px] p-[20px] sm:p-[10px] rounded-t-lg font-semibold text-sm"
+                    gap-[15px] p-[20px] sm:p-[10px] font-semibold text-sm"
                     >
                         <div>Banner</div>
                         <div>Name</div>
@@ -170,7 +168,7 @@ export function AdminCategoriesContent({
                                 gap-[15px] items-center"
                                 >
                                     <img
-                                        src={category.banner}
+                                        src={category.banner || ""}
                                         className="max-h-[120px] w-full object-cover"
                                         alt={`Category banner ${category.name}`}
                                     />
@@ -185,14 +183,14 @@ export function AdminCategoriesContent({
                                         {formatDate(category.updatedAt || "")}
                                     </div>
                                     <Link
-                                        href={`/${collectionPath}/${category.path}`}
+                                        href={`/${collection.path}/${category.path}`}
                                         className="text-blue-500 hover:text-white hover:underline xs:hidden text-center"
                                     >
                                         Category
                                     </Link>
                                     <div className="flex gap-[10px] justify-end sm:justify-start lg:hidden">
                                         <LinkWithIcon
-                                            href={`/admin/collections/${collectionPath}/${category.path}`}
+                                            href={`/admin/collections/${collection.id}/${category.id}`}
                                             counter={
                                                 category.products?.length || 0
                                             }
@@ -225,7 +223,7 @@ export function AdminCategoriesContent({
                                 <div className="gap-[10px] hidden lg:flex w-full">
                                     <LinkWithIcon
                                         className="w-full flex justify-center"
-                                        href={`/admin/collections/${collectionPath}/${category.path}`}
+                                        href={`/admin/collections/${collection.id}/${category.id}`}
                                         counter={category.products?.length || 0}
                                     >
                                         <ProductsIcon className="w-[30px] lg:w-[25px] md:w-[20px] xs:w-[18px] stroke-none fill-white group-hover:fill-black" />
@@ -260,9 +258,9 @@ export function AdminCategoriesContent({
                     </div>
                 </div>
             ) : (
-                <div className="relative flex min-h-[200px] items-center bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px] overflow-hidden">
-                    <div className="font-bold text-3xl z-1">
-                        The category list is empty.
+                <div className="relative flex min-h-[200px] items-center justify-center bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px] overflow-hidden">
+                    <div className="font-bold text-4xl font-perandory tracking-wider z-1">
+                        Category list is empty.
                     </div>
                     <ProductsIcon className="absolute top-[-150] right-40 w-[600px] opacity-20 rotate-[340deg] pointer-events-none" />
                 </div>

@@ -1,4 +1,9 @@
-import { ConflictException, Injectable, NotFoundException } from "@nestjs/common";
+import {
+    BadRequestException,
+    ConflictException,
+    Injectable,
+    NotFoundException,
+} from "@nestjs/common";
 import { PrismaService } from "src/prisma/prisma.service";
 import { CreateCartDto } from "./dto/create-cart.dto";
 
@@ -14,15 +19,55 @@ export class ShopCartService {
         return cartItems;
     }
 
-    async addCartItemToUser(userId: string, createCartDto: CreateCartDto) {
+    async addCartItemToUser(userId: string, dto: CreateCartDto) {
+        const product = await this.prisma.product.findUnique({
+            where: { id: dto.productId },
+            include: {
+                productColors: { include: { color: true } },
+                productSizes: { include: { size: true } },
+                productTypes: { include: { type: true } },
+            },
+        });
+
+        if (!product) {
+            throw new NotFoundException("Product not found");
+        }
+
+        if (!product.isAvailable) {
+            throw new BadRequestException("This product is not available for purchase");
+        }
+
+        if (!product.isVisible) {
+            throw new BadRequestException("Product cannot be added due to its status");
+        }
+
+        const hasColor = product.productColors.some((c) => c.color.name === dto.color);
+
+        if (!hasColor) {
+            throw new BadRequestException("Invalid color for this product");
+        }
+
+        const hasSize = product.productSizes.some((s) => s.size.name === dto.size);
+
+        if (!hasSize) {
+            throw new BadRequestException("Invalid size for this product");
+        }
+
+        const hasType = product.productTypes.some((t) => t.type.name === dto.type);
+
+        if (!hasType) {
+            throw new BadRequestException("Invalid type for this product");
+        }
+
+        // --- Перевірка дубліката у кошику ---
         const existingCartItem = await this.prisma.cartItem.findUnique({
             where: {
                 userId_productId_size_type_color: {
                     userId,
-                    productId: createCartDto.productId,
-                    size: createCartDto.size,
-                    type: createCartDto.type,
-                    color: createCartDto.color,
+                    productId: dto.productId,
+                    size: dto.size,
+                    type: dto.type,
+                    color: dto.color,
                 },
             },
         });
@@ -33,20 +78,19 @@ export class ShopCartService {
             );
         }
 
+        // --- Створення ---
         await this.prisma.cartItem.create({
             data: {
                 userId,
-                productId: createCartDto.productId,
-                size: createCartDto.size,
-                type: createCartDto.type,
-                color: createCartDto.color,
-                quantity: createCartDto.quantity,
+                productId: dto.productId,
+                size: dto.size,
+                type: dto.type,
+                color: dto.color,
+                quantity: dto.quantity,
             },
         });
 
-        return {
-            message: "Product added to the cart",
-        };
+        return { message: "Product added to the cart" };
     }
 
     async removeCartItemFromUser(userId: string, cartItemId: string) {

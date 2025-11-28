@@ -13,6 +13,6 @@ export class CreateCollectionDto {
     @IsNotEmpty({ message: "Description cannot be empty" })
     description: string;
 
-    @IsBoolean({ message: "Status must be true/false" })
-    status: boolean;
+    @IsBoolean({ message: "Visibility must be true/false" })
+    isVisible: boolean;
 }

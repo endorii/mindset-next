@@ -114,11 +114,11 @@ export function AdminOrdersContent() {
                     lg:grid-cols-4
                     md:grid-cols-3
                     xs:grid-cols-2 
-                    gap-[15px] p-[20px] sm:p-[10px] rounded-t-lg font-semibold text-sm"
+                    gap-[15px] p-[20px] sm:p-[10px] font-semibold text-sm"
                     >
                         <div>Name</div>
                         <div className="lg:hidden">Phone number</div>
-                        <div className="xs:text-end">Visibility</div>
+                        <div className="xs:text-end">Status</div>
                         <div className="text-center md:hidden">Ammount, $</div>
                         <div className="xs:hidden">Creation/Update Date</div>
                         <div className="text-right lg:hidden">Actions</div>
@@ -214,9 +214,9 @@ export function AdminOrdersContent() {
                     </div>
                 </div>
             ) : (
-                <div className="relative flex min-h-[200px] items-center bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px] overflow-hidden">
-                    <div className="font-bold text-3xl z-1">
-                        The order list is empty.
+                <div className="relative flex min-h-[200px] items-center justify-center bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px] overflow-hidden">
+                    <div className="font-bold text-4xl font-perandory tracking-wider z-1">
+                        Orders list is empty.
                     </div>
                     {/* <OrderIcon className="absolute fill-none stroke-2 stroke-black top-[-60] right-20 w-[400px] rotate-20 opacity-20 pointer-events-none" /> ЗАМІНИТИ */}
                 </div>

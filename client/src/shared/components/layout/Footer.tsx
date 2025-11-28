@@ -1,6 +1,6 @@
 "use client";
 
-import { useGetShopCollections } from "@/features/collections/hooks/useCollections";
+import { useShopCollections } from "@/features/collections/hooks/useCollections";
 import {
     InstagramIcon,
     LocationIcon,
@@ -19,7 +19,7 @@ export function Footer() {
         data: collections,
         isPending: isCollectionsPending,
         isError: isCollectionsError,
-    } = useGetShopCollections();
+    } = useShopCollections();
 
     // const pathname = usePathname();
     // const collectionPath = pathname.split("/").filter(Boolean)[0] || null;

@@ -10,11 +10,11 @@ import { UpdateProductDto } from "./dto/update-product.dto";
 
 @Controller("admin/products")
 @UseGuards(JwtAccessGuard, RolesGuard)
+@Roles(Role.admin)
 export class AdminProductsController {
     constructor(private readonly adminProductsService: AdminProductsService) {}
 
     @Post()
-    @Roles(Role.admin)
     postProduct(
         @Body() createProductDto: CreateProductDto,
         @Req() req: Request & { user: AuthenticatedRequestUser }
@@ -23,7 +23,6 @@ export class AdminProductsController {
     }
 
     @Patch(":productId")
-    @Roles(Role.admin)
     editProduct(
         @Param("productId") productId: string,
         @Body() updateProductDto: UpdateProductDto,
@@ -33,7 +32,6 @@ export class AdminProductsController {
     }
 
     @Delete(":productId")
-    @Roles(Role.admin)
     deleteProduct(
         @Param("productId") productId: string,
         @Req() req: Request & { user: AuthenticatedRequestUser }

@@ -9,7 +9,7 @@ async function fetchCategory(
     categorySlug: string
 ): Promise<ICategory> {
     const res = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/shop/categories/${collectionSlug}/${categorySlug}`,
+        `${process.env.NEXT_PUBLIC_API_URL}/shop/collections/${collectionSlug}/categories/${categorySlug}`,
         { next: { revalidate: 60 } }
     );
 

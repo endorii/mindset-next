@@ -9,10 +9,10 @@ import {
     IProductToType,
 } from "../types/products.types";
 
-export async function fetchProductsByCategoryId(categoryId: string): Promise<IProduct[]> {
+export async function fetchCategoryProducts(categoryId: string): Promise<IProduct[]> {
     try {
-        const { data } = await httpService.get<IProduct[]>(
-            `/shop/products/categories/${categoryId}`
+        const { data } = await httpServiceAuth.get<IProduct[]>(
+            `/admin/categories/${categoryId}/products`
         );
         return data;
     } catch (error: unknown) {
@@ -50,7 +50,7 @@ export async function fetchProductsByIds(ids: string[]): Promise<IProduct[]> {
 
 export async function fetchPopularProducts(): Promise<IProduct[]> {
     try {
-        const { data } = await httpService.get<IProduct[]>(`/shop/products/popular`);
+        const { data } = await httpService.get<IProduct[]>(`/shop/products/utils/popular`);
         return data;
     } catch (error: unknown) {
         handleAxiosError(error);
@@ -60,7 +60,7 @@ export async function fetchPopularProducts(): Promise<IProduct[]> {
 export async function fetchProductsFromSameCollection(collectionPath: string): Promise<IProduct[]> {
     try {
         const { data } = await httpService.get<IProduct[]>(
-            `/shop/products/collections/${collectionPath}`
+            `/shop/products/utils/collections/${collectionPath}`
         );
         return data;
     } catch (error: unknown) {
@@ -69,8 +69,8 @@ export async function fetchProductsFromSameCollection(collectionPath: string): P
 }
 
 export async function addProductToCategory(
-    productData: Omit<ICreateProductPayload, "images" | "banner">
-): Promise<ServerResponseWithMessage<Omit<ICreateProductPayload, "images" | "banner">>> {
+    productData: ICreateProductPayload
+): Promise<ServerResponseWithMessage<ICreateProductPayload>> {
     try {
         const { data } = await httpServiceAuth.post(`/admin/products`, productData);
         return data;

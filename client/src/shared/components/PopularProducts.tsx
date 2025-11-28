@@ -11,6 +11,8 @@ export function PopularProducts() {
         return null;
     }
 
+    console.log(popularProducts);
+
     if (!popularProducts && isPending) {
         return <ProductsListSkeleton />;
     }

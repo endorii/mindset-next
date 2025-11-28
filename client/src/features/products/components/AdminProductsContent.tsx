@@ -1,6 +1,5 @@
 import { FilterSection } from "@/features/admin/attributes/components/FilterSection";
 import { TitleWithAddElementButton } from "@/features/admin/attributes/components/TitleWithAddElementButton";
-import { useGetAdminCategoryByPath } from "@/features/categories/hooks/useCategories";
 import { FiltersWrapper } from "@/shared/components/layout";
 import {
     BackIcon,
@@ -19,7 +18,11 @@ import { formatDate } from "@/shared/utils/formatDate";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useMemo, useState } from "react";
-import { useProductsByCategoryId } from "../hooks/useProducts";
+
+import {
+    useAdminCategory,
+    useAdminCategoryProducts,
+} from "@/features/categories/hooks/useCategories";
 import {
     AddProductModal,
     DeleteProductModal,
@@ -29,11 +32,11 @@ import {
 import { IProduct } from "../types/products.types";
 
 export function AdminProductsContent({
-    collectionPath,
-    categoryPath,
+    collectionId,
+    categoryId,
 }: {
-    collectionPath: string;
-    categoryPath: string;
+    collectionId: string;
+    categoryId: string;
 }) {
     const filters = ["Newest first", "Latest updated", "Alphabetically"];
 
@@ -45,12 +48,11 @@ export function AdminProductsContent({
     );
     const [selectedFilter, setSelectedFilter] = useState("");
 
-    const { data: category } = useGetAdminCategoryByPath(
-        collectionPath,
-        categoryPath
-    );
+    const { data: category } = useAdminCategory(categoryId);
 
-    const { data: products } = useProductsByCategoryId(category.id);
+    if (!category.id) return;
+
+    const { data: products } = useAdminCategoryProducts(category.id);
 
     const sortedProducts = useMemo(() => {
         if (!products) return [];
@@ -97,7 +99,7 @@ export function AdminProductsContent({
             <div>
                 <MonoButton
                     onClick={() =>
-                        router.push(`/admin/collections/${collectionPath}`)
+                        router.push(`/admin/collections/${collectionId}`)
                     }
                 >
                     <BackIcon className="w-[23px] stroke-white stroke-[50] fill-white group-hover:stroke-black" />
@@ -106,7 +108,7 @@ export function AdminProductsContent({
             </div>
 
             <TitleWithAddElementButton
-                title={`List of products [${collectionPath}/${categoryPath}]`}
+                title={`List of products [${category.collection?.name}/${category.name}]`}
                 onClick={() => setActiveModal("add")}
                 buttonText={"Add product"}
             />
@@ -132,7 +134,7 @@ export function AdminProductsContent({
                     lg:grid-cols-4 
                     sm:grid-cols-3 
                     xs:grid-cols-2 
-                    gap-[15px] p-[20px] sm:p-[10px] rounded-t-lg font-semibold text-sm"
+                    gap-[15px] p-[20px] sm:p-[10px] font-semibold text-sm"
                     >
                         <div>Banner</div>
                         <div>Name</div>
@@ -172,7 +174,7 @@ export function AdminProductsContent({
                                         {formatDate(product.updatedAt)}
                                     </div>
                                     <Link
-                                        href={`/${collectionPath}/${categoryPath}/${product.path}`}
+                                        href={`/${category.collection?.path}/${category.path}/${product.path}`}
                                         className="text-blue-500 hover:text-white hover:underline xs:hidden text-center"
                                     >
                                         Product
@@ -232,9 +234,9 @@ export function AdminProductsContent({
                     </div>
                 </div>
             ) : (
-                <div className="relative flex min-h-[200px] items-center bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px] overflow-hidden">
-                    <div className="font-bold text-3xl z-1">
-                        The product list is empty.
+                <div className="relative flex min-h-[200px] items-center justify-center bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px] overflow-hidden">
+                    <div className="font-bold text-4xl font-perandory tracking-wider z-1">
+                        Products list is empty.
                     </div>
                     <ProductsIcon className="absolute top-[-150px] right-40 w-[600px] opacity-20 rotate-[340deg] pointer-events-none" />
                 </div>

@@ -68,7 +68,7 @@ export function CollectionInfoModal({
                         value={categories?.length}
                     />
                 </div>
-                <InfoModalBanner image={banner} />
+                <InfoModalBanner image={banner || ""} />
             </FormFillingWrapper>
             <FormButtonsWrapper>
                 <MonoButtonUnderlined onClick={onClose}>

@@ -35,7 +35,7 @@ export function CollectionsAndCategoriesList({
                             {item.name}
                         </div>
                         <Image
-                            src={item.banner}
+                            src={item.banner || ""}
                             alt={item.name}
                             width={700}
                             height={700}

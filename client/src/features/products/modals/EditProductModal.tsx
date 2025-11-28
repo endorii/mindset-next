@@ -375,7 +375,7 @@ export function EditProductModal({
                             getOptionLabel={(a) => a.label}
                             getOptionValue={(a) => String(a.value)}
                             errorMessage={errors.isAvailable?.message}
-                            name={`available`}
+                            name={`isAvailable`}
                         />
                         <BasicSelector
                             label={"Visibility*"}

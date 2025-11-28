@@ -1,9 +1,4 @@
-import { IsEnum, IsNotEmpty, IsString } from "class-validator";
-
-export enum CollectionStatus {
-    ACTIVE = "Active",
-    NOTACTIVE = "Not Active",
-}
+import { IsBoolean, IsNotEmpty, IsString } from "class-validator";
 
 export class CreateCollectionDto {
     @IsString()
@@ -22,6 +17,6 @@ export class CreateCollectionDto {
     @IsNotEmpty({ message: "Banner must be provided" })
     banner: string;
 
-    @IsEnum(CollectionStatus, { message: "Status must be 'Active' or 'Not Active'" })
-    status: CollectionStatus;
+    @IsBoolean({ message: "Visibility must be true or false" })
+    isVisible: boolean;
 }

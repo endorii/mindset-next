@@ -20,7 +20,7 @@ import { ModalType } from "@/shared/types/types";
 import { formatDate } from "@/shared/utils/formatDate";
 import Link from "next/link";
 import { useMemo, useState } from "react";
-import { useGetAdminCollections } from "../hooks/useCollections";
+import { useAdminCollections } from "../hooks/useCollections";
 import {
     AddCollectionModal,
     CollectionInfoModal,
@@ -43,7 +43,7 @@ export function AdminCollectionsContent() {
         useState<ICollection | null>(null);
     const [selectedFilter, setSelectedFilter] = useState("");
 
-    const { data: collections } = useGetAdminCollections();
+    const { data: collections } = useAdminCollections();
 
     const sortedCollections = useMemo(() => {
         if (!collections) return [];
@@ -128,7 +128,7 @@ export function AdminCollectionsContent() {
                     lg:grid-cols-4
                     sm:grid-cols-3
                     xs:grid-cols-2
-                    gap-[15px] p-[20px] sm:p-[10px] rounded-t-lg font-semibold "
+                    gap-[15px] p-[20px] sm:p-[10px] font-semibold "
                     >
                         <div className="hidden xs:block">Collections</div>
                         <div className="xs:hidden">Banner</div>
@@ -156,7 +156,7 @@ export function AdminCollectionsContent() {
                                 gap-[15px] items-center"
                                     >
                                         <img
-                                            src={collection.banner}
+                                            src={collection?.banner || ""}
                                             className="max-h-[120px] w-full object-cover"
                                             alt="banner"
                                         />
@@ -183,7 +183,7 @@ export function AdminCollectionsContent() {
                                         </Link>
                                         <div className="flex gap-[10px] justify-end lg:hidden">
                                             <LinkWithIcon
-                                                href={`collections/${collection.path}`}
+                                                href={`collections/${collection.id}`}
                                                 counter={
                                                     collection.categories
                                                         ?.length || 0
@@ -228,7 +228,7 @@ export function AdminCollectionsContent() {
                                             className={
                                                 "w-full flex justify-center"
                                             }
-                                            href={`collections/${collection.path}`}
+                                            href={`collections/${collection.id}`}
                                             counter={
                                                 collection.categories?.length ||
                                                 0
@@ -268,9 +268,9 @@ export function AdminCollectionsContent() {
                     </div>
                 </div>
             ) : (
-                <div className="relative flex min-h-[200px] items-center bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px] overflow-hidden">
-                    <div className="font-bold text-3xl z-1">
-                        Collection list is empty
+                <div className="relative flex min-h-[200px] items-center justify-center bg-white/5 shadow-lg backdrop-blur-[100px] border border-white/5 p-[20px] overflow-hidden">
+                    <div className="font-bold text-4xl font-perandory tracking-wider z-1">
+                        Collections list is empty
                     </div>
                     <ProductsIcon className="absolute top-[-150] right-40 w-[600px] opacity-20 rotate-[340deg] pointer-events-none" />
                 </div>

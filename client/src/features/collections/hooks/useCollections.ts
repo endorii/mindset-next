@@ -1,33 +1,34 @@
+import { fetchAdminCollectionCategories } from "@/features/categories/api/categories.api";
 import { useMutation, useQueryClient, useSuspenseQuery } from "@tanstack/react-query";
 import { toast } from "sonner";
 import {
     createCollection,
     deleteCollection,
     editCollection,
+    fetchAdminCollection,
     fetchAdminCollections,
-    fetchGetAdminCollectionByPath,
     fetchShopCollections,
 } from "../api/collections.api";
 import { ICollection } from "../types/collections.types";
 
-export function useGetShopCollections() {
+export function useShopCollections() {
     return useSuspenseQuery({
         queryKey: ["shop", "collections"],
         queryFn: () => fetchShopCollections(),
     });
 }
 
-export function useGetAdminCollections() {
+export function useAdminCollections() {
     return useSuspenseQuery({
         queryKey: ["admin", "collections"],
         queryFn: () => fetchAdminCollections(),
     });
 }
 
-export function useGetAdminCollectionByPath(collectionPath: string) {
+export function useAdminCollection(collectionId: string) {
     return useSuspenseQuery({
-        queryKey: ["admin", "collections", collectionPath],
-        queryFn: () => fetchGetAdminCollectionByPath(collectionPath),
+        queryKey: ["admin", "collections", collectionId],
+        queryFn: () => fetchAdminCollection(collectionId),
     });
 }
 
@@ -52,6 +53,13 @@ export function useCreateCollection() {
     });
 }
 
+export function useAdminCollectionCategories(collectionId: string) {
+    return useSuspenseQuery({
+        queryKey: ["admin", "collections", collectionId, "categories"],
+        queryFn: () => fetchAdminCollectionCategories(collectionId),
+    });
+}
+
 export function useEditCollection() {
     const queryClient = useQueryClient();
 
@@ -67,15 +75,9 @@ export function useEditCollection() {
                 isVisible: boolean;
             };
         }) => editCollection(collectionId, data),
-        onSuccess: (data, variables) => {
+        onSuccess: (data) => {
             queryClient.invalidateQueries({ queryKey: ["shop", "collections"] });
             queryClient.invalidateQueries({ queryKey: ["admin", "collections"] });
-            queryClient.invalidateQueries({
-                queryKey: ["shop", "collections", variables.collectionId],
-            });
-            queryClient.invalidateQueries({
-                queryKey: ["admin", "collections", variables.collectionId],
-            });
 
             toast.success(data.message);
         },

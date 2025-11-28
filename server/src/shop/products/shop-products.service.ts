@@ -1,27 +1,13 @@
-import { Injectable, NotFoundException } from "@nestjs/common";
+import { Injectable } from "@nestjs/common";
 import { PrismaService } from "src/prisma/prisma.service";
 
 @Injectable()
 export class ProductsService {
     constructor(private readonly prisma: PrismaService) {}
 
-    async getAllProducts() {
-        const products = await this.prisma.product.findMany({
-            include: {
-                category: {
-                    include: {
-                        collection: true,
-                    },
-                },
-            },
-        });
-
-        return products;
-    }
-
     async findByIds(ids: string[]) {
         return this.prisma.product.findMany({
-            where: { id: { in: ids } },
+            where: { id: { in: ids }, isVisible: true },
             include: {
                 category: {
                     select: {
@@ -39,7 +25,7 @@ export class ProductsService {
 
     async getProductsByCategoryId(categoryId: string) {
         const products = await this.prisma.product.findMany({
-            where: { category: { id: categoryId } },
+            where: { category: { id: categoryId }, isVisible: true },
             include: {
                 productColors: { include: { color: true } },
                 productTypes: { include: { type: true } },
@@ -48,32 +34,6 @@ export class ProductsService {
         });
 
         return products;
-    }
-
-    async getProductByPath(collectionPath: string, categoryPath: string, productPath: string) {
-        const product = await this.prisma.product.findFirst({
-            where: {
-                path: productPath,
-                category: {
-                    path: categoryPath,
-                    collection: {
-                        path: collectionPath,
-                    },
-                },
-            },
-            include: {
-                productColors: { include: { color: true } },
-                productTypes: { include: { type: true } },
-                productSizes: { include: { size: true } },
-                category: { include: { collection: true } },
-            },
-        });
-
-        if (!product) {
-            throw new NotFoundException("Product not found");
-        }
-
-        return product;
     }
 
     async getPopularProducts() {
@@ -87,7 +47,7 @@ export class ProductsService {
         const productIds = popularProductGroups.map((group) => group.productId);
 
         const products = await this.prisma.product.findMany({
-            where: { id: { in: productIds } },
+            where: { id: { in: productIds }, isVisible: true },
             include: {
                 productColors: { include: { color: true } },
                 productTypes: { include: { type: true } },
@@ -102,6 +62,7 @@ export class ProductsService {
     async getProductsFromCollection(collectionId: string) {
         const products = await this.prisma.product.findMany({
             where: {
+                isVisible: true,
                 category: {
                     collection: {
                         id: collectionId,

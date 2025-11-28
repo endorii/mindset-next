@@ -3,15 +3,6 @@ import { ServerResponseWithMessage } from "@/shared/interfaces/interfaces";
 import { AxiosError } from "axios";
 import { ICollection } from "../types/collections.types";
 
-export async function fetchAdminCollections(): Promise<ICollection[]> {
-    try {
-        const { data } = await httpServiceAuth.get("/admin/collections");
-        return data;
-    } catch (error: unknown) {
-        handleAxiosError(error);
-    }
-}
-
 export async function fetchShopCollections(): Promise<ICollection[]> {
     try {
         const { data } = await httpService.get("/shop/collections");
@@ -21,7 +12,16 @@ export async function fetchShopCollections(): Promise<ICollection[]> {
     }
 }
 
-export async function fetchGetShopCollectionByPath(collectionPath: string): Promise<ICollection> {
+export async function fetchAdminCollections(): Promise<ICollection[]> {
+    try {
+        const { data } = await httpServiceAuth.get("/admin/collections");
+        return data;
+    } catch (error: unknown) {
+        handleAxiosError(error);
+    }
+}
+
+export async function fetchShopCollectionByPath(collectionPath: string): Promise<ICollection> {
     try {
         const { data } = await httpService.get(`/shop/collections/${collectionPath}`);
         return data;
@@ -30,9 +30,9 @@ export async function fetchGetShopCollectionByPath(collectionPath: string): Prom
     }
 }
 
-export async function fetchGetAdminCollectionByPath(collectionPath: string): Promise<ICollection> {
+export async function fetchAdminCollection(collectionId: string): Promise<ICollection> {
     try {
-        const { data } = await httpServiceAuth.get(`/admin/collections/${collectionPath}`);
+        const { data } = await httpServiceAuth.get(`/admin/collections/${collectionId}`);
         return data;
     } catch (error: unknown) {
         handleAxiosError(error);
@@ -40,8 +40,8 @@ export async function fetchGetAdminCollectionByPath(collectionPath: string): Pro
 }
 
 export async function createCollection(
-    collectionData: Omit<ICollection, "banner">
-): Promise<ServerResponseWithMessage<Omit<ICollection, "banner">>> {
+    collectionData: ICollection
+): Promise<ServerResponseWithMessage<ICollection>> {
     try {
         const { data } = await httpServiceAuth.post("/admin/collections", collectionData);
         return data;
