@@ -34,6 +34,18 @@ export async function changePassword(data: {
     }
 }
 
+export async function setPassword(data: {
+    password: string;
+    confirmPassword: string;
+}): Promise<ServerResponseWithMessage> {
+    try {
+        const { data: response } = await httpServiceAuth.patch("/shop/users/set-password", data);
+        return response;
+    } catch (error: unknown) {
+        handleHttpError(error);
+    }
+}
+
 function handleHttpError(error: any): never {
     const message = error?.response?.data?.message || error.message || "Unknown server error";
     const status = error?.response?.status;

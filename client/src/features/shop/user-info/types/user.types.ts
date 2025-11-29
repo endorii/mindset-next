@@ -5,7 +5,7 @@ export interface IUser {
     id: string;
     userName: string;
     email: string;
-    password: string;
+    password?: string;
     phone: string;
     role: "admin" | "user";
     shippingAddress: IUserShippingAdress;
@@ -13,6 +13,7 @@ export interface IUser {
     favorites: IFavoriteItem[];
     createdAt: string;
     updatedAt: string;
+    withPassword?: boolean;
 }
 
 export interface IUserShippingAdress {

@@ -2,7 +2,7 @@ import { fetchCurrentUser } from "@/features/auth/api/auth.api";
 import { useUserStore } from "@/store/userStore";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
-import { changePassword, deleteUser, editUser } from "../api/users.api";
+import { changePassword, deleteUser, editUser, setPassword } from "../api/users.api";
 import { IUser } from "../types/user.types";
 
 export function useCurrentUser() {
@@ -19,7 +19,6 @@ export function useCurrentUser() {
         enabled: !!accessToken,
         retry: false,
         initialData: null,
-        staleTime: 5 * 60 * 1000,
     });
 }
 
@@ -49,6 +48,27 @@ export function useChangePassword() {
 
     return useMutation({
         mutationFn: (data: { oldPassword: string; newPassword: string }) => changePassword(data),
+        onSuccess: (data) => {
+            queryClient.invalidateQueries({
+                queryKey: ["currentUser"],
+            });
+            toast.success(data.message);
+        },
+        onError: (error: any) => {
+            if (error?.message) {
+                toast.error(error.message);
+            } else {
+                toast.error("An unknown error occurred.");
+            }
+        },
+    });
+}
+
+export function useSetPassword() {
+    const queryClient = useQueryClient();
+
+    return useMutation({
+        mutationFn: (data: { password: string; confirmPassword: string }) => setPassword(data),
         onSuccess: (data) => {
             queryClient.invalidateQueries({
                 queryKey: ["currentUser"],

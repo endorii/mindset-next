@@ -17,6 +17,7 @@ export type AttributeModalType =
     | "editUserInfo"
     | "editUserPassword"
     | "changePassword"
+    | "setPassword"
     | "deleteAccount"
     | null;
 

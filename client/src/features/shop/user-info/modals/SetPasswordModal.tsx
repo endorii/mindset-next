@@ -12,22 +12,19 @@ import {
 import { useState } from "react";
 import { createPortal } from "react-dom";
 import { useForm } from "react-hook-form";
-import { useChangePassword } from "../hooks/useUsers";
+import { useSetPassword } from "../hooks/useUsers";
 
-interface ChangePasswordModalProps {
+interface SetPasswordModalProps {
     isOpen: boolean;
     onClose: () => void;
 }
 
 type FormValues = {
-    oldPassword: string;
-    newPassword: string;
+    password: string;
+    confirmPassword: string;
 };
 
-export function ChangePasswordModal({
-    isOpen,
-    onClose,
-}: ChangePasswordModalProps) {
+export function SetPasswordModal({ isOpen, onClose }: SetPasswordModalProps) {
     const [modalMessage, setModalMessage] = useState("");
 
     const {
@@ -38,12 +35,12 @@ export function ChangePasswordModal({
         formState: { errors },
     } = useForm<FormValues>({
         defaultValues: {
-            oldPassword: "",
-            newPassword: "",
+            password: "",
+            confirmPassword: "",
         },
     });
 
-    const changePasswordMutation = useChangePassword();
+    const setPasswordMutation = useSetPassword();
 
     const handleClose = () => {
         reset();
@@ -53,13 +50,13 @@ export function ChangePasswordModal({
 
     const onSubmit = async (data: FormValues) => {
         try {
-            await changePasswordMutation.mutateAsync({
-                oldPassword: data.oldPassword,
-                newPassword: data.newPassword,
+            await setPasswordMutation.mutateAsync({
+                password: data.password,
+                confirmPassword: data.confirmPassword,
             });
             handleClose();
         } catch (err: any) {
-            setModalMessage(err?.message || "Error while changing password");
+            setModalMessage(err?.message || "Error while setting password");
         }
     };
 
@@ -68,7 +65,7 @@ export function ChangePasswordModal({
     if (!isOpen) return null;
 
     const modalContent = (
-        <ModalWrapper onClose={onClose} modalTitle={"Change password"}>
+        <ModalWrapper onClose={onClose} modalTitle={"Set password"}>
             <form
                 className="flex flex-col gap-[10px]"
                 onSubmit={handleSubmit(onSubmit)}
@@ -76,9 +73,9 @@ export function ChangePasswordModal({
                 <FormFillingWrapper>
                     <div className="grid grid-cols-2 gap-[15px]">
                         <InputField
-                            label={"Old password*"}
+                            label={"Password*"}
                             type="password"
-                            {...register("oldPassword", {
+                            {...register("password", {
                                 required: "Enter password",
                                 minLength: {
                                     value: 8,
@@ -96,33 +93,18 @@ export function ChangePasswordModal({
                                         "Password must contain letters and numbers",
                                 },
                             })}
-                            errorMessage={errors.oldPassword?.message}
+                            errorMessage={errors.password?.message}
                         />
                         <InputField
-                            label="New password*"
+                            label={"Confirm password*"}
                             type="password"
-                            {...register("newPassword", {
-                                required: "Enter new password",
-                                minLength: {
-                                    value: 8,
-                                    message:
-                                        "Password must contain at least 8 characters",
-                                },
-                                maxLength: {
-                                    value: 32,
-                                    message:
-                                        "Password must not exceed 32 characters.",
-                                },
-                                pattern: {
-                                    value: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d@$!%*?&]{8,}$/,
-                                    message:
-                                        "Password must contain letters and numbers",
-                                },
+                            {...register("confirmPassword", {
+                                required: "Enter password again",
                                 validate: (value) =>
-                                    value !== watch("oldPassword") ||
-                                    "New password must be different from old password",
+                                    value === watch("password") ||
+                                    "Passwords do not match",
                             })}
-                            errorMessage={errors.newPassword?.message}
+                            errorMessage={errors.confirmPassword?.message}
                         />
                     </div>
                 </FormFillingWrapper>
@@ -133,17 +115,15 @@ export function ChangePasswordModal({
                     <MonoButtonUnderlined
                         type="button"
                         onClick={handleClose}
-                        disabled={changePasswordMutation.isPending}
+                        disabled={setPasswordMutation.isPending}
                     >
                         Cancel
                     </MonoButtonUnderlined>
                     <MonoButton
                         type="submit"
-                        disabled={changePasswordMutation.isPending}
+                        disabled={setPasswordMutation.isPending}
                     >
-                        {changePasswordMutation.isPending
-                            ? "Changing..."
-                            : "Change"}
+                        {setPasswordMutation.isPending ? "Setting..." : "Set"}
                     </MonoButton>
                 </FormButtonsWrapper>
             </form>

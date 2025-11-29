@@ -78,7 +78,7 @@ export function EditUserInfoModal({
                 onSubmit={handleSubmit(onSubmit)}
             >
                 <FormFillingWrapper>
-                    <div className="grid grid-cols-3 gap-[15px]">
+                    <div className="grid grid-cols-2 gap-[15px]">
                         <InputField
                             label="Username*"
                             type="text"
@@ -100,18 +100,7 @@ export function EditUserInfoModal({
                             })}
                             errorMessage={modalErrors.userName?.message}
                         />
-                        <InputField
-                            label="E-mail*"
-                            type="email"
-                            {...register("email", {
-                                required: "Enter e-mail",
-                                pattern: {
-                                    value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-                                    message: "Incorrect e-mail format",
-                                },
-                            })}
-                            errorMessage={modalErrors.email?.message}
-                        />
+
                         <InputField
                             label="Phone number*"
                             placeholder="+380XXXXXXXXX"

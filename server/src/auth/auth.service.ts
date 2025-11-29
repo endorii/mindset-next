@@ -284,6 +284,7 @@ export class AuthService {
             favorites: user.favorites,
             cart: user.cart,
             shippingAddress: user.shippingAddress,
+            withPassword: !!user.password,
         };
     }
 }

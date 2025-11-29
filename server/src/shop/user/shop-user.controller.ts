@@ -9,11 +9,11 @@ import { ShopUserService } from "./shop-user.service";
 
 @Controller("shop/users")
 @UseGuards(JwtAccessGuard, RolesGuard)
+@Roles(Role.admin, Role.user)
 export class ShopUserController {
     constructor(private readonly shopUserService: ShopUserService) {}
 
     @Patch()
-    @Roles(Role.admin, Role.user)
     editUserInfo(
         @Req() req: Request & { user: AuthenticatedRequestUser },
         @Body() updateUserDto: UpdateUserDto
@@ -22,7 +22,6 @@ export class ShopUserController {
     }
 
     @Delete()
-    @Roles(Role.admin, Role.user)
     deleteUser(
         @Req() req: Request & { user: AuthenticatedRequestUser },
         @Body() body: { password: string }
@@ -31,11 +30,18 @@ export class ShopUserController {
     }
 
     @Patch("change-password")
-    @Roles(Role.admin, Role.user)
     changePassword(
         @Req() req: Request & { user: AuthenticatedRequestUser },
         @Body() data: { oldPassword: string; newPassword: string }
     ) {
         return this.shopUserService.changePassword(req.user.id, data);
+    }
+
+    @Patch("set-password")
+    setPassword(
+        @Req() req: Request & { user: AuthenticatedRequestUser },
+        @Body() data: { password: string; confirmPassword: string }
+    ) {
+        return this.shopUserService.setPassword(req.user.id, data);
     }
 }

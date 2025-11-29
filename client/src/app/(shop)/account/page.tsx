@@ -7,6 +7,7 @@ import {
     DeliveryAndPaymentMethod,
     MainInfo,
 } from "@/features/shop/account/components";
+import { SetPassword } from "@/features/shop/account/components/SetPassword";
 import {
     AddUserAddressModal,
     EditUserAddressModal,
@@ -16,6 +17,7 @@ import { useCurrentUser } from "@/features/shop/user-info/hooks/useUsers";
 import {
     ChangePasswordModal,
     DeleteAccountModal,
+    SetPasswordModal,
 } from "@/features/shop/user-info/modals";
 
 import { AttributeModalType } from "@/shared/types/types";
@@ -56,14 +58,25 @@ function Account() {
                             openModal(type);
                         }}
                     />
-                    <ChangePassword
-                        openModal={(type: AttributeModalType) => {
-                            openModal(type);
-                        }}
-                        isUserError={isUserError}
-                        isUserPending={isUserPending}
-                        currentUser={user}
-                    />
+                    {user?.withPassword ? (
+                        <ChangePassword
+                            openModal={(type: AttributeModalType) => {
+                                openModal(type);
+                            }}
+                            isUserError={isUserError}
+                            isUserPending={isUserPending}
+                            currentUser={user}
+                        />
+                    ) : (
+                        <SetPassword
+                            openModal={(type: AttributeModalType) => {
+                                openModal(type);
+                            }}
+                            isUserError={isUserError}
+                            isUserPending={isUserPending}
+                            currentUser={user}
+                        />
+                    )}
                 </div>
             </div>
 
@@ -93,6 +106,10 @@ function Account() {
                 />
                 <ChangePasswordModal
                     isOpen={activeModal === "changePassword"}
+                    onClose={closeModal}
+                />
+                <SetPasswordModal
+                    isOpen={activeModal === "setPassword"}
                     onClose={closeModal}
                 />
                 <DeleteAccountModal

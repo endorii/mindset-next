@@ -67,7 +67,9 @@ export class ShopUserService {
 
         if (!user) throw new NotFoundException(`User with id ${userId} not found`);
 
-        return user;
+        const setUser = { ...user, withPassword: !!user.password };
+
+        return setUser;
     }
 
     async editUserInfo(userId: string, updateUserDto: UpdateUserDto) {
@@ -107,6 +109,25 @@ export class ShopUserService {
         });
 
         return { message: "Password successfully changed" };
+    }
+
+    async setPassword(userId: string, data: { password: string; confirmPassword: string }) {
+        const existingUser = await this.prisma.user.findUnique({ where: { id: userId } });
+        if (!existingUser) throw new NotFoundException(`User with id ${userId} not found`);
+
+        if (existingUser.password) throw new NotFoundException(`User already have password`);
+
+        const isMatched = data.password === data.confirmPassword;
+        if (!isMatched) throw new BadRequestException("Passwords are not match");
+
+        const hashedPassword = await bcrypt.hash(data.password, 10);
+
+        await this.prisma.user.update({
+            where: { id: userId },
+            data: { password: hashedPassword },
+        });
+
+        return { message: "Password successfully set" };
     }
 
     async deleteAccount(userId: string, password: string) {
