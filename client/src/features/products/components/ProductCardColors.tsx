@@ -1,6 +1,6 @@
 "use client";
 
-import JustColorsSkeleton from "@/shared/ui/skeletons/JustColorsSkeleton";
+import { JustColorsSkeleton } from "@/shared/ui/skeletons";
 import { useProductColors } from "../hooks/useProducts";
 
 export function ProductCardColors({ productId }: { productId: string }) {

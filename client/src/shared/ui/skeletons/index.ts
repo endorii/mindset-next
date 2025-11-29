@@ -1,14 +1,17 @@
 export { AdminProductsSkeleton } from "./AdminProductsSkeleton";
+export { AttributeSelectorSkeleton } from "./AttributeSelectorSkeleton";
 export { BreadcrumbsSkeleton } from "./BreadcrumbsSkeleton";
 export { ButtonSkeleton } from "./ButtonSkeleton";
 export { CheckoutSkeleton } from "./CheckoutSkeleton";
 export { CollectionsAndCategoriesListSkeleton } from "./CollectionsAndCategoriesListSkeleton";
+export { ColorSelectorSkeleton } from "./ColorSelectorSkeleton";
 export { ColorsSkeleton } from "./ColorsSkeleton";
 export { DeliveryAddressSkeleton } from "./DeliveryAddressSkeleton";
 export { FastStatMiniSkeleton } from "./FastStatMiniSkeleton";
 export { FastStatSkeleton } from "./FastStatSkeleton";
 export { FilterSectionSkeleton } from "./FilterSectionSkeleton";
 export { FooterNavListSkeleton } from "./FooterNavListSkeleton";
+export { JustColorsSkeleton } from "./JustColorsSkeleton";
 export { LineChartSkeleton } from "./LineChartSkeleton";
 export { MainInfoSkeleton } from "./MainInfoSkeleton";
 export { PieChartSkeleton } from "./PieChartSkeleton";

@@ -1,4 +1,4 @@
-export default function JustColorsSkeleton() {
+export function JustColorsSkeleton() {
     return (
         <ul className="flex flex-wrap gap-[10px]">
             {Array.from({ length: 5 }).map((_, i) => (

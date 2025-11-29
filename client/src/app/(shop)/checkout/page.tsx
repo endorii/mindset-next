@@ -21,13 +21,13 @@ import {
 import { CardIcon } from "@/shared/icons";
 import { MonoButton } from "@/shared/ui/buttons";
 import { ErrorWithMessage } from "@/shared/ui/components";
-import { InputField } from "@/shared/ui/inputs/InputField";
-import { NovaPoshtaSelect } from "@/shared/ui/selectors/NovaPoshtaSelect";
+import { InputField } from "@/shared/ui/inputs";
+import { NovaPostSelect } from "@/shared/ui/selectors";
 import { CheckoutSkeleton } from "@/shared/ui/skeletons";
 import { ShopTitle } from "@/shared/ui/titles/ShopTitle";
 import { useCartStore } from "@/store/useCartStore";
 import { BadgeDollarSignIcon } from "lucide-react";
-import { useRouter } from "next/navigation";
+import { useRouter } from "next/router";
 import { useCallback, useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { toast } from "sonner";
@@ -437,7 +437,7 @@ function Checkout() {
                                 )}
                                 <div className="flex gap-[15px]">
                                     <div className="flex flex-col gap-[15px] w-full">
-                                        <NovaPoshtaSelect
+                                        <NovaPostSelect
                                             label="Region*"
                                             options={areas}
                                             onChange={handleAreaChange}
@@ -448,7 +448,7 @@ function Checkout() {
                                             disabled={novaPoshtaLoading.areas}
                                         />
 
-                                        <NovaPoshtaSelect
+                                        <NovaPostSelect
                                             label="City*"
                                             options={cities}
                                             onChange={handleCityChange}
@@ -462,7 +462,7 @@ function Checkout() {
                                             }
                                         />
 
-                                        <NovaPoshtaSelect
+                                        <NovaPostSelect
                                             label="Post office*"
                                             options={warehouses}
                                             onChange={handleWarehouseChange}

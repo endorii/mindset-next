@@ -96,7 +96,6 @@ export function AddCollectionModal({
                 type: "collection",
                 entityId: collection.data?.id,
                 banner,
-                includedIn: null,
             });
 
             handleClose();

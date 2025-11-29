@@ -7,8 +7,8 @@ import {
     SelectValue,
 } from "@/components/ui/select";
 import { IUser } from "@/features/shop/user-info/types/user.types";
-import { MONTH_NAMES } from "@/shared/constants/constants";
-import { Period, PERIOD_LABELS } from "@/shared/types/chartPeriods";
+import { MONTH_NAMES, PERIOD_LABELS } from "@/shared/constants/constants";
+import { Period } from "@/shared/types/types";
 import {
     endOfDay,
     endOfMonth,

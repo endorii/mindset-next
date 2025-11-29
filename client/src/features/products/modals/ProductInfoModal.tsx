@@ -4,11 +4,11 @@ import { useEscapeKeyClose } from "@/shared/hooks";
 import { MonoButtonUnderlined } from "@/shared/ui/buttons/MonoButtonUnderlined";
 import {
     AtributesInfoField,
+    InfoField,
     InfoModalBanner,
     Label,
     TextareaInfoField,
 } from "@/shared/ui/components";
-import { InfoField } from "@/shared/ui/inputs/InfoField";
 import {
     FormButtonsWrapper,
     FormFillingWrapper,

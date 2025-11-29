@@ -1,6 +1,6 @@
-import { IIconsProps } from "../types/types";
+import { IconProps } from "../interfaces/interfaces";
 
-export function CollectionsIcon({ className }: IIconsProps) {
+export function CollectionsIcon({ className }: IconProps) {
     return (
         <svg className={`${className ?? null}`} viewBox="0 0 24 24">
             <path d="M8.5 2.75H15.5V1.25H8.5V2.75ZM16.25 3.5V20.5H17.75V3.5H16.25ZM15.5 21.25H8.5V22.75H15.5V21.25ZM7.75 20.5V3.5H6.25V20.5H7.75ZM8.5 21.25C8.08579 21.25 7.75 20.9142 7.75 20.5H6.25C6.25 21.7426 7.25736 22.75 8.5 22.75V21.25ZM16.25 20.5C16.25 20.9142 15.9142 21.25 15.5 21.25V22.75C16.7426 22.75 17.75 21.7426 17.75 20.5H16.25ZM15.5 2.75C15.9142 2.75 16.25 3.08579 16.25 3.5H17.75C17.75 2.25736 16.7426 1.25 15.5 1.25V2.75ZM8.5 1.25C7.25736 1.25 6.25 2.25736 6.25 3.5H7.75C7.75 3.08579 8.08579 2.75 8.5 2.75V1.25Z" />

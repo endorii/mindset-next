@@ -1,6 +1,6 @@
-import { IIconsProps } from "../types/types";
+import { IconProps } from "../interfaces/interfaces";
 
-export function StatsIcon({ className }: IIconsProps) {
+export function StatsIcon({ className }: IconProps) {
     return (
         <svg className={`${className ?? null}`} viewBox="0 -0.5 25 25">
             <path

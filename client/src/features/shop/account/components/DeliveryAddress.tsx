@@ -1,7 +1,7 @@
 import { IUser } from "@/features/shop/user-info/types/user.types";
 import { AttributeModalType } from "@/shared/types/types";
 import { MonoButton } from "@/shared/ui/buttons";
-import { InfoField } from "@/shared/ui/inputs/InfoField";
+import { InfoField } from "@/shared/ui/components";
 import { DeliveryAddressSkeleton } from "@/shared/ui/skeletons";
 
 interface DeliveryAddressProps {

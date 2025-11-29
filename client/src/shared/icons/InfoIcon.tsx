@@ -1,6 +1,6 @@
-import { IIconsProps } from "../types/types";
+import { IconProps } from "../interfaces/interfaces";
 
-export function InfoIcon({ className }: IIconsProps) {
+export function InfoIcon({ className }: IconProps) {
     return (
         <svg className={`${className ?? null}`} viewBox="0 0 24 24">
             <circle cx="12" cy="12" r="10" />

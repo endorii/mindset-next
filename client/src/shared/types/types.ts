@@ -1,7 +1,3 @@
-export interface Props {
-    children: React.ReactNode;
-}
-
 export type ModalType = "add" | "edit" | "delete" | "info" | null;
 export type AttributeModalType =
     | "addColor"
@@ -41,9 +37,7 @@ export type ReviewModalType =
 
 export type TodoModalType = "add" | "edit" | "delete" | null;
 
-export interface IIconsProps {
-    className?: string;
-}
-
 export type BannerEntity = "collection" | "category" | "product";
 export type ImagesEntity = "products" | "reviews";
+
+export type Period = "day" | "week" | "month" | "year";

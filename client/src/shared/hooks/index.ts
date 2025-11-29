@@ -1,3 +1,3 @@
 export { useEscapeKeyClose } from "./useEscapeKeyClose";
-export * from "./useFiles";
+export { useUploadBanner, useUploadImages } from "./useFiles";
 export { useTypewriter } from "./useTypewriter";

@@ -3,8 +3,7 @@
 import { useEscapeKeyClose } from "@/shared/hooks";
 import { MonoButton } from "@/shared/ui/buttons";
 import { MonoButtonUnderlined } from "@/shared/ui/buttons/MonoButtonUnderlined";
-import { Label } from "@/shared/ui/components";
-import { InfoField } from "@/shared/ui/inputs/InfoField";
+import { InfoField, Label } from "@/shared/ui/components";
 import { BasicTextarea } from "@/shared/ui/textareas/BasicTextarea";
 import {
     FormButtonsWrapper,

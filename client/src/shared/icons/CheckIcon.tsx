@@ -1,4 +1,6 @@
-export function CheckIcon({ className }: { className: string }) {
+import { IconProps } from "../interfaces/interfaces";
+
+export function CheckIcon({ className }: IconProps) {
     return (
         <svg viewBox="0 0 24 24" className={`${className ?? null}`}>
             <g>

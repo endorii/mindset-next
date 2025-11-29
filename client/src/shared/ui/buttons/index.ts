@@ -8,5 +8,6 @@ export { DeleteButton } from "./DeleteButton";
 export { DeleteButtonWithIcon } from "./DeleteButtonWithIcon";
 export { LinkWithIcon } from "./LinkWithIcon";
 export { MonoButton } from "./MonoButton";
+export { MonoButtonUnderlined } from "./MonoButtonUnderlined";
 export { MonoLink } from "./MonoLink";
 export { NavigationLink } from "./NavigationLink";

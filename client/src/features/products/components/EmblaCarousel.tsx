@@ -9,7 +9,7 @@ type PropType = {
     options?: EmblaOptionsType;
 };
 
-const EmblaCarousel: React.FC<PropType> = ({ slides, options }) => {
+export const EmblaCarousel: React.FC<PropType> = ({ slides, options }) => {
     const [selectedIndex, setSelectedIndex] = useState(0);
     const [emblaMainRef, emblaMainApi] = useEmblaCarousel(options);
     const [emblaThumbsRef, emblaThumbsApi] = useEmblaCarousel({
@@ -74,5 +74,3 @@ const EmblaCarousel: React.FC<PropType> = ({ slides, options }) => {
         </div>
     );
 };
-
-export default EmblaCarousel;

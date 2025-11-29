@@ -1,4 +1,5 @@
 export { AdminRecentActions } from "./AdminRecentActions";
+export { AuthStoreInitializer } from "./AuthStoreInitializer";
 export { CollectionsAndCategoriesList } from "./CollectionsAndCategoriesList";
 export { EmptyCategories } from "./EmptyCategories";
 export { ErrorFallback } from "./ErrorFallback";

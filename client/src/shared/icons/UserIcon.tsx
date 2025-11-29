@@ -1,4 +1,6 @@
-export function UserIcon({ className }: { className: string }) {
+import { IconProps } from "../interfaces/interfaces";
+
+export function UserIcon({ className }: IconProps) {
     return (
         <svg viewBox="0 0 16 16" className={`${className ?? null}`}>
             <path

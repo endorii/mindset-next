@@ -79,7 +79,6 @@ export function useUploadImages() {
         }) => uploadImages(type, entityId, images),
 
         onSuccess: (_, variables) => {
-            // invalidate детальні сторінки
             queryClient.invalidateQueries({
                 queryKey: ["admin", "categories", variables.includedIn, "products"],
             });

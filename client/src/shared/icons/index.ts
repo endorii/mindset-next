@@ -1,10 +1,12 @@
 export { AccountIcon } from "./AccountIcon";
 export { AdminIcon } from "./AdminIcon";
+export { ApproveIcon } from "./ApproveIcon";
 export { ArrowIcon } from "./ArrowIcon";
 export { BackIcon } from "./BackIcon";
 export { BurgerMenuIcon } from "./BurgerMenuIcon";
 export { CardIcon } from "./CardIcon";
 export { CartIcon } from "./CartIcon";
+export { CastleFlagIcon } from "./CastleFlagIcon";
 export { CategoriesIcon } from "./CategoriesIcon";
 export { CheckIcon } from "./CheckIcon";
 export { CloseIcon } from "./CloseIcon";
@@ -31,7 +33,5 @@ export { TagIcon } from "./TagIcon";
 export { TelegramIcon } from "./TelegramIcon";
 export { TiktokIcon } from "./TiktokIcon";
 export { TrashIcon } from "./TrashIcon";
-export { WearIcon } from "./WearIcon";
-
-export { CastleFlagIcon } from "./CastleFlagIcon";
 export { UserIcon } from "./UserIcon";
+export { WearIcon } from "./WearIcon";

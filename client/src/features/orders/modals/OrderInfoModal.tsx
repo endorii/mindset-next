@@ -2,7 +2,7 @@
 
 import { useEscapeKeyClose } from "@/shared/hooks";
 import { MonoButtonUnderlined } from "@/shared/ui/buttons/MonoButtonUnderlined";
-import { InfoField } from "@/shared/ui/inputs/InfoField";
+import { InfoField } from "@/shared/ui/components";
 import {
     FormButtonsWrapper,
     FormFillingWrapper,

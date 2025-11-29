@@ -1,8 +1,6 @@
-interface BurgerMenuIconProps {
-    className: string;
-}
+import { IconProps } from "../interfaces/interfaces";
 
-export function BurgerMenuIcon({ className }: BurgerMenuIconProps) {
+export function BurgerMenuIcon({ className }: IconProps) {
     return (
         <svg className={`${className ?? null}`} viewBox="0 0 24 24">
             <path d="M4 18L20 18" />

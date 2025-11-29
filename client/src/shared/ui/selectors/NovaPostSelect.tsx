@@ -12,14 +12,14 @@ import { ChangeEvent } from "react";
 import { UseFormRegisterReturn } from "react-hook-form";
 import { Label } from "../components";
 
-interface INovaPoshtaOption {
+interface INovaPostOption {
     Ref: string;
     Description: string;
 }
 
-interface NovaPoshtaSelectProps {
+interface NovaPostSelectProps {
     label: string;
-    options: INovaPoshtaOption[];
+    options: INovaPostOption[];
     value?: string;
     onChange?: (e: ChangeEvent<HTMLSelectElement>) => void;
     register?: UseFormRegisterReturn;
@@ -27,7 +27,7 @@ interface NovaPoshtaSelectProps {
     errorMessage?: string;
 }
 
-export function NovaPoshtaSelect({
+export function NovaPostSelect({
     label,
     options,
     value,
@@ -35,7 +35,7 @@ export function NovaPoshtaSelect({
     register,
     disabled = false,
     errorMessage,
-}: NovaPoshtaSelectProps) {
+}: NovaPostSelectProps) {
     return (
         <div className="flex flex-col gap-1 w-full">
             <Label>{label}</Label>

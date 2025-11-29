@@ -1,6 +1,6 @@
-import { IIconsProps } from "../types/types";
+import { IconProps } from "../interfaces/interfaces";
 
-export function AccountIcon({ className }: IIconsProps) {
+export function AccountIcon({ className }: IconProps) {
     return (
         <svg viewBox="0 0 48 48" className={`${className ?? null}`}>
             <path d="M0 0h48v48H0z" fill="none" />

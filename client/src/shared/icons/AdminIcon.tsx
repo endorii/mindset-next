@@ -1,6 +1,6 @@
-import { IIconsProps } from "../types/types";
+import { IconProps } from "../interfaces/interfaces";
 
-export function AdminIcon({ className }: IIconsProps) {
+export function AdminIcon({ className }: IconProps) {
     return (
         <svg viewBox="0 0 256 256" className={`${className ?? null}`}>
             <g

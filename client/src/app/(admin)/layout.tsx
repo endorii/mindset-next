@@ -1,4 +1,4 @@
-import { AdminWrapper } from "@/features/admin/components/AdminWrapper";
+import { AdminWrapper } from "@/features/admin/components";
 import { AdminHeader } from "@/features/admin/components/layout/AdminHeader";
 import { AdminNavigation } from "@/features/admin/components/layout/AdminNavigation";
 

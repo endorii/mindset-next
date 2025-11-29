@@ -1,4 +1,4 @@
-import JustColorsSkeleton from "./JustColorsSkeleton";
+import { JustColorsSkeleton } from "./JustColorsSkeleton";
 
 export function ColorSelectorSkeleton() {
     return (

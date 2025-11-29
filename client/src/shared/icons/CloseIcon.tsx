@@ -1,6 +1,6 @@
-import { IIconsProps } from "../types/types";
+import { IconProps } from "../interfaces/interfaces";
 
-export function CloseIcon({ className }: IIconsProps) {
+export function CloseIcon({ className }: IconProps) {
     return (
         <svg viewBox="-0.5 0 25 25" className={`${className ?? null}`}>
             <path d="M3 21.32L21 3.32001" />

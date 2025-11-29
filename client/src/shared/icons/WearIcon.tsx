@@ -1,8 +1,6 @@
-interface WearIconProps {
-    className: string;
-}
+import { IconProps } from "../interfaces/interfaces";
 
-export function WearIcon({ className }: WearIconProps) {
+export function WearIcon({ className }: IconProps) {
     return (
         <svg viewBox="0 0 32 32" className={`${className ?? null}`}>
             <path

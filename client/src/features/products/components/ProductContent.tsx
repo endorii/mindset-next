@@ -25,7 +25,7 @@ import {
 } from "../hooks/useProducts";
 import { IProduct } from "../types/products.types";
 import { AttributeSelector } from "./AttributeSelector";
-import EmblaCarousel from "./Carousel";
+import { EmblaCarousel } from "./EmblaCarousel";
 
 interface ProductContentProps {
     collectionPath: string;

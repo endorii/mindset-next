@@ -1,5 +1,5 @@
 import { IUser } from "@/features/shop/user-info/types/user.types";
-import { InfoField } from "@/shared/ui/inputs/InfoField";
+import { InfoField } from "@/shared/ui/components";
 import { MainInfoSkeleton } from "@/shared/ui/skeletons";
 
 interface MainInfoProps {

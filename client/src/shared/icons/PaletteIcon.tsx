@@ -1,14 +1,8 @@
-interface PaletteIconProps {
-    className: string;
-}
+import { IconProps } from "../interfaces/interfaces";
 
-export function PaletteIcon({ className }: PaletteIconProps) {
+export function PaletteIcon({ className }: IconProps) {
     return (
-        <svg
-            viewBox="0 0 24 24"
-            className={`${className ?? null}`}
-            xmlns="http://www.w3.org/2000/svg"
-        >
+        <svg viewBox="0 0 24 24" className={`${className ?? null}`}>
             <path d="M14 12.5001C14 13.3285 13.3284 14.0001 12.5 14.0001C11.6716 14.0001 11 13.3285 11 12.5001C11 11.6717 11.6716 11.0001 12.5 11.0001C13.3284 11.0001 14 11.6717 14 12.5001Z" />
             <path d="M16.5 10.0001C17.3284 10.0001 18 9.32854 18 8.50011C18 7.67169 17.3284 7.00011 16.5 7.00011C15.6716 7.00011 15 7.67169 15 8.50011C15 9.32854 15.6716 10.0001 16.5 10.0001Z" />
             <path d="M13 6.50011C13 7.32854 12.3284 8.00011 11.5 8.00011C10.6716 8.00011 10 7.32854 10 6.50011C10 5.67169 10.6716 5.00011 11.5 5.00011C12.3284 5.00011 13 5.67169 13 6.50011Z" />
