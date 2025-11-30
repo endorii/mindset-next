@@ -1,4 +1,5 @@
 import { LoginComponentsWrapper } from "@/shared/ui/wrappers";
+import Link from "next/link";
 
 export function Security() {
     return (
@@ -47,12 +48,12 @@ export function Security() {
                     </p>
 
                     <div className="flex flex-col gap-[5px]">
-                        <a
-                            href="/privacy-policy"
-                            className="text-xs underline text-blue-400 hover:text-blue-300 w-fit"
+                        <Link
+                            href="#"
+                            className="text-sm font-normal text-blue-400 hover:text-blue-300 hover:underline"
                         >
                             More about privacy policy
-                        </a>
+                        </Link>
                         <p className="text-xs text-neutral-400">
                             Last updated: June 2025
                         </p>

@@ -134,7 +134,7 @@ export function RegistrationForm() {
                         />
                         <div>
                             I agree with{" "}
-                            <span className="underline text-blue-400 hover:text-blue-300">
+                            <span className="text-blue-400 hover:text-blue-300 hover:underline">
                                 store rules
                             </span>
                         </div>
@@ -152,7 +152,7 @@ export function RegistrationForm() {
                         />
                         <div>
                             Agree to receive commercial offers from{" "}
-                            <span className="underline text-blue-400 hover:text-blue-300">
+                            <span className="text-blue-400 hover:text-blue-300 hover:underline">
                                 mindset.ua
                             </span>{" "}
                             to the specified e-mail

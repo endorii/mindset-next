@@ -48,10 +48,10 @@ export class AuthService {
                     },
                 });
 
-                const { token, expiry } = this.generateVerificationToken();
+                const { token, hashedToken, expiry } = this.generateToken();
                 await tx.user.update({
                     where: { id: newUser.id },
-                    data: { verificationToken: token, verificationTokenExpires: expiry },
+                    data: { verificationToken: hashedToken, verificationTokenExpires: expiry },
                 });
 
                 await this.emailService.sendVerificationEmail(newUser.email, token);
@@ -67,13 +67,61 @@ export class AuthService {
     }
 
     async verifyEmail(token: string) {
-        const user = await this.shopUserService.findByVerificationToken(token);
-        if (!user) throw new BadRequestException("Invalid or expired token, or user not found");
+        const hashedToken = crypto.createHash("sha256").update(token).digest("hex");
 
-        await this.shopUserService.update(user.id, { isVerified: true, verificationToken: null });
+        const user = await this.prisma.user.findFirst({
+            where: {
+                verificationToken: hashedToken,
+                verificationTokenExpires: {
+                    gt: new Date(),
+                },
+            },
+        });
+
+        if (!user) throw new BadRequestException("Invalid or expired token");
+
+        await this.prisma.user.update({
+            where: { id: user.id },
+            data: {
+                isVerified: true,
+                verificationToken: null,
+                verificationTokenExpires: null,
+            },
+        });
+
         await this.emailService.sendRegistrationEmail(user.email);
 
         return { message: "Email verified successfully!" };
+    }
+
+    async resetPassword(token: string, newPassword: string) {
+        const hashedToken = crypto.createHash("sha256").update(token).digest("hex");
+
+        const user = await this.prisma.user.findFirst({
+            where: {
+                resetPasswordToken: hashedToken,
+                resetPasswordTokenExpires: {
+                    gt: new Date(),
+                },
+            },
+        });
+
+        if (!user) {
+            throw new BadRequestException("Invalid or expired token");
+        }
+
+        const hashedPassword = await bcrypt.hash(newPassword, 10);
+
+        await this.prisma.user.update({
+            where: { id: user.id },
+            data: {
+                password: hashedPassword,
+                resetPasswordToken: null,
+                resetPasswordTokenExpires: null,
+            },
+        });
+
+        return { message: "Password reset successfully" };
     }
 
     async resendVerificationEmail(email: string) {
@@ -81,20 +129,44 @@ export class AuthService {
         if (!user) throw new NotFoundException("User not found");
         if (user.isVerified) return { message: "Account already verified" };
 
-        const { token, expiry } = this.generateVerificationToken();
+        const { token, hashedToken, expiry } = this.generateToken();
         await this.prisma.user.update({
             where: { id: user.id },
-            data: { verificationToken: token, verificationTokenExpires: expiry },
+            data: { verificationToken: hashedToken, verificationTokenExpires: expiry },
         });
 
         await this.emailService.sendVerificationEmail(user.email, token);
         return { message: "Verification email resent" };
     }
 
-    private generateVerificationToken() {
+    async requestPasswordReset(email: string) {
+        const user = await this.prisma.user.findUnique({ where: { email } });
+
+        if (!user) {
+            return { message: "If the email exists, password reset link has been sent" };
+        }
+
+        if (!user?.password)
+            throw new BadRequestException(
+                "This account does not have a password. You signed up using Google."
+            );
+
+        const { token, hashedToken, expiry } = this.generateToken();
+
+        await this.prisma.user.update({
+            where: { id: user.id },
+            data: { resetPasswordToken: hashedToken, resetPasswordTokenExpires: expiry },
+        });
+
+        await this.emailService.sendPasswordResetEmail(user.email, token);
+        return { message: "If the email exists, password reset link has been sent" };
+    }
+
+    private generateToken() {
         const token = crypto.randomBytes(32).toString("hex");
+        const hashedToken = crypto.createHash("sha256").update(token).digest("hex");
         const expiry = new Date(Date.now() + 10 * 60 * 1000); // 10 minutes
-        return { token, expiry };
+        return { token, hashedToken, expiry };
     }
 
     // Login / SignOut

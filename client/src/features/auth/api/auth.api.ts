@@ -13,6 +13,30 @@ export async function registerUser(data: CreateUserDto): Promise<ServerResponseW
     }
 }
 
+export async function forgotPassword(email: string): Promise<ServerResponseWithMessage> {
+    try {
+        const { data } = await httpService.post(`/auth/forgot-password`, { email });
+        return data;
+    } catch (error: unknown) {
+        handleAxiosError(error);
+    }
+}
+
+export async function resetPassword({
+    token,
+    newPassword,
+}: {
+    token: string;
+    newPassword: string;
+}): Promise<ServerResponseWithMessage> {
+    try {
+        const { data } = await httpService.post(`/auth/reset-password`, { token, newPassword });
+        return data;
+    } catch (error: unknown) {
+        handleAxiosError(error);
+    }
+}
+
 export async function verifyUser(token: string): Promise<ServerResponseWithMessage> {
     try {
         const { data } = await httpService.get(`/auth/verify?token=${token}`);

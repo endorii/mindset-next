@@ -1,6 +1,7 @@
 import { ButtonWithIcon, MonoButton } from "@/shared/ui/buttons";
 import { InputField } from "@/shared/ui/inputs/InputField";
 import { LoginComponentsWrapper } from "@/shared/ui/wrappers";
+import Link from "next/link";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useLoginUser } from "../hooks/useAuth";
@@ -65,6 +66,12 @@ export function LoginForm() {
                 {loginMessage && (
                     <p className="text-red-500 text-sm">{loginMessage}</p>
                 )}
+                <Link
+                    href="/auth/forgot-password"
+                    className="text-sm text-blue-400 hover:text-blue-300 hover:underline"
+                >
+                    Forgot password?
+                </Link>
 
                 <MonoButton
                     type="submit"

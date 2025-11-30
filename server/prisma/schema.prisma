@@ -29,6 +29,9 @@ model User {
   verificationToken        String?   @map("verification_token")
   verificationTokenExpires DateTime? @map("verification_token_expires")
 
+  resetPasswordToken        String?   @map("reset_password_token")
+  resetPasswordTokenExpires DateTime? @map("reset_password_token_expires")
+
   recentActions RecentAction[]
   reviews       Review[]
   reviewVotes   ReviewVote[]

@@ -23,6 +23,19 @@ export class EmailService {
         });
     }
 
+    async sendPasswordResetEmail(email: string, token: string) {
+        const verificationUrl = `${this.configService.get<string>("FRONTEND_URL")}/auth/reset-password?token=${token}`;
+
+        await this.mailerService.sendMail({
+            to: email,
+            subject: "Reset password request",
+            html: `
+                <p>Please click the link below to reset your password:</p>
+                <a href="${verificationUrl}" style="padding: 10px 20px; background-color: #007BFF; color: white; text-decoration: none; border-radius: 5px;">Verify Email</a>
+            `,
+        });
+    }
+
     async sendRegistrationEmail(email: string) {
         await this.mailerService.sendMail({
             to: email,
