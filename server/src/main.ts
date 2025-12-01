@@ -16,7 +16,7 @@ async function bootstrap() {
     app.setGlobalPrefix("api");
 
     app.enableCors({
-        origin: "http://localhost:3000",
+        origin: ["http://localhost:3000", "https://mindset-client.onrender.com"],
         methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
         credentials: true,
     });
@@ -38,7 +38,11 @@ async function bootstrap() {
     const document = SwaggerModule.createDocument(app, config);
     SwaggerModule.setup("docs", app, document);
 
-    await app.listen(5000);
+    const port = process.env.PORT || 5000;
+    await app.listen(port, "0.0.0.0");
+
+    console.log(`🚀 Application is running on: http://localhost:${port}`);
+    // console.log(`📚 Swagger docs available at: http://localhost:${port}/docs`);
 }
 
 bootstrap();
