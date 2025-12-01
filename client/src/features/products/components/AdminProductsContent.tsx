@@ -1,5 +1,5 @@
 import { FilterSection } from "@/features/admin/attributes/components/FilterSection";
-import { TitleWithAddElementButton } from "@/features/admin/attributes/components/TitleWithAddElementButton";
+import { TitleWithAddElementButton } from "@/shared/components";
 import { FiltersWrapper } from "@/shared/components/layout";
 import {
     BackIcon,

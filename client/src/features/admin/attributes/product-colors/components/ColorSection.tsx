@@ -7,10 +7,10 @@ import {
 } from "@/features/admin";
 import { useColors } from "@/features/admin/attributes/product-colors/hooks/useColors";
 import { IColor } from "@/features/admin/attributes/product-colors/types/product-color.types";
+import { TitleWithAddElementButton } from "@/shared/components";
 import { EditIcon, PaletteIcon, TrashIcon } from "@/shared/icons";
 import { ButtonWithIcon, DeleteButtonWithIcon } from "@/shared/ui/buttons";
 import { useState } from "react";
-import { TitleWithAddElementButton } from "../../components/TitleWithAddElementButton";
 
 export function ColorSection() {
     const [modalType, setModalType] = useState<

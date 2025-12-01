@@ -1,8 +1,7 @@
 "use client";
 
 import { useEscapeKeyClose } from "@/shared/hooks";
-import { DeleteButton } from "@/shared/ui/buttons";
-import { MonoButtonUnderlined } from "@/shared/ui/buttons/MonoButtonUnderlined";
+import { DeleteButton, MonoButtonUnderlined } from "@/shared/ui/buttons";
 import { FormButtonsWrapper, ModalWrapper } from "@/shared/ui/wrappers";
 import { createPortal } from "react-dom";
 import { useDeleteProduct } from "../hooks/useProducts";

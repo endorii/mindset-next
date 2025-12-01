@@ -1,10 +1,10 @@
 "use client";
 
 import { AddTypeModal, DeleteTypeModal, EditTypeModal } from "@/features/admin";
+import { TitleWithAddElementButton } from "@/shared/components";
 import { EditIcon, PaletteIcon, TrashIcon } from "@/shared/icons";
 import { ButtonWithIcon, DeleteButtonWithIcon } from "@/shared/ui/buttons";
 import { useState } from "react";
-import { TitleWithAddElementButton } from "../../components/TitleWithAddElementButton";
 import { useTypes } from "../hooks/useTypes";
 import { IType } from "../types/product-type.types";
 

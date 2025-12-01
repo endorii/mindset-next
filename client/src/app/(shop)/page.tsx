@@ -1,9 +1,8 @@
-import { CollectionsSection } from "@/features/collections/components/CollectionsSection";
+import { CollectionsSection } from "@/features/collections/components";
 import { ICollection } from "@/features/collections/types/collections.types";
 import { HeroBanner } from "@/features/shop/components/Herobanner";
 import { Welcome } from "@/shared/components";
 import { PopularProductsWrapper } from "@/shared/components/providers/PopularProductsWrapper";
-
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {

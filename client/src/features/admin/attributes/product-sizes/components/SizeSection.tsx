@@ -1,10 +1,10 @@
 "use client";
 
 import { AddSizeModal, DeleteSizeModal, EditSizeModal } from "@/features/admin";
+import { TitleWithAddElementButton } from "@/shared/components";
 import { EditIcon, PaletteIcon, TrashIcon } from "@/shared/icons";
 import { ButtonWithIcon, DeleteButtonWithIcon } from "@/shared/ui/buttons";
 import { useState } from "react";
-import { TitleWithAddElementButton } from "../../components/TitleWithAddElementButton";
 import { useSizes } from "../hooks/useSizes";
 import { ISize } from "../types/product-size.types";
 

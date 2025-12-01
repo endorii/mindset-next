@@ -1,5 +1,5 @@
-import { Title } from "@/features/admin/attributes/components/Title";
 import { AdminOrdersWrapper } from "@/features/orders/components/AdminOrdersWrapper";
+import { Title } from "@/shared/components";
 
 function Orders() {
     return (

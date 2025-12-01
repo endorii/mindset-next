@@ -1,5 +1,5 @@
-import { Title } from "@/features/admin/attributes/components/Title";
-import { AdminReviewsWrapper } from "@/features/reviews/components/AdminReviewsWrapper";
+import { AdminReviewsWrapper } from "@/features/reviews/components";
+import { Title } from "@/shared/components";
 
 function Reviews() {
     return (

@@ -1,8 +1,8 @@
 "use client";
 
 import { FilterSection } from "@/features/admin/attributes/components/FilterSection";
-import { TitleWithAddElementButton } from "@/features/admin/attributes/components/TitleWithAddElementButton";
 import { useAdminCollection } from "@/features/collections/hooks/useCollections";
+import { TitleWithAddElementButton } from "@/shared/components";
 import {
     BackIcon,
     EditIcon,

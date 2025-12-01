@@ -1,6 +1,6 @@
 "use client";
 
-import { AdminCategoriesWrapper } from "@/features/categories/components/AdminCategoriesWrapper";
+import { AdminCategoriesWrapper } from "@/features/categories/components";
 import { useParams } from "next/navigation";
 
 export default function AdminCategories() {

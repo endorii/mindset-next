@@ -1,5 +1,5 @@
 import { AdminAccountWrapper } from "@/features/admin/account/components/AdminAccountWrapper";
-import { Title } from "@/features/admin/attributes/components/Title";
+import { Title } from "@/shared/components";
 
 function AdminAccount() {
     return (

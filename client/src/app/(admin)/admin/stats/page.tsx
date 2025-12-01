@@ -1,5 +1,5 @@
-import { Title } from "@/features/admin/attributes/components/Title";
 import { StatsWrapper } from "@/features/admin/stats/components/StatsWrapper";
+import { Title } from "@/shared/components";
 
 export default function AnalyticsPage() {
     return (

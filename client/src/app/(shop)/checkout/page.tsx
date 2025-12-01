@@ -27,7 +27,7 @@ import { CheckoutSkeleton } from "@/shared/ui/skeletons";
 import { ShopTitle } from "@/shared/ui/titles/ShopTitle";
 import { useCartStore } from "@/store/useCartStore";
 import { BadgeDollarSignIcon } from "lucide-react";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { toast } from "sonner";

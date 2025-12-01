@@ -3,8 +3,8 @@
 import { useRouter, useSearchParams } from "next/navigation";
 import { useForm } from "react-hook-form";
 
-import { Title } from "@/features/admin/attributes/components/Title";
 import { useResetPassword } from "@/features/auth/hooks/useAuth";
+import { Title } from "@/shared/components";
 import { MonoButton } from "@/shared/ui/buttons";
 import { InputField } from "@/shared/ui/inputs";
 import { useEffect } from "react";

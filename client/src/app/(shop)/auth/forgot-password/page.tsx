@@ -1,7 +1,7 @@
 "use client";
 
-import { Title } from "@/features/admin/attributes/components/Title";
 import { useForgotPassword } from "@/features/auth/hooks/useAuth";
+import { Title } from "@/shared/components";
 import { MonoButton } from "@/shared/ui/buttons";
 import { InputField } from "@/shared/ui/inputs";
 import { useForm } from "react-hook-form";

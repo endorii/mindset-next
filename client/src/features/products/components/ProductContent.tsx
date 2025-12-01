@@ -10,9 +10,11 @@ import { useCurrentUser } from "@/features/shop/user-info/hooks/useUsers";
 import { HeartIcon } from "@/shared/icons";
 import { MonoButton } from "@/shared/ui/buttons";
 import { Breadcrumbs } from "@/shared/ui/components";
-import { AttributeSelectorSkeleton } from "@/shared/ui/skeletons/AttributeSelectorSkeleton";
-import { ColorSelectorSkeleton } from "@/shared/ui/skeletons/ColorSelectorSkeleton";
-import { addToRecentlyViewed } from "@/shared/utils/addToRecentlyViewed";
+import {
+    AttributeSelectorSkeleton,
+    ColorSelectorSkeleton,
+} from "@/shared/ui/skeletons";
+import { addToRecentlyViewed } from "@/shared/utils";
 import { useCartStore } from "@/store/useCartStore";
 import { useFavoritesStore } from "@/store/useFavoritesStore";
 import { EmblaOptionsType } from "embla-carousel";

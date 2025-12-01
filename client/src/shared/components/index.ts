@@ -6,4 +6,6 @@ export { ErrorFallback } from "./ErrorFallback";
 export { PopularProducts } from "./PopularProducts";
 export { ProductsFromSameCollection } from "./ProductsFromSameCollection";
 export { RecentlyViewedProducts } from "./RecentlyViewedProducts";
+export { Title } from "./Title";
+export { TitleWithAddElementButton } from "./TitleWithAddElementButton";
 export { Welcome } from "./Welcome";

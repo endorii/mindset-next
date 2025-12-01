@@ -9,22 +9,21 @@ import {
     useUploadBanner,
     useUploadImages,
 } from "@/shared/hooks";
-import { TrashIcon } from "@/shared/icons";
-import { MonoButton } from "@/shared/ui/buttons";
-import { MonoButtonUnderlined } from "@/shared/ui/buttons/MonoButtonUnderlined";
+import { MonoButton, MonoButtonUnderlined } from "@/shared/ui/buttons";
 import {
     Label,
     RenderAttributeField,
     UploadBannerWithPreview,
 } from "@/shared/ui/components";
-import { InputField } from "@/shared/ui/inputs/InputField";
-import { BasicSelector } from "@/shared/ui/selectors/BasicSelector";
+import { InputField } from "@/shared/ui/inputs";
+import { BasicSelector } from "@/shared/ui/selectors";
 import { BasicTextarea } from "@/shared/ui/textareas/BasicTextarea";
 import {
     FormButtonsWrapper,
     FormFillingWrapper,
     ModalWrapper,
 } from "@/shared/ui/wrappers";
+import { TrashIcon } from "lucide-react";
 import Image from "next/image";
 import { ChangeEvent, useEffect, useState } from "react";
 import { createPortal } from "react-dom";
