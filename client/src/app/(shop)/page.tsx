@@ -11,7 +11,7 @@ export const metadata: Metadata = {
     openGraph: {
         title: "Mindset",
         description: "Online clothes shop.",
-        url: "https://localhost:3000",
+        url: process.env.NEXT_PUBLIC_APP_URL,
         siteName: "Mindset",
         locale: "en_US",
         type: "website",

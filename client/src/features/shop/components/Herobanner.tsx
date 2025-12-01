@@ -2,6 +2,7 @@ import { ICollection } from "@/features/collections/types/collections.types";
 import { MonoLink } from "@/shared/ui/buttons";
 
 export function HeroBanner({ collection }: { collection: ICollection }) {
+    if (!collection) return;
     return (
         <div className="relative h-[70vh] sm:h-[60vh] w-full flex items-center justify-center bg-cover bg-center p-[20px] group">
             <video
