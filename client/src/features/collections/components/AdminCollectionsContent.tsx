@@ -1,7 +1,8 @@
 "use client";
 
-import { FilterSection } from "@/features/admin/attributes/components/FilterSection";
+import { FilterSection } from "@/features/admin/attributes/components";
 import { TitleWithAddElementButton } from "@/shared/components";
+import { FiltersWrapper } from "@/shared/components/layout";
 import {
     CategoriesIcon,
     EditIcon,
@@ -9,15 +10,13 @@ import {
     ProductsIcon,
     TrashIcon,
 } from "@/shared/icons";
+import { ModalType } from "@/shared/types/types";
 import {
     ButtonWithIcon,
     DeleteButtonWithIcon,
     LinkWithIcon,
 } from "@/shared/ui/buttons";
-
-import { FiltersWrapper } from "@/shared/components/layout";
-import { ModalType } from "@/shared/types/types";
-import { formatDate } from "@/shared/utils/formatDate";
+import { formatDate } from "@/shared/utils";
 import Link from "next/link";
 import { useMemo, useState } from "react";
 import { useAdminCollections } from "../hooks/useCollections";

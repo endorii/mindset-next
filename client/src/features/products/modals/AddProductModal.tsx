@@ -9,6 +9,7 @@ import {
     useUploadBanner,
     useUploadImages,
 } from "@/shared/hooks";
+import { TrashIcon } from "@/shared/icons";
 import { MonoButton, MonoButtonUnderlined } from "@/shared/ui/buttons";
 import {
     Label,
@@ -23,7 +24,6 @@ import {
     FormFillingWrapper,
     ModalWrapper,
 } from "@/shared/ui/wrappers";
-import { TrashIcon } from "lucide-react";
 import Image from "next/image";
 import { ChangeEvent, useEffect, useState } from "react";
 import { createPortal } from "react-dom";

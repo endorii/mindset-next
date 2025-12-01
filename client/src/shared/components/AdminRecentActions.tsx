@@ -1,5 +1,5 @@
 import { IRecentActions } from "@/features/admin/recent-actions/types/recent-actions.types";
-import { formatDate } from "../utils/formatDate";
+import { formatDate } from "../utils";
 
 export function AdminRecentActions({
     actions,

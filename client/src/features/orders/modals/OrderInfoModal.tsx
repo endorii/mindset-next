@@ -1,14 +1,14 @@
 "use client";
 
 import { useEscapeKeyClose } from "@/shared/hooks";
-import { MonoButtonUnderlined } from "@/shared/ui/buttons/MonoButtonUnderlined";
+import { MonoButtonUnderlined } from "@/shared/ui/buttons";
 import { InfoField } from "@/shared/ui/components";
 import {
     FormButtonsWrapper,
     FormFillingWrapper,
     ModalWrapper,
 } from "@/shared/ui/wrappers";
-import { formatDate } from "@/shared/utils/formatDate";
+import { formatDate } from "@/shared/utils";
 import { createPortal } from "react-dom";
 import { IOrder } from "../types/orders.types";
 

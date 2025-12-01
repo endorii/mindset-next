@@ -5,7 +5,7 @@ import { useCurrentUser } from "@/features/shop/user-info/hooks/useUsers";
 import { AdminIcon, BackIcon, LogoutIcon } from "@/shared/icons";
 import { NavigationLink } from "@/shared/ui/buttons";
 import { ButtonSkeleton } from "@/shared/ui/skeletons";
-import { accountNavigationLinks } from "@/shared/utils/accountNavigationLinks";
+import { accountNavigationLinks } from "@/shared/utils";
 import { useState } from "react";
 
 export function AccountNavigation({ children }: { children: React.ReactNode }) {

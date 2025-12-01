@@ -7,7 +7,7 @@ import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 
-import { ProductCard } from "@/features/products/components/ProductCard";
+import { ProductCard } from "@/features/products/components";
 import { IProduct } from "@/features/products/types/products.types";
 
 interface SliderWrapperProps {

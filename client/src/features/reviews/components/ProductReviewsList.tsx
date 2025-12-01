@@ -2,7 +2,7 @@
 
 import { useCurrentUser } from "@/features/shop/user-info/hooks/useUsers";
 import { BackIcon } from "@/shared/icons";
-import { formatDate } from "@/shared/utils/formatDate";
+import { formatDate } from "@/shared/utils";
 import Image from "next/image";
 import { toast } from "sonner";
 import { useToggleReviewVote } from "../hooks/useReviews";

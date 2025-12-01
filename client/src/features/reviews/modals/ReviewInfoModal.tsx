@@ -1,17 +1,19 @@
 "use client";
 
 import { useEscapeKeyClose } from "@/shared/hooks";
-import { MonoButtonUnderlined } from "@/shared/ui/buttons/MonoButtonUnderlined";
-import { InfoField, InfoModalBanner, Label } from "@/shared/ui/components";
+import { MonoButtonUnderlined } from "@/shared/ui/buttons";
+import { InfoField, InfoModalBanner } from "@/shared/ui/components";
 import {
     FormButtonsWrapper,
     FormFillingWrapper,
     ModalWrapper,
 } from "@/shared/ui/wrappers";
-import { formatDate } from "@/shared/utils/formatDate";
+import { formatDate } from "@/shared/utils";
+
 import Image from "next/image";
 import Link from "next/link";
 import { createPortal } from "react-dom";
+import { Label } from "recharts";
 import { IReview } from "../types/reviews.types";
 
 export interface ReviewInfoModalProps {

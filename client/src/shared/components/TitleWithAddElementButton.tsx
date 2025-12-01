@@ -1,5 +1,5 @@
-import { PlusIcon } from "@/shared/icons";
-import { MonoButton } from "@/shared/ui/buttons";
+import { PlusIcon } from "../icons";
+import { MonoButton } from "../ui/buttons";
 import { Title } from "./Title";
 
 interface TitleWithAddElementButtonProps {

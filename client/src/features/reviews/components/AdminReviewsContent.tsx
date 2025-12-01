@@ -1,16 +1,15 @@
 "use client";
 
-import { FilterSection } from "@/features/admin/attributes/components/FilterSection";
+import { FilterSection } from "@/features/admin/attributes/components";
 import { FiltersWrapper } from "@/shared/components/layout";
-import { ArrowIcon, InfoIcon, TrashIcon } from "@/shared/icons";
-import { ApproveIcon } from "@/shared/icons/ApproveIcon";
+import { ApproveIcon, ArrowIcon, InfoIcon, TrashIcon } from "@/shared/icons";
 import { ReviewModalType } from "@/shared/types/types";
 import {
     ApproveButtonWithIcon,
     ButtonWithIcon,
     DeleteButtonWithIcon,
 } from "@/shared/ui/buttons";
-import { formatDate } from "@/shared/utils/formatDate";
+import { formatDate } from "@/shared/utils";
 import { useMemo, useState } from "react";
 import { useReviews } from "../hooks/useReviews";
 import {

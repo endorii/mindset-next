@@ -1,4 +1,4 @@
-import { MonoButtonUnderlined } from "@/shared/ui/buttons/MonoButtonUnderlined";
+import { MonoButtonUnderlined } from "@/shared/ui/buttons";
 
 export function FiltersWrapper({
     children,

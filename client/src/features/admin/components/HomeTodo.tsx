@@ -7,7 +7,7 @@ import {
     DeleteButtonWithIcon,
     MonoButton,
 } from "@/shared/ui/buttons";
-import { formatDate } from "@/shared/utils/formatDate";
+import { formatDate } from "@/shared/utils";
 import { useState } from "react";
 import {
     AddTodoItemModal,

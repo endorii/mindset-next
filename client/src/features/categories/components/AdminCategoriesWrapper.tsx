@@ -8,7 +8,6 @@ import {
 } from "@/shared/ui/skeletons";
 import { Suspense } from "react";
 import { ErrorBoundary } from "react-error-boundary";
-
 import { AdminCategoriesContent } from "./AdminCategoriesContent";
 
 export function AdminCategoriesWrapper({

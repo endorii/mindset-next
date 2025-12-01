@@ -1,8 +1,12 @@
 "use client";
 
-import { FilterSection } from "@/features/admin/attributes/components/FilterSection";
-import { useAdminCollection } from "@/features/collections/hooks/useCollections";
+import { FilterSection } from "@/features/admin/attributes/components";
+import {
+    useAdminCollection,
+    useAdminCollectionCategories,
+} from "@/features/collections/hooks/useCollections";
 import { TitleWithAddElementButton } from "@/shared/components";
+import { FiltersWrapper } from "@/shared/components/layout";
 import {
     BackIcon,
     EditIcon,
@@ -17,10 +21,7 @@ import {
     LinkWithIcon,
     MonoButton,
 } from "@/shared/ui/buttons";
-
-import { useAdminCollectionCategories } from "@/features/collections/hooks/useCollections";
-import { FiltersWrapper } from "@/shared/components/layout";
-import { formatDate } from "@/shared/utils/formatDate";
+import { formatDate } from "@/shared/utils";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useMemo, useState } from "react";

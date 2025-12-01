@@ -1,12 +1,11 @@
 "use client";
 
+import { FilterSection } from "@/features/admin/attributes/components";
+import { FiltersWrapper } from "@/shared/components/layout";
 import { EditIcon, InfoIcon, TrashIcon } from "@/shared/icons";
 import { OrderModalType } from "@/shared/types/types";
 import { ButtonWithIcon, DeleteButtonWithIcon } from "@/shared/ui/buttons";
-
-import { FilterSection } from "@/features/admin/attributes/components/FilterSection";
-import { FiltersWrapper } from "@/shared/components/layout";
-import { formatDate } from "@/shared/utils/formatDate";
+import { formatDate } from "@/shared/utils";
 import { useMemo, useState } from "react";
 import { useOrders } from "../hooks/useOrders";
 import { DeleteOrderModal, EditOrderModal, OrderInfoModal } from "../modals";

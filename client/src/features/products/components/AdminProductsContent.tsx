@@ -1,4 +1,8 @@
-import { FilterSection } from "@/features/admin/attributes/components/FilterSection";
+import { FilterSection } from "@/features/admin/attributes/components";
+import {
+    useAdminCategory,
+    useAdminCategoryProducts,
+} from "@/features/categories/hooks/useCategories";
 import { TitleWithAddElementButton } from "@/shared/components";
 import { FiltersWrapper } from "@/shared/components/layout";
 import {
@@ -14,15 +18,11 @@ import {
     DeleteButtonWithIcon,
     MonoButton,
 } from "@/shared/ui/buttons";
-import { formatDate } from "@/shared/utils/formatDate";
+import { formatDate } from "@/shared/utils";
+
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useMemo, useState } from "react";
-
-import {
-    useAdminCategory,
-    useAdminCategoryProducts,
-} from "@/features/categories/hooks/useCategories";
 import {
     AddProductModal,
     DeleteProductModal,

@@ -1,8 +1,7 @@
 "use client";
 
 import { BackIcon } from "@/shared/icons";
-import { formatDate } from "@/shared/utils/formatDate";
-import { useRouter } from "next/navigation";
+import { formatDate } from "@/shared/utils";
 import { useState } from "react";
 import { IOrder, IOrderItem } from "../types/orders.types";
 import { Detail } from "./Detail";
@@ -26,7 +25,6 @@ export function UserOrdersList({
     setSelectedOrderItem: (item: IOrderItem) => void;
 }) {
     const [expandedOrderId, setExpandedOrderId] = useState<string | null>(null);
-    const router = useRouter();
 
     const toggleExpand = (orderId: string) =>
         setExpandedOrderId((prev) => (prev === orderId ? null : orderId));
