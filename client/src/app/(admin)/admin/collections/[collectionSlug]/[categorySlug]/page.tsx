@@ -1,6 +1,6 @@
 "use client";
 
-import { AdminProductsWrapper } from "@/features/products/components/AdminProductsWrapper";
+import { AdminProductsWrapper } from "@/features/products/components";
 import { useParams } from "next/navigation";
 
 export default function AdminProducts() {
