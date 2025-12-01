@@ -60,7 +60,7 @@ export default function ResetPasswordPage() {
     };
 
     return (
-        <div className="flex justify-center items-center h-[90vh] pb-[200px] text-white">
+        <div className="flex justify-center items-center h-[90vh] pb-[200px] md:pb-[100px] p-[10px] text-white">
             <div className="flex flex-col gap-[20px] bg-white/5 p-[40px]">
                 <Title title="Create new password" />
 

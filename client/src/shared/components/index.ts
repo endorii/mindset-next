@@ -3,8 +3,6 @@ export { AuthStoreInitializer } from "./AuthStoreInitializer";
 export { CollectionsAndCategoriesList } from "./CollectionsAndCategoriesList";
 export { EmptyCategories } from "./EmptyCategories";
 export { ErrorFallback } from "./ErrorFallback";
-export { FooterNavList } from "./FooterNavList";
-export { FooterNavListItem } from "./FooterNavListItem";
 export { PopularProducts } from "./PopularProducts";
 export { ProductsFromSameCollection } from "./ProductsFromSameCollection";
 export { RecentlyViewedProducts } from "./RecentlyViewedProducts";

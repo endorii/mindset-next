@@ -18,7 +18,7 @@ export function ProductCard({
                     height={400}
                     src={product.banner}
                     alt={product.name}
-                    className="relative h-[400px] w-[500px] object-cover"
+                    className="relative h-[400px] xl:h-[350px] lg:h-[320px] md:h-[300px] w-[500px] object-cover"
                 />
                 <ProductCardColors productId={product.id} />
             </div>

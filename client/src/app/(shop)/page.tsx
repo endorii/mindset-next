@@ -1,5 +1,6 @@
 import { CollectionsSection } from "@/features/collections/components/CollectionsSection";
 import { ICollection } from "@/features/collections/types/collections.types";
+import { HeroBanner } from "@/features/shop/components/Herobanner";
 import { Welcome } from "@/shared/components";
 import { PopularProductsWrapper } from "@/shared/components/providers/PopularProductsWrapper";
 
@@ -38,6 +39,7 @@ export default async function CollectionsPage() {
         <div className="flex flex-col gap-10">
             <Welcome />
             <CollectionsSection collections={collections} />
+            <HeroBanner collection={collections[0]} />
             <PopularProductsWrapper />
         </div>
     );

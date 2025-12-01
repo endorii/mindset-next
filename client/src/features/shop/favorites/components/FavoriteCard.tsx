@@ -20,7 +20,7 @@ export function FavoriteCard({ onRemove, product }: FavoriteCardProps) {
                         alt={product.name}
                         width={450}
                         height={450}
-                        className="h-[450px] object-cover"
+                        className="h-[400px] sm:h-[250px] object-cover"
                     />
                     <div className="flex items-center justify-between flex-col absolute top-0 right-0 z-10 w-full h-full bg-black/80 backdrop-blur-lg opacity-0 group-hover:opacity-100 transition-all duration-400 font-perandory tracking-wider text-3xl">
                         <Link
@@ -34,16 +34,16 @@ export function FavoriteCard({ onRemove, product }: FavoriteCardProps) {
                     </div>
                 </div>
                 <div className="flex flex-col justify-between text-white gap-[5px] px-[10px]">
-                    <div className="text-white text-3xl font-perandory tracking-wider">
+                    <div className="text-white text-3xl md:text-2xl sm:text-xl xs:text-lg xxs:text-base font-perandory tracking-wider">
                         {product.name}
                     </div>
                     <div className="flex gap-[10px] justify-between items-center">
-                        <div className="flex gap-[10px]">
-                            <div className="text-xl text-white font-semibold">
+                        <div className="flex gap-[10px] text-xl md:text-lg xs:text-base">
+                            <div className="text-white font-bold">
                                 ${product.price}
                             </div>
                             {product.oldPrice && (
-                                <div className="font-semibold line-through text-neutral-200">
+                                <div className="line-through text-base text-neutral-200">
                                     ${product.oldPrice}
                                 </div>
                             )}
@@ -53,7 +53,7 @@ export function FavoriteCard({ onRemove, product }: FavoriteCardProps) {
                             className="group flex transition-all duration-300 cursor-pointer"
                         >
                             <HeartIcon
-                                className={`group-hover:fill-none group-hover:stroke-white transition-all duration-300 w-[40px] stroke-red-600 fill-red-600`}
+                                className={`group-hover:fill-none group-hover:stroke-white transition-all duration-300 w-[40px] sm:w-[30px] stroke-red-600 fill-red-600`}
                             />
                         </button>
                     </div>

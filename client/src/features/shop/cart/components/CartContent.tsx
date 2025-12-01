@@ -66,7 +66,7 @@ export function CartContent() {
 
     if (!mergedCart.length) {
         return (
-            <div className="flex flex-col gap-[30px] text-white items-center text-center justify-center h-screen pb-[200px]">
+            <div className="flex flex-col gap-[30px] text-white items-center text-center justify-center h-screen pb-[200px] md:pb-[100px]">
                 <ShopTitle title={"Your cart is empty"} />
                 <MonoButton onClick={() => router.push("/#collections")}>
                     Start shopping
@@ -77,9 +77,9 @@ export function CartContent() {
 
     return (
         <>
-            <ShopTitle title="Cart" />
-            <div className="flex justify-between gap-[15px] w-full px-[30px]">
-                <div className="flex flex-col gap-[10px] w-2/3 max-h-[80vh] overflow-y-auto">
+            <ShopTitle title={`Cart (${mergedCart.length})`} />
+            <div className="flex sm:flex-col justify-between gap-[15px] w-full px-[30px] sm:px-[10px]">
+                <div className="flex flex-col gap-[10px] w-2/3 sm:w-full">
                     {mergedCart.map((item) => {
                         const isServer = !!user;
 
@@ -101,7 +101,9 @@ export function CartContent() {
                     })}
                 </div>
 
-                <CartReceip totalPrice={totalPrice} />
+                <div className="w-1/3 sm:w-full">
+                    <CartReceip totalPrice={totalPrice} />
+                </div>
             </div>
         </>
     );

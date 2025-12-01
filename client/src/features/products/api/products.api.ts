@@ -20,14 +20,14 @@ export async function fetchCategoryProducts(categoryId: string): Promise<IProduc
     }
 }
 
-export async function fetchGetProductByPath(
+export async function fetchProductByPath(
     collectionPath: string,
     categoryPath: string,
     productPath: string
 ): Promise<IProduct> {
     try {
         const { data } = await httpService.get<IProduct>(
-            `/shop/products/${collectionPath}/${categoryPath}/${productPath}`
+            `/shop/collections/${collectionPath}/categories/${categoryPath}/products/${productPath}`
         );
         return data;
     } catch (error: unknown) {
@@ -40,7 +40,7 @@ export async function fetchProductsByIds(ids: string[]): Promise<IProduct[]> {
 
     try {
         const { data } = await httpService.get<IProduct[]>(
-            `/shop/products/by-ids?ids=${ids.join(",")}`
+            `/shop/products/utils/by-ids?ids=${ids.join(",")}`
         );
         return data;
     } catch (error: unknown) {

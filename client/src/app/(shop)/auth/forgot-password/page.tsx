@@ -30,7 +30,7 @@ export default function ForgotPasswordPage() {
     };
 
     return (
-        <div className="flex justify-center items-center h-[90vh] pb-[200px] text-white">
+        <div className="flex justify-center items-center h-[90vh] pb-[200px] md:pb-[100px] text-white p-[10px]">
             <div className="flex flex-col gap-[20px] bg-white/5 p-[40px]">
                 <Title title={"Reset password"} />
                 <form

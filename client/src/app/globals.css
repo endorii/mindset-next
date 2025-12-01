@@ -19,6 +19,20 @@
   }
 }
 
+.marquee-text {
+    animation: marquee 60s linear infinite;
+}
+
+@keyframes marquee {
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        transform: translateX(-100%);
+    }
+}
+
+
 .animate-wobble {
   animation: wobble-updown 7.5s ease-in-out infinite;
   transform-origin: center;

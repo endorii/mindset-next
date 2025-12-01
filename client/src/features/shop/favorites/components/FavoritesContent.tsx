@@ -50,7 +50,7 @@ export function FavoritesContent() {
 
     if (!products?.length) {
         return (
-            <div className="flex flex-col gap-[30px] text-white items-center text-center justify-center h-screen pb-[200px]">
+            <div className="flex flex-col gap-[30px] text-white items-center text-center justify-center h-screen pb-[200px] md:pb-[100px]">
                 <ShopTitle title={"Your favorite list is empty"} />
                 <MonoButton onClick={() => router.push("/#collections")}>
                     Start exploring
@@ -62,7 +62,7 @@ export function FavoritesContent() {
     return (
         <>
             <ShopTitle title="Favorites" />
-            <ul className="grid grid-cols-4 2xl:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 w-full gap-[15px] px-[30px]">
+            <ul className="grid grid-cols-5 2xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-3 xs:grid-cols-2 xxs:grid-cols-1 w-full gap-[15px] px-[30px] sm:px-[10px]">
                 {products.map((product) => (
                     <FavoriteCard
                         key={product.id}

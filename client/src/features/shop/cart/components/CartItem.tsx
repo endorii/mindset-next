@@ -17,9 +17,14 @@ export function CartItem({ item, handleRemove }: CartItemProps) {
         `${product?.category?.path ?? ""}/` +
         `${product?.path ?? ""}`;
 
+    console.log(item);
+
     return (
         <div className="flex bg-white/5 backdrop-blur-[100px] border border-white/5">
-            <Link href={link} className="relative max-w-[350px] w-full">
+            <Link
+                href={link}
+                className="relative max-w-[250px] md:max-w-[200px] w-full"
+            >
                 <div
                     className="absolute inset-0 flex items-center justify-center 
                     opacity-0 hover:opacity-100 bg-black/80 backdrop-blur-xl 
@@ -33,16 +38,16 @@ export function CartItem({ item, handleRemove }: CartItemProps) {
                 <Image
                     src={product?.banner || ""}
                     alt={product?.name || ""}
-                    width={300}
-                    height={380}
-                    className="object-cover w-full max-h-[380px]"
+                    width={250}
+                    height={250}
+                    className="object-cover w-full h-full"
                 />
             </Link>
 
-            <div className="flex flex-col justify-between p-[20px] px-[30px] gap-[10px] w-full">
+            <div className="flex flex-col justify-between p-[20px] px-[30px] sm:px-[15px] gap-[10px] w-full">
                 <div className="flex flex-col">
-                    <div className="flex items-center justify-between">
-                        <div className="font-perandory tracking-wider text-3xl">
+                    <div className="flex xs:flex-col xs:items-start items-center justify-between gap-[10px]">
+                        <div className="font-perandory tracking-wider text-3xl sm:text-2xl xxs:text-lg">
                             {product?.name}
                         </div>
                         <div className="text-xl font-bold">
@@ -63,9 +68,7 @@ export function CartItem({ item, handleRemove }: CartItemProps) {
                 <div className="flex justify-end">
                     <ButtonWithTextAndIcon onClick={handleRemove}>
                         <CloseIcon className="w-[20px] stroke-white stroke-3 group-hover:stroke-black transition-all duration-300" />
-                        <div className="font-perandory text-xl tracking-wider mt-1">
-                            Remove
-                        </div>
+                        <div>Remove</div>
                     </ButtonWithTextAndIcon>
                 </div>
             </div>

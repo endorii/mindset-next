@@ -80,7 +80,13 @@ export function LoginForm() {
                     {loginUserMutation.isPending ? "Loading..." : "Log In"}
                 </MonoButton>
             </form>
-            <div className="font-semibold text-neutral-400 text-center">Or</div>
+            <div className="flex items-center justify-between">
+                <hr className="w-full border-t border-white/5" />
+                <div className=" px-[10px] font-semibold text-neutral-400 text-center">
+                    Or
+                </div>
+                <hr className="w-full border-t border-white/5" />
+            </div>
             <div className="w-full">
                 <ButtonWithIcon onClick={handleGoogleLogin} className="w-full">
                     <img src="./google.svg" alt="" />

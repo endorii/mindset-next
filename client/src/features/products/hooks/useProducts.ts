@@ -4,8 +4,8 @@ import {
     addProductToCategory,
     deleteProduct,
     editProduct,
-    fetchGetProductByPath,
     fetchPopularProducts,
+    fetchProductByPath,
     fetchProductColors,
     fetchProductsByIds,
     fetchProductsFromSameCollection,
@@ -28,7 +28,7 @@ export function useProductByPath(
 ) {
     return useQuery({
         queryKey: ["shop", "products", productPath],
-        queryFn: () => fetchGetProductByPath(collectionPath, categoryPath, productPath),
+        queryFn: () => fetchProductByPath(collectionPath, categoryPath, productPath),
         enabled: !!collectionPath || !!categoryPath || !!productPath,
     });
 }
