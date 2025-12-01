@@ -16,7 +16,7 @@ async function bootstrap() {
     app.setGlobalPrefix("api");
 
     app.enableCors({
-        origin: ["http://localhost:3000", "https://mindset-client.onrender.com"],
+        origin: ["http://localhost:3000", process.env.FRONTEND_URL],
         methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
         credentials: true,
     });
