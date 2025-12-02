@@ -365,10 +365,10 @@ function Checkout() {
         <div className="flex flex-col gap-[10px] mt-[10px] text-white">
             <ShopTitle title={"Placeing an order"} />
             <form onSubmit={handleSubmit(onSubmit)}>
-                <div className="flex justify-between px-[30px] gap-[15px]">
-                    <div className="flex flex-col gap-[10px] w-1/2 bg-white/5 backdrop-blur-[100px] border border-white/5 p-[30px] h-fit">
-                        <div className="flex gap-[15px] w-full">
-                            <div className="flex flex-col gap-[10px] w-1/2">
+                <div className="flex md:flex-col justify-between px-[30px] sm:p-[10px] gap-[15px]">
+                    <div className="flex flex-col gap-[10px] w-1/2 md:w-full bg-white/5 backdrop-blur-[100px] border border-white/5 p-[30px] h-fit">
+                        <div className="flex xs:flex-col gap-[15px] w-full">
+                            <div className="flex flex-col gap-[10px] w-1/2 xs:w-full">
                                 <div className="text-3xl font-perandory tracking-wider">
                                     Shipping details
                                 </div>
@@ -425,7 +425,7 @@ function Checkout() {
                                     />
                                 </div>
                             </div>
-                            <div className="flex flex-col gap-[10px] w-1/2">
+                            <div className="flex flex-col gap-[10px] w-1/2 xs:w-full">
                                 <div className="text-3xl font-perandory tracking-wider">
                                     Delivery address
                                 </div>
@@ -488,7 +488,7 @@ function Checkout() {
                         <PreOrderInfo />
                     </div>
 
-                    <div className="flex flex-col gap-[20px] w-1/2 bg-white/5 backdrop-blur-[100px] border border-white/5 p-[30px] text-white">
+                    <div className="flex flex-col gap-[20px] w-1/2 md:w-full bg-white/5 backdrop-blur-[100px] border border-white/5 p-[30px] text-white">
                         <CheckoutResultTable cart={mergedCart} />
                         <div>
                             <div className="text-xl font-semibold mb-2 font-perandory tracking-wider">
@@ -499,7 +499,7 @@ function Checkout() {
                                 control={control}
                                 rules={{ required: "Choose a payment method" }}
                                 render={({ field }) => (
-                                    <div className="flex gap-3">
+                                    <div className="flex sm:flex-col gap-3">
                                         <button
                                             type="button"
                                             className={`flex items-center justify-center gap-2 px-6 py-3 font-medium border border-transparent transition-all ${
