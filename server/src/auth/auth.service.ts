@@ -252,7 +252,7 @@ export class AuthService {
 
             res.cookie("refreshToken", refreshToken, {
                 httpOnly: true,
-                sameSite: "lax",
+                sameSite: process.env.NODE_ENV === "development" ? "lax" : "none",
                 secure: this.configService.get("NODE_ENV") === "production",
                 maxAge: parseInt(this.configService.get("REFRESH_TOKEN_EXPIRES_MS") || "604800000"), // 7d
                 path: "/",
@@ -280,7 +280,7 @@ export class AuthService {
     private setTokenInCookies(res: Response, refreshToken: string) {
         res.cookie("refreshToken", refreshToken, {
             httpOnly: true,
-            sameSite: "lax",
+            sameSite: process.env.NODE_ENV === "development" ? "lax" : "none",
             secure: this.configService.get<string>("NODE_ENV") === "production",
             maxAge: parseInt(this.configService.get("REFRESH_TOKEN_EXPIRES_MS") || "604800000"), // 7 days
             path: "/",
