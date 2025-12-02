@@ -27,11 +27,15 @@ async function refreshAccessToken(): Promise<string | null> {
     const cookieStore = await cookies();
     const refreshToken = cookieStore.get("refreshToken")?.value; // "refreshToken=..."
 
+    if (!refreshToken) return null;
+
     try {
         const res = await fetch(`${API_BASE_URL}/auth/refresh`, {
             method: "POST",
-            headers: { cookie: `refreshToken=${refreshToken}` },
-            credentials: "include",
+            headers: {
+                Cookie: `refreshToken=${refreshToken}`,
+                "Content-Type": "application/json",
+            },
         });
 
         if (!res.ok) return null;
