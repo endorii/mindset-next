@@ -255,6 +255,7 @@ export class AuthService {
                 sameSite: process.env.NODE_ENV === "development" ? "lax" : "none",
                 secure: this.configService.get("NODE_ENV") === "production",
                 maxAge: parseInt(this.configService.get("REFRESH_TOKEN_EXPIRES_MS") || "604800000"), // 7d
+                domain: this.configService.get<string>("FRONTEND_DOMAIN") || "localhost:5000",
                 path: "/",
             });
 
@@ -282,6 +283,7 @@ export class AuthService {
             httpOnly: true,
             sameSite: process.env.NODE_ENV === "development" ? "lax" : "none",
             secure: this.configService.get<string>("NODE_ENV") === "production",
+            domain: this.configService.get<string>("FRONTEND_DOMAIN") || "localhost:5000",
             maxAge: parseInt(this.configService.get("REFRESH_TOKEN_EXPIRES_MS") || "604800000"), // 7 days
             path: "/",
         });
