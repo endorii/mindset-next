@@ -15,8 +15,6 @@ export function PopularProducts() {
         return null;
     }
 
-    console.log(popularProducts);
-
     return (
         <SliderWrapper
             productsList={popularProducts}

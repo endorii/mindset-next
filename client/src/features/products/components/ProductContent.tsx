@@ -308,13 +308,16 @@ export function ProductContent({
                         className="w-full h-[50px] bg-white text-black!"
                         disabled={
                             !product.isAvailable ||
+                            addCartItemToUserMutation.isPending ||
                             !chosenColor ||
                             !chosenSize ||
                             !chosenType ||
                             quantity < 1
                         }
                     >
-                        Add to cart
+                        {addCartItemToUserMutation.isPending
+                            ? "Processing..."
+                            : "Add to cart"}
                     </MonoButton>
                     <MonoButton
                         onClick={handleLikeToggle}

@@ -291,8 +291,6 @@ function Checkout() {
                     return;
                 }
 
-                await clearUserCart();
-
                 const res = await fetch(
                     `${
                         process.env.NEXT_PUBLIC_API_URL ||
@@ -308,7 +306,9 @@ function Checkout() {
                 );
 
                 const { url } = await res.json();
+
                 if (url) {
+                    // await clearUserCart();
                     window.location.href = url;
                 } else {
                     toast.error("Failed to create payment session");

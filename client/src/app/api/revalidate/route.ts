@@ -13,7 +13,7 @@ export async function GET(req: NextRequest) {
 
     revalidatePath(path);
 
-    console.log("Revalidating path:", path);
+    // console.log("Revalidating path:", path);
 
     return NextResponse.json({ revalidated: true, path });
 }

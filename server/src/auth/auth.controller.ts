@@ -53,7 +53,6 @@ export class AuthController {
         @Req() req: Request & { user: AuthenticatedRequestUser },
         @Res({ passthrough: true }) res: Response
     ) {
-        console.log("Cookies in /refresh controller:", req.cookies);
         return this.authService.refreshToken(req.user.id, res);
     }
 

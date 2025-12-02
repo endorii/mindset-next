@@ -26,13 +26,11 @@ export async function getCurrentUserSSR(): Promise<{
 async function refreshAccessToken(): Promise<string | null> {
     const cookieStore = await cookies();
 
-    console.log("SSR cookies:", cookieStore.getAll());
     const refreshToken = cookieStore.get("refreshToken")?.value; // "refreshToken=..."
 
     if (!refreshToken) return null;
 
     try {
-        console.log("SSR sending refreshToken:", refreshToken);
         const res = await fetch(`${API_BASE_URL}/auth/refresh`, {
             method: "POST",
             headers: {

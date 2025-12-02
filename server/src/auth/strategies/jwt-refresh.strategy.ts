@@ -26,8 +26,6 @@ export class JwtRefreshStrategy extends PassportStrategy(Strategy, "jwt-refresh"
         if (!refreshToken) {
             throw new UnauthorizedException("Refresh token is missing");
         }
-        console.log("Cookies in JwtRefreshStrategy:", req.cookies);
-        console.log("refreshToken from cookie:", req.cookies?.refreshToken);
 
         const user = await this.authService.validateRefreshToken(payload.sub, refreshToken);
 

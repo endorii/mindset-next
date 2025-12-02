@@ -17,8 +17,6 @@ export function CartItem({ item, handleRemove }: CartItemProps) {
         `${product?.category?.path ?? ""}/` +
         `${product?.path ?? ""}`;
 
-    console.log(item);
-
     return (
         <div className="flex bg-white/5 backdrop-blur-[100px] border border-white/5">
             <Link
