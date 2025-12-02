@@ -56,7 +56,7 @@ export function HeaderBurger() {
     return (
         <div className="text-center">
             <button className="relative" onClick={() => setIsOpen(true)}>
-                <BurgerMenuIcon className="w-[25px] fill-none stroke-2 stroke-white" />
+                <BurgerMenuIcon className="w-[25px] xs:w-[20px] fill-none stroke-2 stroke-white" />
             </button>
 
             <div

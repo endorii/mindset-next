@@ -2,7 +2,7 @@
 
 import { useCurrentUser } from "@/features/shop/user-info/hooks/useUsers";
 import { IUser } from "@/features/shop/user-info/types/user.types";
-import { UserIcon } from "@/shared/icons";
+import { CartIcon, HeartIcon, UserIcon } from "@/shared/icons";
 import { useCartStore } from "@/store/useCartStore";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -53,14 +53,14 @@ export function Header({ serverUser }: { serverUser: IUser | null }) {
             <HeaderBurger />
             <Link
                 href="/"
-                className={`absolute left-1/2 font-perandory tracking-wide transform -translate-x-1/2 transition-opacity duration-300 ${
+                className={`absolute left-1/2 xs:left-1/3 font-perandory tracking-wide transform -translate-x-1/2 transition-opacity duration-300 ${
                     showTitle ? "opacity-100" : "opacity-0 pointer-events-none"
                 }  px-[25px] py-[10px] font-bold text-5xl md:text-4xl`}
             >
                 mindset
             </Link>
 
-            <ul className="flex gap-[30px]">
+            <ul className="flex gap-[30px] xs:gap-[15px]">
                 <li className="md:hidden">
                     <Link
                         href="/cart"
@@ -80,12 +80,40 @@ export function Header({ serverUser }: { serverUser: IUser | null }) {
                         favorites
                     </Link>
                 </li>
+                <li className="hidden md:block">
+                    <Link
+                        href="/cart"
+                        className="relative flex gap-[3px] items-center font-perandory tracking-wider text-[20px] border-b border-transparent hover:border-white transition-all duration-200"
+                    >
+                        <div className="text-sm pt-1">
+                            {cartAmount > 0 && `${cartAmount}`}
+                        </div>
+                        <CartIcon className="w-[25px] xs:w-[20px] fill-none stroke-2 stroke-white" />
+                    </Link>
+                </li>
+                <li className="hidden md:block">
+                    <Link
+                        href="/favorites"
+                        className="flex font-perandory tracking-wider text-[20px] border-b border-transparent hover:border-white transition-all duration-200"
+                    >
+                        <HeartIcon className="w-[25px] xs:w-[20px] fill-white stroke-3 stroke-white" />
+                    </Link>
+                </li>
+                <li className="hidden sm:block">
+                    <Link
+                        href={` ${serverUser || user ? "/account" : "/auth"}`}
+                        className="flex font-perandory tracking-wider text-[20px] border-b border-transparent hover:border-white transition-all duration-200"
+                    >
+                        <UserIcon className="w-[25px] xs:w-[20px] fill-white" />
+                    </Link>
+                </li>
+
                 <li className="sm:hidden">
                     <Link
                         href={` ${serverUser || user ? "/account" : "/auth"}`}
                         className="flex items-start gap-[10px] font-perandory tracking-wider text-[20px] border-b border-transparent hover:border-white transition-all duration-200"
                     >
-                        <UserIcon className="w-[25px] fill-white" />
+                        <UserIcon className="w-[25px] xs:w-[20px] fill-white" />
                         <div>
                             {user?.userName || serverUser?.userName
                                 ? user?.userName || serverUser?.userName
