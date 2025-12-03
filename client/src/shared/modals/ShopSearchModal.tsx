@@ -4,6 +4,7 @@ import { useEscapeKeyClose, useShopSearch } from "@/shared/hooks";
 import { InputField } from "@/shared/ui/inputs/InputField";
 import { ModalWrapper } from "@/shared/ui/wrappers";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { createPortal } from "react-dom";
 import { CloseIcon, SearchIcon } from "../icons";
@@ -19,6 +20,7 @@ interface SearchResultItemProps {
     path: string;
     banner?: string;
     fullPath?: string;
+    onClose: () => void;
 }
 
 function SearchResultItem({
@@ -26,9 +28,18 @@ function SearchResultItem({
     path,
     banner,
     fullPath,
+    onClose,
 }: SearchResultItemProps) {
+    const router = useRouter();
+    const handleRedirect = () => {
+        router.push(`/${fullPath || path}`);
+        onClose();
+    };
     return (
-        <div className="flex items-center gap-3 bg-white/1 p-2 cursor-pointer hover:bg-white/5 transition">
+        <div
+            onClick={handleRedirect}
+            className="flex items-center gap-3 bg-white/1 p-2 cursor-pointer hover:bg-white/5 transition"
+        >
             {banner && (
                 <Image
                     src={banner}
@@ -54,10 +65,12 @@ function SearchSection({
     title,
     items,
     renderPath,
+    onClose,
 }: {
     title: string;
     items: any[];
     renderPath: (item: any) => string;
+    onClose: () => void;
 }) {
     if (!items?.length) return null;
 
@@ -76,6 +89,7 @@ function SearchSection({
                         path={item.path}
                         banner={item.banner}
                         fullPath={renderPath(item)}
+                        onClose={onClose}
                     />
                 ))}
             </div>
@@ -91,7 +105,7 @@ export function ShopSearchModal({ isOpen, onClose }: ShopSearchModalProps) {
 
     const handleClose = useCallback(() => {
         onClose();
-        setSearchValue("");
+        // setSearchValue("");
         setDebouncedSearch("");
     }, [onClose]);
 
@@ -169,6 +183,7 @@ export function ShopSearchModal({ isOpen, onClose }: ShopSearchModalProps) {
                         title="Collections"
                         items={data?.collections || []}
                         renderPath={(col) => col.path}
+                        onClose={onClose}
                     />
 
                     <SearchSection
@@ -177,6 +192,7 @@ export function ShopSearchModal({ isOpen, onClose }: ShopSearchModalProps) {
                         renderPath={(cat) =>
                             `${cat?.collection?.path}/${cat.path}`
                         }
+                        onClose={onClose}
                     />
 
                     <SearchSection
@@ -185,6 +201,7 @@ export function ShopSearchModal({ isOpen, onClose }: ShopSearchModalProps) {
                         renderPath={(prod) =>
                             `${prod.category?.collection?.path}/${prod.category?.path}/${prod.path}`
                         }
+                        onClose={onClose}
                     />
                 </div>
             </div>
