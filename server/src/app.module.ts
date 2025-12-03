@@ -11,6 +11,7 @@ import { PrismaModule } from "./prisma/prisma.module";
 import { ShopModule } from "./shop/shop.module";
 import { StripeModule } from './stripe/stripe.module';
 import { RevalidateModule } from './revalidate/revalidate.module';
+import { SearchModule } from './search/search.module';
 
 @Module({
     imports: [
@@ -30,6 +31,7 @@ import { RevalidateModule } from './revalidate/revalidate.module';
         EmailModule,
         StripeModule,
         RevalidateModule,
+        SearchModule,
     ],
 })
 export class AppModule {}

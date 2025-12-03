@@ -1,3 +1,7 @@
+"use client";
+
+import { useEffect } from "react";
+
 interface IModalWrapperProps {
     onClose: () => void;
     children: React.ReactNode;
@@ -9,6 +13,15 @@ export function ModalWrapper({
     children,
     modalTitle,
 }: IModalWrapperProps) {
+    useEffect(() => {
+        const originalOverflow = document.body.style.overflow;
+        document.body.style.overflow = "hidden";
+
+        return () => {
+            document.body.style.overflow = originalOverflow;
+        };
+    }, []);
+
     return (
         <div
             className="fixed inset-0 bg-black/85 flex items-center products-center justify-center z-100 cursor-pointer px-[40px] sm:p-0"

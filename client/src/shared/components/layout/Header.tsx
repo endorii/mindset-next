@@ -2,7 +2,9 @@
 
 import { useCurrentUser } from "@/features/shop/user-info/hooks/useUsers";
 import { IUser } from "@/features/shop/user-info/types/user.types";
-import { CartIcon, HeartIcon, UserIcon } from "@/shared/icons";
+import { CartIcon, HeartIcon, SearchIcon, UserIcon } from "@/shared/icons";
+import { ShopSearchModal } from "@/shared/modals/ShopSearchModal";
+import { MonoButtonUnderlined } from "@/shared/ui/buttons";
 import { useCartStore } from "@/store/useCartStore";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -14,6 +16,11 @@ export function Header({ serverUser }: { serverUser: IUser | null }) {
     const pathname = usePathname();
 
     const { cartItems } = useCartStore();
+
+    const [searchOpen, setSearchOpen] = useState<boolean>(false);
+    const closeModal = () => {
+        setSearchOpen(false);
+    };
 
     const [showTitle, setShowTitle] = useState(false);
 
@@ -53,7 +60,7 @@ export function Header({ serverUser }: { serverUser: IUser | null }) {
             <HeaderBurger />
             <Link
                 href="/"
-                className={`absolute left-1/2 xs:left-1/3 font-perandory tracking-wide transform -translate-x-1/2 transition-opacity duration-300 ${
+                className={`absolute left-1/2 md:left-1/3 font-perandory tracking-wide transform -translate-x-1/2 transition-opacity duration-300 ${
                     showTitle ? "opacity-100" : "opacity-0 pointer-events-none"
                 }  px-[25px] py-[10px] font-bold text-5xl md:text-4xl`}
             >
@@ -61,6 +68,12 @@ export function Header({ serverUser }: { serverUser: IUser | null }) {
             </Link>
 
             <ul className="flex gap-[30px] xs:gap-[15px]">
+                <li>
+                    <MonoButtonUnderlined onClick={() => setSearchOpen(true)}>
+                        <SearchIcon className="w-[25px] xs:w-[20px] fill-none stroke-2 stroke-white" />
+                    </MonoButtonUnderlined>
+                </li>
+
                 <li className="md:hidden">
                     <Link
                         href="/cart"
@@ -85,7 +98,7 @@ export function Header({ serverUser }: { serverUser: IUser | null }) {
                         href="/cart"
                         className="relative flex gap-[3px] items-center font-perandory tracking-wider text-[20px] border-b border-transparent hover:border-white transition-all duration-200"
                     >
-                        <div className="text-sm pt-1">
+                        <div className="text-sm">
                             {cartAmount > 0 && `${cartAmount}`}
                         </div>
                         <CartIcon className="w-[25px] xs:w-[20px] fill-none stroke-2 stroke-white" />
@@ -122,6 +135,10 @@ export function Header({ serverUser }: { serverUser: IUser | null }) {
                     </Link>
                 </li>
             </ul>
+            <ShopSearchModal
+                isOpen={searchOpen === true}
+                onClose={closeModal}
+            />
         </header>
     );
 }
