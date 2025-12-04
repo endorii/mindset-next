@@ -150,14 +150,14 @@ git clone https://github.com/endorii/mindset-next
 cd mindset-next
 ```
 
-###Client
+### **Client**
 ```bash
 cd client
 npm install
 npm run dev
 ```
 
-###Server
+### **Server**
 ```bash
 cd server
 npm install
