@@ -8,10 +8,7 @@ import { PaymentMethodType } from "@/features/checkout/types/checkout.types";
 import { useCreateOrder } from "@/features/orders/hooks/useOrders";
 import { INovaPostDataObj } from "@/features/orders/types/orders.types";
 import { useProductsByIds } from "@/features/products/hooks/useProducts";
-import {
-    useCartItemsFromUser,
-    useDeleteCartItemFromUser,
-} from "@/features/shop/cart/hooks/useCart";
+import { useCartItemsFromUser } from "@/features/shop/cart/hooks/useCart";
 import { useCurrentUser } from "@/features/shop/user-info/hooks/useUsers";
 import {
     fetchAreas,
@@ -50,9 +47,7 @@ interface NovaPoshtaLoadingState {
 
 function Checkout() {
     const router = useRouter();
-    const { cartItems, removeFromCart, clearCart } = useCartStore();
-
-    const deleteCartItemMutation = useDeleteCartItemFromUser();
+    const { cartItems } = useCartStore();
 
     const { data: user } = useCurrentUser();
 
@@ -236,17 +231,6 @@ function Checkout() {
         [warehouses, setValue]
     );
 
-    const clearUserCart = async () => {
-        if (user && userCartItems) {
-            const deletePromises = userCartItems.map((item) =>
-                deleteCartItemMutation.mutateAsync(item.id)
-            );
-            await Promise.all(deletePromises);
-        } else {
-            clearCart();
-        }
-    };
-
     const onSubmit = async (data: FormData) => {
         if (!mergedCart.length) {
             toast.error("Cart is empty.");
@@ -308,7 +292,6 @@ function Checkout() {
                 const { url } = await res.json();
 
                 if (url) {
-                    // await clearUserCart();
                     window.location.href = url;
                 } else {
                     toast.error("Failed to create payment session");
@@ -328,12 +311,6 @@ function Checkout() {
                     paymentMethod: data.paymentMethod,
                     items: destructedCart,
                 });
-
-                await clearUserCart();
-
-                toast.success(
-                    "Your order has been successfully placed. Please wait... Our managers will contact you for confirmation."
-                );
             }
         } catch (err) {
             console.error(err);

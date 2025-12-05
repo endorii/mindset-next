@@ -45,6 +45,7 @@ export function useCreateOrder() {
             } else {
                 queryClient.invalidateQueries({ queryKey: ["orders"] });
                 queryClient.invalidateQueries({ queryKey: ["cart"] });
+                queryClient.invalidateQueries({ queryKey: ["currentUser"] });
             }
             toast.success(data.message);
         },

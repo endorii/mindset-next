@@ -92,8 +92,8 @@ export class ShopCartService {
     }
 
     async removeCartItemFromUser(userId: string, cartItemId: string) {
-        const existingItem = await this.prisma.cartItem.findUnique({
-            where: { userId, id: cartItemId },
+        const existingItem = await this.prisma.cartItem.findFirst({
+            where: { id: cartItemId, userId },
         });
 
         if (!existingItem) {
@@ -101,7 +101,7 @@ export class ShopCartService {
         }
 
         await this.prisma.cartItem.delete({
-            where: { userId, id: cartItemId },
+            where: { id: existingItem.id },
         });
 
         return { message: "Product removed from the cart" };
